@@ -1,4 +1,4 @@
-package com.TeamDman_9201.NOVA;
+package com.TeamDman_9201.nova.Slots;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

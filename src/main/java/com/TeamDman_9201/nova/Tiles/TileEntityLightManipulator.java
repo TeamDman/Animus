@@ -1,6 +1,8 @@
-package com.TeamDman_9201.NOVA;
+package com.TeamDman_9201.nova.Tiles;
 
 import java.util.ArrayList;
+
+import com.TeamDman_9201.nova.Threads.LightManipulatorThread;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

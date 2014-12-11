@@ -1,4 +1,8 @@
-package com.TeamDman_9201.NOVA;
+package com.TeamDman_9201.nova.Containers;
+
+import com.TeamDman_9201.nova.Slots.SlotLight;
+import com.TeamDman_9201.nova.Slots.SlotLightUpgrade;
+import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

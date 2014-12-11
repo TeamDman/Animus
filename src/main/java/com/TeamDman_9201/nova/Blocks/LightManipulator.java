@@ -1,4 +1,4 @@
-package com.TeamDman_9201.NOVA;
+package com.TeamDman_9201.nova.Blocks;
 
 import java.util.Random;
 
@@ -18,6 +18,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import com.TeamDman_9201.nova.NOVA;
+import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,21 +30,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class LightManipulator extends BlockContainer {
 
 	private final Random random = new Random();
-	private static boolean field_149934_M;
+	private static boolean updateDebounce;
 	private boolean isActive = false;
-	@SideOnly(Side.CLIENT)
-	private IIcon field_149935_N;
-	@SideOnly(Side.CLIENT)
-	private IIcon field_149936_O;
-	private static final String __OBFID = "CL_00000248";
 
 	public LightManipulator(boolean active) {
 		super(Material.glass);
 		this.isActive = active;
-		setBlockName("lightManipulator");
-		setCreativeTab(First.firstTab);
-		setHardness(3.5F);
-		//setLightLevel(1);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -50,9 +45,9 @@ public class LightManipulator extends BlockContainer {
 
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		this.blockIcon = iconRegister.registerIcon(First.MODID + ":"
+		this.blockIcon = iconRegister.registerIcon(NOVA.MODID + ":"
 				+ "lightManipulatorSide");
-		this.iconFront = iconRegister.registerIcon(First.MODID + ":"
+		this.iconFront = iconRegister.registerIcon(NOVA.MODID + ":"
 				+ "lightManipulatorFront");
 	}
 
@@ -66,7 +61,7 @@ public class LightManipulator extends BlockContainer {
 	 */
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World world, int x, int y, int z) {
-		return Item.getItemFromBlock(First.lightManipulator);
+		return Item.getItemFromBlock(NOVA.lightManipulator);
 	}
 
 	@Override
@@ -76,7 +71,7 @@ public class LightManipulator extends BlockContainer {
 
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_,
 			int p_149650_3_) {
-		return Item.getItemFromBlock(First.lightManipulator);
+		return Item.getItemFromBlock(NOVA.lightManipulator);
 	}
 
 	/**
@@ -132,8 +127,8 @@ public class LightManipulator extends BlockContainer {
 				// !player.capabilities.allowFlying;
 				// player.capabilities.isFlying = !player.capabilities.isFlying;
 				// player.openGui(mod, modGuiId, world, x, y, z);
-				player.openGui(First.instance, First.guiLightManipulator,
-						world, x, y, z);
+				player.openGui(NOVA.instance, NOVA.guiLightManipulator, world,
+						x, y, z);
 
 			}
 
@@ -173,7 +168,7 @@ public class LightManipulator extends BlockContainer {
 
 	public void breakBlock(World world, int x, int y, int z, Block block,
 			int p_149749_6_) {
-		if (!field_149934_M) {
+		if (!updateDebounce) {
 			TileEntityLightManipulator tileentityfurnace = (TileEntityLightManipulator) world
 					.getTileEntity(x, y, z);
 
@@ -226,56 +221,20 @@ public class LightManipulator extends BlockContainer {
 		super.breakBlock(world, x, y, z, block, p_149749_6_);
 	}
 
-	
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor Block
-     */
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
-    {
-       if (world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z)) {    	   
-    	   	TileEntityLightManipulator tile = (TileEntityLightManipulator) world.getTileEntity(x, y, z);
-    	   	tile.commence();
-       }
-       
-    }
-    
 	/**
-	 * A randomly called display update to be able to add particles or other
-	 * items for display
+	 * Lets the block know when one of its neighbor changes. Doesn't know which
+	 * neighbor changed (coordinates passed are their own) Args: x, y, z,
+	 * neighbor Block
 	 */
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-		if (this.isActive) {
-			int l = world.getBlockMetadata(x, y, z);
-			float f = (float) x + 0.5F;
-			float f1 = (float) y + 0.0F + rand.nextFloat() * 6.0F / 16.0F;
-			float f2 = (float) z + 0.5F;
-			float f3 = 0.52F;
-			float f4 = rand.nextFloat() * 0.6F - 0.3F;
-
-			if (l == 4) {
-				world.spawnParticle("smoke", (double) (f - f3), (double) f1,
-						(double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-				world.spawnParticle("flame", (double) (f - f3), (double) f1,
-						(double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-			} else if (l == 5) {
-				world.spawnParticle("smoke", (double) (f + f3), (double) f1,
-						(double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-				world.spawnParticle("flame", (double) (f + f3), (double) f1,
-						(double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-			} else if (l == 2) {
-				world.spawnParticle("smoke", (double) (f + f4), (double) f1,
-						(double) (f2 - f3), 0.0D, 0.0D, 0.0D);
-				world.spawnParticle("flame", (double) (f + f4), (double) f1,
-						(double) (f2 - f3), 0.0D, 0.0D, 0.0D);
-			} else if (l == 3) {
-				world.spawnParticle("smoke", (double) (f + f4), (double) f1,
-						(double) (f2 + f3), 0.0D, 0.0D, 0.0D);
-				world.spawnParticle("flame", (double) (f + f4), (double) f1,
-						(double) (f2 + f3), 0.0D, 0.0D, 0.0D);
-			}
+	public void onNeighborBlockChange(World world, int x, int y, int z,
+			Block block) {
+		if (world.isBlockIndirectlyGettingPowered(x, y, z)
+				|| world.isBlockIndirectlyGettingPowered(x, y + 1, z)) {
+			TileEntityLightManipulator tile = (TileEntityLightManipulator) world
+					.getTileEntity(x, y, z);
+			tile.commence();
 		}
+
 	}
 
 	/**
@@ -297,26 +256,5 @@ public class LightManipulator extends BlockContainer {
 		return Container.calcRedstoneFromInventory((IInventory) world
 				.getTileEntity(x, y, z));
 	}
-	
+
 }
-
-/*
- * public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int
- * p_149650_3_){ return Item.getItemFromBlock(First.lightManipulatorIdle); }
- * 
- * public void onBlockAdded(World world, int x, int y, int z) {
- * super.onBlockAdded(world, x, y, z); this.setDefaultDirection(world, x, y, z);
- * }
- * 
- * private void setDefaultDirection(World world, int x, int y, int z) { if
- * (!world.isRemote) { Block block1 = world.getBlock(x, y, z-1); Block block2 =
- * world.getBlock(x, y, z+1); Block block3 = world.getBlock(x-1, y, z); Block
- * block4 = world.getBlock(x+1, y, z);
- * 
- * byte b0 = 3; if (block1.func_149730_j() && ~ block2.func_149730_j()) { b0 =
- * 3; } if (block2.func_149730_j() && !block1..func_149730_j()) { b0 = 2; } if
- * (block3.func_149730_j() && Block4.func_149730_j()) { b0 = 5 } if
- * (block4.func_149730_j() && Block3.func_149730_j()) { b0 = 4 }
- * world.setBlockMetadataWithNotify(x, y, z, b0, 2); } }
- */
-

@@ -1,7 +1,11 @@
-package com.TeamDman_9201.NOVA;
+package com.TeamDman_9201.nova.Tiles;
 
 import net.minecraft.block.Block;
+
 import com.TeamDman_9201.*;//BrickFurnace;//net.minecraft.block.BlockFurnace;
+import com.TeamDman_9201.nova.NOVA;
+import com.TeamDman_9201.nova.Blocks.BrickFurnace;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -272,7 +276,7 @@ public class TileEntityBrickFurnace extends TileEntity implements ISidedInventor
 
                     if (this.furnaceItemStacks[1] != null)
                     {
-                    	if (this.furnaceItemStacks[1].isItemEqual(new ItemStack(First.superCoal,1))) increaseFurnaceHeat(1000);//this.furnaceHeat+=1000;
+                    	if (this.furnaceItemStacks[1].isItemEqual(new ItemStack(NOVA.superCoal,1))) increaseFurnaceHeat(1000);//this.furnaceHeat+=1000;
                     	if (this.furnaceHeat>this.furnaceMaxHeat) this.furnaceHeat = this.furnaceMaxHeat;
                         --this.furnaceItemStacks[1].stackSize;
 

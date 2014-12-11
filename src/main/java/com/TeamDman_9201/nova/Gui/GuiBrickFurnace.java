@@ -1,4 +1,4 @@
-package com.TeamDman_9201.NOVA;//net.minecraft.client.gui.inventory;
+package com.TeamDman_9201.nova.Gui;//net.minecraft.client.gui.inventory;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -6,6 +6,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+
+import com.TeamDman_9201.nova.Containers.ContainerBrickFurnace;
+import com.TeamDman_9201.nova.Tiles.TileEntityBrickFurnace;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

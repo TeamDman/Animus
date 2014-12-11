@@ -1,4 +1,4 @@
-package com.TeamDman_9201.NOVA;
+package com.TeamDman_9201.nova.Gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -7,12 +7,15 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import com.TeamDman_9201.nova.Containers.ContainerLightManipulator;
+import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiLightManipulator extends GuiContainer {
-	private static final ResourceLocation	GuiTextures	= new ResourceLocation("first:textures/gui/lightManipulator.png");	// "first:textures/gui/BrickFurnace.png");//
+	private static final ResourceLocation	GuiTextures	= new ResourceLocation("NOVA:textures/gui/lightManipulator.png");	// "first:textures/gui/BrickFurnace.png");//
 	private TileEntityLightManipulator		tileLightManipulator;
 
 	/**

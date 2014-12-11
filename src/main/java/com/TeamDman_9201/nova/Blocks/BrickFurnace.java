@@ -1,4 +1,4 @@
-package com.TeamDman_9201.NOVA;
+package com.TeamDman_9201.nova.Blocks;
 
 import java.util.Random;
 
@@ -20,7 +20,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 
-import com.TeamDman_9201.NOVA.*;
+import com.TeamDman_9201.nova.*;
+import com.TeamDman_9201.nova.Tiles.TileEntityBrickFurnace;
 
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
@@ -35,11 +36,6 @@ public class BrickFurnace extends BlockContainer {
 
 	public BrickFurnace() {
 		super(Material.rock);
-		System.out.println("New Brickfurance");
-		setCreativeTab(First.firstTab);
-		setHardness(3.5F);
-		// if (isActive)
-		// setLightLevel(1);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -51,9 +47,9 @@ public class BrickFurnace extends BlockContainer {
 
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		this.blockIcon = iconRegister.registerIcon(First.MODID + ":" + "brickFurnaceSide");
-		this.iconFrontActive = iconRegister.registerIcon(First.MODID + ":" + "brickFurnaceFrontActive");
-		this.iconFrontIdle = iconRegister.registerIcon(First.MODID + ":" + "brickFurnaceFrontIdle");
+		this.blockIcon = iconRegister.registerIcon(NOVA.MODID + ":" + "brickFurnaceSide");
+		this.iconFrontActive = iconRegister.registerIcon(NOVA.MODID + ":" + "brickFurnaceFrontActive");
+		this.iconFrontIdle = iconRegister.registerIcon(NOVA.MODID + ":" + "brickFurnaceFrontIdle");
 	}
 
 	// @SideOnly(Side.CLIENT)
@@ -77,7 +73,7 @@ public class BrickFurnace extends BlockContainer {
 	 */
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World world, int x, int y, int z) {
-		return Item.getItemFromBlock(First.brickFurnace);
+		return Item.getItemFromBlock(NOVA.brickFurnace);
 	}
 
 	@Override
@@ -86,7 +82,7 @@ public class BrickFurnace extends BlockContainer {
 	}
 
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-		return Item.getItemFromBlock(First.brickFurnace);
+		return Item.getItemFromBlock(NOVA.brickFurnace);
 	}
 
 	int toMeta(int facing, boolean active) {
@@ -158,7 +154,7 @@ public class BrickFurnace extends BlockContainer {
 				// !player.capabilities.allowFlying;
 				// player.capabilities.isFlying = !player.capabilities.isFlying;
 				// player.openGui(mod, modGuiId, world, x, y, z);
-				player.openGui(First.instance, First.guiBrickFurnace, world, x, y, z);
+				player.openGui(NOVA.instance, NOVA.guiBrickFurnace, world, x, y, z);
 
 				System.out.println("End Open " + random.nextInt());
 			}
@@ -202,7 +198,7 @@ public class BrickFurnace extends BlockContainer {
 		int meta = world.getBlockMetadata(x, y, z);
 		TileEntity tileentity = world.getTileEntity(x, y, z);
 		breakDebounce = true;
-		world.setBlock(x, y, z, First.brickFurnace);
+		world.setBlock(x, y, z, NOVA.brickFurnace);
 		breakDebounce = false;
 
 		int mask = 0;

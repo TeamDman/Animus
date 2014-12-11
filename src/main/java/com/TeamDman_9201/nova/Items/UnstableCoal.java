@@ -1,4 +1,6 @@
-package com.TeamDman_9201.NOVA;
+package com.TeamDman_9201.nova.Items;
+
+import com.TeamDman_9201.nova.NOVA;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,9 +10,6 @@ import net.minecraft.world.World;
 
 public class UnstableCoal extends Item {
 	public UnstableCoal() {
-		setUnlocalizedName("unstableCoal");
-		setCreativeTab(First.firstTab); //CreativeTabs.tabMaterials);
-		setTextureName(First.MODID + ":" + "unstableCoal");
 	}
 
 	public boolean onItemUse(ItemStack par1ItemStack,

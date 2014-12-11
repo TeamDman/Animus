@@ -1,4 +1,6 @@
-package com.TeamDman_9201.NOVA;///net.minecraft.inventory;
+package com.TeamDman_9201.nova.Containers;///net.minecraft.inventory;
+
+import com.TeamDman_9201.nova.Tiles.TileEntityBrickFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

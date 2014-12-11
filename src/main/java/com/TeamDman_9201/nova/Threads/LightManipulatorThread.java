@@ -1,7 +1,9 @@
 // Thanks to bro @ https://github.com/4poc/lloverlay/blob/master/forge_src/cc/apoc/lloverlay/LightLevelOverlayThread.java
-package com.TeamDman_9201.NOVA;
+package com.TeamDman_9201.nova.Threads;
 
 import java.util.ArrayList;
+
+import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
