@@ -1,14 +1,5 @@
 package com.TeamDman_9201.nova;
 
-import com.TeamDman_9201.nova.Blocks.BrickFurnace;
-import com.TeamDman_9201.nova.Blocks.CoalDiamondOre;
-import com.TeamDman_9201.nova.Blocks.LightManipulator;
-import com.TeamDman_9201.nova.Items.CompressedTorch;
-import com.TeamDman_9201.nova.Items.SuperCoal;
-import com.TeamDman_9201.nova.Items.UnstableCoal;
-import com.TeamDman_9201.nova.Tiles.TileEntityBrickFurnace;
-import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,7 +7,21 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+
+import com.TeamDman_9201.nova.Blocks.BrickFurnace;
+import com.TeamDman_9201.nova.Blocks.CoalDiamondOre;
+import com.TeamDman_9201.nova.Blocks.CompressedTorch;
+import com.TeamDman_9201.nova.Blocks.LightManipulator;
+import com.TeamDman_9201.nova.Items.SuperCoal;
+import com.TeamDman_9201.nova.Items.UnstableCoal;
+import com.TeamDman_9201.nova.Recipes.CompressedTorchRecipe;
+import com.TeamDman_9201.nova.Tiles.TileEntityBrickFurnace;
+import com.TeamDman_9201.nova.Tiles.TileEntityCompressedTorch;
+import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -80,6 +85,11 @@ public class NOVA {
 		compressedTorch = new CompressedTorch();
 		setupBlock(compressedTorch, "compressedTorch", mainTab, 0,
 				Material.wood);
+//		GameRegistry.addShapelessRecipe(new ItemStack(compressedTorch, 1),
+//				new ItemStack(Blocks.torch, 1), new ItemStack(Blocks.torch, 1));
+//		
+//		CraftingManager.getInstance().
+		GameRegistry.addRecipe(new CompressedTorchRecipe());
 
 		lightManipulator = new LightManipulator(false);
 		setupBlock(lightManipulator, "lightManipulator", mainTab, 3.5F,
@@ -112,7 +122,7 @@ public class NOVA {
 		GameRegistry.addRecipe(new ItemStack(superCoal, 2), new Object[] {
 				"AAA", "ABA", "AAA", 'A', Items.coal, 'B',
 				new ItemStack(superCoal) });
-
+		
 		// OreDictionary.registerOre(NAME, coalDiamondOre);
 	}
 
@@ -120,6 +130,10 @@ public class NOVA {
 	public void init(FMLInitializationEvent event) {
 		GameRegistry.registerFuelHandler(new NOVAFuelHandler());
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new NOVAGuiHandler());
+//		MinecraftForge.EVENT_BUS.register(new NOVAEventListener());
+		FMLCommonHandler.instance().bus().register(new NOVAEventListener());
+		// FML.EVENT();
+
 	}
 
 	@EventHandler
@@ -128,6 +142,7 @@ public class NOVA {
 				"BrickFurnace");
 		GameRegistry.registerTileEntity(TileEntityLightManipulator.class,
 				"LightManipulator");
+		GameRegistry.registerTileEntity(TileEntityCompressedTorch.class, "CompressedTorch");
 	}
 
 	@EventHandler
