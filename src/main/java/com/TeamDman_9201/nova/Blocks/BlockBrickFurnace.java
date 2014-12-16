@@ -21,7 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 import com.TeamDman_9201.nova.*;
-import com.TeamDman_9201.nova.Tiles.TileEntityBrickFurnace;
+import com.TeamDman_9201.nova.Tiles.TileBrickFurnace;
 
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
@@ -29,12 +29,12 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BrickFurnace extends BlockContainer {
+public class BlockBrickFurnace extends BlockContainer {
 
 	private final Random	random	= new Random();
 	private static boolean	breakDebounce;
 
-	public BrickFurnace() {
+	public BlockBrickFurnace() {
 		super(Material.rock);
 	}
 
@@ -78,7 +78,7 @@ public class BrickFurnace extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityBrickFurnace();
+		return new TileBrickFurnace();
 	}
 
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
@@ -143,7 +143,7 @@ public class BrickFurnace extends BlockContainer {
 		if (world.isRemote) {
 			return true;
 		} else {
-			TileEntityBrickFurnace tileentityfurnace = (TileEntityBrickFurnace) world.getTileEntity(x, y, z);
+			TileBrickFurnace tileentityfurnace = (TileBrickFurnace) world.getTileEntity(x, y, z);
 			System.out.println("Opening Furnace " + random.nextInt());
 			if (tileentityfurnace != null) {
 
@@ -186,7 +186,7 @@ public class BrickFurnace extends BlockContainer {
 		}
 		world.setBlockMetadataWithNotify(x, y, z, toMeta(face, false), 2);
 		if (item.hasDisplayName()) {
-			((TileEntityBrickFurnace) world.getTileEntity(x, y, z)).setName(item.getDisplayName());
+			((TileBrickFurnace) world.getTileEntity(x, y, z)).setName(item.getDisplayName());
 		}
 	}
 
@@ -218,7 +218,7 @@ public class BrickFurnace extends BlockContainer {
 
 	public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
 		if (!breakDebounce) {
-			TileEntityBrickFurnace tileentityfurnace = (TileEntityBrickFurnace) world.getTileEntity(x, y, z);
+			TileBrickFurnace tileentityfurnace = (TileBrickFurnace) world.getTileEntity(x, y, z);
 
 			if (tileentityfurnace != null) {
 				for (int i1 = 0; i1 < tileentityfurnace.getSizeInventory(); ++i1) {

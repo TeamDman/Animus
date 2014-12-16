@@ -12,7 +12,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class CompressedTorchRecipe implements IRecipe {
+public class RecipeCompressedTorch implements IRecipe {
 	public int[] getData(InventoryCrafting crafting) {
 		int rtn[] = { 0, 0, 0, 0 };
 		for (int i = 0; i < crafting.getSizeInventory(); i++) {
@@ -24,13 +24,11 @@ public class CompressedTorchRecipe implements IRecipe {
 				if (contents.getItem() == new ItemStack(Blocks.torch).getItem()) {
 					rtn[0]++;
 					rtn[1]++;
-				} else if (contents.getItem() == new ItemStack(
-						NOVA.compressedTorch).getItem()) {
+				} else if (contents.getItem() == new ItemStack(NOVA.compressedTorch).getItem()) {
 					rtn[0]++;
 					rtn[2]++;
 					if (contents.getTagCompound() != null) {
-						rtn[3] += contents.getTagCompound().getInteger(
-								"Torches");
+						rtn[3] += contents.getTagCompound().getLong("Torches");
 					}
 				}
 			}
@@ -64,15 +62,8 @@ public class CompressedTorchRecipe implements IRecipe {
 		}
 
 		NBTTagCompound nbtData = new NBTTagCompound();
-		nbtData.setInteger("Torches", storedTorches);
+		nbtData.setLong("Torches", storedTorches);
 		returnStack.setTagCompound(nbtData);
-
-		returnStack.setStackDisplayName(Integer.toString(nbtData
-				.getInteger("Torches")));
-		System.out.printf("Set torch nbt to %d\n",
-				nbtData.getInteger("Torches"));
-
-		// returnStack.getItem().addInformation(returnStack, , toolTip, true);
 		return returnStack;
 	}
 

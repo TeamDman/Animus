@@ -4,8 +4,8 @@ import com.TeamDman_9201.nova.Containers.ContainerBrickFurnace;
 import com.TeamDman_9201.nova.Containers.ContainerLightManipulator;
 import com.TeamDman_9201.nova.Gui.GuiBrickFurnace;
 import com.TeamDman_9201.nova.Gui.GuiLightManipulator;
-import com.TeamDman_9201.nova.Tiles.TileEntityBrickFurnace;
-import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
+import com.TeamDman_9201.nova.Tiles.TileBrickFurnace;
+import com.TeamDman_9201.nova.Tiles.TileLightManipulator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -17,9 +17,9 @@ public class NOVAGuiHandler implements IGuiHandler {
 		// TODO Auto-generated method stub
 		switch(ID) {
 			case NOVA.guiBrickFurnace:
-				return new ContainerBrickFurnace(player.inventory, (TileEntityBrickFurnace)world.getTileEntity(x, y, z));//Object();//GuiPortalgestures();
+				return new ContainerBrickFurnace(player.inventory, (TileBrickFurnace)world.getTileEntity(x, y, z));//Object();//GuiPortalgestures();
 			case NOVA.guiLightManipulator:
-				return new ContainerLightManipulator(player.inventory, (TileEntityLightManipulator)world.getTileEntity(x, y, z));
+				return new ContainerLightManipulator(player.inventory, (TileLightManipulator)world.getTileEntity(x, y, z));
 		}
 		return null;
 	}
@@ -30,9 +30,9 @@ public class NOVAGuiHandler implements IGuiHandler {
 		System.out.println("GUI Called with "+ID);
 		switch(ID) {
 			case NOVA.guiBrickFurnace:
-				return new GuiBrickFurnace(player.inventory,(TileEntityBrickFurnace)world.getTileEntity(x, y, z));
+				return new GuiBrickFurnace(player.inventory,(TileBrickFurnace)world.getTileEntity(x, y, z));
 			case NOVA.guiLightManipulator:
-				return new GuiLightManipulator(player.inventory,(TileEntityLightManipulator)world.getTileEntity(x,y,z));
+				return new GuiLightManipulator(player.inventory,(TileLightManipulator)world.getTileEntity(x,y,z));
 		}
 		return null;
 	}

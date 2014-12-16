@@ -6,8 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
-public class CoalDiamondOre extends Block {
-	public CoalDiamondOre() {
+public class BlockCoalDiamondOre extends Block {
+	public BlockCoalDiamondOre() {
 		super(Material.rock);
 	}
 }

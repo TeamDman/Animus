@@ -1,6 +1,6 @@
 package com.TeamDman_9201.nova.Containers;///net.minecraft.inventory;
 
-import com.TeamDman_9201.nova.Tiles.TileEntityBrickFurnace;
+import com.TeamDman_9201.nova.Tiles.TileBrickFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,13 +17,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerBrickFurnace extends Container
 {
-    private TileEntityBrickFurnace tileFurnace;
+    private TileBrickFurnace tileFurnace;
     private int lastCookTime;
     private int lastBurnTime;
     private int lastItemBurnTime;
     private static final String __OBFID = "CL_00001748";
 
-    public ContainerBrickFurnace(InventoryPlayer par1InventoryPlayer, TileEntityBrickFurnace tileEntityBrickFurnace)
+    public ContainerBrickFurnace(InventoryPlayer par1InventoryPlayer, TileBrickFurnace tileEntityBrickFurnace)
     {
         this.tileFurnace = tileEntityBrickFurnace;
         this.addSlotToContainer(new Slot(tileEntityBrickFurnace, 0, 56, 17));

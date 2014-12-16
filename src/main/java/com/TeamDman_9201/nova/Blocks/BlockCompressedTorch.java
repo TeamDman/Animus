@@ -22,16 +22,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import com.TeamDman_9201.nova.NOVA;
-import com.TeamDman_9201.nova.Tiles.TileEntityCompressedTorch;
+import com.TeamDman_9201.nova.Tiles.TileCompressedTorch;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class CompressedTorch extends BlockTorch implements ITileEntityProvider {
-	//Cazzar> Teamy, create another class, which extends that, and register it with the block.
+public class BlockCompressedTorch extends BlockTorch implements ITileEntityProvider {
+	// Cazzar> Teamy, create another class, which extends that, and register it
+	// with the block.
 	private final Random	random	= new Random();
 
-	public CompressedTorch() {
+	public BlockCompressedTorch() {
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -69,8 +70,7 @@ public class CompressedTorch extends BlockTorch implements ITileEntityProvider {
 	 *            Breakers fortune level
 	 * @return A ArrayList containing all items this block drops
 	 */
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z,
-			int metadata, int fortune) {
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
 		ArrayList<ItemStack> rtn = new ArrayList<ItemStack>();
 		return rtn;
 	}
@@ -80,33 +80,29 @@ public class CompressedTorch extends BlockTorch implements ITileEntityProvider {
 	}
 
 	public TileEntity createNewTileEntity(World world, int var2) {
-		return new TileEntityCompressedTorch();
+		return new TileCompressedTorch();
 	}
 
 	/**
 	 * Called when the block is placed in the world.
 	 */
-	public void onBlockPlacedBy(World world, int xPos, int yPos, int zPos,
-			EntityLivingBase entity, ItemStack stack) {
+	public void onBlockPlacedBy(World world, int xPos, int yPos, int zPos, EntityLivingBase entity, ItemStack stack) {
 		NBTTagCompound tags = stack.getTagCompound();
-		TileEntityCompressedTorch tile = (TileEntityCompressedTorch) world
-				.getTileEntity(xPos, yPos, zPos);
+		TileCompressedTorch tile = (TileCompressedTorch) world.getTileEntity(xPos, yPos, zPos);
 		if (tags != null && tile != null) {
-			tile.setTorches(tags.getInteger("Torches"));
+			tile.setTorches(tags.getLong("Torches"));
 		}
 	}
 
 	/**
 	 * Called upon block activation (right click on the block.)
 	 */
-	public boolean onBlockActivated(World world, int x, int y, int z,
-			EntityPlayer player, int p_149727_6_, float p_149727_7_,
-			float p_149727_8_, float p_149727_9_) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_,
+			float p_149727_7_, float p_149727_8_, float p_149727_9_) {
 		if (world.isRemote) {
 			return true;
 		} else {
-			TileEntityCompressedTorch tile = (TileEntityCompressedTorch) world
-					.getTileEntity(x, y, z);
+			TileCompressedTorch tile = (TileCompressedTorch) world.getTileEntity(x, y, z);
 			if (tile != null) {
 				System.out.println("Torches:" + tile.getTorches());
 			}
@@ -115,18 +111,15 @@ public class CompressedTorch extends BlockTorch implements ITileEntityProvider {
 		}
 	}
 
-	public void breakBlock(World world, int x, int y, int z, Block block,
-			int p_149749_6_) {
+	public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
 
-		TileEntityCompressedTorch tile = (TileEntityCompressedTorch) world
-				.getTileEntity(x, y, z);
+		TileCompressedTorch tile = (TileCompressedTorch) world.getTileEntity(x, y, z);
 
 		if (tile != null) {
 			ItemStack stack = new ItemStack(NOVA.compressedTorch);
 			NBTTagCompound tags = new NBTTagCompound();
-			tags.setInteger("Torches", tile.getTorches());
+			tags.setLong("Torches", tile.getTorches());
 			stack.setTagCompound(tags);
-			stack.setStackDisplayName("Torches Stored: " + tile.getTorches());
 
 			float f = random.nextFloat() * 0.8F + 0.1F;
 			float f1 = random.nextFloat() * 0.8F + 0.1F;
@@ -140,20 +133,16 @@ public class CompressedTorch extends BlockTorch implements ITileEntityProvider {
 				}
 
 				stack.stackSize -= j1;
-				EntityItem entityitem = new EntityItem(world,
-						(double) ((float) x + f), (double) ((float) y + f1),
-						(double) ((float) z + f2), new ItemStack(
-								stack.getItem(), j1, stack.getItemDamage()));
+				EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1),
+						(double) ((float) z + f2), new ItemStack(stack.getItem(), j1, stack.getItemDamage()));
 
 				if (stack.hasTagCompound()) {
-					entityitem.getEntityItem().setTagCompound(
-							(NBTTagCompound) stack.getTagCompound().copy());
+					entityitem.getEntityItem().setTagCompound((NBTTagCompound) stack.getTagCompound().copy());
 				}
 
 				float f3 = 0.05F;
 				entityitem.motionX = (double) ((float) random.nextGaussian() * f3);
-				entityitem.motionY = (double) ((float) random.nextGaussian()
-						* f3 + 0.2F);
+				entityitem.motionY = (double) ((float) random.nextGaussian() * f3 + 0.2F);
 				entityitem.motionZ = (double) ((float) random.nextGaussian() * f3);
 				world.spawnEntityInWorld(entityitem);
 			}
@@ -167,25 +156,4 @@ public class CompressedTorch extends BlockTorch implements ITileEntityProvider {
 																// isinstanceof
 																// blockContainer
 	}
-//
-//	 if (nbttagcompound.hasKey("Lore"))
-//	 {
-//	 NBTTagList nbttaglist1 = nbttagcompound.getTagList("Lore");
-//
-//	 if (nbttaglist1.tagCount() > 0)
-//	 {
-//	 for (int j = 0; j < nbttaglist1.tagCount(); ++j)
-//	 {
-//	 arraylist.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + ((NBTTagString)nbttaglist1.tagAt(j)).data);
-//	 }
-//	 }
-//	 }
-////	 
-//	public void addInformation(ItemStack itemStack, EntityPlayer player,
-//			List list, boolean par4) {
-////		if (null != (itemStack.getTagCompound().getInteger("Torches")) {
-//			list.add("Torches: "+itemStack.getTagCompound().getInteger("Torches"));
-////			list.add(EnumChatFormatting.GREEN + "code: " + code);
-////		}
-//	}
 }

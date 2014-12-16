@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class UnstableCoal extends Item {
-	public UnstableCoal() {
+public class ItemUnstableCoal extends Item {
+	public ItemUnstableCoal() {
 	}
 
 	public boolean onItemUse(ItemStack par1ItemStack,

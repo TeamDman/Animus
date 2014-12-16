@@ -20,20 +20,20 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import com.TeamDman_9201.nova.NOVA;
-import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
+import com.TeamDman_9201.nova.Tiles.TileLightManipulator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 //net.minecraft.tileentity.TileEntityFurnace;
 
-public class LightManipulator extends BlockContainer {
+public class BlockLightManipulator extends BlockContainer {
 
 	private final Random random = new Random();
 	private static boolean updateDebounce;
 	private boolean isActive = false;
 
-	public LightManipulator(boolean active) {
+	public BlockLightManipulator(boolean active) {
 		super(Material.glass);
 		this.isActive = active;
 	}
@@ -66,7 +66,7 @@ public class LightManipulator extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityLightManipulator();
+		return new TileLightManipulator();
 	}
 
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_,
@@ -116,7 +116,7 @@ public class LightManipulator extends BlockContainer {
 		if (world.isRemote) {
 			return true;
 		} else {
-			TileEntityLightManipulator tileentityfurnace = (TileEntityLightManipulator) world
+			TileLightManipulator tileentityfurnace = (TileLightManipulator) world
 					.getTileEntity(x, y, z);
 			if (tileentityfurnace != null) {
 
@@ -161,7 +161,7 @@ public class LightManipulator extends BlockContainer {
 		}
 
 		if (item.hasDisplayName()) {
-			((TileEntityLightManipulator) world.getTileEntity(x, y, z))
+			((TileLightManipulator) world.getTileEntity(x, y, z))
 					.setName(item.getDisplayName());
 		}
 	}
@@ -169,7 +169,7 @@ public class LightManipulator extends BlockContainer {
 	public void breakBlock(World world, int x, int y, int z, Block block,
 			int p_149749_6_) {
 		if (!updateDebounce) {
-			TileEntityLightManipulator tileentityfurnace = (TileEntityLightManipulator) world
+			TileLightManipulator tileentityfurnace = (TileLightManipulator) world
 					.getTileEntity(x, y, z);
 
 			if (tileentityfurnace != null) {
@@ -230,7 +230,7 @@ public class LightManipulator extends BlockContainer {
 			Block block) {
 		if (world.isBlockIndirectlyGettingPowered(x, y, z)
 				|| world.isBlockIndirectlyGettingPowered(x, y + 1, z)) {
-			TileEntityLightManipulator tile = (TileEntityLightManipulator) world
+			TileLightManipulator tile = (TileLightManipulator) world
 					.getTileEntity(x, y, z);
 			tile.commence();
 		}

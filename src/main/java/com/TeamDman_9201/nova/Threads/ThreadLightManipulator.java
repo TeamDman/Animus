@@ -3,7 +3,7 @@ package com.TeamDman_9201.nova.Threads;
 
 import java.util.ArrayList;
 
-import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
+import com.TeamDman_9201.nova.Tiles.TileLightManipulator;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -13,14 +13,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public class LightManipulatorThread {// extends Thread {
-	private TileEntityLightManipulator	tileLightManipulator;
+public class ThreadLightManipulator {// extends Thread {
+	private TileLightManipulator	tileLightManipulator;
 	private static Block[]				OVERLAY_BLOCKS	= new Block[] { Blocks.farmland, Blocks.wooden_slab, Blocks.stone_slab, Blocks.glass,
 			Blocks.snow, Blocks.ice, Blocks.glowstone, Blocks.piston, Blocks.piston_extension, Blocks.piston_head, Blocks.daylight_detector,
 			Blocks.leaves, Blocks.carpet				// carpet
 														};
 
-	public LightManipulatorThread(TileEntityLightManipulator tile) {
+	public ThreadLightManipulator(TileLightManipulator tile) {
 		tileLightManipulator = tile;
 	}
 

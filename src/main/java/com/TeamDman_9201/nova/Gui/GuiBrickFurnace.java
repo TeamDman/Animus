@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import com.TeamDman_9201.nova.Containers.ContainerBrickFurnace;
-import com.TeamDman_9201.nova.Tiles.TileEntityBrickFurnace;
+import com.TeamDman_9201.nova.Tiles.TileBrickFurnace;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,14 +17,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiBrickFurnace extends GuiContainer
 {
     private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("textures/gui/container/furnace.png");//"first:textures/gui/BrickFurnace.png");//
-    private TileEntityBrickFurnace tileFurnace;
+    private TileBrickFurnace tileFurnace;
     private static final String __OBFID = "CL_00000758";
 
     /**
      * Create the gui for a brick furnace.
      * args:InventoyPlayer inventoyPlayer, TileEntityBrickFurnace tileEntityBrickFurnace
     */
-    public GuiBrickFurnace(InventoryPlayer inventoryPlayer, TileEntityBrickFurnace tileEntityBrickFurnace)
+    public GuiBrickFurnace(InventoryPlayer inventoryPlayer, TileBrickFurnace tileEntityBrickFurnace)
     {
         super(new ContainerBrickFurnace(inventoryPlayer, tileEntityBrickFurnace));
         this.tileFurnace = tileEntityBrickFurnace;

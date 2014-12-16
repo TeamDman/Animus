@@ -2,7 +2,7 @@ package com.TeamDman_9201.nova.Tiles;
 
 import java.util.ArrayList;
 
-import com.TeamDman_9201.nova.Threads.LightManipulatorThread;
+import com.TeamDman_9201.nova.Threads.ThreadLightManipulator;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -13,8 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityLightManipulator extends TileEntity implements ISidedInventory {
-	private LightManipulatorThread	thread						= new LightManipulatorThread(this);
+public class TileLightManipulator extends TileEntity implements ISidedInventory {
+	private ThreadLightManipulator	thread						= new ThreadLightManipulator(this);
 	private int						iteration					= 0;
 	private int						speed						= 25;
 	private boolean					isActive					= false;

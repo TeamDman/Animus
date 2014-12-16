@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import com.TeamDman_9201.nova.Containers.ContainerLightManipulator;
-import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
+import com.TeamDman_9201.nova.Tiles.TileLightManipulator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,13 +16,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiLightManipulator extends GuiContainer {
 	private static final ResourceLocation	GuiTextures	= new ResourceLocation("NOVA:textures/gui/lightManipulator.png");	// "first:textures/gui/BrickFurnace.png");//
-	private TileEntityLightManipulator		tileLightManipulator;
+	private TileLightManipulator		tileLightManipulator;
 
 	/**
 	 * Create the gui for a brick furnace. args:InventoyPlayer inventoyPlayer,
 	 * TileEntityBrickFurnace tileEntityBrickFurnace
 	 */
-	public GuiLightManipulator(InventoryPlayer inventoryPlayer, TileEntityLightManipulator tileEntityLightManipulator) {
+	public GuiLightManipulator(InventoryPlayer inventoryPlayer, TileLightManipulator tileEntityLightManipulator) {
 		super(new ContainerLightManipulator(inventoryPlayer, tileEntityLightManipulator));
 		// public GuiHopper(InventoryPlayer par1InventoryPlayer, IInventory
 		// par2IInventory)

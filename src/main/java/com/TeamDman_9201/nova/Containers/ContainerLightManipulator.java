@@ -2,7 +2,7 @@ package com.TeamDman_9201.nova.Containers;
 
 import com.TeamDman_9201.nova.Slots.SlotLight;
 import com.TeamDman_9201.nova.Slots.SlotLightUpgrade;
-import com.TeamDman_9201.nova.Tiles.TileEntityLightManipulator;
+import com.TeamDman_9201.nova.Tiles.TileLightManipulator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,9 +15,9 @@ import net.minecraft.item.ItemStack;
 public class ContainerLightManipulator extends Container {
 
 	// private final IInventory inventory;
-	private TileEntityLightManipulator	tileLightManipulator;
+	private TileLightManipulator	tileLightManipulator;
 
-	public ContainerLightManipulator(InventoryPlayer playerInventory, TileEntityLightManipulator tileLightManipulator) {
+	public ContainerLightManipulator(InventoryPlayer playerInventory, TileLightManipulator tileLightManipulator) {
 		this.tileLightManipulator = tileLightManipulator;
 		// this.addSlotToContainer(new Slot(tileLightManipulator,i, 44 + i * 18,
 		// 20));

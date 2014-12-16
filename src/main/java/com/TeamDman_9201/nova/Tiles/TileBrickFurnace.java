@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 
 import com.TeamDman_9201.*;//BrickFurnace;//net.minecraft.block.BlockFurnace;
 import com.TeamDman_9201.nova.NOVA;
-import com.TeamDman_9201.nova.Blocks.BrickFurnace;
+import com.TeamDman_9201.nova.Blocks.BlockBrickFurnace;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +25,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityBrickFurnace extends TileEntity implements ISidedInventory
+public class TileBrickFurnace extends TileEntity implements ISidedInventory
 {
     private static final int[] slotsTop = new int[] {0};
     private static final int[] slotsBottom = new int[] {2, 1};
@@ -307,7 +307,7 @@ public class TileEntityBrickFurnace extends TileEntity implements ISidedInventor
             if (flag != this.furnaceBurnTime > 0)
             {
                 flag1 = true;
-                BrickFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                BlockBrickFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             }
         }
 
