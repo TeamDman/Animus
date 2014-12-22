@@ -1,19 +1,14 @@
 package com.TeamDman_9201.nova;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
 public class NOVAEventListener {
 
-	@SubscribeEvent
-	public void SomethingCrafted(ItemCraftedEvent event) {
-	}
+  @SubscribeEvent
+  public void SomethingCrafted(ItemCraftedEvent event) {
+  }
 }
 
 //

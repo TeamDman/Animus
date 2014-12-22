@@ -5,6 +5,7 @@
 #folders and stuff
 bin
 eclipse
+idea
 build
 gradlew
 run
