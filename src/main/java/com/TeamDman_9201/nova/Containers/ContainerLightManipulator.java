@@ -13,30 +13,19 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerLightManipulator extends Container {
 
-  // private final IInventory inventory;
   private TileLightManipulator tileLightManipulator;
 
   public ContainerLightManipulator(InventoryPlayer playerInventory,
                                    TileLightManipulator tileLightManipulator) {
     this.tileLightManipulator = tileLightManipulator;
-    // this.addSlotToContainer(new Slot(tileLightManipulator,i, 44 + i * 18,
-    // 20));
     playerInventory.openInventory();
     int column;
     byte b0 = 51;
-    // blah, slot, x, y
-    // Inventory Creation
-    // for (column = 0; column < tileLightManipulator.getSizeInventory();
-    // ++column) {
-    // this.addSlotToContainer(new Slot(tileLightManipulator, column,
-    // 44 + column * 18, 20));
-    // }
     for (int i = 0; i < 7; i++) {
       this.addSlotToContainer(
           new SlotLight(tileLightManipulator, i, 44 - 18 - 18 + (18 * (i)), 20));
     }
-    this.addSlotToContainer(
-        new SlotUpgrade(tileLightManipulator, 7, 44 - 18 - 18 + 18 * 8, 20));
+    this.addSlotToContainer(new SlotUpgrade(tileLightManipulator, 7, 44 - 18 - 18 + 18 * 8, 20));
 
     for (column = 0; column < 3; ++column) {
       for (int row = 0; row < 9; ++row) {
@@ -50,18 +39,6 @@ public class ContainerLightManipulator extends Container {
     }
   }
 
-  // @Override
-  // torches.isItemValid(ItemStack item) {
-  // if (item.isItemEqual(new ItemStack(Blocks.torch)) {
-  // return true;
-  // }
-  // return false;
-  // }
-
-  /**
-   * Called when a player shift-clicks on a slot. You must override this or you will crash when
-   * someone does that.
-   */
   public ItemStack transferStackInSlot(EntityPlayer player, int parSlot) {
     ItemStack itemstack = null;
     Slot slot = (Slot) this.inventorySlots.get(parSlot);
@@ -90,9 +67,6 @@ public class ContainerLightManipulator extends Container {
     return itemstack;
   }
 
-  /**
-   * merges provided ItemStack with the first avaliable one in the container/player inventory
-   */
   @Override
   protected boolean mergeItemStack(ItemStack items, int par2Slot, int par3Slot, boolean inv) {
     boolean flag1 = false;
@@ -110,10 +84,9 @@ public class ContainerLightManipulator extends Container {
         slot = (Slot) this.inventorySlots.get(k);
         itemstack1 = slot.getStack();
 
-        if (itemstack1 != null && itemstack1.getItem() == items.getItem()
-            && (!items.getHasSubtypes() || items.getItemDamage() == itemstack1.getItemDamage())
-            && ItemStack.areItemStackTagsEqual(items, itemstack1)
-            && slot.isItemValid(items)) {
+        if (itemstack1 != null && itemstack1.getItem() == items.getItem() && (
+            !items.getHasSubtypes() || items.getItemDamage() == itemstack1.getItemDamage())
+            && ItemStack.areItemStackTagsEqual(items, itemstack1) && slot.isItemValid(items)) {
           int l = itemstack1.stackSize + items.stackSize;
 
           if (l <= items.getMaxStackSize()) {
@@ -169,17 +142,10 @@ public class ContainerLightManipulator extends Container {
 
   public void addCraftingToCrafters(ICrafting par1ICrafting) {
     super.addCraftingToCrafters(par1ICrafting);
-    // par1ICrafting.sendProgressBarUpdate(this, 0,
-    // this.tileFurnace.furnaceCookTime);
-    // par1ICrafting.sendProgressBarUpdate(this, 1,
-    // this.tileFurnace.furnaceBurnTime);
-    // par1ICrafting.sendProgressBarUpdate(this, 2,
-    // this.tileFurnace.currentItemBurnTime);
   }
 
   @Override
   public boolean canInteractWith(EntityPlayer var1) {
-    // TODO Auto-generated method stub
     return true;
   }
 }

@@ -28,7 +28,7 @@ public class TileCobblizer extends GenericInventory {
   public int buffer = 0;
 
   public TileCobblizer() {
-    super(110, "Cobblizer");
+    super(13, "Cobblizer");
   }
 
   @Override
@@ -36,7 +36,6 @@ public class TileCobblizer extends GenericInventory {
     super.updateEntity();
     if (!worldObj.isRemote) {
       if (items[1] != null && buffer == 0) {
-        System.out.println("GETTING COMPONENTS FOR: " + items[1].getDisplayName());
         buffer += getComponents(items[1], 0, new HashMap());
         decrStackSize(1, 1);
       }
@@ -56,31 +55,9 @@ public class TileCobblizer extends GenericInventory {
       }
     }
   }
-//https://github.com/sinkillerj/ProjectE/blob/master/src/main/java/moze_intel/projecte/emc/mappers/CraftingMapper.java
-/*        Iterable recipeItems = null;
-        if (recipe instanceof ShapedRecipes) {
-          recipeItems = Arrays.asList(((ShapedRecipes) recipe).recipeItems);
-        } else if (recipe instanceof ShapelessRecipes) {
-          recipeItems = ((ShapelessRecipes) recipe).recipeItems;
-        }
-        if (recipeItems == null) {
-          continue;
-        }
-        for (Object component : recipeItems) {
-          if (component == null) {
-            continue;
-          }
-          if (component instanceof ItemStack) {
-            ItemStack recipeItem = (ItemStack) component;
-            rtn += getComponents(recipeItem, layer);
-          }
-        }
-*/
 
   public int getComponents(ItemStack input, int layer, HashMap indexed) {
-    System.out.println("RECURSIVE Level: " + layer + " | " + input.getDisplayName());
     if (indexed.get(input) != null) {
-      System.out.println("Index found for " + input.getDisplayName());
       return (Integer) indexed.get(input);
     }
     if (layer > 8) {
@@ -91,7 +68,6 @@ public class TileCobblizer extends GenericInventory {
     List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
     for (IRecipe recipe : recipes) {
       if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(input)) {
-        System.out.println("FOUND MATCH: " + input.getDisplayName());
         rtn += recipe.getRecipeSize();
         List components = null;
         if (recipe instanceof ShapelessRecipes) {
@@ -101,11 +77,9 @@ public class TileCobblizer extends GenericInventory {
         } else if (recipe instanceof ShapedOreRecipe) {
           components = Arrays.asList(((ShapedOreRecipe) recipe).getInput());
         } else {
-          System.out.println("Not a recipe, " + recipe.getClass().getName());
           continue;
         }
         if (components == null) {
-          System.out.println("No components");
           continue;
         }
         Iterator iter = components.iterator();
@@ -133,9 +107,8 @@ public class TileCobblizer extends GenericInventory {
             }
           }
         }
-      } // End of matching recursion
-    }  // End of recipe iterations
-
+      }
+    }
     return rtn;
   }
 }

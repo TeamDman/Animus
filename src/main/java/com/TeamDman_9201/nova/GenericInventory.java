@@ -138,7 +138,6 @@ public class GenericInventory extends TileEntity implements ISidedInventory {
 
   public void readFromNBT(NBTTagCompound tagCompound) {
     super.readFromNBT(tagCompound);
-//    System.out.println("READING BIN DATAH");
     NBTTagList nbttaglist = tagCompound.getTagList("Items", 10);
     this.items = new ItemStack[this.getSizeInventory()];
 
@@ -158,7 +157,6 @@ public class GenericInventory extends TileEntity implements ISidedInventory {
 
   public void writeToNBT(NBTTagCompound tagCompound) {
     super.writeToNBT(tagCompound);
-//    System.out.println("WRITING BIN DATAH");
     NBTTagList NBTList = new NBTTagList();
 
     for (int slot = 0; slot < this.items.length; ++slot) {
