@@ -20,7 +20,7 @@ public class GuiBrickFurnace extends GuiContainer {
       furnaceGuiTextures =
       new ResourceLocation("textures/gui/container/furnace.png");
   private static final String __OBFID = "CL_00000758";
-//"first:textures/gui/BrickFurnace.png");//
+//"first:textures/gui/blockBrickFurnace.png");//
   private TileBrickFurnace tileFurnace;
 
   /**

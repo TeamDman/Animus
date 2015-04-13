@@ -1,7 +1,7 @@
 package com.TeamDman_9201.nova.Containers;
 
 import com.TeamDman_9201.nova.Slots.SlotLight;
-import com.TeamDman_9201.nova.Slots.SlotLightUpgrade;
+import com.TeamDman_9201.nova.Slots.SlotUpgrade;
 import com.TeamDman_9201.nova.Tiles.TileLightManipulator;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +36,7 @@ public class ContainerLightManipulator extends Container {
           new SlotLight(tileLightManipulator, i, 44 - 18 - 18 + (18 * (i)), 20));
     }
     this.addSlotToContainer(
-        new SlotLightUpgrade(tileLightManipulator, 7, 44 - 18 - 18 + 18 * 8, 20));
+        new SlotUpgrade(tileLightManipulator, 7, 44 - 18 - 18 + 18 * 8, 20));
 
     for (column = 0; column < 3; ++column) {
       for (int row = 0; row < 9; ++row) {

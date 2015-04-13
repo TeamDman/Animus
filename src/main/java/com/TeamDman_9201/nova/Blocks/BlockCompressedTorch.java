@@ -46,7 +46,7 @@ public class BlockCompressedTorch extends BlockTorch implements ITileEntityProvi
 
   @SideOnly(Side.CLIENT)
   public Item getItem(World world, int x, int y, int z) {
-    return Item.getItemFromBlock(NOVA.compressedTorch);
+    return Item.getItemFromBlock(NOVA.blockCompressedTorch);
   }
 
   /**
@@ -109,7 +109,7 @@ public class BlockCompressedTorch extends BlockTorch implements ITileEntityProvi
     TileCompressedTorch tile = (TileCompressedTorch) world.getTileEntity(x, y, z);
 
     if (tile != null) {
-      ItemStack stack = new ItemStack(NOVA.compressedTorch);
+      ItemStack stack = new ItemStack(NOVA.blockCompressedTorch);
       NBTTagCompound tags = new NBTTagCompound();
       tags.setLong("Torches", tile.getTorches());
       stack.setTagCompound(tags);

@@ -24,7 +24,7 @@ public class RecipeCompressedTorch implements IRecipe {
         if (contents.getItem() == new ItemStack(Blocks.torch).getItem()) {
           rtn[0]++;
           rtn[1]++;
-        } else if (contents.getItem() == new ItemStack(NOVA.compressedTorch).getItem()) {
+        } else if (contents.getItem() == new ItemStack(NOVA.blockCompressedTorch).getItem()) {
           rtn[0]++;
           rtn[2]++;
           if (contents.getTagCompound() != null) {
@@ -52,7 +52,7 @@ public class RecipeCompressedTorch implements IRecipe {
     // 3=storedTorches
     ArrayList<String> toolTip = new ArrayList<String>();
     toolTip.add("Test");
-    ItemStack returnStack = new ItemStack(NOVA.compressedTorch);
+    ItemStack returnStack = new ItemStack(NOVA.blockCompressedTorch);
     int parts[] = getData(crafting);
     int storedTorches = parts[1] + parts[3];
 
@@ -76,7 +76,7 @@ public class RecipeCompressedTorch implements IRecipe {
   @Override
   public ItemStack getRecipeOutput() {
     // TODO Auto-generated method stub
-    return new ItemStack(NOVA.compressedTorch);
+    return new ItemStack(NOVA.blockCompressedTorch);
   }
 
 }

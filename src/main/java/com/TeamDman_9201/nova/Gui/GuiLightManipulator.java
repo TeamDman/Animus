@@ -18,8 +18,7 @@ public class GuiLightManipulator extends GuiContainer {
 
   private static final ResourceLocation
       GuiTextures =
-      new ResourceLocation("NOVA:textures/gui/lightManipulator.png");
-      // "first:textures/gui/BrickFurnace.png");//
+      new ResourceLocation("NOVA:textures/gui/blockLightManipulator.png");
   private TileLightManipulator tileLightManipulator;
 
   /**

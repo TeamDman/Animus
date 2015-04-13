@@ -1,9 +1,12 @@
 item.superCoal.name=Super Coal
 item.unstableCoal.name=Unstable Coal
 
-tile.coalDiamondOre.name=Coal-Diamond Ore
-tile.brickFurnace.name=Brick Furnace
-tile.lightManipulator.name=Light Manipulator
-tile.compressedTorch.name=Compressed Torch
+tile.blockCoalDiamondOre.name=Coal-Diamond Ore
+tile.blockBrickFurnace.name=Brick Furnace
+tile.blockLightManipulator.name=Light Manipulator
+tile.blockCompressedTorch.name=Compressed Torch
+tile.blockDefragmenter.name=Defragmenter
+
+enchantment.Pow=Pow
 
 itemGroup.NOVA=NOVA

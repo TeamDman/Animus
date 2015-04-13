@@ -21,7 +21,7 @@ public class BlockCoalDiamondOre extends Block {
 
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iconRegister) {
-    this.blockIcon = iconRegister.registerIcon(NOVA.MODID + ":" + "coalDiamondOre");
+    this.blockIcon = iconRegister.registerIcon(NOVA.MODID + ":" + "blockCoalDiamondOre");
   }
 
   @SideOnly(Side.CLIENT)

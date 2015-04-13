@@ -9,6 +9,9 @@ idea
 build
 gradlew
 run
+src/main/*/app*
+src/main/java/app*
+src/main/resources/assets/app*
 
 #Shit thats in those folders
 forge*

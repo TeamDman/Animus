@@ -35,6 +35,7 @@ public class BlockBrickFurnace extends BlockContainer {
   private IIcon iconFrontIdle;
   @SideOnly(Side.CLIENT)
   private IIcon blockIcon;
+
   public BlockBrickFurnace() {
     super(Material.rock);
   }
@@ -46,7 +47,7 @@ public class BlockBrickFurnace extends BlockContainer {
     int meta = world.getBlockMetadata(x, y, z);
     TileEntity tileentity = world.getTileEntity(x, y, z);
     breakDebounce = true;
-    world.setBlock(x, y, z, NOVA.brickFurnace);
+    world.setBlock(x, y, z, NOVA.blockBrickFurnace);
     breakDebounce = false;
 
     int mask = 0;
@@ -75,9 +76,9 @@ public class BlockBrickFurnace extends BlockContainer {
 
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iconRegister) {
-    this.blockIcon = iconRegister.registerIcon(NOVA.MODID + ":" + "brickFurnaceSide");
-    this.iconFrontActive = iconRegister.registerIcon(NOVA.MODID + ":" + "brickFurnaceFrontActive");
-    this.iconFrontIdle = iconRegister.registerIcon(NOVA.MODID + ":" + "brickFurnaceFrontIdle");
+    this.blockIcon = iconRegister.registerIcon(NOVA.MODID + ":" + "blockBrickFurnaceSide");
+    this.iconFrontActive = iconRegister.registerIcon(NOVA.MODID + ":" + "blockBrickFurnaceFrontActive");
+    this.iconFrontIdle = iconRegister.registerIcon(NOVA.MODID + ":" + "blockBrickFurnaceFrontIdle");
   }
 
   @SideOnly(Side.CLIENT)
@@ -92,7 +93,7 @@ public class BlockBrickFurnace extends BlockContainer {
    */
   @SideOnly(Side.CLIENT)
   public Item getItem(World world, int x, int y, int z) {
-    return Item.getItemFromBlock(NOVA.brickFurnace);
+    return Item.getItemFromBlock(NOVA.blockBrickFurnace);
   }
 
   @Override
@@ -101,7 +102,7 @@ public class BlockBrickFurnace extends BlockContainer {
   }
 
   public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-    return Item.getItemFromBlock(NOVA.brickFurnace);
+    return Item.getItemFromBlock(NOVA.blockBrickFurnace);
   }
 
   int toMeta(int facing, boolean active) {

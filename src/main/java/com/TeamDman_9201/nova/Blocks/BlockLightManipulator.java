@@ -36,6 +36,7 @@ public class BlockLightManipulator extends BlockContainer {
   private IIcon iconFront;
   @SideOnly(Side.CLIENT)
   private IIcon blockIcon;
+
   public BlockLightManipulator(boolean active) {
     super(Material.glass);
     this.isActive = active;
@@ -43,10 +44,8 @@ public class BlockLightManipulator extends BlockContainer {
 
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iconRegister) {
-    this.blockIcon = iconRegister.registerIcon(NOVA.MODID + ":"
-                                               + "lightManipulatorSide");
-    this.iconFront = iconRegister.registerIcon(NOVA.MODID + ":"
-                                               + "lightManipulatorFront");
+    this.blockIcon = iconRegister.registerIcon(NOVA.MODID + ":" + "blockLightManipulatorSide");
+    this.iconFront = iconRegister.registerIcon(NOVA.MODID + ":" + "blockLightManipulatorFront");
   }
 
   @SideOnly(Side.CLIENT)
@@ -59,7 +58,7 @@ public class BlockLightManipulator extends BlockContainer {
    */
   @SideOnly(Side.CLIENT)
   public Item getItem(World world, int x, int y, int z) {
-    return Item.getItemFromBlock(NOVA.lightManipulator);
+    return Item.getItemFromBlock(NOVA.blockLightManipulator);
   }
 
   @Override
@@ -67,9 +66,8 @@ public class BlockLightManipulator extends BlockContainer {
     return new TileLightManipulator();
   }
 
-  public Item getItemDropped(int p_149650_1_, Random p_149650_2_,
-                             int p_149650_3_) {
-    return Item.getItemFromBlock(NOVA.lightManipulator);
+  public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
+    return Item.getItemFromBlock(NOVA.blockLightManipulator);
   }
 
   /**
@@ -108,14 +106,13 @@ public class BlockLightManipulator extends BlockContainer {
   /**
    * Called upon block activation (right click on the block.)
    */
-  public boolean onBlockActivated(World world, int x, int y, int z,
-                                  EntityPlayer player, int p_149727_6_, float p_149727_7_,
-                                  float p_149727_8_, float p_149727_9_) {
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
+                                  int p_149727_6_, float p_149727_7_, float p_149727_8_,
+                                  float p_149727_9_) {
     if (world.isRemote) {
       return true;
     } else {
-      TileLightManipulator tileentityfurnace = (TileLightManipulator) world
-          .getTileEntity(x, y, z);
+      TileLightManipulator tileentityfurnace = (TileLightManipulator) world.getTileEntity(x, y, z);
       if (tileentityfurnace != null) {
 
         // player.func_146101_a(new
@@ -125,8 +122,7 @@ public class BlockLightManipulator extends BlockContainer {
         // !player.capabilities.allowFlying;
         // player.capabilities.isFlying = !player.capabilities.isFlying;
         // player.openGui(mod, modGuiId, world, x, y, z);
-        player.openGui(NOVA.instance, NOVA.guiLightManipulator, world,
-                       x, y, z);
+        player.openGui(NOVA.instance, NOVA.guiLightManipulator, world, x, y, z);
 
       }
 
@@ -137,10 +133,11 @@ public class BlockLightManipulator extends BlockContainer {
   /**
    * Called when the block is placed in the world.
    */
-  public void onBlockPlacedBy(World world, int x, int y, int z,
-                              EntityLivingBase entityLivingBase, ItemStack item) {
-    int l = MathHelper
-                .floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase,
+                              ItemStack item) {
+    int
+        l =
+        MathHelper.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
     if (l == 0) {
       world.setBlockMetadataWithNotify(x, y, z, 2, 2);
@@ -159,16 +156,13 @@ public class BlockLightManipulator extends BlockContainer {
     }
 
     if (item.hasDisplayName()) {
-      ((TileLightManipulator) world.getTileEntity(x, y, z))
-          .setName(item.getDisplayName());
+      ((TileLightManipulator) world.getTileEntity(x, y, z)).setName(item.getDisplayName());
     }
   }
 
-  public void breakBlock(World world, int x, int y, int z, Block block,
-                         int p_149749_6_) {
+  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
     if (!updateDebounce) {
-      TileLightManipulator tileentityfurnace = (TileLightManipulator) world
-          .getTileEntity(x, y, z);
+      TileLightManipulator tileentityfurnace = (TileLightManipulator) world.getTileEntity(x, y, z);
 
       if (tileentityfurnace != null) {
         for (int i1 = 0; i1 < tileentityfurnace.getSizeInventory(); ++i1) {
@@ -187,26 +181,21 @@ public class BlockLightManipulator extends BlockContainer {
               }
 
               itemstack.stackSize -= j1;
-              EntityItem entityitem = new EntityItem(world,
-                                                     (double) ((float) x + f),
-                                                     (double) ((float) y + f1),
-                                                     (double) ((float) z + f2), new ItemStack(
-                  itemstack.getItem(), j1,
-                  itemstack.getItemDamage()));
+              EntityItem
+                  entityitem =
+                  new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1),
+                                 (double) ((float) z + f2),
+                                 new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
               if (itemstack.hasTagCompound()) {
-                entityitem.getEntityItem().setTagCompound(
-                    (NBTTagCompound) itemstack
-                        .getTagCompound().copy());
+                entityitem.getEntityItem()
+                    .setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
               }
 
               float f3 = 0.05F;
-              entityitem.motionX = (double) ((float) this.random
-                  .nextGaussian() * f3);
-              entityitem.motionY = (double) ((float) this.random
-                  .nextGaussian() * f3 + 0.2F);
-              entityitem.motionZ = (double) ((float) this.random
-                  .nextGaussian() * f3);
+              entityitem.motionX = (double) ((float) this.random.nextGaussian() * f3);
+              entityitem.motionY = (double) ((float) this.random.nextGaussian() * f3 + 0.2F);
+              entityitem.motionZ = (double) ((float) this.random.nextGaussian() * f3);
               world.spawnEntityInWorld(entityitem);
             }
           }
@@ -223,12 +212,10 @@ public class BlockLightManipulator extends BlockContainer {
    * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed
    * (coordinates passed are their own) Args: x, y, z, neighbor Block
    */
-  public void onNeighborBlockChange(World world, int x, int y, int z,
-                                    Block block) {
-    if (world.isBlockIndirectlyGettingPowered(x, y, z)
-        || world.isBlockIndirectlyGettingPowered(x, y + 1, z)) {
-      TileLightManipulator tile = (TileLightManipulator) world
-          .getTileEntity(x, y, z);
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+    if (world.isBlockIndirectlyGettingPowered(x, y, z) || world
+        .isBlockIndirectlyGettingPowered(x, y + 1, z)) {
+      TileLightManipulator tile = (TileLightManipulator) world.getTileEntity(x, y, z);
       tile.commence();
     }
 
@@ -246,10 +233,8 @@ public class BlockLightManipulator extends BlockContainer {
    * If hasComparatorInputOverride returns true, the return value from this is used instead of the
    * redstone signal strength when this block inputs to a comparator.
    */
-  public int getComparatorInputOverride(World world, int x, int y, int z,
-                                        int p_149736_5_) {
-    return Container.calcRedstoneFromInventory((IInventory) world
-        .getTileEntity(x, y, z));
+  public int getComparatorInputOverride(World world, int x, int y, int z, int p_149736_5_) {
+    return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
   }
 
 }
