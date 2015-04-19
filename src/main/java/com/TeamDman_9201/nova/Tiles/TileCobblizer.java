@@ -1,6 +1,7 @@
 package com.TeamDman_9201.nova.Tiles;
 
 import com.TeamDman_9201.nova.GenericInventory;
+import com.TeamDman_9201.nova.NOVA;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -28,19 +29,23 @@ public class TileCobblizer extends GenericInventory {
   public int buffer = 0;
 
   public TileCobblizer() {
-    super(13, "Cobblizer");
+    super(11, "Cobblizer", new int[] {1}, new int[] {2,10},new int[] {2,10});
   }
 
   @Override
   public void updateEntity() {
     super.updateEntity();
     if (!worldObj.isRemote) {
+      if (items[0] != null && items[0].isItemEqual(new ItemStack(NOVA.itemSlotIdentifier))) {
+        showSlots();
+        return;
+      }
       if (items[1] != null && buffer == 0) {
         buffer += getComponents(items[1], 0, new HashMap());
         decrStackSize(1, 1);
       }
       if (buffer > 0) {
-        for (int slot = 2; slot < 13; ++slot) {
+        for (int slot = 2; slot < 11; ++slot) {
           int size = buffer > getInventoryStackLimit() ? getInventoryStackLimit() : buffer;
           if (size == 0) {
             break;
@@ -110,5 +115,10 @@ public class TileCobblizer extends GenericInventory {
       }
     }
     return rtn;
+  }
+
+  @Override
+  public boolean isItemValidForSlot(int slot, ItemStack item) {
+    return slot>1?false:slot==1?true:false;
   }
 }

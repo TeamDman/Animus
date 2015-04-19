@@ -1,11 +1,14 @@
 item.superCoal.name=Super Coal
 item.unstableCoal.name=Unstable Coal
+item.slotIdentifier.name=Slot Identifier
 
+tile.blockLeaves.name=Red Oak Leaves
+tile.blockSapling.name=Red Oak Sapling
 tile.blockCoalDiamondOre.name=Coal-Diamond Ore
 tile.blockBrickFurnace.name=Brick Furnace
 tile.blockLightManipulator.name=Light Manipulator
 tile.blockCompressedTorch.name=Compressed Torch
-tile.blockDefragmenter.name=Defragmenter
+tile.blockCobblizer.name=Cobblizer
 
 enchantment.Pow=Pow
 

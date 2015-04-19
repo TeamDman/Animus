@@ -22,7 +22,7 @@ public class GuiCobblizer extends GuiContainer {
 
   private static final ResourceLocation
       texture =
-      new ResourceLocation(NOVA.MODID + ":textures/gui/recyclebin.png");
+      new ResourceLocation(NOVA.MODID + ":textures/gui/blockCobblizer.png");
   private TileCobblizer tile;
 
   public GuiCobblizer(InventoryPlayer inventoryPlayer, TileCobblizer tile) {

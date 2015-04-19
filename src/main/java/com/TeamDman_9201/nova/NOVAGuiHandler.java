@@ -27,7 +27,7 @@ public class NOVAGuiHandler implements IGuiHandler {
       case NOVA.guiLightManipulator:
         return new ContainerLightManipulator(player.inventory,
                                              (TileLightManipulator) world.getTileEntity(x, y, z));
-      case NOVA.guiRecycleBin:
+      case NOVA.guiCobblizer:
         return new ContainerCobblizer(player.inventory,
                                        (TileCobblizer) world.getTileEntity(x, y, z));
 
@@ -46,7 +46,7 @@ public class NOVAGuiHandler implements IGuiHandler {
       case NOVA.guiLightManipulator:
         return new GuiLightManipulator(player.inventory,
                                        (TileLightManipulator) world.getTileEntity(x, y, z));
-      case NOVA.guiRecycleBin:
+      case NOVA.guiCobblizer:
         return new GuiCobblizer(player.inventory,
                                        (TileCobblizer) world.getTileEntity(x, y, z));
     }

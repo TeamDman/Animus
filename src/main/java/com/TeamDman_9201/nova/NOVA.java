@@ -4,18 +4,20 @@ package com.TeamDman_9201.nova;
 
 import com.TeamDman_9201.nova.Blocks.BlockBrickFurnace;
 import com.TeamDman_9201.nova.Blocks.BlockCoalDiamondOre;
+import com.TeamDman_9201.nova.Blocks.BlockCobblizer;
 import com.TeamDman_9201.nova.Blocks.BlockCompressedTorch;
 import com.TeamDman_9201.nova.Blocks.BlockLightManipulator;
-import com.TeamDman_9201.nova.Blocks.BlockRecycleBin;
+import com.TeamDman_9201.nova.Blocks.BlockSapling;
 import com.TeamDman_9201.nova.Items.ItemBlockCompressedTorch;
+import com.TeamDman_9201.nova.Items.ItemBlockSapling;
 import com.TeamDman_9201.nova.Items.ItemSlotIdentifier;
 import com.TeamDman_9201.nova.Items.ItemSuperCoal;
 import com.TeamDman_9201.nova.Items.ItemUnstableCoal;
 import com.TeamDman_9201.nova.Recipes.RecipeCompressedTorch;
 import com.TeamDman_9201.nova.Tiles.TileBrickFurnace;
+import com.TeamDman_9201.nova.Tiles.TileCobblizer;
 import com.TeamDman_9201.nova.Tiles.TileCompressedTorch;
 import com.TeamDman_9201.nova.Tiles.TileLightManipulator;
-import com.TeamDman_9201.nova.Tiles.TileCobblizer;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -41,31 +43,34 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(modid = NOVA.MODID, name = NOVA.NAME, version = NOVA.VERSION)
 public class NOVA {
 
-  public static final String MODID = "nova";
+  public static final String MODID = "NOVA";
   public static final String NAME = "NOVA";
   public static final String VERSION = "1.0";
   public static final int guiBrickFurnace = 0;
   public static final int guiLightManipulator = 1;
-  public static final int guiRecycleBin = 2;
+  public static final int guiCobblizer = 2;
   @Instance(value = MODID)
   public static NOVA instance;
   public static Block blockCoalDiamondOre;
   public static Block blockBrickFurnace;
   public static Block blockLightManipulator;
   public static Block blockCompressedTorch;
-  public static Block blockRecycleBin;
+  public static Block blockCobblizer;
+  public static Block blockSapling;
+  public static Block blockLeaves;
+  public static ItemBlock itemBlockCompressedTorch;
+  public static ItemBlock itemBlockSapling;
   public static Enchantment enchantPow;
-  public static Item superCoal;
-  public static Item unstableCoal;
-  public static Item slotIdentifier;
+  public static Item itemSuperCoal;
+  public static Item itemUnstableCoal;
+  public static Item itemSlotIdentifier;
+
   public static CreativeTabs mainTab = new CreativeTabs("NOVA") {
     @Override
     public Item getTabIconItem() {
-      return superCoal;
+      return itemSuperCoal;
     }
   };
-
-  public static ItemBlock itemBlockCompressedTorch;
 
   @EventHandler
   public void preinit(FMLPreInitializationEvent event) {
@@ -74,15 +79,20 @@ public class NOVA {
     enchantPow = new EnchantmentPow(getEnchantID(config, "Pow", 132), 3004);
     config.save();
 
-    blockRecycleBin = new BlockRecycleBin();
-    setupBlock(blockRecycleBin,"blockRecycleBin", mainTab, 3.5F, Material.iron);
-    GameRegistry.addRecipe(new ItemStack(blockRecycleBin,1), "A A","A A","AAA",'A',Blocks.cobblestone);
+    blockCobblizer = new BlockCobblizer();
+    setupBlock(blockCobblizer, "blockCobblizer", mainTab, 3.5F, Material.iron);
+    GameRegistry
+        .addRecipe(new ItemStack(blockCobblizer, 1), "A A", "A A", "AAA", 'A', Blocks.cobblestone);
 
     blockCompressedTorch = new BlockCompressedTorch();
     itemBlockCompressedTorch = new ItemBlockCompressedTorch(blockCompressedTorch);
     setupItemBlock(blockCompressedTorch, ItemBlockCompressedTorch.class, "blockCompressedTorch",
                    mainTab, 0, Material.wood);
     GameRegistry.addRecipe(new RecipeCompressedTorch());
+
+    blockSapling = new BlockSapling();
+    itemBlockSapling = new ItemBlockSapling(blockSapling);
+    setupItemBlock(blockSapling,ItemBlockSapling.class,"blockSapling",mainTab,0,Material.leaves);
 
     blockLightManipulator = new BlockLightManipulator(false);
     setupBlock(blockLightManipulator, "blockLightManipulator", mainTab, 3.5F, Material.glass);
@@ -98,17 +108,20 @@ public class NOVA {
     blockCoalDiamondOre = new BlockCoalDiamondOre();
     setupBlock(blockCoalDiamondOre, "blockCoalDiamondOre", mainTab, 6, Material.rock);
 
-    unstableCoal = new ItemUnstableCoal();
-    setupItem(unstableCoal, "unstableCoal", mainTab);
-    GameRegistry.addSmelting(new ItemStack(superCoal), new ItemStack(unstableCoal), 2048);
+    blockLeaves = new com.TeamDman_9201.nova.Blocks.BlockLeaves();
+    setupBlock(blockLeaves,"blockLeaves",mainTab,0.1F,Material.leaves);
+    itemSuperCoal = new ItemSuperCoal();
+    setupItem(itemSuperCoal, "itemSuperCoal", mainTab);
+    GameRegistry
+        .addRecipe(new ItemStack(itemSuperCoal, 2), "AAA", "ABA", "AAA", 'A', Items.coal, 'B',
+                   new ItemStack(itemSuperCoal));
 
-    superCoal = new ItemSuperCoal();
-    setupItem(superCoal, "superCoal", mainTab);
-    GameRegistry.addRecipe(new ItemStack(superCoal, 2), "AAA", "ABA", "AAA", 'A', Items.coal, 'B',
-                           new ItemStack(superCoal));
+    itemUnstableCoal = new ItemUnstableCoal();
+    setupItem(itemUnstableCoal, "itemUnstableCoal", mainTab);
+    GameRegistry.addSmelting(new ItemStack(itemSuperCoal), new ItemStack(itemUnstableCoal), 2048);
 
-    slotIdentifier = new ItemSlotIdentifier();
-    setupItem(slotIdentifier,"slotIdentifier",mainTab);
+    itemSlotIdentifier = new ItemSlotIdentifier();
+    setupItem(itemSlotIdentifier, "itemSlotIdentifier", mainTab);
 
     GameRegistry
         .addRecipe(new ItemStack(Items.glowstone_dust, 1), "ABA", "BCB", "ABA", 'A', Items.redstone,
@@ -119,6 +132,7 @@ public class NOVA {
   @EventHandler
   public void init(FMLInitializationEvent event) {
     GameRegistry.registerFuelHandler(new NOVAFuelHandler());
+    GameRegistry.registerWorldGenerator(new NOVAWorldGenerator(), 1);
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new NOVAGuiHandler());
     // MinecraftForge.EVENT_BUS.register(new NOVAEventListener());
     FMLCommonHandler.instance().bus().register(new NOVAEventListener());
@@ -135,7 +149,7 @@ public class NOVA {
     GameRegistry.registerTileEntity(TileBrickFurnace.class, "BrickFurnace");
     GameRegistry.registerTileEntity(TileLightManipulator.class, "LightManipulator");
     GameRegistry.registerTileEntity(TileCompressedTorch.class, "CompressedTorch");
-    GameRegistry.registerTileEntity(TileCobblizer.class, "RecycleBin");
+    GameRegistry.registerTileEntity(TileCobblizer.class, "Cobblizer");
   }
 
   public int getEnchantID(Configuration config, String name, int id) {
@@ -165,3 +179,5 @@ public class NOVA {
     theBlock.setHardness(theHardness);
   }
 }
+
+//player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed).applyModifier(...)

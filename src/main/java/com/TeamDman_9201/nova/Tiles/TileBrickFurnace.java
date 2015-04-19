@@ -257,7 +257,7 @@ public class TileBrickFurnace extends TileEntity implements ISidedInventory {
           flag1 = true;
 
           if (this.furnaceItemStacks[1] != null) {
-            if (this.furnaceItemStacks[1].isItemEqual(new ItemStack(NOVA.superCoal, 1))) {
+            if (this.furnaceItemStacks[1].isItemEqual(new ItemStack(NOVA.itemSuperCoal, 1))) {
               increaseFurnaceHeat(1000);//this.furnaceHeat+=1000;
             }
             if (this.furnaceHeat > this.furnaceMaxHeat) {

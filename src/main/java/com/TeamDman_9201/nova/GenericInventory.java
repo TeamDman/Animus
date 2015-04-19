@@ -14,11 +14,17 @@ import net.minecraft.tileentity.TileEntity;
 public class GenericInventory extends TileEntity implements ISidedInventory {
 
   public ItemStack[] items;
+  public int[] slotsTop;
+  public int[] slotsBottom;
+  public int[] slotsSides;
   public String containerName;
 
-  public GenericInventory(int items, String name) {
+  public GenericInventory(int items, String name, int[] top, int[] bottom, int[] sides) {
     this.items = new ItemStack[items];
     this.containerName = name;
+    slotsTop = top;
+    slotsBottom = bottom;
+    slotsSides = sides;
   }
 
   public ItemStack insertStack(ItemStack stack,int slot) {
@@ -103,8 +109,8 @@ public class GenericInventory extends TileEntity implements ISidedInventory {
   }
 
   public int[] getAccessibleSlotsFromSide(int side) {
-    // return par1 == 0 ? slotsBottom : (par1 == 1 ? slotsTop : slotsSides);
-    return new int[]{0, this.getSizeInventory()};
+    return side == 0 ? slotsBottom : (side == 1 ? slotsTop : slotsSides);
+//    return new int[]{0, this.getSizeInventory()-1};
   }
 
   public boolean canInsertItem(int slot, ItemStack item, int side) {

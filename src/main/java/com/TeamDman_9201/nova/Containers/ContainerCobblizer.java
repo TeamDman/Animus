@@ -26,7 +26,7 @@ public class ContainerCobblizer extends Container {
     for (int y = 0; y < 3; ++y) {
       for (int x = 0; x < 3; ++x) {
         this.addSlotToContainer(
-            new SlotOutput(this.tile, y + x * 3 + 2, x * 18 + 100, y * 18 + 17));
+            new SlotOutput(this.tile, x + y * 3 + 2, x * 18 + 100, y * 18 + 17));
       }
     }
 
@@ -50,15 +50,15 @@ public class ContainerCobblizer extends Container {
       ItemStack itemstack1 = slot.getStack();
       itemstack = itemstack1.copy();
 
-      if (parSlot > 11) {
+      if (parSlot > tile.getSizeInventory()-1) {
         if (SlotUpgrade.isItemUpgrade(itemstack1)) {
-          if (!this.mergeItemStack(itemstack1,0,1, false)) {
+          if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
             return null;
           }
-        } else if  (!this.mergeItemStack(itemstack1, 1, 2, false)) {
+        } else if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
           return null;
         }
-      } else if (!this.mergeItemStack(itemstack1, 11, 47, false)) {
+      } else if (!this.mergeItemStack(itemstack1, tile.getSizeInventory()-1, inventorySlots.size(), false)) {
         return null;
       }
 

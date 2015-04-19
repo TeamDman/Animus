@@ -19,7 +19,7 @@ public class TileLightManipulator extends GenericInventory implements ISidedInve
   }
 
   public TileLightManipulator() {
-    super(8,"Light Manipulator");
+    super(8,"Light Manipulator", new int[] {0,7}, new int[] {0,7}, new int[] {0,7});
   }
 
   public void commence() {

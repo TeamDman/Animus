@@ -8,11 +8,11 @@ public class NOVAFuelHandler implements IFuelHandler {
 
   @Override
   public int getBurnTime(ItemStack fuel) {
-    if (fuel.isItemEqual(new ItemStack(NOVA.superCoal)) == true) {
+    if (fuel.isItemEqual(new ItemStack(NOVA.itemSuperCoal)) == true) {
       return 128000;
     }
     return 0;
-    //Item superCoal = new SuperCoal();
-    //return fuel==new ItemStack(superCoal)?12800:0; //superCoal.getUnlocalizedName() ? 12800 : 0;
+    //Item itemSuperCoal = new SuperCoal();
+    //return fuel==new ItemStack(itemSuperCoal)?12800:0; //itemSuperCoal.getUnlocalizedName() ? 12800 : 0;
   }
 }

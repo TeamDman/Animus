@@ -11,3 +11,10 @@ or to make food harmful
 
 => Compentalizer <=
 Tells you components needed to make item
+
+=> RF Chunkloaders <=
+Addon for TE to make chunkloaders that have:
+    CoFH Friends support,
+    Multiple player control,
+    Global log file,
+    Global toggle control, lock (disable all inteaction), void ( removes all chunkloaders in world)
