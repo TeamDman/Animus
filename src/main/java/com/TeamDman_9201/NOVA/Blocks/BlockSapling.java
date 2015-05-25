@@ -1,7 +1,7 @@
-package com.TeamDman_9201.nova.Blocks;
+package com.TeamDman.nova.Blocks;
 
-import com.TeamDman_9201.nova.NOVA;
-import com.TeamDman_9201.nova.NOVAWorldGenTree;
+import com.TeamDman.nova.NOVA;
+import com.TeamDman.nova.NOVAWorldGenTree;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;

@@ -1,4 +1,4 @@
-package com.TeamDman_9201.nova.Items;
+package com.TeamDman.nova.Items;
 
 import net.minecraft.item.Item;
 

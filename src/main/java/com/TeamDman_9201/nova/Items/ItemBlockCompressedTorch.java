@@ -1,4 +1,6 @@
-package com.TeamDman_9201.nova.Items;
+package com.TeamDman.nova.Items;
+
+import com.TeamDman.nova.NOVA;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,14 +10,11 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 public class ItemBlockCompressedTorch extends ItemBlock {
-
-  // Cazzar> Teamy, create another class, which extends that, and register it
-  // with the block.
   Block cTorch;
 
   public ItemBlockCompressedTorch(Block arg) {
-    super(arg);
-    cTorch = arg;
+    super(NOVA.blockCompressedTorch);
+    cTorch = NOVA.blockCompressedTorch;
   }
 
   public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {

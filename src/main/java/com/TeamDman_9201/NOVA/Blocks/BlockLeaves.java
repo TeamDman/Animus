@@ -1,6 +1,6 @@
-package com.TeamDman_9201.nova.Blocks;
+package com.TeamDman.nova.Blocks;
 
-import com.TeamDman_9201.nova.NOVA;
+import com.TeamDman.nova.NOVA;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNewLeaf;

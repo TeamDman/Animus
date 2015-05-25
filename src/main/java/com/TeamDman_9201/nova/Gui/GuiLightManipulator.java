@@ -1,7 +1,7 @@
-package com.TeamDman_9201.nova.Gui;
+package com.TeamDman.nova.Gui;
 
-import com.TeamDman_9201.nova.Containers.ContainerLightManipulator;
-import com.TeamDman_9201.nova.Tiles.TileLightManipulator;
+import com.TeamDman.nova.Containers.ContainerLightManipulator;
+import com.TeamDman.nova.Tiles.TileLightManipulator;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -21,10 +21,6 @@ public class GuiLightManipulator extends GuiContainer {
       new ResourceLocation("NOVA:textures/gui/blockLightManipulator.png");
   private TileLightManipulator tileLightManipulator;
 
-  /**
-   * Create the gui for a brick furnace. args:InventoyPlayer inventoyPlayer, TileEntityBrickFurnace
-   * tileEntityBrickFurnace
-   */
   public GuiLightManipulator(InventoryPlayer inventoryPlayer,
                              TileLightManipulator tileEntityLightManipulator) {
     super(new ContainerLightManipulator(inventoryPlayer, tileEntityLightManipulator));
@@ -32,21 +28,6 @@ public class GuiLightManipulator extends GuiContainer {
     // par2IInventory)
     // super(new ContainerHopper(par1InventoryPlayer, par2IInventory));
     this.tileLightManipulator = tileEntityLightManipulator;
-  }
-
-  /**
-   * Draw the foreground layer for the GuiContainer (everything in front of the items)
-   */
-  protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-    String
-        s =
-        this.tileLightManipulator.hasCustomInventoryName() ? this.tileLightManipulator
-            .getInventoryName() : I18n.format(
-            this.tileLightManipulator.getInventoryName(), new Object[0]);
-    this.fontRendererObj
-        .drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-    // this.fontRendererObj.drawString(I18n.format("container.inventory",new
-    // Object[0]), 8, this.ySize - 96 + 2 - 51 + 96 - 2, 4210752);
   }
 
   protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_,
@@ -60,5 +41,16 @@ public class GuiLightManipulator extends GuiContainer {
     //
     // i1 = 1;//this.tileFurnace.getCookProgressScaled(24);
     // this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
+  }
+
+  protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
+    String
+        s =
+        this.tileLightManipulator.hasCustomInventoryName() ? this.tileLightManipulator
+            .getInventoryName() : I18n.format(this.tileLightManipulator.getInventoryName());
+    this.fontRendererObj
+        .drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
+    // this.fontRendererObj.drawString(I18n.format("container.inventory",new
+    // Object[0]), 8, this.ySize - 96 + 2 - 51 + 96 - 2, 4210752);
   }
 }

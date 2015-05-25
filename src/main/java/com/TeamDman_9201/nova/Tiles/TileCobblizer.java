@@ -1,7 +1,7 @@
-package com.TeamDman_9201.nova.Tiles;
+package com.TeamDman.nova.Tiles;
 
-import com.TeamDman_9201.nova.GenericInventory;
-import com.TeamDman_9201.nova.NOVA;
+import com.TeamDman.nova.GenericInventory;
+import com.TeamDman.nova.NOVA;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

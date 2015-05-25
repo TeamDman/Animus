@@ -1,6 +1,6 @@
-package com.TeamDman_9201.nova.Blocks;
+package com.TeamDman.nova.Blocks;
 
-import com.TeamDman_9201.nova.NOVA;
+import com.TeamDman.nova.NOVA;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,6 +18,7 @@ public class BlockCoalDiamondOre extends Block {
 
   @SideOnly(Side.CLIENT)
   private IIcon blockIcon;
+  Random rnd = new Random();
 
   public BlockCoalDiamondOre() {
     super(Material.rock);
@@ -25,7 +26,7 @@ public class BlockCoalDiamondOre extends Block {
 
   @Override
   public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-    return new Random().nextInt(2) == 1 ? Items.diamond : NOVA.itemSuperCoal;
+    return rnd.nextInt(2) == 1 ? Items.diamond : NOVA.itemSuperCoal;
   }
 
   @Override

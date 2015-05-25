@@ -9,7 +9,7 @@ Glass + cobble in crafting
 Can be used as in world defence
 or to make food harmful
 
-=> Compentalizer <=
+=> Componentalizer <=
 Tells you components needed to make item
 
 => RF Chunkloaders <=
@@ -18,3 +18,15 @@ Addon for TE to make chunkloaders that have:
     Multiple player control,
     Global log file,
     Global toggle control, lock (disable all inteaction), void ( removes all chunkloaders in world)
+
+=> Cobblizer Upgrades <=
+Increasesp roduction
+
+=>RF from cobble<=
+
+=> Trash Can <=
+Huge inventory, doesn't save NBT so it voids items on restart
+allows you to not accidentally delete iteems
+
+=> Force Lowercase <=
+On Messages Typed With First Letter Of Each Word Capitalized Lowercases The Message

@@ -1,6 +1,6 @@
-package com.TeamDman_9201.nova.Containers;///net.minecraft.inventory;
+package com.TeamDman.nova.Containers;///net.minecraft.inventory;
 
-import com.TeamDman_9201.nova.Tiles.TileBrickFurnace;
+import com.TeamDman.nova.Tiles.TileBrickFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -21,9 +21,9 @@ public class ContainerBrickFurnace extends Container {
 
   private static final String __OBFID = "CL_00001748";
   private TileBrickFurnace tileFurnace;
-  private int lastCookTime;
-  private int lastBurnTime;
-  private int lastItemBurnTime;
+  private int              lastCookTime;
+  private int              lastBurnTime;
+  private int              lastItemBurnTime;
 
   public ContainerBrickFurnace(InventoryPlayer par1InventoryPlayer,
                                TileBrickFurnace tileEntityBrickFurnace) {

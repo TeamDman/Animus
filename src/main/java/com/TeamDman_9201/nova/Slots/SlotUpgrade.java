@@ -1,6 +1,6 @@
-package com.TeamDman_9201.nova.Slots;
+package com.TeamDman.nova.Slots;
 
-import com.TeamDman_9201.nova.NOVA;
+import com.TeamDman.nova.NOVA;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

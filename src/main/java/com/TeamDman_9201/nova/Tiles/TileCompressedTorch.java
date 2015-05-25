@@ -1,4 +1,4 @@
-package com.TeamDman_9201.nova.Tiles;
+package com.TeamDman.nova.Tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

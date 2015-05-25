@@ -1,6 +1,6 @@
-package com.TeamDman_9201.nova.Items;
+package com.TeamDman.nova.Items;
 
-import com.TeamDman_9201.nova.NOVA;
+import com.TeamDman.nova.NOVA;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -17,7 +17,7 @@ public class ItemBlockSapling extends ItemBlock {
   private static Random rand = new Random();
 
   public ItemBlockSapling(Block arg) {
-    super(arg);
+    super(NOVA.blockSapling);
   }
 
   @Override

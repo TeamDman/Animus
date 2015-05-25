@@ -1,6 +1,6 @@
-package com.TeamDman_9201.nova.Recipes;
+package com.TeamDman.nova.Recipes;
 
-import com.TeamDman_9201.nova.NOVA;
+import com.TeamDman.nova.NOVA;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;

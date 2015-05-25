@@ -1,7 +1,7 @@
-package com.TeamDman_9201.nova.Tiles;
+package com.TeamDman.nova.Tiles;
 
-import com.TeamDman_9201.nova.GenericInventory;
-import com.TeamDman_9201.nova.Threads.ThreadLightManipulator;
+import com.TeamDman.nova.Threads.ThreadLightManipulator;
+import com.TeamDman.nova.GenericInventory;
 
 import net.minecraft.inventory.ISidedInventory;
 
@@ -9,17 +9,18 @@ import java.util.ArrayList;
 
 public class TileLightManipulator extends GenericInventory implements ISidedInventory {
 
-  private ThreadLightManipulator thread = new ThreadLightManipulator(this);
-  private int iteration = 0;
-  private int speed = 25;
-  private boolean isActive = false;
+  private ThreadLightManipulator thread    = new ThreadLightManipulator(this);
+  private int                    iteration = 0;
+  private int                    speed     = 25;
+  private boolean                isActive  = false;
   private ArrayList<int[]> chunkContents;
+
   public int getSizeInventory() {
     return this.items.length;
   }
 
   public TileLightManipulator() {
-    super(8,"Light Manipulator", new int[] {0,7}, new int[] {0,7}, new int[] {0,7});
+    super(8, "Light Manipulator", new int[]{0, 7}, new int[]{0, 7}, new int[]{0, 7});
   }
 
   public void commence() {

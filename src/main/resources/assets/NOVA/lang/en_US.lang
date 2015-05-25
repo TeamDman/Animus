@@ -1,14 +1,16 @@
-item.superCoal.name=Super Coal
-item.unstableCoal.name=Unstable Coal
-item.slotIdentifier.name=Slot Identifier
+item.itemSuperCoal.name=Super Coal
+item.itemUnstableCoal.name=Unstable Coal
+item.itemSlotIdentifier.name=Slot Identifier
+item.itemTransportalizer.name=Transportalizer
 
-tile.blockLeaves.name=Red Oak Leaves
-tile.blockSapling.name=Red Oak Sapling
-tile.blockCoalDiamondOre.name=Coal-Diamond Ore
 tile.blockBrickFurnace.name=Brick Furnace
-tile.blockLightManipulator.name=Light Manipulator
-tile.blockCompressedTorch.name=Compressed Torch
+tile.blockCoalDiamondOre.name=Coal-Diamond Ore
 tile.blockCobblizer.name=Cobblizer
+tile.blockCompressedTorch.name=Compressed Torch
+tile.blockDirtChest.name=Dirt Chest 9002
+tile.blockLeaves.name=Red Oak Leaves
+tile.blockLightManipulator.name=Light Manipulator
+tile.blockSapling.name=Red Oak Sapling
 
 enchantment.Pow=Pow
 

@@ -1,7 +1,7 @@
-package com.TeamDman_9201.nova.Blocks;
+package com.TeamDman.nova.Blocks;
 
-import com.TeamDman_9201.nova.NOVA;
-import com.TeamDman_9201.nova.Tiles.TileBrickFurnace;
+import com.TeamDman.nova.NOVA;
+import com.TeamDman.nova.Tiles.TileBrickFurnace;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;

@@ -1,7 +1,8 @@
 package com.TeamDman.nova.Blocks;
 
-import com.TeamDman.nova.NOVA;
 import com.TeamDman.nova.Tiles.TileCobblizer;
+import com.TeamDman.nova.NOVA;
+import com.TeamDman.nova.Tiles.TileDirtChest;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -24,40 +25,37 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Created by TeamDman on 2015-04-04.
+ * Created by TeamDman on 2015-04-25.
  */
-public class BlockCobblizer extends BlockContainer {
+public class BlockDirtChest extends BlockContainer {
+  public BlockDirtChest() {
+    super(Material.wood);
+  }
 
   private final Random random = new Random();
   @SideOnly(Side.CLIENT)
   private IIcon blockIcon;
-  @SideOnly(Side.CLIENT)
-  private IIcon blockTop;
 
-  public BlockCobblizer() {
-    super(Material.iron);
+  @Override
+  public TileEntity createNewTileEntity(World var1, int var2) {
+    return new TileDirtChest();
   }
+
 
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iconRegister) {
     this.blockIcon =
-        iconRegister.registerIcon("furnace_side");//NOVA.MODID + ":" + "blockBrickFurnaceSide");
-    this.blockTop = iconRegister.registerIcon("furnace_top");
+        iconRegister.registerIcon("dirt");
   }
 
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int side, int metadata) {
-    return side == 0 ? blockTop : side == 1 ? blockTop : blockIcon;
+    return blockIcon;
   }
 
   @SideOnly(Side.CLIENT)
   public Item getItem(World world, int x, int y, int z) {
-    return Item.getItemFromBlock(NOVA.blockCobblizer);
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World var1, int var2) {
-    return new TileCobblizer();
+    return Item.getItemFromBlock(NOVA.blockDirtChest);
   }
 
   public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
@@ -70,7 +68,7 @@ public class BlockCobblizer extends BlockContainer {
     if (world.isRemote) {
       return true;
     } else {
-      player.openGui(NOVA.instance, NOVA.guiCobblizer, world, x, y, z);
+      player.openGui(NOVA.instance, NOVA.guiDirtChest, world, x, y, z);
       return true;
     }
   }

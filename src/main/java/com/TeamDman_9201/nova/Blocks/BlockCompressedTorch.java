@@ -1,7 +1,7 @@
-package com.TeamDman_9201.nova.Blocks;
+package com.TeamDman.nova.Blocks;
 
-import com.TeamDman_9201.nova.NOVA;
-import com.TeamDman_9201.nova.Tiles.TileCompressedTorch;
+import com.TeamDman.nova.NOVA;
+import com.TeamDman.nova.Tiles.TileCompressedTorch;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;

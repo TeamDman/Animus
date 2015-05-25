@@ -1,10 +1,10 @@
 [
 {
-  "modid": "nova",
+  "modid": "NOVA",
   "name": "NOVA",
-  "description": "First mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "description": "Collection of junk I make.",
+  "version": "2015-5-15",
+  "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",
   "authorList": ["TeamDman_9201"],

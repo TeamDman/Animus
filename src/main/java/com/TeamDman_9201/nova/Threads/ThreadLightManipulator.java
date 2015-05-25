@@ -1,7 +1,7 @@
 // Thanks to bro @ https://github.com/4poc/lloverlay/blob/master/forge_src/cc/apoc/lloverlay/LightLevelOverlayThread.java
-package com.TeamDman_9201.nova.Threads;
+package com.TeamDman.nova.Threads;
 
-import com.TeamDman_9201.nova.Tiles.TileLightManipulator;
+import com.TeamDman.nova.Tiles.TileLightManipulator;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
