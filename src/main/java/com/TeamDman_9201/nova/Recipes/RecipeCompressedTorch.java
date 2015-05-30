@@ -1,6 +1,6 @@
-package com.TeamDman.nova.Recipes;
+package com.teamdman_9201.nova.recipes;
 
-import com.TeamDman.nova.NOVA;
+import com.teamdman_9201.nova.NOVA;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
@@ -13,70 +13,67 @@ import java.util.ArrayList;
 
 public class RecipeCompressedTorch implements IRecipe {
 
-  public int[] getData(InventoryCrafting crafting) {
-    int rtn[] = {0, 0, 0, 0};
-    for (int i = 0; i < crafting.getSizeInventory(); i++) {
-      ItemStack contents = crafting.getStackInSlot(i);
-      // if (contents != null) {
-      // System.out.println(contents.getDisplayName() + " " + i);
-      // }
-      if (contents != null) {
-        if (contents.getItem() == new ItemStack(Blocks.torch).getItem()) {
-          rtn[0]++;
-          rtn[1]++;
-        } else if (contents.getItem() == new ItemStack(NOVA.blockCompressedTorch).getItem()) {
-          rtn[0]++;
-          rtn[2]++;
-          if (contents.getTagCompound() != null) {
-            rtn[3] += contents.getTagCompound().getLong("Torches");
-          }
+    public int[] getData(InventoryCrafting crafting) {
+        int rtn[] = {0, 0, 0, 0};
+        for (int i = 0; i < crafting.getSizeInventory(); i++) {
+            ItemStack contents = crafting.getStackInSlot(i);
+            // if (contents != null) {
+            // System.out.println(contents.getDisplayName() + " " + i);
+            // }
+            if (contents != null) {
+                if (contents.getItem() == new ItemStack(Blocks.torch).getItem()) {
+                    rtn[0]++;
+                    rtn[1]++;
+                } else if (contents.getItem() == new ItemStack(NOVA.blockCompressedTorch).getItem
+                        ()) {
+                    rtn[0]++;
+                    rtn[2]++;
+                    if (contents.getTagCompound() != null) {
+                        rtn[3] += contents.getTagCompound().getLong("Torches");
+                    }
+                }
+            }
         }
-      }
+
+        return rtn;
     }
 
-    return rtn;
-  }
-
-  @Override
-  public boolean matches(InventoryCrafting crafting, World world) {
-    // TODO Auto-generated method stub
-    return getData(crafting)[0] > 0;
-  }
-
-  @Override
-  public ItemStack getCraftingResult(InventoryCrafting crafting) {
-    // TODO Auto-generated method stub
-    // 0=total
-    // 1=torches
-    // 2=cTorches
-    // 3=storedTorches
-    ArrayList<String> toolTip = new ArrayList<String>();
-    toolTip.add("Test");
-    ItemStack returnStack = new ItemStack(NOVA.blockCompressedTorch);
-    int parts[] = getData(crafting);
-    int storedTorches = parts[1] + parts[3];
-
-    if (parts[0] == 1 && parts[2] == 1) {
-      returnStack.stackSize = 2;
-      storedTorches /= 2;
+    @Override
+    public boolean matches(InventoryCrafting crafting, World world) {
+        return getData(crafting)[0] > 0;
     }
 
-    NBTTagCompound nbtData = new NBTTagCompound();
-    nbtData.setLong("Torches", storedTorches);
-    returnStack.setTagCompound(nbtData);
-    return returnStack;
-  }
+    @Override
+    public ItemStack getCraftingResult(InventoryCrafting crafting) {
+        // 0=total
+        // 1=torches
+        // 2=cTorches
+        // 3=storedTorches
+        ArrayList<String> toolTip = new ArrayList<String>();
+        toolTip.add("Test");
+        ItemStack returnStack   = new ItemStack(NOVA.blockCompressedTorch);
+        int       parts[]       = getData(crafting);
+        int       storedTorches = parts[1] + parts[3];
 
-  @Override
-  public int getRecipeSize() {
-    // TODO Auto-generated method stub
-    return 2;
-  }
+        if (parts[0] == 1 && parts[2] == 1) {
+            returnStack.stackSize = 2;
+            storedTorches /= 2;
+        }
 
-  @Override
-  public ItemStack getRecipeOutput() {
-    // TODO Auto-generated method stub
-    return new ItemStack(NOVA.blockCompressedTorch);
-  }
+        NBTTagCompound nbtData = new NBTTagCompound();
+        nbtData.setLong("Torches", storedTorches);
+        returnStack.setTagCompound(nbtData);
+        return returnStack;
+    }
+
+    @Override
+    public int getRecipeSize() {
+        return 2;
+    }
+
+    @Override
+    public ItemStack getRecipeOutput() {
+        return new ItemStack(NOVA.blockCompressedTorch);
+    }
 
 }

@@ -1,0 +1,42 @@
+=> Componentalizer <=
+Tells you components needed to make item
+
+=> LP Chunkloaders <=
+Addon for TE to make chunkloaders that have:
+    CoFH Friends support,
+    Multiple player control,
+    Global log file,
+    Global toggle control, lock (disable all inteaction), void ( removes all chunkloaders in world)
+
+=> Cobblizer Upgrades <=
+Increasesp roduction
+
+=>RF from cobble<=
+
+=> Trash Can <=
+Huge inventory, doesn't save NBT so it voids items on restart
+allows you to not accidentally delete iteems
+
+=> Force Lowercase <=
+On Messages Typed With First Letter Of Each Word Capitalized Lowercases The Message
+
+=>Scythe of Sacrifice<=
+AOE sword of sacrifice, kills enough mobs to fill blood altar.
+
+=>Mana Log<=
+Converts botania mana to LP
+a log structure/ritual that accepts manabursts and converts it into LP source blocks
+>point manaspreader at glimmering living wood on ritual and it does it maybe?
+
+=>Ritual of chance<=
+generates a random item at the cost of 15m lp
+
+=>Ritual of transmutation<=
+converts fluids into different fluids
+
+=>Disenchanting ritual<=
+=>Goat mob gives huge ammount of LP when sacrificed<=
+=>Ritual of Enchanting<=
+=>Sigil of wither protection<=
+
+//<diesieben07> ok, try to call player.sendContainerToPlayer(player.openContainer) after you modify the inventory
