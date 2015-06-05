@@ -1,5 +1,7 @@
 package com.teamdman_9201.nova.rituals;
 
+import com.teamdman_9201.nova.NOVA;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -19,7 +21,8 @@ import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
  * Created by TeamDman on 2015-05-28.
  */
 public class RitualEffectLuna extends RitualEffect {
-    public int reagentDrain = 5;
+    public  int reagentDrain = 5;
+    private int upkeep       = NOVA.ritualCosts.get("upkeepLuna");
     ArrayList<int[]> lightLocations;
 
     @Override
@@ -37,10 +40,6 @@ public class RitualEffectLuna extends RitualEffect {
             }
             SoulNetworkHandler.causeNauseaToPlayer(owner);
         } else {
-            for (int i = 0; i < 10; i++) {
-                SpellHelper.sendIndexedParticleToAllAround(world, x, y, z, 20, world.provider
-                        .dimensionId, 3, x, y, z);
-            }
             int radius = this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent,
                     reagentDrain, false) ? 5 : 1;
             int[] pos = getNextBlock(world, x, z, radius);
@@ -51,13 +50,18 @@ public class RitualEffectLuna extends RitualEffect {
                 world.setBlockToAir(pos[0], pos[1] + 1, pos[2]);
                 this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent, reagentDrain,
                         true);
+                SoulNetworkHandler.syphonFromNetwork(owner,this.getCostPerRefresh());
             }
+        }
+        if (world.rand.nextInt(10) == 0)
+        {
+            SpellHelper.sendIndexedParticleToAllAround(world, x, y, z, 20, world.provider.dimensionId, 1, x, y, z);
         }
     }
 
     @Override
     public int getCostPerRefresh() {
-        return 10;
+        return upkeep;
     }
 
     @Override

@@ -1,11 +1,17 @@
 package com.teamdman_9201.nova.gui;
 
 import com.teamdman_9201.nova.NOVA;
-import com.teamdman_9201.nova.NOVAConfig;
 
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cpw.mods.fml.client.config.IConfigElement;
+
+import static com.teamdman_9201.nova.NOVAConfig.config;
 
 /**
  * Created by TeamDman on 2015-05-14.
@@ -13,11 +19,21 @@ import net.minecraftforge.common.config.Configuration;
 public class ConfigGui extends cpw.mods.fml.client.config.GuiConfig {
 
     public ConfigGui(GuiScreen parent) {
-        super(parent, new ConfigElement(NOVAConfig.config.getCategory(Configuration
-                .CATEGORY_GENERAL))
-                .getChildElements(), NOVA.MODID, false, false, cpw.mods.fml.client.config
-                .GuiConfig.getAbridgedConfigPath(NOVAConfig.config.toString()));
+        super(parent, getConfigElements(parent), NOVA.MODID, false, false, NOVA.MODID);
     }
 
+    @SuppressWarnings("rawtypes")
+    private static List<IConfigElement> getConfigElements(GuiScreen parent) {
+        List<IConfigElement> list = new ArrayList<IConfigElement>();
+
+        // adds sections declared in ConfigHandler. toLowerCase() is used because the
+        // configuration class automatically does this, so must we.
+        list.add(new ConfigElement<ConfigCategory>(config.getCategory("general")));
+        list.add(new ConfigElement<ConfigCategory>(config.getCategory("enchantments")));
+        list.add(new ConfigElement<ConfigCategory>(config.getCategory("ritual blacklist")));
+        list.add(new ConfigElement<ConfigCategory>(config.getCategory("ritual costs")));
+
+        return list;
+    }
 
 }

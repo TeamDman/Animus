@@ -3,6 +3,7 @@ item.itemSuperCoal.name=Super Coal
 item.itemUnstableCoal.name=Unstable Coal
 item.itemSlotIdentifier.name=Slot Identifier
 item.itemTransportalizer.name=Transportalizer
+item.itemBoundScythe.name=Bound Scythe
 
 #Tiles
 tile.blockBrickFurnace.name=Brick Furnace
@@ -17,10 +18,12 @@ tile.blockSapling.name=Red Oak Sapling
 #Rituals
 ritual.NOVA.sol=Ritual of Sol
 ritual.NOVA.luna=Ritual of Luna
-ritual.NOVA.disenchant
+ritual.NOVA.uncreate=Ritual of Uncreation
+ritual.NOVA.dev=Ritual of Ritual Building
 
 #Enchantments
 enchantment.enchantPow=Pow
+enchantment.level.0=Nulla
 
 #ItemGroups
 itemGroup.NOVA=NOVA

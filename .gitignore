@@ -20,6 +20,7 @@ README.txt
 
 .idea
 .gradle
+gradle.properties
 
 
 #forge-related shenanigans
