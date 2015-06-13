@@ -1,0 +1,44 @@
+#Items
+item.itemSuperCoal.name=Super Coal
+item.itemUnstableCoal.name=Unstable Coal
+item.itemSlotIdentifier.name=Slot Identifier
+item.itemTransportalizer.name=Transportalizer
+
+item.itemSigilOfChains.name=Sigil of Phantom Chains
+item.itemMobSoul.name=Mob Soul
+
+item.itemWoodenSickle.name=Wooden Sickle
+item.itemStoneSickle.name=Stone Sickle
+item.itemIronSickle.name=Iron Sickle
+item.itemGoldSickle.name=Gold Sickle
+item.itemDiamondSickle.name=Diamond Sickle
+item.itemBoundSickle.name=Bound Sickle
+
+#Tiles
+tile.blockBrickFurnace.name=Brick Furnace
+tile.blockCoalDiamondOre.name=Coal-Diamond Ore
+tile.blockCobblizer.name=Cobblizer
+tile.blockCompressedTorch.name=Compressed Torch
+tile.blockDirtChest.name=Dirt Chest 9002
+tile.blockLeaves.name=Red Oak Leaves
+tile.blockLightManipulator.name=Light Manipulator
+tile.blockSapling.name=Red Oak Sapling
+
+#Rituals
+ritual.NOVA.sol=Ritual of Sol
+ritual.NOVA.luna=Ritual of Luna
+ritual.NOVA.uncreate=Ritual of Uncreation
+ritual.NOVA.dev=Ritual of Ritual Building
+
+
+#ToolTips
+tooltip.sigilofchains.desc1=Used to contain monsters against their will
+tooltip.sigilofchains.desc2=they don't appreciate it tho.
+tooltip.sigil.state.empty=Empty
+tooltip.sigil.state.full=Holding
+#Enchantments
+enchantment.enchantPow=Pow
+enchantment.level.0=Nulla
+
+#ItemGroups
+itemGroup.NOVA=NOVA

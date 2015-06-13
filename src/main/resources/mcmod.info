@@ -1,0 +1,16 @@
+[
+{
+  "modid": "NOVA",
+  "name": "NOVA",
+  "description": "A Blood Magic addon adding whatever I can think of.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://minecraft.curseforge.com/mc-mods/229664-nova",
+  "updateUrl": "http://minecraft.curseforge.com/mc-mods/229664-nova",
+  "authorList": [ "TeamDman_9201" ],
+  "credits": "AWayOfTime, for making BloodMagic; Tombenpotter, for example code in Sanguimancy",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
