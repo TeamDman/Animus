@@ -11,17 +11,23 @@ Addon for TE to make chunkloaders that have:
 => Cobblizer Upgrades <=
 Increasesp roduction
 
+
+Sickles to harvest wheat on right click for their range area, like tterag core thing
+
 =>RF from cobble<=
+
+
+Death hive, put bees in, pump blood out.
+
+Drip drive for villagers, IV to slowly gain blood from them
+
+
+//player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed)
+// .applyModifier(...)
 
 => Trash Can <=
 Huge inventory, doesn't save NBT so it voids items on restart
 allows you to not accidentally delete iteems
-
-=> Force Lowercase <=
-On Messages Typed With First Letter Of Each Word Capitalized Lowercases The Message
-
-=>Scythe of Sacrifice<=
-AOE sword of sacrifice, kills enough mobs to fill blood altar.
 
 =>Mana Log<=
 Converts botania mana to LP

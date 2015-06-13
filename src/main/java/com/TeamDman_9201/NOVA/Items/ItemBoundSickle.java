@@ -1,5 +1,8 @@
 package com.teamdman_9201.nova.items;
 
+import com.teamdman_9201.nova.NOVA;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
@@ -13,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -22,10 +26,19 @@ import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.IHoardD
 import WayofTime.alchemicalWizardry.common.items.DaggerOfSacrifice;
 import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEAltar;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBoundScythe extends DaggerOfSacrifice {
+public class ItemBoundSickle extends DaggerOfSacrifice {
+    private float weaponDamage;
+    @SideOnly(Side.CLIENT)
+    private IIcon icon;
 
-    public ItemBoundScythe() {
+    public ItemBoundSickle() {
+        super();
+        setEnergyUsed(100);
+        this.maxStackSize = 1;
+        weaponDamage = 2.0F;
     }
 
     @Override
@@ -53,27 +66,17 @@ public class ItemBoundScythe extends DaggerOfSacrifice {
             for (int j = -radius; j <= radius; j++) {
                 for (int k = -radius; k <= radius; k++) {
                     tileEntity = world.getTileEntity(i + x, k + y, j + z);
-
-                    if ((tileEntity instanceof TEAltar)) {
+                    if (tileEntity instanceof TEAltar)
                         return (TEAltar) tileEntity;
-                    }
-                }
-
-                if ((tileEntity instanceof TEAltar)) {
-                    return (TEAltar) tileEntity;
                 }
             }
-
-            if ((tileEntity instanceof TEAltar)) {
-                return (TEAltar) tileEntity;
-            }
         }
-
-        if ((tileEntity instanceof TEAltar)) {
-            return (TEAltar) tileEntity;
-        }
-
         return null;
+    }
+
+    @Override
+    public IIcon getIconFromDamage(int p_77617_1_) {
+        return icon;
     }
 
     @Override
@@ -87,7 +90,6 @@ public class ItemBoundScythe extends DaggerOfSacrifice {
                 .class, region);
         if (entities == null || entities.isEmpty())
             return false;
-        System.out.println(entities.size());
         for (EntityLivingBase entity : entities) {
             if (entity instanceof EntityPlayer)
                 continue;
@@ -95,10 +97,9 @@ public class ItemBoundScythe extends DaggerOfSacrifice {
                     instanceof EntityPlayer && SpellHelper.isFakePlayer(player.worldObj,
                     (EntityPlayer) player)))
                 continue;
-            if (entity instanceof IHoardDemon || entity.isChild() || entity instanceof
-                    EntityWither || entity instanceof EntityDragon || entity instanceof
-                    EntityPlayer || entity instanceof IBossDisplayData || entity.isDead || entity
-                    .getHealth() < 0.5f)
+            if (entity instanceof IHoardDemon || entity instanceof EntityWither || entity
+                    instanceof EntityDragon || entity instanceof EntityPlayer || entity
+                    instanceof IBossDisplayData || entity.isDead || entity.getHealth() < 0.5f)
                 continue;
 
             if (entity instanceof IDemon) {
@@ -107,14 +108,16 @@ public class ItemBoundScythe extends DaggerOfSacrifice {
             }
 
             int blood = 500;
-            if (entity instanceof EntityVillager && !entity.isChild())
+            if (entity instanceof EntityVillager)
                 blood = 2000;
-            if (entity instanceof EntitySlime && !entity.isChild())
+            if (entity instanceof EntitySlime)
                 blood = 150;
-            if (entity instanceof EntityEnderman && !entity.isChild())
+            if (entity instanceof EntityEnderman)
                 blood = 200;
-            if (entity instanceof EntityAnimal && !entity.isChild())
+            if (entity instanceof EntityAnimal)
                 blood = 250;
+            if (entity.isChild())
+                blood /= 2;
 
 
             if (findAndFillAltar(entity.worldObj, entity, blood)) {
@@ -132,4 +135,9 @@ public class ItemBoundScythe extends DaggerOfSacrifice {
         return false;
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister) {
+        icon = iconRegister.registerIcon(NOVA.MODID + ":itemBoundSickle");
+    }
 }
