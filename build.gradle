@@ -19,9 +19,8 @@ apply plugin: 'idea'
 apply plugin: 'forge'
 apply plugin: 'curseforge'
 
-
-group = package_group
-archivesBaseName = mod_name
+group = "com.teamdman_9201.nova"
+archivesBaseName = "NOVA"
 version = "${getDate()}"
 
 def getDate() {

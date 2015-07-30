@@ -19,31 +19,14 @@ import amerifrance.guideapi.entries.EntryText;
 import amerifrance.guideapi.pages.PageFurnaceRecipe;
 import amerifrance.guideapi.pages.PageIRecipe;
 import amerifrance.guideapi.pages.PageLocText;
+import amerifrance.guideapi.api.util.BookHelper;
 
-
-import amerifrance.guideapi.api.GuideRegistry;
-import amerifrance.guideapi.api.abstraction.CategoryAbstract;
-import amerifrance.guideapi.api.abstraction.EntryAbstract;
-import amerifrance.guideapi.api.abstraction.IPage;
-import amerifrance.guideapi.api.base.Book;
-import amerifrance.guideapi.categories.CategoryItemStack;
-import amerifrance.guideapi.entries.EntryText;
-import amerifrance.guideapi.pages.PageFurnaceRecipe;
-import amerifrance.guideapi.pages.PageIRecipe;
-import amerifrance.guideapi.pages.PageLocText;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 /**
  * Created by TeamDman on 2015-07-30.
  */
 public class NOVAGuide {
     public static Book myBook;
+
     public static void buildGuide() {
         List<EntryAbstract> entries = new ArrayList<EntryAbstract>(); // Create the list for this categories entries.
 
@@ -59,7 +42,7 @@ public class NOVAGuide {
         ArrayList<CategoryAbstract> categories = new ArrayList<CategoryAbstract>(); // Create the list for this book's categories
         categories.add(new CategoryItemStack(entries, "My category", new ItemStack(Items.painting))); // Add your entry list to the category list.
 
-        BookBuilder builder =  new BookBuilder(); // Create a new instance of the book builder
+        BookBuilder builder = new BookBuilder(); // Create a new instance of the book builder
         builder.setCategories(categories); // Set the category list of the book
         builder.setUnlocBookTitle("My book title"); // Set the unlocalized book title
         builder.setUnlocWelcomeMessage("My welcome message"); // Set the unlocalized welcome message
