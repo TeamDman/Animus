@@ -5,6 +5,9 @@ import com.teamdman_9201.nova.NOVA;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,6 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.IHoardDemon;
 import WayofTime.alchemicalWizardry.common.items.EnergyItems;
 import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
 
@@ -44,6 +48,10 @@ public class ItemSigilOfChains extends EnergyItems {
                                             EntityLivingBase mob) {
         if (player.worldObj.isRemote)
             return true;
+        if (mob instanceof IHoardDemon || mob instanceof EntityWither || mob
+                instanceof EntityDragon || mob instanceof EntityPlayer || mob
+                instanceof IBossDisplayData || mob.isDead || mob.getHealth() < 0.5f)
+            return false;
         if (!EnergyItems.syphonBatteries(sigil, player, getEnergyUsed()))
             return false;
         double x     = player.posX;
