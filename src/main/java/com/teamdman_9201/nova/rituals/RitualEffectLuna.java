@@ -21,9 +21,8 @@ import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
  * Created by TeamDman on 2015-05-28.
  */
 public class RitualEffectLuna extends RitualEffect {
-    public int reagentDrain = 5;
-    ArrayList<int[]> lightLocations;
-    private int upkeep = NOVA.ritualData.get("upkeepLuna");
+    public  int reagentDrain = 5;
+    private int upkeep       = NOVA.ritualData.get("upkeepLuna");
 
     @Override
     public int getCostPerRefresh() {
@@ -93,22 +92,20 @@ public class RitualEffectLuna extends RitualEffect {
             }
             SoulNetworkHandler.causeNauseaToPlayer(owner);
         } else {
-            int radius = this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent,
-                    reagentDrain, false) ? 5 : 1;
+            int radius = this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent, reagentDrain, false) ? 5 : 1;
             int[] pos = getNextBlock(world, x, z, radius);
             if (pos != null) {
-                Block light = world.getBlock(pos[0], pos[1] + 1, pos[2]);
-                int meta = world.getBlockMetadata(pos[0], pos[1] + 1, pos[2]);
+                Block light = world.getBlock(pos[0], pos[1] , pos[2]);
+                int meta = world.getBlockMetadata(pos[0], pos[1] , pos[2]);
                 light.dropBlockAsItem(world, x, y + 1, z, meta, 25);
-                world.setBlockToAir(pos[0], pos[1] + 1, pos[2]);
-                this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent, reagentDrain,
-                        true);
+                world.setBlockToAir(pos[0], pos[1], pos[2]);
+                if (radius==5)
+                    this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent, reagentDrain, true);
                 SoulNetworkHandler.syphonFromNetwork(owner, this.getCostPerRefresh());
             }
         }
         if (world.rand.nextInt(10) == 0) {
-            SpellHelper.sendIndexedParticleToAllAround(world, x, y, z, 20, world.provider
-                    .dimensionId, 1, x, y, z);
+            SpellHelper.sendIndexedParticleToAllAround(world, x, y, z, 20, world.provider.dimensionId, 1, x, y, z);
         }
     }
 
