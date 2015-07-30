@@ -1,10 +1,7 @@
 package com.teamdman_9201.nova.generation;
 
-import com.teamdman_9201.nova.NOVA;
-
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.feature.WorldGenMinable;
 
 import java.util.Random;
 
@@ -35,14 +32,14 @@ public class WorldGenerator implements IWorldGenerator {
     }
 
     private void generateSurface(World world, Random rand, int chunkX, int chunkZ) {
-        for (int k = 0; k < 1; k++) {
-            int firstBlockXCoord = chunkX + rand.nextInt(16);
-            int firstBlockYCoord = rand.nextInt(64);
-            int firstBlockZCoord = chunkZ + rand.nextInt(16);
-
-            (new WorldGenMinable(NOVA.blockCoalDiamondOre, 3)).generate(world, rand,
-                    firstBlockXCoord, firstBlockYCoord, firstBlockZCoord);
-        }
+//        for (int k = 0; k < 1; k++) {
+//            int firstBlockXCoord = chunkX + rand.nextInt(16);
+//            int firstBlockYCoord = rand.nextInt(64);
+//            int firstBlockZCoord = chunkZ + rand.nextInt(16);
+//
+//            (new WorldGenMinable(NOVA.blockCoalDiamondOre, 3)).generate(world, rand,
+//                    firstBlockXCoord, firstBlockYCoord, firstBlockZCoord);
+//        }
     }
 
     private void generateNether(World world, Random rand, int chunkX, int chunkZ) {

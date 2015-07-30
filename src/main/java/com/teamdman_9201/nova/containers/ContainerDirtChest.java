@@ -1,7 +1,6 @@
 package com.teamdman_9201.nova.containers;
 
 import com.teamdman_9201.nova.generics.GenericInventory;
-import com.teamdman_9201.nova.slots.SlotUpgrade;
 import com.teamdman_9201.nova.tiles.TileDirtChest;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,8 +22,7 @@ public class ContainerDirtChest extends Container {
 
         for (int column = 0; column < 3; ++column) {
             for (int row = 0; row < 9; ++row) {
-                this.addSlotToContainer(new Slot(playerInventory, row + column * 9 + 9, 8 + row *
-                        18, column * 18 + 48));
+                this.addSlotToContainer(new Slot(playerInventory, row + column * 9 + 9, 8 + row * 18, column * 18 + 48));
             }
         }
 
@@ -32,6 +30,15 @@ public class ContainerDirtChest extends Container {
             this.addSlotToContainer(new Slot(playerInventory, column, 8 + column * 18, 106));
         }
     }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer var1) {
+        return true;
+    }
+
+    //  public void addCraftingToCrafters(ICrafting par1ICrafting) {
+    //    super.addCraftingToCrafters(par1ICrafting);
+    //  }
 
     public ItemStack transferStackInSlot(EntityPlayer player, int parSlot) {
         ItemStack itemstack = null;
@@ -42,15 +49,9 @@ public class ContainerDirtChest extends Container {
             itemstack = itemstack1.copy();
 
             if (parSlot > tile.getSizeInventory() - 1) {
-                if (SlotUpgrade.isItemUpgrade(itemstack1)) {
-                    if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
-                        return null;
-                    }
-                } else if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
+                if (!this.mergeItemStack(itemstack1, 0, 1, false))
                     return null;
-                }
-            } else if (!this.mergeItemStack(itemstack1, tile.getSizeInventory() - 1,
-                    inventorySlots.size(), false)) {
+            } else if (!this.mergeItemStack(itemstack1, tile.getSizeInventory() - 1, inventorySlots.size(), false)) {
                 return null;
             }
 
@@ -62,14 +63,5 @@ public class ContainerDirtChest extends Container {
         }
 
         return itemstack;
-    }
-
-    //  public void addCraftingToCrafters(ICrafting par1ICrafting) {
-    //    super.addCraftingToCrafters(par1ICrafting);
-    //  }
-
-    @Override
-    public boolean canInteractWith(EntityPlayer var1) {
-        return true;
     }
 }

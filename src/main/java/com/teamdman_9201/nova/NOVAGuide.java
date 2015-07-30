@@ -9,17 +9,17 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import WayofTime.alchemicalWizardry.ModItems;
 import amerifrance.guideapi.api.GuideRegistry;
 import amerifrance.guideapi.api.abstraction.CategoryAbstract;
 import amerifrance.guideapi.api.abstraction.EntryAbstract;
 import amerifrance.guideapi.api.abstraction.IPage;
 import amerifrance.guideapi.api.base.Book;
+import amerifrance.guideapi.api.util.BookBuilder;
 import amerifrance.guideapi.categories.CategoryItemStack;
 import amerifrance.guideapi.entries.EntryText;
-import amerifrance.guideapi.pages.PageFurnaceRecipe;
 import amerifrance.guideapi.pages.PageIRecipe;
-import amerifrance.guideapi.pages.PageLocText;
-import amerifrance.guideapi.api.util.BookHelper;
+import amerifrance.guideapi.pages.PageUnlocText;
 
 /**
  * Created by TeamDman on 2015-07-30.
@@ -28,28 +28,55 @@ public class NOVAGuide {
     public static Book myBook;
 
     public static void buildGuide() {
-        List<EntryAbstract> entries = new ArrayList<EntryAbstract>(); // Create the list for this categories entries.
+        //        pages2.add(new PageIRecipe(new ShapedOreRecipe(Items.apple, "AAA", "BBB", "CCC", 'A', "ingotIron", 'B', Blocks.anvil, 'C', Items.potato))); // Create a recipe page and add it to your pages2 list.
+        //        pages2.add(new PageFurnaceRecipe("oreGold")); // Create a furnace recipe page and add it to your pages2 list.
+        List<EntryAbstract> rituals = new ArrayList<EntryAbstract>();
 
-        ArrayList<IPage> pages1 = new ArrayList<IPage>(); // Create the list for this entries pages.
-        pages1.add(new PageLocText("This is a page in my guide!")); // Create a page with text and add it to your pages1 list.
-        entries.add(new EntryText(pages1, "My entry 1")); // Add your pages1 list to the entry list.
+        ArrayList<IPage> pages1 = new ArrayList<IPage>();
+        pages1.add(new PageUnlocText("book.NOVA.rituals.Sol.body"));
+        rituals.add(new EntryText(pages1, "Ritual of Sol"));
 
-        ArrayList<IPage> pages2 = new ArrayList<IPage>(); // Create the list for this entries pages.
-        pages2.add(new PageIRecipe(new ShapedOreRecipe(Items.apple, "AAA", "BBB", "CCC", 'A', "ingotIron", 'B', Blocks.anvil, 'C', Items.potato))); // Create a recipe page and add it to your pages2 list.
-        pages2.add(new PageFurnaceRecipe("oreGold")); // Create a furnace recipe page and add it to your pages2 list.
-        entries.add(new EntryText(pages2, "My entry 2")); // Add your pages2 list to the entry list.
+        ArrayList<IPage> pages2 = new ArrayList<IPage>();
+        pages2.add(new PageUnlocText("book.NOVA.rituals.Luna.body"));
+        rituals.add(new EntryText(pages2, "Ritual of Luna"));
 
-        ArrayList<CategoryAbstract> categories = new ArrayList<CategoryAbstract>(); // Create the list for this book's categories
-        categories.add(new CategoryItemStack(entries, "My category", new ItemStack(Items.painting))); // Add your entry list to the category list.
+        ArrayList<IPage> pages3 = new ArrayList<IPage>();
+        pages3.add(new PageUnlocText("book.NOVA.rituals.Uncreation.body1"));
+        pages3.add(new PageUnlocText("book.NOVA.rituals.Uncreation.body2"));
+        rituals.add(new EntryText(pages3, "Ritual of Uncreation"));
 
-        BookBuilder builder = new BookBuilder(); // Create a new instance of the book builder
-        builder.setCategories(categories); // Set the category list of the book
-        builder.setUnlocBookTitle("My book title"); // Set the unlocalized book title
-        builder.setUnlocWelcomeMessage("My welcome message"); // Set the unlocalized welcome message
-        builder.setUnlocDisplayName("My book name"); // Set the unlocalized item display name
-        builder.setBookColor(Color.GREEN); // Set the book color
-        myBook = builder.build(); // Create your book from the information provided with your BookBuilder
+        ArrayList<IPage> pages4 = new ArrayList<IPage>();
+        pages4.add(new PageUnlocText("book.NOVA.rituals.Entropy.body1"));
+        pages4.add(new PageUnlocText("book.NOVA.rituals.Entropy.body2"));
+        rituals.add(new EntryText(pages4, "Ritual of Entropy"));
 
-        GuideRegistry.registerBook(myBook); // Register your book with Guide-API
+        List<EntryAbstract> items = new ArrayList<EntryAbstract>();
+        ArrayList<IPage> pages5 = new ArrayList<IPage>();
+        pages5.add(new PageUnlocText("book.NOVA.items.Sickles.body1"));
+        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemWoodSickle, "AAA", "A B", " B ", 'A', Blocks.planks, 'B', Items.stick)));
+        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemStoneSickle, "AAA", "A B", " B ", 'A', Blocks.cobblestone, 'B', Items.stick)));
+        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemIronSickle, "AAA", "A B", " B ", 'A', Items.iron_ingot, 'B', Items.stick)));
+        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemGoldSickle, "AAA", "A B", " B ", 'A', Items.gold_ingot, 'B', Items.stick)));
+        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemDiamondSickle, "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick)));
+        items.add(new EntryText(pages5, "Sickles"));
+
+        ArrayList<IPage> pages6 = new ArrayList<IPage>();
+        pages6.add(new PageUnlocText("book.NOVA.sigils.SigilOfChains.body"));
+        items.add(new EntryText(pages6, "Ritual of Entropy"));
+
+
+        ArrayList<CategoryAbstract> categories = new ArrayList<CategoryAbstract>();
+        categories.add(new CategoryItemStack(rituals, "Rituals", new ItemStack(ModItems.activationCrystal)));
+        categories.add(new CategoryItemStack(items, "Items", new ItemStack(NOVA.itemBoundSickle)));
+
+        BookBuilder builder = new BookBuilder();
+        builder.setCategories(categories);
+        builder.setUnlocBookTitle("book.NOVA.title");
+        builder.setUnlocWelcomeMessage("book.NOVA.welcome");
+        builder.setUnlocDisplayName("book.NOVA.displayname");
+        builder.setBookColor(Math.random()>0.5?Color.CYAN:Color.MAGENTA); //cube wants 1DEAF6
+        myBook = builder.build();
+
+        GuideRegistry.registerBook(myBook);
     }
 }

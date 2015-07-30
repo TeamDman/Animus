@@ -20,8 +20,6 @@ import com.teamdman_9201.nova.rituals.RitualEffectEntropy;
 import com.teamdman_9201.nova.rituals.RitualEffectLuna;
 import com.teamdman_9201.nova.rituals.RitualEffectSol;
 import com.teamdman_9201.nova.rituals.RitualEffectUncreation;
-import com.teamdman_9201.nova.tiles.TileCobblizer;
-import com.teamdman_9201.nova.tiles.TileCompressedTorch;
 import com.teamdman_9201.nova.tiles.TileDirtChest;
 
 import net.minecraft.block.Block;
@@ -71,7 +69,6 @@ public class NOVA {
     public static       boolean isDevEnv     = (Boolean) Launch.blackboard.get("fml" + ".deobfuscatedEnvironment");
     @Instance(value = MODID)
     public static NOVA        instance;
-    public static Block       blockCoalDiamondOre;
     public static Block       blockDirtChest;
     public static Block       blockLeaves;
     public static Block       blockLightManipulator;
@@ -149,8 +146,6 @@ public class NOVA {
     }
 
     private void initTiles() {
-        GameRegistry.registerTileEntity(TileCobblizer.class, "Cobblizer");
-        GameRegistry.registerTileEntity(TileCompressedTorch.class, "CompressedTorch");
         GameRegistry.registerTileEntity(TileDirtChest.class, "DirtChest");
     }
 
@@ -179,6 +174,7 @@ public class NOVA {
         initTiles();
         initRecipes();
         initRituals();
+        NOVAGuide.buildGuide();
     }
 
     @EventHandler

@@ -70,11 +70,11 @@ processResources {
 }
 
 repositories {
-    maven { // WAILA
+    maven {
         name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
-    maven { // CCC/NEI (for WAILA)
+    maven {
         name 'CB Repo'
         url "http://chickenbones.net/maven/"
     }
@@ -87,7 +87,7 @@ repositories {
 dependencies {
     compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
     compile "codechicken:NotEnoughItems:1.7.10-1.0.3.64:dev"
-    compile "info.amerifrance.guideapi:Guide-API:1.7.10-1.0-15:deobf"
+    compile "info.amerifrance.guideapi:Guide-API:1.7.10-1.0.1-20:deobf"
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 

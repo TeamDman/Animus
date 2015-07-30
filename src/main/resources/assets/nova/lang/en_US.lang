@@ -36,9 +36,25 @@ tooltip.sigilofchains.desc1=Used to contain monsters against their will
 tooltip.sigilofchains.desc2=they don't appreciate it tho.
 tooltip.sigil.state.empty=Empty
 tooltip.sigil.state.full=Holding
+
 #Enchantments
 enchantment.enchantPow=Pow
 enchantment.level.0=Nulla
 
 #ItemGroups
 itemGroup.NOVA=NOVA
+
+#Book
+book.NOVA.title=NOVA for dummies
+book.NOVA.welcome=Welcome to my guidebook! Within you will find information about all the additions this mod has to offer.
+book.NOVA.displayname=NOVA for dummies
+
+book.NOVA.rituals.Sol.body=The Ritual of Sol allows you to easily light up a large area. Once the ritual is activated, you can place blocks on top of the Master Ritual Stone (Which will henceforth be referred to as the MRS) and those blocks will be teleported to dark areas in a 1 chunk radius. The radius can be increased by supplying the MRS with virtus reagent.
+book.NOVA.rituals.Luna.body=The Ritual of Luna is effectively the opposite of the Ritual of Sol. Once the ritual is activated, all nearby light sources will be removed and dropped above the MRS as items for you to pick up. The range may again be increased by supplying the MRS with virtus reagent.
+book.NOVA.rituals.Uncreation.body1=The ritual of uncreation is an extremely powerful ritual which allows you to dismantle items, in a way. However, at the moment you have only discovered how to use it to disenchant items. Continue to the next page for instructions.
+book.NOVA.rituals.Uncreation.body2=To disenchant an item with this ritual, you must drop the item in question along with any number of vanilla books. Once the ritual is activated, the enchanted item will have its enchantments transferred to the books. You have also discovered that you can use the ritual to split higher level books into their lower levels.
+book.NOVA.rituals.Entropy.body1=You, being the logically minded individual you are, hate wasting items. Trashcans appall you. You believe that all items have a use, the problem is that their use is not always obvious. But now it is! With this ritual, you can convert any item into cobblestone. Sure, it may not be the item's most efficient use, but it is better than voiding it.
+book.NOVA.rituals.Entropy.body2=To use the ritual, simply place a chest over the MRS and activate the ritual. As long as the ritual is active, items within the chest will be converted to cobblestone at seemingly random ratios. However, conversion will only take place if there is no cobblestone in the inventory.
+
+book.NOVA.items.Sickles.body1=You have managed to create a brand new type of weapon, useful for taking on hordes of enemies at once. By creating sickles of the normal tool materials, you can attack all enemies near your target concurrently.
+book.NOVA.sigils.SigilOfChains.body=In your endeavor of manipulating your own soul, you have discovered the secret of control over the souls of weaker beings. With this sigil, you can capture the souls of mobs into your inventory, allowing for easy transport of multiple mobs long distances at once. However, it would be foolish to assume you had the willpower to capture the souls of stronger beings, say, a wither...
