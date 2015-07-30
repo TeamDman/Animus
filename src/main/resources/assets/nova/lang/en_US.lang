@@ -29,7 +29,7 @@ ritual.NOVA.sol=Ritual of Sol
 ritual.NOVA.luna=Ritual of Luna
 ritual.NOVA.uncreate=Ritual of Uncreation
 ritual.NOVA.dev=Ritual of Ritual Building
-
+ritual.NOVA.entropy=Ritual of Entropy
 
 #ToolTips
 tooltip.sigilofchains.desc1=Used to contain monsters against their will

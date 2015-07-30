@@ -1,9 +1,5 @@
 package com.teamdman_9201.nova;
 
-import com.teamdman_9201.nova.blocks.BlockBrickFurnace;
-import com.teamdman_9201.nova.blocks.BlockCoalDiamondOre;
-import com.teamdman_9201.nova.blocks.BlockCobblizer;
-import com.teamdman_9201.nova.blocks.BlockCompressedTorch;
 import com.teamdman_9201.nova.blocks.BlockDirtChest;
 import com.teamdman_9201.nova.blocks.BlockLeaves;
 import com.teamdman_9201.nova.blocks.BlockSapling;
@@ -12,21 +8,18 @@ import com.teamdman_9201.nova.handlers.NOVAEventHandler;
 import com.teamdman_9201.nova.handlers.NOVAFuelHandler;
 import com.teamdman_9201.nova.handlers.NOVAGuiHandler;
 import com.teamdman_9201.nova.items.ItemBasicSickle;
-import com.teamdman_9201.nova.items.ItemBlockCompressedTorch;
 import com.teamdman_9201.nova.items.ItemBlockSapling;
 import com.teamdman_9201.nova.items.ItemBoundSickle;
 import com.teamdman_9201.nova.items.ItemMobSoul;
 import com.teamdman_9201.nova.items.ItemSlotIdentifier;
-import com.teamdman_9201.nova.items.ItemSuperCoal;
 import com.teamdman_9201.nova.items.ItemTransportalizer;
 import com.teamdman_9201.nova.items.ItemUnstableCoal;
 import com.teamdman_9201.nova.items.sigils.ItemSigilOfChains;
-import com.teamdman_9201.nova.recipes.RecipeCompressedTorch;
 import com.teamdman_9201.nova.rituals.RitualEffectDev;
+import com.teamdman_9201.nova.rituals.RitualEffectEntropy;
 import com.teamdman_9201.nova.rituals.RitualEffectLuna;
 import com.teamdman_9201.nova.rituals.RitualEffectSol;
 import com.teamdman_9201.nova.rituals.RitualEffectUncreation;
-import com.teamdman_9201.nova.tiles.TileBrickFurnace;
 import com.teamdman_9201.nova.tiles.TileCobblizer;
 import com.teamdman_9201.nova.tiles.TileCompressedTorch;
 import com.teamdman_9201.nova.tiles.TileDirtChest;
@@ -48,6 +41,7 @@ import java.util.HashMap;
 
 import WayofTime.alchemicalWizardry.ModItems;
 import WayofTime.alchemicalWizardry.api.bindingRegistry.BindingRegistry;
+import WayofTime.alchemicalWizardry.api.rituals.RitualEffect;
 import WayofTime.alchemicalWizardry.api.rituals.Rituals;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -69,30 +63,22 @@ import cpw.mods.fml.common.registry.GameRegistry;
         guiFactory = "com.teamdman_9201.nova.gui.GuiFactory")
 public class NOVA {
 
-    public static final String  MODID           = "NOVA";
-    public static final String  NAME            = "NOVA";
-    public static final String  VERSION         = "@VERSION@";
-    public static final String  DEPENDS         = "required-after:AWWayofTime;";
-    public static final int     guiBrickFurnace = 0;
-    public static final int     guiCobblizer    = 1;
-    public static final int     guiDirtChest    = 2;
-    public static       boolean isDevEnv        = (Boolean) Launch.blackboard.get("fml" +
-            ".deobfuscatedEnvironment");
+    public static final String  MODID        = "NOVA";
+    public static final String  NAME         = "NOVA";
+    public static final String  VERSION      = "@VERSION@";
+    public static final String  DEPENDS      = "required-after:AWWayofTime;";
+    public static final int     guiDirtChest = 0;
+    public static       boolean isDevEnv     = (Boolean) Launch.blackboard.get("fml" + ".deobfuscatedEnvironment");
     @Instance(value = MODID)
     public static NOVA        instance;
-    public static Block       blockBrickFurnace;
     public static Block       blockCoalDiamondOre;
-    public static Block       blockCobblizer;
-    public static Block       blockCompressedTorch;
     public static Block       blockDirtChest;
     public static Block       blockLeaves;
     public static Block       blockLightManipulator;
     public static Block       blockSapling;
     public static Enchantment enchantPow;
-    public static ItemBlock   itemBlockCompressedTorch;
     public static ItemBlock   itemBlockSapling;
     public static Item        itemSlotIdentifier;
-    public static Item        itemSuperCoal;
     public static Item        itemTransportalizer;
     public static Item        itemUnstableCoal;
     public static Item        itemBoundSickle;
@@ -103,15 +89,14 @@ public class NOVA {
     public static Item        itemDiamondSickle;
     public static Item        itemMobSoul;
     public static Item        itemSigilOfChains;
-    public static HashMap<String, Boolean> disabledRituals = new HashMap<String, Boolean>();
-    public static HashMap<String, Integer> ritualCosts     = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> ritualData = new HashMap<String, Integer>();
     //Configurable Variables
     public static boolean doLowerChat;
 
     public static CreativeTabs mainTab = new CreativeTabs("NOVA") {
         @Override
         public Item getTabIconItem() {
-            return itemSuperCoal;
+            return itemBoundSickle;
         }
     };
 
@@ -126,17 +111,11 @@ public class NOVA {
     }
 
     private void initItemsandBlocks() {
-//        setupBlock(blockBrickFurnace, "blockBrickFurnace", mainTab, 3.5F);
-//        setupBlock(blockCoalDiamondOre, "blockCoalDiamondOre", mainTab, 6);
-//        setupBlock(blockCobblizer, "blockCobblizer", mainTab, 3.5F);
-//        setupBlock(blockDirtChest, "blockDirtChest", mainTab, 3.5F);
-//        setupBlock(blockLeaves, "blockLeaves", mainTab, 0.1F);
-//        setupItem(itemTransportalizer, "itemTransportalizer", mainTab);
-//        setupItem(itemSlotIdentifier, "itemSlotIdentifier", mainTab);
-//        setupItem(itemSuperCoal, "itemSuperCoal", mainTab);
-//        setupItem(itemUnstableCoal, "itemUnstableCoal", mainTab);
-//        setupItemBlock(blockCompressedTorch, ItemBlockCompressedTorch.class,
-//                "blockCompressedTorch", mainTab, 0);
+        setupBlock(blockDirtChest, "blockDirtChest", mainTab, 3.5F);
+        setupBlock(blockLeaves, "blockLeaves", mainTab, 0.1F);
+        setupItem(itemTransportalizer, "itemTransportalizer", mainTab);
+        setupItem(itemSlotIdentifier, "itemSlotIdentifier", mainTab);
+        setupItem(itemUnstableCoal, "itemUnstableCoal", mainTab);
         setupItem(itemWoodSickle, "itemWoodenSickle", mainTab);
         setupItem(itemStoneSickle, "itemStoneSickle", mainTab);
         setupItem(itemIronSickle, "itemIronSickle", mainTab);
@@ -145,69 +124,37 @@ public class NOVA {
         setupItem(itemBoundSickle, "itemBoundSickle", mainTab);
         setupItem(itemSigilOfChains, "itemSigilOfChains", mainTab);
         setupItem(itemMobSoul, "itemMobSoul", mainTab);
-//        setupItemBlock(blockSapling, ItemBlockSapling.class, "blockSapling", mainTab, 0);
+        setupItemBlock(blockSapling, ItemBlockSapling.class, "blockSapling", mainTab, 0);
     }
 
     private void initRecipes() {
-        GameRegistry.addRecipe(new ItemStack(blockCobblizer, 1), "A A", "A A", "AAA", 'A', Blocks
-                .cobblestone);
-        GameRegistry.addRecipe(new RecipeCompressedTorch());
-        GameRegistry.addRecipe(new ItemStack(blockLightManipulator, 1), "ACA", "CBC", "ACA", 'A',
-                Blocks.torch, 'B', Items.ender_pearl, 'C', Blocks.glowstone);
-        GameRegistry.addRecipe(new ItemStack(blockBrickFurnace, 1), "AAA", "A A", "AAA", 'A',
-                Blocks.brick_block);
-        GameRegistry.addRecipe(new ItemStack(itemSuperCoal, 2), "AAA", "ABA", "AAA", 'A', Items
-                .coal, 'B', new ItemStack(itemSuperCoal));
-        GameRegistry.addRecipe(new ItemStack(Items.glowstone_dust, 1), "ABA", "BCB", "ABA", 'A',
-                Items.redstone, 'B', Blocks.torch, 'C', Items.gold_ingot);
-        GameRegistry.addSmelting(new ItemStack(itemSuperCoal), new ItemStack(itemUnstableCoal),
-                2048);
-        GameRegistry.addRecipe(new ItemStack(itemWoodSickle), "AAA", "A B", " B ", 'A', Blocks
-                .planks, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemStoneSickle), "AAA", "A B", " B ", 'A', Blocks
-                .cobblestone, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemIronSickle), "AAA", "A B", " B ", 'A', Items
-                .iron_ingot, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemGoldSickle), "AAA", "A B", " B ", 'A', Items
-                .gold_ingot, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemDiamondSickle), "AAA", "A B", " B ", 'A', Items
-                .diamond, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemSigilOfChains), "ABA","DCD","ABA",'A',Blocks
-                .iron_bars,'B',Items.glass_bottle,'C', ModItems.magicianBloodOrb,'D',Items
-                .ender_pearl);
+        GameRegistry.addRecipe(new ItemStack(blockLightManipulator, 1), "ACA", "CBC", "ACA", 'A', Blocks.torch, 'B', Items.ender_pearl, 'C', Blocks.glowstone);
+        GameRegistry.addRecipe(new ItemStack(Items.glowstone_dust, 1), "ABA", "BCB", "ABA", 'A', Items.redstone, 'B', Blocks.torch, 'C', Items.gold_ingot);
+        GameRegistry.addRecipe(new ItemStack(itemWoodSickle), "AAA", "A B", " B ", 'A', Blocks.planks, 'B', Items.stick);
+        GameRegistry.addRecipe(new ItemStack(itemStoneSickle), "AAA", "A B", " B ", 'A', Blocks.cobblestone, 'B', Items.stick);
+        GameRegistry.addRecipe(new ItemStack(itemIronSickle), "AAA", "A B", " B ", 'A', Items.iron_ingot, 'B', Items.stick);
+        GameRegistry.addRecipe(new ItemStack(itemGoldSickle), "AAA", "A B", " B ", 'A', Items.gold_ingot, 'B', Items.stick);
+        GameRegistry.addRecipe(new ItemStack(itemDiamondSickle), "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick);
+        GameRegistry.addRecipe(new ItemStack(itemSigilOfChains), "ABA", "DCD", "ABA", 'A', Blocks.iron_bars, 'B', Items.glass_bottle, 'C', ModItems.magicianBloodOrb, 'D', Items.ender_pearl);
     }
 
     private void initRituals() {
-        if (!disabledRituals.get("ritualSol"))
-            Rituals.registerRitual("ritualSol", 1, ritualCosts.get("initSol"), new
-                    RitualEffectSol(), StatCollector.translateToLocal("ritual.NOVA.sol"));
-        if (!disabledRituals.get("ritualLuna"))
-            Rituals.registerRitual("ritualLuna", 2, ritualCosts.get("initLuna"), new
-                    RitualEffectLuna(), StatCollector.translateToLocal("ritual.NOVA.luna"));
-        if (!disabledRituals.get("ritualUncreate"))
-            Rituals.registerRitual("ritualUncreate", 2, ritualCosts.get("initUncreate"), new
-                    RitualEffectUncreation(), StatCollector.translateToLocal("ritual.NOVA" + "" +
-                    ".uncreate"));
+        setupRitual("Sol",new RitualEffectSol());
+        setupRitual("Luna",new RitualEffectLuna());
+        setupRitual("Uncreate",new RitualEffectUncreation());
+        setupRitual("Entropy",new RitualEffectEntropy());
         if (isDevEnv)
-            Rituals.registerRitual("ritualDev", 1, 1, new RitualEffectDev(), StatCollector
-                    .translateToLocal("ritual.NOVA.dev"));
-
-        BindingRegistry.registerRecipe(new ItemStack(itemBoundSickle), new ItemStack
-                (itemDiamondSickle));
+            Rituals.registerRitual("ritualDev", 1, 1, new RitualEffectDev(), StatCollector.translateToLocal("ritual.NOVA.dev"));
+        BindingRegistry.registerRecipe(new ItemStack(itemBoundSickle), new ItemStack(itemDiamondSickle));
     }
 
     private void initTiles() {
-        GameRegistry.registerTileEntity(TileBrickFurnace.class, "BrickFurnace");
         GameRegistry.registerTileEntity(TileCobblizer.class, "Cobblizer");
         GameRegistry.registerTileEntity(TileCompressedTorch.class, "CompressedTorch");
         GameRegistry.registerTileEntity(TileDirtChest.class, "DirtChest");
     }
 
     private void initVars() {
-        blockBrickFurnace = new BlockBrickFurnace();
-        blockCoalDiamondOre = new BlockCoalDiamondOre();
-        blockCobblizer = new BlockCobblizer();
-        blockCompressedTorch = new BlockCompressedTorch();
         blockDirtChest = new BlockDirtChest();
         blockLeaves = new BlockLeaves();
         blockSapling = new BlockSapling();
@@ -219,9 +166,7 @@ public class NOVA {
         itemDiamondSickle = new ItemBasicSickle(Item.ToolMaterial.EMERALD);
         itemTransportalizer = new ItemTransportalizer();
         itemSlotIdentifier = new ItemSlotIdentifier();
-        itemSuperCoal = new ItemSuperCoal();
         itemUnstableCoal = new ItemUnstableCoal();
-        itemBlockCompressedTorch = new ItemBlockCompressedTorch(blockCompressedTorch);
         itemBlockSapling = new ItemBlockSapling(blockSapling);
         itemSigilOfChains = new ItemSigilOfChains();
         itemMobSoul = new ItemMobSoul();
@@ -260,12 +205,16 @@ public class NOVA {
         theItem.setTextureName(MODID + ":" + theName);
     }
 
-    private void setupItemBlock(Block theBlock, Class theClass, String theName, CreativeTabs
-            theTab, float theHardness) {
+    private void setupItemBlock(Block theBlock, Class theClass, String theName, CreativeTabs theTab, float theHardness) {
         GameRegistry.registerBlock(theBlock, theClass, theName);
         theBlock.setBlockName(theName);
         theBlock.setCreativeTab(theTab);
         theBlock.setHardness(theHardness);
+    }
+
+    private void setupRitual(String name, RitualEffect effect) {
+        if (ritualData.get("ritual"+name)==0)
+            Rituals.registerRitual("ritual"+name, ritualData.get("level"+name), ritualData.get("init"+name), effect, StatCollector.translateToLocal("ritual.NOVA."+name.toLowerCase()));
     }
 }
 

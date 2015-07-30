@@ -1,7 +1,6 @@
 package com.teamdman_9201.nova.blocks;
 
 import com.teamdman_9201.nova.NOVA;
-import com.teamdman_9201.nova.tiles.TileCobblizer;
 import com.teamdman_9201.nova.tiles.TileDirtChest;
 
 import net.minecraft.block.Block;
@@ -57,7 +56,7 @@ public class BlockDirtChest extends BlockContainer {
     }
 
     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-        return Item.getItemFromBlock(NOVA.blockCobblizer);
+        return Item.getItemFromBlock(NOVA.blockDirtChest);
     }
 
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int
@@ -71,7 +70,7 @@ public class BlockDirtChest extends BlockContainer {
     }
 
     public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
-        TileCobblizer tile = (TileCobblizer) world.getTileEntity(x, y, z);
+        TileDirtChest tile = (TileDirtChest) world.getTileEntity(x, y, z);
 
         if (tile != null) {
             for (int i1 = 0; i1 < tile.getSizeInventory(); ++i1) {

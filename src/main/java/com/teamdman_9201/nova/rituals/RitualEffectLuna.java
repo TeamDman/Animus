@@ -21,9 +21,9 @@ import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
  * Created by TeamDman on 2015-05-28.
  */
 public class RitualEffectLuna extends RitualEffect {
-    public  int reagentDrain = 5;
+    public int reagentDrain = 5;
     ArrayList<int[]> lightLocations;
-    private int upkeep       = NOVA.ritualCosts.get("upkeepLuna");
+    private int upkeep = NOVA.ritualData.get("upkeepLuna");
 
     @Override
     public int getCostPerRefresh() {

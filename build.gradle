@@ -22,7 +22,7 @@ apply plugin: 'curseforge'
 
 group = package_group
 archivesBaseName = mod_name
-version = " ${getDate()}"
+version = "${getDate()}"
 
 def getDate() {
     def date = new Date()
@@ -31,17 +31,27 @@ def getDate() {
 }
 
 minecraft {
-    version = "${mc_version}-${forge_version}"
+    version = "1.7.10-10.13.4.1448-1.7.10"
     runDir = "run"
+
+    replaceIn "NOVA.java"
+    replace "@VERSION@", getDate()
 
     if (project.hasProperty('mappings_version'))
         mappings = project.mappings_version
 }
 
 curse {
-    projectId = project.curse_project
-    apiKey = project.curse_token
-    releaseType = 'alpha'
+    dependsOn 'reobf'
+    
+    onlyIf {
+        return project.hasProperty('curse_token') && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
+    }
+
+    if (project.hasProperty('curse_token')) apiKey = project.curse_token
+    projectId = project.curse_projectId
+    releaseType = project.hasProperty('curse_buildType') ? "${curse_buildType}".toString() : 'release'
+    //additionalArtifact deobfJar, sourceJar, deobfJar
 }
 
 processResources {

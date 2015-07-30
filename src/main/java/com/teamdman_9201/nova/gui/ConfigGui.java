@@ -32,6 +32,7 @@ public class ConfigGui extends cpw.mods.fml.client.config.GuiConfig {
         list.add(new ConfigElement<ConfigCategory>(config.getCategory("enchantments")));
         list.add(new ConfigElement<ConfigCategory>(config.getCategory("ritual blacklist")));
         list.add(new ConfigElement<ConfigCategory>(config.getCategory("ritual costs")));
+        list.add(new ConfigElement<ConfigCategory>(config.getCategory("ritual levels")));
 
         return list;
     }

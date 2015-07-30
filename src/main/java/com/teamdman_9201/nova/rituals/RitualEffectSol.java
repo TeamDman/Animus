@@ -24,7 +24,7 @@ import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
  */
 public class RitualEffectSol extends RitualEffect {
     public  int reagentDrain = 5;
-    private int upkeep       = NOVA.ritualCosts.get("upkeepSol");
+    private int upkeep       = NOVA.ritualData.get("upkeepSol");
 
     @Override
     public void performEffect(IMasterRitualStone ritualStone) {

@@ -25,7 +25,7 @@ import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
  * Created by TeamDman on 2015-05-28.
  */
 public class RitualEffectUncreation extends RitualEffect {
-    private int upkeep = NOVA.ritualCosts.get("upkeepUncreate");
+    private int upkeep = NOVA.ritualData.get("upkeepUncreate");
 
     public int getCostPerRefresh() {
         return upkeep;
