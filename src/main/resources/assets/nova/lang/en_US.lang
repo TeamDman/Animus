@@ -15,14 +15,10 @@ item.itemDiamondSickle.name=Diamond Sickle
 item.itemBoundSickle.name=Bound Sickle
 
 #Tiles
-tile.blockBrickFurnace.name=Brick Furnace
-tile.blockCoalDiamondOre.name=Coal-Diamond Ore
-tile.blockCobblizer.name=Cobblizer
-tile.blockCompressedTorch.name=Compressed Torch
 tile.blockDirtChest.name=Dirt Chest 9002
 tile.blockLeaves.name=Red Oak Leaves
-tile.blockLightManipulator.name=Light Manipulator
 tile.blockSapling.name=Red Oak Sapling
+tile.blockAntiBlock.name=Anti Block
 
 #Rituals
 ritual.NOVA.sol=Ritual of Sol

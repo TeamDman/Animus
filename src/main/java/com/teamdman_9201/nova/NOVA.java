@@ -1,5 +1,6 @@
 package com.teamdman_9201.nova;
 
+import com.teamdman_9201.nova.blocks.BlockAntiBlock;
 import com.teamdman_9201.nova.blocks.BlockDirtChest;
 import com.teamdman_9201.nova.blocks.BlockLeaves;
 import com.teamdman_9201.nova.blocks.BlockSapling;
@@ -8,6 +9,7 @@ import com.teamdman_9201.nova.handlers.NOVAEventHandler;
 import com.teamdman_9201.nova.handlers.NOVAFuelHandler;
 import com.teamdman_9201.nova.handlers.NOVAGuiHandler;
 import com.teamdman_9201.nova.items.ItemBasicSickle;
+import com.teamdman_9201.nova.items.ItemBlockAntiBlock;
 import com.teamdman_9201.nova.items.ItemBlockSapling;
 import com.teamdman_9201.nova.items.ItemBoundSickle;
 import com.teamdman_9201.nova.items.ItemMobSoul;
@@ -15,6 +17,7 @@ import com.teamdman_9201.nova.items.ItemSlotIdentifier;
 import com.teamdman_9201.nova.items.ItemTransportalizer;
 import com.teamdman_9201.nova.items.ItemUnstableCoal;
 import com.teamdman_9201.nova.items.sigils.ItemSigilOfChains;
+import com.teamdman_9201.nova.recipes.RecipeBlockAntiBlock;
 import com.teamdman_9201.nova.rituals.RitualEffectDev;
 import com.teamdman_9201.nova.rituals.RitualEffectEntropy;
 import com.teamdman_9201.nova.rituals.RitualEffectLuna;
@@ -38,6 +41,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import WayofTime.alchemicalWizardry.ModItems;
+import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
 import WayofTime.alchemicalWizardry.api.bindingRegistry.BindingRegistry;
 import WayofTime.alchemicalWizardry.api.rituals.RitualEffect;
 import WayofTime.alchemicalWizardry.api.rituals.Rituals;
@@ -73,6 +77,7 @@ public class NOVA {
     public static Block       blockLeaves;
     public static Block       blockLightManipulator;
     public static Block       blockSapling;
+    public static Block       blockAntiBlock;
     public static Enchantment enchantPow;
     public static ItemBlock   itemBlockSapling;
     public static Item        itemSlotIdentifier;
@@ -110,6 +115,8 @@ public class NOVA {
     private void initItemsandBlocks() {
         setupBlock(blockDirtChest, "blockDirtChest", mainTab, 3.5F);
         setupBlock(blockLeaves, "blockLeaves", mainTab, 0.1F);
+        setupItemBlock(blockAntiBlock, ItemBlockAntiBlock.class,  "blockAntiBlock", mainTab, 2.0F);
+        setupItemBlock(blockSapling, ItemBlockSapling.class, "blockSapling", mainTab, 0);
         setupItem(itemTransportalizer, "itemTransportalizer", mainTab);
         setupItem(itemSlotIdentifier, "itemSlotIdentifier", mainTab);
         setupItem(itemUnstableCoal, "itemUnstableCoal", mainTab);
@@ -121,10 +128,13 @@ public class NOVA {
         setupItem(itemBoundSickle, "itemBoundSickle", mainTab);
         setupItem(itemSigilOfChains, "itemSigilOfChains", mainTab);
         setupItem(itemMobSoul, "itemMobSoul", mainTab);
-        setupItemBlock(blockSapling, ItemBlockSapling.class, "blockSapling", mainTab, 0);
+
     }
 
     private void initRecipes() {
+        BindingRegistry.registerRecipe(new ItemStack(itemBoundSickle), new ItemStack(itemDiamondSickle));
+        AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockAntiBlock),new ItemStack(Blocks.cobblestone),4,10000,100,100,false);
+        GameRegistry.addRecipe(new RecipeBlockAntiBlock());
         GameRegistry.addRecipe(new ItemStack(blockLightManipulator, 1), "ACA", "CBC", "ACA", 'A', Blocks.torch, 'B', Items.ender_pearl, 'C', Blocks.glowstone);
         GameRegistry.addRecipe(new ItemStack(Items.glowstone_dust, 1), "ABA", "BCB", "ABA", 'A', Items.redstone, 'B', Blocks.torch, 'C', Items.gold_ingot);
         GameRegistry.addRecipe(new ItemStack(itemWoodSickle), "AAA", "A B", " B ", 'A', Blocks.planks, 'B', Items.stick);
@@ -136,13 +146,12 @@ public class NOVA {
     }
 
     private void initRituals() {
-        setupRitual("Sol",new RitualEffectSol());
-        setupRitual("Luna",new RitualEffectLuna());
-        setupRitual("Uncreate",new RitualEffectUncreation());
-        setupRitual("Entropy",new RitualEffectEntropy());
+        setupRitual("Sol", new RitualEffectSol());
+        setupRitual("Luna", new RitualEffectLuna());
+        setupRitual("Uncreate", new RitualEffectUncreation());
+        setupRitual("Entropy", new RitualEffectEntropy());
         if (isDevEnv)
             Rituals.registerRitual("ritualDev", 1, 1, new RitualEffectDev(), StatCollector.translateToLocal("ritual.NOVA.dev"));
-        BindingRegistry.registerRecipe(new ItemStack(itemBoundSickle), new ItemStack(itemDiamondSickle));
     }
 
     private void initTiles() {
@@ -153,6 +162,7 @@ public class NOVA {
         blockDirtChest = new BlockDirtChest();
         blockLeaves = new BlockLeaves();
         blockSapling = new BlockSapling();
+        blockAntiBlock=new BlockAntiBlock();
         itemBoundSickle = new ItemBoundSickle();
         itemWoodSickle = new ItemBasicSickle(Item.ToolMaterial.WOOD);
         itemStoneSickle = new ItemBasicSickle(Item.ToolMaterial.STONE);
@@ -209,8 +219,8 @@ public class NOVA {
     }
 
     private void setupRitual(String name, RitualEffect effect) {
-        if (ritualData.get("ritual"+name)==0)
-            Rituals.registerRitual("ritual"+name, ritualData.get("level"+name), ritualData.get("init"+name), effect, StatCollector.translateToLocal("ritual.NOVA."+name.toLowerCase()));
+        if (ritualData.get("ritual" + name) == 0)
+            Rituals.registerRitual("ritual" + name, ritualData.get("level" + name), ritualData.get("init" + name), effect, StatCollector.translateToLocal("ritual.NOVA." + name.toLowerCase()));
     }
 }
 
