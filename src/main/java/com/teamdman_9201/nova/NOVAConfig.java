@@ -1,5 +1,6 @@
 package com.teamdman_9201.nova;
 
+import com.teamdman_9201.nova.blocks.BlockAntiBlock;
 import com.teamdman_9201.nova.enchantments.EnchantmentPow;
 
 import net.minecraftforge.common.config.Configuration;
@@ -29,6 +30,8 @@ public class NOVAConfig {
                 (false);
         if  (NOVA.enchantPow==null)
         NOVA.enchantPow = new EnchantmentPow(config.get("Enchantments", "Pow", 168).getInt(), 1);
+
+        BlockAntiBlock.maxSpread = config.get("General","AntiBlock Max Spread",512).getInt();
 
         NOVA.ritualData.put("ritualSol", config.get("Ritual Blacklist", "Ritual of Sol", false).getBoolean()?1:0);
         NOVA.ritualData.put("ritualLuna", config.get("Ritual Blacklist", "Ritual of Luna",false).getBoolean()?1:0);

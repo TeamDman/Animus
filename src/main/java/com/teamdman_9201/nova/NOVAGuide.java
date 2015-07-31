@@ -9,6 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import WayofTime.alchemicalWizardry.ModBlocks;
 import WayofTime.alchemicalWizardry.ModItems;
 import amerifrance.guideapi.api.GuideRegistry;
 import amerifrance.guideapi.api.abstraction.CategoryAbstract;
@@ -62,12 +63,19 @@ public class NOVAGuide {
 
         ArrayList<IPage> pages6 = new ArrayList<IPage>();
         pages6.add(new PageUnlocText("book.NOVA.sigils.SigilOfChains.body"));
-        items.add(new EntryText(pages6, "Ritual of Entropy"));
+        items.add(new EntryText(pages6, "Sigil of Chains"));
+
+        List<EntryAbstract> blocks = new ArrayList<EntryAbstract>();
+        ArrayList<IPage> pages7 = new ArrayList<IPage>();
+        pages7.add(new PageUnlocText("book.NOVA.blocks.AntiBlock.body1"));
+        pages7.add(new PageUnlocText("book.NOVA.blocks.AntiBlock.body2"));
+        blocks.add(new EntryText(pages7, "Anti Block"));
 
 
         ArrayList<CategoryAbstract> categories = new ArrayList<CategoryAbstract>();
         categories.add(new CategoryItemStack(rituals, "Rituals", new ItemStack(ModItems.activationCrystal)));
         categories.add(new CategoryItemStack(items, "Items", new ItemStack(NOVA.itemBoundSickle)));
+        categories.add(new CategoryItemStack(blocks, "Blocks", new ItemStack(ModBlocks.blockMasterStone)));
 
         BookBuilder builder = new BookBuilder();
         builder.setCategories(categories);

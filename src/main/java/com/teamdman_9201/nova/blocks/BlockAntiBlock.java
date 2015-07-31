@@ -21,28 +21,34 @@ import cpw.mods.fml.relauncher.SideOnly;
  * Created by TeamDman on 2015-07-30.
  */
 public class BlockAntiBlock extends Block {
-    public String  toRepl   = "nope.avi";
-    public int     spread   = 0;
+    public static int    maxSpread = 512;
+    public        String toRepl    = "nope.avi";
+    public        int    spread    = 0;
     @SideOnly(Side.CLIENT)
     private IIcon        tex;
     private EntityPlayer destroyer;
     private ItemStack    toReturn;
-//    private boolean decaying = false;
+    //    private boolean decaying = false;
 
     public BlockAntiBlock() {
         super(Material.dragonEgg);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return tex;
+    public void breakBlock(World world, int x, int y, int z, Block me, int meta) {
+        spread = 0;
+        super.breakBlock(world, x, y, z, me, meta);
+        if (toReturn != null) {
+            EntityItem drop = new EntityItem(world, destroyer.posX, destroyer.posY, destroyer.posZ);
+            drop.setEntityItemStack(toReturn);
+            world.spawnEntityInWorld(drop);
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister reg) {
-        tex = reg.registerIcon(NOVA.MODID + ":blockAntiBlock");
+    public IIcon getIcon(int side, int meta) {
+        return tex;
     }
 
     @Override
@@ -58,21 +64,16 @@ public class BlockAntiBlock extends Block {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block me, int meta) {
-        spread = 0;
-        super.breakBlock(world, x, y, z, me, meta);
-        if (toReturn != null) {
-            EntityItem drop = new EntityItem(world, destroyer.posX, destroyer.posY, destroyer.posZ);
-            drop.setEntityItemStack(toReturn);
-            world.spawnEntityInWorld(drop);
-        }
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister reg) {
+        tex = reg.registerIcon(NOVA.MODID + ":blockAntiBlock");
     }
 
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
         world.playSound(x, y, z, "random.fizz", 10, 1, true);
         destroyer = player;
-        world.setBlockMetadataWithNotify(x,y,z,1,1);
+        world.setBlockMetadataWithNotify(x, y, z, 1, 1);
         updateTick(world, x, y, z, world.rand);
 
         EntityItem drop = new EntityItem(world, destroyer.posX, destroyer.posY, destroyer.posZ);
@@ -81,11 +82,24 @@ public class BlockAntiBlock extends Block {
         return false;
     }
 
+    public void setData(ItemStack give, String replace, int spreaded) {
+        toReturn = give;
+        toRepl = replace;
+        spread = spreaded;
+    }
+
+    public void setData(EntityPlayer player) {
+        destroyer = player;
+    }
+    //    public void setData(boolean decay) {
+    //        decaying = decay;
+    //    }
+
     @Override
     public void updateTick(World world, int x, int y, int z, Random rnd) {
-        boolean decaying = world.getBlockMetadata(x,y,z) == 1;
-        System.out.printf("ticking to world with decay [%s],spread [%d] and repl [%s]\n",decaying?"true":"false", spread, toRepl);
-        if (spread > 255 && !decaying)
+        boolean decaying = world.getBlockMetadata(x, y, z) == 1;
+        System.out.printf("ticking to world with decay [%s],spread [%d] and repl [%s]\n", decaying ? "true" : "false", spread, toRepl);
+        if (spread > maxSpread && !decaying)
             return;
         for (int ox = -1; ox < 2; ox += 1) {
             for (int oy = -1; oy < 2; oy += 1) {
@@ -95,11 +109,11 @@ public class BlockAntiBlock extends Block {
                         if (adj == NOVA.blockAntiBlock) {
                             ((BlockAntiBlock) adj).setData(destroyer);
                             world.setBlockMetadataWithNotify(x + ox, y + oy, z + oz, 1, 1);
-//                            ((BlockAntiBlock) adj).setData(true);
+                            //                            ((BlockAntiBlock) adj).setData(true);
                             world.scheduleBlockUpdate(x + ox, y + oy, z + oz, adj, 5);
                         }
                     } else {
-                        if (adj.getUnlocalizedName().equals(toRepl) && adj.getBlockHardness(world,x,y,z) != -1) {
+                        if (adj.getUnlocalizedName().equals(toRepl) && adj.getBlockHardness(world, x, y, z) != -1) {
                             world.setBlock(x + ox, y + oy, z + oz, NOVA.blockAntiBlock);
                             ((BlockAntiBlock) world.getBlock(x + ox, y + oy, z + oz)).setData(new ItemStack(adj), toRepl, spread + 1);
                         }
@@ -108,21 +122,8 @@ public class BlockAntiBlock extends Block {
             }
         }
         if (decaying)
-            world.setBlockToAir(x,y,z);
+            world.setBlockToAir(x, y, z);
         setTickRandomly(false);
-    }
-
-    public void setData(ItemStack give, String replace, int spreaded) {
-        toReturn = give;
-        toRepl = replace;
-        spread = spreaded;
-    }
-//    public void setData(boolean decay) {
-//        decaying = decay;
-//    }
-
-    public void setData(EntityPlayer player) {
-        destroyer = player;
     }
 }
 
