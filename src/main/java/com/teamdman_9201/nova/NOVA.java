@@ -68,7 +68,7 @@ public class NOVA {
     public static final String  MODID        = "NOVA";
     public static final String  NAME         = "NOVA";
     public static final String  VERSION      = "@VERSION@";
-    public static final String  DEPENDS      = "required-after:AWWayofTime;";
+    public static final String  DEPENDS      = "required-after:AWWayofTime;required-after:guideapi;";
     public static final int     guiDirtChest = 0;
     public static       boolean isDevEnv     = (Boolean) Launch.blackboard.get("fml" + ".deobfuscatedEnvironment");
     @Instance(value = MODID)
