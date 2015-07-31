@@ -133,7 +133,7 @@ public class NOVA {
 
     private void initRecipes() {
         BindingRegistry.registerRecipe(new ItemStack(itemBoundSickle), new ItemStack(itemDiamondSickle));
-        AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockAntiBlock),new ItemStack(Blocks.cobblestone),4,10000,100,100,false);
+        AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockAntiBlock),new ItemStack(Blocks.cobblestone),3,10000,100,100,false);
         GameRegistry.addRecipe(new RecipeBlockAntiBlock());
         GameRegistry.addRecipe(new ItemStack(blockLightManipulator, 1), "ACA", "CBC", "ACA", 'A', Blocks.torch, 'B', Items.ender_pearl, 'C', Blocks.glowstone);
         GameRegistry.addRecipe(new ItemStack(Items.glowstone_dust, 1), "ABA", "BCB", "ABA", 'A', Items.redstone, 'B', Blocks.torch, 'C', Items.gold_ingot);
