@@ -61,6 +61,19 @@ public class NOVAGuide {
         pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemDiamondSickle, "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick)));
         items.add(new EntryText(pages5, "Sickles"));
 
+        ArrayList<IPage> pages8 = new ArrayList<IPage>();
+        pages8.add(new PageUnlocText("book.NOVA.items.UnstableCoal.body"));
+        items.add(new EntryText(pages8, "Unstable Coal"));
+
+        ArrayList<IPage> pages9 = new ArrayList<IPage>();
+        pages9.add(new PageUnlocText("book.NOVA.items.Sapling.body"));
+        items.add(new EntryText(pages9, "Blood Trees"));
+
+        ArrayList<IPage> pages10 = new ArrayList<IPage>();
+        pages10.add(new PageUnlocText("book.NOVA.items.RedundantOrb.body"));
+        items.add(new EntryText(pages10, "Regret in a physical form"));
+
+
         ArrayList<IPage> pages6 = new ArrayList<IPage>();
         pages6.add(new PageUnlocText("book.NOVA.sigils.SigilOfChains.body"));
         items.add(new EntryText(pages6, "Sigil of Chains"));
@@ -70,6 +83,10 @@ public class NOVAGuide {
         pages7.add(new PageUnlocText("book.NOVA.blocks.AntiBlock.body1"));
         pages7.add(new PageUnlocText("book.NOVA.blocks.AntiBlock.body2"));
         blocks.add(new EntryText(pages7, "Anti Block"));
+
+        ArrayList<IPage> pages11 = new ArrayList<IPage>();
+        pages11.add(new PageUnlocText("book.NOVA.blocks.DirtChest.body"));
+        blocks.add(new EntryText(pages11, "Anti Block"));
 
 
         ArrayList<CategoryAbstract> categories = new ArrayList<CategoryAbstract>();

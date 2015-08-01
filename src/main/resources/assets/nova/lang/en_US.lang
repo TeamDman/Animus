@@ -59,6 +59,11 @@ book.NOVA.rituals.Entropy.body2=To use the ritual, simply place a chest over the
 
 book.NOVA.items.Sickles.body1=You have managed to create a brand new type of weapon, useful for taking on hordes of enemies at once. By creating sickles of the normal tool materials, you can attack all enemies near your target concurrently.
 book.NOVA.sigils.SigilOfChains.body=In your endeavor of manipulating your own soul, you have discovered the secret of control over the souls of weaker beings. With this sigil, you can capture the souls of mobs into your inventory, allowing for easy transport of multiple mobs long distances at once. However, it would be foolish to assume you had the willpower to capture the souls of stronger beings, say, a wither...
+book.NOVA.items.UnstableCoal.body=In your madness you decided that you could do better than pathetic charcoal for your fuel, so you created the science defying monster that is Unstable Coal. With a burn time over 100 times that of coal, the opportunities are limitless.
+book.NOVA.items.Sapling.body=By infusing a sapling with blood, you have managed to create a tree that bears fruit filled with blood. By consuming these fruit, you can add 100lp to your soul network. Take note that if your network has 2,500 LP no more will be added.
+book.NOVA.items.RedundantOrb.body=In a period of loneliness, you taped together 9 lava crytals to make a friend. Little did you know, you would never be lonely again.
+
 
 book.NOVA.blocks.AntiBlock.body1=In your boredom you decided to place a block of cobblestone in your (T3) altar. Lo and behold, it actually did something! With this marvellous creation which you have deemed the "Anti Block", you can deconstruct large structures with ease.
 book.NOVA.blocks.AntiBlock.body2=Simply place the anti block in the first slot of the crafting withdow with another block in the second window the set the filter on the block. Then you can place the block in the world and watch as it infects all nearby blocks matching the filter. Breaking any of these infected blocks will result in the deconstruction of the structure.
+book.NOVA.blocks.DirtChest.body=By combining 8 dirt in a chest pattern, you have managed to create the ultimate combination of efficiency and class. With this container, deemed the Dirt Chest 9002, you can store an amazing 1 slot worth of items.
