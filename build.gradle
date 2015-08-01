@@ -16,6 +16,7 @@ buildscript {
 }
 
 apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply plugin: 'forge'
 apply plugin: 'curseforge'
 
@@ -29,8 +30,16 @@ def getDate() {
     return formattedDate
 }
 
+ext.configFile = file "build.properties"
+configFile.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+
 minecraft {
-    version = "${mc_version}-${forge_version}-${mc_version}"
+    version = config.mc_version + "-" + config.forge_version
     runDir = "run"
 
     replaceIn "NOVA.java"
@@ -48,7 +57,7 @@ curse {
     }
 
     if (project.hasProperty('curse_token')) apiKey = project.curse_token
-    projectId = project.curse_projectId
+    projectId = "229664"
     releaseType = project.hasProperty('curse_buildType') ? "${curse_buildType}".toString() : 'release'
     //additionalArtifact deobfJar, sourceJar, deobfJar
 }
