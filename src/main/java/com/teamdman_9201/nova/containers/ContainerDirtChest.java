@@ -36,10 +36,6 @@ public class ContainerDirtChest extends Container {
         return true;
     }
 
-    //  public void addCraftingToCrafters(ICrafting par1ICrafting) {
-    //    super.addCraftingToCrafters(par1ICrafting);
-    //  }
-
     public ItemStack transferStackInSlot(EntityPlayer player, int parSlot) {
         ItemStack itemstack = null;
         Slot      slot      = (Slot) this.inventorySlots.get(parSlot);

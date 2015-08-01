@@ -32,7 +32,6 @@ public class BlockDirtChest extends BlockContainer {
     private IIcon blockIcon;
     public BlockDirtChest() {
         super(Material.wood);
-//        setHarvestLevel("shovel",0);
     }
 
     @Override

@@ -54,12 +54,13 @@ public class NOVAGuide {
         addPage("Sickles", items, "items.Sickles.body1", new PageIRecipe(new ShapedOreRecipe(NOVA.itemWoodSickle, "AAA", "A B", " B ", 'A', Blocks.planks, 'B', Items.stick)), new PageIRecipe(new ShapedOreRecipe(NOVA.itemStoneSickle, "AAA", "A B", " B ", 'A', Blocks.cobblestone, 'B', Items.stick)), new PageIRecipe(new ShapedOreRecipe(NOVA.itemIronSickle, "AAA", "A B", " B ", 'A', Items.iron_ingot, 'B', Items.stick)), new PageIRecipe(new ShapedOreRecipe(NOVA.itemGoldSickle, "AAA", "A B", " B ", 'A', Items.gold_ingot, 'B', Items.stick)), new PageIRecipe(new ShapedOreRecipe(NOVA.itemDiamondSickle, "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick)));
         addPage("Unstable Coal", items, "items.UnstableCoal.body");
         addPage("Blood Trees", items, "items.Sapling.body");
-        addPage("Orb of Redundancy", items, "items.RedundantOrb.body");
+        addPage("Orb of Redundancy", items, "items.RedundantOrb.body", new PageIRecipe(new ShapedOreRecipe(NOVA.itemRedundantOrb, "AAA", "ABA", "AAA", 'A', Items.diamond, 'B', Blocks.dirt)));
 
-        addPage("Sigil of Chains", sigils, "sigils.SigilOfChains.body");
+        addPage("Sigil of Chains", sigils, "sigils.SigilOfChains.body", new PageIRecipe(new ShapedOreRecipe(NOVA.itemSigilOfChains, "ABA", "DCD", "AEA", 'A', Blocks.iron_bars, 'B', Items.glass_bottle, 'C', ModItems.imbuedSlate, 'D', Items.ender_pearl, 'E', ModItems.magicianBloodOrb)));
+        addPage("Sigil of Transposition", sigils, "sigils.SigilOfTransposition.body", new PageIRecipe( new ShapedOreRecipe(NOVA.itemSigilOfTransposition,"ABA", "BCB", "ADA", 'A', Blocks.obsidian, 'B', Items.ender_pearl, 'C', ModItems.demonicSlate, 'D', ModItems.masterBloodOrb)));
 
         addPage("Anti Block", blocks, "blocks.AntiBlock.body1", "blocks.AntiBlock.body2");
-        addPage("Dirt Chest", blocks, "blocks.DirtChest.body");
+        addPage("Dirt Chest", blocks, "blocks.DirtChest.body", new PageIRecipe(new ShapedOreRecipe(NOVA.blockDirtChest,"AAA","ABA","AAA",'A', Blocks.dirt,'B',Blocks.planks)));
 
         ArrayList<CategoryAbstract> categories = new ArrayList<CategoryAbstract>();
         categories.add(new CategoryItemStack(rituals, "Rituals", new ItemStack(ModItems.activationCrystal)));

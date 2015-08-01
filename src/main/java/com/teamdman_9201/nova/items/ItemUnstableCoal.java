@@ -15,16 +15,21 @@ public class ItemUnstableCoal extends Item {
     public ItemUnstableCoal() {
     }
 
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int meta, float ox, float oy, float oz) {
-        Explosion boom = world.createExplosion(null, x, y, z, 100, true);
-        DamageSource ultimate = new DamageSource("NOVA.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor().setDamageIsAbsolute();
-        int           d0     = 5;
-        AxisAlignedBB region = AxisAlignedBB.getBoundingBox((double) x, (double) y, (double) z, (double) (x + 1), (double) (y + 2), (double) (z + 1)).expand(d0, d0, d0);
-        List<EntityPlayer>          list   = world.getEntitiesWithinAABB(EntityPlayer.class, region);
-        for (EntityPlayer hit : list){
-            System.out.printf("Killing %s\n",hit.getDisplayName());
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer me) {
+        double             x        = me.posX;
+        double             y        = me.posY;
+        double             z        = me.posZ;
+        Explosion          boom     = world.createExplosion(null, x, y, z, 100, true);
+        DamageSource       ultimate = new DamageSource("NOVA.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor().setDamageIsAbsolute();
+        int                d0       = 5;
+        AxisAlignedBB      region   = AxisAlignedBB.getBoundingBox( x-1, y-2, z-1, x + 1, y + 2, z + 1).expand(d0, d0, d0);
+        List<EntityPlayer> list     = world.getEntitiesWithinAABB(EntityPlayer.class, region);
+        for (EntityPlayer hit : list) {
+            System.out.printf("Killing %s\n", hit.getDisplayName());
             hit.attackEntityFrom(ultimate, Integer.MAX_VALUE);
         }
-        return true;
+        return stack;
     }
+
 }

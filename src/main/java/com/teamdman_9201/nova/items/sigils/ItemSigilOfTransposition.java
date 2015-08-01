@@ -1,10 +1,14 @@
 package com.teamdman_9201.nova.items.sigils;
 
+import com.teamdman_9201.nova.NOVA;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -12,18 +16,22 @@ import java.util.List;
 import java.util.Random;
 
 import WayofTime.alchemicalWizardry.common.items.EnergyItems;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Created by TeamDman on 2015-04-19.
  */
 public class ItemSigilOfTransposition extends EnergyItems {
-
+    @SideOnly(Side.CLIENT)
+    IIcon icon;
     Block picked;
     int   meta;
     int[] pos = new int[3];
     TileEntity     tile;
     NBTTagCompound inv;
     Random rnd = new Random();
+    public static Boolean canMoveTiles = true;
 
     public ItemSigilOfTransposition() {
         super();
@@ -47,20 +55,32 @@ public class ItemSigilOfTransposition extends EnergyItems {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister reg) {
+    icon = reg.registerIcon(NOVA.MODID + ":itemSigilOfTransposition");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int p_77617_1_) {
+        return icon;
+    }
+
+    @Override
     public boolean onItemUseFirst(ItemStack sigil, EntityPlayer player, World world, int x, int y, int z, int side, float px, float py, float pz) {
         if (world.isRemote)
             return false;
-        if (picked == null) {
+        if (picked == null && world.getBlock(x,y,z).getBlockHardness(world,x,y,z) != -1) {
             picked = world.getBlock(x, y, z);
-            if (picked.getBlockHardness(world,x,y,z) == -1)
-                return false;
             meta = world.getBlockMetadata(x, y, z);
             pos[0] = x;
             pos[1] = y;
             pos[2] = z;
             tile = world.getTileEntity(x, y, z);
             inv = new NBTTagCompound();
-        } else {
+            if (tile != null && !canMoveTiles)
+                picked = null;
+        } else if (picked != null) {
             if (!EnergyItems.syphonBatteries(sigil, player, getEnergyUsed()*(tile==null?1:5)))
                 return false;
             if (tile != null)
@@ -70,6 +90,7 @@ public class ItemSigilOfTransposition extends EnergyItems {
             inv.setInteger("y", y);
             inv.setInteger("z", z);
             world.setBlock(x, y, z, picked, meta, 1);
+            if (world.getTileEntity(x,y,z)!=null)
             world.getTileEntity(x,y,z).readFromNBT(inv);
             try {
                 world.removeTileEntity(pos[0], pos[1], pos[2]);

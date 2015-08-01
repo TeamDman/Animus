@@ -2,6 +2,7 @@ package com.teamdman_9201.nova;
 
 import com.teamdman_9201.nova.blocks.BlockAntiBlock;
 import com.teamdman_9201.nova.enchantments.EnchantmentPow;
+import com.teamdman_9201.nova.items.sigils.ItemSigilOfTransposition;
 
 import net.minecraftforge.common.config.Configuration;
 
@@ -29,10 +30,10 @@ public class NOVAConfig {
         NOVA.doLowerChat = config.get("General", "Lowercase Incoming Messages", false).getBoolean
                 (false);
         if  (NOVA.enchantPow==null)
-        NOVA.enchantPow = new EnchantmentPow(config.get("Enchantments", "Pow", 168).getInt(), 1);
+        NOVA.enchantPow = new EnchantmentPow(config.get("Enchantments", "Pow", 214).getInt(), 1);
 
         BlockAntiBlock.maxSpread = config.get("General","AntiBlock Max Spread",512).getInt();
-
+        ItemSigilOfTransposition.canMoveTiles = config.get("General","Transposition Can Move Tiles",true).getBoolean();
         NOVA.ritualData.put("ritualSol", config.get("Ritual Blacklist", "Ritual of Sol", false).getBoolean()?1:0);
         NOVA.ritualData.put("ritualLuna", config.get("Ritual Blacklist", "Ritual of Luna",false).getBoolean()?1:0);
         NOVA.ritualData.put("ritualUncreate", config.get("Ritual Blacklist","Ritual of Uncreation", false).getBoolean()?1:0);

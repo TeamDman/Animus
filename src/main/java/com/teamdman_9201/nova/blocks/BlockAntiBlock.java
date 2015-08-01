@@ -21,9 +21,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  * Created by TeamDman on 2015-07-30.
  */
 public class BlockAntiBlock extends Block {
-    public static int    maxSpread = 512;
+    public static int maxSpread = 512;
     public        int toRepl    = -1;
-    public        int    spread    = 0;
+    public        int spread    = 0;
     @SideOnly(Side.CLIENT)
     private IIcon        tex;
     private EntityPlayer destroyer;
@@ -58,15 +58,8 @@ public class BlockAntiBlock extends Block {
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-        if (world.getBlock(x, y, z) == NOVA.blockAntiBlock && stack.getTagCompound() != null && stack.getTagCompound().getInteger("ID") != -1) //shit happens man
-        {
-        	((BlockAntiBlock) world.getBlock(x, y, z)).toRepl = stack.getTagCompound().getInteger("ID");
-        	System.out.printf("Successfully placed\n");
-        }
-        else
-        {
-            System.out.printf("compound null or -1 int\n");
-        }
+        if (world.getBlock(x, y, z) == NOVA.blockAntiBlock && stack.getTagCompound() != null && stack.getTagCompound().getInteger("ID") != -1)
+            ((BlockAntiBlock) world.getBlock(x, y, z)).toRepl = stack.getTagCompound().getInteger("ID");
     }
 
     @Override
@@ -97,14 +90,10 @@ public class BlockAntiBlock extends Block {
     public void setData(EntityPlayer player) {
         destroyer = player;
     }
-    //    public void setData(boolean decay) {
-    //        decaying = decay;
-    //    }
 
     @Override
     public void updateTick(World world, int x, int y, int z, Random rnd) {
         boolean decaying = world.getBlockMetadata(x, y, z) == 1;
-        System.out.printf("ticking to world with decay [%s],spread [%d] and repl [%d]\n", decaying ? "true" : "false", spread, toRepl);
         if (spread > maxSpread && !decaying)
             return;
         for (int ox = -1; ox < 2; ox += 1) {
@@ -115,12 +104,11 @@ public class BlockAntiBlock extends Block {
                         if (adj == NOVA.blockAntiBlock) {
                             ((BlockAntiBlock) adj).setData(destroyer);
                             world.setBlockMetadataWithNotify(x + ox, y + oy, z + oz, 1, 1);
-                            //                            ((BlockAntiBlock) adj).setData(true);
                             world.scheduleBlockUpdate(x + ox, y + oy, z + oz, adj, 5);
                         }
                     } else {
-                    	
-                    	
+
+
                         if (Block.getIdFromBlock(adj) == toRepl && adj.getBlockHardness(world, x, y, z) != -1) {
                             world.setBlock(x + ox, y + oy, z + oz, NOVA.blockAntiBlock);
                             ((BlockAntiBlock) world.getBlock(x + ox, y + oy, z + oz)).setData(new ItemStack(adj), toRepl, spread + 1);

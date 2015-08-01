@@ -15,9 +15,9 @@ import com.teamdman_9201.nova.items.ItemBloodApple;
 import com.teamdman_9201.nova.items.ItemBoundSickle;
 import com.teamdman_9201.nova.items.ItemMobSoul;
 import com.teamdman_9201.nova.items.ItemRedundantOrb;
-import com.teamdman_9201.nova.items.sigils.ItemSigilOfTransposition;
 import com.teamdman_9201.nova.items.ItemUnstableCoal;
 import com.teamdman_9201.nova.items.sigils.ItemSigilOfChains;
+import com.teamdman_9201.nova.items.sigils.ItemSigilOfTransposition;
 import com.teamdman_9201.nova.recipes.RecipeBlockAntiBlock;
 import com.teamdman_9201.nova.rituals.RitualEffectDev;
 import com.teamdman_9201.nova.rituals.RitualEffectEntropy;
@@ -39,12 +39,14 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import WayofTime.alchemicalWizardry.ModItems;
 import WayofTime.alchemicalWizardry.api.alchemy.AlchemyRecipeRegistry;
 import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
 import WayofTime.alchemicalWizardry.api.bindingRegistry.BindingRegistry;
+import WayofTime.alchemicalWizardry.api.items.ShapedBloodOrbRecipe;
 import WayofTime.alchemicalWizardry.api.rituals.RitualEffect;
 import WayofTime.alchemicalWizardry.api.rituals.Rituals;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -77,13 +79,12 @@ public class NOVA {
     public static NOVA        instance;
     public static Block       blockDirtChest;
     public static Block       blockLeaves;
-    public static Block       blockLightManipulator;
     public static Block       blockSapling;
     public static Block       blockAntiBlock;
     public static Enchantment enchantPow;
     public static ItemBlock   itemBlockSapling;
     public static ItemBlock   itemBlockAntiBlock;
-    public static Item        itemTransportalizer;
+    public static Item        itemSigilOfTransposition;
     public static Item        itemUnstableCoal;
     public static Item        itemBoundSickle;
     public static Item        itemWoodSickle;
@@ -96,8 +97,9 @@ public class NOVA {
     public static Item        itemBloodApple;
     public static Item        itemRedundantOrb;
     public static HashMap<String, Integer> ritualData = new HashMap<String, Integer>();
+    public static ArrayList<Block> moveBlacklist;
     //Configurable Variables
-    public static boolean doLowerChat;
+    public static boolean          doLowerChat;
 
     public static CreativeTabs mainTab = new CreativeTabs("NOVA") {
         @Override
@@ -121,7 +123,7 @@ public class NOVA {
         setupBlock(blockLeaves, "blockLeaves", mainTab, 0.1F);
         setupItemBlock(blockAntiBlock, ItemBlockAntiBlock.class, "blockAntiBlock", mainTab, 2.0F);
         setupItemBlock(blockSapling, ItemBlockSapling.class, "blockSapling", mainTab, 0);
-        setupItem(itemTransportalizer, "itemTransportalizer", mainTab);
+        setupItem(itemSigilOfTransposition, "itemSigilOfTransposition", mainTab);
         setupItem(itemUnstableCoal, "itemUnstableCoal", mainTab);
         setupItem(itemWoodSickle, "itemWoodenSickle", mainTab);
         setupItem(itemStoneSickle, "itemStoneSickle", mainTab);
@@ -142,22 +144,23 @@ public class NOVA {
         AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockAntiBlock), new ItemStack(Blocks.cobblestone), 3, 10000, 100, 100, false);
         AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockSapling), new ItemStack(Blocks.sapling), 1, 100, 1, 1, false);
         AltarRecipeRegistry.registerAltarRecipe(new ItemStack(Items.apple), new ItemStack(itemBloodApple), 1, -500, 25, 25, false);
-        //ItemStack output, int amountNeeded, ItemStack[] recipe, int bloodOrbLevel
         AlchemyRecipeRegistry.registerRecipe(new ItemStack(itemUnstableCoal), 100, new ItemStack[]{new ItemStack(Items.nether_star), new ItemStack(Blocks.coal_block), new ItemStack(Items.gunpowder), new ItemStack(Items.flint_and_steel)}, 5);
 
+        GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemSigilOfChains), "ABA", "DCD", "AEA", 'A', Blocks.iron_bars, 'B', Items.glass_bottle, 'C', ModItems.imbuedSlate, 'D', Items.ender_pearl, 'E', ModItems.magicianBloodOrb));
+        GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemSigilOfTransposition), "ABA", "BCB", "ADA", 'A', Blocks.obsidian, 'B', Items.ender_pearl, 'C', ModItems.demonicSlate, 'D', ModItems.masterBloodOrb));
 
         GameRegistry.addSmelting(new ItemStack(itemRedundantOrb), new ItemStack(itemRedundantOrb), 1);
+        GameRegistry.addRecipe(new ItemStack(itemRedundantOrb), "AAA", "ABA", "AAA", 'A', Items.diamond, 'B', Blocks.dirt);
 
-        GameRegistry.addRecipe(new ItemStack(itemRedundantOrb), "AAA", "AAA", "AAA", 'A', ModItems.lavaCrystal);
         GameRegistry.addRecipe(new RecipeBlockAntiBlock());
-        GameRegistry.addRecipe(new ItemStack(blockLightManipulator, 1), "ACA", "CBC", "ACA", 'A', Blocks.torch, 'B', Items.ender_pearl, 'C', Blocks.glowstone);
-        GameRegistry.addRecipe(new ItemStack(Items.glowstone_dust, 1), "ABA", "BCB", "ABA", 'A', Items.redstone, 'B', Blocks.torch, 'C', Items.gold_ingot);
+
+        GameRegistry.addRecipe(new ItemStack(blockDirtChest), "AAA","ABA","AAA",'A', Blocks.dirt,'B',Blocks.planks);
+
         GameRegistry.addRecipe(new ItemStack(itemWoodSickle), "AAA", "A B", " B ", 'A', Blocks.planks, 'B', Items.stick);
         GameRegistry.addRecipe(new ItemStack(itemStoneSickle), "AAA", "A B", " B ", 'A', Blocks.cobblestone, 'B', Items.stick);
         GameRegistry.addRecipe(new ItemStack(itemIronSickle), "AAA", "A B", " B ", 'A', Items.iron_ingot, 'B', Items.stick);
         GameRegistry.addRecipe(new ItemStack(itemGoldSickle), "AAA", "A B", " B ", 'A', Items.gold_ingot, 'B', Items.stick);
         GameRegistry.addRecipe(new ItemStack(itemDiamondSickle), "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemSigilOfChains), "ABA", "DCD", "ABA", 'A', Blocks.iron_bars, 'B', Items.glass_bottle, 'C', ModItems.magicianBloodOrb, 'D', Items.ender_pearl);
     }
 
     private void initRituals() {
@@ -184,7 +187,7 @@ public class NOVA {
         itemIronSickle = new ItemBasicSickle(Item.ToolMaterial.IRON);
         itemGoldSickle = new ItemBasicSickle(Item.ToolMaterial.GOLD);
         itemDiamondSickle = new ItemBasicSickle(Item.ToolMaterial.EMERALD);
-        itemTransportalizer = new ItemSigilOfTransposition();
+        itemSigilOfTransposition = new ItemSigilOfTransposition();
         itemUnstableCoal = new ItemUnstableCoal();
         itemBlockAntiBlock = new ItemBlockAntiBlock(blockAntiBlock);
         itemBlockSapling = new ItemBlockSapling(blockSapling);
