@@ -86,7 +86,7 @@ public class NOVAGuide {
 
         ArrayList<IPage> pages11 = new ArrayList<IPage>();
         pages11.add(new PageUnlocText("book.NOVA.blocks.DirtChest.body"));
-        blocks.add(new EntryText(pages11, "Anti Block"));
+        blocks.add(new EntryText(pages11, "Dirt Chest"));
 
 
         ArrayList<CategoryAbstract> categories = new ArrayList<CategoryAbstract>();
