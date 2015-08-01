@@ -140,7 +140,7 @@ public class NOVA {
 
         AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockAntiBlock), new ItemStack(Blocks.cobblestone), 3, 10000, 100, 100, false);
         AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockSapling), new ItemStack(Blocks.sapling), 1, 100, 1, 1, false);
-
+        AltarRecipeRegistry.registerAltarRecipe(new ItemStack(Items.apple), new ItemStack(itemBloodApple),1, -500, 25,25, false);
         GameRegistry.addRecipe(new RecipeBlockAntiBlock());
         GameRegistry.addRecipe(new ItemStack(blockLightManipulator, 1), "ACA", "CBC", "ACA", 'A', Blocks.torch, 'B', Items.ender_pearl, 'C', Blocks.glowstone);
         GameRegistry.addRecipe(new ItemStack(Items.glowstone_dust, 1), "ABA", "BCB", "ABA", 'A', Items.redstone, 'B', Blocks.torch, 'C', Items.gold_ingot);
@@ -183,7 +183,7 @@ public class NOVA {
         itemBlockSapling = new ItemBlockSapling(blockSapling);
         itemSigilOfChains = new ItemSigilOfChains();
         itemMobSoul = new ItemMobSoul();
-        itemBloodApple = new ItemBloodApple(1, 1, false);
+        itemBloodApple = new ItemBloodApple(2, 0.1F, false);
     }
 
     @EventHandler

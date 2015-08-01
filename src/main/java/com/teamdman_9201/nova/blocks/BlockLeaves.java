@@ -7,7 +7,6 @@ import net.minecraft.block.BlockNewLeaf;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -148,9 +147,8 @@ public class BlockLeaves extends BlockNewLeaf {
         this.dropBlockAsItem(world, posX, posY, posZ, world.getBlockMetadata(posX, posY, posZ), 0);
         world.setBlockToAir(posX, posY, posZ);
         EntityItem drop = new EntityItem(world,posX,posY,posZ);
-        drop.setEntityItemStack(new ItemStack(Items.apple));
+        drop.setEntityItemStack(new ItemStack(NOVA.itemBloodApple));
         world.spawnEntityInWorld(drop);
-
     }
 
     @Override
