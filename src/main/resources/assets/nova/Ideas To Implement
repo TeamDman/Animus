@@ -30,8 +30,9 @@
 * Blood Furnace
 	for caco, magical crops speed furnaces for lp cost. infusing previous tier furnace starting with vanilla in an altar would be the recipe
 
-	//TODO: change Pow to repel
-	//TODO: Fix dirtchest transferstackinslot function, uses wrong slot placement code
+
+//TODO: fix orb of redundency recipe to require endermen souls
+//TODO: change Pow to repel
 //player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed)
 // .applyModifier(...)
 //<diesieben07> ok, try to call player.sendContainerToPlayer(player.openContainer) after you modify the inventory

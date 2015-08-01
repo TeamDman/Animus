@@ -14,6 +14,7 @@ item.itemGoldSickle.name=Gold Sickle
 item.itemDiamondSickle.name=Diamond Sickle
 item.itemBoundSickle.name=Bound Sickle
 item.itemBloodApple.name=Bloody Apple
+item.itemRedundantOrb.name=Orb of Redundancy
 
 #Tiles
 tile.blockDirtChest.name=Dirt Chest 9002
@@ -40,6 +41,9 @@ enchantment.level.0=Nulla
 
 #ItemGroups
 itemGroup.NOVA=NOVA
+
+#DamageSource
+death.attack.NOVA.absolute=%1$s has embraced death.
 
 #Book
 book.NOVA.title=NOVA for dummies

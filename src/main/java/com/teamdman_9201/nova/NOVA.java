@@ -14,6 +14,7 @@ import com.teamdman_9201.nova.items.ItemBlockSapling;
 import com.teamdman_9201.nova.items.ItemBloodApple;
 import com.teamdman_9201.nova.items.ItemBoundSickle;
 import com.teamdman_9201.nova.items.ItemMobSoul;
+import com.teamdman_9201.nova.items.ItemRedundantOrb;
 import com.teamdman_9201.nova.items.ItemSlotIdentifier;
 import com.teamdman_9201.nova.items.ItemTransportalizer;
 import com.teamdman_9201.nova.items.ItemUnstableCoal;
@@ -42,6 +43,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import WayofTime.alchemicalWizardry.ModItems;
+import WayofTime.alchemicalWizardry.api.alchemy.AlchemyRecipeRegistry;
 import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
 import WayofTime.alchemicalWizardry.api.bindingRegistry.BindingRegistry;
 import WayofTime.alchemicalWizardry.api.rituals.RitualEffect;
@@ -94,6 +96,7 @@ public class NOVA {
     public static Item        itemMobSoul;
     public static Item        itemSigilOfChains;
     public static Item        itemBloodApple;
+    public static Item itemRedundantOrb;
     public static HashMap<String, Integer> ritualData = new HashMap<String, Integer>();
     //Configurable Variables
     public static boolean doLowerChat;
@@ -132,6 +135,7 @@ public class NOVA {
         setupItem(itemSigilOfChains, "itemSigilOfChains", mainTab);
         setupItem(itemMobSoul, "itemMobSoul", mainTab);
         setupItem(itemBloodApple, "itemBloodApple", mainTab);
+        setupItem(itemRedundantOrb,"itemRedundantOrb",mainTab);
 
     }
 
@@ -141,6 +145,13 @@ public class NOVA {
         AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockAntiBlock), new ItemStack(Blocks.cobblestone), 3, 10000, 100, 100, false);
         AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockSapling), new ItemStack(Blocks.sapling), 1, 100, 1, 1, false);
         AltarRecipeRegistry.registerAltarRecipe(new ItemStack(Items.apple), new ItemStack(itemBloodApple),1, -500, 25,25, false);
+//ItemStack output, int amountNeeded, ItemStack[] recipe, int bloodOrbLevel
+        AlchemyRecipeRegistry.registerRecipe(new ItemStack(itemUnstableCoal), 100, new ItemStack[]{new ItemStack(Items.nether_star), new ItemStack(Blocks.coal_block), new ItemStack(Items.gunpowder), new ItemStack(Items.flint_and_steel)}, 5);
+
+
+        GameRegistry.addSmelting(new ItemStack(itemRedundantOrb),new ItemStack(itemRedundantOrb),1);
+
+        GameRegistry.addRecipe(new ItemStack(itemRedundantOrb), "AAA","AAA","AAA",'A', ModItems.lavaCrystal);
         GameRegistry.addRecipe(new RecipeBlockAntiBlock());
         GameRegistry.addRecipe(new ItemStack(blockLightManipulator, 1), "ACA", "CBC", "ACA", 'A', Blocks.torch, 'B', Items.ender_pearl, 'C', Blocks.glowstone);
         GameRegistry.addRecipe(new ItemStack(Items.glowstone_dust, 1), "ABA", "BCB", "ABA", 'A', Items.redstone, 'B', Blocks.torch, 'C', Items.gold_ingot);
@@ -184,6 +195,7 @@ public class NOVA {
         itemSigilOfChains = new ItemSigilOfChains();
         itemMobSoul = new ItemMobSoul();
         itemBloodApple = new ItemBloodApple(2, 0.1F, false);
+        itemRedundantOrb = new ItemRedundantOrb();
     }
 
     @EventHandler

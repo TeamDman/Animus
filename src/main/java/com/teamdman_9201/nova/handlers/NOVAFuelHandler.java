@@ -17,4 +17,5 @@ public class NOVAFuelHandler implements IFuelHandler {
         //Item itemSuperCoal = new SuperCoal();
         //return fuel==new ItemStack(itemSuperCoal)?12800:0; //itemSuperCoal.getUnlocalizedName() ? 12800 : 0;
     }
+
 }

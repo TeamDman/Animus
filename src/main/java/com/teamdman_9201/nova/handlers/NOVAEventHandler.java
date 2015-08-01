@@ -26,4 +26,5 @@ public class NOVAEventHandler {
             System.out.println("CONFIG SYNCED");
         }
     }
+
 }
