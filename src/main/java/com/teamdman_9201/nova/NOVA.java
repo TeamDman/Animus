@@ -11,6 +11,7 @@ import com.teamdman_9201.nova.handlers.NOVAGuiHandler;
 import com.teamdman_9201.nova.items.ItemBasicSickle;
 import com.teamdman_9201.nova.items.ItemBlockAntiBlock;
 import com.teamdman_9201.nova.items.ItemBlockSapling;
+import com.teamdman_9201.nova.items.ItemBloodApple;
 import com.teamdman_9201.nova.items.ItemBoundSickle;
 import com.teamdman_9201.nova.items.ItemMobSoul;
 import com.teamdman_9201.nova.items.ItemSlotIdentifier;
@@ -70,7 +71,7 @@ public class NOVA {
     public static final String  VERSION      = "@VERSION@";
     public static final String  DEPENDS      = "required-after:AWWayofTime;required-after:guideapi;";
     public static final int     guiDirtChest = 0;
-    public static       boolean isDevEnv     = (Boolean) Launch.blackboard.get("fml" + ".deobfuscatedEnvironment");
+    public static       boolean isDevEnv     = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
     @Instance(value = MODID)
     public static NOVA        instance;
     public static Block       blockDirtChest;
@@ -80,6 +81,7 @@ public class NOVA {
     public static Block       blockAntiBlock;
     public static Enchantment enchantPow;
     public static ItemBlock   itemBlockSapling;
+    public static ItemBlock   itemBlockAntiBlock;
     public static Item        itemSlotIdentifier;
     public static Item        itemTransportalizer;
     public static Item        itemUnstableCoal;
@@ -91,6 +93,7 @@ public class NOVA {
     public static Item        itemDiamondSickle;
     public static Item        itemMobSoul;
     public static Item        itemSigilOfChains;
+    public static Item        itemBloodApple;
     public static HashMap<String, Integer> ritualData = new HashMap<String, Integer>();
     //Configurable Variables
     public static boolean doLowerChat;
@@ -115,7 +118,7 @@ public class NOVA {
     private void initItemsandBlocks() {
         setupBlock(blockDirtChest, "blockDirtChest", mainTab, 3.5F);
         setupBlock(blockLeaves, "blockLeaves", mainTab, 0.1F);
-        setupItemBlock(blockAntiBlock, ItemBlockAntiBlock.class,  "blockAntiBlock", mainTab, 2.0F);
+        setupItemBlock(blockAntiBlock, ItemBlockAntiBlock.class, "blockAntiBlock", mainTab, 2.0F);
         setupItemBlock(blockSapling, ItemBlockSapling.class, "blockSapling", mainTab, 0);
         setupItem(itemTransportalizer, "itemTransportalizer", mainTab);
         setupItem(itemSlotIdentifier, "itemSlotIdentifier", mainTab);
@@ -128,12 +131,16 @@ public class NOVA {
         setupItem(itemBoundSickle, "itemBoundSickle", mainTab);
         setupItem(itemSigilOfChains, "itemSigilOfChains", mainTab);
         setupItem(itemMobSoul, "itemMobSoul", mainTab);
+        setupItem(itemBloodApple, "itemBloodApple", mainTab);
 
     }
 
     private void initRecipes() {
         BindingRegistry.registerRecipe(new ItemStack(itemBoundSickle), new ItemStack(itemDiamondSickle));
-        AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockAntiBlock),new ItemStack(Blocks.cobblestone),3,10000,100,100,false);
+
+        AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockAntiBlock), new ItemStack(Blocks.cobblestone), 3, 10000, 100, 100, false);
+        AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockSapling), new ItemStack(Blocks.sapling), 1, 100, 1, 1, false);
+
         GameRegistry.addRecipe(new RecipeBlockAntiBlock());
         GameRegistry.addRecipe(new ItemStack(blockLightManipulator, 1), "ACA", "CBC", "ACA", 'A', Blocks.torch, 'B', Items.ender_pearl, 'C', Blocks.glowstone);
         GameRegistry.addRecipe(new ItemStack(Items.glowstone_dust, 1), "ABA", "BCB", "ABA", 'A', Items.redstone, 'B', Blocks.torch, 'C', Items.gold_ingot);
@@ -162,7 +169,7 @@ public class NOVA {
         blockDirtChest = new BlockDirtChest();
         blockLeaves = new BlockLeaves();
         blockSapling = new BlockSapling();
-        blockAntiBlock=new BlockAntiBlock();
+        blockAntiBlock = new BlockAntiBlock();
         itemBoundSickle = new ItemBoundSickle();
         itemWoodSickle = new ItemBasicSickle(Item.ToolMaterial.WOOD);
         itemStoneSickle = new ItemBasicSickle(Item.ToolMaterial.STONE);
@@ -172,9 +179,11 @@ public class NOVA {
         itemTransportalizer = new ItemTransportalizer();
         itemSlotIdentifier = new ItemSlotIdentifier();
         itemUnstableCoal = new ItemUnstableCoal();
+        itemBlockAntiBlock = new ItemBlockAntiBlock(blockAntiBlock);
         itemBlockSapling = new ItemBlockSapling(blockSapling);
         itemSigilOfChains = new ItemSigilOfChains();
         itemMobSoul = new ItemMobSoul();
+        itemBloodApple = new ItemBloodApple(1, 1, false);
     }
 
     @EventHandler

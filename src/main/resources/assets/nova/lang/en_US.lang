@@ -13,11 +13,12 @@ item.itemIronSickle.name=Iron Sickle
 item.itemGoldSickle.name=Gold Sickle
 item.itemDiamondSickle.name=Diamond Sickle
 item.itemBoundSickle.name=Bound Sickle
+item.itemBloodApple.name=Bloody Apple
 
 #Tiles
 tile.blockDirtChest.name=Dirt Chest 9002
 tile.blockLeaves.name=Red Oak Leaves
-tile.blockSapling.name=Red Oak Sapling
+tile.blockSapling.name=Blood Sapling
 tile.blockAntiBlock.name=Anti Block
 
 #Rituals
