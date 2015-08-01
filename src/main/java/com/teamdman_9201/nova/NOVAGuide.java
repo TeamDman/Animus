@@ -28,70 +28,43 @@ import amerifrance.guideapi.pages.PageUnlocText;
 public class NOVAGuide {
     public static Book myBook;
 
+    public static void addPage(String title, List<EntryAbstract> category, Object... extra) {
+        ArrayList<IPage> pages = new ArrayList<IPage>();
+        for (Object obj : extra) {
+            if (obj instanceof IPage) {
+                pages.add((IPage) obj);
+            } else if (obj instanceof String) {
+                pages.add(new PageUnlocText("book.NOVA." + (String) obj));
+            }
+        }
+        category.add(new EntryText(pages, title));
+    }
+
     public static void buildGuide() {
-        //        pages2.add(new PageIRecipe(new ShapedOreRecipe(Items.apple, "AAA", "BBB", "CCC", 'A', "ingotIron", 'B', Blocks.anvil, 'C', Items.potato))); // Create a recipe page and add it to your pages2 list.
-        //        pages2.add(new PageFurnaceRecipe("oreGold")); // Create a furnace recipe page and add it to your pages2 list.
         List<EntryAbstract> rituals = new ArrayList<EntryAbstract>();
+        List<EntryAbstract> items   = new ArrayList<EntryAbstract>();
+        List<EntryAbstract> blocks  = new ArrayList<EntryAbstract>();
+        List<EntryAbstract> sigils  = new ArrayList<EntryAbstract>();
 
-        ArrayList<IPage> pages1 = new ArrayList<IPage>();
-        pages1.add(new PageUnlocText("book.NOVA.rituals.Sol.body"));
-        rituals.add(new EntryText(pages1, "Ritual of Sol"));
+        addPage("Ritual of Sol", rituals, "rituals.Sol.body");
+        addPage("Ritual of Luna", rituals, "rituals.Luna.body");
+        addPage("Ritual of Uncreation", rituals, "rituals.Uncreation.body1", "rituals.Uncreation.body2");
+        addPage("Ritual of Entropy", rituals, "rituals.Entropy.body1", "rituals.Entropy.body2");
 
-        ArrayList<IPage> pages2 = new ArrayList<IPage>();
-        pages2.add(new PageUnlocText("book.NOVA.rituals.Luna.body"));
-        rituals.add(new EntryText(pages2, "Ritual of Luna"));
+        addPage("Sickles", items, "items.Sickles.body1", new PageIRecipe(new ShapedOreRecipe(NOVA.itemWoodSickle, "AAA", "A B", " B ", 'A', Blocks.planks, 'B', Items.stick)), new PageIRecipe(new ShapedOreRecipe(NOVA.itemStoneSickle, "AAA", "A B", " B ", 'A', Blocks.cobblestone, 'B', Items.stick)), new PageIRecipe(new ShapedOreRecipe(NOVA.itemIronSickle, "AAA", "A B", " B ", 'A', Items.iron_ingot, 'B', Items.stick)), new PageIRecipe(new ShapedOreRecipe(NOVA.itemGoldSickle, "AAA", "A B", " B ", 'A', Items.gold_ingot, 'B', Items.stick)), new PageIRecipe(new ShapedOreRecipe(NOVA.itemDiamondSickle, "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick)));
+        addPage("Unstable Coal", items, "items.UnstableCoal.body");
+        addPage("Blood Trees", items, "items.Sapling.body");
+        addPage("Orb of Redundancy", items, "items.RedundantOrb.body");
 
-        ArrayList<IPage> pages3 = new ArrayList<IPage>();
-        pages3.add(new PageUnlocText("book.NOVA.rituals.Uncreation.body1"));
-        pages3.add(new PageUnlocText("book.NOVA.rituals.Uncreation.body2"));
-        rituals.add(new EntryText(pages3, "Ritual of Uncreation"));
+        addPage("Sigil of Chains", sigils, "sigils.SigilOfChains.body");
 
-        ArrayList<IPage> pages4 = new ArrayList<IPage>();
-        pages4.add(new PageUnlocText("book.NOVA.rituals.Entropy.body1"));
-        pages4.add(new PageUnlocText("book.NOVA.rituals.Entropy.body2"));
-        rituals.add(new EntryText(pages4, "Ritual of Entropy"));
-
-        List<EntryAbstract> items = new ArrayList<EntryAbstract>();
-        ArrayList<IPage> pages5 = new ArrayList<IPage>();
-        pages5.add(new PageUnlocText("book.NOVA.items.Sickles.body1"));
-        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemWoodSickle, "AAA", "A B", " B ", 'A', Blocks.planks, 'B', Items.stick)));
-        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemStoneSickle, "AAA", "A B", " B ", 'A', Blocks.cobblestone, 'B', Items.stick)));
-        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemIronSickle, "AAA", "A B", " B ", 'A', Items.iron_ingot, 'B', Items.stick)));
-        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemGoldSickle, "AAA", "A B", " B ", 'A', Items.gold_ingot, 'B', Items.stick)));
-        pages5.add(new PageIRecipe(new ShapedOreRecipe(NOVA.itemDiamondSickle, "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick)));
-        items.add(new EntryText(pages5, "Sickles"));
-
-        ArrayList<IPage> pages8 = new ArrayList<IPage>();
-        pages8.add(new PageUnlocText("book.NOVA.items.UnstableCoal.body"));
-        items.add(new EntryText(pages8, "Unstable Coal"));
-
-        ArrayList<IPage> pages9 = new ArrayList<IPage>();
-        pages9.add(new PageUnlocText("book.NOVA.items.Sapling.body"));
-        items.add(new EntryText(pages9, "Blood Trees"));
-
-        ArrayList<IPage> pages10 = new ArrayList<IPage>();
-        pages10.add(new PageUnlocText("book.NOVA.items.RedundantOrb.body"));
-        items.add(new EntryText(pages10, "Regret in a physical form"));
-
-
-        ArrayList<IPage> pages6 = new ArrayList<IPage>();
-        pages6.add(new PageUnlocText("book.NOVA.sigils.SigilOfChains.body"));
-        items.add(new EntryText(pages6, "Sigil of Chains"));
-
-        List<EntryAbstract> blocks = new ArrayList<EntryAbstract>();
-        ArrayList<IPage> pages7 = new ArrayList<IPage>();
-        pages7.add(new PageUnlocText("book.NOVA.blocks.AntiBlock.body1"));
-        pages7.add(new PageUnlocText("book.NOVA.blocks.AntiBlock.body2"));
-        blocks.add(new EntryText(pages7, "Anti Block"));
-
-        ArrayList<IPage> pages11 = new ArrayList<IPage>();
-        pages11.add(new PageUnlocText("book.NOVA.blocks.DirtChest.body"));
-        blocks.add(new EntryText(pages11, "Dirt Chest"));
-
+        addPage("Anti Block", blocks, "blocks.AntiBlock.body1", "blocks.AntiBlock.body2");
+        addPage("Dirt Chest", blocks, "blocks.DirtChest.body");
 
         ArrayList<CategoryAbstract> categories = new ArrayList<CategoryAbstract>();
         categories.add(new CategoryItemStack(rituals, "Rituals", new ItemStack(ModItems.activationCrystal)));
         categories.add(new CategoryItemStack(items, "Items", new ItemStack(NOVA.itemBoundSickle)));
+        categories.add(new CategoryItemStack(sigils, "Sigils", new ItemStack(NOVA.itemSigilOfChains)));
         categories.add(new CategoryItemStack(blocks, "Blocks", new ItemStack(ModBlocks.blockMasterStone)));
 
         BookBuilder builder = new BookBuilder();
@@ -99,7 +72,7 @@ public class NOVAGuide {
         builder.setUnlocBookTitle("book.NOVA.title");
         builder.setUnlocWelcomeMessage("book.NOVA.welcome");
         builder.setUnlocDisplayName("book.NOVA.displayname");
-        builder.setBookColor(Math.random()>0.5?Color.CYAN:Color.MAGENTA); //cube wants 1DEAF6
+        builder.setBookColor(Math.random() > 0.5 ? Color.CYAN : Color.MAGENTA); //cube wants 1DEAF6
         myBook = builder.build();
 
         GuideRegistry.registerBook(myBook);
