@@ -12,13 +12,23 @@ import java.util.List;
  * Created by TeamDman on 2015-07-30.
  */
 public class ItemBlockAntiBlock extends ItemBlock {
+	
+	private Block myBlock;
+	private String blockName;
+	
     public ItemBlockAntiBlock(Block p_i45328_1_) {
         super(p_i45328_1_);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void addInformation(ItemStack stack, EntityPlayer player, List data, boolean wut) {
+    	
         if (stack.hasTagCompound() && stack.getTagCompound().getString("ID") != null)
-            data.add("Replacing: " + StatCollector.translateToLocal(stack.getTagCompound().getString(("ID"))));
+        	
+        	myBlock = Block.getBlockById(stack.getTagCompound().getInteger("ID"));
+        	blockName = myBlock.getUnlocalizedName();
+        	
+        	data.add("Replacing: " + StatCollector.translateToLocal(blockName));            		
     }
 }

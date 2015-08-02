@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockAntiBlock extends Block {
     public static int    maxSpread = 512;
-    public        String toRepl    = "nope.avi";
+    public        int toRepl    = -1;
     public        int    spread    = 0;
     @SideOnly(Side.CLIENT)
     private IIcon        tex;
@@ -58,9 +58,15 @@ public class BlockAntiBlock extends Block {
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-        if (world.getBlock(x, y, z) == NOVA.blockAntiBlock && stack.getTagCompound() != null && stack.getTagCompound().getString("ID") != null) //shit happens man
-            ((BlockAntiBlock) world.getBlock(x, y, z)).toRepl = stack.getTagCompound().getString("ID");
-
+        if (world.getBlock(x, y, z) == NOVA.blockAntiBlock && stack.getTagCompound() != null && stack.getTagCompound().getInteger("ID") != -1) //shit happens man
+        {
+        	((BlockAntiBlock) world.getBlock(x, y, z)).toRepl = stack.getTagCompound().getInteger("ID");
+        	System.out.printf("Successfully placed\n");
+        }
+        else
+        {
+            System.out.printf("compound null or -1 int\n");
+        }
     }
 
     @Override
@@ -82,7 +88,7 @@ public class BlockAntiBlock extends Block {
         return false;
     }
 
-    public void setData(ItemStack give, String replace, int spreaded) {
+    public void setData(ItemStack give, int replace, int spreaded) {
         toReturn = give;
         toRepl = replace;
         spread = spreaded;
@@ -98,7 +104,7 @@ public class BlockAntiBlock extends Block {
     @Override
     public void updateTick(World world, int x, int y, int z, Random rnd) {
         boolean decaying = world.getBlockMetadata(x, y, z) == 1;
-        System.out.printf("ticking to world with decay [%s],spread [%d] and repl [%s]\n", decaying ? "true" : "false", spread, toRepl);
+        System.out.printf("ticking to world with decay [%s],spread [%d] and repl [%d]\n", decaying ? "true" : "false", spread, toRepl);
         if (spread > maxSpread && !decaying)
             return;
         for (int ox = -1; ox < 2; ox += 1) {
@@ -113,7 +119,9 @@ public class BlockAntiBlock extends Block {
                             world.scheduleBlockUpdate(x + ox, y + oy, z + oz, adj, 5);
                         }
                     } else {
-                        if (adj.getUnlocalizedName().equals(toRepl) && adj.getBlockHardness(world, x, y, z) != -1) {
+                    	
+                    	
+                        if (Block.getIdFromBlock(adj) == toRepl && adj.getBlockHardness(world, x, y, z) != -1) {
                             world.setBlock(x + ox, y + oy, z + oz, NOVA.blockAntiBlock);
                             ((BlockAntiBlock) world.getBlock(x + ox, y + oy, z + oz)).setData(new ItemStack(adj), toRepl, spread + 1);
                         }

@@ -2,6 +2,8 @@ package com.teamdman_9201.nova.recipes;
 
 import com.teamdman_9201.nova.NOVA;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -30,9 +32,14 @@ public class RecipeBlockAntiBlock implements IRecipe {
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting crafting) {
-        ItemStack returnStack   = new ItemStack(NOVA.blockAntiBlock);
+    	
+    	
+    	
+    	ItemStack returnStack   = new ItemStack(NOVA.blockAntiBlock);
         NBTTagCompound nbtData = new NBTTagCompound();
-        nbtData.setString("ID",crafting.getStackInSlot(1).getUnlocalizedName());
+        
+        
+        nbtData.setInteger("ID", Block.getIdFromBlock(Block.getBlockFromItem(crafting.getStackInSlot(1).getItem()))  );
         returnStack.setTagCompound(nbtData);
         return returnStack;
     }

@@ -7,9 +7,13 @@ bin
 eclipse
 idea
 build
+asm/*
 gradlew
 run/*
+saves/*
+logs/*
 out/*
+config/*
 src/main/*/app*
 src/main/java/app*
 src/main/resources/assets/app*
@@ -17,6 +21,8 @@ src/main/resources/assets/app*
 #Shit thats in those folders
 forge*
 README.txt
+options.txt
+usernamecache.json
 
 .idea
 .gradle
