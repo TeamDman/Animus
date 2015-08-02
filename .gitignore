@@ -9,6 +9,7 @@ idea
 build
 asm/*
 gradlew
+eclipse*
 run/*
 saves/*
 logs/*
