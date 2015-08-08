@@ -144,11 +144,13 @@ public class BlockLeaves extends BlockNewLeaf {
     }
 
     private void removeLeaves(World world, int posX, int posY, int posZ) {
+    	if (world.rand.nextInt(100) < 20){ //20% chance of apple drop, was 100%
         this.dropBlockAsItem(world, posX, posY, posZ, world.getBlockMetadata(posX, posY, posZ), 0);
         world.setBlockToAir(posX, posY, posZ);
         EntityItem drop = new EntityItem(world,posX,posY,posZ);
         drop.setEntityItemStack(new ItemStack(NOVA.itemBloodApple));
         world.spawnEntityInWorld(drop);
+    	}
     }
 
     @Override
