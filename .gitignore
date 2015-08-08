@@ -14,6 +14,7 @@ run/*
 saves/*
 logs/*
 out/*
+crash-reports/*
 config/*
 src/main/*/app*
 src/main/java/app*
