@@ -1,0 +1,93 @@
+---- Minecraft Crash Report ----
+// I just don't know what went wrong :(
+
+Time: 8/7/15 10:48 PM
+Description: Ticking player
+
+java.lang.NullPointerException: Ticking player
+	at net.minecraft.entity.EntityLivingBase.isPotionActive(EntityLivingBase.java:686)
+	at com.teamdman_9201.nova.handlers.NOVABloodappleHandler.addBloodToAltar(NOVABloodappleHandler.java:23)
+	at com.teamdman_9201.nova.items.ItemBloodApple.onEaten(ItemBloodApple.java:50)
+	at net.minecraft.item.ItemStack.onFoodEaten(ItemStack.java:169)
+	at net.minecraft.entity.player.EntityPlayer.onItemUseFinish(EntityPlayer.java:470)
+	at net.minecraft.entity.player.EntityPlayerMP.onItemUseFinish(EntityPlayerMP.java:970)
+	at net.minecraft.entity.player.EntityPlayer.onUpdate(EntityPlayer.java:281)
+	at net.minecraft.entity.player.EntityPlayerMP.onUpdateEntity(EntityPlayerMP.java:330)
+	at net.minecraft.network.NetHandlerPlayServer.processPlayer(NetHandlerPlayServer.java:329)
+	at net.minecraft.network.play.client.C03PacketPlayer.processPacket(C03PacketPlayer.java:37)
+	at net.minecraft.network.play.client.C03PacketPlayer.processPacket(C03PacketPlayer.java:111)
+	at net.minecraft.network.NetworkManager.processReceivedPackets(NetworkManager.java:241)
+	at net.minecraft.network.NetworkSystem.networkTick(NetworkSystem.java:182)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:726)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:614)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:118)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:485)
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:752)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at net.minecraft.entity.EntityLivingBase.isPotionActive(EntityLivingBase.java:686)
+	at com.teamdman_9201.nova.handlers.NOVABloodappleHandler.addBloodToAltar(NOVABloodappleHandler.java:23)
+	at com.teamdman_9201.nova.items.ItemBloodApple.onEaten(ItemBloodApple.java:50)
+	at net.minecraft.item.ItemStack.onFoodEaten(ItemStack.java:169)
+	at net.minecraft.entity.player.EntityPlayer.onItemUseFinish(EntityPlayer.java:470)
+	at net.minecraft.entity.player.EntityPlayerMP.onItemUseFinish(EntityPlayerMP.java:970)
+	at net.minecraft.entity.player.EntityPlayer.onUpdate(EntityPlayer.java:281)
+
+-- Player being ticked --
+Details:
+	Entity Type: null (net.minecraft.entity.player.EntityPlayerMP)
+	Entity ID: 371
+	Entity Name: Player986
+	Entity's Exact location: 143.94, 67.00, 252.00
+	Entity's Block location: World: (143,67,252), Chunk: (at 15,4,12 in 8,15; contains blocks 128,0,240 to 143,255,255), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,0,0 to 511,255,511)
+	Entity's Momentum: 0.00, -0.08, 0.00
+Stacktrace:
+	at net.minecraft.entity.player.EntityPlayerMP.onUpdateEntity(EntityPlayerMP.java:330)
+	at net.minecraft.network.NetHandlerPlayServer.processPlayer(NetHandlerPlayServer.java:329)
+	at net.minecraft.network.play.client.C03PacketPlayer.processPacket(C03PacketPlayer.java:37)
+	at net.minecraft.network.play.client.C03PacketPlayer.processPacket(C03PacketPlayer.java:111)
+	at net.minecraft.network.NetworkManager.processReceivedPackets(NetworkManager.java:241)
+
+-- Ticking connection --
+Details:
+	Connection: net.minecraft.network.NetworkManager@dd9b951
+Stacktrace:
+	at net.minecraft.network.NetworkSystem.networkTick(NetworkSystem.java:182)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:726)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:614)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:118)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:485)
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:752)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.7.10
+	Operating System: Windows 7 (amd64) version 6.1
+	Java Version: 1.8.0_45, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 393349368 bytes (375 MB) / 1521483776 bytes (1451 MB) up to 3797417984 bytes (3621 MB)
+	JVM Flags: 0 total; 
+	AABB Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	IntCache: cache: 0, tcache: 0, allocated: 13, tallocated: 95
+	FML: MCP v9.05 FML v7.10.99.99 Minecraft Forge 10.13.4.1448 9 mods loaded, 9 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+	UCHIJAAAA	mcp{9.05} [Minecraft Coder Pack] (minecraft.jar) 
+	UCHIJAAAA	FML{7.10.99.99} [Forge Mod Loader] (forgeSrc-1.7.10-10.13.4.1448-1.7.10.jar) 
+	UCHIJAAAA	Forge{10.13.4.1448} [Minecraft Forge] (forgeSrc-1.7.10-10.13.4.1448-1.7.10.jar) 
+	UCHIJAAAA	NotEnoughItems{1.0.3.64} [Not Enough Items] (NotEnoughItems-1.7.10-1.0.3.64-dev.jar) 
+	UCHIJAAAA	CodeChickenCore{1.0.3.26} [CodeChicken Core] (minecraft.jar) 
+	UCHIJAAAA	guideapi{1.7.10-1.0.1-20} [Guide-API] (Guide-API-1.7.10-1.0.1-20-deobf.jar) 
+	UCHIJAAAA	AWWayofTime{v1.3.1} [Blood Magic: Alchemical Wizardry] (BloodMagic-1.7.10-1.3.1-7-deobf.jar) 
+	UCHIJAAAA	NOVA{@VERSION@} [NOVA] (bin) 
+	UCHIJAAAA	Waila{1.5.5} [Waila] (Waila-1.5.5_1.7.10.jar) 
+	GL info: ~~ERROR~~ RuntimeException: No OpenGL context found in the current thread.
+	Profiler Position: N/A (disabled)
+	Vec3 Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	Player Count: 1 / 8; [EntityPlayerMP['Player986'/371, l='New World', x=143.94, y=67.00, z=252.00]]
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'fml,forge'

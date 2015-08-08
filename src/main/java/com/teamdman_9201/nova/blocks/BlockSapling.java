@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMegaPineTree;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
 import java.util.List;
@@ -37,14 +38,19 @@ public class BlockSapling extends net.minecraft.block.BlockSapling implements IG
     }
 
     public void updateTick(World world, int posX, int posY, int posZ, Random rnd) {
+    	super.updateTick(world, posX, posY, posZ, rnd);
         if (!world.isRemote) {
-            super.updateTick(world, posX, posY, posZ, rnd);
-            if (world.getBlockLightValue(posX, posY + 1, posZ) >= 9 && rnd.nextInt(2) == 0) {
+          
+            if (this.canPlantGrowOnThisBlock(this, world, posX, posY, posZ) && world.getBlockLightValue(posX, posY + 1, posZ) >= 9 && rnd.nextInt(2) == 0) {
                 makeTree(world, posX, posY, posZ, rnd);
             }
         }
     }
-
+    
+    public boolean canPlantGrowOnThisBlock(Block block, World world, int x, int y, int z){
+        return block.canSustainPlant(world, x, y, z, ForgeDirection.UP, this);
+    }
+    
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int metadata) {
         return icon;
@@ -57,7 +63,8 @@ public class BlockSapling extends net.minecraft.block.BlockSapling implements IG
 
     public void makeTree(World world, int posX, int posY, int posZ, Random rnd) {
         if (!TerrainGen.saplingGrowTree(world, rnd, posX, posY, posZ)) {
-            System.out.println("!saplingGrowTree");
+         
+        	System.out.println("!saplingGrowTree");
             return;
         }
         int l = world.getBlockMetadata(posX, posY, posZ) & 7;
