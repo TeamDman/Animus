@@ -26,7 +26,7 @@ public class ItemBloodApple extends ItemFood {
 
     public ItemBloodApple(int heal, float sat, boolean wolfy) {
         super(heal, sat, wolfy);
-        setAlwaysEdible(); //Commented this out, hunger is the only limiting factor on this, once you're full you cant use it more
+        //setAlwaysEdible(); //Commented this out, hunger is the only limiting factor on this, once you're full you cant use it more
         
     }
 
