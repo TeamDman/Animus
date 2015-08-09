@@ -75,7 +75,7 @@ public class BlockLeavesBlood extends BlockLeaves {
     @Override
     public void updateTick(World world, int posX, int posY, int posZ, Random rnd) {
     	if (!world.isRemote) {
-    		System.out.println("Serverside: updateTick for Leaves");
+    		//System.out.println("Serverside: updateTick for Leaves");
 
     		int l = world.getBlockMetadata(posX, posY, posZ);
 
@@ -96,7 +96,7 @@ public class BlockLeavesBlood extends BlockLeaves {
 
     			if (world.checkChunksExist(posX - i1, posY - i1, posZ - i1, posX + i1, posY + i1,
     					posZ + i1)) {
-    				System.out.println("leaveS: if chunk exists, do stuff");
+    				//System.out.println("leaveS: if chunk exists, do stuff");
     				int i2;
     				int j2;
 
@@ -174,14 +174,14 @@ public class BlockLeavesBlood extends BlockLeaves {
     			}
 
 
-    			System.out.println("Serverside: finished primary leaf loop");
+    			//System.out.println("Serverside: finished primary leaf loop");
     			l1 = this.decayCheck[k1 * j1 + k1 * b1 + k1];
 
     			if (l1 >= 0) {
-    				System.out.println("Serverside: SettingBlockMetadataWithNotify");
+    				//System.out.println("Serverside: SettingBlockMetadataWithNotify");
     				world.setBlockMetadataWithNotify(posX, posY, posZ, l & -9, 4);
     			} else {
-    				System.out.println("remove leaves called");
+    				//System.out.println("remove leaves called");
     				this.removeLeaves(world, posX, posY, posZ);
     			}
     		}
@@ -192,7 +192,7 @@ public class BlockLeavesBlood extends BlockLeaves {
    
 
     private void removeLeaves(World world, int posX, int posY, int posZ) {
-    	System.out.println("RemoveLeaves start");
+    	//System.out.println("RemoveLeaves start");
     		this.dropBlockAsItem(world, posX, posY, posZ, world.getBlockMetadata(posX, posY, posZ), 0);
         
     /*	if (world.rand.nextInt(100) < 50){ 

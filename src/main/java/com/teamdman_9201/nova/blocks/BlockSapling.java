@@ -44,7 +44,7 @@ public class BlockSapling extends net.minecraft.block.BlockSapling implements IG
 
     
     public boolean canPlantGrowOnThisBlock(Block block, World world, int x, int y, int z){
-    	System.out.println("Checking can sutain");
+    	//System.out.println("Checking can sutain");
         return block.canSustainPlant(world, x, y, z, ForgeDirection.UP, this);
     }
     
@@ -92,7 +92,7 @@ public class BlockSapling extends net.minecraft.block.BlockSapling implements IG
     }
     
     public boolean isThisSapling(World world, int posX, int posY, int posZ, int meta) {
-    	System.out.println("checking if block is this sapling");
+    	//System.out.println("checking if block is this sapling");
     	return world.getBlock(posX, posY, posZ) == this;
     }
 
