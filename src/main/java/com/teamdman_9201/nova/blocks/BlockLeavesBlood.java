@@ -4,8 +4,10 @@ import com.teamdman_9201.nova.NOVA;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,17 +35,18 @@ public class BlockLeavesBlood extends BlockLeaves {
     public BlockLeavesBlood()
     {
         super();
+        
         setCreativeTab(CreativeTabs.tabDecorations);
         setHardness(0.2F);
-        this.setLightOpacity(4);
-        this.canRenderInPass(1);
+        setLightOpacity(0);
     }
     
 
     
     @Override
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return icon;
+    	
+    	return icon;
     }
 
     @SideOnly(Side.CLIENT)
@@ -55,18 +58,20 @@ public class BlockLeavesBlood extends BlockLeaves {
     @Override
     public Item getItemDropped(int i, Random random, int j)
     {
+    	
         return Item.getItemFromBlock(NOVA.blockSapling);
     }
 
-
+/*
     @Override
     protected void func_150124_c(World world, int x, int y, int z, int meta, int wat)
     {
-        if (world.rand.nextInt(100) < 10)
+        if (world.rand.nextInt(100) < 35)
         {
             this.dropBlockAsItem(world, x, y, z, new ItemStack(NOVA.itemBloodApple, 1, 0));
         }
     }
+  */
     
     /**
      * Ticks the block if it's been scheduled
@@ -192,14 +197,20 @@ public class BlockLeavesBlood extends BlockLeaves {
    
 
     private void removeLeaves(World world, int posX, int posY, int posZ) {
-    	//System.out.println("RemoveLeaves start");
-    		this.dropBlockAsItem(world, posX, posY, posZ, world.getBlockMetadata(posX, posY, posZ), 0);
-        
-    /*	if (world.rand.nextInt(100) < 50){ 
+    	
+    	
+    	if (world.rand.nextInt(20) == 0){ 
+    		EntityItem drop = new EntityItem(world,posX,posY,posZ);
+            drop.setEntityItemStack(new ItemStack(NOVA.blockSapling));
+            world.spawnEntityInWorld(drop);
+        	}
+        	
+    	
+    	if (world.rand.nextInt(8) == 0){ 
         EntityItem drop = new EntityItem(world,posX,posY,posZ);
         drop.setEntityItemStack(new ItemStack(NOVA.itemBloodApple));
         world.spawnEntityInWorld(drop);
-    	}*/
+    	}
     	world.setBlockToAir(posX, posY, posZ);
     }
 
@@ -216,9 +227,8 @@ public class BlockLeavesBlood extends BlockLeaves {
     
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess iba, int x, int y, int z, int side)
-    {
-        return !Blocks.leaves.isOpaqueCube() || super.shouldSideBeRendered(iba, x, y, z, side);
+    public boolean shouldSideBeRendered(IBlockAccess iba, int x, int y, int z, int side){
+    	return true;
     }
     @Override
     public boolean isOpaqueCube()

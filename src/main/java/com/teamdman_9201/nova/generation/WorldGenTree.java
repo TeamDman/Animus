@@ -22,7 +22,6 @@ public class WorldGenTree extends WorldGenAbstractTree {
      * index - 1 and 2 for 0, 0 and 2 for 1, and 0 and 1 for 2.
      */
     static final         byte[] otherCoordPairs = new byte[]{(byte) 2, (byte) 0, (byte) 0, (byte) 1, (byte) 2, (byte) 1};
-    private static final String __OBFID         = "CL_00000400";
     /**
      * random seed for GenBigTree
      */
@@ -34,7 +33,6 @@ public class WorldGenTree extends WorldGenAbstractTree {
     int[] basePos = new int[]{0, 0, 0};
     int heightLimit;
     int height;
-    private final int minTreeHeight;
     double heightAttenuation = 0.618D;
     double branchDensity     = 1.0D;
     double branchSlope       = 0.381D;
@@ -61,7 +59,6 @@ public class WorldGenTree extends WorldGenAbstractTree {
 
     public WorldGenTree(boolean arg, int p_i2028_2_) {
         super(arg);
-        this.minTreeHeight = p_i2028_2_;
     }
 
     /**
