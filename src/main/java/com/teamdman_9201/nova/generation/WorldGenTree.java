@@ -34,6 +34,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
     int[] basePos = new int[]{0, 0, 0};
     int heightLimit;
     int height;
+    private final int minTreeHeight;
     double heightAttenuation = 0.618D;
     double branchDensity     = 1.0D;
     double branchSlope       = 0.381D;
@@ -58,14 +59,16 @@ public class WorldGenTree extends WorldGenAbstractTree {
      */
     int[][] leafNodes;
 
-    public WorldGenTree(boolean arg) {
+    public WorldGenTree(boolean arg, int p_i2028_2_) {
         super(arg);
+        this.minTreeHeight = p_i2028_2_;
     }
 
     /**
      * Generates a list of leaf nodes for the tree, to be populated by generateLeaves.
      */
     void generateLeafNodeList() {
+    	System.out.println("Generating leaf node list");
         this.height = (int) ((double) this.heightLimit * this.heightAttenuation);
 
         if (this.height >= this.heightLimit) {
@@ -131,7 +134,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
                 --i1;
             }
         }
-
+        System.out.println("done with leaf for loops");
         this.leafNodes = new int[k][4];
         System.arraycopy(aint, 0, this.leafNodes, 0, k);
     }
@@ -144,7 +147,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
         int[] count  = new int[]{0, 0, 0};
         int   i1     = -l;
         int   j1     = -l;
-
+        System.out.println("place block with coords called");
         for (count[p_150529_5_] = coords[p_150529_5_]; i1 <= l; ++i1) {
             count[b1] = coords[b1] + i1;
             j1 = -l;
@@ -173,6 +176,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
      * Gets the rough size of a layer of the tree.
      */
     float layerSize(int p_76490_1_) {
+    	System.out.println("Checking layer size");
         if ((double) p_76490_1_ < (double) ((float) this.heightLimit) * 0.3D) {
             return -1.618F;
         } else {
@@ -202,7 +206,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
      */
     void generateLeafNode(int posX, int posY, int posZ) {
         int l = posY;
-
+        System.out.println("Generating leaf node");
         for (int i1 = posY + this.leafDistanceLimit; l < i1; ++l) {
             float f = this.leafSize(l - posY);
             this.placeBlockWithCoords(posX, l, posZ, f, (byte) 1, NOVA.blockLeaves);
@@ -213,7 +217,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
         int[] aint2 = new int[]{0, 0, 0};
         byte  b0    = 0;
         byte  b1;
-
+        System.out.println("Place block called");
         for (b1 = 0; b0 < 3; ++b0) {
             aint2[b0] = p_150530_2_[b0] - p_150530_1_[b0];
 
@@ -267,7 +271,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
      */
     void generateLeaves() {
         int i = 0;
-
+        System.out.println("Generate Leaves");
         for (int j = this.leafNodes.length; i < j; ++i) {
             int k = this.leafNodes[i][0];
             int l = this.leafNodes[i][1];
@@ -296,7 +300,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
         int[] aint  = new int[]{i, j, l};
         int[] aint1 = new int[]{i, k, l};
         this.placeBlock(aint, aint1, Blocks.log);
-
+        System.out.println("Generate trunk");
         if (this.trunkSize == 2) {
             ++aint[0];
             ++aint1[0];
@@ -317,7 +321,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
     void generateLeafNodeBases() {
         int i = 0;
         int j = this.leafNodes.length;
-
+        System.out.println("retrogen leaves");
         for (int[] aint = new int[]{this.basePos[0], this.basePos[1], this.basePos[2]}; i < j; ++i) {
             int[] aint1 = this.leafNodes[i];
             int[] aint2 = new int[]{aint1[0], aint1[1], aint1[2]};
@@ -339,7 +343,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
         int[] aint2 = new int[]{0, 0, 0};
         byte  b0    = 0;
         byte  b1;
-
+        System.out.println("Check blockline");
         for (b1 = 0; b0 < 3; ++b0) {
             aint2[b0] = p_76496_2_[b0] - p_76496_1_[b0];
 
@@ -390,7 +394,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
         int[] aint  = new int[]{this.basePos[0], this.basePos[1], this.basePos[2]};
         int[] aint1 = new int[]{this.basePos[0], this.basePos[1] + this.heightLimit - 1, this.basePos[2]};
         Block block = this.worldObj.getBlock(this.basePos[0], this.basePos[1] - 1, this.basePos[2]);
-
+        System.out.println("Worldgen checking valid tree location");
         boolean isSoil = block.canSustainPlant(worldObj, basePos[0], basePos[1] - 1, basePos[2], ForgeDirection.UP, (BlockSapling) NOVA.blockSapling);
         if (!isSoil) {
             return false;
@@ -413,7 +417,7 @@ public class WorldGenTree extends WorldGenAbstractTree {
      */
     public void setScale(double p_76487_1_, double p_76487_3_, double p_76487_5_) {
         this.heightLimitLimit = (int) (p_76487_1_ * 12.0D);
-
+        
         if (p_76487_1_ > 0.5D) {
             this.leafDistanceLimit = 5;
         }

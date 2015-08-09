@@ -30,111 +30,70 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockSapling extends net.minecraft.block.BlockSapling implements IGrowable {
 
     IIcon icon;
+    
+
+    
 
     public BlockSapling() {
+    	super();
         float f = 0.4F;
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
         this.setCreativeTab(CreativeTabs.tabDecorations);
     }
 
-    public void updateTick(World world, int posX, int posY, int posZ, Random rnd) {
-    	super.updateTick(world, posX, posY, posZ, rnd);
-        if (!world.isRemote) {
-          
-            if (this.canPlantGrowOnThisBlock(this, world, posX, posY, posZ) && world.getBlockLightValue(posX, posY + 1, posZ) >= 9 && rnd.nextInt(2) == 0) {
-                makeTree(world, posX, posY, posZ, rnd);
-            }
-        }
-    }
+
     
     public boolean canPlantGrowOnThisBlock(Block block, World world, int x, int y, int z){
+    	System.out.println("Checking can sutain");
         return block.canSustainPlant(world, x, y, z, ForgeDirection.UP, this);
     }
     
     @SideOnly(Side.CLIENT)
+    @Override
     public IIcon getIcon(int side, int metadata) {
         return icon;
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void registerBlockIcons(IIconRegister register) {
         this.icon = register.registerIcon(NOVA.MODID + ":blockSapling");
     }
 
-    public void makeTree(World world, int posX, int posY, int posZ, Random rnd) {
-        if (!TerrainGen.saplingGrowTree(world, rnd, posX, posY, posZ)) {
-         
-        	System.out.println("!saplingGrowTree");
-            return;
-        }
-        int l = world.getBlockMetadata(posX, posY, posZ) & 7;
-        System.out.println("l:" + l);
-        Object  object    = new WorldGenTree(true);//.nextInt(10) == 0 ? new WorldGenBigTree
-        // (true) : new WorldGenTrees(true);
-        int     i1        = 0;
-        int     j1        = 0;
-        boolean isBigTree = false;
+    
+    @Override
+    public void func_149878_d(World world, int x, int y, int z, Random rand)
+    {
+        if(!world.isRemote)
+        {
+            int meta = world.getBlockMetadata(x, y, z);
 
-        if (l == 1) {
-            for (i1 = 0; i1 >= -1; --i1) {
-                for (j1 = 0; j1 >= -1; --j1) {
-                    if (this.isThisSapling(world, posX + i1, posY, posZ + j1, 1) && this
-                            .isThisSapling(world, posX + i1 + 1, posY, posZ + j1, 1) && this
-                            .isThisSapling(world, posX + i1, posY, posZ + j1 + 1, 1) && this
-                            .isThisSapling(world, posX + i1 + 1, posY, posZ + j1 + 1, 1)) {
-                        object = new WorldGenMegaPineTree(false, rnd.nextBoolean());
-                        isBigTree = true;
-                    }
-                }
+            world.setBlockToAir(x, y, z);
+            WorldGenerator tree = new WorldGenTree(true, 5);
+            if (!tree.generate(world, rand, x, y, z))
+            {
+                world.setBlock(x, y, z, this, meta, 2);
             }
-            if (!isBigTree) {
-                j1 = 0;
-                i1 = 0;
-                object = new WorldGenTaiga2(true);
-            }
-        }
-
-        Block block = Blocks.air;
-
-        if (isBigTree) {
-            world.setBlock(posX + i1, posY, posZ + j1, block, 0, 4);
-            world.setBlock(posX + i1 + 1, posY, posZ + j1, block, 0, 4);
-            world.setBlock(posX + i1, posY, posZ + j1 + 1, block, 0, 4);
-            world.setBlock(posX + i1 + 1, posY, posZ + j1 + 1, block, 0, 4);
-        } else {
-            world.setBlock(posX, posY, posZ, block, 0, 4);
-        }
-
-        if (!((WorldGenerator) object).generate(world, rnd, posX + i1, posY, posZ + j1)) {
-            if (isBigTree) {
-                world.setBlock(posX + i1, posY, posZ + j1, this, l, 4);
-                world.setBlock(posX + i1 + 1, posY, posZ + j1, this, l, 4);
-                world.setBlock(posX + i1, posY, posZ + j1 + 1, this, l, 4);
-                world.setBlock(posX + i1 + 1, posY, posZ + j1 + 1, this, l, 4);
-            } else {
-                world.setBlock(posX, posY, posZ, this, l, 4);
-            }
+        
         }
     }
-
-    public boolean isThisSapling(World world, int posX, int posY, int posZ, int meta) {
-        return world.getBlock(posX, posY, posZ) == this;
-    }
-
-    public boolean func_149851_a(World world, int posX, int posY, int posZ, boolean p_149851_5_) {
-        return true;
-    }
-
-    public boolean func_149852_a(World world, Random rnd, int posX, int posY, int posZ) {
-        return (double) world.rand.nextFloat() < 0.45D;
-    }
-
-    public void func_149853_b(World world, Random rnd, int posX, int posY, int posZ) {
-        this.makeTree(world, posX, posY, posZ, rnd);
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item item, CreativeTabs tab, List list)
+    {
+        list.add(new ItemStack(this, 1, 0));
     }
 
     @Override
-    public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_) {
-        p_149666_3_.add(new ItemStack(p_149666_1_, 1, 0));
+    public Item getItemDropped(int wut, Random random, int yeah)
+    {
+        return Item.getItemFromBlock(this);
     }
+    
+    public boolean isThisSapling(World world, int posX, int posY, int posZ, int meta) {
+    	System.out.println("checking if block is this sapling");
+    	return world.getBlock(posX, posY, posZ) == this;
+    }
+
 }

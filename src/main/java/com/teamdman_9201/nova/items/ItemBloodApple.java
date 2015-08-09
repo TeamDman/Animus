@@ -48,7 +48,7 @@ public class ItemBloodApple extends ItemFood {
     		 //and increases your own network
     		 
     		 if (NOVABloodappleHandler.addBloodToAltar(player) == false)
-    			 SoulNetworkHandler.addCurrentEssenceToMaximum(SoulNetworkHandler.getUsername(player), 100, 2500);
+    			 SoulNetworkHandler.addCurrentEssenceToMaximum(SoulNetworkHandler.getUsername(player), 150, 2500);
         
     	 }
     	 return super.onEaten(food, world, player);

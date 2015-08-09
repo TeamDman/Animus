@@ -21,10 +21,10 @@ public class NOVABloodappleHandler {
 			return false;
 		
 		
-			if(findAndFillAltar(player.getEntityWorld(), player, (int)(100)))
+			if(findAndFillAltar(player.getEntityWorld(), player, (int)(150)))
 				{									
-				player.addPotionEffect(new PotionEffect(Potion.confusion.id, 400));
-				player.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,400));
+				player.addPotionEffect(new PotionEffect(Potion.confusion.id, 300));
+				player.addPotionEffect(new PotionEffect(Potion.digSlowdown.id,300));
 				player.addPotionEffect(new PotionEffect(Potion.hunger.id,400));
 				return true;
 				}

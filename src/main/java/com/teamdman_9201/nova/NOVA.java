@@ -2,7 +2,7 @@ package com.teamdman_9201.nova;
 
 import com.teamdman_9201.nova.blocks.BlockAntiBlock;
 import com.teamdman_9201.nova.blocks.BlockDirtChest;
-import com.teamdman_9201.nova.blocks.BlockLeaves;
+import com.teamdman_9201.nova.blocks.BlockLeavesBlood;
 import com.teamdman_9201.nova.blocks.BlockSapling;
 import com.teamdman_9201.nova.generation.WorldGenerator;
 import com.teamdman_9201.nova.handlers.NOVAEventHandler;
@@ -181,7 +181,7 @@ public class NOVA {
 
     private void initVars() {
         blockDirtChest = new BlockDirtChest();
-        blockLeaves = new BlockLeaves();
+        blockLeaves = new BlockLeavesBlood();
         blockSapling = new BlockSapling();
         blockAntiBlock = new BlockAntiBlock();
         itemBoundSickle = new ItemBoundSickle();
