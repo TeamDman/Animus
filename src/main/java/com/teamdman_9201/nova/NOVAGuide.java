@@ -1,14 +1,5 @@
 package com.teamdman_9201.nova;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
 import WayofTime.alchemicalWizardry.ModBlocks;
 import WayofTime.alchemicalWizardry.ModItems;
 import amerifrance.guideapi.api.GuideRegistry;
@@ -21,6 +12,14 @@ import amerifrance.guideapi.categories.CategoryItemStack;
 import amerifrance.guideapi.entries.EntryText;
 import amerifrance.guideapi.pages.PageIRecipe;
 import amerifrance.guideapi.pages.PageUnlocText;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TeamDman on 2015-07-30.
@@ -58,9 +57,10 @@ public class NOVAGuide {
 
         addPage("Sigil of Chains", sigils, "sigils.SigilOfChains.body", new PageIRecipe(new ShapedOreRecipe(NOVA.itemSigilOfChains, "ABA", "DCD", "AEA", 'A', Blocks.iron_bars, 'B', Items.glass_bottle, 'C', ModItems.imbuedSlate, 'D', Items.ender_pearl, 'E', ModItems.magicianBloodOrb)));
         addPage("Sigil of Transposition", sigils, "sigils.SigilOfTransposition.body", new PageIRecipe( new ShapedOreRecipe(NOVA.itemSigilOfTransposition,"ABA", "BCB", "ADA", 'A', Blocks.obsidian, 'B', Items.ender_pearl, 'C', ModItems.demonicSlate, 'D', ModItems.masterBloodOrb)));
+        addPage("Sigil of Consumption", sigils, "sigils.SigilOfConsumption.body", new PageIRecipe(new ShapedOreRecipe(NOVA.itemSigilOfConsumption,"ABA","BCB","ADA",'A',Blocks.end_stone,'B',Blocks.redstone_lamp,'C',ModItems.demonicSlate,'D',ModItems.masterBloodOrb)));
 
-        addPage("Anti Block", blocks, "blocks.AntiBlock.body1", "blocks.AntiBlock.body2");
         addPage("Dirt Chest", blocks, "blocks.DirtChest.body", new PageIRecipe(new ShapedOreRecipe(NOVA.blockDirtChest,"AAA","ABA","AAA",'A', Blocks.dirt,'B',Blocks.planks)));
+        addPage("Blood Trees", blocks, "blocks.BloodSapling.body");
 
         ArrayList<CategoryAbstract> categories = new ArrayList<CategoryAbstract>();
         categories.add(new CategoryItemStack(rituals, "Rituals", new ItemStack(ModItems.activationCrystal)));

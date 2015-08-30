@@ -90,12 +90,22 @@ repositories {
 }
 
 dependencies {
-    compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
-    compile "codechicken:NotEnoughItems:1.7.10-1.0.5.111:dev"
+//    compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
+//    compile "codechicken:CodeChickenLib:1.7.10-1.1.1.106:dev"
+//    compile "codechicken:NotEnoughItems:1.7.10-1.0.5.111:dev"
+//    compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
     compile "info.amerifrance.guideapi:Guide-API:1.7.10-1.0.1-20:deobf"
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
+task copyModDeps(type: Copy, dependsOn: "extractUserDev") {
+    from { configurations.compile }
+    include "**/*CodeChickenCore*.jar", "**/*NotEnoughItems*.jar"
+    into file(minecraft.runDir + "/mods")
+
+    mustRunAfter "deobfBinJar"
+    mustRunAfter "repackMinecraft"
+}
 
 jar {
     dependsOn "incrementBuildNumber"

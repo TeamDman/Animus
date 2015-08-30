@@ -13,11 +13,11 @@ import java.util.Random;
 /**
  * Created by TeamDman on 2015-04-13.
  */
-public class ItemBlockSapling extends ItemBlock {
+public class ItemBlockBloodSapling extends ItemBlock {
 
     private static Random rand = new Random();
 
-    public ItemBlockSapling(Block arg) {
+    public ItemBlockBloodSapling(Block arg) {
         super(NOVA.blockSapling);
     }
 

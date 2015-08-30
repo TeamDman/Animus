@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -14,6 +15,13 @@ public class ItemUnstableCoal extends Item {
 
     public ItemUnstableCoal() {
     }
+
+    @Override
+    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List lore, boolean p_77624_4_) {
+        lore.add(StatCollector.translateToLocal("item.itemUnstableCoal.lore"));
+    }
+
+
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer me) {

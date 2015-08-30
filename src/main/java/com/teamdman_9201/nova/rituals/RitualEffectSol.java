@@ -1,7 +1,12 @@
 package com.teamdman_9201.nova.rituals;
 
+import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
+import WayofTime.alchemicalWizardry.api.rituals.IMasterRitualStone;
+import WayofTime.alchemicalWizardry.api.rituals.RitualComponent;
+import WayofTime.alchemicalWizardry.api.rituals.RitualEffect;
+import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
 import com.teamdman_9201.nova.NOVA;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -11,13 +16,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
-import WayofTime.alchemicalWizardry.api.rituals.IMasterRitualStone;
-import WayofTime.alchemicalWizardry.api.rituals.RitualComponent;
-import WayofTime.alchemicalWizardry.api.rituals.RitualEffect;
-import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
 
 /**
  * Created by TeamDman on 2015-05-28.
@@ -117,7 +115,7 @@ public class RitualEffectSol extends RitualEffect {
             if (world.getBlock(x, y + 1, z).getLightValue() > 0) {
                 int[] pos = getNextBlock(world, x, z, radius);
                 if (pos == null) {
-                    source.dropBlockAsItem(world, x, y + 1, z, meta, 25);
+                    source.dropBlockAsItem(world, x, y + 1, z, meta, 0);
                 } else {
                     world.setBlock(pos[0], pos[1] + 1, pos[2], source);
                     if (radius==5)

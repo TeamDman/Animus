@@ -1,12 +1,11 @@
 #Items
 item.itemSuperCoal.name=Super Coal
 item.itemUnstableCoal.name=Unstable Coal
+item.itemUnstableCoal.lore=The embodiment of a bad time
 item.itemSlotIdentifier.name=Slot Identifier
-
 item.itemSigilOfTransposition.name=Sigil of Transposition
 item.itemSigilOfChains.name=Sigil of Phantom Chains
 item.itemMobSoul.name=Mob Soul
-
 item.itemWoodenSickle.name=Wooden Sickle
 item.itemStoneSickle.name=Stone Sickle
 item.itemIronSickle.name=Iron Sickle
@@ -15,10 +14,13 @@ item.itemDiamondSickle.name=Diamond Sickle
 item.itemBoundSickle.name=Bound Sickle
 item.itemBloodApple.name=Bloody Apple
 item.itemRedundantOrb.name=Orb of Redundancy
+item.itemDev.name=/Dev/
+item.itemSigilOfConsumption.name=Sigil of Consumption
+item.itemAltarDiviner.name=Altar Assembler
 
 #Tiles
 tile.blockDirtChest.name=Dirt Chest 9002
-tile.blockLeaves.name=Red Oak Leaves
+tile.blockLeaves.name=Blood Leaves
 tile.blockSapling.name=Blood Sapling
 tile.blockAntiBlock.name=Anti Block
 
@@ -64,7 +66,7 @@ book.NOVA.items.RedundantOrb.body=You have never regretted anything this much...
 
 book.NOVA.sigils.SigilOfChains.body=In your endeavor of manipulating your own soul, you have discovered the secret of control over the souls of weaker beings. With this sigil, you can capture the souls of mobs into your inventory, allowing for easy transport of multiple mobs long distances at once. However, it would be foolish to assume you had the willpower to capture the souls of stronger beings, say, a wither...
 book.NOVA.sigils.SigilOfTransposition.body=After many frustrating hours of moving the contents of chests from one location to another, you figured that there had to be a better way. So you created one! With the Sigil of Transposition, you can move easily move a block from one location to another! Be warned, this comes at a hefty price, more so for moving more complicated blocks.
+book.NOVA.sigils.SigilOfConsumption.body=After the construction of a beautiful structure, nobody wants to be left to take down scaffoldings, so, of course, there is now a sigil for that. The sigil of consumption will when right clicked on a block, transform that block into an anti-block. Antiblocks spread to adjacent blocks of the same type as the initial placement. Once the antiblocks have finished spreading, you can destroy any of them to begin a reaction that removes them all.
 
-book.NOVA.blocks.AntiBlock.body1=In your boredom you decided to place a block of cobblestone in your (T3) altar. Lo and behold, it actually did something! With this marvellous creation which you have deemed the "Anti Block", you can deconstruct large structures with ease.
-book.NOVA.blocks.AntiBlock.body2=Simply place the anti block in the first slot of the crafting withdow with another block in the second window the set the filter on the block. Then you can place the block in the world and watch as it infects all nearby blocks matching the filter. Breaking any of these infected blocks will result in the deconstruction of the structure.
 book.NOVA.blocks.DirtChest.body=By combining 8 dirt in a chest pattern, you have managed to create the ultimate combination of efficiency and class. With this container, deemed the Dirt Chest 9002, you can store an amazing 1 slot worth of items.
+book.NOVA.blocks.BloodSapling.body=In order to accelerate your decent into blood wizardry, you required more blood. But where can you easily obtain such large quantities this early? Enter, the blood sapling. Created by placing an oak sapling in a t1 altar with a little blood, this tree will yield blood apples, which can be consumed near the altar to fill it with a small amount.

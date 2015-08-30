@@ -18,7 +18,7 @@ public class NOVAEventHandler {
 
     @SubscribeEvent
     public void onClientChatRecieved(ClientChatReceivedEvent event) {
-        if (NOVA.doLowerChat) {
+        if (NOVA.doLowerChat && !event.message.getUnformattedText().contains("http")) {
             event.message = new ChatComponentText(event.message.getFormattedText().toLowerCase());
         }
     }
