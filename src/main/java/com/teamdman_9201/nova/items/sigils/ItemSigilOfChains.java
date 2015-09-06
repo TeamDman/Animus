@@ -1,7 +1,9 @@
 package com.teamdman_9201.nova.items.sigils;
 
+import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.IHoardDemon;
+import WayofTime.alchemicalWizardry.common.items.EnergyItems;
+import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
 import com.teamdman_9201.nova.NOVA;
-
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,10 +19,6 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import WayofTime.alchemicalWizardry.common.demonVillage.demonHoard.demon.IHoardDemon;
-import WayofTime.alchemicalWizardry.common.items.EnergyItems;
-import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
-
 /**
  * Created by TeamDman on 2015-06-09.
  */
@@ -34,9 +32,6 @@ public class ItemSigilOfChains extends EnergyItems {
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List
             par3List, boolean par4) {
-        par3List.add(StatCollector.translateToLocal("tooltip.sigilofchains.desc1"));
-        par3List.add(StatCollector.translateToLocal("tooltip.sigilofchains.desc2"));
-
         if (!(par1ItemStack.getTagCompound() == null)) {
             par3List.add(StatCollector.translateToLocal("tooltip.owner.currentowner") + " " +
                     par1ItemStack.getTagCompound().getString("ownerName"));

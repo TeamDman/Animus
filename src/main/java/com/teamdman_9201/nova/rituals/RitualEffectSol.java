@@ -9,7 +9,8 @@ import WayofTime.alchemicalWizardry.common.spell.complex.effect.SpellHelper;
 import com.teamdman_9201.nova.NOVA;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -21,8 +22,8 @@ import java.util.List;
  * Created by TeamDman on 2015-05-28.
  */
 public class RitualEffectSol extends RitualEffect {
-    public  int reagentDrain = 5;
-    private int upkeep       = NOVA.ritualData.get("upkeepSol");
+    public int reagentDrain = 5;
+    private int upkeep = NOVA.ritualData.get("upkeepSol");
 
     public boolean checkSpot(World world, int[] pos) {
         int x = pos[0];
@@ -44,9 +45,9 @@ public class RitualEffectSol extends RitualEffect {
     }
 
     public int[] getNextBlock(World world, int ritualX, int ritualZ, int radius) {
-        int            startChunkX = ritualX >> 4;
-        int            startChunkZ = ritualZ >> 4;
-        IChunkProvider provider    = world.getChunkProvider();
+        int startChunkX = ritualX >> 4;
+        int startChunkZ = ritualZ >> 4;
+        IChunkProvider provider = world.getChunkProvider();
         for (int chunkX = startChunkX - radius; chunkX <= startChunkX + radius; chunkX++) {
             for (int chunkZ = startChunkZ - radius; chunkZ <= startChunkZ + radius; chunkZ++) {
                 provider.loadChunk(chunkX, chunkZ);
@@ -94,12 +95,12 @@ public class RitualEffectSol extends RitualEffect {
 
     @Override
     public void performEffect(IMasterRitualStone ritualStone) {
-        String owner          = ritualStone.getOwner();
-        World  world          = ritualStone.getWorld();
-        int    x              = ritualStone.getXCoord();
-        int    y              = ritualStone.getYCoord();
-        int    z              = ritualStone.getZCoord();
-        int    currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
+        String owner = ritualStone.getOwner();
+        World world = ritualStone.getWorld();
+        int x = ritualStone.getXCoord();
+        int y = ritualStone.getYCoord();
+        int z = ritualStone.getZCoord();
+        int currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
         if (currentEssence < this.getCostPerRefresh()) {
             EntityPlayer entityOwner = SpellHelper.getPlayerForUsername(owner);
             if (entityOwner == null) {
@@ -107,23 +108,30 @@ public class RitualEffectSol extends RitualEffect {
             }
             SoulNetworkHandler.causeNauseaToPlayer(owner);
         } else {
-            Block source = world.getBlock(x, y + 1, z);
-            int meta = world.getBlockMetadata(x, y + 1, z);
-            int radius = this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent, reagentDrain, false) ? 5 : 1;
-            if (source == Blocks.air)
+            TileEntity tile = world.getTileEntity(x, y + 1, z);
+            if (tile==null)
                 return;
-            if (world.getBlock(x, y + 1, z).getLightValue() > 0) {
-                int[] pos = getNextBlock(world, x, z, radius);
-                if (pos == null) {
-                    source.dropBlockAsItem(world, x, y + 1, z, meta, 0);
-                } else {
-                    world.setBlock(pos[0], pos[1] + 1, pos[2], source);
-                    if (radius==5)
-                    this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent, reagentDrain, true);
+            if (tile instanceof IInventory) {
+                IInventory chest = (IInventory) tile;
+                if (chest.getSizeInventory() > 0) {
+                    int radius = this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent, reagentDrain, false) ? 5 : 1;
+                    for (int slot = 0; slot < chest.getSizeInventory(); slot++) {
+                        if (chest.getStackInSlot(slot) != null && Block.getBlockFromItem(chest.getStackInSlot(slot).getItem()) != null) {
+                            int[] pos = getNextBlock(world, x, z, radius);
+                            if (pos == null) {
+                                return;
+                            } else {
+                                world.setBlock(pos[0], pos[1] + 1, pos[2], Block.getBlockFromItem(chest.getStackInSlot(slot).getItem()), chest.getStackInSlot(slot).getItemDamage(), 3);
+                                chest.decrStackSize(slot, 1);
+                                if (radius == 5)
+                                    this.canDrainReagent(ritualStone, ReagentRegistry.virtusReagent, reagentDrain, true);
+                                SoulNetworkHandler.syphonFromNetwork(owner, this.getCostPerRefresh());
+                                return;
+                            }
+                        }
+                    }
                 }
             }
-            world.setBlockToAir(x, y + 1, z);
-            SoulNetworkHandler.syphonFromNetwork(owner, this.getCostPerRefresh());
         }
         if (world.rand.nextInt(10) == 0) {
             SpellHelper.sendIndexedParticleToAllAround(world, x, y, z, 20, world.provider.dimensionId, 1, x, y, z);

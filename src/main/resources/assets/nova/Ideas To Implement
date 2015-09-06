@@ -10,28 +10,21 @@
 	Just don't run saveNBTData
 * Ritual of chance
 	Generates a random at the cost of 15m lp and some other reagents
-* Goat mob to give lots of LP when sacrificed by hand
 * Enchanting ritual osmosis style
 * Sigil to remove wither effect
 * Mob Spawning ritual
 	Increases rate at which mobs spawn, cursed earth style
-* Corporeal Alteration Engine 
-	Complex Spell component, converts applicable matter in it's AOE to another type of matter. Input and output would be one of the four elemental blocks, to tell it what to target. (For instance Ice Maker and Earth Former on the input and output respectively would convert any water source blocks in the AOE into stone or dirt, Crucible of Fire -> Wind Generator converts lava source blocks into glass, etc.)
 * Ritual of the Distant Scapegoat
 	imprison a mob in a Ritual of Containment with the Scapegoat ritual around it. (Above/below, whatever shape works out best.) If the Blood Mage is slain, their captive dies instead and the Mage is returned to full health. Probably best to code it to kill everything trapped in the ritual at once so that some joker doesn't just throw 40 mobs in at once and run around like they're an immortal with a death wish.
-* Bound Tool ability inhibitor
-	Removes right click ability of bound pick when enabled
-* More altar runes
-	Runes to improve altar function if it is day/night
-* Assembly riual
-	Give item to ritual, get blueprint. Give blueprint and all raw resources, autocrafts item.
-* Construction sigil
-	Gammel: Recursive cobble destruction, touch one all dissapear
 * Blood Furnace
 	for caco, magical crops speed furnaces for lp cost. infusing previous tier furnace starting with vanilla in an altar would be the recipe
+* Immobilization sigil
+	no entities can move
+* Creeper splosion prevention
+	creeper no boom
+* ender stopper
+	ender no go go
 
-
-//TODO: fix orb of redundency recipe to require endermen souls
 //TODO: change Pow to repel
 //player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed)
 // .applyModifier(...)

@@ -1,17 +1,16 @@
 package com.teamdman_9201.nova.items;
 
-import WayofTime.alchemicalWizardry.ModBlocks;
 import WayofTime.alchemicalWizardry.api.rituals.IRitualStone;
-import WayofTime.alchemicalWizardry.common.block.BlockAltar;
 import WayofTime.alchemicalWizardry.common.block.BlockMasterStone;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEAltar;
 import com.teamdman_9201.nova.NOVA;
-import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -20,13 +19,18 @@ public class ItemDev extends Item {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List data, boolean wut) {
         data.add("Is Dev Env: " + NOVA.isDevEnv);
+        data.add("Damage: infinite");
+        data.add("Sneak damage: AOE kill");
+        data.add("Right click mob: voids mob");
+        data.add("Sneak right click mob: AOE voids mobs");
+        data.add("Right click MRS: prints ritual design code");
+        data.add("Right click log: AOE voids logs");
+        data.add("Sneak right click block: drops block as item");
     }
 
     @Override
     public boolean onItemUseFirst(ItemStack devItem, EntityPlayer player, World world, int x, int y, int z, int metaa, float dx, float dy, float dz) {
-        if (world.isRemote)
-            return false;
-        if (world.getBlock(x,y,z) instanceof BlockMasterStone) {
+        if (world.getBlock(x,y,z) instanceof BlockMasterStone && world.isRemote) {
             for (int xPos = -50; xPos < 50; ++xPos) {
                 for (int yPos = 0; yPos < 256; yPos++) {
                     for (int zPos = -50; zPos < 50; ++zPos) {
@@ -64,7 +68,7 @@ public class ItemDev extends Item {
                     }
                 }
             }
-            return true;
+            return false;
         } else if (world.getBlock(x,y,z) == Blocks.log) {
             for (int posX = -50; posX < 50; posX++) {
                 for (int posY = -50; posY < 50; posY++) {
@@ -75,29 +79,50 @@ public class ItemDev extends Item {
                     }
                 }
             }
-            return true;
-        } else if (world.getBlock(x,y,z) == ModBlocks.blockAltar) {
-            BlockAltar altar = (BlockAltar) world.getBlock(x,y,z);
-            TEAltar te = (TEAltar) world.getTileEntity(x,y,z);
-            System.out.printf("\nTier %d\n",te.getTier());
-            for (int posX = -50;posX<50;posX++) {
-                for (int posY = -50;posY<50;posY++) {
-                    for (int posZ = -50; posZ<50;posZ++) {
-                        Block b = world.getBlock(x+posX,y+posY,z+posZ);
-                        if (b != Blocks.dirt && b!=Blocks.grass && b!=ModBlocks.blockAltar && b != Blocks.air && b!=Blocks.bedrock)
-                            System.out.printf("tier%d.put(new pos(%d,%d,%d),Blocks.%s;\n",te.getTier(),posX,posY,posZ,b.getLocalizedName());
-                    }
-                }
-            }
-            return true;
+            return false;
         }
         if (player.isSneaking()) {
-            EntityItem drop = new EntityItem(world,x,y,z,new ItemStack(world.getBlock(x,y,z)));
-            world.spawnEntityInWorld(drop);
-            world.setBlockToAir(x,y,z);
-            world.playSound(x,y,z,"random.fizz",10,1,true);
-            return true;
+            world.playSound(x, y, z, "random.fizz", 10, 1, true);
+            if (!world.isRemote) {
+                EntityItem drop = new EntityItem(world, x, y, z, new ItemStack(world.getBlock(x, y, z)));
+                world.spawnEntityInWorld(drop);
+            }
+            world.setBlockToAir(x, y, z);
+            return false;
         }
-    return  false;
+        return  false;
+    }
+
+    @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase hit, EntityLivingBase hitter) {
+        DamageSource ultimate = new DamageSource("NOVA.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor().setDamageIsAbsolute();
+        hit.attackEntityFrom(ultimate, Integer.MAX_VALUE);
+        if (hitter.isSneaking()) {
+            int d0 = 50;
+            AxisAlignedBB region = AxisAlignedBB.getBoundingBox(hitter.posX - 1, hitter.posY - 2, hitter.posZ - 1, hitter.posX + 1, hitter.posY + 2, hitter.posZ + 1).expand(d0, d0, d0);
+            List<EntityLivingBase> list = hitter.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, region);
+            for (EntityLivingBase mob : list) {
+                if (mob != hitter) {
+                    mob.attackEntityFrom(ultimate,Integer.MAX_VALUE);
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase mob) {
+        mob.setDead();
+        if (player.isSneaking()) {
+            int d0 = 50;
+            AxisAlignedBB region = AxisAlignedBB.getBoundingBox(player.posX - 1, player.posY - 2, player.posZ - 1, player.posX + 1, player.posY + 2, player.posZ + 1).expand(d0, d0, d0);
+            List<EntityLivingBase> list = player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, region);
+            for (EntityLivingBase mobb : list) {
+                if (mobb != player) {
+                    mobb.setDead();
+                }
+            }
+        }
+        return true;
     }
 }

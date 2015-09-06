@@ -24,6 +24,10 @@ tile.blockLeaves.name=Blood Leaves
 tile.blockSapling.name=Blood Sapling
 tile.blockAntiBlock.name=Anti Block
 
+#BloodMagicForgotToDoThese
+tile.bloodRune.name=Blood Rune
+tile.crystalBlock.name=Crystal Cluster
+
 #Rituals
 ritual.NOVA.sol=Ritual of Sol
 ritual.NOVA.luna=Ritual of Luna
@@ -32,8 +36,6 @@ ritual.NOVA.dev=Ritual of Ritual Building
 ritual.NOVA.entropy=Ritual of Entropy
 
 #ToolTips
-tooltip.sigilofchains.desc1=Used to contain monsters against their will
-tooltip.sigilofchains.desc2=they don't appreciate it tho.
 tooltip.sigil.state.empty=Empty
 tooltip.sigil.state.full=Holding
 
@@ -52,21 +54,19 @@ book.NOVA.title=NOVA for dummies
 book.NOVA.welcome=Welcome to my guidebook! Within you will find information about all the additions this mod has to offer.
 book.NOVA.displayname=NOVA for dummies
 
-book.NOVA.rituals.Sol.body=The Ritual of Sol allows you to easily light up a large area. Once the ritual is activated, you can place blocks on top of the Master Ritual Stone (Which will henceforth be referred to as the MRS) and those blocks will be teleported to dark areas in a 1 chunk radius. The radius can be increased by supplying the MRS with virtus reagent.
-book.NOVA.rituals.Luna.body=The Ritual of Luna is effectively the opposite of the Ritual of Sol. Once the ritual is activated, all nearby light sources will be removed and dropped above the MRS as items for you to pick up. The range may again be increased by supplying the MRS with virtus reagent.
-book.NOVA.rituals.Uncreation.body1=The ritual of uncreation is an extremely powerful ritual which allows you to dismantle items, in a way. However, at the moment you have only discovered how to use it to disenchant items. Continue to the next page for instructions.
-book.NOVA.rituals.Uncreation.body2=To disenchant an item with this ritual, you must drop the item in question along with any number of vanilla books. Once the ritual is activated, the enchanted item will have its enchantments transferred to the books. You have also discovered that you can use the ritual to split higher level books into their lower levels.
-book.NOVA.rituals.Entropy.body1=You, being the logically minded individual you are, hate wasting items. Trashcans appall you. You believe that all items have a use, the problem is that their use is not always obvious. But now it is! With this ritual, you can convert any item into cobblestone. Sure, it may not be the item's most efficient use, but it is better than voiding it.
-book.NOVA.rituals.Entropy.body2=To use the ritual, simply place a chest over the MRS and activate the ritual. As long as the ritual is active, items within the chest will be converted to cobblestone at seemingly random ratios. However, conversion will only take place if there is no cobblestone in the inventory.
+book.NOVA.rituals.Sol.body=The Ritual of Sol allows you to easily light up a large area. Once the ritual is activated, you can place blocks on top of the Master Ritual Stone (Which will henceforth be referred to as the MRS) and those blocks will be teleported to dark areas in a 1 chunk radius. The radius can be increased by supplying the ritual with virtus reagent.
+book.NOVA.rituals.Luna.body=The Ritual of Luna is the opposite of the Ritual of Sol. Once the ritual is activated, all nearby light sources will be removed and dropped above the MRS as items for you to pick up. The range may again be increased by supplying the MRS with virtus reagent.
+book.NOVA.rituals.Uncreation.body=The Ritual of Uncreation is an extremely powerful ritual which allows you to dismantle items, in a way. However, at the moment it can only be used to disenchant items. To disenchant an item, you must drop the item along with any number of vanilla books on the MRS. Once the ritual is activated, the enchanted item will have its enchantments transferred to the books. You can also use the ritual to split higher level books into their lower levels.
+book.NOVA.rituals.Entropy.body=The Ritual of Entropy converts items placed in a chest above the MRS into cobblestone. The amount of cobble varies per item, but it can be an effective way to void items in return for large quantities. The ritual will only convert items if all the cobblestone has been removed from the inventory.
 
-book.NOVA.items.Sickles.body1=You have managed to create a brand new type of weapon, useful for taking on hordes of enemies at once. By creating sickles of the normal tool materials, you can attack all enemies near your target concurrently.
-book.NOVA.items.UnstableCoal.body=In your madness you decided that you could do better than pathetic charcoal for your fuel, so you created the science defying monster that is Unstable Coal. With a burn time over 100 times that of coal, the opportunities are limitless. To create it, simply place a nether star, a block of coal, flint and steel, and gunpowder in an alchemic chemestry set with a T5 blood orb.
-book.NOVA.items.Sapling.body=By infusing a sapling with blood in a T1 altar, you have managed to create a tree that bears fruit filled with blood. By consuming these fruit, you can add 100lp to your soul network. Take note that if your network has 2,500 LP no more will be added. If you are close to a blood altar however, the life essence will be ripped from you and added to the Altar. This transition has some... unpleasant side effects.
-book.NOVA.items.RedundantOrb.body=You have never regretted anything this much...
+book.NOVA.items.Sickles.body=These sickles are a useful weapon allowing you to attack all enemies around you at once. The range increases with each tier of sickle. The bound variant can be used to sacrifice multiple enemies at once, allowing for easier manual sacrifice. Once the blood altar is full, it will not sacrifice more enemies.
+book.NOVA.items.UnstableCoal.body=What can only be described as insane, unstable coal will burn for an extremely long time. Be cautious not to right click with it.
+book.NOVA.items.Sapling.body=By infusing a sapling with blood in a T1 altar, you can create a tree that bears fruit filled with blood. By consuming these fruit, you can add 100lp to your soul network. Take note that if your network has 2,500 LP no more will be added. If you are close to a blood altar however, the life essence will be ripped from you and added to the Altar. This transition has some... unpleasant side effects.
+book.NOVA.items.RedundantOrb.body=You will never regret crafting an item more than this one.
+book.NOVA.items.Dev.body=This is a powerful creative only testing item.
 
-book.NOVA.sigils.SigilOfChains.body=In your endeavor of manipulating your own soul, you have discovered the secret of control over the souls of weaker beings. With this sigil, you can capture the souls of mobs into your inventory, allowing for easy transport of multiple mobs long distances at once. However, it would be foolish to assume you had the willpower to capture the souls of stronger beings, say, a wither...
-book.NOVA.sigils.SigilOfTransposition.body=After many frustrating hours of moving the contents of chests from one location to another, you figured that there had to be a better way. So you created one! With the Sigil of Transposition, you can move easily move a block from one location to another! Be warned, this comes at a hefty price, more so for moving more complicated blocks.
-book.NOVA.sigils.SigilOfConsumption.body=After the construction of a beautiful structure, nobody wants to be left to take down scaffoldings, so, of course, there is now a sigil for that. The sigil of consumption will when right clicked on a block, transform that block into an anti-block. Antiblocks spread to adjacent blocks of the same type as the initial placement. Once the antiblocks have finished spreading, you can destroy any of them to begin a reaction that removes them all.
+book.NOVA.sigils.SigilOfChains.body=This sigil can be used to contain mobs souls, allowing for easy transport and release. Simply right click on a mob to capture it's soul, and right click the soul to release the mob. Will not work on boss mobs.
+book.NOVA.sigils.SigilOfTransposition.body=The Sigil of Transposition can be used to transfer blocks from one position to another. Simply right click the target block, and right click again where you want it to move to.
+book.NOVA.sigils.SigilOfConsumption.body=By right clicking on a block with the Sigil of Consumption, you can transform that block and it's surrounding blocks into antiblocks. You may then break one antiblock, which will cause all the others to disappear.
 
-book.NOVA.blocks.DirtChest.body=By combining 8 dirt in a chest pattern, you have managed to create the ultimate combination of efficiency and class. With this container, deemed the Dirt Chest 9002, you can store an amazing 1 slot worth of items.
-book.NOVA.blocks.BloodSapling.body=In order to accelerate your decent into blood wizardry, you required more blood. But where can you easily obtain such large quantities this early? Enter, the blood sapling. Created by placing an oak sapling in a t1 altar with a little blood, this tree will yield blood apples, which can be consumed near the altar to fill it with a small amount.
+book.NOVA.blocks.DirtChest.body=With an amazing capacity of 1 slot, this chest is the ultimate storage block.

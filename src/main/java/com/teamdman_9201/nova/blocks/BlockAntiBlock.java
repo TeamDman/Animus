@@ -40,7 +40,7 @@ public class BlockAntiBlock extends Block {
 
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
-        world.scheduleBlockUpdate(x, y, z, this, 5);
+        world.scheduleBlockUpdate(x, y, z, this, (int) world.rand.nextFloat()*20 + 5);
     }
 
 
@@ -76,7 +76,7 @@ public class BlockAntiBlock extends Block {
                     if (decaying) {
                         if (adj == NOVA.blockAntiBlock) {
                             world.setBlockMetadataWithNotify(x + ox, y + oy, z + oz, 1, 1);
-                            world.scheduleBlockUpdate(x + ox, y + oy, z + oz, adj, 5);
+                            world.scheduleBlockUpdate(x + ox, y + oy, z + oz, adj, (int) world.rand.nextFloat() * 20+5);
                         }
                     } else {
                         if (Block.getIdFromBlock(adj) == toRepl && adj.getBlockHardness(world, x, y, z) != -1) {
