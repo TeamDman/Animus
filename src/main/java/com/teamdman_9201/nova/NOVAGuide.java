@@ -59,6 +59,7 @@ public class NOVAGuide {
         addPage("Sigil of Chains", sigils, "sigils.SigilOfChains.body", new PageIRecipe(new ShapedOreRecipe(NOVA.itemSigilOfChains, "ABA", "DCD", "AEA", 'A', Blocks.iron_bars, 'B', Items.glass_bottle, 'C', ModItems.imbuedSlate, 'D', Items.ender_pearl, 'E', ModItems.magicianBloodOrb)));
         addPage("Sigil of Transposition", sigils, "sigils.SigilOfTransposition.body", new PageIRecipe( new ShapedOreRecipe(NOVA.itemSigilOfTransposition,"ABA", "BCB", "ADA", 'A', Blocks.obsidian, 'B', Items.ender_pearl, 'C', ModItems.demonicSlate, 'D', ModItems.masterBloodOrb)));
         addPage("Sigil of Consumption", sigils, "sigils.SigilOfConsumption.body", new PageIRecipe(new ShapedOreRecipe(NOVA.itemSigilOfConsumption,"ABA","BCB","ADA",'A',Blocks.end_stone,'B',Blocks.redstone_lamp,'C',ModItems.demonicSlate,'D',ModItems.masterBloodOrb)));
+        addPage("Sigil of the Fast Builder", sigils, "sigils.SigilOfFastBuilder.body");
 
         addPage("Dirt Chest", blocks, "blocks.DirtChest.body", new PageIRecipe(new ShapedOreRecipe(NOVA.blockDirtChest,"AAA","ABA","AAA",'A', Blocks.dirt,'B',Blocks.planks)));
 

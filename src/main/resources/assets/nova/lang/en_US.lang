@@ -17,6 +17,7 @@ item.itemRedundantOrb.name=Orb of Redundancy
 item.itemDev.name=/Dev/
 item.itemSigilOfConsumption.name=Sigil of Consumption
 item.itemAltarDiviner.name=Altar Assembler
+item.itemSigilOfFastBuilder.name=Sigil of the Fast Builder
 
 #Tiles
 tile.blockDirtChest.name=Dirt Chest 9002
@@ -68,5 +69,6 @@ book.NOVA.items.Dev.body=This is a powerful creative only testing item.
 book.NOVA.sigils.SigilOfChains.body=This sigil can be used to contain mobs souls, allowing for easy transport and release. Simply right click on a mob to capture it's soul, and right click the soul to release the mob. Will not work on boss mobs.
 book.NOVA.sigils.SigilOfTransposition.body=The Sigil of Transposition can be used to transfer blocks from one position to another. Simply right click the target block, and right click again where you want it to move to.
 book.NOVA.sigils.SigilOfConsumption.body=By right clicking on a block with the Sigil of Consumption, you can transform that block and it's surrounding blocks into antiblocks. You may then break one antiblock, which will cause all the others to disappear.
+book.NOVA.sigils.SigilOfFastBuilder.body=When activated, this sigil allows you to place blocks faster than default by removing the right click delay. The delay is only removed while holding a block, unless you are in creative mode.
 
 book.NOVA.blocks.DirtChest.body=With an amazing capacity of 1 slot, this chest is the ultimate storage block.

@@ -1,15 +1,13 @@
 package com.teamdman_9201.nova.gui;
 
 import com.teamdman_9201.nova.NOVA;
-
+import cpw.mods.fml.client.config.IConfigElement;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cpw.mods.fml.client.config.IConfigElement;
 
 import static com.teamdman_9201.nova.NOVAConfig.config;
 
@@ -29,6 +27,7 @@ public class ConfigGui extends cpw.mods.fml.client.config.GuiConfig {
         // adds sections declared in ConfigHandler. toLowerCase() is used because the
         // configuration class automatically does this, so must we.
         list.add(new ConfigElement<ConfigCategory>(config.getCategory("general")));
+        list.add(new ConfigElement<ConfigCategory>(config.getCategory("blacklist")));
         list.add(new ConfigElement<ConfigCategory>(config.getCategory("enchantments")));
         list.add(new ConfigElement<ConfigCategory>(config.getCategory("ritual blacklist")));
         list.add(new ConfigElement<ConfigCategory>(config.getCategory("ritual costs")));

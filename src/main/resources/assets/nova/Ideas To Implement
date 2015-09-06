@@ -24,6 +24,8 @@
 	creeper no boom
 * ender stopper
 	ender no go go
+* season sigils
+	spring = flowers, winter = snow, autumn = leaf decay, summer = fire
 
 //TODO: change Pow to repel
 //player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed)

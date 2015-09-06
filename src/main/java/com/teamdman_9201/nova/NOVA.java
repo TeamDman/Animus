@@ -20,6 +20,7 @@ import com.teamdman_9201.nova.handlers.NOVAGuiHandler;
 import com.teamdman_9201.nova.items.*;
 import com.teamdman_9201.nova.items.sigils.ItemSigilOfChains;
 import com.teamdman_9201.nova.items.sigils.ItemSigilOfConsumption;
+import com.teamdman_9201.nova.items.sigils.ItemSigilOfFastBuilder;
 import com.teamdman_9201.nova.items.sigils.ItemSigilOfTransposition;
 import com.teamdman_9201.nova.rituals.RitualEffectEntropy;
 import com.teamdman_9201.nova.rituals.RitualEffectLuna;
@@ -78,6 +79,7 @@ public class NOVA {
     public static ItemBlock itemBlockAntiBlock;
     public static Item itemSigilOfTransposition;
     public static Item itemSigilOfConsumption;
+    public static Item itemSigilOfFastBuilder;
     public static Item itemUnstableCoal;
     public static Item itemBoundSickle;
     public static Item itemWoodSickle;
@@ -92,6 +94,7 @@ public class NOVA {
     public static Item itemDev;
     public static Item itemAltarDiviner;
     public static HashMap<String, Integer> ritualData = new HashMap<String, Integer>();
+    public static HashMap<String, Boolean> blacklist = new HashMap<String, Boolean>();
     public static ArrayList<Block> moveBlacklist;
     //Configurable Variables
     public static boolean doLowerChat;
@@ -132,33 +135,45 @@ public class NOVA {
         setupItem(itemRedundantOrb, "itemRedundantOrb", mainTab);
         setupItem(itemDev, "itemDev", mainTab);
         setupItem(itemSigilOfConsumption, "itemSigilOfConsumption", mainTab);
-        setupItem(itemAltarDiviner,"itemAltarDiviner",mainTab);
+        setupItem(itemAltarDiviner, "itemAltarDiviner", mainTab);
+        setupItem(itemSigilOfFastBuilder, "itemSigilOfFastBuilder", mainTab);
 
     }
 
     private void initRecipes() {
-        BindingRegistry.registerRecipe(new ItemStack(itemBoundSickle), new ItemStack(itemDiamondSickle));
-
-        AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockAntiBlock), new ItemStack(Blocks.cobblestone), 3, 10000, 100, 100, false);
-        AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockSapling), new ItemStack(Blocks.sapling), 1, 100, 1, 1, false);
         AltarRecipeRegistry.registerAltarRecipe(GuideRegistry.getItemStackForBook(NOVAGuide.myBook), new ItemStack(Items.book), 1, 100, 1, 1, false);
-
-        AlchemyRecipeRegistry.registerRecipe(new ItemStack(itemUnstableCoal), 100, new ItemStack[]{new ItemStack(Items.nether_star), new ItemStack(Blocks.coal_block), new ItemStack(Items.gunpowder), new ItemStack(Items.flint_and_steel)}, 5);
-
-        GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemSigilOfChains), "ABA", "DCD", "AEA", 'A', Blocks.iron_bars, 'B', Items.glass_bottle, 'C', ModItems.imbuedSlate, 'D', Items.ender_pearl, 'E', ModItems.magicianBloodOrb));
-        GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemSigilOfTransposition), "ABA", "BCB", "ADA", 'A', Blocks.obsidian, 'B', Items.ender_pearl, 'C', ModItems.demonicSlate, 'D', ModItems.masterBloodOrb));
-        GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemSigilOfConsumption),"ABA","BCB","ADA",'A',Blocks.end_stone,'B',Blocks.redstone_lamp,'C',ModItems.demonicSlate,'D',ModItems.masterBloodOrb));
-        GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemAltarDiviner),"ABA","BCB","ADA",'A', ModBlocks.bloodRune,'B',Blocks.stone,'C',Items.stick,'D',ModItems.weakBloodOrb));
-        GameRegistry.addSmelting(new ItemStack(itemRedundantOrb), new ItemStack(itemRedundantOrb), 1);
-        GameRegistry.addRecipe(new ItemStack(itemRedundantOrb), "AAA", "ABA", "AAA", 'A', Items.diamond, 'B', Blocks.dirt);
-
-        GameRegistry.addRecipe(new ItemStack(blockDirtChest), "AAA", "ABA", "AAA", 'A', Blocks.dirt, 'B', Blocks.planks);
-
-        GameRegistry.addRecipe(new ItemStack(itemWoodSickle), "AAA", "A B", " B ", 'A', Blocks.planks, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemStoneSickle), "AAA", "A B", " B ", 'A', Blocks.cobblestone, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemIronSickle), "AAA", "A B", " B ", 'A', Items.iron_ingot, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemGoldSickle), "AAA", "A B", " B ", 'A', Items.gold_ingot, 'B', Items.stick);
-        GameRegistry.addRecipe(new ItemStack(itemDiamondSickle), "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick);
+        if (!blacklist.get("itemBoundSickle"))
+            BindingRegistry.registerRecipe(new ItemStack(itemBoundSickle), new ItemStack(itemDiamondSickle));
+        if (!blacklist.get("blockSapling"))
+            AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockSapling), new ItemStack(Blocks.sapling), 1, 100, 1, 1, false);
+        if (!blacklist.get("itemUnstableCoal"))
+            AlchemyRecipeRegistry.registerRecipe(new ItemStack(itemUnstableCoal), 100, new ItemStack[]{new ItemStack(Items.nether_star), new ItemStack(Blocks.coal_block), new ItemStack(Items.gunpowder), new ItemStack(Items.flint_and_steel)}, 5);
+        if (!blacklist.get("itemSigilOfChains"))
+            GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemSigilOfChains), "ABA", "DCD", "AEA", 'A', Blocks.iron_bars, 'B', Items.glass_bottle, 'C', ModItems.imbuedSlate, 'D', Items.ender_pearl, 'E', ModItems.magicianBloodOrb));
+        if (!blacklist.get("itemSigilOfTransposition"))
+            GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemSigilOfTransposition), "ABA", "BCB", "ADA", 'A', Blocks.obsidian, 'B', Items.ender_pearl, 'C', ModItems.demonicSlate, 'D', ModItems.masterBloodOrb));
+        if (!blacklist.get("itemSigilOfConsumption"))
+            GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemSigilOfConsumption), "ABA", "BCB", "ADA", 'A', Blocks.end_stone, 'B', Blocks.redstone_lamp, 'C', ModItems.demonicSlate, 'D', ModItems.masterBloodOrb));
+        if (!blacklist.get("itemSigilOfFastBuilder"))
+            GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemSigilOfFastBuilder), "ABA", "BCB", "ADA", 'A', Items.sugar, 'B', Items.potionitem, 'C', ModItems.demonicSlate, 'D', ModItems.archmageBloodOrb));
+        if (!blacklist.get("itemAltarDiviner"))
+            GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemAltarDiviner), "ABA", "BCB", "ADA", 'A', ModBlocks.bloodRune, 'B', Blocks.stone, 'C', Items.stick, 'D', ModItems.weakBloodOrb));
+        if (!blacklist.get("itemRedundantOrb")) {
+            GameRegistry.addRecipe(new ItemStack(itemRedundantOrb), "AAA", "ABA", "AAA", 'A', Items.diamond, 'B', Blocks.dirt);
+            GameRegistry.addSmelting(new ItemStack(itemRedundantOrb), new ItemStack(itemRedundantOrb), 1);
+        }
+        if (!blacklist.get("blockDirtChest"))
+            GameRegistry.addRecipe(new ItemStack(blockDirtChest), "AAA", "ABA", "AAA", 'A', Blocks.dirt, 'B', Blocks.planks);
+        if (!blacklist.get("itemWoodenSickle"))
+            GameRegistry.addRecipe(new ItemStack(itemWoodSickle), "AAA", "A B", " B ", 'A', Blocks.planks, 'B', Items.stick);
+        if (!blacklist.get("itemStoneSickle"))
+            GameRegistry.addRecipe(new ItemStack(itemStoneSickle), "AAA", "A B", " B ", 'A', Blocks.cobblestone, 'B', Items.stick);
+        if (!blacklist.get("itemIronSickle"))
+            GameRegistry.addRecipe(new ItemStack(itemIronSickle), "AAA", "A B", " B ", 'A', Items.iron_ingot, 'B', Items.stick);
+        if (!blacklist.get("itemGoldSickle"))
+            GameRegistry.addRecipe(new ItemStack(itemGoldSickle), "AAA", "A B", " B ", 'A', Items.gold_ingot, 'B', Items.stick);
+        if (!blacklist.get("itemDiamondSickle"))
+            GameRegistry.addRecipe(new ItemStack(itemDiamondSickle), "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick);
     }
 
     private void initRituals() {
@@ -193,7 +208,8 @@ public class NOVA {
         itemRedundantOrb = new ItemRedundantOrb();
         itemDev = new ItemDev();
         itemSigilOfConsumption = new ItemSigilOfConsumption();
-        itemAltarDiviner=new ItemAltarDiviner();
+        itemAltarDiviner = new ItemAltarDiviner();
+        itemSigilOfFastBuilder = new ItemSigilOfFastBuilder();
     }
 
     @EventHandler
@@ -201,9 +217,10 @@ public class NOVA {
         initVars();
         initItemsandBlocks();
         initTiles();
+        NOVAGuide.buildGuide();
+        NOVAConfig.syncConfig();
         initRecipes();
         initRituals();
-        NOVAGuide.buildGuide();
     }
 
     @EventHandler
@@ -221,6 +238,7 @@ public class NOVA {
         theBlock.setBlockName(name);
         theBlock.setCreativeTab(tab);
         theBlock.setHardness(hardness);
+        NOVAConfig.blacklist.add(name);
     }
 
     private void setupItem(Item theItem, String theName, CreativeTabs theTab) {
@@ -228,6 +246,7 @@ public class NOVA {
         theItem.setUnlocalizedName(theName);
         theItem.setCreativeTab(theTab);
         theItem.setTextureName(MODID + ":" + theName);
+        NOVAConfig.blacklist.add(theName);
     }
 
     private void setupItemBlock(Block theBlock, Class theClass, String theName, CreativeTabs theTab, float theHardness) {
@@ -235,6 +254,7 @@ public class NOVA {
         theBlock.setBlockName(theName);
         theBlock.setCreativeTab(theTab);
         theBlock.setHardness(theHardness);
+        NOVAConfig.blacklist.add(theName);
     }
 
     private void setupRitual(String name, RitualEffect effect) {

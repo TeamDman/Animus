@@ -40,6 +40,8 @@ public class ItemSigilOfConsumption extends EnergyItems {
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int meta, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
         if (world.getBlock(x,y,z).getBlockHardness(world,x,y,z)!=-1) {
+            if (!EnergyItems.syphonBatteries(stack, player, getEnergyUsed()))
+                return false;
             EnergyItems.syphonBatteries(stack,player,BlockAntiBlock.maxSpread^2/1000);
             int ID = Block.getIdFromBlock(world.getBlock(x, y, z));
             world.setBlock(x,y,z, NOVA.blockAntiBlock);

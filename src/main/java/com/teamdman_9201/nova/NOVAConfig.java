@@ -3,16 +3,17 @@ package com.teamdman_9201.nova;
 import com.teamdman_9201.nova.blocks.BlockAntiBlock;
 import com.teamdman_9201.nova.enchantments.EnchantmentPow;
 import com.teamdman_9201.nova.items.sigils.ItemSigilOfTransposition;
-
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by TeamDman on 2015-05-30.
  */
 public class NOVAConfig {
     public static Configuration config;
+    public static ArrayList<String> blacklist = new ArrayList<String>();
 
     public static void init(File cfg) {
         config = new Configuration(cfg);
@@ -31,6 +32,9 @@ public class NOVAConfig {
                 (false);
         if  (NOVA.enchantPow==null)
         NOVA.enchantPow = new EnchantmentPow(config.get("Enchantments", "Pow", 214).getInt(), 1);
+
+        for (String unloc : blacklist )
+            NOVA.blacklist.put(unloc,config.get("Blacklist",unloc,false).getBoolean());
 
         BlockAntiBlock.maxSpread = config.get("General","AntiBlock Max Spread",512).getInt();
         ItemSigilOfTransposition.canMoveTiles = config.get("General","Transposition Can Move Tiles",true).getBoolean();

@@ -3,6 +3,7 @@ package com.teamdman_9201.nova.items;
 import WayofTime.alchemicalWizardry.api.rituals.IRitualStone;
 import WayofTime.alchemicalWizardry.common.block.BlockMasterStone;
 import com.teamdman_9201.nova.NOVA;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +23,7 @@ public class ItemDev extends Item {
         data.add("Damage: infinite");
         data.add("Sneak damage: AOE kill");
         data.add("Right click mob: voids mob");
-        data.add("Sneak right click mob: AOE voids mobs");
+        data.add("Sneak right click entity: AOE voids entities");
         data.add("Right click MRS: prints ritual design code");
         data.add("Right click log: AOE voids logs");
         data.add("Sneak right click block: drops block as item");
@@ -116,8 +117,8 @@ public class ItemDev extends Item {
         if (player.isSneaking()) {
             int d0 = 50;
             AxisAlignedBB region = AxisAlignedBB.getBoundingBox(player.posX - 1, player.posY - 2, player.posZ - 1, player.posX + 1, player.posY + 2, player.posZ + 1).expand(d0, d0, d0);
-            List<EntityLivingBase> list = player.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, region);
-            for (EntityLivingBase mobb : list) {
+            List<EntityLivingBase> list = player.worldObj.getEntitiesWithinAABB(Entity.class, region);
+            for (Entity mobb : list) {
                 if (mobb != player) {
                     mobb.setDead();
                 }
