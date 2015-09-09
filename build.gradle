@@ -12,13 +12,13 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-		classpath 'org.ajoberstar:gradle-git:0.10.1'
+        classpath 'org.ajoberstar:gradle-git:0.10.1'
     }
 }
 
+apply plugin: 'forge'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-apply plugin: 'forge'
 
 group = "com.teamdman_9201.nova"
 archivesBaseName = "NOVA"
@@ -73,27 +73,34 @@ processResources {
         exclude '**/*.properties'
     }
 }
-
 repositories {
-    maven {
+    maven { // GUIDEAPI
+        url 'http://tehnut.info/maven/'
+    }
+
+    maven { // WAILA
         name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
-    maven {
-        name 'CB Repo'
+    maven { // CCC/NEI (for WAILA)
+        name "Chicken Bones Repo"
         url "http://chickenbones.net/maven/"
     }
-
-    maven {
-        url "http://tehnut.info/maven/"
+    ivy {
+        name "Thaumcraft"
+        artifactPattern "http://addons-origin.cursecdn.com/files/2227/552/[module]-[revision].[ext]"
+    }
+    ivy {
+        name "Baubles"
+        artifactPattern "https://dl.dropboxusercontent.com/u/47135879/[module]-deobf-1.7.10-[revision].[ext]"
     }
 }
 
 dependencies {
-//    compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
-//    compile "codechicken:CodeChickenLib:1.7.10-1.1.1.106:dev"
-//    compile "codechicken:NotEnoughItems:1.7.10-1.0.5.111:dev"
-//    compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
+    compile "mcp.mobius.waila:Waila:1.5.5_1.7.10"
+    compile "codechicken:CodeChickenLib:1.7.10-1.1.1.104:dev"
+    compile "codechicken:CodeChickenCore:1.7.10-1.0.3.26:dev"
+    compile "codechicken:NotEnoughItems:1.7.10-1.0.3.64:dev"
     compile "info.amerifrance.guideapi:Guide-API:1.7.10-1.0.1-20:deobf"
     compile fileTree(dir: 'libs', include: '*.jar')
 }
@@ -111,11 +118,11 @@ jar {
     dependsOn "incrementBuildNumber"
     classifier = 'universal'
     manifest.mainAttributes(
-        "Built-By": System.getProperty('user.name'),
-        "Created-By": "${System.getProperty('java.vm.version')} + (${System.getProperty('java.vm.vendor')})",
-        "Implementation-Title": project.name,
-        "Implementation-Version": project.version,
-        "Git-Hash": gitHash
+            "Built-By": System.getProperty('user.name'),
+            "Created-By": "${System.getProperty('java.vm.version')} + (${System.getProperty('java.vm.vendor')})",
+            "Implementation-Title": project.name,
+            "Implementation-Version": project.version,
+            "Git-Hash": gitHash
     )
 }
 
@@ -144,18 +151,17 @@ tasks.withType(JavaCompile) { task ->
 }
 
 task("incrementBuildNumber") {
-	// increment build number
-	doFirst {
-		// increment
-		config.build_number = (config.build_number.toString().toInteger()) + 1
+    // increment build number
+    doFirst {
+        // increment
+        config.build_number = (config.build_number.toString().toInteger()) + 1
 
-		// write back to the file
-		configFile.withWriter {
-			config.toProperties().store(it, "")
-		}
-	}
+        // write back to the file
+        configFile.withWriter {
+            config.toProperties().store(it, "")
+        }
+    }
 }
-
 
 //because IDEA is stupido :(
 idea { module { inheritOutputDirs = true } }

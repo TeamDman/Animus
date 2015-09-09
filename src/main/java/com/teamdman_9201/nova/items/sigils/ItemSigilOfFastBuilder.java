@@ -37,12 +37,13 @@ public class ItemSigilOfFastBuilder extends EnergyItems implements ArmourUpgrade
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List data, boolean wat) {
-        if (!(stack.getTagCompound() == null))
+        if (!(stack.getTagCompound() == null)) {
             data.add(StatCollector.translateToLocal("tooltip.owner.currentowner") + stack.getTagCompound().getString("ownerName"));
-        if (stack.getTagCompound().getBoolean("isActive")) {
-            data.add(StatCollector.translateToLocal("tooltip.sigil.state.activated"));
-        } else {
-            data.add(StatCollector.translateToLocal("tooltip.sigil.state.deactivated"));
+            if (stack.getTagCompound().getBoolean("isActive")) {
+                data.add(StatCollector.translateToLocal("tooltip.sigil.state.activated"));
+            } else {
+                data.add(StatCollector.translateToLocal("tooltip.sigil.state.deactivated"));
+            }
         }
     }
 
