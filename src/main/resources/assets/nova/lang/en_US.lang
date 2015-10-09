@@ -18,6 +18,7 @@ item.itemDev.name=/Dev/
 item.itemSigilOfConsumption.name=Sigil of Consumption
 item.itemAltarDiviner.name=Altar Assembler
 item.itemSigilOfFastBuilder.name=Sigil of the Fast Builder
+item.itemHealingFragment.name=Healing Fragment
 
 #Tiles
 tile.blockDirtChest.name=Dirt Chest 9002
@@ -63,8 +64,9 @@ book.NOVA.rituals.Entropy.body=The Ritual of Entropy converts items placed in a 
 book.NOVA.items.Sickles.body=These sickles are a useful weapon allowing you to attack all enemies around you at once. The range increases with each tier of sickle. The bound variant can be used to sacrifice multiple enemies at once, allowing for easier manual sacrifice. Once the blood altar is full, it will not sacrifice more enemies.
 book.NOVA.items.UnstableCoal.body=What can only be described as insane, unstable coal will burn for an extremely long time. Be cautious not to right click with it.
 book.NOVA.items.Sapling.body=By infusing a sapling with blood in a T1 altar, you can create a tree that bears fruit filled with blood. By consuming these fruit, you can add 100lp to your soul network. Take note that if your network has 2,500 LP no more will be added. If you are close to a blood altar however, the life essence will be ripped from you and added to the Altar. This transition has some... unpleasant side effects.
-book.NOVA.items.RedundantOrb.body=You will never regret crafting an item more than this one.
+book.NOVA.items.RedundantOrb.body=This item can be smelted into itself.
 book.NOVA.items.Dev.body=This is a powerful creative only testing item.
+book.NOVA.items.HealingFragment.body=Having enough of this item in your inventory will apply a regen buff, which increases in strength for every 9 shards in your inventory. However, the regen comes at a price: Once placed in the inventory, you won't be able to move the item. To regain your inventory slot, you must die.
 
 book.NOVA.sigils.SigilOfChains.body=This sigil can be used to contain mobs souls, allowing for easy transport and release. Simply right click on a mob to capture it's soul, and right click the soul to release the mob. Will not work on boss mobs.
 book.NOVA.sigils.SigilOfTransposition.body=The Sigil of Transposition can be used to transfer blocks from one position to another. Simply right click the target block, and right click again where you want it to move to.

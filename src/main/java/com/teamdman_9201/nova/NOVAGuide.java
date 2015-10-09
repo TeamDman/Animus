@@ -55,6 +55,7 @@ public class NOVAGuide {
         addPage("Blood Trees", items, "items.Sapling.body");
         addPage("Orb of Redundancy", items, "items.RedundantOrb.body", new PageIRecipe(new ShapedOreRecipe(NOVA.itemRedundantOrb, "AAA", "ABA", "AAA", 'A', Items.diamond, 'B', Blocks.dirt)));
         addPage("Dev Item", items, "items.Dev.body");
+        addPage("Healing Fragments", items, "items.HealingFragment.body");
 
         addPage("Sigil of Chains", sigils, "sigils.SigilOfChains.body", new PageIRecipe(new ShapedOreRecipe(NOVA.itemSigilOfChains, "ABA", "DCD", "AEA", 'A', Blocks.iron_bars, 'B', Items.glass_bottle, 'C', ModItems.imbuedSlate, 'D', Items.ender_pearl, 'E', ModItems.magicianBloodOrb)));
         addPage("Sigil of Transposition", sigils, "sigils.SigilOfTransposition.body", new PageIRecipe( new ShapedOreRecipe(NOVA.itemSigilOfTransposition,"ABA", "BCB", "ADA", 'A', Blocks.obsidian, 'B', Items.ender_pearl, 'C', ModItems.demonicSlate, 'D', ModItems.masterBloodOrb)));

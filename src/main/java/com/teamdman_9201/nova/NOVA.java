@@ -93,6 +93,7 @@ public class NOVA {
     public static Item itemRedundantOrb;
     public static Item itemDev;
     public static Item itemAltarDiviner;
+    public static Item itemHealingFragment;
     public static HashMap<String, Integer> ritualData = new HashMap<String, Integer>();
     public static HashMap<String, Boolean> blacklist = new HashMap<String, Boolean>();
     public static ArrayList<Block> moveBlacklist;
@@ -137,7 +138,7 @@ public class NOVA {
         setupItem(itemSigilOfConsumption, "itemSigilOfConsumption", mainTab);
         setupItem(itemAltarDiviner, "itemAltarDiviner", mainTab);
         setupItem(itemSigilOfFastBuilder, "itemSigilOfFastBuilder", mainTab);
-
+        setupItem(itemHealingFragment,"itemHealingFragment", mainTab);
     }
 
     private void initRecipes() {
@@ -145,7 +146,7 @@ public class NOVA {
         if (!blacklist.get("itemBoundSickle"))
             BindingRegistry.registerRecipe(new ItemStack(itemBoundSickle), new ItemStack(itemDiamondSickle));
         if (!blacklist.get("blockSapling"))
-            AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockSapling), new ItemStack(Blocks.sapling), 1, 100, 1, 1, false);
+            AltarRecipeRegistry.registerAltarRecipe(new ItemStack(blockSapling), new ItemStack(Blocks.sapling), 1, 500, 10, 10, false);
         if (!blacklist.get("itemUnstableCoal"))
             AlchemyRecipeRegistry.registerRecipe(new ItemStack(itemUnstableCoal), 100, new ItemStack[]{new ItemStack(Items.nether_star), new ItemStack(Blocks.coal_block), new ItemStack(Items.gunpowder), new ItemStack(Items.flint_and_steel)}, 5);
         if (!blacklist.get("itemSigilOfChains"))
@@ -159,7 +160,7 @@ public class NOVA {
         if (!blacklist.get("itemAltarDiviner"))
             GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(itemAltarDiviner), "ABA", "BCB", "ADA", 'A', ModBlocks.bloodRune, 'B', Blocks.stone, 'C', Items.stick, 'D', ModItems.weakBloodOrb));
         if (!blacklist.get("itemRedundantOrb")) {
-            GameRegistry.addRecipe(new ItemStack(itemRedundantOrb), "AAA", "ABA", "AAA", 'A', Items.diamond, 'B', Blocks.dirt);
+            GameRegistry.addRecipe(new ItemStack(itemRedundantOrb), "AAA", "ABA", "AAA", 'A', Blocks.furnace, 'B', Items.diamond);
             GameRegistry.addSmelting(new ItemStack(itemRedundantOrb), new ItemStack(itemRedundantOrb), 1);
         }
         if (!blacklist.get("blockDirtChest"))
@@ -174,6 +175,8 @@ public class NOVA {
             GameRegistry.addRecipe(new ItemStack(itemGoldSickle), "AAA", "A B", " B ", 'A', Items.gold_ingot, 'B', Items.stick);
         if (!blacklist.get("itemDiamondSickle"))
             GameRegistry.addRecipe(new ItemStack(itemDiamondSickle), "AAA", "A B", " B ", 'A', Items.diamond, 'B', Items.stick);
+        if (!blacklist.get("itemHealingFragment"))
+            AltarRecipeRegistry.registerAltarRecipe(new ItemStack(itemHealingFragment), new ItemStack(Items.golden_apple,1,1),4,10000,50,50,false);
     }
 
     private void initRituals() {
@@ -210,6 +213,7 @@ public class NOVA {
         itemSigilOfConsumption = new ItemSigilOfConsumption();
         itemAltarDiviner = new ItemAltarDiviner();
         itemSigilOfFastBuilder = new ItemSigilOfFastBuilder();
+        itemHealingFragment = new ItemHealingFragment();
     }
 
     @EventHandler
