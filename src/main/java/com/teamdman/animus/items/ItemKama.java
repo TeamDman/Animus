@@ -1,0 +1,50 @@
+package com.teamdman.animus.items;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
+
+import java.util.List;
+
+/**
+ * Created by User on 9/18/2016.
+ */
+public class ItemKama extends ItemSword {
+    float attackDamage;
+    Item.ToolMaterial mat;
+
+    public ItemKama(Item.ToolMaterial material) {
+        super(material);
+        mat = material;
+        attackDamage = 2.0F + material.getDamageVsEntity();
+    }
+
+    @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase hit, EntityLivingBase attacker) {
+        double x = hit.posX;
+        double y = hit.posY;
+        double z = hit.posZ;
+        int d0 = (mat.getHarvestLevel() + 1) * 2;
+        AxisAlignedBB region = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
+        List<EntityLivingBase> entities = hit.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, region);
+        if (entities == null || entities.isEmpty())
+            return false;
+        for (EntityLivingBase target : entities) {
+            if (target instanceof EntityPlayer)
+                continue;
+            if (attacker == null || target == null || attacker.worldObj.isRemote)
+                continue;
+            target.attackEntityFrom(DamageSource.causeMobDamage(attacker), attackDamage);
+            stack.damageItem(1, attacker);
+        }
+        return false;
+    }
+}
