@@ -1,5 +1,6 @@
 package com.teamdman.animus.items;
 
+import WayofTime.bloodmagic.client.IVariantProvider;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,13 +12,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by User on 9/18/2016.
  */
-public class ItemKama extends ItemSword {
+public class ItemKama extends ItemSword implements IVariantProvider {
     float attackDamage;
     Item.ToolMaterial mat;
 
@@ -46,5 +51,12 @@ public class ItemKama extends ItemSword {
             stack.damageItem(1, attacker);
         }
         return false;
+    }
+
+    // IVariantProvider
+    @Override
+    public List<Pair<Integer, String>> getVariants()
+    {
+        return Collections.singletonList(Pair.of(0, "type=normal"));
     }
 }
