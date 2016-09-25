@@ -53,10 +53,11 @@ public class ItemKama extends ItemSword implements IVariantProvider {
         return false;
     }
 
-    // IVariantProvider
     @Override
     public List<Pair<Integer, String>> getVariants()
     {
-        return Collections.singletonList(Pair.of(0, "type=normal"));
+        List<Pair<Integer, String>> ret = new ArrayList<Pair<Integer, String>>();
+        ret.add(new ImmutablePair<Integer, String>(0, "type=normal"));
+        return ret;
     }
 }

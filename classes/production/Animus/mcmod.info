@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "Animus",
+  "name": "Animus",
+  "description": "A Blood Magic addon.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://github.com/TeamDman/Animus",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["TeamDman","Saereth"],
+  "credits": "",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
