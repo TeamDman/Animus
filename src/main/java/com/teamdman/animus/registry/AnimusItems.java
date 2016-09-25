@@ -8,6 +8,7 @@ import WayofTime.bloodmagic.registry.ModItems;
 import WayofTime.bloodmagic.util.helper.InventoryRenderHelper;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.items.ItemKama;
+import com.teamdman.animus.items.ItemKamaBound;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -36,7 +37,7 @@ public class AnimusItems {
         kamaIron = setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemKamaIron", Animus.tabMain);
         kamaGold = setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemKamaGold", Animus.tabMain);
         kamaDiamond = setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemKamaDiamond", Animus.tabMain);
-        kamaBound = setupItem(new ItemKama(ModItems.boundToolMaterial), "itemKamaBound", Animus.tabMain);
+        kamaBound = setupItem(new ItemKamaBound(), "ItemKamaBound", Animus.tabMain);
     }
 
     private static Item setupItem(Item item, String name, CreativeTabs tab) {
