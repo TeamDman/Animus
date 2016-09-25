@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by User on 9/18/2016.
+ * Created by TeamDman on 9/18/2016.
  */
 public class ItemKama extends ItemSword implements IVariantProvider {
     float attackDamage;

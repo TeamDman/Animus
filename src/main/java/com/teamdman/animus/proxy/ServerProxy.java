@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
- * Created by User on 9/18/2016.
+ * Created by TeamDman on 9/18/2016.
  */
 public class ServerProxy extends CommonProxy {
     @Override

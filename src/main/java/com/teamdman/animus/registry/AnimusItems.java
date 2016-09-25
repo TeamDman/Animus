@@ -1,27 +1,17 @@
 package com.teamdman.animus.registry;
 
-import WayofTime.bloodmagic.BloodMagic;
-import WayofTime.bloodmagic.ConfigHandler;
-import WayofTime.bloodmagic.api.Constants;
-import WayofTime.bloodmagic.api.registry.OrbRegistry;
-import WayofTime.bloodmagic.registry.ModItems;
-import WayofTime.bloodmagic.util.helper.InventoryRenderHelper;
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.items.ItemAltarDiviner;
 import com.teamdman.animus.items.ItemKama;
 import com.teamdman.animus.items.ItemKamaBound;
-import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Created by User on 9/18/2016.
+ * Created by TeamDman on 9/18/2016.
  */
 public class AnimusItems {
     public static Item kamaWood;
@@ -30,21 +20,23 @@ public class AnimusItems {
     public static Item kamaGold;
     public static Item kamaDiamond;
     public static Item kamaBound;
+	public static Item altarDiviner;
 
     public static void init() {
-        kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemKamaWood", Animus.tabMain);
-        kamaStone = setupItem(new ItemKama(Item.ToolMaterial.STONE), "itemKamaStone", Animus.tabMain);
-        kamaIron = setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemKamaIron", Animus.tabMain);
-        kamaGold = setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemKamaGold", Animus.tabMain);
-        kamaDiamond = setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemKamaDiamond", Animus.tabMain);
-        kamaBound = setupItem(new ItemKamaBound(), "ItemKamaBound", Animus.tabMain);
+        kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemKamaWood");
+        kamaStone = setupItem(new ItemKama(Item.ToolMaterial.STONE), "itemKamaStone");
+        kamaIron = setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemKamaIron");
+        kamaGold = setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemKamaGold");
+        kamaDiamond = setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemKamaDiamond");
+        kamaBound = setupItem(new ItemKamaBound(), "itemKamaBound");
+		altarDiviner = setupItem(new ItemAltarDiviner(), "itemAltarDiviner");
     }
 
-    private static Item setupItem(Item item, String name, CreativeTabs tab) {
+    private static Item setupItem(Item item, String name) {
         if (item.getRegistryName() == null)
             item.setRegistryName(name);
         item.setUnlocalizedName(name);
-        item.setCreativeTab(tab);
+        item.setCreativeTab(Animus.tabMain);
         GameRegistry.register(item);
         Animus.proxy.tryHandleItemModel(item, name);
 

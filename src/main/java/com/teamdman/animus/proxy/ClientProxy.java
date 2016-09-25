@@ -6,6 +6,7 @@ import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.util.helper.InventoryRenderHelperV2;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.registry.AnimusItems;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Created by User on 9/18/2016.
+ * Created by TeamDman on 9/18/2016.
  */
 public class ClientProxy extends CommonProxy {
     InventoryRenderHelperV2 renderHelper;
@@ -63,5 +64,18 @@ public class ClientProxy extends CommonProxy {
                 ModelLoader.setCustomModelResourceLocation(item, variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, "item/" + name), variant.getRight()));
         }
     }
+
+
+    @Override
+    public void tryHandleBlockModel(Block block, String name)
+    {
+        if (block instanceof IVariantProvider)
+        {
+            IVariantProvider variantProvider = (IVariantProvider) block;
+            for (Pair<Integer, String> variant : variantProvider.getVariants())
+                ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, name), variant.getRight()));
+        }
+    }
+
 
 }

@@ -1,10 +1,10 @@
 package com.teamdman.animus;
-
 /**
- * Created by User on 9/9/2016.
+ * Created by TeamDman on 9/9/2016.
  */
 
 import com.teamdman.animus.proxy.CommonProxy;
+import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -39,6 +39,7 @@ public class Animus {
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
         AnimusItems.init();
+        AnimusBlocks.init();
         proxy.preInit(event);
     }
 

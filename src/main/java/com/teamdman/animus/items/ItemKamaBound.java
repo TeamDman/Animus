@@ -15,7 +15,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import java.util.List;
 
 /**
- * Created by User on 9/25/2016.
+ * Created by TeamDman on 9/25/2016.
  */
 public class ItemKamaBound extends ItemDaggerOfSacrifice {
 
