@@ -55,6 +55,9 @@ public class ItemKamaBound extends ItemDaggerOfSacrifice {
 
 			if (lifeEssence <= 0)
 				return false;
+			if (!target.isNonBoss())
+				return false;
+
 			if (target.isChild())
 				lifeEssence /= 2;
 

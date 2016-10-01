@@ -6,4 +6,7 @@ item.itemKamaGold.name=Gold Khopesh
 item.itemKamaDiamond.name=Diamond Khopesh
 item.itemKamaBound.name=Bound Khopesh
 item.itemAltarDiviner.name=Altar Diviner
+
 tile.blockPhantomBuilder.name=Phantom Builder Block
+tile.lightgem.name=Glowstone
+text.component.diviner.missing=You are missing a

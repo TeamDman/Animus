@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 /**
  * Created by TeamDman on 9/25/2016.
  */
+//
 public class BlockPhantomBuilder extends BlockPhantom {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
