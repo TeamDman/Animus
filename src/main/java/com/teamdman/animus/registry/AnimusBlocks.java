@@ -19,7 +19,8 @@ public class AnimusBlocks {
 	}
 
 	private static Block setupBlock(Block block, String name) {
-		//TODO Block Blacklist
+		if (ConfigHandler.blockBlacklist.contains(name))
+			return block;
 		if (block.getRegistryName() == null)
 			block.setRegistryName(name);
 

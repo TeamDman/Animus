@@ -1,6 +1,8 @@
 package com.teamdman.animus.registry;
 
+import WayofTime.bloodmagic.ConfigHandler;
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.items.ItemAltarDiviner;
 import com.teamdman.animus.items.ItemKama;
 import com.teamdman.animus.items.ItemKamaBound;
@@ -33,6 +35,8 @@ public class AnimusItems {
     }
 
     private static Item setupItem(Item item, String name) {
+        if (AnimusConfig.itemBlacklist.contains(name))
+            return item;
         if (item.getRegistryName() == null)
             item.setRegistryName(name);
         item.setUnlocalizedName(name);

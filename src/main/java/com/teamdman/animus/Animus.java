@@ -3,6 +3,7 @@ package com.teamdman.animus;
  * Created by TeamDman on 9/9/2016.
  */
 
+import com.teamdman.animus.client.gui.config.GuiHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
@@ -14,10 +15,14 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
+import java.io.File;
 import java.util.Locale;
 
-@Mod(modid = Animus.MODID, name = Animus.NAME, version = Animus.VERSION, dependencies = Animus.DEPENDENCIES)
+// TODO: Sigil that eats for you
+
+@Mod(modid = Animus.MODID, name = Animus.NAME, version = Animus.VERSION, dependencies = Animus.DEPENDENCIES, guiFactory = "com.teamdman.client.gui.config.ConfigGuiFactory")
 public class Animus {
     public static final String MODID = "animus";
     public static final String DOMAIN = MODID.toLowerCase(Locale.ENGLISH) + ":";
@@ -38,6 +43,7 @@ public class Animus {
     // init blocks and items
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
+        AnimusConfig.init(new File(event.getModConfigurationDirectory(), Animus.MODID + ".cfg"));
         AnimusItems.init();
         AnimusBlocks.init();
         proxy.preInit(event);
@@ -46,7 +52,8 @@ public class Animus {
     // mod setup, register recipes
     @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
-        proxy.init(event);
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+		proxy.init(event);
     }
 
     // mod interaction
