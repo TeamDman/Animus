@@ -7,6 +7,7 @@ import com.teamdman.animus.client.gui.config.GuiHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
+import com.teamdman.animus.registry.AnimusRituals;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -51,9 +52,10 @@ public class Animus {
 
     // mod setup, register recipes
     @Mod.EventHandler
-    public void load(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-		proxy.init(event);
+        AnimusRituals.initRituals();
+        proxy.init(event);
     }
 
     // mod interaction

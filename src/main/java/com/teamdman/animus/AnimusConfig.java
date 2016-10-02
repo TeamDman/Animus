@@ -27,6 +27,10 @@ public class AnimusConfig {
 	public static List<String> itemBlacklist;
 	public static List<String> blockBlacklist;
 
+
+	// Ritual Disabling
+	public static boolean ritualSol;
+
 	public static void init(File file)
 	{
 		config = new Configuration(file);
@@ -41,6 +45,11 @@ public class AnimusConfig {
 		config.setCategoryRequiresMcRestart(category, true);
 		itemBlacklist = Arrays.asList(config.getStringList("itemBlacklist", category, new String[] {}, "Items to not be registered. This requires their mapping name. Usually the same as the class name. Can be found in F3+H mode."));
 		blockBlacklist = Arrays.asList(config.getStringList("blockBlacklist", category, new String[] {}, "Blocks to not be registered. This requires their mapping name. Usually the same as the class name. Can be found in F3+H mode."));
+
+		category = "Rituals";
+		config.addCustomCategoryComment(category, "Ritual toggling");
+		config.setCategoryRequiresMcRestart(category, true);
+		ritualSol = config.get(category, "ritualSol", true).getBoolean();
 
 		config.save();
 	}

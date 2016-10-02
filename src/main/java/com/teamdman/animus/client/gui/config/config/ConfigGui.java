@@ -25,7 +25,7 @@ public class ConfigGui extends GuiConfig
         List<IConfigElement> list = new ArrayList<IConfigElement>();
 
         list.add(new ConfigElement(ConfigHandler.getConfig().getCategory("Item/Block Blacklisting".toLowerCase())));
-//        list.add(new ConfigElement(ConfigHandler.getConfig().getCategory("Rituals".toLowerCase())));
+        list.add(new ConfigElement(ConfigHandler.getConfig().getCategory("Rituals".toLowerCase())));
 
         return list;
     }

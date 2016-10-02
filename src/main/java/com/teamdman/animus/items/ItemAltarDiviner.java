@@ -49,18 +49,16 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 		tooltip.add("Keep using to automatically place altar blocks");
 		tooltip.add("Use in off hand to display max tier altar outline");
 	}
-	private boolean stackEqualExact(ItemStack stack1, ItemStack stack2)
-	{
+
+	private boolean stackEqualExact(ItemStack stack1, ItemStack stack2) {
 		if (stack1.getItem() instanceof ItemBlockBloodRune && stack2.getItem() instanceof ItemBlockBloodRune)
 			return true;
 		return stack1.getItem() == stack2.getItem() && (!stack1.getHasSubtypes() || stack1.getMetadata() == stack2.getMetadata()) && ItemStack.areItemStackTagsEqual(stack1, stack2);
 	}
 
 	private int getSlotFor(ItemStack stack, EntityPlayer player) {
-		for (int i = 0; i < player.inventory.mainInventory.length; ++i)
-		{
-			if (player.inventory.mainInventory[i] != null && stackEqualExact(stack, player.inventory.mainInventory[i]))
-			{
+		for (int i = 0; i < player.inventory.mainInventory.length; ++i) {
+			if (player.inventory.mainInventory[i] != null && stackEqualExact(stack, player.inventory.mainInventory[i])) {
 				return i;
 			}
 		}
@@ -73,22 +71,23 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 		System.out.println(asd);
 		if (world.getTileEntity(pos) == null || !(world.getTileEntity(pos) instanceof IBloodAltar))
 			return EnumActionResult.PASS;
+
 		TileAltar altar = (TileAltar) world.getTileEntity(pos);
 		altar.checkTier();
-		if (!player.isSneaking() || altar == null || altar.getTier().toInt() >= EnumAltarTier.MAXTIERS) {
-			return EnumActionResult.PASS;
-		}
 
-		for (AltarComponent altarComponent : EnumAltarTier.values()[hand.compareTo(EnumHand.OFF_HAND)==0?EnumAltarTier.MAXTIERS-1:altar.getTier().toInt()].getAltarComponents()) {
+		if (!player.isSneaking() || altar == null || altar.getTier().toInt() >= EnumAltarTier.MAXTIERS)
+			return EnumActionResult.PASS;
+
+
+		for (AltarComponent altarComponent : EnumAltarTier.values()[hand.compareTo(EnumHand.OFF_HAND) == 0 ? EnumAltarTier.MAXTIERS - 1 : altar.getTier().toInt()].getAltarComponents()) {
 			BlockPos componentPos = pos.add(altarComponent.getOffset());
-			BlockStack worldBlock = new BlockStack(world.getBlockState(componentPos).getBlock(), world.getBlockState(componentPos).getBlock().getMetaFromState(world.getBlockState(componentPos)));
 			if (world.isAirBlock(componentPos)) {
 				world.setBlockState(componentPos, AnimusBlocks.blockPhantomBuilder.getDefaultState());
 				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 			}
 		}
 
-		String missingText="";
+		String missingText = "";
 		for (AltarComponent altarComponent : EnumAltarTier.values()[altar.getTier().toInt()].getAltarComponents()) {
 			BlockPos componentPos = pos.add(altarComponent.getOffset());
 			BlockStack worldBlock = new BlockStack(world.getBlockState(componentPos).getBlock(), world.getBlockState(componentPos).getBlock().getMetaFromState(world.getBlockState(componentPos)));
@@ -96,40 +95,28 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			if (altarComponent.getComponent() != EnumAltarComponent.NOTAIR) {
 				if (worldBlock.getBlock() == AnimusBlocks.blockPhantomBuilder) {
 					int invSlot = getSlotFor(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())), player);
-					if (invSlot != -1 || player.capabilities.isCreativeMode) {
-						if (!player.capabilities.isCreativeMode) {
-							//world.setBlockState(componentPos,Block.getBlockFromItem(player.inventory.getStackInSlot(invSlot).getItem()).getDefaultState()); //Block.getBlockFromItem(player.inventory.getStackInSlot(invSlot).getItem()).getDefaultState());
-							ItemStack _stack = player.inventory.getStackInSlot(invSlot);
-							if (_stack.getItem() instanceof ItemBlock) {
-								ItemBlock _item = (ItemBlock) player.inventory.getStackInSlot(invSlot).getItem();
-								if (_item.getBlock() instanceof BlockString) {
-									System.out.println("yee");
-									IBlockState _state = ((BlockString) _item.getBlock()).getStateFromMeta(_item.getDamage(_stack));
-									world.setBlockState(componentPos, _state);
-								}
-								world.setBlockState(componentPos, _item.getBlock().getDefaultState());
-							}
-						} else {
-							world.setBlockState(componentPos, Utils.getBlockForComponent(altarComponent.getComponent()).getDefaultState());
-						}
+					if (invSlot != -1) {
+						ItemStack _stack = player.inventory.getStackInSlot(invSlot);
+						ItemBlock _item = (ItemBlock) player.inventory.getStackInSlot(invSlot).getItem();
+						System.out.println("yee");
+						IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
+						world.setBlockState(componentPos, _state);
+
 						world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 0.5F, 1.0F);
-						if (!player.capabilities.isCreativeMode) {
-							player.inventory.decrStackSize(invSlot, 1);
-							return EnumActionResult.PASS;
-						}
+
+						player.inventory.decrStackSize(invSlot, 1);
+						return EnumActionResult.PASS;
 					} else {
-						missingText=I18n.format("text.component.diviner.missing") + " " +
-								(altarComponent.getComponent() == EnumAltarComponent.GLOWSTONE ? "Glowstone Block" :
-										(I18n.format(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())).getItem().getUnlocalizedName(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()))) + ".name")));
+						missingText = I18n.format("text.component.diviner.missing") + " " + (altarComponent.getComponent() == EnumAltarComponent.GLOWSTONE ? "Glowstone Block" : (I18n.format(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())).getItem().getUnlocalizedName(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()))) + ".name")));
 
 					}
+				} else {
+					ChatUtil.sendNoSpam(player,I18n.format("text.component.diviner.obstructed"));
 				}
-			} else if (player.capabilities.isCreativeMode) {
-				world.setBlockState(componentPos, Blocks.STONE.getDefaultState());
 			}
 		}
 		System.out.println(missingText);
-		if (missingText.length()>0) {
+		if (missingText.length() > 0) {
 			ChatUtil.sendNoSpam(player, new TextComponentTranslation(missingText));
 		}
 		return EnumActionResult.PASS;

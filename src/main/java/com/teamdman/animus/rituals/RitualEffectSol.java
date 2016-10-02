@@ -3,6 +3,7 @@ package com.teamdman.animus.rituals;
 import WayofTime.bloodmagic.api.ritual.IMasterRitualStone;
 import WayofTime.bloodmagic.api.ritual.Ritual;
 import WayofTime.bloodmagic.api.ritual.RitualComponent;
+import com.teamdman.animus.Animus;
 
 import java.util.ArrayList;
 
@@ -11,12 +12,12 @@ import java.util.ArrayList;
  */
 public class RitualEffectSol extends Ritual {
 	public RitualEffectSol(String name, int crystalLevel, int activationCost, String unlocalizedName) {
-		super(name, crystalLevel, activationCost, unlocalizedName);
+		super("ritualSol", 0, 1000, "ritual."+ Animus.MODID+".SolRitual");
 	}
 
 	@Override
 	public int getRefreshCost() {
-		return 0;
+		return 1;
 	}
 
 	@Override
