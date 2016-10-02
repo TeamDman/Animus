@@ -30,6 +30,7 @@ public class AnimusConfig {
 
 	// Ritual Disabling
 	public static boolean ritualSol;
+	public static boolean ritualLuna;
 
 	public static void init(File file)
 	{
@@ -50,6 +51,7 @@ public class AnimusConfig {
 		config.addCustomCategoryComment(category, "Ritual toggling");
 		config.setCategoryRequiresMcRestart(category, true);
 		ritualSol = config.get(category, "ritualSol", true).getBoolean();
+		ritualLuna = config.get(category, "ritualLuna", true).getBoolean();
 
 		config.save();
 	}

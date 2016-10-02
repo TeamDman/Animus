@@ -35,14 +35,15 @@ public class ItemKamaBound extends ItemDaggerOfSacrifice {
 		if (entities == null || entities.isEmpty())
 			return false;
 		for (EntityLivingBase target : entities) {
+			System.out.println(target.getDisplayName());
 			if (target == null || attacker == null || attacker.worldObj.isRemote || (attacker instanceof EntityPlayer && !(attacker instanceof EntityPlayerMP)))
-				return false;
+				continue;
 
 			if (target instanceof EntityPlayer)
-				return false;
+				continue;
 
 			if (target.isDead || target.getHealth() < 0.5F)
-				return false;
+				continue;
 
 			String entityName = target.getClass().getSimpleName();
 			int lifeEssence = 500;
@@ -54,9 +55,9 @@ public class ItemKamaBound extends ItemDaggerOfSacrifice {
 				lifeEssence = BloodMagicAPI.getEntitySacrificeValues().get(entityName);
 
 			if (lifeEssence <= 0)
-				return false;
-			if (!target.isNonBoss())
-				return false;
+				continue;
+//			if (target.isNonBoss())
+//				continue;
 
 			if (target.isChild())
 				lifeEssence /= 2;
