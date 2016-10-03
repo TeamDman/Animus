@@ -34,10 +34,10 @@ public class Animus {
     @SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
     public static CommonProxy proxy;
 
-    public static CreativeTabs tabMain = new CreativeTabs("Animus") {
+    public static CreativeTabs tabMain = new CreativeTabs(MODID) {
         @Override
         public Item getTabIconItem() {
-            return Items.BAKED_POTATO;
+            return AnimusItems.altarDiviner;
         }
     };
 

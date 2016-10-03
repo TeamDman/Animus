@@ -1,8 +1,13 @@
 package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.api.impl.ItemSigil;
+import WayofTime.bloodmagic.api.util.helper.NBTHelper;
+import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.api.util.helper.PlayerHelper;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
+import WayofTime.bloodmagic.util.helper.TextHelper;
+import com.google.common.base.Strings;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.client.particle.ParticleSpell;
 import net.minecraft.client.resources.I18n;
@@ -17,6 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -36,6 +43,7 @@ public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
 		boolean unusable = isUnusable(stack);
 		if (!playerIn.worldObj.isRemote && !unusable) {
+			NetworkHelper.getSoulNetwork(playerIn).syphonAndDamage(playerIn, getLpUsed());
 			ItemStack soul = new ItemStack(AnimusItems.mobSoul);
 			NBTTagCompound tag = new NBTTagCompound();
 			NBTTagCompound targetData = new NBTTagCompound();
@@ -55,6 +63,18 @@ public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 			target.setDead();
 		}
 		return super.itemInteractionForEntity(stack, playerIn, target, hand);
+	}
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
+	{
+
+		NBTHelper.checkNBT(stack);
+
+		if (!Strings.isNullOrEmpty(getOwnerName(stack)))
+			tooltip.add(TextHelper.localizeEffect("tooltip.BloodMagic.currentOwner", PlayerHelper.getUsernameFromStack(stack)));
+
+		super.addInformation(stack, player, tooltip, advanced);
 	}
 
 	@Override

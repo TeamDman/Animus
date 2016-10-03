@@ -7,6 +7,7 @@ import com.teamdman.animus.items.ItemKama;
 import com.teamdman.animus.items.ItemKamaBound;
 import com.teamdman.animus.items.ItemMobSoul;
 import com.teamdman.animus.items.sigils.ItemSigilChains;
+import com.teamdman.animus.items.sigils.ItemSigilTransposition;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,6 +26,7 @@ public class AnimusItems {
 	public static Item altarDiviner;
     public static Item mobSoul;
     public static Item sigilChains;
+    public static Item sigilTransposition;
 
     public static void init() {
         kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemKamaWood");
@@ -36,6 +38,7 @@ public class AnimusItems {
 		altarDiviner = setupItem(new ItemAltarDiviner(), "itemAltarDiviner");
         mobSoul=setupItem(new ItemMobSoul(), "itemMobSoul");
         sigilChains=setupItem(new ItemSigilChains(), "itemSigilChains");
+        sigilTransposition=setupItem(new ItemSigilTransposition(), "itemSigilTransposition");
     }
 
     private static Item setupItem(Item item, String name) {

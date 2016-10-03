@@ -8,6 +8,7 @@ item.itemKamaBound.name=Bound Khopesh
 item.itemAltarDiviner.name=Altar Diviner
 item.itemMobSoul.name=Mob Soul
 item.itemSigilChains.name=Sigil of Phantom Chains
+item.itemSigilTransposition.name=Sigil of Transposition
 
 tile.blockPhantomBuilder.name=Phantom Builder Block
 tile.lightgem.name=Glowstone
