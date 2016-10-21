@@ -57,6 +57,7 @@ public class RitualLuna extends Ritual {
 					if (Utils.canInsertStackFullyIntoInventory(stack, (IInventory) tileInventory, EnumFacing.UP)) {
 						Utils.insertStackIntoInventory(stack, (IInventory) tileInventory, EnumFacing.UP);
 						world.setBlockToAir(pos);
+						network.syphon(getRefreshCost());
 						return;
 					}
 				}

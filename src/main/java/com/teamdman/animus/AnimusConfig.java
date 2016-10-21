@@ -33,6 +33,7 @@ public class AnimusConfig {
 	public static boolean ritualLuna;
 	public static boolean ritualEntropy;
 	public static boolean ritualUnmaking;
+	public static boolean ritualPeace;
 
 	public static void init(File file)
 	{
@@ -56,6 +57,7 @@ public class AnimusConfig {
 		ritualLuna = config.get(category, "ritualLuna", true).getBoolean();
 		ritualEntropy = config.get(category, "ritualEntropy", true).getBoolean();
 		ritualUnmaking = config.get(category, "ritualUnmaking", true).getBoolean();
+		ritualPeace = config.get(category, "ritualPeace", true).getBoolean();
 
 		config.save();
 	}

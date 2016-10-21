@@ -66,6 +66,8 @@ public class RitualEntropy extends Ritual {
 					}
 				}
 			}
+			network.syphon(getRefreshCost());
+
 		}
 	}
 

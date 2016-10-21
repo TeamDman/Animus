@@ -128,6 +128,7 @@ public class RitualUnmaking extends Ritual {
 						}
 					}
 				}
+				network.syphon(getRefreshCost());
 			}
 		}
 	}

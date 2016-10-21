@@ -5,10 +5,7 @@ import WayofTime.bloodmagic.api.registry.RitualRegistry;
 import WayofTime.bloodmagic.api.ritual.Ritual;
 import WayofTime.bloodmagic.ritual.RitualWater;
 import com.teamdman.animus.AnimusConfig;
-import com.teamdman.animus.rituals.RitualEntropy;
-import com.teamdman.animus.rituals.RitualLuna;
-import com.teamdman.animus.rituals.RitualSol;
-import com.teamdman.animus.rituals.RitualUnmaking;
+import com.teamdman.animus.rituals.*;
 
 /**
  * Created by TeamDman on 10/1/2016.
@@ -18,6 +15,7 @@ public class AnimusRituals {
 	public static Ritual ritualLuna;
 	public static Ritual ritualEntropy;
 	public static Ritual ritualUnmaking;
+	public static Ritual ritualPeace;
 
 	public static void initRituals() {
 		ritualSol = new RitualSol();
@@ -28,6 +26,8 @@ public class AnimusRituals {
 		RitualRegistry.registerRitual(ritualEntropy, AnimusConfig.ritualEntropy);
 		ritualUnmaking = new RitualUnmaking();
 		RitualRegistry.registerRitual(ritualUnmaking, AnimusConfig.ritualUnmaking);
+		ritualPeace = new RitualPeace();
+		RitualRegistry.registerRitual(ritualPeace,AnimusConfig.ritualPeace);
 
 	}
 }

@@ -1,7 +1,4 @@
 package com.teamdman.animus;
-/**
- * Created by TeamDman on 9/9/2016.
- */
 
 import com.teamdman.animus.client.gui.config.GuiHandler;
 import com.teamdman.animus.proxy.CommonProxy;

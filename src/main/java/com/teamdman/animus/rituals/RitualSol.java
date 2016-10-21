@@ -66,6 +66,8 @@ public class RitualSol extends Ritual {
 					IBlockState toPlace = Block.getBlockFromItem(((IInventory) tileInventory).getStackInSlot(slotToPlace).getItem()).getStateFromMeta(((IInventory) tileInventory).getStackInSlot(slotToPlace).getItemDamage());
 					((IInventory) tileInventory).decrStackSize(slotToPlace,1);
 					world.setBlockState(pos, toPlace);
+					network.syphon(getRefreshCost());
+
 					return;
 				}
 			}

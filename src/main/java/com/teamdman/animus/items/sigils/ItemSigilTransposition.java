@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagLong;
@@ -22,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -50,11 +52,13 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 				NetworkHelper.getSoulNetwork(playerIn).syphonAndDamage(playerIn, getLpUsed());
 				stack.getTagCompound().setLong("pos", pos.toLong());
 				ChatUtil.sendNoSpam(playerIn, "Position set!");
+				worldIn.playSound(null,pos, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS,1,1);
 			} else if (stack.getTagCompound().getLong("pos")!=0) {
 				BlockPos _pos = BlockPos.fromLong(stack.getTagCompound().getLong("pos"));
 				TileEntity _tile = worldIn.getTileEntity(_pos);
 				BlockPos _place = pos.offset(facing);
 				if (worldIn.isAirBlock(_place)) {
+					NetworkHelper.getSoulNetwork(playerIn).syphonAndDamage(playerIn, getLpUsed());
 					worldIn.setBlockState(_place, worldIn.getBlockState(_pos));
 					TileEntity _newtile = worldIn.getTileEntity(_place);
 					if (_newtile != null && _tile != null) {
@@ -67,16 +71,11 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 					}
 				}
 				worldIn.setBlockToAir(_pos);
+				worldIn.playSound(null,pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS,1,1);
 				stack.getTagCompound().setLong("pos",0);
 			}
 		}
 		return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-	}
-
-	@Override
-	public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-		System.out.println(world.isRemote);
-		return super.onItemUseFirst(stack, player, world, pos, side, hitX, hitY, hitZ, hand);
 	}
 
 	@Override

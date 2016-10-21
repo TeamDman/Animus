@@ -9,6 +9,7 @@ item.itemAltarDiviner.name=Altar Diviner
 item.itemMobSoul.name=Mob Soul
 item.itemSigilChains.name=Sigil of Phantom Chains
 item.itemSigilTransposition.name=Sigil of Transposition
+item.itemSigilBuilder.name=Sigil of the Fast Builder
 
 tile.blockPhantomBuilder.name=Phantom Builder Block
 tile.lightgem.name=Glowstone
@@ -19,3 +20,4 @@ ritual.animus.solRitual=Ritual of Sol
 ritual.animus.lunaRitual=Ritual of Luna
 ritual.animus.entropyRitual=Ritual of Entropy
 ritual.animus.unmakingRitual=Ritual of Unmaking
+ritual.animus.peaceRitual=Ritual of Peace
