@@ -17,7 +17,7 @@ public class AnimusRituals {
 	public static Ritual ritualUnmaking;
 	public static Ritual ritualPeace;
 
-	public static void initRituals() {
+	public static void init() {
 		ritualSol = new RitualSol();
 		RitualRegistry.registerRitual(ritualSol, AnimusConfig.ritualSol);
 		ritualLuna = new RitualLuna();

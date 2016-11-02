@@ -1,12 +1,12 @@
 package com.teamdman.animus;
 
-import com.teamdman.animus.client.gui.config.GuiHandler;
+import com.teamdman.animus.client.gui.GuiHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
+import com.teamdman.animus.registry.AnimusRecipes;
 import com.teamdman.animus.registry.AnimusRituals;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -20,7 +20,7 @@ import java.util.Locale;
 
 // TODO: Sigil that eats for you
 
-@Mod(modid = Animus.MODID, name = Animus.NAME, version = Animus.VERSION, dependencies = Animus.DEPENDENCIES, guiFactory = "com.teamdman.client.gui.config.ConfigGuiFactory")
+@Mod(modid = Animus.MODID, name = Animus.NAME, version = Animus.VERSION, dependencies = Animus.DEPENDENCIES, guiFactory = "com.teamdman.animus.client.gui.config.ConfigGuiFactory")
 public class Animus {
     public static final String MODID = "animus";
     public static final String DOMAIN = MODID.toLowerCase(Locale.ENGLISH) + ":";
@@ -44,6 +44,7 @@ public class Animus {
         AnimusConfig.init(new File(event.getModConfigurationDirectory(), Animus.MODID + ".cfg"));
         AnimusItems.init();
         AnimusBlocks.init();
+        AnimusRecipes.init();
         proxy.preInit(event);
     }
 
@@ -51,7 +52,7 @@ public class Animus {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-        AnimusRituals.initRituals();
+        AnimusRituals.init();
         proxy.init(event);
     }
 

@@ -22,6 +22,9 @@ import java.util.List;
 public class AnimusConfig {
 	private static Configuration config;
 
+	public static Configuration getConfig() {
+		return config;
+	}
 
 	// Item/Block Disabling
 	public static List<String> itemBlacklist;

@@ -1,4 +1,4 @@
-package com.teamdman.animus.client.gui.config;
+package com.teamdman.animus.client.gui;
 
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;

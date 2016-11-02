@@ -1,4 +1,4 @@
-package com.teamdman.animus.client.gui.config.config;
+package com.teamdman.animus.client.gui.config;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
