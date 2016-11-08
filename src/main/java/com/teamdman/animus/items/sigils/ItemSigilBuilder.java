@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
  */
 public class ItemSigilBuilder extends com.teamdman.animus.items.sigils.ItemSigilToggleableBase {
 	public ItemSigilBuilder() {
-		super("Builder",100);
+		super("builder",100);
 	}
 
 	@Override
@@ -26,13 +26,10 @@ public class ItemSigilBuilder extends com.teamdman.animus.items.sigils.ItemSigil
 		try {
 			Field delay = Minecraft.class.getDeclaredField("rightClickDelayTimer");
 			delay.setAccessible(true);
-			try {
-				delay.set(Minecraft.getMinecraft(), 0);
-			} catch (IllegalAccessException nsfe) {
-				throw new RuntimeException(nsfe);
-			}
-		} catch (NoSuchFieldException nsfe) {
-			throw new RuntimeException(nsfe);
+			delay.set(Minecraft.getMinecraft(), 0);
+		} catch (Exception e) {
+			System.out.println("ANIMUS BUILDER SIGIL HAS SCREWD UP");
+			e.printStackTrace();
 		}
 	}
 }

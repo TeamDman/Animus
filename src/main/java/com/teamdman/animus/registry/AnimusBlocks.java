@@ -15,7 +15,7 @@ public class AnimusBlocks {
 	public static Block blockPhantomBuilder;
 
 	public static void init() {
-		blockPhantomBuilder = setupBlock(new BlockPhantomBuilder(), "blockPhantomBuilder");
+		blockPhantomBuilder = setupBlock(new BlockPhantomBuilder(), "blockphantombuilder");
 	}
 
 	private static Block setupBlock(Block block, String name) {

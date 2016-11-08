@@ -47,7 +47,7 @@ public class ItemSigilToggleableBase extends ItemSigilToggleable implements IMes
 	@SideOnly(Side.CLIENT)
 	public ItemMeshDefinition getMeshDefinition()
 	{
-		return new CustomMeshDefinitionActivatable("itemSigil" + WordUtils.capitalize(name));
+		return new CustomMeshDefinitionActivatable("itemsigil" + name);//WordUtils.capitalize(name));
 	}
 
 	@Nullable

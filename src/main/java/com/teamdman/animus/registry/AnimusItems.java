@@ -31,17 +31,17 @@ public class AnimusItems {
     public static Item sigilBuilder;
 
     public static void init() {
-        kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemKamaWood");
-        kamaStone = setupItem(new ItemKama(Item.ToolMaterial.STONE), "itemKamaStone");
-        kamaIron = setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemKamaIron");
-        kamaGold = setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemKamaGold");
-        kamaDiamond = setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemKamaDiamond");
-        kamaBound = setupItem(new ItemKamaBound(), "itemKamaBound");
-		altarDiviner = setupItem(new ItemAltarDiviner(), "itemAltarDiviner");
-        mobSoul=setupItem(new ItemMobSoul(), "itemMobSoul");
-        sigilChains=setupItem(new ItemSigilChains(), "itemSigilChains");
-        sigilTransposition=setupItem(new ItemSigilTransposition(), "itemSigilTransposition");
-        sigilBuilder=setupItem(new ItemSigilBuilder(), "itemSigilBuilder");
+        kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood");
+        kamaStone = setupItem(new ItemKama(Item.ToolMaterial.STONE), "itemkamastone");
+        kamaIron = setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemkamairon");
+        kamaGold = setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemkamagold");
+        kamaDiamond = setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemkamadiamond");
+        kamaBound = setupItem(new ItemKamaBound(), "itemkamabound");
+		altarDiviner = setupItem(new ItemAltarDiviner(), "itemaltardiviner");
+        mobSoul=setupItem(new ItemMobSoul(), "itemmobsoul");
+        sigilChains=setupItem(new ItemSigilChains(), "itemsigilchains");
+        sigilTransposition=setupItem(new ItemSigilTransposition(), "itemsigiltransposition");
+        sigilBuilder=setupItem(new ItemSigilBuilder(), "itemsigilbuilder");
 
     }
 
