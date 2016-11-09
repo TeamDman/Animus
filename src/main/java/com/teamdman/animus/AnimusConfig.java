@@ -1,16 +1,9 @@
 package com.teamdman.animus;
 
 import WayofTime.bloodmagic.ConfigHandler;
-import WayofTime.bloodmagic.api.BlockStack;
-import WayofTime.bloodmagic.api.Constants;
-import WayofTime.bloodmagic.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.io.File;
 import java.util.Arrays;
@@ -38,6 +31,9 @@ public class AnimusConfig {
 	public static boolean ritualUnmaking;
 	public static boolean ritualPeace;
 
+	// General
+	public static boolean muteWither;
+
 	public static void init(File file)
 	{
 		config = new Configuration(file);
@@ -62,6 +58,10 @@ public class AnimusConfig {
 		ritualUnmaking = config.get(category, "ritualUnmaking", true).getBoolean();
 		ritualPeace = config.get(category, "ritualPeace", true).getBoolean();
 
+		category = "General";
+		config.addCustomCategoryComment(category,"General Preferences");
+		config.setCategoryRequiresMcRestart(category,false);
+		muteWither = config.get(category,"muteWither",true).getBoolean();
 		config.save();
 	}
 

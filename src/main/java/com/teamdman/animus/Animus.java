@@ -1,6 +1,7 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.client.gui.GuiHandler;
+import com.teamdman.animus.handlers.EventHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
@@ -8,6 +9,7 @@ import com.teamdman.animus.registry.AnimusRecipes;
 import com.teamdman.animus.registry.AnimusRituals;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -46,6 +48,9 @@ public class Animus {
         AnimusBlocks.init();
         AnimusRecipes.init();
         proxy.preInit(event);
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
+//        Legacy, might not need
+//        FMLCommonHandler.instance().bus().register(new EventHandler());
     }
 
     // mod setup, register recipes
