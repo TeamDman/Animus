@@ -30,10 +30,12 @@ public class AnimusConfig {
 	public static boolean ritualEntropy;
 	public static boolean ritualUnmaking;
 	public static boolean ritualPeace;
-
+	public static boolean ritualNaturesLeech;
+	public static boolean ritualCulling;
+	
 	// General
 	public static boolean muteWither;
-
+	
 	public static void init(File file)
 	{
 		config = new Configuration(file);
@@ -57,6 +59,8 @@ public class AnimusConfig {
 		ritualEntropy = config.get(category, "ritualEntropy", true).getBoolean();
 		ritualUnmaking = config.get(category, "ritualUnmaking", true).getBoolean();
 		ritualPeace = config.get(category, "ritualPeace", true).getBoolean();
+		ritualNaturesLeech = config.get(category, "ritualNaturesLeech", true).getBoolean();
+		ritualCulling = config.get(category, "ritualCulling", true).getBoolean();
 
 		category = "General";
 		config.addCustomCategoryComment(category,"General Preferences");
