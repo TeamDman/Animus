@@ -30,7 +30,7 @@ public class RitualEntropy extends Ritual {
 	HashMap<Item, Integer> indexed = new HashMap<Item, Integer>();
 
 	public RitualEntropy() {
-		super("ritualEntropy", 0, 1000, "ritual." + Animus.MODID + ".entropyRitual");
+		super("ritualEntropy", 0, 1000, "ritual." + Animus.MODID + ".entropyritual");
 
 		addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
 		setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);

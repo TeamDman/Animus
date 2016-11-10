@@ -24,7 +24,7 @@ public class RitualLuna extends Ritual {
 	public static final String CHEST_RANGE = "chest";
 
 	public RitualLuna() {
-		super("ritualLuna", 1, 1000, "ritual." + Animus.MODID + ".lunaRitual");
+		super("ritualLuna", 1, 1000, "ritual." + Animus.MODID + ".lunaritual");
 
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
 		addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));

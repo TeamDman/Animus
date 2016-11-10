@@ -26,7 +26,7 @@ public class RitualSol extends Ritual {
 	public static final String CHEST_RANGE = "chest";
 
 	public RitualSol() {
-		super("ritualSol", 0, 1000, "ritual." + Animus.MODID + ".solRitual");
+		super("ritualSol", 0, 1000, "ritual." + Animus.MODID + ".solritual");
 
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
 		addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));

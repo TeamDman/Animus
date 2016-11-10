@@ -30,7 +30,7 @@ public class RitualUnmaking extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 
 	public RitualUnmaking() {
-		super("ritualUnmaking", 1, 3000, "ritual." + Animus.MODID + ".unmakingRitual");
+		super("ritualUnmaking", 1, 3000, "ritual." + Animus.MODID + ".unmakingritual");
 
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-2, -2, -2), 5));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 8, 8);
