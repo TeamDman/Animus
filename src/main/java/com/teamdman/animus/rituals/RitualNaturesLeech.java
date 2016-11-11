@@ -26,7 +26,7 @@ import WayofTime.bloodmagic.tile.TileAltar;
 
 public class RitualNaturesLeech extends Ritual {
 	public int reagentDrain = 2;
-	
+
 	public static final String EFFECT_RANGE = "effect";
 
 	public RitualNaturesLeech() {
@@ -81,7 +81,6 @@ public class RitualNaturesLeech extends Ritual {
 		int currentEssence = network.getCurrentEssence();
 		TileAltar tileAltar = new TileAltar();
 
-
 		if (!ritualStone.getWorldObj().isRemote) {
 			if (currentEssence < getRefreshCost()) {
 				network.causeNausea();
@@ -92,7 +91,7 @@ public class RitualNaturesLeech extends Ritual {
 			int max = 100;
 			network.syphon(this.getRefreshCost());
 			BlockPos at = null;
-			
+
 			for (int eat = 0; eat < 5; eat++) {
 				if (eat > max)
 					break;// little sanity checking
@@ -101,7 +100,10 @@ public class RitualNaturesLeech extends Ritual {
 				if (pos != null) {
 					if (random.nextInt(100) < 20) {
 						at = new BlockPos(pos[0], pos[1], pos[2]);
-						EffectHandler.getInstance().registerFX(new EntityFXBurst(1, at.getX() + 0.5, at.getY() + .8, at.getZ() + 1, 1F));
+
+						EffectHandler.getInstance()
+								.registerFX(new EntityFXBurst(1, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + .5, 1F));
+
 						world.playSound(null, at, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
 						world.setBlockToAir(at);
 						eaten++;

@@ -29,7 +29,6 @@ import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.api.util.helper.*;
 
-
 public class RitualCulling extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 
@@ -59,8 +58,9 @@ public class RitualCulling extends Ritual {
 		zCoord = ritualStone.getBlockPos().getZ();
 
 		if (player != null)
-		player.worldObj.addWeatherEffect(new EntityLightningBolt(player.worldObj, xCoord + itemRand.nextInt(64) - 32,
-				yCoord + itemRand.nextInt(8) - 8, zCoord + itemRand.nextInt(64) - 32, false));
+			player.worldObj
+					.addWeatherEffect(new EntityLightningBolt(player.worldObj, xCoord + itemRand.nextInt(64) - 32,
+							yCoord + itemRand.nextInt(8) - 8, zCoord + itemRand.nextInt(64) - 32, false));
 
 		return true;
 	}
@@ -69,7 +69,7 @@ public class RitualCulling extends Ritual {
 	public void performRitual(IMasterRitualStone ritualStone) {
 		SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
 		if (network == null)
-					return;
+			return;
 		int currentEssence = network.getCurrentEssence();
 
 		World world = ritualStone.getWorldObj();
@@ -81,7 +81,6 @@ public class RitualCulling extends Ritual {
 
 		TileAltar tileAltar = null;
 		boolean testFlag = false;
-
 
 		for (int i = -5; i <= 5; i++) {
 			for (int j = -5; j <= 5; j++) {
@@ -106,16 +105,16 @@ public class RitualCulling extends Ritual {
 		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 
 		int entityCount = 0;
-		
+
 		if (currentEssence < this.getRefreshCost() * list.size()) {
 			network.causeNausea();
 		} else {
 			for (EntityLivingBase livingEntity : list) {
 				if (!livingEntity.isNonBoss()
-						|| (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName()))) {			
+						|| (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName()))) {
 					continue;
 				}
-				
+
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
 
@@ -127,24 +126,26 @@ public class RitualCulling extends Ritual {
 					int p = 0;
 					BlockPos at = null;
 					soundSource = livingEntity.worldObj;
-					
+
 					for (p = 0; p < 6; p++)
-					at = livingEntity.getPosition();
-					
-						livingEntity.setSilent(true); //The screams of the weak fall on deaf ears.
-						result = (livingEntity.attackEntityFrom(culled, livingEntity.getMaxHealth() * 3));
+						at = livingEntity.getPosition();
+
+					livingEntity.setSilent(true); // The screams of the weak
+													// fall on deaf ears.
+					result = (livingEntity.attackEntityFrom(culled, livingEntity.getMaxHealth() * 3));
 
 					if (result != false) {
 						entityCount++;
-							tileAltar.sacrificialDaggerCall(RitualCulling.amount, true);
-							
-							if (at != null){
-								
-							EffectHandler.getInstance().registerFX(new EntityFXBurst(0, at.getX() + 0.5, at.getY() + .8, at.getZ() + 0.5, 1F));
-							soundSource.playSound(null, at, AnimusSoundEventHandler.ghostly, SoundCategory.BLOCKS, 1F, 1F);
-							
-							
-							}
+						tileAltar.sacrificialDaggerCall(RitualCulling.amount, true);
+
+						if (at != null) {
+
+							EffectHandler.getInstance().registerFX(
+									new EntityFXBurst(0, at.getX() + 0.5, at.getY() + .8, at.getZ() + 0.5, 1F));
+							soundSource.playSound(null, at, AnimusSoundEventHandler.ghostly, SoundCategory.BLOCKS, 1F,
+									1F);
+
+						}
 
 					}
 				}
