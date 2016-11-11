@@ -33,9 +33,9 @@ def getDate() {
 }
 
 
-sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.6"
+    sourceCompatibility = targetCompatibility = "1.8"
 }
 
 minecraft {
@@ -65,14 +65,9 @@ repositories {
 
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
-    //deobfCompile "mcp.mobius.waila:Waila:${waila_version}_${mc_version}:dev"
-    deobfCompile "info.amerifrance.guideapi:Guide-API:${mc_version}-${guideapi_version}"
+	deobfCompile "info.amerifrance.guideapi:Guide-API:${mc_version}-${guideapi_version}"
     deobfCompile "info.tehnut.buttons:Buttons:${buttons_version}:api"
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.9.4-2.0.4-58"
-	
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
 processResources {

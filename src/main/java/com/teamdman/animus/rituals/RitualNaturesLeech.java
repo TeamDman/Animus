@@ -22,7 +22,7 @@ import WayofTime.bloodmagic.tile.TileAltar;
 
 public class RitualNaturesLeech extends Ritual {
 	public int reagentDrain = 2;
-	public static final int timeDelay = 40;
+	
 	public static final String EFFECT_RANGE = "effect";
 
 	public RitualNaturesLeech() {
@@ -48,7 +48,7 @@ public class RitualNaturesLeech extends Ritual {
 		this.addRune(ritualBlocks, -2, 1, -2, EnumRuneType.WATER);
 		this.addRune(ritualBlocks, -2, 1, 0, EnumRuneType.AIR);
 		this.addRune(ritualBlocks, -2, 1, 2, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, -1, 0, -1, EnumRuneType.WATER);
+		this.addRune(ritualBlocks, -1, 0, -1, EnumRuneType.EARTH);
 		this.addRune(ritualBlocks, -1, 0, 1, EnumRuneType.WATER);
 		this.addRune(ritualBlocks, 0, 0, -3, EnumRuneType.EARTH);
 		this.addRune(ritualBlocks, 0, 0, 3, EnumRuneType.EARTH);
@@ -77,8 +77,6 @@ public class RitualNaturesLeech extends Ritual {
 		int currentEssence = network.getCurrentEssence();
 		TileAltar tileAltar = new TileAltar();
 
-		if (world.getWorldTime() % RitualNaturesLeech.timeDelay != 0)
-			return; // Don't want to call
 
 		if (!ritualStone.getWorldObj().isRemote) {
 			if (currentEssence < getRefreshCost()) {

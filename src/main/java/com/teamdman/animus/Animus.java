@@ -1,6 +1,7 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.client.gui.GuiHandler;
+import com.teamdman.animus.handlers.AnimusSounds;
 import com.teamdman.animus.handlers.EventHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.AnimusBlocks;
@@ -45,12 +46,11 @@ public class Animus {
     public void preinit(FMLPreInitializationEvent event) {
         AnimusConfig.init(new File(event.getModConfigurationDirectory(), Animus.MODID + ".cfg"));
         AnimusItems.init();
+        AnimusSounds.init();
         AnimusBlocks.init();
         AnimusRecipes.init();
         proxy.preInit(event);
         MinecraftForge.EVENT_BUS.register(new EventHandler());
-//        Legacy, might not need
-//        FMLCommonHandler.instance().bus().register(new EventHandler());
     }
 
     // mod setup, register recipes
