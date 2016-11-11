@@ -6,20 +6,29 @@ import java.util.List;
 import java.util.Random;
 
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.client.resources.EffectHandler;
+import com.teamdman.animus.client.resources.fx.EntityFXBurst;
+import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import WayofTime.bloodmagic.ConfigHandler;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import WayofTime.bloodmagic.api.ritual.*;
+
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.tile.TileAltar;
+import WayofTime.bloodmagic.api.util.helper.*;
+
 
 public class RitualCulling extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
@@ -37,8 +46,8 @@ public class RitualCulling extends Ritual {
 
 	public int reagentDrain = 2;
 	public boolean result = false;
-	public static final int timeDelay = 20;
 	public static final int amount = 200;
+	public LogHelper logger = new LogHelper("Animus Debug");
 
 	@Override
 	public boolean activateRitual(IMasterRitualStone ritualStone, EntityPlayer player, String owner) {
@@ -49,6 +58,7 @@ public class RitualCulling extends Ritual {
 		yCoord = ritualStone.getBlockPos().getY();
 		zCoord = ritualStone.getBlockPos().getZ();
 
+		if (player != null)
 		player.worldObj.addWeatherEffect(new EntityLightningBolt(player.worldObj, xCoord + itemRand.nextInt(64) - 32,
 				yCoord + itemRand.nextInt(8) - 8, zCoord + itemRand.nextInt(64) - 32, false));
 
@@ -58,9 +68,12 @@ public class RitualCulling extends Ritual {
 	@Override
 	public void performRitual(IMasterRitualStone ritualStone) {
 		SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
+		if (network == null)
+					return;
 		int currentEssence = network.getCurrentEssence();
 
 		World world = ritualStone.getWorldObj();
+		World soundSource = ritualStone.getWorldObj();
 		int x = ritualStone.getBlockPos().getX();
 		int y = ritualStone.getBlockPos().getY();
 		int z = ritualStone.getBlockPos().getZ();
@@ -69,9 +82,7 @@ public class RitualCulling extends Ritual {
 		TileAltar tileAltar = null;
 		boolean testFlag = false;
 
-		if (world.getWorldTime() % RitualCulling.timeDelay != 0) {
-			return;
-		}
+
 		for (int i = -5; i <= 5; i++) {
 			for (int j = -5; j <= 5; j++) {
 				for (int k = -10; k <= 10; k++) {
@@ -84,6 +95,7 @@ public class RitualCulling extends Ritual {
 		}
 
 		if (!testFlag) {
+
 			return;
 		}
 		int d0 = 10;
@@ -94,15 +106,16 @@ public class RitualCulling extends Ritual {
 		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 
 		int entityCount = 0;
-
+		
 		if (currentEssence < this.getRefreshCost() * list.size()) {
 			network.causeNausea();
 		} else {
 			for (EntityLivingBase livingEntity : list) {
-				if (livingEntity.isNonBoss()
-						|| (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName()))) {
+				if (!livingEntity.isNonBoss()
+						|| (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName()))) {			
 					continue;
 				}
+				
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
 
@@ -110,22 +123,32 @@ public class RitualCulling extends Ritual {
 																							// earth
 																							// boosted
 
-				if (effect == null) {
+				if (effect.isEmpty()) {
 					int p = 0;
+					BlockPos at = null;
+					soundSource = livingEntity.worldObj;
+					
 					for (p = 0; p < 6; p++)
-
-						if (network.getPlayer() != null)
-							result = livingEntity.attackEntityFrom(DamageSource.causePlayerDamage(network.getPlayer()),
-									livingEntity.getMaxHealth() * 3);
-					if (result != true)
-						result = (livingEntity.attackEntityFrom(culled, livingEntity.getMaxHealth() * 2));
+					at = livingEntity.getPosition();
+					
+						livingEntity.setSilent(true); //The screams of the weak fall on deaf ears.
+						result = (livingEntity.attackEntityFrom(culled, livingEntity.getMaxHealth() * 3));
 
 					if (result != false) {
 						entityCount++;
-						if (effect == null)
 							tileAltar.sacrificialDaggerCall(RitualCulling.amount, true);
+							
+							if (at != null){
+								
+							EffectHandler.getInstance().registerFX(new EntityFXBurst(0, at.getX() + 0.5, at.getY() + .8, at.getZ() + 0.5, 1F));
+							soundSource.playSound(null, at, AnimusSoundEventHandler.ghostly, SoundCategory.BLOCKS, 1F, 1F);
+							
+							
+							}
+
 					}
 				}
+
 			}
 
 			network.syphon(getRefreshCost() * entityCount);
