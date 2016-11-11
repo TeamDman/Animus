@@ -1,4 +1,5 @@
 {
-	"ghostly": {"category:": "block", "sounds":[{"name": "animus:ghostly", "stream": false}]}
+	"ghostly": {"category:": "block", "sounds":[{"name": "animus:ghostly", "stream": false}]},
+	"naturesleech": {"category:": "block", "sounds":[{"name": "animus:naturesleech", "stream": false}]}	
 }
 

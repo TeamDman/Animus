@@ -6,8 +6,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public final class AnimusSounds {
 	public static void init() {
 		String[] sounds = {
-				"animus:ghostly"
-			};
+				"animus:ghostly",
+				"animus:naturesleech"
+				};
 
 		for (String s : sounds) {
 			ResourceLocation location = new ResourceLocation(s);

@@ -14,7 +14,8 @@ public class TexturePreloader {
     }
 
     private static void preloadTextures() {
-        Assets.loadTexture(Loader.TextureLocation.EFFECT, "culling")      .allocateGlId();      
+        Assets.loadTexture(Loader.TextureLocation.EFFECT, "culling")      .allocateGlId();
+        Assets.loadTexture(Loader.TextureLocation.EFFECT, "naturesleech")      .allocateGlId();  
         SpriteLibrary.init(); //Loads all spritesheets
     }
 }

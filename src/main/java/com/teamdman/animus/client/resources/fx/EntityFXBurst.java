@@ -17,6 +17,8 @@ public class EntityFXBurst extends EntityFXFacingSprite {
         switch (burstId) {
             case 0:
                 return SpriteLibrary.spriteCulling;
+            case 1:
+            	return SpriteLibrary.spriteNaturesLeech;
         }
         return SpriteLibrary.spriteCulling;
     }

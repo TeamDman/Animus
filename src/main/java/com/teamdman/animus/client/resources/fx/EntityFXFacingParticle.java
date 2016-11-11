@@ -16,7 +16,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 public class EntityFXFacingParticle extends EntityComplexFX  {
 	 public static final BindableResource cullingTex = Assets.loadTexture(Loader.TextureLocation.EFFECT, "culling");
-
+	 public static final BindableResource naturesleechTex = Assets.loadTexture(Loader.TextureLocation.EFFECT, "naturesleech");
+	 
 	    private double x, y, z;
 	    private double oldX, oldY, oldZ;
 	    private double yGravity = 0.004;
@@ -97,7 +98,8 @@ public class EntityFXFacingParticle extends EntityComplexFX  {
 	        GL11.glDepthMask(false);
 
 	        cullingTex.bind();
-
+	        naturesleechTex.bind();
+	        
 	        Tessellator t = Tessellator.getInstance();
 	        VertexBuffer vb = t.getBuffer();
 	        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
@@ -141,6 +143,7 @@ public class EntityFXFacingParticle extends EntityComplexFX  {
 	        alpha *= alphaMultiplier;
 	        GL11.glColor4f(colorRed, colorGreen, colorBlue, alpha);
 	        cullingTex.bind();
+	        naturesleechTex.bind();
 	        RenderingUtils.renderFacingQuad(interpolate(oldX, x, pTicks), interpolate(oldY, y, pTicks), interpolate(oldZ, z, pTicks), pTicks, scale, 0, 0, 0, 1, 1);
 	        GL11.glDisable(GL11.GL_BLEND);
 	        GL11.glEnable(GL11.GL_ALPHA_TEST);

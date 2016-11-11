@@ -12,7 +12,6 @@ import com.teamdman.animus.client.resources.fx.EntityComplexFX;
 import com.teamdman.animus.client.resources.fx.EntityFXFacingParticle;
 import com.teamdman.animus.client.resources.fx.IComplexEffect;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;

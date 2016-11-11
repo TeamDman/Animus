@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.client.resources.EffectHandler;
+import com.teamdman.animus.client.resources.fx.EntityFXBurst;
+import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
@@ -12,6 +15,7 @@ import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockTallGrass;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -87,6 +91,8 @@ public class RitualNaturesLeech extends Ritual {
 			int eaten = 0;
 			int max = 100;
 			network.syphon(this.getRefreshCost());
+			BlockPos at = null;
+			
 			for (int eat = 0; eat < 5; eat++) {
 				if (eat > max)
 					break;// little sanity checking
@@ -94,8 +100,10 @@ public class RitualNaturesLeech extends Ritual {
 
 				if (pos != null) {
 					if (random.nextInt(100) < 20) {
-
-						world.setBlockToAir(new BlockPos(pos[0], pos[1], pos[2]));
+						at = new BlockPos(pos[0], pos[1], pos[2]);
+						EffectHandler.getInstance().registerFX(new EntityFXBurst(1, at.getX() + 0.5, at.getY() + .8, at.getZ() + 1, 1F));
+						world.playSound(null, at, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
+						world.setBlockToAir(at);
 						eaten++;
 
 						boolean testFlag = false;
