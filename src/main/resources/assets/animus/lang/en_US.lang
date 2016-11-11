@@ -52,7 +52,7 @@ guide.animus.rituals.peace.entry=Ritual of Peace
 guide.animus.rituals.peace.page0=Tier 0\nSpawns peaceful mobs
 
 guide.animus.rituals.culling.entry=Ritual of Culling
-guide.animus.rituals.culling.page0=Tier 2\n
+guide.animus.rituals.culling.page0=Tier 2\nKills mobs in the area for blood. Demon will needs to be non-zero for mobs with a potion effect to die. Do not approach while health is low.
 
 guide.animus.rituals.leech.entry=Ritual of Nature's Leech
-guide.animus.rituals.leech.page0=Tier 1\n
+guide.animus.rituals.leech.page0=Tier 1\nEats growable blocks in the area for blood.
