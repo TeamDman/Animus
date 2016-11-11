@@ -9,17 +9,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class EventHandler {
 	@SubscribeEvent
 	public void onPlaySoundEvent(PlaySoundEvent e) {
-		System.out.println(e.getName());
+//		System.out.println(e.getName());
 		if (AnimusConfig.muteWither && e.getName().contains("entity.wither.spawn")) {
 			e.setCanceled(true);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent e) {
 		if (e.getModID().equals(Animus.MODID)) {
 			AnimusConfig.syncConfig();
-			System.out.println("Synced Animus Config");
 		}
 	}
 	

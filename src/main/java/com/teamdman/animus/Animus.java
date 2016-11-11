@@ -1,5 +1,6 @@
 package com.teamdman.animus;
 
+import WayofTime.bloodmagic.compat.guideapi.GuideBloodMagic;
 import com.teamdman.animus.client.gui.GuiHandler;
 import com.teamdman.animus.handlers.AnimusSounds;
 import com.teamdman.animus.handlers.EventHandler;
@@ -49,6 +50,7 @@ public class Animus {
         AnimusSounds.init();
         AnimusBlocks.init();
         AnimusRecipes.init();
+        AnimusGuide.buildGuide();
         proxy.preInit(event);
         MinecraftForge.EVENT_BUS.register(new EventHandler());
     }

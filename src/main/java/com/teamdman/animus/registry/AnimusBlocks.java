@@ -1,6 +1,5 @@
 package com.teamdman.animus.registry;
 
-import WayofTime.bloodmagic.BloodMagic;
 import WayofTime.bloodmagic.ConfigHandler;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.blocks.BlockPhantomBuilder;
@@ -12,10 +11,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  * Created by TeamDman on 9/25/2016.
  */
 public class AnimusBlocks {
-	public static Block blockPhantomBuilder;
+	public static Block phantomBuilder;
 
 	public static void init() {
-		blockPhantomBuilder = setupBlock(new BlockPhantomBuilder(), "blockphantombuilder");
+		phantomBuilder = setupBlock(new BlockPhantomBuilder(), "blockphantombuilder");
 	}
 
 	private static Block setupBlock(Block block, String name) {

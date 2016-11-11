@@ -6,21 +6,16 @@ import WayofTime.bloodmagic.api.altar.AltarComponent;
 import WayofTime.bloodmagic.api.altar.EnumAltarComponent;
 import WayofTime.bloodmagic.api.altar.EnumAltarTier;
 import WayofTime.bloodmagic.api.altar.IBloodAltar;
-import WayofTime.bloodmagic.block.base.BlockString;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.block.ItemBlockBloodRune;
-import WayofTime.bloodmagic.registry.ModBlocks;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -82,7 +77,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 		for (AltarComponent altarComponent : EnumAltarTier.values()[hand.compareTo(EnumHand.OFF_HAND) == 0 ? EnumAltarTier.MAXTIERS - 1 : altar.getTier().toInt()].getAltarComponents()) {
 			BlockPos componentPos = pos.add(altarComponent.getOffset());
 			if (world.isAirBlock(componentPos)) {
-				world.setBlockState(componentPos, AnimusBlocks.blockPhantomBuilder.getDefaultState());
+				world.setBlockState(componentPos, AnimusBlocks.phantomBuilder.getDefaultState());
 				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 			}
 		}
@@ -93,7 +88,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			BlockStack worldBlock = new BlockStack(world.getBlockState(componentPos).getBlock(), world.getBlockState(componentPos).getBlock().getMetaFromState(world.getBlockState(componentPos)));
 
 			if (altarComponent.getComponent() != EnumAltarComponent.NOTAIR) {
-				if (worldBlock.getBlock() == AnimusBlocks.blockPhantomBuilder) {
+				if (worldBlock.getBlock() == AnimusBlocks.phantomBuilder) {
 					int invSlot = getSlotFor(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())), player);
 					if (invSlot != -1) {
 						ItemStack _stack = player.inventory.getStackInSlot(invSlot);

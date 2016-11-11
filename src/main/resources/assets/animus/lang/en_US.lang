@@ -13,6 +13,7 @@ item.itemsigilbuilder.name=Sigil of the Fast Builder
 
 tile.blockphantombuilder.name=Phantom Builder Block
 tile.lightgem.name=Glowstone
+
 text.component.diviner.missing=You are missing a
 text.component.diviner.obstructed=Some of the altar is obstructed!
 
@@ -25,3 +26,33 @@ ritual.animus.cullingritual=Ritual of Culling
 ritual.animus.naturesleechritual=Ritual of Nature's Leech
 
 death.attack.animus.absolute=%1$s has been culled by blood magic.
+
+
+
+guide.animus.displayname=Animus Compendium
+guide.animus.title=Animus Compendium
+guide.animus.welcome=§4Written in blood...
+
+guide.animus.category.rituals=Rituals
+
+
+guide.animus.rituals.sol.entry=Ritual of Sol
+guide.animus.rituals.sol.page0=Tier 0\nTakes light sources from an adjacent inventory and distributes them evenly in the world.
+
+guide.animus.rituals.luna.entry=Ritual of Luna
+guide.animus.rituals.luna.page0=Tier 1\nRemoves light sources from the world and places them inside an adjacent inventory.
+
+guide.animus.rituals.entropy.entry=Ritual of Entropy
+guide.animus.rituals.entropy.page0=Tier 0\nConverts items from an adjacent inventory into cobblestone and places them in the same inventory.
+
+guide.animus.rituals.unmaking.entry=Ritual of Unmaking
+guide.animus.rituals.unmaking.page0=Tier 1\nCan do either of the following:\nDisenchant an item by throwing it, along with a vanilla book, ontop of the ritual\n\t\tor\nTake a vanilla and an enchanted book and split the enchantment into 2 books of lower level
+
+guide.animus.rituals.peace.entry=Ritual of Peace
+guide.animus.rituals.peace.page0=Tier 0\nSpawns peaceful mobs
+
+guide.animus.rituals.culling.entry=Ritual of Culling
+guide.animus.rituals.culling.page0=Tier 2\n
+
+guide.animus.rituals.leech.entry=Ritual of Nature's Leech
+guide.animus.rituals.leech.page0=Tier 1\n
