@@ -59,7 +59,7 @@ guide.animus.sigils.chains.page0=Captures the soul of a mob when right clicked o
 guide.animus.sigils.transposition.entry=Sigil of Transposition
 guide.animus.sigils.transposition.page0=Right click marks a block in the world, right clicking elsewhere will move the block.
 guide.animus.sigils.builder.entry=Sigil of the Fast Builder
-guide.animus.sigils.builder.page0=When activated, the sigil will let the user place blocks incredibly fast.
+guide.animus.sigils.builder.page0=When activated, the sigil will let the user place blocks incredibly fast. Right click on open air to place a block from your off-hand in front of you. Shift-right click on a block to expand it using blocks from your off-hand.
 
 guide.animus.blocks.phantom.entry=Phantom Builder Block
 guide.animus.blocks.phantom.page0=Right clicking this block will replace it with the held item in the world. Disappears after a short period of time.

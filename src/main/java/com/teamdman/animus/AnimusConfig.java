@@ -35,6 +35,7 @@ public class AnimusConfig {
 	
 	// General
 	public static boolean muteWither;
+	public static int builderRange;
 	
 	public static void init(File file)
 	{
@@ -66,6 +67,7 @@ public class AnimusConfig {
 		config.addCustomCategoryComment(category,"General Preferences");
 		config.setCategoryRequiresMcRestart(category,false);
 		muteWither = config.get(category,"muteWither",true).getBoolean();
+		builderRange = config.get(category,"builderRange",64).getInt();
 		config.save();
 	}
 
