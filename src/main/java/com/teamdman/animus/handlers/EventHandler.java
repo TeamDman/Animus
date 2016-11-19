@@ -18,7 +18,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public class EventHandler {
 	@SubscribeEvent
 	public void onPlaySoundEvent(PlaySoundEvent e) {
-//		System.out.println(e.getName());
 		if (AnimusConfig.muteWither && e.getName().contains("entity.wither.spawn")) {
 			e.setCanceled(true);
 		}

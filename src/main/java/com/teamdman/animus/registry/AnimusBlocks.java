@@ -2,6 +2,7 @@ package com.teamdman.animus.registry;
 
 import WayofTime.bloodmagic.ConfigHandler;
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.blocks.BlockAntimatter;
 import com.teamdman.animus.blocks.BlockPhantomBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -12,9 +13,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  */
 public class AnimusBlocks {
 	public static Block phantomBuilder;
+	public static Block blockAntimatter;
 
 	public static void init() {
 		phantomBuilder = setupBlock(new BlockPhantomBuilder(), "blockphantombuilder");
+		blockAntimatter = setupBlock(new BlockAntimatter(), "blockantimatter");
 	}
 
 	private static Block setupBlock(Block block, String name) {

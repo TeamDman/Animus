@@ -7,7 +7,11 @@ import WayofTime.bloodmagic.api.util.helper.PlayerHelper;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.google.common.base.Strings;
+import com.teamdman.animus.blocks.BlockAntimatter;
+import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
+import com.teamdman.animus.tiles.TileAntimatter;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,7 +43,14 @@ public class ItemSigilConsumption extends ItemSigil implements IVariantProvider 
 
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		worldIn.setBlockToAir(pos);
+		if (worldIn.getTileEntity(pos) != null)
+			return EnumActionResult.SUCCESS;
+		Block seeking = worldIn.getBlockState(pos).getBlock();
+		worldIn.setBlockState(pos, AnimusBlocks.blockAntimatter.getDefaultState().withProperty(BlockAntimatter.DECAYING,false));
+		((TileAntimatter) worldIn.getTileEntity(pos)).seeking = seeking;
+		((TileAntimatter) worldIn.getTileEntity(pos)).player = playerIn;
+
+		worldIn.scheduleBlockUpdate(pos,AnimusBlocks.blockAntimatter,5,0);
 		return EnumActionResult.SUCCESS;
 	}
 

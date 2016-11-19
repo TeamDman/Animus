@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": { "model": "animus:blockAntimatter" },
+        "decaying=true": { "model": "animus:blockAntimatter" },
+        "decaying=false": { "model": "animus:blockAntimatter" }
+    }
+}

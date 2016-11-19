@@ -36,7 +36,9 @@ public class AnimusConfig {
 	// General
 	public static boolean muteWither;
 	public static int builderRange;
-	
+	public static int antimatterRange;
+	public static int antimatterConsumption;
+
 	public static void init(File file)
 	{
 		config = new Configuration(file);
@@ -68,6 +70,8 @@ public class AnimusConfig {
 		config.setCategoryRequiresMcRestart(category,false);
 		muteWither = config.get(category,"muteWither",true).getBoolean();
 		builderRange = config.get(category,"builderRange",64).getInt();
+		antimatterRange = config.get(category,"antimatterRange",8).getInt();
+		antimatterConsumption = config.get(category,"antimatterConsumption",25).getInt();
 		config.save();
 	}
 
