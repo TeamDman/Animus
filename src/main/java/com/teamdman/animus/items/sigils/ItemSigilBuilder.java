@@ -47,16 +47,16 @@ public class ItemSigilBuilder extends com.teamdman.animus.items.sigils.ItemSigil
 
 				NBTTagCompound comp = NBTHelper.checkNBT(stack).getTagCompound();
 				boolean activated = getActivated(stack);
-				if (activated) {
-					if (comp.getInteger("debounce") < 5) {
-						comp.setInteger("debounce", comp.getInteger("debounce") + 1);
-					} else {
-						comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
-						comp.setInteger("debounce", 0);
-					}
-				} else {
+//				if (activated) {
+//					if (comp.getInteger("debounce") < 5) {
+//						comp.setInteger("debounce", comp.getInteger("debounce") + 1);
+//					} else {
+//						comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
+//						comp.setInteger("debounce", 0);
+//					}
+//				} else {
 					comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
-				}
+//				}
 			} else {
 				ItemStack _stack = getStackToUse(hand,player);
 				if (_stack != null) {

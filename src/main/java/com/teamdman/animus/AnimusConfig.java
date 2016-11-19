@@ -32,12 +32,16 @@ public class AnimusConfig {
 	public static boolean ritualPeace;
 	public static boolean ritualNaturesLeech;
 	public static boolean ritualCulling;
-	
-	// General
-	public static boolean muteWither;
+
+	// Sigil Variables
+	public static int chainsConsumption;
+	public static int transpositionConsumption;
 	public static int builderRange;
 	public static int antimatterRange;
 	public static int antimatterConsumption;
+
+	// General
+	public static boolean muteWither;
 
 	public static void init(File file)
 	{
@@ -65,13 +69,20 @@ public class AnimusConfig {
 		ritualNaturesLeech = config.get(category, "ritualNaturesLeech", true).getBoolean();
 		ritualCulling = config.get(category, "ritualCulling", true).getBoolean();
 
+		category = "Sigil Variables";
+		config.addCustomCategoryComment(category,"Costs of various actions");
+		config.setCategoryRequiresMcRestart(category,false);
+		chainsConsumption = config.get(category,"chainsConsumption",500).getInt();
+		transpositionConsumption = config.get(category,"transpositionConsumption",2000).getInt();
+		builderRange = config.get(category,"builderRange",64).getInt();
+		antimatterRange = config.get(category,"antimatterRange",8).getInt();
+		antimatterConsumption = config.get(category,"antimatterConsumption",25).getInt();
+
+
 		category = "General";
 		config.addCustomCategoryComment(category,"General Preferences");
 		config.setCategoryRequiresMcRestart(category,false);
 		muteWither = config.get(category,"muteWither",true).getBoolean();
-		builderRange = config.get(category,"builderRange",64).getInt();
-		antimatterRange = config.get(category,"antimatterRange",8).getInt();
-		antimatterConsumption = config.get(category,"antimatterConsumption",25).getInt();
 		config.save();
 	}
 

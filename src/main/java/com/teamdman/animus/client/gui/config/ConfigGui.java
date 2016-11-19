@@ -27,6 +27,7 @@ public class ConfigGui extends GuiConfig
 
         list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("Item/Block Blacklisting".toLowerCase())));
         list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("Rituals".toLowerCase())));
+        list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("Sigil Variables".toLowerCase())));
         list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("General".toLowerCase())));
 
         return list;

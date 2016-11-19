@@ -9,6 +9,7 @@ import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.Utils;
 import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.google.common.base.Strings;
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -41,7 +42,13 @@ import java.util.UUID;
  */
 public class ItemSigilTransposition extends ItemSigil implements IVariantProvider {
 	public ItemSigilTransposition() {
-		super(5000);
+		super(AnimusConfig.transpositionConsumption);
+
+	}
+
+	@Override
+	public int getLpUsed() {
+		return AnimusConfig.transpositionConsumption;
 	}
 
 	@Override
@@ -49,7 +56,6 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 		if (!isUnusable(stack)) {
 			NBTHelper.checkNBT(stack);
 			if (stack.getTagCompound().getLong("pos")==0) {
-				NetworkHelper.getSoulNetwork(playerIn).syphonAndDamage(playerIn, getLpUsed());
 				stack.getTagCompound().setLong("pos", pos.toLong());
 				ChatUtil.sendNoSpam(playerIn, "Position set!");
 				worldIn.playSound(null,pos, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS,1,1);

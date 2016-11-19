@@ -8,6 +8,7 @@ import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.google.common.base.Strings;
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.client.particle.ParticleSpell;
 import net.minecraft.client.resources.I18n;
@@ -36,7 +37,12 @@ import java.util.UUID;
  */
 public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 	public ItemSigilChains() {
-		super(200);
+		super(AnimusConfig.chainsConsumption);
+	}
+
+	@Override
+	public int getLpUsed() {
+		return AnimusConfig.chainsConsumption;
 	}
 
 	@Override
@@ -47,9 +53,6 @@ public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 			ItemStack soul = new ItemStack(AnimusItems.mobSoul);
 			NBTTagCompound tag = new NBTTagCompound();
 			NBTTagCompound targetData = new NBTTagCompound();
-			//			for (int i = 0; i < 10; i++) {
-			//				SpellHelper.sendIndexedParticleToAllAround(world, target.posX, target.posY, target.posZ, 20, world.provider.dimensionId, 1, target.posX, target.posY, target.posZ);
-			//			}
 			target.setUniqueId(new UUID(playerIn.worldObj.rand.nextInt(100000),playerIn.worldObj.rand.nextInt(100000000)));
 			target.writeToNBT(targetData);
 			tag.setString("id", EntityList.getEntityString(target));

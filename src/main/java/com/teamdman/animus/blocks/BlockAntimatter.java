@@ -13,9 +13,11 @@ import net.minecraft.block.state.BlockStateBase;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -79,6 +81,11 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 		}
 		if (decaying)
 			worldIn.setBlockToAir(pos);
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess p_getDrops_1_, BlockPos p_getDrops_2_, IBlockState p_getDrops_3_, int p_getDrops_4_) {
+		return null;
 	}
 
 	@Override

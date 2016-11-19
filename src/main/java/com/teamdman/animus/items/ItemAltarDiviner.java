@@ -42,11 +42,6 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 	}
 
 	private boolean isItemComponent(AltarComponent component, ItemStack stack2) {
-//		if (stack1.getItem() instanceof IAltarComponent && stack2.getItem() instanceof IAltarComponent)
-//			return true;
-//		if (Block.getBlockFromItem(stack1.getItem()) instanceof IAltarComponent && Block.getBlockFromItem(stack2.getItem()) instanceof IAltarComponent)
-//			return true;
-//		return stack1.getItem() == stack2.getItem() && (!stack1.getHasSubtypes() || stack1.getMetadata() == stack2.getMetadata()) && ItemStack.areItemStackTagsEqual(stack1, stack2);
 		return Utils.getBlockForComponent(component.getComponent()) == Block.getBlockFromItem(stack2.getItem());
 	}
 
