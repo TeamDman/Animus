@@ -22,7 +22,7 @@ plugins {
 */
 version = "${getDate()}"
 group= "com.teamdman.animus" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "animus"
+archivesBaseName = "Animus"
 
 
 
