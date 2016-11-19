@@ -42,10 +42,10 @@ public class AnimusRecipes {
 		GameRegistry.addRecipe(new ShapelessRecipes(new ItemStack(AnimusItems.altarDiviner), ImmutableList.of(new ItemStack(ModItems.ritualDiviner),new ItemStack(Blocks.REDSTONE_TORCH))));
 
 		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PRISMARINE_SHARD),new ItemStack(AnimusItems.fragmentHealing), EnumAltarTier.TWO,1000,20,25));
-		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PAPER), GuideAPI.getStackFromBook(AnimusGuide.book),EnumAltarTier.ONE,200,5,5));
-
 
 		AlchemyArrayRecipeRegistry.registerRecipe(ItemComponent.getStack(ItemComponent.REAGENT_BINDING), new ItemStack(AnimusItems.kamaDiamond), new AlchemyArrayEffectBinding("boundKama", Utils.setUnbreakable(new ItemStack(AnimusItems.kamaBound))), new BindingAlchemyCircleRenderer());
-
+	}
+	public static void addGuideRecipe() {
+		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PAPER), GuideAPI.getStackFromBook(AnimusGuide.book),EnumAltarTier.ONE,200,5,5));
 	}
 }

@@ -11,6 +11,7 @@ item.itemsigilchains.name=Sigil of Phantom Chains
 item.itemsigiltransposition.name=Sigil of Transposition
 item.itemsigilbuilder.name=Sigil of the Fast Builder
 item.itemfragmenthealing.name=Healing Fragment
+item.itemsigilconsumption.name=Sigil of Consumption
 
 tile.blockphantombuilder.name=Phantom Builder Block
 tile.lightgem.name=Glowstone

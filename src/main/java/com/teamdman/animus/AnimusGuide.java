@@ -15,6 +15,7 @@ import com.teamdman.animus.items.ItemKama;
 import com.teamdman.animus.items.ItemKamaBound;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
+import com.teamdman.animus.registry.AnimusRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -75,6 +76,7 @@ public class AnimusGuide {
 					matches.add(new PageIRecipe(v));
 			} catch (Exception e) {
 				System.out.println("Error fetching recipe to animus guidebook");
+				e.printStackTrace();
 			}
 		});
 		return matches;
@@ -121,5 +123,6 @@ public class AnimusGuide {
 		GameRegistry.register(book);
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
 			GuideAPI.setModel(book);
+		AnimusRecipes.addGuideRecipe();
 	}
 }

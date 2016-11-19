@@ -3,6 +3,7 @@ package com.teamdman.animus.registry;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.items.*;
+import com.teamdman.animus.items.sigils.ItemSigilConsumption;
 import com.teamdman.animus.items.sigils.ItemSigilBuilder;
 import com.teamdman.animus.items.sigils.ItemSigilChains;
 import com.teamdman.animus.items.sigils.ItemSigilTransposition;
@@ -21,12 +22,15 @@ public class AnimusItems {
 	public static Item kamaGold;
 	public static Item kamaDiamond;
 	public static Item kamaBound;
+
 	public static Item altarDiviner;
 	public static Item mobSoul;
+	public static Item fragmentHealing;
+
 	public static Item sigilChains;
 	public static Item sigilTransposition;
 	public static Item sigilBuilder;
-	public static Item fragmentHealing;
+	public static Item sigilConsumption;
 
 	public static void init() {
 		kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood");
@@ -40,6 +44,7 @@ public class AnimusItems {
 		sigilChains = setupItem(new ItemSigilChains(), "itemsigilchains");
 		sigilTransposition = setupItem(new ItemSigilTransposition(), "itemsigiltransposition");
 		sigilBuilder = setupItem(new ItemSigilBuilder(), "itemsigilbuilder");
+		sigilConsumption = setupItem(new ItemSigilConsumption(), "itemsigilconsumption");
 		fragmentHealing = setupItem(new ItemFragmentHealing(), "itemfragmenthealing");
 	}
 
