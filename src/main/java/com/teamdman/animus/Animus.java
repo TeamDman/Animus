@@ -49,8 +49,9 @@ public class Animus {
         AnimusItems.init();
         AnimusSounds.init();
         AnimusBlocks.init();
-        AnimusRecipes.init();
         AnimusGuide.buildGuide();
+
+        AnimusRecipes.init();
         proxy.preInit(event);
         MinecraftForge.EVENT_BUS.register(new EventHandler());
     }
