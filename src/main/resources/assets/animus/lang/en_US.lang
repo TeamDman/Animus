@@ -10,6 +10,7 @@ item.itemmobsoul.name=Mob Soul
 item.itemsigilchains.name=Sigil of Phantom Chains
 item.itemsigiltransposition.name=Sigil of Transposition
 item.itemsigilbuilder.name=Sigil of the Fast Builder
+item.itemfragmenthealing.name=Healing Fragment
 
 tile.blockphantombuilder.name=Phantom Builder Block
 tile.lightgem.name=Glowstone
@@ -70,3 +71,5 @@ guide.animus.items.mobsoul.entry=Mob Souls
 guide.animus.items.mobsoul.page0=The soul of a mob that was captured with a Sigil of Phantom Chains, right click to release.
 guide.animus.items.altardiviner.entry=Altar Diviner
 guide.animus.items.altardiviner.page0=When shift-clicked on an altar, an outline of the next tier will be displayed in the world. Keep shift-clicking to automatically place components.
+guide.animus.items.fragmenthealing.entry=Fragment of Healing
+guide.animus.items.fragmenthealing.page0=Once the item is in your inventory, it cannot be removed. When in sets of 9, the fragments give the holder a regeneration buff of strength equal to the number of sets of 9 fragments. If the holder has 36 fragments, they get a huge bonus.
