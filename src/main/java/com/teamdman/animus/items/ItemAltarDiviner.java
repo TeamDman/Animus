@@ -2,12 +2,8 @@ package com.teamdman.animus.items;
 
 
 import WayofTime.bloodmagic.api.BlockStack;
-import WayofTime.bloodmagic.api.altar.AltarComponent;
-import WayofTime.bloodmagic.api.altar.EnumAltarComponent;
-import WayofTime.bloodmagic.api.altar.EnumAltarTier;
-import WayofTime.bloodmagic.api.altar.IBloodAltar;
+import WayofTime.bloodmagic.api.altar.*;
 import WayofTime.bloodmagic.client.IVariantProvider;
-import WayofTime.bloodmagic.item.block.ItemBlockBloodRune;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.Utils;
@@ -45,15 +41,18 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 		tooltip.add("Use in off hand to display max tier altar outline");
 	}
 
-	private boolean stackEqualExact(ItemStack stack1, ItemStack stack2) {
-		if (stack1.getItem() instanceof ItemBlockBloodRune && stack2.getItem() instanceof ItemBlockBloodRune)
-			return true;
-		return stack1.getItem() == stack2.getItem() && (!stack1.getHasSubtypes() || stack1.getMetadata() == stack2.getMetadata()) && ItemStack.areItemStackTagsEqual(stack1, stack2);
+	private boolean isItemComponent(AltarComponent component, ItemStack stack2) {
+//		if (stack1.getItem() instanceof IAltarComponent && stack2.getItem() instanceof IAltarComponent)
+//			return true;
+//		if (Block.getBlockFromItem(stack1.getItem()) instanceof IAltarComponent && Block.getBlockFromItem(stack2.getItem()) instanceof IAltarComponent)
+//			return true;
+//		return stack1.getItem() == stack2.getItem() && (!stack1.getHasSubtypes() || stack1.getMetadata() == stack2.getMetadata()) && ItemStack.areItemStackTagsEqual(stack1, stack2);
+		return Utils.getBlockForComponent(component.getComponent()) == Block.getBlockFromItem(stack2.getItem());
 	}
 
-	private int getSlotFor(ItemStack stack, EntityPlayer player) {
+	private int getSlotFor(AltarComponent component, EntityPlayer player) {
 		for (int i = 0; i < player.inventory.mainInventory.length; ++i) {
-			if (player.inventory.mainInventory[i] != null && stackEqualExact(stack, player.inventory.mainInventory[i])) {
+			if (player.inventory.mainInventory[i] != null && isItemComponent(component, player.inventory.mainInventory[i])) {
 				return i;
 			}
 		}
@@ -62,8 +61,6 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		IBlockState asd = world.getBlockState(pos);
-		System.out.println(asd);
 		if (world.getTileEntity(pos) == null || !(world.getTileEntity(pos) instanceof IBloodAltar))
 			return EnumActionResult.PASS;
 
@@ -88,12 +85,11 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			BlockStack worldBlock = new BlockStack(world.getBlockState(componentPos).getBlock(), world.getBlockState(componentPos).getBlock().getMetaFromState(world.getBlockState(componentPos)));
 
 			if (altarComponent.getComponent() != EnumAltarComponent.NOTAIR) {
-				if (worldBlock.getBlock() == AnimusBlocks.phantomBuilder) {
-					int invSlot = getSlotFor(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())), player);
+				if (worldBlock.getBlock() == AnimusBlocks.phantomBuilder || world.isAirBlock(componentPos)) {
+					int invSlot = getSlotFor(altarComponent, player);
 					if (invSlot != -1) {
 						ItemStack _stack = player.inventory.getStackInSlot(invSlot);
 						ItemBlock _item = (ItemBlock) player.inventory.getStackInSlot(invSlot).getItem();
-						System.out.println("yee");
 						IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 						world.setBlockState(componentPos, _state);
 
@@ -106,7 +102,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 
 					}
 				} else {
-					ChatUtil.sendNoSpam(player,I18n.format("text.component.diviner.obstructed"));
+//					ChatUtil.sendNoSpam(player,I18n.format("text.component.diviner.obstructed"));
 				}
 			}
 		}

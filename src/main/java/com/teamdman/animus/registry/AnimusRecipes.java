@@ -35,11 +35,11 @@ public class AnimusRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaDiamond), " a ", "a a", "  b", 'a', Items.DIAMOND, 'b', Items.STICK));
 
 		
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilChains), "aba", "bcb", "ada", 'a', Blocks.END_STONE, 'b', Blocks.OBSIDIAN, 'c', new ItemStack(ModItems.slate, 1, 3), 'd', OrbRegistry.getOrbStack(ModItems.orbMaster)));
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilTransposition), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Items.ENDER_PEARL, 'c', new ItemStack(ModItems.slate, 1, 3), 'd', OrbRegistry.getOrbStack(ModItems.orbMaster)));
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilBuilder), "aba", "bcb", "ada", 'a', Items.SUGAR, 'b', Items.POTIONITEM, 'c',new ItemStack(ModItems.slate, 1, 3), 'd', OrbRegistry.getOrbStack(ModItems.orbApprentice)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilChains), "aba", "bcb", "ada", 'a', Blocks.END_STONE, 'b', Blocks.OBSIDIAN, 'c', new ItemStack(ModItems.SLATE, 1, 3), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MASTER)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilTransposition), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Items.ENDER_PEARL, 'c', new ItemStack(ModItems.SLATE, 1, 3), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MASTER)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilBuilder), "aba", "bcb", "ada", 'a', Items.SUGAR, 'b', Items.POTIONITEM, 'c',new ItemStack(ModItems.SLATE, 1, 3), 'd', OrbRegistry.getOrbStack(ModItems.ORB_APPRENTICE)));
 
-		GameRegistry.addRecipe(new ShapelessRecipes(new ItemStack(AnimusItems.altarDiviner), ImmutableList.of(new ItemStack(ModItems.ritualDiviner),new ItemStack(Blocks.REDSTONE_TORCH))));
+		GameRegistry.addRecipe(new ShapelessRecipes(new ItemStack(AnimusItems.altarDiviner), ImmutableList.of(new ItemStack(ModItems.RITUAL_DIVINER),new ItemStack(Blocks.REDSTONE_TORCH))));
 
 		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PRISMARINE_SHARD),new ItemStack(AnimusItems.fragmentHealing), EnumAltarTier.TWO,1000,20,25));
 

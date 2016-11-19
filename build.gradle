@@ -67,7 +67,7 @@ dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
 	deobfCompile "info.amerifrance.guideapi:Guide-API:${mc_version}-${guideapi_version}"
     deobfCompile "info.tehnut.buttons:Buttons:${buttons_version}:api"
-    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.9.4-2.0.4-58"
+    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${bloodmagic_version}"
 }
 
 processResources {
