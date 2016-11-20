@@ -8,7 +8,7 @@
 		"type": {
 			"normal": {
 				"textures": {
-					"layer0": "animus:items/itemKamaGold"
+					"layer0": "animus:items/itemkamagold"
 				}
 			}
 		}

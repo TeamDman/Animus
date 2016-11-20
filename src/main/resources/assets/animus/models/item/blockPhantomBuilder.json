@@ -1,5 +1,5 @@
 {
-  "parent": "animus:block/blockPhantomBuilder",
+  "parent": "animus:block/blockphantombuilder",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

@@ -1,5 +1,5 @@
 {
-  "parent": "animus:block/blockAntimatter",
+  "parent": "animus:block/blockantimatter",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

@@ -8,7 +8,7 @@
     "type": {
       "normal": {
         "textures": {
-          "layer0": "animus:items/itemSigilTransposition"
+          "layer0": "animus:items/itemsigiltransposition"
         }
       }
     }

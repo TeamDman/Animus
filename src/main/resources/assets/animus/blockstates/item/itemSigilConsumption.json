@@ -8,7 +8,7 @@
     "type": {
       "normal": {
         "textures": {
-          "layer0": "animus:items/itemSigilConsumption"
+          "layer0": "animus:items/itemsigilconsumption"
         }
       }
     }

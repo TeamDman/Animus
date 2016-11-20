@@ -8,12 +8,12 @@
     "active": {
       "false": {
         "textures": {
-          "layer0": "animus:items/itemSigilBuilder_deactivated"
+          "layer0": "animus:items/itemsigilbuilder_deactivated"
         }
       },
       "true": {
         "textures": {
-          "layer0": "animus:items/itemSigilBuilder_activated"
+          "layer0": "animus:items/itemsigilbuilder_activated"
         }
       }
     }
