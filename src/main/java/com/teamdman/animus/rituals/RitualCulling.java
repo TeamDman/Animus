@@ -54,7 +54,7 @@ public class RitualCulling extends Ritual {
 		xCoord = ritualStone.getBlockPos().getX();
 		yCoord = ritualStone.getBlockPos().getY();
 		zCoord = ritualStone.getBlockPos().getZ();
-		logger.fatal("Ritual Active");
+		
 
 		if (player != null)
 			player.worldObj
@@ -70,7 +70,7 @@ public class RitualCulling extends Ritual {
 		if (network == null){
 			return;
 		}
-		logger.fatal("Ritual ticking");
+		
 		int currentEssence = network.getCurrentEssence();
 
 		World world = ritualStone.getWorldObj();
@@ -95,7 +95,7 @@ public class RitualCulling extends Ritual {
 		}
 
 		if (!testFlag) {
-			logger.fatal("No altar in range");
+			
 			return;
 		}
 		int d0 = 10;

@@ -2,12 +2,10 @@ package com.teamdman.animus;
 
 import com.teamdman.animus.client.gui.GuiHandler;
 import com.teamdman.animus.handlers.AnimusSounds;
-import com.teamdman.animus.handlers.EventHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -48,7 +46,7 @@ public class Animus {
         AnimusRecipes.init();
 		AnimusGuide.buildGuide();
 		proxy.preInit(event);
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
+        //MinecraftForge.EVENT_BUS.register(new EventHandler());
     }
 
     // mod setup, register recipes

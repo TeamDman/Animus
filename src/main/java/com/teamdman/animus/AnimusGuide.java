@@ -52,6 +52,7 @@ public class AnimusGuide {
 
 
 
+	@SuppressWarnings("unused")
 	private static void buildEntry(Map<ResourceLocation, EntryAbstract> entries, String identifier, int pages, Block icon, List<IPage> extras) {
 		buildEntry(entries, identifier, pages, new ItemStack(icon), extras);
 	}
