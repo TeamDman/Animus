@@ -85,6 +85,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 					if (invSlot != -1) {
 						ItemStack _stack = player.inventory.getStackInSlot(invSlot);
 						ItemBlock _item = (ItemBlock) player.inventory.getStackInSlot(invSlot).getItem();
+						@SuppressWarnings("deprecation")
 						IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 						world.setBlockState(componentPos, _state);
 

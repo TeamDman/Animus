@@ -15,7 +15,8 @@ public class Tuple<K, V> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Tuple tuple = (Tuple) o;
+        @SuppressWarnings("rawtypes")
+		Tuple tuple = (Tuple) o;
         return (key == null ? tuple.key == null : key.equals(tuple.key)) && (value == null ? tuple.value == null : value.equals(tuple.value));
     }
 

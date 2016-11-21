@@ -95,6 +95,7 @@ public class RitualNaturesLeech extends Ritual {
 			for (int eat = 0; eat < 5; eat++) {
 				if (eat > max)
 					break;// little sanity checking
+				
 				int[] pos = getNextBlock(world, x, z, radius, ritualStone);
 
 				if (pos != null) {

@@ -13,7 +13,6 @@ import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,7 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import WayofTime.bloodmagic.ConfigHandler;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import WayofTime.bloodmagic.api.ritual.*;
 
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
@@ -56,6 +54,7 @@ public class RitualCulling extends Ritual {
 		xCoord = ritualStone.getBlockPos().getX();
 		yCoord = ritualStone.getBlockPos().getY();
 		zCoord = ritualStone.getBlockPos().getZ();
+		logger.fatal("Ritual Active");
 
 		if (player != null)
 			player.worldObj
@@ -68,8 +67,10 @@ public class RitualCulling extends Ritual {
 	@Override
 	public void performRitual(IMasterRitualStone ritualStone) {
 		SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
-		if (network == null)
+		if (network == null){
 			return;
+		}
+		logger.fatal("Ritual ticking");
 		int currentEssence = network.getCurrentEssence();
 
 		World world = ritualStone.getWorldObj();
@@ -77,7 +78,7 @@ public class RitualCulling extends Ritual {
 		int x = ritualStone.getBlockPos().getX();
 		int y = ritualStone.getBlockPos().getY();
 		int z = ritualStone.getBlockPos().getZ();
-		;
+		
 
 		TileAltar tileAltar = null;
 		boolean testFlag = false;
@@ -94,7 +95,7 @@ public class RitualCulling extends Ritual {
 		}
 
 		if (!testFlag) {
-
+			logger.fatal("No altar in range");
 			return;
 		}
 		int d0 = 10;
@@ -118,10 +119,8 @@ public class RitualCulling extends Ritual {
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
 
-				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Cursed
-																							// earth
-																							// boosted
-
+				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Cursed Earth Boosted
+				
 				if (effect.isEmpty()) {
 					int p = 0;
 					BlockPos at = null;
@@ -130,8 +129,8 @@ public class RitualCulling extends Ritual {
 					for (p = 0; p < 6; p++)
 						at = livingEntity.getPosition();
 
-					livingEntity.setSilent(true); // The screams of the weak
-													// fall on deaf ears.
+					livingEntity.setSilent(true); // The screams of the weak fall on deaf ears.
+													
 					result = (livingEntity.attackEntityFrom(culled, livingEntity.getMaxHealth() * 3));
 
 					if (result != false) {

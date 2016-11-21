@@ -1,6 +1,4 @@
 package com.teamdman.animus.client.resources;
-import com.teamdman.animus.Animus;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 
@@ -32,7 +30,8 @@ public class Assets implements IResourceManagerReloadListener {
         return res;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
         if(reloading) return;
         reloading = true;

@@ -1,7 +1,6 @@
 package com.teamdman.animus.client.gui.config;
 
-import WayofTime.bloodmagic.ConfigHandler;
-import WayofTime.bloodmagic.api.Constants;
+
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import net.minecraft.client.gui.GuiScreen;
@@ -20,7 +19,6 @@ public class ConfigGui extends GuiConfig
         super(parentScreen, getConfigElements(parentScreen), Animus.MODID, false, false, Animus.MODID);
     }
 
-    @SuppressWarnings("rawtypes")
     private static List<IConfigElement> getConfigElements(GuiScreen parent)
     {
         List<IConfigElement> list = new ArrayList<IConfigElement>();

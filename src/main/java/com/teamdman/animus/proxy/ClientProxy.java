@@ -1,6 +1,5 @@
 package com.teamdman.animus.proxy;
 
-import WayofTime.bloodmagic.api.Constants;
 import WayofTime.bloodmagic.client.IMeshProvider;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.util.helper.InventoryRenderHelperV2;

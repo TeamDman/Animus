@@ -1,6 +1,5 @@
 package com.teamdman.animus;
 
-import WayofTime.bloodmagic.compat.guideapi.GuideBloodMagic;
 import com.teamdman.animus.client.gui.GuiHandler;
 import com.teamdman.animus.handlers.AnimusSounds;
 import com.teamdman.animus.handlers.EventHandler;
@@ -44,7 +43,6 @@ public class Animus {
     public void preinit(FMLPreInitializationEvent event) {
         AnimusConfig.init(new File(event.getModConfigurationDirectory(), Animus.MODID + ".cfg"));
         AnimusItems.init();
-        AnimusSounds.init();
         AnimusBlocks.init();
 		AnimusTiles.init();
         AnimusRecipes.init();
@@ -58,6 +56,7 @@ public class Animus {
     public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         AnimusRituals.init();
+        AnimusSounds.init();
         proxy.init(event);
     }
 
