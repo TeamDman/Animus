@@ -38,11 +38,6 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 	}
 
 	@Override
-	public int getLpUsed() {
-		return AnimusConfig.transpositionConsumption;
-	}
-
-	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!isUnusable(stack)) {
 			NBTHelper.checkNBT(stack);

@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public class EventHandler {
 	@SubscribeEvent
 	public void onPlaySoundEvent(PlaySoundEvent e) {
-		if (AnimusConfig.muteWither && e.getName().contains("entity.wither.spawn")) {
+		if (AnimusConfig.muteWither && e.getName().contains("wither")) {
 			e.setCanceled(true);
 		}
 	}
@@ -40,13 +40,13 @@ public class EventHandler {
 			if (slot.getHasStack() && slot.getStack().getItem() == AnimusItems.fragmentHealing) {
 				frags++;
 				if (!eventArgs.player.capabilities.isCreativeMode && slot.getClass()==Slot.class) {
-					open.inventorySlots.set(i,new SlotNoPickup(slot.inventory, slot.getSlotIndex(), slot.xDisplayPosition, slot.yDisplayPosition));
+					open.inventorySlots.set(i,new SlotNoPickup(slot.inventory, slot.getSlotIndex(), slot.xPos, slot.yPos));
 				}
 			}
 		}
-		if (eventArgs.player.worldObj.getWorldTime()%20==0 && frags>=9 && !eventArgs.player.worldObj.isRemote) {
+		if (eventArgs.player.world.getWorldTime()%20==0 && frags>=9 && !eventArgs.player.world.isRemote) {
 		eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION,20, frags/9-1));
-			if (frags>=35 && eventArgs.player.worldObj.getWorldTime()%200==0)
+			if (frags>=35 && eventArgs.player.world.getWorldTime()%200==0)
 				eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION,200,4));
 		}
 	}

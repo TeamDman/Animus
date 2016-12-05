@@ -349,7 +349,7 @@ public class Vector3 {
 	    }
 
 	    public BlockPos toBlockPos() {
-	        return new BlockPos(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
+	        return new BlockPos(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
 	    }
 
 	    public Vector3 vectorFromHereTo(Vector3 target) {

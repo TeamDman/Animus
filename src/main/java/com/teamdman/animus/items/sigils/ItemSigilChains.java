@@ -42,12 +42,12 @@ public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 	@Override
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
 		boolean unusable = isUnusable(stack);
-		if (!playerIn.worldObj.isRemote && !unusable) {
+		if (!playerIn.world.isRemote && !unusable) {
 			NetworkHelper.getSoulNetwork(playerIn).syphonAndDamage(playerIn, getLpUsed());
 			ItemStack soul = new ItemStack(AnimusItems.mobSoul);
 			NBTTagCompound tag = new NBTTagCompound();
 			NBTTagCompound targetData = new NBTTagCompound();
-			target.setUniqueId(new UUID(playerIn.worldObj.rand.nextInt(100000),playerIn.worldObj.rand.nextInt(100000000)));
+			target.setUniqueId(new UUID(playerIn.world.rand.nextInt(100000),playerIn.world.rand.nextInt(100000000)));
 			target.writeToNBT(targetData);
 			tag.setString("id", EntityList.getEntityString(target));
 			if (target instanceof EntityLiving && target.hasCustomName())
@@ -56,7 +56,7 @@ public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 			soul.setTagCompound(tag);
 			soul.setStackDisplayName((tag.hasKey("name") ? tag.getString("name") + "" : tag.getString("id")) + " Soul");
 			if (!playerIn.inventory.addItemStackToInventory(soul))
-				playerIn.worldObj.spawnEntityInWorld(new EntityItem(playerIn.worldObj, target.posX, target.posY, target.posZ, soul));
+				playerIn.world.spawnEntity(new EntityItem(playerIn.world, target.posX, target.posY, target.posZ, soul));
 			target.setDead();
 		}
 		return super.itemInteractionForEntity(stack, playerIn, target, hand);

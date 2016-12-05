@@ -31,7 +31,7 @@ public class RitualCulling extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 
 	public RitualCulling() {
-		super("ritualCulling", 2, 50000, "ritual." + Animus.MODID + ".cullingritual");
+		super("ritualCulling", 1, 50000, "ritual." + Animus.MODID + ".cullingritual");
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
 
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
@@ -57,8 +57,8 @@ public class RitualCulling extends Ritual {
 		
 
 		if (player != null)
-			player.worldObj
-					.addWeatherEffect(new EntityLightningBolt(player.worldObj, xCoord + itemRand.nextInt(64) - 32,
+			player.world
+					.addWeatherEffect(new EntityLightningBolt(player.world, xCoord + itemRand.nextInt(64) - 32,
 							yCoord + itemRand.nextInt(8) - 8, zCoord + itemRand.nextInt(64) - 32, false));
 
 		return true;
@@ -124,7 +124,7 @@ public class RitualCulling extends Ritual {
 				if (effect.isEmpty()) {
 					int p = 0;
 					BlockPos at = null;
-					soundSource = livingEntity.worldObj;
+					soundSource = livingEntity.world;
 
 					for (p = 0; p < 6; p++)
 						at = livingEntity.getPosition();

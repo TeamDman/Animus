@@ -4,6 +4,7 @@ import WayofTime.bloodmagic.ConfigHandler;
 import WayofTime.bloodmagic.api.BloodMagicAPI;
 import WayofTime.bloodmagic.api.util.helper.PlayerSacrificeHelper;
 import WayofTime.bloodmagic.item.ItemDaggerOfSacrifice;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,18 +26,30 @@ public class ItemKamaBound extends ItemDaggerOfSacrifice {
 	}
 
 	@Override
+	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+		if (entity instanceof EntityLivingBase) {
+
+			hitEntity(stack,(EntityLivingBase) entity,player);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase hit, EntityLivingBase attacker) {
 		double x = hit.posX;
 		double y = hit.posY;
 		double z = hit.posZ;
 		int d0 = 10;
 		AxisAlignedBB region = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
-		List<EntityLivingBase> entities = hit.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, region);
+		List<EntityLivingBase> entities = hit.world.getEntitiesWithinAABB(EntityLivingBase.class, region);
 		if (entities == null || entities.isEmpty())
 			return false;
 		for (EntityLivingBase target : entities) {
-			System.out.println(target.getDisplayName());
-			if (target == null || attacker == null || attacker.worldObj.isRemote || (attacker instanceof EntityPlayer && !(attacker instanceof EntityPlayerMP)))
+//			System.out.println(target.getDisplayName());
+			if (target == null || attacker == null || attacker.world.isRemote || (attacker instanceof EntityPlayer && !(attacker instanceof EntityPlayerMP)))
 				continue;
 
 			if (target instanceof EntityPlayer)
@@ -56,14 +69,14 @@ public class ItemKamaBound extends ItemDaggerOfSacrifice {
 
 			if (lifeEssence <= 0)
 				continue;
-//			if (target.isNonBoss())
-//				continue;
+			if (!target.isNonBoss())
+				continue;
 
 			if (target.isChild())
 				lifeEssence /= 2;
 
-			if (PlayerSacrificeHelper.findAndFillAltar(attacker.worldObj, attacker, lifeEssence, true)) {
-				target.worldObj.playSound(null, target.posX, target.posY, target.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (target.worldObj.rand.nextFloat() - target.worldObj.rand.nextFloat()) * 0.8F);
+			if (PlayerSacrificeHelper.findAndFillAltar(attacker.world, attacker, lifeEssence, true)) {
+				target.world.playSound(null, target.posX, target.posY, target.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (target.world.rand.nextFloat() - target.world.rand.nextFloat()) * 0.8F);
 				target.setHealth(-1);
 				target.onDeath(BloodMagicAPI.getDamageSource());
 			}

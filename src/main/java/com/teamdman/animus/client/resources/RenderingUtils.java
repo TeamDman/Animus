@@ -79,7 +79,7 @@ public class RenderingUtils {
 
     public static void removeStandartTranslationFromTESRMatrix(float partialTicks) {
         Entity rView = Minecraft.getMinecraft().getRenderViewEntity();
-        if(rView == null) rView = Minecraft.getMinecraft().thePlayer;
+        if(rView == null) rView = Minecraft.getMinecraft().player;
         Entity entity = rView;
         double tx = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * partialTicks);
         double ty = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * partialTicks);
@@ -147,7 +147,7 @@ public class RenderingUtils {
 
         Entity e = Minecraft.getMinecraft().getRenderViewEntity();
         if(e == null) {
-            e = Minecraft.getMinecraft().thePlayer;
+            e = Minecraft.getMinecraft().player;
         }
         double iPX = e.prevPosX + (e.posX - e.prevPosX) * partialTicks;
         double iPY = e.prevPosY + (e.posY - e.prevPosY) * partialTicks;
@@ -186,7 +186,7 @@ public class RenderingUtils {
 
         Entity e = Minecraft.getMinecraft().getRenderViewEntity();
         if(e == null) {
-            e = Minecraft.getMinecraft().thePlayer;
+            e = Minecraft.getMinecraft().player;
         }
         double iPX = e.prevPosX + (e.posX - e.prevPosX) * partialTicks;
         double iPY = e.prevPosY + (e.posY - e.prevPosY) * partialTicks;

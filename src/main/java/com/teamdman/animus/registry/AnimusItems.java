@@ -26,6 +26,7 @@ public class AnimusItems {
 	public static Item altarDiviner;
 	public static Item mobSoul;
 	public static Item fragmentHealing;
+	public static Item keyBinding;
 
 	public static Item sigilChains;
 	public static Item sigilTransposition;

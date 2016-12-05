@@ -34,7 +34,7 @@ public class EntityFXFacingSprite extends EntityComplexFX {
 
     protected int getAgeBasedFrame() {
         float perc = ((float) age) / ((float) maxAge);
-        return MathHelper.floor_float(spriteSheet.getFrameCount() * perc);
+        return MathHelper.floor(spriteSheet.getFrameCount() * perc);
     }
 
     @Override

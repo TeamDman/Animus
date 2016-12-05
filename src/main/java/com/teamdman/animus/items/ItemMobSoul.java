@@ -33,7 +33,7 @@ public class ItemMobSoul extends Item implements IVariantProvider {
 		NBTTagCompound root = stack.getTagCompound();
 		if (root.hasKey("id")) {
 			String entityId = root.getString("id");
-			mob = EntityList.createEntityByName(entityId, worldIn);
+			mob = EntityList.createEntityByIDFromName(entityId, worldIn);
 		} else {
 			mob = EntityList.createEntityFromNBT(root.getCompoundTag("MobData"), worldIn);
 		}
@@ -48,7 +48,7 @@ public class ItemMobSoul extends Item implements IVariantProvider {
 			mob.setCustomNameTag(root.getString("name"));
 		}
 
-		worldIn.spawnEntityInWorld(mob);
+		worldIn.spawnEntity(mob);
 
 		if (mob instanceof EntityLiving) {
 			((EntityLiving) mob).playLivingSound();

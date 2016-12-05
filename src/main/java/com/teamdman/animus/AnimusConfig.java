@@ -39,6 +39,7 @@ public class AnimusConfig {
 	public static int builderRange;
 	public static int antimatterRange;
 	public static int antimatterConsumption;
+	public static int stormConsumption;
 
 	// General
 	public static boolean muteWither;
@@ -77,6 +78,7 @@ public class AnimusConfig {
 		builderRange = config.get(category,"builderRange",64).getInt();
 		antimatterRange = config.get(category,"antimatterRange",8).getInt();
 		antimatterConsumption = config.get(category,"antimatterConsumption",25).getInt();
+		stormConsumption = config.get(category,"stormConsumption",1000).getInt();
 
 
 		category = "General";

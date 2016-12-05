@@ -89,8 +89,8 @@ public class RitualUnmaking extends Ritual {
 							comp.setShort("lvl", (short) (enchLVL < 1 ? 1 : enchLVL));
 							bookTags.appendTag(comp);
 							enchBook.getTagCompound().setTag("StoredEnchantments", bookTags);
-							world.spawnEntityInWorld(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook.copy()));
-							world.spawnEntityInWorld(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
+							world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook.copy()));
+							world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
 
 							books.getEntityItem().stackSize--;
 						}
@@ -116,7 +116,7 @@ public class RitualUnmaking extends Ritual {
 								nbttagcompound.setShort("id", enchID);
 								nbttagcompound.setShort("lvl", enchLVL);
 								bookTags.appendTag(nbttagcompound);
-								world.spawnEntityInWorld(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
+								world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
 								books.getEntityItem().stackSize--;
 							}
 							if (entityItem.getEntityItem().getEnchantmentTagList().tagCount() == 0) {

@@ -47,7 +47,7 @@ public class RitualPeace extends Ritual {
 			do {
 				mob.setPosition(masterPos.getX()+world.rand.nextInt(8)-4, masterPos.getY()+1, masterPos.getZ()+world.rand.nextInt(8)-4);
 			} while (!world.isAirBlock(mob.getPosition()));
-			world.spawnEntityInWorld(mob);
+			world.spawnEntity(mob);
 			world.playSound(null,mob.getPosition(), SoundEvents.BLOCK_SNOW_STEP, SoundCategory.BLOCKS,1,1);
 			network.syphon(getRefreshCost());
 		}
