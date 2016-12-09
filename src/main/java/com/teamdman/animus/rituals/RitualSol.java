@@ -87,10 +87,10 @@ public class RitualSol extends Ritual {
 	@Override
 	public ArrayList<RitualComponent> getComponents() {
 		ArrayList<RitualComponent> components = new ArrayList();
-		this.addParallelRunes(components, 1, 0, EnumRuneType.FIRE);
-		this.addCornerRunes(components, 1, 0, EnumRuneType.FIRE);
-		this.addParallelRunes(components, 2, 1, EnumRuneType.AIR);
-		this.addCornerRunes(components, 2, 1, EnumRuneType.AIR);
+		this.addParallelRunes(components, 0, -1, EnumRuneType.AIR);
+		this.addParallelRunes(components, 0, -2, EnumRuneType.AIR);
+		this.addParallelRunes(components, 0, -3, EnumRuneType.AIR);
+		this.addParallelRunes(components, 1, -3, EnumRuneType.AIR);
 
 		return components;
 	}
