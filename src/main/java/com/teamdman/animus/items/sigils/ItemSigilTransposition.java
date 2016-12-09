@@ -9,16 +9,17 @@ import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.google.common.base.Strings;
 import com.teamdman.animus.AnimusConfig;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,12 +39,25 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 	}
 
 	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+		RayTraceResult result = this.rayTrace(world,player,true);
+		if (result == null || result.typeOfHit == RayTraceResult.Type.MISS) {
+			NBTHelper.checkNBT(stack);
+			stack.getTagCompound().setLong("pos",0);
+			ChatUtil.sendNoSpam(player,"Position cleared!");
+		}
+		return new ActionResult<>(EnumActionResult.PASS	,stack);
+	}
+
+
+
+	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!isUnusable(stack)) {
 			NBTHelper.checkNBT(stack);
 			if (stack.getTagCompound().getLong("pos")==0) {
 				stack.getTagCompound().setLong("pos", pos.toLong());
-				ChatUtil.sendNoSpam(playerIn, "Position set!");
+				ChatUtil.sendNoSpamUnloc(playerIn, "text.component.transposition.set");
 				worldIn.playSound(null,pos, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS,1,1);
 			} else if (stack.getTagCompound().getLong("pos")!=0) {
 				BlockPos _pos = BlockPos.fromLong(stack.getTagCompound().getLong("pos"));
@@ -61,10 +75,13 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 						_newtile.deserializeNBT(_inv);
 						worldIn.removeTileEntity(_pos);
 					}
+					worldIn.setBlockToAir(_pos);
+					worldIn.playSound(null,pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS,1,1);
+					stack.getTagCompound().setLong("pos",0);
+
+				} else {
+					ChatUtil.sendNoSpamUnloc(playerIn,"text.component.transposition.obstructed");
 				}
-				worldIn.setBlockToAir(_pos);
-				worldIn.playSound(null,pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS,1,1);
-				stack.getTagCompound().setLong("pos",0);
 			}
 		}
 		return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);

@@ -3,10 +3,7 @@ package com.teamdman.animus.registry;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.items.*;
-import com.teamdman.animus.items.sigils.ItemSigilConsumption;
-import com.teamdman.animus.items.sigils.ItemSigilBuilder;
-import com.teamdman.animus.items.sigils.ItemSigilChains;
-import com.teamdman.animus.items.sigils.ItemSigilTransposition;
+import com.teamdman.animus.items.sigils.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,6 +29,7 @@ public class AnimusItems {
 	public static Item sigilTransposition;
 	public static Item sigilBuilder;
 	public static Item sigilConsumption;
+	public static Item sigilStorm;
 
 	public static void init() {
 		kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood");
@@ -47,6 +45,7 @@ public class AnimusItems {
 		sigilBuilder = setupItem(new ItemSigilBuilder(), "itemsigilbuilder");
 		sigilConsumption = setupItem(new ItemSigilConsumption(), "itemsigilconsumption");
 		fragmentHealing = setupItem(new ItemFragmentHealing(), "itemfragmenthealing");
+		sigilStorm = setupItem(new ItemSigilStorm(), "itemsigilstorm");
 	}
 
 	private static Item setupItem(Item item, String name) {

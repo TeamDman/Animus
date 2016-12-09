@@ -31,7 +31,7 @@ public class RitualCulling extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 
 	public RitualCulling() {
-		super("ritualCulling", 1, 50000, "ritual." + Animus.MODID + ".cullingritual");
+		super("ritualCulling", 0, 50000, "ritual." + Animus.MODID + ".cullingritual");
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
 
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);

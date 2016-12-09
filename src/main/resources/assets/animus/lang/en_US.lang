@@ -20,6 +20,9 @@ tile.lightgem.name=Glowstone
 
 text.component.diviner.missing=You are missing a
 text.component.diviner.obstructed=Some of the altar is obstructed!
+text.component.transposition.set=Position set!
+text.component.transposition.obstructed=Target location obstructed! Try again.
+
 
 ritual.animus.solritual=Ritual of Sol
 ritual.animus.lunaritual=Ritual of Luna
