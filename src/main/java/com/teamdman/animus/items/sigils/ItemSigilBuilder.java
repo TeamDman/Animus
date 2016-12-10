@@ -19,10 +19,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
+
+import static net.minecraft.client.Minecraft.getMinecraft;
 
 /**
  * Created by TeamDman on 2015-06-09.
@@ -146,10 +149,12 @@ public class ItemSigilBuilder extends com.teamdman.animus.items.sigils.ItemSigil
 	}
 
 	public static void removeDelay() {
+		//ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, getMinecraft(), Integer.valueOf(0), 46);
 		try {
+
 			Field delay = Minecraft.class.getDeclaredField("rightClickDelayTimer");
 			delay.setAccessible(true);
-			delay.set(Minecraft.getMinecraft(), 0);
+			delay.set(getMinecraft(), 0);
 		} catch (Exception e) {
 			System.out.println("ANIMUS BUILDER SIGIL HAS SCREWD UP");
 			e.printStackTrace();

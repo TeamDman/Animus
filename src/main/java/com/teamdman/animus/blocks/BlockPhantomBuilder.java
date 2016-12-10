@@ -5,6 +5,7 @@ import WayofTime.bloodmagic.tile.TilePhantomBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -25,7 +26,10 @@ public class BlockPhantomBuilder extends BlockPhantom {
 		if (heldItem==null)
 			return false;
 		if (heldItem.getItem() instanceof ItemBlock) {
-			worldIn.setBlockState(pos,Block.getBlockFromItem(heldItem.getItem()).getDefaultState());
+			Item _item = heldItem.getItem();
+			@SuppressWarnings("deprecation")
+			IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(heldItem));
+			worldIn.setBlockState(pos, _state);
 			heldItem.stackSize-=playerIn.capabilities.isCreativeMode?0:1;
 		}
 		return true;
