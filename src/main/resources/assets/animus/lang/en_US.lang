@@ -22,15 +22,17 @@ text.component.diviner.missing=You are missing a
 text.component.diviner.obstructed=Some of the altar is obstructed!
 text.component.transposition.set=Position set!
 text.component.transposition.obstructed=Target location obstructed! Try again.
+text.component.holdingitem=You must be holding an item!
 
 
-ritual.animus.solritual=Ritual of Sol
-ritual.animus.lunaritual=Ritual of Luna
-ritual.animus.entropyritual=Ritual of Entropy
-ritual.animus.unmakingritual=Ritual of Unmaking
-ritual.animus.peaceritual=Ritual of Peace
-ritual.animus.cullingritual=Ritual of Culling
-ritual.animus.naturesleechritual=Ritual of Nature's Leech
+ritual.animus.sol=Ritual of Sol
+ritual.animus.luna=Ritual of Luna
+ritual.animus.entropy=Ritual of Entropy
+ritual.animus.unmaking=Ritual of Unmaking
+ritual.animus.peace=Ritual of Peace
+ritual.animus.culling=Ritual of Culling
+ritual.animus.naturesleech=Ritual of Nature's Leech
+ritual.animus.regr=Ritual of Regression
 
 death.attack.animus.absolute=%1$s has been culled by blood magic.
 
@@ -60,6 +62,8 @@ guide.animus.rituals.culling.entry=Ritual of Culling
 guide.animus.rituals.culling.page0=Tier 2\nKills mobs in the area for blood. Demon will needs to be non-zero for mobs with a potion effect to die. Do not approach while health is low.
 guide.animus.rituals.leech.entry=Ritual of Nature's Leech
 guide.animus.rituals.leech.page0=Tier 1\nEats growable blocks in the area for blood.
+guide.animus.rituals.regression.entry=Ritual of Regression
+guide.animus.rituals.regression.page0=An imperfect ritual activated by placing a bookcase ontop of an impure ritual stone and right clicking, this ritual allows you to remove the anvil limit on the held item.
 
 guide.animus.sigils.chains.entry=Sigil of Phantom Chains
 guide.animus.sigils.chains.page0=Captures the soul of a mob when right clicked on one. The soul can then be released elsewhere.
@@ -67,6 +71,8 @@ guide.animus.sigils.transposition.entry=Sigil of Transposition
 guide.animus.sigils.transposition.page0=Right click marks a block in the world, right clicking elsewhere will move the block.
 guide.animus.sigils.builder.entry=Sigil of the Fast Builder
 guide.animus.sigils.builder.page0=When activated, the sigil will let the user place blocks incredibly fast. Right click on open air to place a block from your off-hand in front of you. Shift-right click on a block to expand it using blocks from your off-hand.
+guide.animus.sigils.consumption.entry=Sigil of Consumption
+guide.animus.sigils.consumption.page0=By right clicking on a block, the sigil will spread 'antimatter' to all blocks near it of the same type. Breaking an antimatter block destroys all adjacent antimatter. No items are dropped in this process.
 
 guide.animus.blocks.phantom.entry=Phantom Builder Block
 guide.animus.blocks.phantom.page0=Right clicking this block will replace it with the held item in the world. Disappears after a short period of time.

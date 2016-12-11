@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 public class RitualPeace extends Ritual {
 	public RitualPeace() {
-		super("ritualPeace", 0, 5000, "ritual." + Animus.MODID + ".peaceritual");
+		super("ritualPeace", 0, 5000, "ritual." + Animus.MODID + ".peace");
 
 	}
 
