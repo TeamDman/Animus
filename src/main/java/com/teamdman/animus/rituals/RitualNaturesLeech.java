@@ -30,7 +30,7 @@ public class RitualNaturesLeech extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 
 	public RitualNaturesLeech() {
-		super("ritualNaturesLeech", 0, 3000, "ritual." + Animus.MODID + ".naturesleechritual");
+		super("ritualNaturesLeech", 0, 3000, "ritual." + Animus.MODID + ".naturesleech");
 
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 20, 48, 48);

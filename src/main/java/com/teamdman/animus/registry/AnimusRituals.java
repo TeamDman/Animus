@@ -1,9 +1,12 @@
 package com.teamdman.animus.registry;
 
+import WayofTime.bloodmagic.api.registry.ImperfectRitualRegistry;
 import WayofTime.bloodmagic.api.registry.RitualRegistry;
 import WayofTime.bloodmagic.api.ritual.Ritual;
+import WayofTime.bloodmagic.api.ritual.imperfect.ImperfectRitual;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.rituals.*;
+import com.teamdman.animus.rituals.imperfect.RitualRegression;
 
 /**
  * Created by TeamDman on 10/1/2016.
@@ -16,6 +19,7 @@ public class AnimusRituals {
 	public static Ritual ritualPeace;
 	public static Ritual ritualNaturesLeech;
 	public static Ritual ritualCulling;
+	public static ImperfectRitual ritualRegression;
 
 	public static void init() {
 		ritualSol = new RitualSol();
@@ -32,5 +36,7 @@ public class AnimusRituals {
 		RitualRegistry.registerRitual(ritualNaturesLeech,AnimusConfig.ritualNaturesLeech);
 		ritualCulling = new RitualCulling();
 		RitualRegistry.registerRitual(ritualCulling,AnimusConfig.ritualCulling);
+		ritualRegression = new RitualRegression();
+		ImperfectRitualRegistry.registerRitual(ritualRegression,AnimusConfig.ritualRegression);
 	}
 }

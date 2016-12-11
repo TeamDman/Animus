@@ -30,7 +30,7 @@ public class RitualUnmaking extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 
 	public RitualUnmaking() {
-		super("ritualUnmaking", 0, 3000, "ritual." + Animus.MODID + ".unmakingritual");
+		super("ritualUnmaking", 0, 3000, "ritual." + Animus.MODID + ".unmaking");
 
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-2, -2, -2), 5));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 8, 8);
@@ -77,7 +77,7 @@ public class RitualUnmaking extends Ritual {
 
 							NBTTagCompound data = enchants.getCompoundTagAt(i);
 							short enchID = data.getShort("id");
-							int enchLVL = data.getShort("lvl") - 1;
+							short enchLVL = data.getShort("lvl");
 							enchants.removeTag(i);
 
 
@@ -86,7 +86,7 @@ public class RitualUnmaking extends Ritual {
 							NBTTagList bookTags = new NBTTagList();
 							NBTTagCompound comp = new NBTTagCompound();
 							comp.setShort("id", enchID);
-							comp.setShort("lvl", (short) (enchLVL < 1 ? 1 : enchLVL));
+							comp.setShort("lvl", enchLVL);
 							bookTags.appendTag(comp);
 							enchBook.getTagCompound().setTag("StoredEnchantments", bookTags);
 							world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook.copy()));

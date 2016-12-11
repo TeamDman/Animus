@@ -32,6 +32,7 @@ public class AnimusConfig {
 	public static boolean ritualPeace;
 	public static boolean ritualNaturesLeech;
 	public static boolean ritualCulling;
+	public static boolean ritualRegression;
 
 	// Sigil Variables
 	public static int chainsConsumption;
@@ -69,6 +70,7 @@ public class AnimusConfig {
 		ritualPeace = config.get(category, "ritualPeace", true).getBoolean();
 		ritualNaturesLeech = config.get(category, "ritualNaturesLeech", true).getBoolean();
 		ritualCulling = config.get(category, "ritualCulling", true).getBoolean();
+		ritualRegression = config.get(category,"ritualRegression",true).getBoolean();
 
 		category = "Sigil Variables";
 		config.addCustomCategoryComment(category,"Costs of various actions");
