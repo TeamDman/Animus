@@ -12,7 +12,6 @@ import amerifrance.guideapi.page.PageIRecipe;
 import amerifrance.guideapi.page.PageText;
 import com.teamdman.animus.items.ItemAltarDiviner;
 import com.teamdman.animus.items.ItemKama;
-import com.teamdman.animus.items.ItemKamaBound;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.registry.AnimusRecipes;
@@ -22,20 +21,16 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
 
 public class AnimusGuide {
 	public static Book book;

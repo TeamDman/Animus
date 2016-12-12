@@ -19,7 +19,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,6 +47,7 @@ public class ItemSigilBuilder extends com.teamdman.animus.items.sigils.ItemSigil
 			ItemSigilBuilder.removeDelay();
 	}
 
+	@SuppressWarnings({ "deprecation" })
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if (!world.isRemote && !isUnusable(stack)) {
@@ -84,9 +84,10 @@ public class ItemSigilBuilder extends com.teamdman.animus.items.sigils.ItemSigil
 			}
 		}
 
-		return new ActionResult(EnumActionResult.PASS, stack);
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		BlockPos air = pos;

@@ -3,19 +3,11 @@ package com.teamdman.animus.rituals;
 import WayofTime.bloodmagic.api.ritual.*;
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
-import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.Animus;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.ParticleSpell;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,7 +27,6 @@ public class RitualPeace extends Ritual {
 	public void performRitual(IMasterRitualStone masterRitualStone) {
 		World world = masterRitualStone.getWorldObj();
 		SoulNetwork network = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
-		int currentEssence = network.getCurrentEssence();
 		BlockPos masterPos = masterRitualStone.getBlockPos();
 
 		if (!masterRitualStone.getWorldObj().isRemote) {
@@ -65,7 +56,7 @@ public class RitualPeace extends Ritual {
 
 	@Override
 	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> components = new ArrayList();
+		ArrayList<RitualComponent> components = new ArrayList<RitualComponent>();
 		this.addParallelRunes(components, 4, 0, EnumRuneType.EARTH);
 		this.addCornerRunes(components,4,0, EnumRuneType.EARTH);
 		this.addOffsetRunes(components,4,1,0,EnumRuneType.EARTH);

@@ -3,19 +3,13 @@ package com.teamdman.animus.rituals;
 import WayofTime.bloodmagic.api.ritual.*;
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
-import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.Animus;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -145,7 +139,7 @@ public class RitualUnmaking extends Ritual {
 
 	@Override
 	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> components = new ArrayList();
+		ArrayList<RitualComponent> components = new ArrayList<RitualComponent>();
 		this.addRune(components, -4, 0, -2, EnumRuneType.FIRE);
 		this.addRune(components, -4, 0, 0, EnumRuneType.FIRE);
 		this.addRune(components, -4, 0, 2, EnumRuneType.FIRE);

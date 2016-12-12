@@ -5,7 +5,6 @@ import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.Animus;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -77,7 +76,7 @@ public class RitualLuna extends Ritual {
 
 	@Override
 	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> components = new ArrayList();
+		ArrayList<RitualComponent> components = new ArrayList<RitualComponent>();
 		this.addParallelRunes(components, 1, 0, EnumRuneType.DUSK);
 		this.addCornerRunes(components, 1, 0, EnumRuneType.DUSK);
 		this.addParallelRunes(components, 2, 1, EnumRuneType.DUSK);

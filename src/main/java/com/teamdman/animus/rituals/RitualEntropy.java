@@ -71,6 +71,7 @@ public class RitualEntropy extends Ritual {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public int getCobbleValue(List<Item> fetchList, ItemStack input, int layer) {
 		System.out.printf("%s requested on layer %d\n",input.getDisplayName(),layer);
 		if (indexed.get(input.getItem()) != null)
@@ -142,7 +143,7 @@ public class RitualEntropy extends Ritual {
 
 	@Override
 	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> components = new ArrayList();
+		ArrayList<RitualComponent> components = new ArrayList<RitualComponent>();
 		this.addCornerRunes(components, 1, 1, EnumRuneType.EARTH);
 		this.addCornerRunes(components, 2, 0, EnumRuneType.FIRE);
 		this.addCornerRunes(components, 3, -1, EnumRuneType.WATER);
