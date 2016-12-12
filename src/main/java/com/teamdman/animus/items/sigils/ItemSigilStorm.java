@@ -1,12 +1,15 @@
 package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.api.impl.ItemSigil;
+import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import com.teamdman.animus.AnimusConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -21,6 +24,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
 	public ItemSigilStorm() {
@@ -29,16 +33,25 @@ public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		RayTraceResult result = this.rayTrace(world,player,true);
+		Random rand = new Random();
+		RayTraceResult result = this.rayTrace(world, player, true);
 		if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK) {
 			BlockPos pos = result.getBlockPos();
 			IBlockState state = world.getBlockState(pos);
-			world.spawnEntity(new EntityLightningBolt(world,pos.getX(),pos.getY(),pos.getZ(),false));
-			if (state.getBlock() == Blocks.WATER) {
+
+			world.spawnEntity(new EntityLightningBolt(world, pos.getX(), pos.getY()+.5, pos.getZ(), false));
+
+			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player,getLpUsed());
+
+			if (state.getBlock() == Blocks.WATER && !world.isRemote) {
+				EntityItem fish = new EntityItem(world, pos.getX(), pos.getY()-rand.nextInt(2), pos.getZ(), new ItemStack(Items.FISH,1+rand.nextInt(2)));
+				fish.setVelocity(rand.nextDouble()* .25, -.25, rand.nextDouble()*.25);
+				fish.setEntityInvulnerable(true); //Stop killing our fish, stupid lightning.
+				world.spawnEntity(fish);
 
 			}
 		}
-		return new ActionResult<>(EnumActionResult.PASS,stack);
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override
