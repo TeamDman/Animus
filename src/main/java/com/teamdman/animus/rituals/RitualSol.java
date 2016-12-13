@@ -38,12 +38,11 @@ public class RitualSol extends Ritual {
 		setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public void performRitual(IMasterRitualStone masterRitualStone) {
 		World world = masterRitualStone.getWorldObj();
 		SoulNetwork network = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
-		int currentEssence = network.getCurrentEssence();
 		BlockPos masterPos = masterRitualStone.getBlockPos();
 		AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
 		TileEntityChest tileInventory = (TileEntityChest) world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
@@ -81,6 +80,7 @@ public class RitualSol extends Ritual {
 		return in != null && (in.getItem() == ModItems.SIGIL_BLOOD_LIGHT || Block.getBlockFromItem(in.getItem()) != null);
 	}
 
+	@SuppressWarnings("deprecation")
 	private IBlockState getStateToUse(ItemStack in) {
 		if (in.getItem() == ModItems.SIGIL_BLOOD_LIGHT) {
 			return ModBlocks.BLOOD_LIGHT.getDefaultState();

@@ -41,11 +41,9 @@ public class RitualNaturesLeech extends Ritual {
 		return 100;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public ArrayList<RitualComponent> getComponents() {
-		@SuppressWarnings("unchecked")
-		ArrayList<RitualComponent> ritualBlocks = new ArrayList();
+		ArrayList<RitualComponent> ritualBlocks = new ArrayList<RitualComponent>();
 		this.addRune(ritualBlocks, -3, 0, 0, EnumRuneType.AIR);
 		this.addRune(ritualBlocks, -2, 0, -2, EnumRuneType.EARTH);
 		this.addRune(ritualBlocks, -2, 0, 2, EnumRuneType.EARTH);
@@ -151,9 +149,7 @@ public class RitualNaturesLeech extends Ritual {
 		double stoneY = 64;
 
 		if (ritualStone != null)
-			stoneY = ritualStone.getBlockPos().getY() - 10;// works up to 10
-															// levels below the
-															// MRS
+			stoneY = ritualStone.getBlockPos().getY() - 10;// works up to 10 levels below the MRS
 
 		IChunkProvider provider = world.getChunkProvider();
 		for (int chunkX = startChunkX - radius; chunkX <= startChunkX + radius; chunkX++) {
@@ -161,13 +157,7 @@ public class RitualNaturesLeech extends Ritual {
 				provider.getLoadedChunk(chunkX, chunkZ);
 				for (int x = 0; x < 16; x++) {
 					for (int z = 0; z < 16; z++) {
-						for (int y = (int) stoneY; y < (int) stoneY + 32; y++) { // works
-																					// up
-																					// to
-																					// 32
-																					// above
-																					// the
-																					// MRS
+						for (int y = (int) stoneY; y < (int) stoneY + 32; y++) { // works up  to 32 above the MRS
 							int wx = chunkX * 16 + x;
 							int wz = chunkZ * 16 + z;
 							Block thisBlock = world.getBlockState(new BlockPos(wx, y, wz)).getBlock();

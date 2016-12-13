@@ -11,9 +11,11 @@ import com.teamdman.animus.client.resources.fx.EntityFXBurst;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -29,13 +31,17 @@ import WayofTime.bloodmagic.api.util.helper.*;
 
 public class RitualCulling extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
+    public static final String ALTAR_RANGE = "altar";
 
 	public RitualCulling() {
 		super("ritualCulling", 0, 50000, "ritual." + Animus.MODID + ".culling");
-		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
+		
+        addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 51));
 
-		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
-
+        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
+		
 	}
 
 	DamageSource culled = new DamageSource("animus.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor()
@@ -44,22 +50,20 @@ public class RitualCulling extends Ritual {
 	public int reagentDrain = 2;
 	public boolean result = false;
 	public static final int amount = 200;
+    public BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
 	public LogHelper logger = new LogHelper("Animus Debug");
 
 	@Override
 	public boolean activateRitual(IMasterRitualStone ritualStone, EntityPlayer player, String owner) {
-		Random itemRand = new Random();
 		double xCoord, yCoord, zCoord;
 
 		xCoord = ritualStone.getBlockPos().getX();
 		yCoord = ritualStone.getBlockPos().getY();
 		zCoord = ritualStone.getBlockPos().getZ();
 		
-
 		if (player != null)
 			player.world
-					.addWeatherEffect(new EntityLightningBolt(player.world, xCoord + itemRand.nextInt(64) - 32,
-							yCoord + itemRand.nextInt(8) - 8, zCoord + itemRand.nextInt(64) - 32, false));
+					.addWeatherEffect(new EntityLightningBolt(player.world, xCoord,	yCoord, zCoord, false));
 
 		return true;
 	}
@@ -83,21 +87,38 @@ public class RitualCulling extends Ritual {
 		TileAltar tileAltar = null;
 		boolean testFlag = false;
 
-		for (int i = -5; i <= 5; i++) {
-			for (int j = -5; j <= 5; j++) {
-				for (int k = -10; k <= 10; k++) {
-					if (world.getTileEntity(new BlockPos(x + i, y + k, z + j)) instanceof TileAltar) {
-						tileAltar = (TileAltar) world.getTileEntity(new BlockPos(x + i, y + k, z + j));
-						testFlag = true;
-					}
-				}
-			}
-		}
+  	    BlockPos pos = ritualStone.getBlockPos();
+		BlockPos altarPos = pos.add(altarOffsetPos);
+		   
+        TileEntity tile = world.getTileEntity(altarPos);
 
+        AreaDescriptor altarRange = getBlockRange(ALTAR_RANGE);
+
+        if (!altarRange.isWithinArea(altarOffsetPos) || !(tile instanceof TileAltar))
+        {
+            for (BlockPos newPos : altarRange.getContainedPositions(pos))
+            {
+                TileEntity nextTile = world.getTileEntity(newPos);
+                if (nextTile instanceof TileAltar)
+                {
+                    tile = nextTile;
+                    altarOffsetPos = newPos.subtract(pos);
+
+                    altarRange.resetCache();
+                    break;
+                }
+            }
+        }
+		
+		
+		if (tile instanceof TileAltar) {
+			tileAltar = (TileAltar) tile;
+			testFlag = true;
+		}
 		if (!testFlag) {
-			
 			return;
 		}
+
 		int d0 = 10;
 		int vertRange = 10;
 		AxisAlignedBB axisalignedbb = new AxisAlignedBB((double) x, (double) y, (double) z, (double) (x + 1),
@@ -111,11 +132,11 @@ public class RitualCulling extends Ritual {
 			network.causeNausea();
 		} else {
 			for (EntityLivingBase livingEntity : list) {
-				if (!livingEntity.isNonBoss()
-						|| (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName()))) {
+				if (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName())) {
 					continue;
 				}
-
+				
+				
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
 
@@ -123,20 +144,40 @@ public class RitualCulling extends Ritual {
 				
 				if (effect.isEmpty()) {
 					int p = 0;
+					float damage = 0;
 					BlockPos at = null;
 					soundSource = livingEntity.world;
 
 					for (p = 0; p < 6; p++)
 						at = livingEntity.getPosition();
+						boolean isNonBoss = livingEntity.isNonBoss();
+						
+						
+						if (livingEntity.getName().contains("Gaia"))
+							continue;
+						
+					livingEntity.setSilent(true); // The screams of the weak fall on deaf ears.										
 
-					livingEntity.setSilent(true); // The screams of the weak fall on deaf ears.
-													
-					result = (livingEntity.attackEntityFrom(culled, livingEntity.getMaxHealth() * 3));
+					damage = Integer.MAX_VALUE;		
+
+					if (!isNonBoss && (currentEssence >= 50000 + (this.getRefreshCost() * list.size()))){ //Special case for bosses
+						livingEntity.setEntityInvulnerable(false);
+						if (livingEntity instanceof EntityWither){
+						EntityWither EW = (EntityWither)livingEntity;
+							EW.setInvulTime(0);
+						}
+					}
+
+					result = (livingEntity.attackEntityFrom(culled, damage));
 
 					if (result != false) {
 						entityCount++;
 						tileAltar.sacrificialDaggerCall(RitualCulling.amount, true);
 
+						if (!isNonBoss){
+							network.syphon(50000);
+						}
+							
 						if (at != null) {
 
 							EffectHandler.getInstance().registerFX(
@@ -167,17 +208,20 @@ public class RitualCulling extends Ritual {
 		return new RitualCulling();
 	}
 
+    @Override
+    public int getRefreshTime()
+    {
+        return 25;
+    }
+	
 	@Override
 	public int getRefreshCost() {
 		return 75;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public ArrayList<RitualComponent> getComponents() {
-		@SuppressWarnings("unchecked")
-		ArrayList<RitualComponent> ritualBlocks = new ArrayList();
-		;
+		ArrayList<RitualComponent> ritualBlocks = new ArrayList<RitualComponent>();
 
 		this.addRune(ritualBlocks, 1, 0, 1, EnumRuneType.FIRE);
 		this.addRune(ritualBlocks, -1, 0, 1, EnumRuneType.FIRE);
