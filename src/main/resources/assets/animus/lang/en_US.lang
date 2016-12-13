@@ -49,7 +49,7 @@ guide.animus.category.items=Items
 
 
 guide.animus.rituals.sol.entry=Ritual of Sol
-guide.animus.rituals.sol.page0=Tier 0\nTakes light sources from an adjacent inventory and distributes them evenly in the world.
+guide.animus.rituals.sol.page0=Tier 0\nTakes light sources from an adjacent inventory and distributes them evenly in the world. Blood lamp sigil also works in the inventory
 guide.animus.rituals.luna.entry=Ritual of Luna
 guide.animus.rituals.luna.page0=Tier 1\nRemoves light sources from the world and places them inside an adjacent inventory.
 guide.animus.rituals.entropy.entry=Ritual of Entropy

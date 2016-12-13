@@ -3,15 +3,21 @@ package com.teamdman.animus.rituals;
 import WayofTime.bloodmagic.api.ritual.*;
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.registry.ModBlocks;
+import WayofTime.bloodmagic.registry.ModItems;
 import com.teamdman.animus.Animus;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
+
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 
 /**
@@ -20,6 +26,7 @@ import java.util.ArrayList;
 public class RitualSol extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 	public static final String CHEST_RANGE = "chest";
+
 
 	public RitualSol() {
 		super("ritualSol", 0, 1000, "ritual." + Animus.MODID + ".sol");
@@ -39,35 +46,46 @@ public class RitualSol extends Ritual {
 		int currentEssence = network.getCurrentEssence();
 		BlockPos masterPos = masterRitualStone.getBlockPos();
 		AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
-		TileEntity tileInventory = world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
+		TileEntityChest tileInventory = (TileEntityChest) world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
+		if (tileInventory == null)
+			return;
+		IItemHandler handler = tileInventory.getSingleChestHandler();
 
-
-		if (!masterRitualStone.getWorldObj().isRemote && tileInventory != null && tileInventory instanceof IInventory) {
-			int slotToPlace = -1;
-			for (int slot = 0; slot < ((IInventory) tileInventory).getSizeInventory(); slot++) {
-				if (((IInventory) tileInventory).getStackInSlot(slot)!=null &&  Block.getBlockFromItem(((IInventory) tileInventory).getStackInSlot(slot).getItem()) != null) {
-					slotToPlace = slot;
-				}
-			}
-			if (slotToPlace==-1)
+		if (!masterRitualStone.getWorldObj().isRemote) {
+			Optional<Integer> slot = Stream.iterate(0, n -> ++n)
+					.limit(handler.getSlots() - 1)
+					.filter((e) -> handler.getStackInSlot(e) != null)
+					.filter((e) -> this.isOkayToUse(handler.getStackInSlot(e)))
+					.findAny();
+			if (!slot.isPresent())
 				return;
+			System.out.println(slot.get());
+			Optional<BlockPos> toPlace = getBlockRange(EFFECT_RANGE).getContainedPositions(masterRitualStone.getBlockPos()).stream()
+					.filter(world::isAirBlock)
+					.filter((e) -> world.getLightFromNeighbors(e) < 8)
+					.filter((e) -> world.isSideSolid(e.down(1), EnumFacing.UP))
+					.findFirst();
 
-			if (currentEssence < getRefreshCost()) {
-				network.causeNausea();
+			if (!toPlace.isPresent())
 				return;
+			IBlockState state = getStateToUse(handler.getStackInSlot(slot.get()));
+			world.setBlockState(toPlace.get(), state);
+			if (state.getBlock() != ModBlocks.BLOOD_LIGHT) {
+				handler.extractItem(slot.get(), 1, false);
 			}
+			network.syphon(getRefreshCost());
+		}
+	}
 
-			AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
-			for (BlockPos pos : effectRange.getContainedPositions(masterRitualStone.getBlockPos())) {
-				if (world.isAirBlock(pos) && world.getLightFromNeighbors(pos) < 8 && world.isSideSolid(pos.down(1), EnumFacing.UP)) {
-					IBlockState toPlace = Block.getBlockFromItem(((IInventory) tileInventory).getStackInSlot(slotToPlace).getItem()).getStateFromMeta(((IInventory) tileInventory).getStackInSlot(slotToPlace).getItemDamage());
-					((IInventory) tileInventory).decrStackSize(slotToPlace,1);
-					world.setBlockState(pos, toPlace);
-					network.syphon(getRefreshCost());
+	private boolean isOkayToUse(ItemStack in) {
+		return in != null && (in.getItem() == ModItems.SIGIL_BLOOD_LIGHT || Block.getBlockFromItem(in.getItem()) != null);
+	}
 
-					return;
-				}
-			}
+	private IBlockState getStateToUse(ItemStack in) {
+		if (in.getItem() == ModItems.SIGIL_BLOOD_LIGHT) {
+			return ModBlocks.BLOOD_LIGHT.getDefaultState();
+		} else {
+			return Block.getBlockFromItem(in.getItem()).getStateFromMeta(in.getItemDamage());
 		}
 	}
 
