@@ -2,6 +2,7 @@ package com.teamdman.animus.rituals;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -13,7 +14,9 @@ import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -25,23 +28,25 @@ import net.minecraft.util.SoundCategory;
 import WayofTime.bloodmagic.api.ritual.*;
 
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
+import WayofTime.bloodmagic.api.soul.EnumDemonWillType;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.api.util.helper.*;
 
 public class RitualCulling extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
-    public static final String ALTAR_RANGE = "altar";
+	public static final String ALTAR_RANGE = "altar";
 
 	public RitualCulling() {
 		super("ritualCulling", 0, 50000, "ritual." + Animus.MODID + ".culling");
-		
-        addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 51));
 
-        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
-		
+		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
+		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 51));
+
+		setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
+		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
+
 	}
 
 	DamageSource culled = new DamageSource("animus.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor()
@@ -50,8 +55,13 @@ public class RitualCulling extends Ritual {
 	public int reagentDrain = 2;
 	public boolean result = false;
 	public static final int amount = 200;
-    public BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
+	public BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
 	public LogHelper logger = new LogHelper("Animus Debug");
+	public double willBuffer = 0;
+	public double crystalBuffer = 0;
+	public final int maxWill = 100;
+	public HashMap<EnumDemonWillType, Double> willMap = new HashMap<EnumDemonWillType, Double>();
+	public Random rand = new Random();
 
 	@Override
 	public boolean activateRitual(IMasterRitualStone ritualStone, EntityPlayer player, String owner) {
@@ -60,10 +70,9 @@ public class RitualCulling extends Ritual {
 		xCoord = ritualStone.getBlockPos().getX();
 		yCoord = ritualStone.getBlockPos().getY();
 		zCoord = ritualStone.getBlockPos().getZ();
-		
+
 		if (player != null)
-			player.world
-					.addWeatherEffect(new EntityLightningBolt(player.world, xCoord,	yCoord, zCoord, false));
+			player.world.addWeatherEffect(new EntityLightningBolt(player.world, xCoord, yCoord, zCoord, false));
 
 		return true;
 	}
@@ -71,46 +80,42 @@ public class RitualCulling extends Ritual {
 	@Override
 	public void performRitual(IMasterRitualStone ritualStone) {
 		SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
-		if (network == null){
+		if (network == null) {
 			return;
 		}
-		
-		int currentEssence = network.getCurrentEssence();
 
+		int currentEssence = network.getCurrentEssence();
 		World world = ritualStone.getWorldObj();
 		World soundSource = ritualStone.getWorldObj();
 		int x = ritualStone.getBlockPos().getX();
 		int y = ritualStone.getBlockPos().getY();
 		int z = ritualStone.getBlockPos().getZ();
-		
+		EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;
+		BlockPos pos = ritualStone.getBlockPos();
+		double currentAmount = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
 		TileAltar tileAltar = null;
 		boolean testFlag = false;
 
-  	    BlockPos pos = ritualStone.getBlockPos();
 		BlockPos altarPos = pos.add(altarOffsetPos);
-		   
-        TileEntity tile = world.getTileEntity(altarPos);
 
-        AreaDescriptor altarRange = getBlockRange(ALTAR_RANGE);
+		TileEntity tile = world.getTileEntity(altarPos);
 
-        if (!altarRange.isWithinArea(altarOffsetPos) || !(tile instanceof TileAltar))
-        {
-            for (BlockPos newPos : altarRange.getContainedPositions(pos))
-            {
-                TileEntity nextTile = world.getTileEntity(newPos);
-                if (nextTile instanceof TileAltar)
-                {
-                    tile = nextTile;
-                    altarOffsetPos = newPos.subtract(pos);
+		AreaDescriptor altarRange = getBlockRange(ALTAR_RANGE);
 
-                    altarRange.resetCache();
-                    break;
-                }
-            }
-        }
-		
-		
+		if (!altarRange.isWithinArea(altarOffsetPos) || !(tile instanceof TileAltar)) {
+			for (BlockPos newPos : altarRange.getContainedPositions(pos)) {
+				TileEntity nextTile = world.getTileEntity(newPos);
+				if (nextTile instanceof TileAltar) {
+					tile = nextTile;
+					altarOffsetPos = newPos.subtract(pos);
+
+					altarRange.resetCache();
+					break;
+				}
+			}
+		}
+
 		if (tile instanceof TileAltar) {
 			tileAltar = (TileAltar) tile;
 			testFlag = true;
@@ -135,13 +140,12 @@ public class RitualCulling extends Ritual {
 				if (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName())) {
 					continue;
 				}
-				
-				
+
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
 
-				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Cursed Earth Boosted
-				
+				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Dissalows cursed earth spawned mobs
+
 				if (effect.isEmpty()) {
 					int p = 0;
 					float damage = 0;
@@ -150,20 +154,21 @@ public class RitualCulling extends Ritual {
 
 					for (p = 0; p < 6; p++)
 						at = livingEntity.getPosition();
-						boolean isNonBoss = livingEntity.isNonBoss();
-						
-						
-						if (livingEntity.getName().contains("Gaia"))
-							continue;
-						
-					livingEntity.setSilent(true); // The screams of the weak fall on deaf ears.										
+					boolean isNonBoss = livingEntity.isNonBoss();
 
-					damage = Integer.MAX_VALUE;		
+					if (livingEntity.getName().contains("Gaia"))
+						continue;
 
-					if (!isNonBoss && (currentEssence >= 50000 + (this.getRefreshCost() * list.size()))){ //Special case for bosses
+					livingEntity.setSilent(true); // The screams of the weak
+													// fall on deaf ears.
+
+					damage = Integer.MAX_VALUE;
+
+					if (!isNonBoss && currentAmount > 99
+							&& (currentEssence >= 50000 + (this.getRefreshCost() * list.size()))) { // Special case for Bosses, they require maxed vengeful will and 50k LP per kill
 						livingEntity.setEntityInvulnerable(false);
-						if (livingEntity instanceof EntityWither){
-						EntityWither EW = (EntityWither)livingEntity;
+						if (livingEntity instanceof EntityWither) {
+							EntityWither EW = (EntityWither) livingEntity;
 							EW.setInvulTime(0);
 						}
 					}
@@ -174,10 +179,16 @@ public class RitualCulling extends Ritual {
 						entityCount++;
 						tileAltar.sacrificialDaggerCall(RitualCulling.amount, true);
 
-						if (!isNonBoss){
+						if (!isNonBoss) {
 							network.syphon(50000);
+						} else {
+							double modifier = .5;
+							if (livingEntity instanceof EntityAnimal && !livingEntity.isCollided) {
+								modifier = 2;
+							}
+							willBuffer += modifier * Math.min(15.00, livingEntity.getMaxHealth());
 						}
-							
+
 						if (at != null) {
 
 							EffectHandler.getInstance().registerFX(
@@ -193,7 +204,14 @@ public class RitualCulling extends Ritual {
 			}
 
 			network.syphon(getRefreshCost() * entityCount);
+			double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount, 10));
 
+			if (rand.nextInt(3) == 0) { // 30% chance per cycle to generate
+										// vengeful will
+				double filled = WorldDemonWillHandler.fillWillToMaximum(world, pos, type, drainAmount, maxWill, false);
+				if (filled > 0)
+					WorldDemonWillHandler.fillWillToMaximum(world, pos, type, filled, maxWill, true);
+			}
 		}
 
 	}
@@ -208,15 +226,28 @@ public class RitualCulling extends Ritual {
 		return new RitualCulling();
 	}
 
-    @Override
-    public int getRefreshTime()
-    {
-        return 25;
-    }
-	
+	@Override
+	public int getRefreshTime() {
+		return 25;
+	}
+
 	@Override
 	public int getRefreshCost() {
 		return 75;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		willBuffer = tag.getDouble("willBuffer");
+
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setDouble("willBuffer", willBuffer);
+
 	}
 
 	@Override
@@ -227,7 +258,6 @@ public class RitualCulling extends Ritual {
 		this.addRune(ritualBlocks, -1, 0, 1, EnumRuneType.FIRE);
 		this.addRune(ritualBlocks, 1, 0, -1, EnumRuneType.FIRE);
 		this.addRune(ritualBlocks, -1, 0, -1, EnumRuneType.FIRE);
-
 		this.addRune(ritualBlocks, 2, -1, 2, EnumRuneType.DUSK);
 		this.addRune(ritualBlocks, 2, -1, -2, EnumRuneType.DUSK);
 		this.addRune(ritualBlocks, -2, -1, 2, EnumRuneType.DUSK);
