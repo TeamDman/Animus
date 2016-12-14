@@ -40,12 +40,12 @@ public class RitualCulling extends Ritual {
 
 	public RitualCulling() {
 		super("ritualCulling", 0, 50000, "ritual." + Animus.MODID + ".culling");
+		
+        addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 21));
 
-		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
-		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 51));
-
-		setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
+        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
 
 	}
 
@@ -87,9 +87,6 @@ public class RitualCulling extends Ritual {
 		int currentEssence = network.getCurrentEssence();
 		World world = ritualStone.getWorldObj();
 		World soundSource = ritualStone.getWorldObj();
-		int x = ritualStone.getBlockPos().getX();
-		int y = ritualStone.getBlockPos().getY();
-		int z = ritualStone.getBlockPos().getZ();
 		EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;
 		BlockPos pos = ritualStone.getBlockPos();
 		double currentAmount = WorldDemonWillHandler.getCurrentWill(world, pos, type);
@@ -124,12 +121,10 @@ public class RitualCulling extends Ritual {
 			return;
 		}
 
-		int d0 = 10;
-		int vertRange = 10;
-		AxisAlignedBB axisalignedbb = new AxisAlignedBB((double) x, (double) y, (double) z, (double) (x + 1),
-				(double) (y + 1), (double) (z + 1)).expand(d0, vertRange, d0);
-
-		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+        AreaDescriptor damageRange = getBlockRange(EFFECT_RANGE);
+        AxisAlignedBB range = damageRange.getAABB(pos);
+		
+        List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, range);
 
 		int entityCount = 0;
 
@@ -144,7 +139,7 @@ public class RitualCulling extends Ritual {
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
 
-				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Dissalows cursed earth spawned mobs
+				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Disallows cursed earth spawned mobs
 
 				if (effect.isEmpty()) {
 					int p = 0;
