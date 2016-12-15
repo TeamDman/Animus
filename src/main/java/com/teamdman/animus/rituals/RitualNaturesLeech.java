@@ -33,13 +33,13 @@ public class RitualNaturesLeech extends Ritual {
 
 	public RitualNaturesLeech() {
 		super("ritualNaturesLeech", 0, 3000, "ritual." + Animus.MODID + ".naturesleech");
-		
+
 		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 20, 20, 20);
 		setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-		
-		}
+
+	}
 
 	@Override
 	public int getRefreshCost() {
@@ -85,7 +85,7 @@ public class RitualNaturesLeech extends Ritual {
 
 			int eaten = 0;
 			network.syphon(this.getRefreshCost());
-			
+
 			AreaDescriptor altarRange = getBlockRange(ALTAR_RANGE);
 			boolean testFlag = false;
 
@@ -109,56 +109,51 @@ public class RitualNaturesLeech extends Ritual {
 			if (!testFlag) {
 				return;
 			}
-			
-			
+
 			AreaDescriptor eatRange = getBlockRange(EFFECT_RANGE);
 
-				eatRange.resetIterator();
-				int randFood = 1+random.nextInt(3);
-				
-				while (eatRange.hasNext() && eaten <= randFood) {
+			eatRange.resetIterator();
+			int randFood = 1 + random.nextInt(3);
 
-					BlockPos nextPos = eatRange.next().add(pos);
-					Block thisBlock = world.getBlockState(nextPos).getBlock();
-					if (thisBlock == Blocks.AIR)
+			while (eatRange.hasNext() && eaten <= randFood) {
+
+				BlockPos nextPos = eatRange.next().add(pos);
+				Block thisBlock = world.getBlockState(nextPos).getBlock();
+				if (thisBlock == Blocks.AIR)
+					continue;
+
+				boolean edible = false;
+
+				if (random.nextInt(100) < 20) {
+					String blockName = thisBlock.getUnlocalizedName().toLowerCase();
+
+					if (thisBlock instanceof BlockCrops || thisBlock instanceof BlockLog
+							|| thisBlock instanceof BlockLeaves || thisBlock instanceof BlockFlower
+							|| thisBlock instanceof BlockTallGrass || thisBlock instanceof BlockDoublePlant
+							|| blockName.contains("extrabiomesxl.flower"))
+						edible = true;
+
+					if (blockName.contains("specialflower") || blockName.contains("shinyflower"))
+						edible = false;
+
+					if (!edible)
 						continue;
-					
-					boolean edible = false;
 
+					EffectHandler.getInstance().registerFX(
+							new EntityFXBurst(1, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
 
-					if (random.nextInt(100) < 20) {
-						String blockName = thisBlock.getUnlocalizedName().toLowerCase();
-
-						if (thisBlock instanceof BlockCrops || thisBlock instanceof BlockLog
-								|| thisBlock instanceof BlockLeaves || thisBlock instanceof BlockFlower
-								|| thisBlock instanceof BlockTallGrass || thisBlock instanceof BlockDoublePlant
-								|| blockName.contains("extrabiomesxl.flower"))
-							edible = true;
-
-						if (blockName.contains("specialflower") || blockName.contains("shinyflower"))
-							edible = false;
-
-						if (!edible)
-							continue;
-
-						
-						EffectHandler.getInstance().registerFX(new EntityFXBurst(1, nextPos.getX() + 0.5,
-								nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
-
-						world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
-						world.setBlockToAir(nextPos);
-						eaten++;
-
-					} 
+					world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
+					world.setBlockToAir(nextPos);
+					eaten++;
 
 				}
 
-
+			}
 
 			tileAltar.sacrificialDaggerCall(eaten * 50, true);
-			int drainAmount = 1 + (int)(Math.random() * ((5 - 1) + 1));
-			if (will > 5 && random.nextInt(100) < 30){
-				 WorldDemonWillHandler.drainWill(world, pos, type, drainAmount, true);
+			int drainAmount = 1 + (int) (Math.random() * ((5 - 1) + 1));
+			if (will > 5 && random.nextInt(100) < 30) {
+				WorldDemonWillHandler.drainWill(world, pos, type, drainAmount, true);
 			}
 		}
 
@@ -171,11 +166,10 @@ public class RitualNaturesLeech extends Ritual {
 
 	@Override
 	public int getRefreshTime() {
-		int rt = (int) Math.min(80, (100 * (100/(Math.max(1, will)*6))));
+		int rt = (int) Math.min(80, (100 * (100 / (Math.max(1, will) * 6))));
 		return rt;
 	}
-	
-	
+
 	@Override
 	public Ritual getNewCopy() {
 		return new RitualNaturesLeech();
