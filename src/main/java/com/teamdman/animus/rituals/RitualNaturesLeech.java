@@ -13,6 +13,7 @@ import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockTallGrass;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -27,20 +28,22 @@ import WayofTime.bloodmagic.tile.TileAltar;
 public class RitualNaturesLeech extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 	public static final String ALTAR_RANGE = "altar";
+	public double will = 100;
 	public BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
 
 	public RitualNaturesLeech() {
 		super("ritualNaturesLeech", 0, 3000, "ritual." + Animus.MODID + ".naturesleech");
 		
-        addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 24, 24, 24));
-		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-24, -24, -24), 24));
-		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 20, 24, 24);
+		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
+		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
+		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 20, 20, 20);
 		setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-	}
+		
+		}
 
 	@Override
 	public int getRefreshCost() {
-		return 100;
+		return 10;
 	}
 
 	@Override
@@ -64,11 +67,11 @@ public class RitualNaturesLeech extends Ritual {
 	public void performRitual(IMasterRitualStone ritualStone) {
 		Random random = new Random();
 		World world = ritualStone.getWorldObj();
-		EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
 		BlockPos pos = ritualStone.getBlockPos();
-		double currentAmount = WorldDemonWillHandler.getCurrentWill(world, pos, type);
+		EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
 		BlockPos altarPos = pos.add(altarOffsetPos);
 		TileEntity tile = world.getTileEntity(altarPos);
+		will = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
 		SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
 		int currentEssence = network.getCurrentEssence();
@@ -111,17 +114,19 @@ public class RitualNaturesLeech extends Ritual {
 			AreaDescriptor eatRange = getBlockRange(EFFECT_RANGE);
 
 				eatRange.resetIterator();
-				while (eatRange.hasNext()) {
-
-					if (eaten > random.nextInt(5))
-						break;// little sanity checking
+				int randFood = 1+random.nextInt(3);
+				
+				while (eatRange.hasNext() && eaten <= randFood) {
 
 					BlockPos nextPos = eatRange.next().add(pos);
+					Block thisBlock = world.getBlockState(nextPos).getBlock();
+					if (thisBlock == Blocks.AIR)
+						continue;
+					
 					boolean edible = false;
 
 
 					if (random.nextInt(100) < 20) {
-						Block thisBlock = world.getBlockState(nextPos).getBlock();
 						String blockName = thisBlock.getUnlocalizedName().toLowerCase();
 
 						if (thisBlock instanceof BlockCrops || thisBlock instanceof BlockLog
@@ -151,7 +156,10 @@ public class RitualNaturesLeech extends Ritual {
 
 
 			tileAltar.sacrificialDaggerCall(eaten * 50, true);
-
+			int drainAmount = 1 + (int)(Math.random() * ((5 - 1) + 1));
+			if (will > 5 && random.nextInt(100) < 30){
+				 WorldDemonWillHandler.drainWill(world, pos, type, drainAmount, true);
+			}
 		}
 
 	}
@@ -163,7 +171,8 @@ public class RitualNaturesLeech extends Ritual {
 
 	@Override
 	public int getRefreshTime() {
-		return 100;
+		int rt = (int) Math.min(80, (100 * (100/(Math.max(1, will)*6))));
+		return rt;
 	}
 	
 	
