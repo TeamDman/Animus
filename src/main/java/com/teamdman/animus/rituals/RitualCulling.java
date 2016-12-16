@@ -132,30 +132,25 @@ public class RitualCulling extends Ritual {
 			network.causeNausea();
 		} else {
 			for (EntityLivingBase livingEntity : list) {
-				if (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName())) {
+				if (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName())) 
 					continue;
-				}
-
+				
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
 
 				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Disallows cursed earth spawned mobs
 
 				if (effect.isEmpty()) {
-					int p = 0;
 					float damage = 0;
 					BlockPos at = null;
 					soundSource = livingEntity.world;
-
-					for (p = 0; p < 6; p++)
-						at = livingEntity.getPosition();
+					at = livingEntity.getPosition();
 					boolean isNonBoss = livingEntity.isNonBoss();
 
 					if (livingEntity.getName().contains("Gaia"))
 						continue;
 
-					livingEntity.setSilent(true); // The screams of the weak
-													// fall on deaf ears.
+					livingEntity.setSilent(true); // The screams of the weak fall on deaf ears.
 
 					damage = Integer.MAX_VALUE;
 
@@ -201,8 +196,7 @@ public class RitualCulling extends Ritual {
 			network.syphon(getRefreshCost() * entityCount);
 			double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount, 10));
 
-			if (rand.nextInt(3) == 0) { // 30% chance per cycle to generate
-										// vengeful will
+			if (rand.nextInt(3) == 0) { // 30% chance per cycle to generate vengeful will
 				double filled = WorldDemonWillHandler.fillWillToMaximum(world, pos, type, drainAmount, maxWill, false);
 				if (filled > 0)
 					WorldDemonWillHandler.fillWillToMaximum(world, pos, type, filled, maxWill, true);
