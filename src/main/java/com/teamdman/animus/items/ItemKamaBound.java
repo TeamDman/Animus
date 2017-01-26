@@ -27,6 +27,7 @@ public class ItemKamaBound extends ItemKama {
 	public ItemKamaBound() {
 		super(Item.ToolMaterial.DIAMOND);
 		this.maxStackSize = 1;
+		
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class ItemKama extends ItemSword implements IVariantProvider {
         super(material);
         mat = material;
         attackDamage = 2.0F + material.getDamageVsEntity();
-
+        setFull3D();
     }
 
     @Override
