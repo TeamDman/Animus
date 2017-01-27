@@ -58,7 +58,6 @@ public class RitualSol extends Ritual {
 					.findAny();
 			if (!slot.isPresent())
 				return;
-			System.out.println(slot.get());
 			Optional<BlockPos> toPlace = getBlockRange(EFFECT_RANGE).getContainedPositions(masterRitualStone.getBlockPos()).stream()
 					.filter(world::isAirBlock)
 					.filter((e) -> world.getLightFromNeighbors(e) < 8)
