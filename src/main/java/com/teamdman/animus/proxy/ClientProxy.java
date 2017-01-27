@@ -17,6 +17,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemModelMesher;
+
 /**
  * Created by TeamDman on 9/18/2016.
  */
@@ -50,21 +53,29 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void tryHandleItemModel(Item item, String name)
     {
+
         if (item instanceof IMeshProvider)
         {
+        	System.out.println("IMeshProvider");
             IMeshProvider meshProvider = (IMeshProvider) item;
             ModelLoader.setCustomMeshDefinition(item, meshProvider.getMeshDefinition());
             ResourceLocation resourceLocation = meshProvider.getCustomLocation();
             if (resourceLocation == null)
                 resourceLocation = new ResourceLocation(Animus.MODID, "item/" + name);
+
             for (String variant : meshProvider.getVariants())
                 ModelLoader.registerItemVariants(item, new ModelResourceLocation(resourceLocation, variant));
-        } else if (item instanceof IVariantProvider)
-        {
+        } else if (item instanceof IVariantProvider){
+        	System.out.println("IVariantProvider");
             IVariantProvider variantProvider = (IVariantProvider) item;
-            for (Pair<Integer, String> variant : variantProvider.getVariants())
-                ModelLoader.setCustomModelResourceLocation(item, variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, "item/" + name), variant.getRight()));
-        }
+            for (Pair<Integer, String> variant : variantProvider.getVariants()){
+            	  ModelLoader.setCustomModelResourceLocation(item, variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, "item/" + name), variant.getRight()));
+            	  System.out.println("Resource: " + Animus.MODID + "item/" + name);
+            	  System.out.println("Variant left: " + variant.getLeft());
+            	  System.out.println("Variant right: " + variant.getRight());
+           	  
+            }
+            }
     }
 
 

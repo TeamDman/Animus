@@ -21,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import java.lang.reflect.Field;
 
 import static net.minecraft.client.Minecraft.getMinecraft;
@@ -29,7 +28,7 @@ import static net.minecraft.client.Minecraft.getMinecraft;
 /**
  * Created by TeamDman on 2015-06-09.
  */
-public class ItemSigilBuilder extends com.teamdman.animus.items.sigils.ItemSigilToggleableBase {
+public class ItemSigilBuilder extends ItemSigilToggleableBase {
 	public ItemSigilBuilder() {
 		super("builder", 100);
 	}
