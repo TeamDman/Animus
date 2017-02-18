@@ -13,6 +13,7 @@ item.itemsigilbuilder.name=Sigil of the Fast Builder
 item.itemfragmenthealing.name=Healing Fragment
 item.itemsigilconsumption.name=Sigil of Consumption
 item.itemkeybinding=Key of Binding
+item.itemsigilstorm.name=Sigil of the Storm
 
 tile.blockphantombuilder.name=Phantom Builder Block
 tile.blockantimatter.name=Antimatter

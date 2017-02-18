@@ -2,10 +2,13 @@ package com.teamdman.animus.items;
 
 
 import WayofTime.bloodmagic.api.BlockStack;
-import WayofTime.bloodmagic.api.altar.*;
+import WayofTime.bloodmagic.api.altar.AltarComponent;
+import WayofTime.bloodmagic.api.altar.EnumAltarComponent;
+import WayofTime.bloodmagic.api.altar.EnumAltarTier;
+import WayofTime.bloodmagic.api.altar.IBloodAltar;
 import WayofTime.bloodmagic.client.IVariantProvider;
+import WayofTime.bloodmagic.registry.ModBlocks;
 import WayofTime.bloodmagic.tile.TileAltar;
-import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.block.Block;
@@ -74,7 +77,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			}
 		}
 
-		String missingText = "";
+		String playerinfomsg = "";
 		for (AltarComponent altarComponent : EnumAltarTier.values()[altar.getTier().toInt()].getAltarComponents()) {
 			BlockPos componentPos = pos.add(altarComponent.getOffset());
 			BlockStack worldBlock = new BlockStack(world.getBlockState(componentPos).getBlock(), world.getBlockState(componentPos).getBlock().getMetaFromState(world.getBlockState(componentPos)));
@@ -94,17 +97,17 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 						player.inventory.decrStackSize(invSlot, 1);
 						return EnumActionResult.PASS;
 					} else {
-						missingText = I18n.format("text.component.diviner.missing") + " " + (altarComponent.getComponent() == EnumAltarComponent.GLOWSTONE ? "Glowstone Block" : (I18n.format(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())).getItem().getUnlocalizedName(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()))) + ".name")));
-
+						if (world.isRemote) {
+							playerinfomsg = I18n.format("text.component.diviner.missing") + " " + (altarComponent.getComponent() == EnumAltarComponent.GLOWSTONE ? "Glowstone Block" : (I18n.format(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())).getItem().getUnlocalizedName(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()))) + ".name")));
+						}
 					}
-				} else {
-//					ChatUtil.sendNoSpam(player,I18n.format("text.component.diviner.obstructed"));
+				} else if (worldBlock.getBlock() != ModBlocks.BLOOD_RUNE) {
+					playerinfomsg = "text.component.diviner.obstructed";
 				}
 			}
 		}
-		System.out.println(missingText);
-		if (missingText.length() > 0) {
-			ChatUtil.sendNoSpam(player, new TextComponentTranslation(missingText));
+		if (playerinfomsg.length() > 0 && world.isRemote) {
+			player.sendMessage(new TextComponentTranslation(playerinfomsg));
 		}
 		return EnumActionResult.PASS;
 	}
