@@ -10,16 +10,23 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class EventHandler {
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled=false)
 	public void onPlaySoundEvent(PlaySoundEvent e) {
-		if (AnimusConfig.muteWither && e.getName().contains("wither")) {
-			e.setCanceled(true);
+		if (AnimusConfig.muteWither && (e.getName().equals("entity.wither.spawn"))) {
+			e.setResultSound(null);
 		}
+		if (AnimusConfig.muteDragon && (e.getName().equals("entity.enderdragon.death"))) {
+			e.setResultSound(null);
+		}
+		
 	}
+	
+	
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent e) {

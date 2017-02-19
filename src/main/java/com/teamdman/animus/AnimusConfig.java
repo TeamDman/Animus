@@ -44,6 +44,7 @@ public class AnimusConfig {
 
 	// General
 	public static boolean muteWither;
+	public static boolean muteDragon;
 
 	public static void init(File file)
 	{
@@ -87,6 +88,7 @@ public class AnimusConfig {
 		config.addCustomCategoryComment(category,"General Preferences");
 		config.setCategoryRequiresMcRestart(category,false);
 		muteWither = config.get(category,"muteWither",true).getBoolean();
+		muteDragon = config.get(category,"muteDragon",false).getBoolean();
 		config.save();
 	}
 
