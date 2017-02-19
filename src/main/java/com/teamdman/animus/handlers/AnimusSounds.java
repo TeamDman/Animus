@@ -1,4 +1,5 @@
 package com.teamdman.animus.handlers;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -8,7 +9,7 @@ public final class AnimusSounds {
 		String[] sounds = {
 				"animus:ghostly",
 				"animus:naturesleech"
-				};
+		};
 
 		for (String s : sounds) {
 			ResourceLocation location = new ResourceLocation(s);
@@ -16,5 +17,6 @@ public final class AnimusSounds {
 		}
 	}
 
-	private AnimusSounds() {}
+	private AnimusSounds() {
+	}
 }

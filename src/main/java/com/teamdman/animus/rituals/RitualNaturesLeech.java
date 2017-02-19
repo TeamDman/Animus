@@ -1,29 +1,24 @@
 package com.teamdman.animus.rituals;
 
-import java.util.ArrayList;
-import java.util.Random;
-import com.teamdman.animus.Animus;
-import com.teamdman.animus.client.resources.EffectHandler;
-import com.teamdman.animus.client.resources.fx.EntityFXBurst;
-import com.teamdman.animus.handlers.AnimusSoundEventHandler;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.BlockDoublePlant;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockTallGrass;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import WayofTime.bloodmagic.api.ritual.*;
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.soul.EnumDemonWillType;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import WayofTime.bloodmagic.tile.TileAltar;
+import com.teamdman.animus.Animus;
+import com.teamdman.animus.client.resources.EffectHandler;
+import com.teamdman.animus.client.resources.fx.EntityFXBurst;
+import com.teamdman.animus.handlers.AnimusSoundEventHandler;
+import net.minecraft.block.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class RitualNaturesLeech extends Ritual {
 	public static final String EFFECT_RANGE = "effect";

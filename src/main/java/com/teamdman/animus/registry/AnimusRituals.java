@@ -31,12 +31,12 @@ public class AnimusRituals {
 		ritualUnmaking = new RitualUnmaking();
 		RitualRegistry.registerRitual(ritualUnmaking, AnimusConfig.ritualUnmaking);
 		ritualPeace = new RitualPeace();
-		RitualRegistry.registerRitual(ritualPeace,AnimusConfig.ritualPeace);
+		RitualRegistry.registerRitual(ritualPeace, AnimusConfig.ritualPeace);
 		ritualNaturesLeech = new RitualNaturesLeech();
-		RitualRegistry.registerRitual(ritualNaturesLeech,AnimusConfig.ritualNaturesLeech);
+		RitualRegistry.registerRitual(ritualNaturesLeech, AnimusConfig.ritualNaturesLeech);
 		ritualCulling = new RitualCulling();
-		RitualRegistry.registerRitual(ritualCulling,AnimusConfig.ritualCulling);
+		RitualRegistry.registerRitual(ritualCulling, AnimusConfig.ritualCulling);
 		ritualRegression = new RitualRegression();
-		ImperfectRitualRegistry.registerRitual(ritualRegression,AnimusConfig.ritualRegression);
+		ImperfectRitualRegistry.registerRitual(ritualRegression, AnimusConfig.ritualRegression);
 	}
 }

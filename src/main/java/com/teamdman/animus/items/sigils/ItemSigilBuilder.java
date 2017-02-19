@@ -21,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import java.lang.reflect.Field;
 
 import static net.minecraft.client.Minecraft.getMinecraft;
@@ -38,7 +39,6 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 	}
 
 
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
@@ -46,7 +46,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 			ItemSigilBuilder.removeDelay();
 	}
 
-	@SuppressWarnings({ "deprecation" })
+	@SuppressWarnings({"deprecation"})
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if (!world.isRemote && !isUnusable(stack)) {

@@ -30,14 +30,14 @@ public class ItemSigilConsumption extends ItemSigil implements IVariantProvider 
 	@SuppressWarnings("deprecation")
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (worldIn.getTileEntity(pos) != null || worldIn.getBlockState(pos).getBlock().getBlockHardness(null,null,null)==-1.0F)
+		if (worldIn.getTileEntity(pos) != null || worldIn.getBlockState(pos).getBlock().getBlockHardness(null, null, null) == -1.0F)
 			return EnumActionResult.SUCCESS;
 		Block seeking = worldIn.getBlockState(pos).getBlock();
-		worldIn.setBlockState(pos, AnimusBlocks.blockAntimatter.getDefaultState().withProperty(BlockAntimatter.DECAYING,false));
+		worldIn.setBlockState(pos, AnimusBlocks.blockAntimatter.getDefaultState().withProperty(BlockAntimatter.DECAYING, false));
 		((TileAntimatter) worldIn.getTileEntity(pos)).seeking = seeking;
 		((TileAntimatter) worldIn.getTileEntity(pos)).player = playerIn;
 
-		worldIn.scheduleBlockUpdate(pos,AnimusBlocks.blockAntimatter,5,0);
+		worldIn.scheduleBlockUpdate(pos, AnimusBlocks.blockAntimatter, 5, 0);
 		return EnumActionResult.SUCCESS;
 	}
 

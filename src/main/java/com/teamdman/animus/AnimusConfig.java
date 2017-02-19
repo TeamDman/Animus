@@ -46,8 +46,7 @@ public class AnimusConfig {
 	public static boolean muteWither;
 	public static boolean muteDragon;
 
-	public static void init(File file)
-	{
+	public static void init(File file) {
 		config = new Configuration(file);
 		syncConfig();
 	}
@@ -58,8 +57,8 @@ public class AnimusConfig {
 		category = "Item/Block Blacklisting";
 		config.addCustomCategoryComment(category, "Allows disabling of specific Blocks/Items.\nNote that using this may result in crashes. Use is not supported.");
 		config.setCategoryRequiresMcRestart(category, true);
-		itemBlacklist = Arrays.asList(config.getStringList("itemBlacklist", category, new String[] {}, "Items to not be registered. This requires their mapping name. Usually the same as the class name. Can be found in F3+H mode."));
-		blockBlacklist = Arrays.asList(config.getStringList("blockBlacklist", category, new String[] {}, "Blocks to not be registered. This requires their mapping name. Usually the same as the class name. Can be found in F3+H mode."));
+		itemBlacklist = Arrays.asList(config.getStringList("itemBlacklist", category, new String[]{}, "Items to not be registered. This requires their mapping name. Usually the same as the class name. Can be found in F3+H mode."));
+		blockBlacklist = Arrays.asList(config.getStringList("blockBlacklist", category, new String[]{}, "Blocks to not be registered. This requires their mapping name. Usually the same as the class name. Can be found in F3+H mode."));
 
 		category = "Rituals";
 		config.addCustomCategoryComment(category, "Ritual toggling");
@@ -71,31 +70,30 @@ public class AnimusConfig {
 		ritualPeace = config.get(category, "ritualPeace", true).getBoolean();
 		ritualNaturesLeech = config.get(category, "ritualNaturesLeech", true).getBoolean();
 		ritualCulling = config.get(category, "ritualCulling", true).getBoolean();
-		ritualRegression = config.get(category,"ritualRegression",true).getBoolean();
+		ritualRegression = config.get(category, "ritualRegression", true).getBoolean();
 
 		category = "Sigil Variables";
-		config.addCustomCategoryComment(category,"Costs of various actions");
-		config.setCategoryRequiresMcRestart(category,false);
-		chainsConsumption = config.get(category,"chainsConsumption",500).getInt();
-		transpositionConsumption = config.get(category,"transpositionConsumption",2000).getInt();
-		builderRange = config.get(category,"builderRange",64).getInt();
-		antimatterRange = config.get(category,"antimatterRange",8).getInt();
-		antimatterConsumption = config.get(category,"antimatterConsumption",25).getInt();
-		stormConsumption = config.get(category,"stormConsumption",1000).getInt();
+		config.addCustomCategoryComment(category, "Costs of various actions");
+		config.setCategoryRequiresMcRestart(category, false);
+		chainsConsumption = config.get(category, "chainsConsumption", 500).getInt();
+		transpositionConsumption = config.get(category, "transpositionConsumption", 2000).getInt();
+		builderRange = config.get(category, "builderRange", 64).getInt();
+		antimatterRange = config.get(category, "antimatterRange", 8).getInt();
+		antimatterConsumption = config.get(category, "antimatterConsumption", 25).getInt();
+		stormConsumption = config.get(category, "stormConsumption", 1000).getInt();
 
 
 		category = "General";
-		config.addCustomCategoryComment(category,"General Preferences");
-		config.setCategoryRequiresMcRestart(category,false);
-		muteWither = config.get(category,"muteWither",true).getBoolean();
-		muteDragon = config.get(category,"muteDragon",false).getBoolean();
+		config.addCustomCategoryComment(category, "General Preferences");
+		config.setCategoryRequiresMcRestart(category, false);
+		muteWither = config.get(category, "muteWither", true).getBoolean();
+		muteDragon = config.get(category, "muteDragon", false).getBoolean();
 		config.save();
 	}
 
 
 	@SubscribeEvent
-	public void onConfigChanged(ConfigChangedEvent event)
-	{
+	public void onConfigChanged(ConfigChangedEvent event) {
 		if (event.getModID().equals(Animus.MODID))
 			ConfigHandler.syncConfig();
 	}

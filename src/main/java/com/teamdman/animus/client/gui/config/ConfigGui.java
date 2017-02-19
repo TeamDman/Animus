@@ -11,23 +11,20 @@ import net.minecraftforge.fml.client.config.IConfigElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigGui extends GuiConfig
-{
+public class ConfigGui extends GuiConfig {
 
-    public ConfigGui(GuiScreen parentScreen)
-    {
-        super(parentScreen, getConfigElements(parentScreen), Animus.MODID, false, false, Animus.MODID);
-    }
+	public ConfigGui(GuiScreen parentScreen) {
+		super(parentScreen, getConfigElements(parentScreen), Animus.MODID, false, false, Animus.MODID);
+	}
 
-    private static List<IConfigElement> getConfigElements(GuiScreen parent)
-    {
-        List<IConfigElement> list = new ArrayList<IConfigElement>();
+	private static List<IConfigElement> getConfigElements(GuiScreen parent) {
+		List<IConfigElement> list = new ArrayList<IConfigElement>();
 
-        list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("Item/Block Blacklisting".toLowerCase())));
-        list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("Rituals".toLowerCase())));
-        list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("Sigil Variables".toLowerCase())));
-        list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("General".toLowerCase())));
+		list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("Item/Block Blacklisting".toLowerCase())));
+		list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("Rituals".toLowerCase())));
+		list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("Sigil Variables".toLowerCase())));
+		list.add(new ConfigElement(AnimusConfig.getConfig().getCategory("General".toLowerCase())));
 
-        return list;
-    }
+		return list;
+	}
 }

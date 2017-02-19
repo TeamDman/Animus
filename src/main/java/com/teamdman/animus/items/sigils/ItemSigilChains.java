@@ -47,7 +47,7 @@ public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 			ItemStack soul = new ItemStack(AnimusItems.mobSoul);
 			NBTTagCompound tag = new NBTTagCompound();
 			NBTTagCompound targetData = new NBTTagCompound();
-			target.setUniqueId(new UUID(playerIn.world.rand.nextInt(100000),playerIn.world.rand.nextInt(100000000)));
+			target.setUniqueId(new UUID(playerIn.world.rand.nextInt(100000), playerIn.world.rand.nextInt(100000000)));
 			target.writeToNBT(targetData);
 			tag.setString("id", EntityList.getEntityString(target));
 			if (target instanceof EntityLiving && target.hasCustomName())
@@ -61,10 +61,10 @@ public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 		}
 		return super.itemInteractionForEntity(stack, playerIn, target, hand);
 	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
-	{
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
 		NBTHelper.checkNBT(stack);
 
@@ -75,8 +75,7 @@ public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 	}
 
 	@Override
-	public List<Pair<Integer, String>> getVariants()
-	{
+	public List<Pair<Integer, String>> getVariants() {
 		List<Pair<Integer, String>> ret = new ArrayList<Pair<Integer, String>>();
 		ret.add(new ImmutablePair<Integer, String>(0, "type=normal"));
 		return ret;

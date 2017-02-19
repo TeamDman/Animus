@@ -40,9 +40,9 @@ public class ItemMobSoul extends Item implements IVariantProvider {
 		if (mob == null)
 			return EnumActionResult.PASS;
 		mob.readFromNBT(root.getCompoundTag("MobData"));
-		mob.setLocationAndAngles(pos.getX(),pos.getY()+2,pos.getZ(), worldIn.rand.nextFloat() * 360.0F, 0);
-//		if (!worldIn.checkNoEntityCollision(mob.getEntityBoundingBox()) || !worldIn.getCollisionBoxes(mob, mob.getEntityBoundingBox()).isEmpty())
-//			return EnumActionResult.PASS;
+		mob.setLocationAndAngles(pos.getX(), pos.getY() + 2, pos.getZ(), worldIn.rand.nextFloat() * 360.0F, 0);
+		//		if (!worldIn.checkNoEntityCollision(mob.getEntityBoundingBox()) || !worldIn.getCollisionBoxes(mob, mob.getEntityBoundingBox()).isEmpty())
+		//			return EnumActionResult.PASS;
 
 		if (root.hasKey("name")) {
 			mob.setCustomNameTag(root.getString("name"));
@@ -63,13 +63,12 @@ public class ItemMobSoul extends Item implements IVariantProvider {
 		//			}
 		//			riddenByEntity = riddenByEntity.riddenByEntity;
 		//		}
-		playerIn.setHeldItem(hand,null);
+		playerIn.setHeldItem(hand, null);
 		return EnumActionResult.PASS;
 	}
 
 	@Override
-	public List<Pair<Integer, String>> getVariants()
-	{
+	public List<Pair<Integer, String>> getVariants() {
 		List<Pair<Integer, String>> ret = new ArrayList<Pair<Integer, String>>();
 		ret.add(new ImmutablePair<Integer, String>(0, "type=normal"));
 		return ret;

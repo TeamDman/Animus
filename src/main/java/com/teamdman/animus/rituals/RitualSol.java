@@ -38,7 +38,7 @@ public class RitualSol extends Ritual {
 		setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
 	}
 
-	
+
 	@Override
 	public void performRitual(IMasterRitualStone masterRitualStone) {
 		World world = masterRitualStone.getWorldObj();

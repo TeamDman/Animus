@@ -89,7 +89,7 @@ public class RitualUnmaking extends Ritual {
 							books.getEntityItem().stackSize--;
 						}
 						entityItem.getEntityItem().stackSize--;
-						world.playSound(null,masterPos, SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.BLOCKS,0.5F,1.0F);
+						world.playSound(null, masterPos, SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.BLOCKS, 0.5F, 1.0F);
 						masterRitualStone.stopRitual(BreakType.DEACTIVATE);
 					} else {
 						NBTTagList enchants = entityItem.getEntityItem().getEnchantmentTagList();
@@ -117,7 +117,7 @@ public class RitualUnmaking extends Ritual {
 								entityItem.getEntityItem().getTagCompound().removeTag("ench");
 							}
 
-							world.playSound(null,masterPos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS,0.5F,1.0F);
+							world.playSound(null, masterPos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 0.5F, 1.0F);
 							masterRitualStone.stopRitual(BreakType.DEACTIVATE);
 						}
 					}

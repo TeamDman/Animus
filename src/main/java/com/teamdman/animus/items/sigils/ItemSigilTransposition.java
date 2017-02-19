@@ -37,26 +37,25 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		RayTraceResult result = this.rayTrace(world,player,true);
+		RayTraceResult result = this.rayTrace(world, player, true);
 		if (result == null || result.typeOfHit == RayTraceResult.Type.MISS) {
 			NBTHelper.checkNBT(stack);
-			stack.getTagCompound().setLong("pos",0);
-			ChatUtil.sendNoSpam(player,"Position cleared!");
+			stack.getTagCompound().setLong("pos", 0);
+			ChatUtil.sendNoSpam(player, "Position cleared!");
 		}
-		return new ActionResult<>(EnumActionResult.PASS	,stack);
+		return new ActionResult<>(EnumActionResult.PASS, stack);
 	}
-
 
 
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!isUnusable(stack)) {
 			NBTHelper.checkNBT(stack);
-			if (stack.getTagCompound().getLong("pos")==0) {
+			if (stack.getTagCompound().getLong("pos") == 0) {
 				stack.getTagCompound().setLong("pos", pos.toLong());
 				ChatUtil.sendNoSpamUnloc(playerIn, "text.component.transposition.set");
-				worldIn.playSound(null,pos, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS,1,1);
-			} else if (stack.getTagCompound().getLong("pos")!=0) {
+				worldIn.playSound(null, pos, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1);
+			} else if (stack.getTagCompound().getLong("pos") != 0) {
 				BlockPos _pos = BlockPos.fromLong(stack.getTagCompound().getLong("pos"));
 				TileEntity _tile = worldIn.getTileEntity(_pos);
 				BlockPos _place = pos.offset(facing);
@@ -66,18 +65,18 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 					TileEntity _newtile = worldIn.getTileEntity(_place);
 					if (_newtile != null && _tile != null) {
 						NBTTagCompound _inv = _tile.serializeNBT();
-						_inv.setInteger("x",_place.getX());
-						_inv.setInteger("y",_place.getY());
-						_inv.setInteger("z",_place.getZ());
+						_inv.setInteger("x", _place.getX());
+						_inv.setInteger("y", _place.getY());
+						_inv.setInteger("z", _place.getZ());
 						_newtile.deserializeNBT(_inv);
 						worldIn.removeTileEntity(_pos);
 					}
 					worldIn.setBlockToAir(_pos);
-					worldIn.playSound(null,pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS,1,1);
-					stack.getTagCompound().setLong("pos",0);
+					worldIn.playSound(null, pos, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1, 1);
+					stack.getTagCompound().setLong("pos", 0);
 
 				} else {
-					ChatUtil.sendNoSpamUnloc(playerIn,"text.component.transposition.obstructed");
+					ChatUtil.sendNoSpamUnloc(playerIn, "text.component.transposition.obstructed");
 				}
 			}
 		}

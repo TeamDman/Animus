@@ -28,19 +28,20 @@ public class AnimusRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaDiamond), " a ", "a a", "  b", 'a', Items.DIAMOND, 'b', Items.STICK));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.altarDiviner), "aaa", "aba", "aaa", 'a', ModBlocks.BLOOD_RUNE, 'b', ModItems.RITUAL_DIVINER));
 
-		
+
 		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilChains), "aba", "bcb", "ada", 'a', Blocks.END_STONE, 'b', Blocks.OBSIDIAN, 'c', new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
 		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilTransposition), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Items.ENDER_PEARL, 'c', new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilBuilder), "aba", "bcb", "ada", 'a', Items.SUGAR, 'b', Items.POTIONITEM, 'c',new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilConsumption), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Blocks.END_STONE, 'c',new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilStorm), "aaa","aba","aca",'a',Items.FISHING_ROD,'b',new ItemStack(ModItems.SLATE,1,1),'c',OrbRegistry.getOrbStack(ModItems.ORB_APPRENTICE)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilBuilder), "aba", "bcb", "ada", 'a', Items.SUGAR, 'b', Items.POTIONITEM, 'c', new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilConsumption), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Blocks.END_STONE, 'c', new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilStorm), "aaa", "aba", "aca", 'a', Items.FISHING_ROD, 'b', new ItemStack(ModItems.SLATE, 1, 1), 'c', OrbRegistry.getOrbStack(ModItems.ORB_APPRENTICE)));
 
-		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PRISMARINE_SHARD),new ItemStack(AnimusItems.fragmentHealing), EnumAltarTier.TWO,1000,20,25));
+		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PRISMARINE_SHARD), new ItemStack(AnimusItems.fragmentHealing), EnumAltarTier.TWO, 1000, 20, 25));
 
 		AlchemyArrayRecipeRegistry.registerRecipe(ItemComponent.getStack(ItemComponent.REAGENT_BINDING), new ItemStack(AnimusItems.kamaDiamond), new AlchemyArrayEffectBinding("boundKama", Utils.setUnbreakable(new ItemStack(AnimusItems.kamaBound))), new BindingAlchemyCircleRenderer());
 
 	}
+
 	public static void addGuideRecipe() {
-		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PAPER), GuideAPI.getStackFromBook(AnimusGuide.book),EnumAltarTier.ONE,200,5,5));
+		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PAPER), GuideAPI.getStackFromBook(AnimusGuide.book), EnumAltarTier.ONE, 200, 5, 5));
 	}
 }

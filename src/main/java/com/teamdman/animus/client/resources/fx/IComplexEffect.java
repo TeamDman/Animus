@@ -2,31 +2,31 @@ package com.teamdman.animus.client.resources.fx;
 
 public interface IComplexEffect {
 
-    public boolean canRemove();
+	public boolean canRemove();
 
-    public boolean isRemoved();
+	public boolean isRemoved();
 
-    public void flagAsRemoved();
+	public void flagAsRemoved();
 
-    public void clearRemoveFlag();
+	public void clearRemoveFlag();
 
-    public RenderTarget getRenderTarget();
+	public RenderTarget getRenderTarget();
 
-    public void render(float pTicks);
+	public void render(float pTicks);
 
-    public void tick();
+	public void tick();
 
-    //Valid layers: 0, 1, 2
-    //Lower layers are rendered first.
-    default public int getLayer() {
-        return 0;
-    }
+	//Valid layers: 0, 1, 2
+	//Lower layers are rendered first.
+	default public int getLayer() {
+		return 0;
+	}
 
-    public static enum RenderTarget {
+	public static enum RenderTarget {
 
-        OVERLAY_TEXT,
-        RENDERLOOP
+		OVERLAY_TEXT,
+		RENDERLOOP
 
-    }
+	}
 
 }

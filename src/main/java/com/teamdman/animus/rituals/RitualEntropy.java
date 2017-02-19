@@ -51,17 +51,17 @@ public class RitualEntropy extends Ritual {
 				network.causeNausea();
 				return;
 			}
-			for (int slot=0;slot<((IInventory) tileInventory).getSizeInventory();slot++) {
+			for (int slot = 0; slot < ((IInventory) tileInventory).getSizeInventory(); slot++) {
 				ItemStack stack = ((IInventory) tileInventory).getStackInSlot(slot);
-				if (stack==null)
+				if (stack == null)
 					continue;
 				if (!stack.isItemEqual(new ItemStack(Blocks.COBBLESTONE))) {
-					int cobble = getCobbleValue(new ArrayList<Item>(),stack,0);
-					if (cobble>0) {
-						((IInventory) tileInventory).decrStackSize(slot,1);
-						while (cobble>0) {
-							Utils.insertStackIntoInventory(new ItemStack(Blocks.COBBLESTONE,cobble>64?64:cobble),(IInventory) tileInventory, EnumFacing.UP);
-							cobble-=cobble>64?64:cobble;
+					int cobble = getCobbleValue(new ArrayList<Item>(), stack, 0);
+					if (cobble > 0) {
+						((IInventory) tileInventory).decrStackSize(slot, 1);
+						while (cobble > 0) {
+							Utils.insertStackIntoInventory(new ItemStack(Blocks.COBBLESTONE, cobble > 64 ? 64 : cobble), (IInventory) tileInventory, EnumFacing.UP);
+							cobble -= cobble > 64 ? 64 : cobble;
 						}
 					}
 				}
@@ -73,7 +73,7 @@ public class RitualEntropy extends Ritual {
 
 	@SuppressWarnings("rawtypes")
 	public int getCobbleValue(List<Item> fetchList, ItemStack input, int layer) {
-		System.out.printf("%s requested on layer %d\n",input.getDisplayName(),layer);
+		System.out.printf("%s requested on layer %d\n", input.getDisplayName(), layer);
 		if (indexed.get(input.getItem()) != null)
 			return indexed.get(input.getItem());
 		if (fetchList.contains(input.getItem()))
@@ -125,7 +125,7 @@ public class RitualEntropy extends Ritual {
 				break;
 			}
 		}
-		System.out.printf("Returning %d for item %s on layer %d\n",rtn,input.getDisplayName(),layer);
+		System.out.printf("Returning %d for item %s on layer %d\n", rtn, input.getDisplayName(), layer);
 		indexed.put(input.getItem(), new Integer(rtn));
 		return rtn;
 	}

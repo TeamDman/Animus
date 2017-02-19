@@ -46,7 +46,6 @@ public class AnimusGuide {
 	}
 
 
-
 	@SuppressWarnings("unused")
 	private static void buildEntry(Map<ResourceLocation, EntryAbstract> entries, String identifier, int pages, Block icon, List<IPage> extras) {
 		buildEntry(entries, identifier, pages, new ItemStack(icon), extras);
@@ -68,7 +67,7 @@ public class AnimusGuide {
 		List<IPage> matches = new ArrayList<>();
 		CraftingManager.getInstance().getRecipeList().forEach((v) -> {
 			try {
-				if (v.getRecipeOutput()!=null && check.isInstance(v.getRecipeOutput().getItem()))
+				if (v.getRecipeOutput() != null && check.isInstance(v.getRecipeOutput().getItem()))
 					matches.add(new PageIRecipe(v));
 			} catch (Exception e) {
 				System.out.println("Error fetching recipe to animus guidebook");

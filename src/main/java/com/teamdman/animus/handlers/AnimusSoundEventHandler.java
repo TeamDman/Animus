@@ -1,4 +1,5 @@
 package com.teamdman.animus.handlers;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
@@ -11,6 +12,7 @@ public final class AnimusSoundEventHandler {
 		return SoundEvent.REGISTRY.getObject(new ResourceLocation(name));
 	}
 
-	private AnimusSoundEventHandler() {}
-	
+	private AnimusSoundEventHandler() {
+	}
+
 }

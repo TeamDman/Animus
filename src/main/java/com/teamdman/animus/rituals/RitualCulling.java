@@ -1,16 +1,17 @@
 package com.teamdman.animus.rituals;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
+import WayofTime.bloodmagic.ConfigHandler;
+import WayofTime.bloodmagic.api.ritual.*;
+import WayofTime.bloodmagic.api.saving.SoulNetwork;
+import WayofTime.bloodmagic.api.soul.EnumDemonWillType;
+import WayofTime.bloodmagic.api.util.helper.LogHelper;
+import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
+import WayofTime.bloodmagic.tile.TileAltar;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.client.resources.EffectHandler;
 import com.teamdman.animus.client.resources.fx.EntityFXBurst;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -20,19 +21,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import WayofTime.bloodmagic.ConfigHandler;
-import net.minecraft.util.SoundCategory;
-import WayofTime.bloodmagic.api.ritual.*;
 
-import WayofTime.bloodmagic.api.saving.SoulNetwork;
-import WayofTime.bloodmagic.api.soul.EnumDemonWillType;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
-import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
-import WayofTime.bloodmagic.tile.TileAltar;
-import WayofTime.bloodmagic.api.util.helper.*;
+import java.util.*;
 
 public class RitualCulling extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
@@ -40,12 +34,12 @@ public class RitualCulling extends Ritual {
 
 	public RitualCulling() {
 		super("ritualCulling", 0, 50000, "ritual." + Animus.MODID + ".culling");
-		
-        addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 21));
 
-        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
+		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
+		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 21));
+
+		setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
+		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
 
 	}
 
@@ -121,10 +115,10 @@ public class RitualCulling extends Ritual {
 			return;
 		}
 
-        AreaDescriptor damageRange = getBlockRange(EFFECT_RANGE);
-        AxisAlignedBB range = damageRange.getAABB(pos);
-		
-        List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, range);
+		AreaDescriptor damageRange = getBlockRange(EFFECT_RANGE);
+		AxisAlignedBB range = damageRange.getAABB(pos);
+
+		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, range);
 
 		int entityCount = 0;
 
@@ -132,9 +126,9 @@ public class RitualCulling extends Ritual {
 			network.causeNausea();
 		} else {
 			for (EntityLivingBase livingEntity : list) {
-				if (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName())) 
+				if (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName()))
 					continue;
-				
+
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
 

@@ -39,13 +39,13 @@ public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
 			BlockPos pos = result.getBlockPos();
 			IBlockState state = world.getBlockState(pos);
 
-			world.spawnEntity(new EntityLightningBolt(world, pos.getX(), pos.getY()+.5, pos.getZ(), false));
+			world.spawnEntity(new EntityLightningBolt(world, pos.getX(), pos.getY() + .5, pos.getZ(), false));
 
-			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player,getLpUsed());
+			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
 
 			if (state.getBlock() == Blocks.WATER && !world.isRemote) {
-				EntityItem fish = new EntityItem(world, pos.getX(), pos.getY()-rand.nextInt(2), pos.getZ(), new ItemStack(Items.FISH,1+rand.nextInt(2)));
-				fish.setVelocity(rand.nextDouble()* .25, -.25, rand.nextDouble()*.25);
+				EntityItem fish = new EntityItem(world, pos.getX(), pos.getY() - rand.nextInt(2), pos.getZ(), new ItemStack(Items.FISH, 1 + rand.nextInt(2)));
+				fish.setVelocity(rand.nextDouble() * .25, -.25, rand.nextDouble() * .25);
 				fish.setEntityInvulnerable(true); //Stop killing our fish, stupid lightning.
 				world.spawnEntity(fish);
 
@@ -55,26 +55,24 @@ public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
 	}
 
 	@Override
-	protected RayTraceResult rayTrace(World worldIn, EntityPlayer playerIn, boolean useLiquids)
-	{
+	protected RayTraceResult rayTrace(World worldIn, EntityPlayer playerIn, boolean useLiquids) {
 		float f = playerIn.rotationPitch;
 		float f1 = playerIn.rotationYaw;
 		double d0 = playerIn.posX;
-		double d1 = playerIn.posY + (double)playerIn.getEyeHeight();
+		double d1 = playerIn.posY + (double) playerIn.getEyeHeight();
 		double d2 = playerIn.posZ;
 		Vec3d vec3d = new Vec3d(d0, d1, d2);
-		float f2 = MathHelper.cos(-f1 * 0.017453292F - (float)Math.PI);
-		float f3 = MathHelper.sin(-f1 * 0.017453292F - (float)Math.PI);
+		float f2 = MathHelper.cos(-f1 * 0.017453292F - (float) Math.PI);
+		float f3 = MathHelper.sin(-f1 * 0.017453292F - (float) Math.PI);
 		float f4 = -MathHelper.cos(-f * 0.017453292F);
 		float f5 = MathHelper.sin(-f * 0.017453292F);
 		float f6 = f3 * f4;
 		float f7 = f2 * f4;
 		double d3 = 25.0D;
-		if (playerIn instanceof net.minecraft.entity.player.EntityPlayerMP)
-		{
-			d3 = ((net.minecraft.entity.player.EntityPlayerMP)playerIn).interactionManager.getBlockReachDistance();
+		if (playerIn instanceof net.minecraft.entity.player.EntityPlayerMP) {
+			d3 = ((net.minecraft.entity.player.EntityPlayerMP) playerIn).interactionManager.getBlockReachDistance();
 		}
-		Vec3d vec3d1 = vec3d.addVector((double)f6 * d3, (double)f5 * d3, (double)f7 * d3);
+		Vec3d vec3d1 = vec3d.addVector((double) f6 * d3, (double) f5 * d3, (double) f7 * d3);
 		return worldIn.rayTraceBlocks(vec3d, vec3d1, useLiquids, !useLiquids, false);
 	}
 

@@ -27,7 +27,7 @@ public class ItemKamaBound extends ItemKama {
 	public ItemKamaBound() {
 		super(Item.ToolMaterial.DIAMOND);
 		this.maxStackSize = 1;
-		
+
 	}
 
 	@Override
@@ -68,13 +68,13 @@ public class ItemKamaBound extends ItemKama {
 				continue;
 
 
-//			System.out.println("attacking: ");
-//			System.out.println(target.getDisplayName());
-//			System.out.println("For: ");
-//			System.out.println(this.attackDamage);
+			//			System.out.println("attacking: ");
+			//			System.out.println(target.getDisplayName());
+			//			System.out.println("For: ");
+			//			System.out.println(this.attackDamage);
 			result = target.attackEntityFrom(this.khopeshDamage, this.attackDamage);
-//			System.out.println("Result: ");
-//			System.out.println(result);
+			//			System.out.println("Result: ");
+			//			System.out.println(result);
 
 			if (result)
 				hit = true;
@@ -87,7 +87,7 @@ public class ItemKamaBound extends ItemKama {
 	}
 
 	private boolean checkAndKill(double x, double y, double z, World world, EntityLivingBase attacker,
-			boolean efficient) {
+								 boolean efficient) {
 		int d0 = 5;
 		boolean killed = false;
 		AxisAlignedBB region = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);

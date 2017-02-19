@@ -23,21 +23,20 @@ import javax.annotation.Nullable;
 public class BlockPhantomBuilder extends BlockPhantom {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (heldItem==null)
+		if (heldItem == null)
 			return false;
 		if (heldItem.getItem() instanceof ItemBlock) {
 			Item _item = heldItem.getItem();
 			@SuppressWarnings("deprecation")
 			IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(heldItem));
 			worldIn.setBlockState(pos, _state);
-			heldItem.stackSize-=playerIn.capabilities.isCreativeMode?0:1;
+			heldItem.stackSize -= playerIn.capabilities.isCreativeMode ? 0 : 1;
 		}
 		return true;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TilePhantomBlock(600);
 	}
 

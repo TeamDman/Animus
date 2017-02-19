@@ -12,13 +12,13 @@ import net.minecraft.nbt.NBTTagCompound;
 public class RitualRegression extends ImperfectRitual {
 
 	public RitualRegression() {
-		super("ritualRegression", new BlockStack(Blocks.BOOKSHELF), 3000, true,"ritual." + Animus.MODID + ".regression");
+		super("ritualRegression", new BlockStack(Blocks.BOOKSHELF), 3000, true, "ritual." + Animus.MODID + ".regression");
 	}
 
 	@Override
 	public boolean onActivate(IImperfectRitualStone imperfectRitualStone, EntityPlayer player) {
-		if (player.getHeldItemMainhand()==null) {
-			ChatUtil.sendNoSpamUnloc(player,"text.component.holdingitem");
+		if (player.getHeldItemMainhand() == null) {
+			ChatUtil.sendNoSpamUnloc(player, "text.component.holdingitem");
 			return false;
 		}
 		NBTTagCompound comp = player.getHeldItemMainhand().getTagCompound();

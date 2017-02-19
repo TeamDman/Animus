@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class EventHandler {
-	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled=false)
+	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = false)
 	public void onPlaySoundEvent(PlaySoundEvent e) {
 		if (AnimusConfig.muteWither && (e.getName().equals("entity.wither.spawn"))) {
 			e.setResultSound(null);
@@ -23,10 +23,7 @@ public class EventHandler {
 		if (AnimusConfig.muteDragon && (e.getName().equals("entity.enderdragon.death"))) {
 			e.setResultSound(null);
 		}
-		
 	}
-	
-	
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent e) {
@@ -34,7 +31,6 @@ public class EventHandler {
 			AnimusConfig.syncConfig();
 		}
 	}
-
 
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent eventArgs) {
@@ -46,16 +42,15 @@ public class EventHandler {
 			Slot slot = (Slot) open.inventorySlots.get(i);
 			if (slot.getHasStack() && slot.getStack().getItem() == AnimusItems.fragmentHealing) {
 				frags++;
-				if (!eventArgs.player.capabilities.isCreativeMode && slot.getClass()==Slot.class) {
-					open.inventorySlots.set(i,new SlotNoPickup(slot.inventory, slot.getSlotIndex(), slot.xPos, slot.yPos));
+				if (!eventArgs.player.capabilities.isCreativeMode && slot.getClass() == Slot.class) {
+					open.inventorySlots.set(i, new SlotNoPickup(slot.inventory, slot.getSlotIndex(), slot.xPos, slot.yPos));
 				}
 			}
 		}
-		if (eventArgs.player.world.getWorldTime()%20==0 && frags>=9 && !eventArgs.player.world.isRemote) {
-		eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION,20, frags/9-1));
-			if (frags>=35 && eventArgs.player.world.getWorldTime()%200==0)
-				eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION,200,4));
+		if (eventArgs.player.world.getWorldTime() % 20 == 0 && frags >= 9 && !eventArgs.player.world.isRemote) {
+			eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, frags / 9 - 1));
+			if (frags >= 35 && eventArgs.player.world.getWorldTime() % 200 == 0)
+				eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 200, 4));
 		}
 	}
-
 }

@@ -21,8 +21,7 @@ import java.util.List;
 public class ItemSigilToggleableBase extends ItemSigilToggleable implements IMeshProvider {
 	private final String name;
 
-	public ItemSigilToggleableBase(String name, int lpUsed)
-	{
+	public ItemSigilToggleableBase(String name, int lpUsed) {
 		super(lpUsed);
 		this.name = name;
 	}
@@ -32,8 +31,7 @@ public class ItemSigilToggleableBase extends ItemSigilToggleable implements IMes
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
-	{
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 		NBTHelper.checkNBT(stack);
 		super.addInformation(stack, player, tooltip, advanced);
 		tooltip.add(TextHelper.localizeEffect("tooltip.BloodMagic." + (getActivated(stack) ? "activated" : "deactivated")));
@@ -44,21 +42,18 @@ public class ItemSigilToggleableBase extends ItemSigilToggleable implements IMes
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemMeshDefinition getMeshDefinition()
-	{
+	public ItemMeshDefinition getMeshDefinition() {
 		return new CustomMeshDefinitionActivatable("itemsigil" + name);//WordUtils.capitalize(name));
 	}
 
 	@Nullable
 	@Override
-	public ResourceLocation getCustomLocation()
-	{
+	public ResourceLocation getCustomLocation() {
 		return null;
 	}
 
 	@Override
-	public List<String> getVariants()
-	{
+	public List<String> getVariants() {
 		List<String> ret = new ArrayList<String>();
 		ret.add("active=false");
 		ret.add("active=true");

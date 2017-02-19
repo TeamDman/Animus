@@ -1,6 +1,9 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.api.ritual.*;
+import WayofTime.bloodmagic.api.ritual.EnumRuneType;
+import WayofTime.bloodmagic.api.ritual.IMasterRitualStone;
+import WayofTime.bloodmagic.api.ritual.Ritual;
+import WayofTime.bloodmagic.api.ritual.RitualComponent;
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import com.teamdman.animus.Animus;
@@ -34,12 +37,12 @@ public class RitualPeace extends Ritual {
 			do {
 				String id = ((EntityList.EntityEggInfo) EntityList.ENTITY_EGGS.values().toArray()[world.rand.nextInt(EntityList.ENTITY_EGGS.values().toArray().length - 1)]).spawnedID;
 				mob = EntityList.createEntityByIDFromName(id, world);
-			} while (mob.isCreatureType(EnumCreatureType.MONSTER,false));
+			} while (mob.isCreatureType(EnumCreatureType.MONSTER, false));
 			do {
-				mob.setPosition(masterPos.getX()+world.rand.nextInt(8)-4, masterPos.getY()+1, masterPos.getZ()+world.rand.nextInt(8)-4);
+				mob.setPosition(masterPos.getX() + world.rand.nextInt(8) - 4, masterPos.getY() + 1, masterPos.getZ() + world.rand.nextInt(8) - 4);
 			} while (!world.isAirBlock(mob.getPosition()));
 			world.spawnEntity(mob);
-			world.playSound(null,mob.getPosition(), SoundEvents.BLOCK_SNOW_STEP, SoundCategory.BLOCKS,1,1);
+			world.playSound(null, mob.getPosition(), SoundEvents.BLOCK_SNOW_STEP, SoundCategory.BLOCKS, 1, 1);
 			network.syphon(getRefreshCost());
 		}
 	}
@@ -58,12 +61,12 @@ public class RitualPeace extends Ritual {
 	public ArrayList<RitualComponent> getComponents() {
 		ArrayList<RitualComponent> components = new ArrayList<RitualComponent>();
 		this.addParallelRunes(components, 4, 0, EnumRuneType.EARTH);
-		this.addCornerRunes(components,4,0, EnumRuneType.EARTH);
-		this.addOffsetRunes(components,4,1,0,EnumRuneType.EARTH);
-		this.addOffsetRunes(components,4,2,0,EnumRuneType.EARTH);
+		this.addCornerRunes(components, 4, 0, EnumRuneType.EARTH);
+		this.addOffsetRunes(components, 4, 1, 0, EnumRuneType.EARTH);
+		this.addOffsetRunes(components, 4, 2, 0, EnumRuneType.EARTH);
 
-		this.addCornerRunes(components,1,0,EnumRuneType.WATER);
-		this.addParallelRunes(components,1,0,EnumRuneType.WATER);
+		this.addCornerRunes(components, 1, 0, EnumRuneType.WATER);
+		this.addParallelRunes(components, 1, 0, EnumRuneType.WATER);
 		return components;
 	}
 
