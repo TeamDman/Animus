@@ -13,10 +13,14 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EventHandler {
-	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = false)
-	public void onPlaySoundEvent(PlaySoundEvent e) {
+	
+	@SideOnly(Side.CLIENT)
+    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = false)
+    public void onPlaySoundEvent(PlaySoundEvent e) {
 		if (AnimusConfig.muteWither && (e.getName().equals("entity.wither.spawn"))) {
 			e.setResultSound(null);
 		}

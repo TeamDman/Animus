@@ -36,7 +36,7 @@ ritual.animus.naturesleech=Ritual of Nature's Leech
 ritual.animus.regr=Ritual of Regression
 
 death.attack.animus.absolute=%1$s has been culled by blood magic.
-
+death.attack.animus.storm=%1$s felt the wrath of the storm.
 
 
 guide.animus.displayname=Animus Compendium

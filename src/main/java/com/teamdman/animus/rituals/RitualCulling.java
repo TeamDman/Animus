@@ -190,7 +190,7 @@ public class RitualCulling extends Ritual {
 			network.syphon(getRefreshCost() * entityCount);
 			double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount, 10));
 
-			if (rand.nextInt(3) == 0) { // 30% chance per cycle to generate vengeful will
+			if (rand.nextInt(30) == 0) { // 3% chance per cycle to generate vengeful will
 				double filled = WorldDemonWillHandler.fillWillToMaximum(world, pos, type, drainAmount, maxWill, false);
 				if (filled > 0)
 					WorldDemonWillHandler.fillWillToMaximum(world, pos, type, filled, maxWill, true);
