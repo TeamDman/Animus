@@ -112,11 +112,12 @@ public class AnimusGuide {
 		book.setCategoryList(categories);
 		book.setTitle("guide.animus.title");
 		book.setWelcomeMessage("guide.animus.welcome");
-		book.setRegistryName(Animus.MODID);
+		book.setRegistryName(new ResourceLocation(Animus.MODID));
 		book.setDisplayName("guide.animus.displayname");
 		book.setColor(Color.RED); //cube wants 1DEAF6
 
 		GameRegistry.register(book);
+		
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
 			GuideAPI.setModel(book);
 		AnimusRecipes.addGuideRecipe();

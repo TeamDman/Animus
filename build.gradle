@@ -1,17 +1,21 @@
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        mavenCentral()
+        maven { url "http://files.minecraftforge.net/maven" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'org.ajoberstar:gradle-git:0.10.1'
     }
 }
+
+plugins {
+	id "net.minecraftforge.gradle.forge" version "2.0.2"
+    id 'com.matthewprenger.cursegradle' version '1.0.7'
+	id 'io.franzbecker.gradle-lombok' version '1.6'
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "${getDate()}"
@@ -39,21 +43,22 @@ minecraft {
 
 
     clientRunArgs += "--username=AnimusDev"
-    mappings = "stable_29"
+    mappings = "snapshot_20170221"
  
 }
 
 
 repositories {
-    maven { url "http://dvs1.progwml6.com/files/maven" }
-    maven {	url "http://mobiusstrip.eu/maven" }
     maven {	url "http://tehnut.info/maven" }
+    maven {	url "http://mobiusstrip.eu/maven" }
+    maven { url "http://dvs1.progwml6.com/files/maven" }
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
-	deobfCompile "info.amerifrance.guideapi:Guide-API:${mc_version}-${guideapi_version}"
+	deobfCompile "info.amerifrance.guideapi:Guide-API:${major_version}-${guideapi_version}"
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${bloodmagic_version}"
+	deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}_${major_version}"
 }
 
 processResources {
@@ -73,4 +78,7 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+	
+
+
 }

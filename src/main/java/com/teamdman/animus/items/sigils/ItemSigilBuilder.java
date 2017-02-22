@@ -115,8 +115,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 								return EnumActionResult.SUCCESS;
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 							world.setBlockState(air, _state);
-							_stack.stackSize--;
-							if (hand == EnumHand.MAIN_HAND && _stack.stackSize <= 0)
+							_stack.setCount(_stack.getCount()-1);
+						if (hand == EnumHand.MAIN_HAND && _stack.isEmpty())
 								player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
 							return EnumActionResult.SUCCESS;
 						}
