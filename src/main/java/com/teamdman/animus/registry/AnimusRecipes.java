@@ -11,8 +11,6 @@ import WayofTime.bloodmagic.item.ItemComponent;
 import WayofTime.bloodmagic.registry.ModBlocks;
 import WayofTime.bloodmagic.registry.ModItems;
 import WayofTime.bloodmagic.util.Utils;
-import amerifrance.guideapi.api.GuideAPI;
-import com.teamdman.animus.AnimusGuide;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -42,6 +40,6 @@ public class AnimusRecipes {
 	}
 
 	public static void addGuideRecipe() {
-		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PAPER), GuideAPI.getStackFromBook(AnimusGuide.book), EnumAltarTier.ONE, 200, 5, 5));
+		//AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PAPER), GuideAPI.getStackFromBook(AnimusGuide.guideBook), EnumAltarTier.ONE, 200, 5, 5));
 	}
 }

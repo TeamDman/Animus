@@ -48,22 +48,14 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
 	@SuppressWarnings({"deprecation"})
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack  = player.getHeldItem(hand);
 		if (!world.isRemote && !isUnusable(stack)) {
 			if (player.isSneaking()) {
 
 				NBTTagCompound comp = NBTHelper.checkNBT(stack).getTagCompound();
 				boolean activated = getActivated(stack);
-				//				if (activated) {
-				//					if (comp.getInteger("debounce") < 5) {
-				//						comp.setInteger("debounce", comp.getInteger("debounce") + 1);
-				//					} else {
-				//						comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
-				//						comp.setInteger("debounce", 0);
-				//					}
-				//				} else {
 				comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
-				//				}
 			} else {
 				ItemStack _stack = getStackToUse(hand, player);
 				if (_stack != null) {
@@ -74,8 +66,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 							world.setBlockState(air, _state);
 							NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
-							_stack.stackSize--;
-							if (hand == EnumHand.MAIN_HAND && _stack.stackSize <= 0)
+							stack.setCount(stack.getCount()-1);;
+							if (hand == EnumHand.MAIN_HAND && _stack.isEmpty())
 								player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
 						}
 					}
@@ -88,7 +80,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		BlockPos air = pos;
 		int dist = 0;
 		if (player.isSneaking()) {
@@ -141,17 +133,15 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 			IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 			world.setBlockState(air, _state);
 			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
-			_stack.stackSize--;
-			if (hand == EnumHand.MAIN_HAND && _stack.stackSize <= 0)
+			_stack.setCount(_stack.getCount()-1);;
+			if (hand == EnumHand.MAIN_HAND && _stack.isEmpty())
 				player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
 		}
 		return EnumActionResult.SUCCESS;
 	}
 
 	public static void removeDelay() {
-		//ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, getMinecraft(), Integer.valueOf(0), 46);
 		try {
-
 			Field delay = Minecraft.class.getDeclaredField("rightClickDelayTimer");
 			delay.setAccessible(true);
 			delay.set(getMinecraft(), 0);

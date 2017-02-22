@@ -36,7 +36,8 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		RayTraceResult result = this.rayTrace(world, player, true);
 		if (result == null || result.typeOfHit == RayTraceResult.Type.MISS) {
 			NBTHelper.checkNBT(stack);
@@ -48,7 +49,8 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = playerIn.getHeldItem(hand);
 		if (!isUnusable(stack)) {
 			NBTHelper.checkNBT(stack);
 			if (stack.getTagCompound().getLong("pos") == 0) {
@@ -80,7 +82,7 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 				}
 			}
 		}
-		return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+		return super.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Override

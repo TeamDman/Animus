@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,7 +36,7 @@ public class RitualPeace extends Ritual {
 		if (!masterRitualStone.getWorldObj().isRemote) {
 			Entity mob;
 			do {
-				String id = ((EntityList.EntityEggInfo) EntityList.ENTITY_EGGS.values().toArray()[world.rand.nextInt(EntityList.ENTITY_EGGS.values().toArray().length - 1)]).spawnedID;
+				ResourceLocation id = ((EntityList.EntityEggInfo) EntityList.ENTITY_EGGS.values().toArray()[world.rand.nextInt(EntityList.ENTITY_EGGS.values().toArray().length - 1)]).spawnedID;
 				mob = EntityList.createEntityByIDFromName(id, world);
 			} while (mob.isCreatureType(EnumCreatureType.MONSTER, false));
 			do {

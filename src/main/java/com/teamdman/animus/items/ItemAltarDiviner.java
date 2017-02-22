@@ -28,7 +28,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +48,10 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 	}
 
 	private int getSlotFor(AltarComponent component, EntityPlayer player) {
-		for (int i = 0; i < player.inventory.mainInventory.length; ++i) {
-			if (player.inventory.mainInventory[i] != null && isItemComponent(component, player.inventory.mainInventory[i])) {
+	Object[] itemArray	= player.inventory.mainInventory.toArray();
+		for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
+			ItemStack currentStack = (ItemStack) itemArray[i];
+			if (!currentStack.isEmpty() && isItemComponent(component, currentStack)) {
 				return i;
 			}
 		}
@@ -58,7 +59,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (world.getTileEntity(pos) == null || !(world.getTileEntity(pos) instanceof IBloodAltar))
 			return EnumActionResult.PASS;
 

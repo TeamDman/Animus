@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.awt.*;
@@ -116,7 +115,7 @@ public class AnimusGuide {
 		book.setDisplayName("guide.animus.displayname");
 		book.setColor(Color.RED); //cube wants 1DEAF6
 
-		GameRegistry.register(book);
+		//GameRegistry.register(book);
 		
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
 			GuideAPI.setModel(book);

@@ -26,3 +26,5 @@ build
 eclipse
 run
 *.log
+logs/*
+config/*

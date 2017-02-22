@@ -50,7 +50,6 @@ public class Animus {
 		AnimusBlocks.init();
 		AnimusTiles.init();
 		AnimusRecipes.init();
-		AnimusGuide.buildGuide();
 		proxy.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
