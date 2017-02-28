@@ -96,6 +96,9 @@ public class AnimusGuide {
 		buildEntry(entries, "sigils.transposition", 1, AnimusItems.sigilTransposition);
 		buildEntry(entries, "sigils.builder", 1, AnimusItems.sigilBuilder);
 		buildEntry(entries, "sigils.consumption", 1, AnimusItems.sigilConsumption);
+		buildEntry(entries, "sigils.storm", 1, AnimusItems.sigilStorm);
+		buildEntry(entries, "sigils.leech", 1, AnimusItems.sigilLeech);
+		
 		categories.add(new CategoryItemStack(entries, "guide.animus.category.sigils", new ItemStack(AnimusItems.sigilBuilder)));
 		entries = new LinkedHashMap<>();
 

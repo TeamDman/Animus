@@ -30,6 +30,7 @@ public class AnimusItems {
 	public static Item sigilBuilder;
 	public static Item sigilConsumption;
 	public static Item sigilStorm;
+	public static Item sigilLeech;
 
 	public static void init() {
 		kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood");
@@ -46,6 +47,7 @@ public class AnimusItems {
 		sigilConsumption = setupItem(new ItemSigilConsumption(), "itemsigilconsumption");
 		fragmentHealing = setupItem(new ItemFragmentHealing(), "itemfragmenthealing");
 		sigilStorm = setupItem(new ItemSigilStorm(), "itemsigilstorm");
+		sigilLeech = setupItem(new ItemSigilLeech(), "itemsigilleech");
 	}
 
 	private static Item setupItem(Item item, String name) {

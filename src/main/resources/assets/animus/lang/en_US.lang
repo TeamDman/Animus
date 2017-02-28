@@ -14,6 +14,7 @@ item.itemfragmenthealing.name=Healing Fragment
 item.itemsigilconsumption.name=Sigil of Consumption
 item.itemkeybinding=Key of Binding
 item.itemsigilstorm.name=Sigil of the Storm
+item.itemsigilleech.name=Sigil of Nature's Leech
 
 tile.blockphantombuilder.name=Phantom Builder Block
 tile.blockantimatter.name=Antimatter
@@ -74,6 +75,12 @@ guide.animus.sigils.builder.entry=Sigil of the Fast Builder
 guide.animus.sigils.builder.page0=When activated, the sigil will let the user place blocks incredibly fast. Right click on open air to place a block from your off-hand in front of you. Shift-right click on a block to expand it using blocks from your off-hand.
 guide.animus.sigils.consumption.entry=Sigil of Consumption
 guide.animus.sigils.consumption.page0=By right clicking on a block, the sigil will spread 'antimatter' to all blocks near it of the same type. Breaking an antimatter block destroys all adjacent antimatter. No items are dropped in this process.
+guide.animus.sigils.storm.entry=Sigil of the Storm
+guide.animus.sigils.storm.page0=By right clicking on a block will cause lightning to strike down at your cursor. If this hits water the local marine life may be disturbed.... Using this sigil in the rain amplifies its power creating an AOE damage effect radiating from the lightning strike.
+guide.animus.sigils.leech.entry=Sigil of Nature's Leech
+guide.animus.sigils.leech.page0=While active this sigil will look for growables in your inventory such as seeds and saplings and conver them into life essence that it then uses to replenish your hunger. If the sigil doesn't find any plantables in your inventory it searches the area immediately around you for growables such as trees, flowers, grass and instead eats those.
+ 
+
 
 guide.animus.blocks.phantom.entry=Phantom Builder Block
 guide.animus.blocks.phantom.page0=Right clicking this block will replace it with the held item in the world. Disappears after a short period of time.
