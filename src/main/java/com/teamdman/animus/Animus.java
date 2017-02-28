@@ -6,7 +6,7 @@ import com.teamdman.animus.handlers.EventHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.*;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -32,13 +32,9 @@ public class Animus {
 	public static CommonProxy proxy;
 
 	public static CreativeTabs tabMain = new CreativeTabs(MODID) {
-    	@Override
-    	public String getTabLabel(){
-    		return "animus";
-    	}
 		@Override
-		public ItemStack getTabIconItem() {
-			return new ItemStack(AnimusItems.altarDiviner);
+		public Item getTabIconItem() {
+			return AnimusItems.altarDiviner;
 		}
 	};
 
