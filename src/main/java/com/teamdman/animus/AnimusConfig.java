@@ -33,6 +33,7 @@ public class AnimusConfig {
 	public static boolean ritualNaturesLeech;
 	public static boolean ritualCulling;
 	public static boolean ritualRegression;
+	public static boolean ritualSteadfastHeart;
 
 	// Sigil Variables
 	public static int chainsConsumption;
@@ -45,6 +46,7 @@ public class AnimusConfig {
 	// General
 	public static boolean muteWither;
 	public static boolean muteDragon;
+	
 
 	public static void init(File file) {
 		config = new Configuration(file);
@@ -70,6 +72,7 @@ public class AnimusConfig {
 		ritualPeace = config.get(category, "ritualPeace", true).getBoolean();
 		ritualNaturesLeech = config.get(category, "ritualNaturesLeech", true).getBoolean();
 		ritualCulling = config.get(category, "ritualCulling", true).getBoolean();
+		ritualSteadfastHeart = config.get(category, "ritualSteadfastHeart", true).getBoolean();
 		ritualRegression = config.get(category, "ritualRegression", true).getBoolean();
 
 		category = "Sigil Variables";
