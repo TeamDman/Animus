@@ -6,7 +6,7 @@ import com.teamdman.animus.handlers.EventHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.*;
 import net.minecraft.creativetab.CreativeTabs;
-import WayofTime.bloodmagic.api.Constants;
+import com.teamdman.animus.Constants;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;

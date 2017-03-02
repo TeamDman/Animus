@@ -25,8 +25,9 @@ public class EntityVengefulSpirit extends EntityMob {
     
 	public EntityVengefulSpirit(World worldIn) {
 		super(worldIn);
-    	this.noClip = true;
+    	this.noClip = false;
         setSize(1.25f,1.25f);
+        
         this.isAirBorne = true;
 		this.experienceValue = 0;
 		isImmuneToFire = true;
@@ -130,7 +131,6 @@ public class EntityVengefulSpirit extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.25D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(6.0D);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
     }
