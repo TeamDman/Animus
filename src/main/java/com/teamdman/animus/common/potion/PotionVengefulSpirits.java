@@ -29,7 +29,11 @@ public class PotionVengefulSpirits extends Potion {
 	}
 
 	public PotionVengefulSpirits() {
+<<<<<<< HEAD
 		super(false, 0x000000);
+=======
+		super(false, 0xFFFFFF);
+>>>>>>> origin/master
 	}
 
 	@Override
@@ -41,8 +45,11 @@ public class PotionVengefulSpirits extends Potion {
 	public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier) {
 		//Do stuff
 	}
+<<<<<<< HEAD
 	
 	
+=======
+>>>>>>> origin/master
 
     @Override
     @SideOnly(Side.CLIENT)

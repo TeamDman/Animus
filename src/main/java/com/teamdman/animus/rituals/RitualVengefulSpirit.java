@@ -72,10 +72,16 @@ public class RitualVengefulSpirit extends Ritual {
 				
 				if (vPotion == null)
 				((EntityLivingBase) livingEntity).addPotionEffect(new PotionEffect(AnimusPotions.VENGEFULSPIRITS, 800));
+<<<<<<< HEAD
 				else{
 					int pow = Math.min(5*((vPotion.getDuration()+60)/36000),4);
 					((EntityLivingBase) livingEntity).addPotionEffect(new PotionEffect(AnimusPotions.VENGEFULSPIRITS, Math.min(((vPotion.getDuration() + 800)*2), 36000), pow, true, false));
 				}
+=======
+				else
+					((EntityLivingBase) livingEntity).addPotionEffect(new PotionEffect(AnimusPotions.VENGEFULSPIRITS, Math.min(((vPotion.getDuration() + 800)*2), 36000), Math.min(1+((5*vPotion.getDuration()+60)/36000),4), true, false));
+				
+>>>>>>> origin/master
 				entityCount++;
 
 			}

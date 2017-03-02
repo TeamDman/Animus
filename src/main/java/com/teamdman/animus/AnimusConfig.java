@@ -34,8 +34,17 @@ public class AnimusConfig {
 	public static boolean ritualCulling;
 	public static boolean ritualRegression;
 	public static boolean ritualSteadfastHeart;
+<<<<<<< HEAD
 	public static boolean ritualVengefulSpirit;
 	
+=======
+<<<<<<< HEAD
+	public static boolean ritualVengefulSpirit;
+	
+=======
+
+>>>>>>> origin/master
+>>>>>>> origin/master
 	// Sigil Variables
 	public static int chainsConsumption;
 	public static int transpositionConsumption;
@@ -47,7 +56,15 @@ public class AnimusConfig {
 	// General
 	public static boolean muteWither;
 	public static boolean muteDragon;
+<<<<<<< HEAD
 		
+=======
+<<<<<<< HEAD
+		
+=======
+	
+>>>>>>> origin/master
+>>>>>>> origin/master
 
 	public static void init(File file) {
 		config = new Configuration(file);
@@ -74,7 +91,14 @@ public class AnimusConfig {
 		ritualNaturesLeech = config.get(category, "ritualNaturesLeech", true).getBoolean();
 		ritualCulling = config.get(category, "ritualCulling", true).getBoolean();
 		ritualSteadfastHeart = config.get(category, "ritualSteadfastHeart", true).getBoolean();
+<<<<<<< HEAD
 		ritualVengefulSpirit = config.get(category, "ritualVengefulSpirit", true).getBoolean();
+=======
+<<<<<<< HEAD
+		ritualVengefulSpirit = config.get(category, "ritualVengefulSpirit", true).getBoolean();
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
 		ritualRegression = config.get(category, "ritualRegression", true).getBoolean();
 
 		category = "Sigil Variables";

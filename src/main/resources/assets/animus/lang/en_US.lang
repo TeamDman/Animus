@@ -34,14 +34,25 @@ ritual.animus.unmaking=Ritual of Unmaking
 ritual.animus.peace=Ritual of Peace
 ritual.animus.culling=Ritual of Culling
 ritual.animus.steadfastheart=Ritual of the Steadfast Heart
+<<<<<<< HEAD
 ritual.animus.vengefulspirit=Ritual of Vengeful Spirits
+=======
+<<<<<<< HEAD
+ritual.animus.vengefulspirit=Ritual of Vengeful Spirits
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
 ritual.animus.naturesleech=Ritual of Nature's Leech
 ritual.animus.regr=Ritual of Regression
 
 death.attack.animus.absolute=%1$s has been culled by blood magic.
 death.attack.animus.storm=%1$s felt the wrath of the storm.
 
+<<<<<<< HEAD
 potion.vengefulspirits.name=Ven Spirits
+=======
+potion.vengefulspirits.name=Vengeful Spirits
+>>>>>>> origin/master
 
 guide.animus.displayname=Animus Compendium
 guide.animus.title=Animus Compendium
