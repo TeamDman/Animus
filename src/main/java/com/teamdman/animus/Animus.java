@@ -6,6 +6,7 @@ import com.teamdman.animus.handlers.EventHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.*;
 import net.minecraft.creativetab.CreativeTabs;
+import WayofTime.bloodmagic.api.Constants;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -18,10 +19,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import java.io.File;
 import java.util.Locale;
 
-// TODO: Sigil that eats for you
+@Mod(modid = Constants.Mod.MODID, name = Constants.Mod.NAME, version = Constants.Mod.VERSION, dependencies = Constants.Mod.DEPEND, guiFactory = "com.teamdman.animus.client.gui.ConfigGuiFactory")
 
-@Mod(modid = Animus.MODID, name = Animus.NAME, version = Animus.VERSION, dependencies = Animus.DEPENDENCIES, guiFactory = "com.teamdman.animus.client.gui.config.ConfigGuiFactory")
 public class Animus {
+	
 	public static final String MODID = "animus";
 	public static final String DOMAIN = MODID.toLowerCase(Locale.ENGLISH) + ":";
 	public static final String NAME = "Animus";
@@ -31,6 +32,9 @@ public class Animus {
 	@SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
 	public static CommonProxy proxy;
 
+	@Mod.Instance(Constants.Mod.MODID)
+	public static Animus instance;
+	
 	public static CreativeTabs tabMain = new CreativeTabs(MODID) {
 		@Override
 		public Item getTabIconItem() {
@@ -47,6 +51,7 @@ public class Animus {
 		AnimusBlocks.init();
 		AnimusTiles.init();
 		AnimusRecipes.init();
+		AnimusEntities.init();
 		AnimusGuide.buildGuide();
 		proxy.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new EventHandler());

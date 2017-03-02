@@ -7,7 +7,7 @@ public final class AnimusSoundEventHandler {
 
 	public static final SoundEvent ghostly = getRegisteredSoundEvent("animus:ghostly");
 	public static final SoundEvent naturesleech = getRegisteredSoundEvent("animus:naturesleech");
-
+	public static final SoundEvent vengefulspiritambient = getRegisteredSoundEvent("animus:vengefulspiritambient");
 	private static SoundEvent getRegisteredSoundEvent(String name) {
 		return SoundEvent.REGISTRY.getObject(new ResourceLocation(name));
 	}

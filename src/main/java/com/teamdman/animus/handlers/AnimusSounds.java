@@ -8,7 +8,8 @@ public final class AnimusSounds {
 	public static void init() {
 		String[] sounds = {
 				"animus:ghostly",
-				"animus:naturesleech"
+				"animus:naturesleech",
+				"animus:vengefulspiritambient"
 		};
 
 		for (String s : sounds) {

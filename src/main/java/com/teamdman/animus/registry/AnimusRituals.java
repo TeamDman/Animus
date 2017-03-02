@@ -20,14 +20,7 @@ public class AnimusRituals {
 	public static Ritual ritualNaturesLeech;
 	public static Ritual ritualCulling;
 	public static Ritual ritualSteadfastHeart;
-<<<<<<< HEAD
 	public static Ritual ritualVengefulSpirit;
-=======
-<<<<<<< HEAD
-	public static Ritual ritualVengefulSpirit;
-=======
->>>>>>> origin/master
->>>>>>> origin/master
 	
 	public static ImperfectRitual ritualRegression;
 
@@ -48,16 +41,10 @@ public class AnimusRituals {
 		RitualRegistry.registerRitual(ritualCulling, AnimusConfig.ritualCulling);
 		ritualSteadfastHeart = new RitualSteadfastHeart();
 		RitualRegistry.registerRitual(ritualSteadfastHeart, AnimusConfig.ritualSteadfastHeart);
-<<<<<<< HEAD
 		ritualVengefulSpirit = new RitualVengefulSpirit();
 		RitualRegistry.registerRitual(ritualVengefulSpirit, AnimusConfig.ritualVengefulSpirit);
-=======
-<<<<<<< HEAD
 		ritualVengefulSpirit = new RitualVengefulSpirit();
 		RitualRegistry.registerRitual(ritualVengefulSpirit, AnimusConfig.ritualVengefulSpirit);
-=======
->>>>>>> origin/master
->>>>>>> origin/master
 
 		ritualRegression = new RitualRegression();
 		ImperfectRitualRegistry.registerRitual(ritualRegression, AnimusConfig.ritualRegression);
