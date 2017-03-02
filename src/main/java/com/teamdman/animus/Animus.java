@@ -43,6 +43,7 @@ public class Animus {
 	public void preinit(FMLPreInitializationEvent event) {
 		AnimusConfig.init(new File(event.getModConfigurationDirectory(), Animus.MODID + ".cfg"));
 		AnimusItems.init();
+		AnimusPotions.init();
 		AnimusBlocks.init();
 		AnimusTiles.init();
 		AnimusRecipes.init();

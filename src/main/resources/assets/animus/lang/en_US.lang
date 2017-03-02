@@ -33,12 +33,15 @@ ritual.animus.entropy=Ritual of Entropy
 ritual.animus.unmaking=Ritual of Unmaking
 ritual.animus.peace=Ritual of Peace
 ritual.animus.culling=Ritual of Culling
+ritual.animus.steadfastheart=Ritual of the Steadfast Heart
+ritual.animus.vengefulspirit=Ritual of Vengeful Spirits
 ritual.animus.naturesleech=Ritual of Nature's Leech
 ritual.animus.regr=Ritual of Regression
 
 death.attack.animus.absolute=%1$s has been culled by blood magic.
 death.attack.animus.storm=%1$s felt the wrath of the storm.
 
+potion.vengefulspirits.name=Ven Spirits
 
 guide.animus.displayname=Animus Compendium
 guide.animus.title=Animus Compendium
@@ -66,6 +69,9 @@ guide.animus.rituals.leech.entry=Ritual of Nature's Leech
 guide.animus.rituals.leech.page0=Tier 1\nEats growable blocks within a 48 block area centered on the MRS including grass, flowers, trees and more to provide blood to an altar within a 10 block range.
 guide.animus.rituals.regression.entry=Ritual of Regression
 guide.animus.rituals.regression.page0=An imperfect ritual activated by placing a bookcase ontop of an impure ritual stone and right clicking, this ritual allows you to remove the anvil limit on the held item.
+
+guide.animus.rituals.steadfastheart.entry=Ritual of The Steadfast Heart
+guide.animus.rituals.steadfastheart.page0=Tier 1\nGradually creates steadfast will and applies absorption to all within its range. Has a constantly LP upkeep cost which is increased for each additional person in range. The buffs intensity and duration increase the longer you are within range of the ritual to a maximum of 30 minutes.
 
 guide.animus.sigils.chains.entry=Sigil of Phantom Chains
 guide.animus.sigils.chains.page0=Captures the soul of a mob when right clicked on one. The soul can then be released elsewhere.
