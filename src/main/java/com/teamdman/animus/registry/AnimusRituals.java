@@ -19,6 +19,9 @@ public class AnimusRituals {
 	public static Ritual ritualPeace;
 	public static Ritual ritualNaturesLeech;
 	public static Ritual ritualCulling;
+	public static Ritual ritualSteadfastHeart;
+	public static Ritual ritualVengefulSpirit;
+	
 	public static ImperfectRitual ritualRegression;
 
 	public static void init() {
@@ -36,6 +39,11 @@ public class AnimusRituals {
 		RitualRegistry.registerRitual(ritualNaturesLeech, AnimusConfig.ritualNaturesLeech);
 		ritualCulling = new RitualCulling();
 		RitualRegistry.registerRitual(ritualCulling, AnimusConfig.ritualCulling);
+		ritualSteadfastHeart = new RitualSteadfastHeart();
+		RitualRegistry.registerRitual(ritualSteadfastHeart, AnimusConfig.ritualSteadfastHeart);
+		ritualVengefulSpirit = new RitualVengefulSpirit();
+		RitualRegistry.registerRitual(ritualVengefulSpirit, AnimusConfig.ritualVengefulSpirit);
+
 		ritualRegression = new RitualRegression();
 		ImperfectRitualRegistry.registerRitual(ritualRegression, AnimusConfig.ritualRegression);
 	}
