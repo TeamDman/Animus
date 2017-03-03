@@ -10,10 +10,12 @@ import com.teamdman.animus.entity.EntityVengefulSpirit;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -40,8 +42,8 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	private void initRenderers() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityVengefulSpirit.class, RenderVengefulSpirit::new);
 		
+		RenderingRegistry.registerEntityRenderingHandler(EntityVengefulSpirit.class, new RenderVengefulSpirit.Factory());
 	}
 
 	@Override

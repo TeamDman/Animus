@@ -4,7 +4,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
@@ -27,10 +26,11 @@ public class EntityVengefulSpirit extends EntityMob {
 	public EntityVengefulSpirit(World worldIn) {
 		super(worldIn);
     	this.noClip = false;
-        setSize(0.25f,0.25f);
+        
         
         this.isAirBorne = true;
 		this.experienceValue = 0;
+
 		isImmuneToFire = true;
 		deathSound = new SoundEvent(new ResourceLocation("animus:ghostly"));
 		ambientSound = new SoundEvent(new ResourceLocation("animus:vengefulspiritambient"));
@@ -42,7 +42,6 @@ public class EntityVengefulSpirit extends EntityMob {
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         
     }
@@ -73,7 +72,7 @@ public class EntityVengefulSpirit extends EntityMob {
 
     protected SoundEvent getAmbientSound()
     {
-        return SoundEvents.ENTITY_POLAR_BEAR_AMBIENT;
+        return SoundEvents.ENTITY_GUARDIAN_AMBIENT_LAND;
     }
     
     public boolean isPlaying()
