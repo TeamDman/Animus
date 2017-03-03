@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -20,19 +21,20 @@ public class EntityVengefulSpirit extends EntityMob {
     public SoundEvent ambientSound;
     public SoundEvent deathSound;
     private static final DataParameter<Boolean> SCREAMING = EntityDataManager.<Boolean>createKey(EntityVengefulSpirit.class, DataSerializers.BOOLEAN);
-    private int lastSound;
+    private int lastSound = 0;
     
     
 	public EntityVengefulSpirit(World worldIn) {
 		super(worldIn);
     	this.noClip = false;
-        setSize(1.25f,1.25f);
+        setSize(0.25f,0.25f);
         
         this.isAirBorne = true;
 		this.experienceValue = 0;
 		isImmuneToFire = true;
 		deathSound = new SoundEvent(new ResourceLocation("animus:ghostly"));
 		ambientSound = new SoundEvent(new ResourceLocation("animus:vengefulspiritambient"));
+		
 		
 	}
 	
@@ -48,20 +50,15 @@ public class EntityVengefulSpirit extends EntityMob {
     @Override
     protected void entityInit(){
     	super.entityInit();
-        this.dataManager.register(SCREAMING, Boolean.valueOf(false));
-       }
+          }
     
     public void scream()
     {
-        if (this.ticksExisted >= this.lastSound + 400)
-        {
-            this.lastSound = this.ticksExisted;
-
             if (!this.isSilent())
             {
                 this.world.playSound(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ, ambientSound, this.getSoundCategory(), 2.5F, 1.0F, false);
+                lastSound = this.ticksExisted;
             }
-        }
     }
 
     @Override
@@ -71,17 +68,12 @@ public class EntityVengefulSpirit extends EntityMob {
     
     public void notifyDataManagerChange(DataParameter<?> key)
     {
-        if (SCREAMING.equals(key) && !this.isPlaying() && this.world.isRemote)
-        {
-            this.scream();
-        }
-
         super.notifyDataManagerChange(key);
     }
 
     protected SoundEvent getAmbientSound()
     {
-        return ambientSound;
+        return SoundEvents.ENTITY_POLAR_BEAR_AMBIENT;
     }
     
     public boolean isPlaying()
@@ -109,7 +101,7 @@ public class EntityVengefulSpirit extends EntityMob {
     
     @Override
     public int getBrightnessForRender(float partialTicks){
-    		return 64;
+    		return 16;
     }
     
     @Override
@@ -139,7 +131,10 @@ public class EntityVengefulSpirit extends EntityMob {
     public void onLivingUpdate() {
         if (this.world.isRemote)
         {
-            for (int i = 0; i < 2; ++i)
+        	if (lastSound == 0)
+        		this.scream();
+        	
+            for (int i = 0; i < 4; ++i)
             {
                 this.world.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, new int[0]);
             }

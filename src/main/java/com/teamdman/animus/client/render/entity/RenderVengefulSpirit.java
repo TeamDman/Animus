@@ -2,6 +2,7 @@ package com.teamdman.animus.client.render.entity;
 
 import javax.annotation.Nonnull;
 
+import com.teamdman.animus.entity.EntityGenericDemon;
 import com.teamdman.animus.entity.EntityVengefulSpirit;
 
 import WayofTime.bloodmagic.client.helper.ShaderHelper;
@@ -17,15 +18,16 @@ public class RenderVengefulSpirit extends RenderBiped<EntityVengefulSpirit>{
 
 
 	public RenderVengefulSpirit(RenderManager renderManager) {
-		super(renderManager, new ModelPlayer(0.0F, false), 0F);
+		super(renderManager, new ModelPlayer(0.25F, false), .2F);
 	}
 	
 	@Override
 	public void doRender(@Nonnull EntityVengefulSpirit spirit, double par2, double par4, double par6, float par8, float par9) {
 
-		ShaderHelper.useShader(ShaderHelper.psiBar, 20);
+		//ShaderHelper.useShader(ShaderHelper., 20);
+		this.addLayer(new EntityGenericDemon<EntityVengefulSpirit>(this, new ModelPlayer(.4f, true)));
 		super.doRender(spirit, par2, par4, par6, par8, par9);
-		ShaderHelper.releaseShader();
+		//ShaderHelper.releaseShader();
 	}
 
 	@Nonnull
