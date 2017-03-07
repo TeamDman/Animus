@@ -8,44 +8,39 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 
-public class RenderVengefulSpirit extends RenderPlayer{
+public class RenderVengefulSpirit extends RenderBiped<EntityVengefulSpirit> {
 
 
 	public RenderVengefulSpirit(RenderManager renderManager) {
-		super(renderManager);
+		super(renderManager, new ModelPlayer(0.0F, false), 0.0F);
 	}
 	
-/*	@Override
-	public void doRender(@Nonnull EntityVengefulSpirit spirit, double par2, double par4, double par6, float par8, float par9) {
-		
-		//this.addLayer(new EntityGenericDemon<EntityVengefulSpirit>(this, new ModelPlayer(.6f, true)));
-		super.doRender(spirit, par2, par4, par6, par8, par9);
-	}
-*/
     @Override
-    public void doRender(AbstractClientPlayer entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(@Nonnull EntityVengefulSpirit entity, double x, double y, double z, float entityYaw, float partialTicks) {
+ 
+    	this.addLayer(new EntityGenericDemon<EntityVengefulSpirit>(this, new ModelPlayer(0.0F, false)));
         GlStateManager.pushMatrix();
+        GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
         GlStateManager.scale(0.5, 0.5, 0.5);
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        super.doRender(entity, 0, 0, 0, entityYaw, partialTicks);
         GlStateManager.popMatrix();
     }
-    
-    public static class Factory implements IRenderFactory<AbstractClientPlayer> {
         
-        @Override
-        public Render<? super AbstractClientPlayer> createRenderFor(RenderManager manager) {
-            return new RenderVengefulSpirit(manager);
-        }
-    
+	@Nonnull
+	@Override
+	protected ResourceLocation getEntityTexture(@Nonnull EntityVengefulSpirit entity) {
+		Minecraft mc = Minecraft.getMinecraft();
+
+		if(!(mc.getRenderViewEntity() instanceof AbstractClientPlayer))
+			return DefaultPlayerSkin.getDefaultSkinLegacy();
+
+		return ((AbstractClientPlayer) mc.getRenderViewEntity()).getLocationSkin();
+	}
 	
-    }
 }

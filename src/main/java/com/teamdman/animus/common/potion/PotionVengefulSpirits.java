@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class PotionVengefulSpirits extends Potion {
 
 	
-	@SideOnly(Side.CLIENT)
+	//@SideOnly(Side.CLIENT)
 	static final ResourceLocation rl = new ResourceLocation(Animus.MODID,"textures/misc/vengefulpotion.png");
 	
 	@Override

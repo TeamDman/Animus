@@ -7,6 +7,7 @@ import WayofTime.bloodmagic.client.IVariantProvider;
 import com.teamdman.animus.AnimusConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
@@ -48,6 +49,7 @@ public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
 		
 		
 		RayTraceResult result = ItemSigilStorm.raytraceFromEntity(world, player, true, 64);
+		
 		if (result != null) {
 			
 			if (result.typeOfHit == RayTraceResult.Type.BLOCK)
@@ -62,10 +64,11 @@ public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
 				world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY() + .5, pos.getZ(), false));
 
 				IBlockState state = world.getBlockState(pos);
-				if (state.getBlock() == Blocks.WATER && !world.isRemote) {
+				if ((state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && !world.isRemote) {
 					EntityItem fish = new EntityItem(world, pos.getX(), pos.getY() - rand.nextInt(2), pos.getZ(), new ItemStack(Items.FISH, 1 + rand.nextInt(2)));
 					fish.setVelocity(rand.nextDouble() * .25, -.25, rand.nextDouble() * .25);
-					fish.setEntityInvulnerable(true); 
+					fish.setEntityInvulnerable(true);
+					fish.fireResistance = 40;
 					world.spawnEntity(fish);
 				}
 			
