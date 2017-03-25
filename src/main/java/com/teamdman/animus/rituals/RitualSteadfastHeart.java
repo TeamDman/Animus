@@ -75,6 +75,13 @@ public class RitualSteadfastHeart extends Ritual {
 				else
 				((EntityLivingBase) livingEntity).addPotionEffect(new PotionEffect(absPotion, Math.min(((abs.getDuration() + 800)*2), 36000), Math.min(1+((5*abs.getDuration()+60)/36000),4), true, false));
 
+				int dur = abs.getDuration();
+				int newdur = Math.min(((dur + 800)*2), 30000);
+				int pow = Math.min((5*(1+(newdur+60))/36000),4);
+				((EntityLivingBase) livingEntity).removePotionEffect(abs.getPotion());
+				((EntityLivingBase) livingEntity).addPotionEffect(new PotionEffect(absPotion, newdur, pow, true, false));
+	
+				
 			}
 			network.syphon(getRefreshCost() * entityCount);
 			double drainAmount = 2*Math.min((maxWill - currentAmount)+1, Math.min(entityCount/2, 10));

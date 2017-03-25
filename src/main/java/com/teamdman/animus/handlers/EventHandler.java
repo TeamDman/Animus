@@ -1,14 +1,22 @@
 package com.teamdman.animus.handlers;
 
+import java.util.Random;
+
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.entity.EntityVengefulSpirit;
 import com.teamdman.animus.registry.AnimusItems;
+import com.teamdman.animus.registry.AnimusPotions;
 import com.teamdman.animus.slots.SlotNoPickup;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,6 +42,37 @@ public class EventHandler {
 		if (e.getModID().equals(Animus.MODID)) {
 			AnimusConfig.syncConfig();
 		}
+	}
+	
+	@SubscribeEvent
+    public void onAttacked(LivingAttackEvent event) {
+		EntityLivingBase el;
+		el = event.getEntityLiving();
+        if(!(el instanceof EntityPlayer))
+            return;
+
+        PotionEffect vPotion = (el.getActivePotionEffect(AnimusPotions.VENGEFULSPIRITS));
+        if (vPotion.equals(null))
+        	return;
+        
+        int count = vPotion.getAmplifier();
+        Random rand = new Random();
+        
+		EntityVengefulSpirit spirit;
+		World ew = el.getEntityWorld();
+        
+        for (int i = 0; i < count; i++){
+  
+        	spirit = new EntityVengefulSpirit(ew);
+        	double posX = el.posX+0.5+rand.nextInt(3);
+        	double posY = el.posY;
+        	double posZ = el.posZ+0.5+rand.nextInt(3);
+        	spirit.setRevengeTarget(el.getAttackingEntity());
+        	spirit.setPosition(posX, posY, posZ);
+        	ew.spawnEntity(spirit);
+        	
+        }
+        
 	}
 
 	@SubscribeEvent

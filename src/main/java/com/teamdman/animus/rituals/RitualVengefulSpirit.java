@@ -18,8 +18,12 @@ import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,6 +32,7 @@ import net.minecraftforge.common.util.FakePlayer;
 public class RitualVengefulSpirit extends Ritual {
 
 	public static final String EFFECT_RANGE = "effect";
+	public static final String CHEST_RANGE = "chest";
 	public final int maxWill = 100;
 	public double willBuffer = 0;
 	public Random rand = new Random();
@@ -36,8 +41,9 @@ public class RitualVengefulSpirit extends Ritual {
 		
 		super("RitualVengefulSpirit", 0, 20000, "ritual." + Animus.MODID + ".vengefulspirit");	
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-16, -16, -16), 32));
+		addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
-
+		setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
 	}
 
 	@Override
@@ -46,6 +52,7 @@ public class RitualVengefulSpirit extends Ritual {
 		if (network == null) {
 			return;
 		}
+		int currentEssence = network.getCurrentEssence();
 
 		
 		World world = masterRitualStone.getWorldObj();
@@ -61,10 +68,34 @@ public class RitualVengefulSpirit extends Ritual {
 		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, range);
 		
 		int entityCount = 0;
-		//Mob drops we care about: Bones, Flesh, Spider Eyes, Skulls, 
-		
-		
 
+		
+		AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
+		TileEntity tileInventory = world.getTileEntity(chestRange.getContainedPositions(pos).get(0));
+		
+		if (tileInventory.equals(null) || !(tileInventory instanceof IInventory)) {
+			return;
+		}
+			if (currentEssence < getRefreshCost()) {
+				network.causeNausea();
+				return;
+			}
+			boolean consumed = false;
+			for (int slot = ((IInventory) tileInventory).getSizeInventory()-1; slot > 0; slot--) {
+				ItemStack stack = ((IInventory) tileInventory).getStackInSlot(slot);
+				if (stack == null)
+					continue;
+				if (is_consumable(stack)) {
+						consumed = true;
+						((IInventory) tileInventory).decrStackSize(slot, stack.stackSize);
+						break;
+				}
+			}
+
+			if (!consumed){
+				return;
+			}
+			
 			for (EntityLivingBase livingEntity : list) {
 				if (!(livingEntity instanceof EntityPlayer) || livingEntity instanceof FakePlayer)
 					continue;
@@ -72,10 +103,11 @@ public class RitualVengefulSpirit extends Ritual {
 				
 				if (vPotion == null)
 				((EntityLivingBase) livingEntity).addPotionEffect(new PotionEffect(AnimusPotions.VENGEFULSPIRITS, 800));
-
 				else{
-					int pow = Math.min(5*((vPotion.getDuration()+60)/36000),4);
-					((EntityLivingBase) livingEntity).addPotionEffect(new PotionEffect(AnimusPotions.VENGEFULSPIRITS, Math.min(((vPotion.getDuration() + 800)*2), 36000), pow, true, false));
+					int dur = vPotion.getDuration();
+					int newdur = Math.min(((dur + 800)*2), 30000);
+					int pow = Math.min((5*(1+(newdur+60))/36000),3);
+					vPotion.combine(new PotionEffect(AnimusPotions.VENGEFULSPIRITS, newdur, pow, true, false));
 				}
 				entityCount++;
 
@@ -90,6 +122,22 @@ public class RitualVengefulSpirit extends Ritual {
 			
 		
 
+	}
+
+	//Mob drops we care about: Bones, Flesh, Spider Eyes, Skulls, 
+	private boolean is_consumable(ItemStack stack) {
+		if (stack.isItemEqual(new ItemStack(Items.BONE)))
+				return true;
+		if (stack.isItemEqual(new ItemStack(Items.ROTTEN_FLESH)))
+			return true;
+		if (stack.isItemEqual(new ItemStack(Items.SPIDER_EYE)))
+			return true;
+		if (stack.isItemEqual(new ItemStack(Items.SKULL)))
+			return true;
+		if (stack.isItemEqual(new ItemStack(Items.STRING)))
+			return true;
+	
+		return false;
 	}
 
 	@Override

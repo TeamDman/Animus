@@ -7,12 +7,11 @@ import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import WayofTime.bloodmagic.tile.TileAltar;
 import com.teamdman.animus.Animus;
-import com.teamdman.animus.client.resources.EffectHandler;
-import com.teamdman.animus.client.resources.fx.EntityFXBurst;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -134,9 +133,14 @@ public class RitualNaturesLeech extends Ritual {
 					if (!edible)
 						continue;
 
-					EffectHandler.getInstance().registerFX(
-							new EntityFXBurst(1, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
+//					EffectHandler.getInstance().registerFX(
+//							new EntityFXBurst(1, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
 
+					if (world.isRemote){
+		                world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
+		                        (random.nextDouble() - 0.5D) * 2.0D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2.0D, new int[0]);	
+						}
+					
 					world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
 					world.setBlockToAir(nextPos);
 					eaten++;

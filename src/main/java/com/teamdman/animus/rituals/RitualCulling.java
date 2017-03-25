@@ -9,8 +9,7 @@ import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import WayofTime.bloodmagic.tile.TileAltar;
 import com.teamdman.animus.Animus;
-import com.teamdman.animus.client.resources.EffectHandler;
-import com.teamdman.animus.client.resources.fx.EntityFXBurst;
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
@@ -21,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -148,8 +148,8 @@ public class RitualCulling extends Ritual {
 
 					damage = Integer.MAX_VALUE;
 
-					if (!isNonBoss && currentAmount > 99
-							&& (currentEssence >= 50000 + (this.getRefreshCost() * list.size()))) { // Special case for Bosses, they require maxed vengeful will and 50k LP per kill
+					if (AnimusConfig.killWither && !isNonBoss && currentAmount > 99
+							&& (currentEssence >= 25000 + (this.getRefreshCost() * list.size()))) { // Special case for Bosses, they require maxed vengeful will and 50k LP per kill
 						livingEntity.setEntityInvulnerable(false);
 						if (livingEntity instanceof EntityWither) {
 							EntityWither EW = (EntityWither) livingEntity;
@@ -164,7 +164,7 @@ public class RitualCulling extends Ritual {
 						tileAltar.sacrificialDaggerCall(RitualCulling.amount, true);
 
 						if (!isNonBoss) {
-							network.syphon(50000);
+							network.syphon(25000);
 						} else {
 							double modifier = .5;
 							if (livingEntity instanceof EntityAnimal && !livingEntity.isCollided) {
@@ -175,8 +175,11 @@ public class RitualCulling extends Ritual {
 
 						if (at != null) {
 
-							EffectHandler.getInstance().registerFX(
-									new EntityFXBurst(0, at.getX() + 0.5, at.getY() + .8, at.getZ() + 0.5, 1F));
+							if (world.isRemote){
+								for (int i = 0; i < rand.nextInt(4); i++)
+				                world.spawnParticle(EnumParticleTypes.PORTAL, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + .5,
+				                        (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, new int[0]);	
+								}
 							soundSource.playSound(null, at, AnimusSoundEventHandler.ghostly, SoundCategory.BLOCKS, 1F,
 									1F);
 

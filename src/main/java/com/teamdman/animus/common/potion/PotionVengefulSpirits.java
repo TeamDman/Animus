@@ -30,6 +30,7 @@ public class PotionVengefulSpirits extends Potion {
 
 	public PotionVengefulSpirits() {
 		super(false, 0x000000);
+		this.setBeneficial();
 		
 	}
 

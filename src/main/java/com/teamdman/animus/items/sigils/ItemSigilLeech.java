@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import com.teamdman.animus.client.resources.EffectHandler;
-import com.teamdman.animus.client.resources.fx.EntityFXBurst;
+
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 
 import WayofTime.bloodmagic.api.Constants;
@@ -27,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -65,7 +65,7 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
 		AreaDescriptor eatRange;
 		eatRange = getBlockRange(EFFECT_RANGE);
 		eatRange.resetIterator();
-		int count = random.nextInt(4);
+		int count = random.nextInt(2);
 		
 		while (eatRange.hasNext()) {
 			int i = 0;
@@ -89,9 +89,11 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
 				if (!edible)
 					continue;
 
-				EffectHandler.getInstance().registerFX(
-						new EntityFXBurst(1, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
-
+				if (player.world.isRemote){
+                player.world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
+                        (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D, new int[0]);	
+				}
+				
 				player.world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
 				player.world.setBlockToAir(nextPos);
 				i++;
