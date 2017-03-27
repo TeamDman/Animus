@@ -48,6 +48,7 @@ public class AnimusConfig {
 	public static boolean muteWither;
 	public static boolean muteDragon;
 	public static boolean killWither;
+	public static int witherCost;
 
 	public static void init(File file) {
 		config = new Configuration(file);
@@ -94,6 +95,7 @@ public class AnimusConfig {
 		muteWither = config.get(category, "muteWither", true).getBoolean();
 		muteDragon = config.get(category, "muteDragon", false).getBoolean();
 		killWither = config.get(category, "killWither", true).getBoolean();
+		witherCost = config.get(category, "witherCost", 25000).getInt();
 		config.save();
 	}
 

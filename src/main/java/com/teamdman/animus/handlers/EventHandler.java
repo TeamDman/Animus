@@ -46,7 +46,7 @@ public class EventHandler {
 	
 	@SubscribeEvent
     public void onAttacked(LivingAttackEvent event) {
-		EntityLivingBase el;
+/*		EntityLivingBase el;
 		el = event.getEntityLiving();
         if(!(el instanceof EntityPlayer))
             return;
@@ -72,7 +72,8 @@ public class EventHandler {
         	ew.spawnEntity(spirit);
         	
         }
-        
+        */ 
+		//VengeFul Spirit stuff for later
 	}
 
 	@SubscribeEvent
