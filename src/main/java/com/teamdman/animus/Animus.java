@@ -50,7 +50,6 @@ public class Animus {
 		AnimusPotions.init();
 		AnimusBlocks.init();
 		AnimusTiles.init();
-		AnimusRecipes.init();
 		AnimusEntities.init();
 		AnimusGuide.buildGuide();
 		proxy.preInit(event);
@@ -63,6 +62,7 @@ public class Animus {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		AnimusRituals.init();
 		AnimusSounds.init();
+		AnimusRecipes.init();
 		proxy.init(event);
 	}
 
