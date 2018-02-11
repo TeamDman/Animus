@@ -8,6 +8,7 @@ import com.teamdman.animus.registry.*;
 import net.minecraft.creativetab.CreativeTabs;
 import com.teamdman.animus.Constants;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -37,8 +38,8 @@ public class Animus {
 	
 	public static CreativeTabs tabMain = new CreativeTabs(MODID) {
 		@Override
-		public Item getTabIconItem() {
-			return AnimusItems.altarDiviner;
+		public ItemStack getTabIconItem() {
+			return AnimusItems.altarDiviner.getDefaultInstance();
 		}
 	};
 

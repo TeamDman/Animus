@@ -97,11 +97,7 @@ public class EntityVengefulSpirit extends EntityMob {
     		this.setDead();*/
     }
     
-    @Override
-    public int getBrightnessForRender(float partialTicks){
-    		return 16;
-    }
-    
+   
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount)
     {//Spirits are short lived and immortal and do not care about other attackers attacking them

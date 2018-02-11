@@ -87,7 +87,7 @@ public class RitualVengefulSpirit extends Ritual {
 					continue;
 				if (is_consumable(stack)) {
 						consumed = true;
-						((IInventory) tileInventory).decrStackSize(slot, stack.stackSize);
+						((IInventory) tileInventory).decrStackSize(slot, 1);
 						break;
 				}
 			}

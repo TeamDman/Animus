@@ -7,7 +7,8 @@ import WayofTime.bloodmagic.api.altar.EnumAltarComponent;
 import WayofTime.bloodmagic.api.altar.EnumAltarTier;
 import WayofTime.bloodmagic.api.altar.IBloodAltar;
 import WayofTime.bloodmagic.client.IVariantProvider;
-import WayofTime.bloodmagic.registry.ModBlocks;
+import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
+import WayofTime.bloodmagic.core.RegistrarBloodMagicItems;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.registry.AnimusBlocks;
@@ -101,7 +102,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 							playerinfomsg = I18n.format("text.component.diviner.missing") + " " + (altarComponent.getComponent() == EnumAltarComponent.GLOWSTONE ? "Glowstone Block" : (I18n.format(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())).getItem().getUnlocalizedName(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()))) + ".name")));
 						}
 					}
-				} else if (worldBlock.getBlock() != ModBlocks.BLOOD_RUNE) {
+				} else if (worldBlock.getBlock() != RegistrarBloodMagicBlocks.BLOOD_RUNE) {
 					playerinfomsg = "text.component.diviner.obstructed";
 				}
 			}

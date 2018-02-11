@@ -67,14 +67,8 @@ public class ItemKamaBound extends ItemKama {
 					|| attacker == target)
 				continue;
 
-
-			//			System.out.println("attacking: ");
-			//			System.out.println(target.getDisplayName());
-			//			System.out.println("For: ");
-			//			System.out.println(this.attackDamage);
 			result = target.attackEntityFrom(this.khopeshDamage, this.attackDamage);
-			//			System.out.println("Result: ");
-			//			System.out.println(result);
+
 
 			if (result)
 				hit = true;

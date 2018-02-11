@@ -16,7 +16,7 @@ public class AnimusPotions {
 		potion.setRegistryName(name);
 		//potion.setPotionName(potion.getClass().getSimpleName());
 		potion.setPotionName("Ven Spirits");
-		GameRegistry.register(potion);
+		GameRegistry. register(potion);
 
 		return potion;
 	}

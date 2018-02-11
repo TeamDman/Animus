@@ -2,14 +2,14 @@ package com.teamdman.animus.registry;
 
 import WayofTime.bloodmagic.alchemyArray.AlchemyArrayEffectBinding;
 import WayofTime.bloodmagic.api.altar.EnumAltarTier;
-import WayofTime.bloodmagic.api.recipe.ShapedBloodOrbRecipe;
+import WayofTime.bloodmagic.api.recipe.*;
 import WayofTime.bloodmagic.api.registry.AlchemyArrayRecipeRegistry;
 import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry;
 import WayofTime.bloodmagic.api.registry.OrbRegistry;
 import WayofTime.bloodmagic.client.render.alchemyArray.BindingAlchemyCircleRenderer;
 import WayofTime.bloodmagic.item.ItemComponent;
-import WayofTime.bloodmagic.registry.ModBlocks;
-import WayofTime.bloodmagic.registry.ModItems;
+import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
+import WayofTime.bloodmagic.core.RegistrarBloodMagicItems;
 import WayofTime.bloodmagic.util.Utils;
 import amerifrance.guideapi.api.GuideAPI;
 
@@ -39,25 +39,25 @@ public class AnimusRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaDiamond), " a ", "a a", "  b", 'a', Items.DIAMOND, 'b', Items.STICK));
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemaltardiviner"))
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.altarDiviner), "aaa", "aba", "aaa", 'a', ModBlocks.BLOOD_RUNE, 'b', ModItems.RITUAL_DIVINER));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.altarDiviner), "aaa", "aba", "aaa", 'a', RegistrarBloodMagicBlocks.BLOOD_RUNE, 'b', RegistrarBloodMagicItems.RITUAL_DIVINER));
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilchains"))
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilChains), "aba", "bcb", "ada", 'a', Blocks.END_STONE, 'b', Blocks.OBSIDIAN, 'c', new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilChains), "aba", "bcb", "ada", 'a', Blocks.END_STONE, 'b', Blocks.OBSIDIAN, 'c', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_MAGICIAN)));
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigiltransposition"))
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilTransposition), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Items.ENDER_PEARL, 'c', new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilTransposition), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Items.ENDER_PEARL, 'c', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_MAGICIAN)));
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilbuilder"))
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilBuilder), "aba", "bcb", "ada", 'a', Items.SUGAR, 'b', Items.POTIONITEM, 'c', new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilBuilder), "aba", "bcb", "ada", 'a', Items.SUGAR, 'b', Items.POTIONITEM, 'c', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_MAGICIAN)));
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilconsumption"))
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilConsumption), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Blocks.END_STONE, 'c', new ItemStack(ModItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(ModItems.ORB_MAGICIAN)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilConsumption), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Blocks.END_STONE, 'c', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_MAGICIAN)));
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilstorm"))
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilStorm), "aaa", "aba", "aca", 'a', Items.FISHING_ROD, 'b', new ItemStack(ModItems.SLATE, 1, 1), 'c', OrbRegistry.getOrbStack(ModItems.ORB_APPRENTICE)));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilStorm), "aaa", "aba", "aca", 'a', Items.FISHING_ROD, 'b', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 1), 'c', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_APPRENTICE)));
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilleech"))
-		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilLeech), "dad", "aba", "dcd", 'a', Blocks.LEAVES, 'b', new ItemStack(ModItems.SLATE, 1, 1), 'c', OrbRegistry.getOrbStack(ModItems.ORB_APPRENTICE), 'd', Items.GOLDEN_APPLE));
+		GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilLeech), "dad", "aba", "dcd", 'a', Blocks.LEAVES, 'b', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 1), 'c', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_APPRENTICE), 'd', Items.GOLDEN_APPLE));
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemfragmenthealing"))
 		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PRISMARINE_SHARD), new ItemStack(AnimusItems.fragmentHealing), EnumAltarTier.TWO, 1000, 20, 25));

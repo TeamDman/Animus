@@ -51,7 +51,7 @@ public class RitualUnmaking extends Ritual {
 					if (entityItem.isDead || books != null) {
 						continue;
 					}
-					if (entityItem.getEntityItem().getItem() == Items.BOOK) {
+					if (entityItem.getItem() == Items.BOOK.getDefaultInstance()) {
 						books = entityItem;
 					}
 				}
@@ -61,12 +61,12 @@ public class RitualUnmaking extends Ritual {
 					if (entityItem.isDead) {
 						continue;
 					}
-					if (entityItem.getEntityItem().getItem() == Items.ENCHANTED_BOOK) {
-						NBTTagList enchants = entityItem.getEntityItem().getTagCompound().getTagList("StoredEnchantments", 10);
+					if (entityItem.getItem() == Items.ENCHANTED_BOOK.getDefaultInstance()) {
+						NBTTagList enchants = entityItem.getItem().getTagCompound().getTagList("StoredEnchantments", 10);
 						if (enchants == null)
 							continue;
 						for (int i = enchants.tagCount() - 1; i >= 0; i--) {
-							if (books == null || books.getEntityItem() == null)
+							if (books == null || books.getItem() == null)
 								break;
 
 							NBTTagCompound data = enchants.getCompoundTagAt(i);
@@ -86,16 +86,16 @@ public class RitualUnmaking extends Ritual {
 							world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook.copy()));
 							world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
 
-							books.getEntityItem().stackSize--;
+							books.getItem().stac  stackSize--;
 						}
-						entityItem.getEntityItem().stackSize--;
+						entityItem.getItem().stackSize--;
 						world.playSound(null, masterPos, SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.BLOCKS, 0.5F, 1.0F);
 						masterRitualStone.stopRitual(BreakType.DEACTIVATE);
 					} else {
-						NBTTagList enchants = entityItem.getEntityItem().getEnchantmentTagList();
+						NBTTagList enchants = entityItem.getItem().getEnchantmentTagList();
 						if (enchants != null) {
 							for (int i = enchants.tagCount() - 1; i >= 0; --i) {
-								if (books == null || books.getEntityItem() == null) {
+								if (books == null || books.getItem() == null) {
 									break;
 								}
 								ItemStack enchBook = new ItemStack(Items.ENCHANTED_BOOK);
@@ -111,10 +111,10 @@ public class RitualUnmaking extends Ritual {
 								nbttagcompound.setShort("lvl", enchLVL);
 								bookTags.appendTag(nbttagcompound);
 								world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
-								books.getEntityItem().stackSize--;
+								books.getItem().stackSize--;
 							}
-							if (entityItem.getEntityItem().getEnchantmentTagList().tagCount() == 0) {
-								entityItem.getEntityItem().getTagCompound().removeTag("ench");
+							if (entityItem.getItem().getEnchantmentTagList().tagCount() == 0) {
+								entityItem.getItem().getTagCompound().removeTag("ench");
 							}
 
 							world.playSound(null, masterPos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 0.5F, 1.0F);

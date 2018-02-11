@@ -3,8 +3,8 @@ package com.teamdman.animus.rituals;
 import WayofTime.bloodmagic.api.ritual.*;
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
-import WayofTime.bloodmagic.registry.ModBlocks;
-import WayofTime.bloodmagic.registry.ModItems;
+import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
+import WayofTime.bloodmagic.core.RegistrarBloodMagicItems;
 import com.teamdman.animus.Animus;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -68,7 +68,7 @@ public class RitualSol extends Ritual {
 				return;
 			IBlockState state = getStateToUse(handler.getStackInSlot(slot.get()));
 			world.setBlockState(toPlace.get(), state);
-			if (state.getBlock() != ModBlocks.BLOOD_LIGHT) {
+			if (state.getBlock() != RegistrarBloodMagicBlocks.BLOOD_LIGHT) {
 				handler.extractItem(slot.get(), 1, false);
 			}
 			network.syphon(getRefreshCost());
@@ -76,13 +76,13 @@ public class RitualSol extends Ritual {
 	}
 
 	private boolean isOkayToUse(ItemStack in) {
-		return in != null && (in.getItem() == ModItems.SIGIL_BLOOD_LIGHT || Block.getBlockFromItem(in.getItem()) != null);
+		return in != null && (in.getItem() == RegistrarBloodMagicItems.SIGIL_BLOOD_LIGHT || Block.getBlockFromItem(in.getItem()) != null);
 	}
 
 	@SuppressWarnings("deprecation")
 	private IBlockState getStateToUse(ItemStack in) {
-		if (in.getItem() == ModItems.SIGIL_BLOOD_LIGHT) {
-			return ModBlocks.BLOOD_LIGHT.getDefaultState();
+		if (in.getItem() == RegistrarBloodMagicItems.SIGIL_BLOOD_LIGHT) {
+			return RegistrarBloodMagicBlocks.BLOOD_LIGHT.getDefaultState();
 		} else {
 			return Block.getBlockFromItem(in.getItem()).getStateFromMeta(in.getItemDamage());
 		}

@@ -1,6 +1,7 @@
 package com.teamdman.animus;
 
-import WayofTime.bloodmagic.registry.ModBlocks;
+import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
+import WayofTime.bloodmagic.core.RegistrarBloodMagicItems;
 import amerifrance.guideapi.api.GuideAPI;
 import amerifrance.guideapi.api.IPage;
 import amerifrance.guideapi.api.impl.Book;
@@ -89,7 +90,7 @@ public class AnimusGuide {
 		buildEntry(entries, "rituals.culling", 1, Items.DIAMOND_SWORD);
 		buildEntry(entries, "rituals.leech", 1, Blocks.LEAVES);
 		buildEntry(entries, "rituals.regression", 1, Blocks.ANVIL);
-		categories.add(new CategoryItemStack(entries, "guide.animus.category.rituals", new ItemStack(ModBlocks.RITUAL_CONTROLLER)));
+		categories.add(new CategoryItemStack(entries, "guide.animus.category.rituals", new ItemStack(RegistrarBloodMagicBlocks.RITUAL_CONTROLLER)));
 		entries = new LinkedHashMap<>();
 
 		buildEntry(entries, "sigils.chains", 1, AnimusItems.sigilChains);
