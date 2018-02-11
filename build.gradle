@@ -1,18 +1,20 @@
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        mavenCentral()
+        maven { url "http://files.minecraftforge.net/maven" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
+
+plugins {
+	id "net.minecraftforge.gradle.forge" version "2.0.2"
+    id 'com.matthewprenger.cursegradle' version '1.0.9'
+	id 'io.franzbecker.gradle-lombok' version '1.6'
+	id 'maven-publish'
+}
 
 version = "${getDate()}"
 group= "com.teamdman.animus"
@@ -39,38 +41,74 @@ minecraft {
 
 
     clientRunArgs += "--username=AnimusDev"
-    mappings = "stable_29"
+    if (project.hasProperty('mappings_version'))
+        mappings = project.mappings_version
  
 }
 
 
 repositories {
-    maven { url "http://dvs1.progwml6.com/files/maven" }
-    maven {	url "http://mobiusstrip.eu/maven" }
-    maven {	url "http://tehnut.info/maven" }
+    maven { // JEI
+	    name "JEI Repo"
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {	// BloodMagic
+	    name "TehNut Repo"
+		url "http://tehnut.info/maven" 
+	}
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
-	deobfCompile "info.amerifrance.guideapi:Guide-API:${mc_version}-${guideapi_version}"
+    deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"   
+    deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
+	deobfCompile "info.amerifrance.guideapi:Guide-API:${major_version}-${guideapi_version}"
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${bloodmagic_version}"
 }
 
 processResources {
-    // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.info'
+        include '**/*.properties'
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
-        
-    // copy everything else, thats not the mcmod.info
+
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude '**/*.info'
+        exclude '**/*.properties'
     }
 }
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
+jar {
+    classifier = ''
+    manifest.mainAttributes(
+        "Built-By": System.getProperty('user.name'),
+        "Created-By": "${System.getProperty('java.vm.version')} + (${System.getProperty('java.vm.vendor')})",
+        "Implementation-Title": project.name,
+        "Implementation-Version": project.version,
+        "Built-On": "${mc_version}-${forge_version}"
+    )
+}
+
+// Javadoc jar
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+tasks.build.dependsOn javadoc, javadocJar
+
+tasks.withType(JavaCompile) { task ->
+    task.options.encoding = 'UTF-8'
+}
+
+
