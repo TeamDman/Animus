@@ -3,7 +3,6 @@ package com.teamdman.animus.registry;
 import com.teamdman.animus.common.potion.PotionVengefulSpirits;
 
 import net.minecraft.potion.Potion;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class AnimusPotions {
 	public static Potion VENGEFULSPIRITS;
@@ -16,7 +15,7 @@ public class AnimusPotions {
 		potion.setRegistryName(name);
 		//potion.setPotionName(potion.getClass().getSimpleName());
 		potion.setPotionName("Ven Spirits");
-		GameRegistry. register(potion);
+		//GameRegistry. register(potion);
 
 		return potion;
 	}

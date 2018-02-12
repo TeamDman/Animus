@@ -8,13 +8,13 @@ import WayofTime.bloodmagic.api.altar.EnumAltarTier;
 import WayofTime.bloodmagic.api.altar.IBloodAltar;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
-import WayofTime.bloodmagic.core.RegistrarBloodMagicItems;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class ItemAltarDiviner extends Item implements IVariantProvider {
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		tooltip.add("Shift-rightclick on an altar to show altar outline");
 		tooltip.add("Keep using to automatically place altar blocks");
 		tooltip.add("Use in off hand to display max tier altar outline");
@@ -50,8 +50,8 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 	}
 
 	private int getSlotFor(AltarComponent component, EntityPlayer player) {
-		for (int i = 0; i < player.inventory.mainInventory.length; ++i) {
-			if (player.inventory.mainInventory[i] != null && isItemComponent(component, player.inventory.mainInventory[i])) {
+		for (int i = 0; i < player.inventory.mainInventory.size(); ++i) {
+			if (player.inventory.mainInventory.get(i) != null && isItemComponent(component, player.inventory.mainInventory.get(i))) {
 				return i;
 			}
 		}
@@ -59,11 +59,12 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (world.getTileEntity(pos) == null || !(world.getTileEntity(pos) instanceof IBloodAltar))
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		
+		if (world.getTileEntity(blockPos) == null || !(world.getTileEntity(blockPos) instanceof IBloodAltar))
 			return EnumActionResult.PASS;
 
-		TileAltar altar = (TileAltar) world.getTileEntity(pos);
+		TileAltar altar = (TileAltar) world.getTileEntity(blockPos);
 		altar.checkTier();
 
 		if (!player.isSneaking() || altar == null || altar.getTier().toInt() >= EnumAltarTier.MAXTIERS)
@@ -71,7 +72,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 
 
 		for (AltarComponent altarComponent : EnumAltarTier.values()[hand.compareTo(EnumHand.OFF_HAND) == 0 ? EnumAltarTier.MAXTIERS - 1 : altar.getTier().toInt()].getAltarComponents()) {
-			BlockPos componentPos = pos.add(altarComponent.getOffset());
+			BlockPos componentPos = blockPos.add(altarComponent.getOffset());
 			if (world.isAirBlock(componentPos)) {
 				world.setBlockState(componentPos, AnimusBlocks.phantomBuilder.getDefaultState());
 				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
@@ -80,7 +81,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 
 		String playerinfomsg = "";
 		for (AltarComponent altarComponent : EnumAltarTier.values()[altar.getTier().toInt()].getAltarComponents()) {
-			BlockPos componentPos = pos.add(altarComponent.getOffset());
+			BlockPos componentPos = blockPos.add(altarComponent.getOffset());
 			BlockStack worldBlock = new BlockStack(world.getBlockState(componentPos).getBlock(), world.getBlockState(componentPos).getBlock().getMetaFromState(world.getBlockState(componentPos)));
 
 			if (altarComponent.getComponent() != EnumAltarComponent.NOTAIR) {

@@ -41,7 +41,8 @@ public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		Random rand = new Random();
 		BlockPos pos = null;
 		int damage;
@@ -67,7 +68,6 @@ public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
 					EntityItem fish = new EntityItem(world, pos.getX(), pos.getY() - rand.nextInt(2), pos.getZ(), new ItemStack(Items.FISH, 1 + rand.nextInt(2)));
 					fish.setVelocity(rand.nextDouble() * .25, -.25, rand.nextDouble() * .25);
 					fish.setEntityInvulnerable(true);
-					fish.fireResistance = 40;
 					world.spawnEntity(fish);
 				}
 			

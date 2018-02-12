@@ -1,20 +1,13 @@
 package com.teamdman.animus.handlers;
 
-import java.util.Random;
-
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
-import com.teamdman.animus.entity.EntityVengefulSpirit;
 import com.teamdman.animus.registry.AnimusItems;
-import com.teamdman.animus.registry.AnimusPotions;
 import com.teamdman.animus.slots.SlotNoPickup;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;

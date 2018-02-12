@@ -44,15 +44,15 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
 	
 	public ItemStack getFood(EntityPlayer player) {
 		int i;
-		for (i = 0; i < player.inventory.mainInventory.length; i++){
-			if (player.inventory.mainInventory[i] == null)
+		for (i = 0; i < player.inventory.mainInventory.size(); i++){
+			if (player.inventory.mainInventory.get(i) == null)
 				continue;
-			Item food = player.inventory.mainInventory[i].getItem();
+			Item food = player.inventory.mainInventory.get(i).getItem();
 			if (food == null)
 				continue;
 
 			if (food instanceof IPlantable){
-				return player.inventory.mainInventory[i];
+				return player.inventory.mainInventory.get(i);
 			}
 			
 		}
@@ -124,7 +124,7 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
 					haseditable = getEdible(player);
 					if (haseditable != null)
 					{
-						haseditable.stackSize -= Math.min(random.nextInt(4), haseditable.stackSize);
+						haseditable.shrink(Math.min(random.nextInt(4), haseditable.getCount()));
 						eaten = true;
 					}
 					else if (eatGrowables(player) == true){
@@ -140,7 +140,9 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
 		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 	}
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		if (!world.isRemote && !isUnusable(stack)) {
 				NBTTagCompound comp = NBTHelper.checkNBT(stack).getTagCompound();
 				boolean activated = getActivated(stack);

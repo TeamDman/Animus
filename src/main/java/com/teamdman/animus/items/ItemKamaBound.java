@@ -1,7 +1,5 @@
 package com.teamdman.animus.items;
 
-import WayofTime.bloodmagic.ConfigHandler;
-import WayofTime.bloodmagic.api.BloodMagicAPI;
 import WayofTime.bloodmagic.api.altar.IBloodAltar;
 import WayofTime.bloodmagic.api.util.helper.PlayerSacrificeHelper;
 import net.minecraft.entity.Entity;
@@ -96,14 +94,14 @@ public class ItemKamaBound extends ItemKama {
 			if (target.isDead || target.getHealth() < 0.5F || !target.isNonBoss() || target instanceof EntityPlayer)
 				continue;
 
-			String entityName = target.getClass().getSimpleName();
+			//String entityName = target.getClass().getSimpleName();
 			int lifeEssence = 500;
 
-			if (ConfigHandler.entitySacrificeValues.containsKey(entityName))
-				lifeEssence = ConfigHandler.entitySacrificeValues.get(entityName);
+			//if (ConfigHandler.entitySacrificeValues.containsKey(entityName))
+				//lifeEssence = ConfigHandler.entitySacrificeValues.get(entityName);
 
-			if (BloodMagicAPI.getEntitySacrificeValues().containsKey(entityName))
-				lifeEssence = BloodMagicAPI.getEntitySacrificeValues().get(entityName);
+			//if (BloodMagicAPI.getEntitySacrificeValues().containsKey(entityName))
+				//lifeEssence = BloodMagicAPI.getEntitySacrificeValues().get(entityName);
 
 			if (lifeEssence <= 0)
 				continue;
@@ -117,7 +115,7 @@ public class ItemKamaBound extends ItemKama {
 						SoundCategory.BLOCKS, 0.5F,
 						2.6F + (target.world.rand.nextFloat() - target.world.rand.nextFloat()) * 0.8F);
 				target.setHealth(-1);
-				target.onDeath(BloodMagicAPI.getDamageSource());
+				target.onDeath(khopeshDamage);
 				killed = true;
 			}
 		}

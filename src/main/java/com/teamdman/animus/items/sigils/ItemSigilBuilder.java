@@ -48,7 +48,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
 	@SuppressWarnings({"deprecation"})
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 		if (!world.isRemote && !isUnusable(stack)) {
 			if (player.isSneaking()) {
 
@@ -65,8 +66,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 							world.setBlockState(air, _state);
 							NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
-							_stack.stackSize--;
-							if (hand == EnumHand.MAIN_HAND && _stack.stackSize <= 0)
+							_stack.shrink(1);
+							if (hand == EnumHand.MAIN_HAND && _stack.getCount() <= 0)
 								player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
 						}
 					}
@@ -79,8 +80,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		BlockPos air = pos;
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		BlockPos air = blockPos;
 		int dist = 0;
 		if (player.isSneaking()) {
 			for (int radius = 1; radius <= Math.sqrt(AnimusConfig.builderRange); radius++) {
@@ -88,13 +89,13 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 					for (int z = -radius; z <= radius; z++) {
 						switch (side.getAxis()) {
 							case X:
-								air = pos.add(0, x, z);
+								air = blockPos.add(0, x, z);
 								break;
 							case Y:
-								air = pos.add(x, 0, z);
+								air = blockPos.add(x, 0, z);
 								break;
 							case Z:
-								air = pos.add(x, z, 0);
+								air = blockPos.add(x, z, 0);
 								break;
 						}
 						if (world.isAirBlock(air)) {
@@ -106,8 +107,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 								return EnumActionResult.SUCCESS;
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 							world.setBlockState(air, _state);
-							_stack.stackSize--;
-							if (hand == EnumHand.MAIN_HAND && _stack.stackSize <= 0)
+							_stack.shrink(1);
+							if (hand == EnumHand.MAIN_HAND && _stack.getCount() <= 0)
 								player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
 							return EnumActionResult.SUCCESS;
 						}
@@ -132,8 +133,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 			IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 			world.setBlockState(air, _state);
 			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
-			_stack.stackSize--;
-			if (hand == EnumHand.MAIN_HAND && _stack.stackSize <= 0)
+			_stack.shrink(1);
+			if (hand == EnumHand.MAIN_HAND && _stack.getCount() <= 0)
 				player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
 		}
 		return EnumActionResult.SUCCESS;

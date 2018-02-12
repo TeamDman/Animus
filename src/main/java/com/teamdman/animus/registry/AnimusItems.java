@@ -5,7 +5,6 @@ import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.items.*;
 import com.teamdman.animus.items.sigils.*;
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -71,7 +70,7 @@ public class AnimusItems {
 			item.setRegistryName(name);
 		item.setUnlocalizedName(name);
 		item.setCreativeTab(Animus.tabMain);
-		GameRegistry.register(item);
+		//GameRegistry.register(item);
 		Animus.proxy.tryHandleItemModel(item, name);
 
 		return item;

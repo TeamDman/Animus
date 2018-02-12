@@ -5,11 +5,11 @@ import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.Animus;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
@@ -83,17 +83,17 @@ public class RitualEntropy extends Ritual {
 		layer++;
 		fetchList.add(input.getItem());
 		int rtn = 1;
-		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-		for (IRecipe recipe : recipes) {
+
+		for (IRecipe recipe : ForgeRegistries.RECIPES.getValues()) {
 			if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(input)) {
-				rtn += recipe.getRecipeSize();
+				rtn += recipe.getIngredients().size();
 				List components;
 				if (recipe instanceof ShapelessRecipes) {
 					components = ((ShapelessRecipes) recipe).recipeItems;
 				} else if (recipe instanceof ShapedRecipes) {
 					components = Arrays.asList(((ShapedRecipes) recipe).recipeItems);
 				} else if (recipe instanceof ShapedOreRecipe) {
-					components = Arrays.asList(((ShapedOreRecipe) recipe).getInput());
+					components = Arrays.asList(((ShapedOreRecipe) recipe).getIngredients());
 				} else {
 					continue;
 				}

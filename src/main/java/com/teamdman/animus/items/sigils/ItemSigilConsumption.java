@@ -7,7 +7,6 @@ import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.tiles.TileAntimatter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -29,15 +28,15 @@ public class ItemSigilConsumption extends ItemSigil implements IVariantProvider 
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (worldIn.getTileEntity(pos) != null || worldIn.getBlockState(pos).getBlock().getBlockHardness(null, null, null) == -1.0F)
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (world.getTileEntity(blockPos) != null || world.getBlockState(blockPos).getBlock().getBlockHardness(null, null, null) == -1.0F)
 			return EnumActionResult.SUCCESS;
-		Block seeking = worldIn.getBlockState(pos).getBlock();
-		worldIn.setBlockState(pos, AnimusBlocks.blockAntimatter.getDefaultState().withProperty(BlockAntimatter.DECAYING, false));
-		((TileAntimatter) worldIn.getTileEntity(pos)).seeking = seeking;
-		((TileAntimatter) worldIn.getTileEntity(pos)).player = playerIn;
+		Block seeking = world.getBlockState(blockPos).getBlock();
+		world.setBlockState(blockPos, AnimusBlocks.blockAntimatter.getDefaultState().withProperty(BlockAntimatter.DECAYING, false));
+		((TileAntimatter) world.getTileEntity(blockPos)).seeking = seeking;
+		((TileAntimatter) world.getTileEntity(blockPos)).player = player;
 
-		worldIn.scheduleBlockUpdate(pos, AnimusBlocks.blockAntimatter, 5, 0);
+		world.scheduleBlockUpdate(blockPos, AnimusBlocks.blockAntimatter, 5, 0);
 		return EnumActionResult.SUCCESS;
 	}
 

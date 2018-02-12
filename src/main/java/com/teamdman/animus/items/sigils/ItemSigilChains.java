@@ -9,6 +9,8 @@ import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.google.common.base.Strings;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusItems;
+
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -64,14 +67,14 @@ public class ItemSigilChains extends ItemSigil implements IVariantProvider {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 
 		NBTHelper.checkNBT(stack);
 
 		if (!Strings.isNullOrEmpty(getOwnerName(stack)))
 			tooltip.add(TextHelper.localizeEffect("tooltip.BloodMagic.currentOwner", PlayerHelper.getUsernameFromStack(stack)));
 
-		super.addInformation(stack, player, tooltip, advanced);
+		super.addInformation(stack, world, tooltip, flag);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.teamdman.animus;
 
-import WayofTime.bloodmagic.ConfigHandler;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -102,7 +101,7 @@ public class AnimusConfig {
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent event) {
-		if (event.getModID().equals(Animus.MODID))
-			ConfigHandler.syncConfig();
+		//if (event.getModID().equals(Animus.MODID))
+			//ConfigHandler.syncConfig();
 	}
 }

@@ -1,6 +1,5 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.ConfigHandler;
 import WayofTime.bloodmagic.api.ritual.*;
 import WayofTime.bloodmagic.api.saving.SoulNetwork;
 import WayofTime.bloodmagic.api.soul.EnumDemonWillType;
@@ -126,8 +125,8 @@ public class RitualCulling extends Ritual {
 			network.causeNausea();
 		} else {
 			for (EntityLivingBase livingEntity : list) {
-				if (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName()))
-					continue;
+				/*if (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName()))
+					continue;*/
 
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;

@@ -1,6 +1,6 @@
 package com.teamdman.animus.proxy;
 
-import WayofTime.bloodmagic.util.helper.InventoryRenderHelperV2;
+//import WayofTime.bloodmagic.util.helper.InventoryRenderHelperV2; <-- no longer exists
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -30,9 +30,9 @@ public class CommonProxy {
 	public void tryHandleBlockModel(Block block, String name) {
 	}
 
-	public InventoryRenderHelperV2 getRenderHelper() {
+	/*public InventoryRenderHelperV2 getRenderHelper() {
 		return null;
-	}
+	}*/
 
 
 }

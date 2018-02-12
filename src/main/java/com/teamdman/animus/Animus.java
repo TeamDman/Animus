@@ -7,7 +7,6 @@ import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.*;
 import net.minecraft.creativetab.CreativeTabs;
 import com.teamdman.animus.Constants;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -52,7 +51,6 @@ public class Animus {
 		AnimusBlocks.init();
 		AnimusTiles.init();
 		AnimusEntities.init();
-		AnimusGuide.buildGuide();
 		proxy.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}

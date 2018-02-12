@@ -2,7 +2,7 @@ package com.teamdman.animus.proxy;
 
 import WayofTime.bloodmagic.client.IMeshProvider;
 import WayofTime.bloodmagic.client.IVariantProvider;
-import WayofTime.bloodmagic.util.helper.InventoryRenderHelperV2;
+//import WayofTime.bloodmagic.util.helper.InventoryRenderHelperV2; no longer exists
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.client.render.entity.RenderVengefulSpirit;
 import com.teamdman.animus.entity.EntityVengefulSpirit;
@@ -23,12 +23,12 @@ import org.apache.commons.lang3.tuple.Pair;
  * Created by TeamDman on 9/18/2016.
  */
 public class ClientProxy extends CommonProxy {
-	InventoryRenderHelperV2 renderHelper;
+	//InventoryRenderHelperV2 renderHelper;
 
-	@Override
-	public InventoryRenderHelperV2 getRenderHelper() {
+
+	/*public InventoryRenderHelperV2 getRenderHelper() {
 		return renderHelper;
-	}
+	}*/
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
@@ -36,7 +36,7 @@ public class ClientProxy extends CommonProxy {
 
         
 		
-	renderHelper = new InventoryRenderHelperV2(Animus.DOMAIN);
+		//renderHelper = new InventoryRenderHelperV2(Animus.DOMAIN);
 		AnimusItems.initRenders();
 		initRenderers();
 	}

@@ -7,8 +7,8 @@ import org.lwjgl.opengl.GL11;
 import com.teamdman.animus.Animus;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
@@ -57,7 +57,7 @@ public class PotionVengefulSpirits extends Potion {
         float b =  ((float) c.getBlue())  / 255F;
 
         mc.renderEngine.bindTexture(rl);
-        VertexBuffer vb = tes.getBuffer();
+        BufferBuilder vb = tes.getBuffer();
         vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
         vb.pos(x + offsetX,      y + offsetY,      0).tex(0, 0).color(r, g, b, 1F).endVertex();
@@ -82,7 +82,7 @@ public class PotionVengefulSpirits extends Potion {
         float b =  ((float) c.getBlue())  / 255F;
 
         mc.renderEngine.bindTexture(rl);
-        VertexBuffer vb = tes.getBuffer();
+        BufferBuilder vb = tes.getBuffer();
         vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
         vb.pos(x + offsetX,      y + offsetY,      0).tex(0, 0).color(r, g, b, alpha).endVertex();

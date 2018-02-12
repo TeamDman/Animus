@@ -18,52 +18,46 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by TeamDman on 2015-06-10.
  */
 public class ItemMobSoul extends Item implements IVariantProvider {
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
+		
+		Random bRand = new Random();
+
 		if (stack.getTagCompound() == null)
 			return EnumActionResult.PASS;
-		if (worldIn.isRemote)
+		if (world.isRemote)
 			return EnumActionResult.PASS;
 		Entity mob;
 		NBTTagCompound root = stack.getTagCompound();
 		if (root.hasKey("id")) {
-			String entityId = root.getString("id");
-			mob = EntityList.createEntityByIDFromName(entityId, worldIn);
+			int entityId = Integer.parseInt(root.getString("id"));
+			mob = EntityList.createEntityByID(entityId, world);
 		} else {
-			mob = EntityList.createEntityFromNBT(root.getCompoundTag("MobData"), worldIn);
+			mob = EntityList.createEntityFromNBT(root.getCompoundTag("MobData"), world);
 		}
 		if (mob == null)
 			return EnumActionResult.PASS;
 		mob.readFromNBT(root.getCompoundTag("MobData"));
-		mob.setLocationAndAngles(pos.getX(), pos.getY() + 2, pos.getZ(), worldIn.rand.nextFloat() * 360.0F, 0);
-		//		if (!worldIn.checkNoEntityCollision(mob.getEntityBoundingBox()) || !worldIn.getCollisionBoxes(mob, mob.getEntityBoundingBox()).isEmpty())
-		//			return EnumActionResult.PASS;
+		mob.setLocationAndAngles(blockPos.getX(), blockPos.getY() + 2, blockPos.getZ(), bRand.nextFloat() * 360.0F, 0);
 
 		if (root.hasKey("name")) {
 			mob.setCustomNameTag(root.getString("name"));
 		}
 
-		worldIn.spawnEntity(mob);
+		world.spawnEntity(mob);
 
 		if (mob instanceof EntityLiving) {
 			((EntityLiving) mob).playLivingSound();
 		}
 
-		//		Entity riddenByEntity = mob.riddenByEntity;
-		//		while (riddenByEntity != null) {
-		//			riddenByEntity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0.0F);
-		//			world.spawnEntityInWorld(riddenByEntity);
-		//			if (riddenByEntity instanceof EntityLiving) {
-		//				((EntityLiving) riddenByEntity).playLivingSound();
-		//			}
-		//			riddenByEntity = riddenByEntity.riddenByEntity;
-		//		}
-		playerIn.setHeldItem(hand, null);
+		player.setHeldItem(hand, null);
 		return EnumActionResult.PASS;
 	}
 
