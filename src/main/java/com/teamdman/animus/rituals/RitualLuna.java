@@ -1,8 +1,9 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.api.ritual.*;
-import WayofTime.bloodmagic.api.saving.SoulNetwork;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.ritual.*;
+import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.ritual.Ritual;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.Animus;
 import net.minecraft.block.state.IBlockState;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 /**
  * Created by TeamDman on 2015-05-28.
@@ -75,14 +77,11 @@ public class RitualLuna extends Ritual {
 	}
 
 	@Override
-	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> components = new ArrayList<RitualComponent>();
-		this.addParallelRunes(components, 1, 0, EnumRuneType.DUSK);
-		this.addCornerRunes(components, 1, 0, EnumRuneType.DUSK);
-		this.addParallelRunes(components, 2, 1, EnumRuneType.DUSK);
-		this.addCornerRunes(components, 2, 1, EnumRuneType.DUSK);
-
-		return components;
+	public void gatherComponents(Consumer<RitualComponent> components) {
+		components.accept(new RitualComponent(new BlockPos(0, 1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(0, 2, 1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(1, 1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(1, 2, 1), EnumRuneType.DUSK));
 	}
 
 	@Override

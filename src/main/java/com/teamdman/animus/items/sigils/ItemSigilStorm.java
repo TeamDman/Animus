@@ -1,10 +1,11 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.api.impl.ItemSigil;
-import WayofTime.bloodmagic.api.ritual.AreaDescriptor;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
+import WayofTime.bloodmagic.ritual.AreaDescriptor;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import com.teamdman.animus.AnimusConfig;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,17 +28,18 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
+public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
     protected final Map<String, AreaDescriptor> modableRangeMap = new HashMap<String, AreaDescriptor>();
-	public static final String EFFECT_RANGE = "effect";
+	public static final String                  EFFECT_RANGE    = "effect";
 	public ItemSigilStorm() {
-		super(AnimusConfig.stormConsumption);
+		super("storm",AnimusConfig.stormConsumption);
 	}
 
 	@Override
@@ -119,12 +121,7 @@ public class ItemSigilStorm extends ItemSigil implements IVariantProvider {
 		return world.rayTraceBlocks(vec3, vec31, useLiquids);
 	}
 
-	@Override
-	public List<Pair<Integer, String>> getVariants() {
-		List<Pair<Integer, String>> ret = new ArrayList<Pair<Integer, String>>();
-		ret.add(new ImmutablePair<Integer, String>(0, "type=normal"));
-		return ret;
-	}
+@Override	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {		variants.put(0,"type=normal");	}
 
 	public void addBlockRange(String range, AreaDescriptor defaultRange)
     {

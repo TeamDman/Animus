@@ -1,10 +1,10 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.api.ritual.*;
-import WayofTime.bloodmagic.api.saving.SoulNetwork;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicItems;
+import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.ritual.*;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Animus;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -15,8 +15,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
-import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 
@@ -41,10 +41,10 @@ public class RitualSol extends Ritual {
 
 	@Override
 	public void performRitual(IMasterRitualStone masterRitualStone) {
-		World world = masterRitualStone.getWorldObj();
-		SoulNetwork network = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
-		BlockPos masterPos = masterRitualStone.getBlockPos();
-		AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
+		World           world         = masterRitualStone.getWorldObj();
+		SoulNetwork     network       = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
+		BlockPos        masterPos     = masterRitualStone.getBlockPos();
+		AreaDescriptor  chestRange    = getBlockRange(CHEST_RANGE);
 		TileEntityChest tileInventory = (TileEntityChest) world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
 		if (tileInventory == null)
 			return;
@@ -99,14 +99,11 @@ public class RitualSol extends Ritual {
 	}
 
 	@Override
-	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> components = new ArrayList<RitualComponent>();
-		this.addParallelRunes(components, 0, -1, EnumRuneType.AIR);
-		this.addParallelRunes(components, 0, -2, EnumRuneType.AIR);
-		this.addParallelRunes(components, 0, -3, EnumRuneType.AIR);
-		this.addParallelRunes(components, 1, -3, EnumRuneType.AIR);
-
-		return components;
+	public void gatherComponents(Consumer<RitualComponent> components) {
+		components.accept(new RitualComponent(new BlockPos(0,-1,0),EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0,-2,0),EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0,-3,0),EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(1,-3,0),EnumRuneType.AIR));
 	}
 
 	@Override

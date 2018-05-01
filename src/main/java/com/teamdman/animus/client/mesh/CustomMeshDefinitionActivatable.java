@@ -1,6 +1,6 @@
 package com.teamdman.animus.client.mesh;
 
-import WayofTime.bloodmagic.api.iface.IActivatable;
+import WayofTime.bloodmagic.iface.IActivatable;
 import com.teamdman.animus.Animus;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

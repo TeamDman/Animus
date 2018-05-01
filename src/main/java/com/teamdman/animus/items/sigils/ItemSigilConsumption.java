@@ -1,7 +1,9 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.api.impl.ItemSigil;
+import WayofTime.bloodmagic.item.ItemSigil;
 import WayofTime.bloodmagic.client.IVariantProvider;
+import WayofTime.bloodmagic.item.ItemSigil;
+import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import com.teamdman.animus.blocks.BlockAntimatter;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.tiles.TileAntimatter;
@@ -21,9 +23,9 @@ import java.util.List;
 /**
  * Created by TeamDman on 2015-06-09.
  */
-public class ItemSigilConsumption extends ItemSigil implements IVariantProvider {
+public class ItemSigilConsumption extends ItemSigilBase implements IVariantProvider {
 	public ItemSigilConsumption() {
-		super(200);
+		super("consumption",200);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -38,12 +40,5 @@ public class ItemSigilConsumption extends ItemSigil implements IVariantProvider 
 
 		world.scheduleBlockUpdate(blockPos, AnimusBlocks.blockAntimatter, 5, 0);
 		return EnumActionResult.SUCCESS;
-	}
-
-	@Override
-	public List<Pair<Integer, String>> getVariants() {
-		List<Pair<Integer, String>> ret = new ArrayList<Pair<Integer, String>>();
-		ret.add(new ImmutablePair<Integer, String>(0, "type=normal"));
-		return ret;
 	}
 }

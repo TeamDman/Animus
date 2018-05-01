@@ -1,8 +1,8 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.api.ritual.*;
-import WayofTime.bloodmagic.api.saving.SoulNetwork;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.ritual.*;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.Animus;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Created by TeamDman on 2015-05-28.
@@ -38,12 +39,12 @@ public class RitualEntropy extends Ritual {
 
 	@Override
 	public void performRitual(IMasterRitualStone masterRitualStone) {
-		World world = masterRitualStone.getWorldObj();
-		SoulNetwork network = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
-		int currentEssence = network.getCurrentEssence();
-		BlockPos masterPos = masterRitualStone.getBlockPos();
-		AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
-		TileEntity tileInventory = world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
+		World          world          = masterRitualStone.getWorldObj();
+		SoulNetwork    network        = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
+		int            currentEssence = network.getCurrentEssence();
+		BlockPos       masterPos      = masterRitualStone.getBlockPos();
+		AreaDescriptor chestRange     = getBlockRange(CHEST_RANGE);
+		TileEntity     tileInventory  = world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
 
 
 		if (!masterRitualStone.getWorldObj().isRemote && tileInventory != null && tileInventory instanceof IInventory) {
@@ -141,14 +142,12 @@ public class RitualEntropy extends Ritual {
 		return 1;
 	}
 
-	@Override
-	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> components = new ArrayList<RitualComponent>();
-		this.addCornerRunes(components, 1, 1, EnumRuneType.EARTH);
-		this.addCornerRunes(components, 2, 0, EnumRuneType.FIRE);
-		this.addCornerRunes(components, 3, -1, EnumRuneType.WATER);
 
-		return components;
+	@Override
+	public void gatherComponents(Consumer<RitualComponent> components) {
+		components.accept(new RitualComponent(new BlockPos(0, 1, 1), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(0, 2, 0), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(0, 3, -1), EnumRuneType.WATER));
 	}
 
 	@Override

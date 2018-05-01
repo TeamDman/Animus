@@ -1,12 +1,12 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.api.ritual.*;
-import WayofTime.bloodmagic.api.saving.SoulNetwork;
-import WayofTime.bloodmagic.api.soul.EnumDemonWillType;
-import WayofTime.bloodmagic.api.util.helper.LogHelper;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.core.data.SoulNetwork;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
+import WayofTime.bloodmagic.ritual.*;
+import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import WayofTime.bloodmagic.tile.TileAltar;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
+import amerifrance.guideapi.util.LogHelper;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
@@ -26,11 +26,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class RitualCulling extends Ritual {
+	public static final String ALTAR_RANGE  = "altar";
 	public static final String EFFECT_RANGE = "effect";
-	public static final String ALTAR_RANGE = "altar";
-
+	public static final int                                amount         = 200;
+	public final        int                                maxWill        = 100;
+	public              BlockPos                           altarOffsetPos = new BlockPos(0, 0, 0);
+	public              double                             crystalBuffer  = 0;
+	public              LogHelper                          logger         = new LogHelper();
+	public              Random                             rand           = new Random();
+	public              int                                reagentDrain   = 2;
+	public              boolean                            result         = false;
+	public              double                             willBuffer     = 0;
+	public              HashMap<EnumDemonWillType, Double> willMap        = new HashMap<EnumDemonWillType, Double>();
+	DamageSource culled = new DamageSource("animus.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor()
+			.setDamageIsAbsolute();
 	public RitualCulling() {
 		super("ritualCulling", 0, 50000, "ritual." + Animus.MODID + ".culling");
 
@@ -42,22 +54,8 @@ public class RitualCulling extends Ritual {
 
 	}
 
-	DamageSource culled = new DamageSource("animus.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor()
-			.setDamageIsAbsolute();
-
-	public int reagentDrain = 2;
-	public boolean result = false;
-	public static final int amount = 200;
-	public BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
-	public LogHelper logger = new LogHelper("Animus Debug");
-	public double willBuffer = 0;
-	public double crystalBuffer = 0;
-	public final int maxWill = 100;
-	public HashMap<EnumDemonWillType, Double> willMap = new HashMap<EnumDemonWillType, Double>();
-	public Random rand = new Random();
-
 	@Override
-	public boolean activateRitual(IMasterRitualStone ritualStone, EntityPlayer player, String owner) {
+	public boolean activateRitual(IMasterRitualStone ritualStone, EntityPlayer player, UUID owner) {
 		double xCoord, yCoord, zCoord;
 
 		xCoord = ritualStone.getBlockPos().getX();
@@ -70,6 +68,25 @@ public class RitualCulling extends Ritual {
 		return true;
 	}
 
+	public double smallGauss(double d) {
+		Random myRand = new Random();
+		return (myRand.nextFloat() - 0.5D) * d;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		willBuffer = tag.getDouble("willBuffer");
+
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setDouble("willBuffer", willBuffer);
+
+	}
+
 	@Override
 	public void performRitual(IMasterRitualStone ritualStone) {
 		SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
@@ -77,15 +94,15 @@ public class RitualCulling extends Ritual {
 			return;
 		}
 
-		int currentEssence = network.getCurrentEssence();
-		World world = ritualStone.getWorldObj();
-		World soundSource = ritualStone.getWorldObj();
-		EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;
-		BlockPos pos = ritualStone.getBlockPos();
-		double currentAmount = WorldDemonWillHandler.getCurrentWill(world, pos, type);
+		int               currentEssence = network.getCurrentEssence();
+		World             world          = ritualStone.getWorldObj();
+		World             soundSource    = ritualStone.getWorldObj();
+		EnumDemonWillType type           = EnumDemonWillType.DESTRUCTIVE;
+		BlockPos          pos            = ritualStone.getBlockPos();
+		double            currentAmount  = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
 		TileAltar tileAltar = null;
-		boolean testFlag = false;
+		boolean   testFlag  = false;
 
 		BlockPos altarPos = pos.add(altarOffsetPos);
 
@@ -115,7 +132,7 @@ public class RitualCulling extends Ritual {
 		}
 
 		AreaDescriptor damageRange = getBlockRange(EFFECT_RANGE);
-		AxisAlignedBB range = damageRange.getAABB(pos);
+		AxisAlignedBB  range       = damageRange.getAABB(pos);
 
 		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, range);
 
@@ -134,8 +151,8 @@ public class RitualCulling extends Ritual {
 				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Disallows cursed earth spawned mobs
 
 				if (effect.isEmpty()) {
-					float damage = 0;
-					BlockPos at = null;
+					float    damage = 0;
+					BlockPos at     = null;
 					soundSource = livingEntity.world;
 					at = livingEntity.getPosition();
 					boolean isNonBoss = livingEntity.isNonBoss();
@@ -166,7 +183,7 @@ public class RitualCulling extends Ritual {
 							network.syphon(25000);
 						} else {
 							double modifier = .5;
-							if (livingEntity instanceof EntityAnimal && !livingEntity.isCollided) {
+							if (livingEntity instanceof EntityAnimal) {//&& !livingEntity.isCollided
 								modifier = 2;
 							}
 							willBuffer += modifier * Math.min(15.00, livingEntity.getMaxHealth());
@@ -174,11 +191,11 @@ public class RitualCulling extends Ritual {
 
 						if (at != null) {
 
-							if (world.isRemote){
+							if (world.isRemote) {
 								for (int i = 0; i < rand.nextInt(4); i++)
-				                world.spawnParticle(EnumParticleTypes.PORTAL, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + .5,
-				                        (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, new int[0]);	
-								}
+									world.spawnParticle(EnumParticleTypes.PORTAL, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + .5,
+											(rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, new int[0]);
+							}
 							soundSource.playSound(null, at, AnimusSoundEventHandler.ghostly, SoundCategory.BLOCKS, 1F,
 									1F);
 
@@ -190,7 +207,7 @@ public class RitualCulling extends Ritual {
 			}
 
 			network.syphon(getRefreshCost() * entityCount);
-			double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount/2, 10));
+			double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2, 10));
 
 			if (rand.nextInt(30) == 0) { // 3% chance per cycle to generate destructive will
 				double filled = WorldDemonWillHandler.fillWillToMaximum(world, pos, type, drainAmount, maxWill, false);
@@ -201,14 +218,9 @@ public class RitualCulling extends Ritual {
 
 	}
 
-	public double smallGauss(double d) {
-		Random myRand = new Random();
-		return (myRand.nextFloat() - 0.5D) * d;
-	}
-
 	@Override
-	public Ritual getNewCopy() {
-		return new RitualCulling();
+	public int getRefreshCost() {
+		return 75;
 	}
 
 	@Override
@@ -217,66 +229,48 @@ public class RitualCulling extends Ritual {
 	}
 
 	@Override
-	public int getRefreshCost() {
-		return 75;
+	public void gatherComponents(Consumer<RitualComponent> components) {
+		components.accept(new RitualComponent(new BlockPos( 1, 0, 1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( -1, 0, 1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( 1, 0, -1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( -1, 0, -1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( 2, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 2, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -2, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -2, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 0, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 2, -1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 0, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -2, -1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -3, -1, -3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 3, -1, -3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -3, -1, 3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 3, -1, 3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 2, -1, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 4, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -2, -1, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 4, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 2, -1, -4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -4, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -2, -1, -4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -4, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 1, 0, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 4, 0, 1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 1, 0, -4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -4, 0, 1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -1, 0, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 4, 0, -1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -1, 0, -4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -4, 0, -1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 4, 1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 0, 1, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -4, 1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 0, 1, -4), EnumRuneType.DUSK));
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		willBuffer = tag.getDouble("willBuffer");
-
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
-		tag.setDouble("willBuffer", willBuffer);
-
-	}
-
-	@Override
-	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> ritualBlocks = new ArrayList<RitualComponent>();
-
-		this.addRune(ritualBlocks, 1, 0, 1, EnumRuneType.FIRE);
-		this.addRune(ritualBlocks, -1, 0, 1, EnumRuneType.FIRE);
-		this.addRune(ritualBlocks, 1, 0, -1, EnumRuneType.FIRE);
-		this.addRune(ritualBlocks, -1, 0, -1, EnumRuneType.FIRE);
-		this.addRune(ritualBlocks, 2, -1, 2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 2, -1, -2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -2, -1, 2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -2, -1, -2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 0, -1, 2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 2, -1, 0, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 0, -1, -2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -2, -1, 0, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -3, -1, -3, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 3, -1, -3, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -3, -1, 3, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 3, -1, 3, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 2, -1, 4, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 4, -1, 2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -2, -1, 4, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 4, -1, -2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 2, -1, -4, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -4, -1, 2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -2, -1, -4, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -4, -1, -2, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 1, 0, 4, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 4, 0, 1, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 1, 0, -4, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -4, 0, 1, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -1, 0, 4, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 4, 0, -1, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -1, 0, -4, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -4, 0, -1, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 4, 1, 0, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 0, 1, 4, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, -4, 1, 0, EnumRuneType.DUSK);
-		this.addRune(ritualBlocks, 0, 1, -4, EnumRuneType.DUSK);
-		return ritualBlocks;
-
+	public Ritual getNewCopy() {
+		return new RitualCulling();
 	}
 
 }

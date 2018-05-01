@@ -56,39 +56,39 @@ public class ClientProxy extends CommonProxy {
 		super.postInit(event);
 	}
 
-
-	@Override
-	public void tryHandleItemModel(Item item, String name) {
-
-		if (item instanceof IMeshProvider) {
-			System.out.println("IMeshProvider");
-			IMeshProvider meshProvider = (IMeshProvider) item;
-			ModelLoader.setCustomMeshDefinition(item, meshProvider.getMeshDefinition());
-			ResourceLocation resourceLocation = meshProvider.getCustomLocation();
-			if (resourceLocation == null)
-				resourceLocation = new ResourceLocation(Animus.MODID, "item/" + name);
-
-			for (String variant : meshProvider.getVariants())
-				ModelLoader.registerItemVariants(item, new ModelResourceLocation(resourceLocation, variant));
-		} else if (item instanceof IVariantProvider) {
-			IVariantProvider variantProvider = (IVariantProvider) item;
-			for (Pair<Integer, String> variant : variantProvider.getVariants()) {
-				ModelLoader.setCustomModelResourceLocation(item, variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, "item/" + name), variant.getRight()));
-
-
-			}
-		}
-	}
-
-
-	@Override
-	public void tryHandleBlockModel(Block block, String name) {
-		if (block instanceof IVariantProvider) {
-			IVariantProvider variantProvider = (IVariantProvider) block;
-			for (Pair<Integer, String> variant : variantProvider.getVariants())
-				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, name), variant.getRight()));
-		}
-	}
+//
+//	@Override
+//	public void tryHandleItemModel(Item item, String name) {
+//
+//		if (item instanceof IMeshProvider) {
+//			System.out.println("IMeshProvider");
+//			IMeshProvider meshProvider = (IMeshProvider) item;
+//			ModelLoader.setCustomMeshDefinition(item, meshProvider.getMeshDefinition());
+//			ResourceLocation resourceLocation = meshProvider.getCustomLocation();
+//			if (resourceLocation == null)
+//				resourceLocation = new ResourceLocation(Animus.MODID, "item/" + name);
+//
+//			for (String variant : meshProvider.getVariants())
+//				ModelLoader.registerItemVariants(item, new ModelResourceLocation(resourceLocation, variant));
+//		} else if (item instanceof IVariantProvider) {
+//			IVariantProvider variantProvider = (IVariantProvider) item;
+//			for (Pair<Integer, String> variant : variantProvider.getVariants()) {
+//				ModelLoader.setCustomModelResourceLocation(item, variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, "item/" + name), variant.getRight()));
+//
+//
+//			}
+//		}
+//	}
+//
+//
+//	@Override
+//	public void tryHandleBlockModel(Block block, String name) {
+//		if (block instanceof IVariantProvider) {
+//			IVariantProvider variantProvider = (IVariantProvider) block;
+//			for (Pair<Integer, String> variant : variantProvider.getVariants())
+//				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, name), variant.getRight()));
+//		}
+//	}
 
 
 }

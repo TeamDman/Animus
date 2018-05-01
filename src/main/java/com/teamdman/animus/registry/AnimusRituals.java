@@ -1,9 +1,11 @@
 package com.teamdman.animus.registry;
 
-import WayofTime.bloodmagic.api.registry.ImperfectRitualRegistry;
-import WayofTime.bloodmagic.api.registry.RitualRegistry;
-import WayofTime.bloodmagic.api.ritual.Ritual;
-import WayofTime.bloodmagic.api.ritual.imperfect.ImperfectRitual;
+import WayofTime.bloodmagic.ritual.Ritual;
+import WayofTime.bloodmagic.ritual.Ritual;
+import WayofTime.bloodmagic.ritual.Ritual;
+import WayofTime.bloodmagic.ritual.RitualRegistry;
+import WayofTime.bloodmagic.ritual.imperfect.ImperfectRitual;
+import WayofTime.bloodmagic.ritual.imperfect.ImperfectRitualRegistry;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.rituals.*;
 import com.teamdman.animus.rituals.imperfect.RitualRegression;
@@ -41,11 +43,6 @@ public class AnimusRituals {
 		RitualRegistry.registerRitual(ritualCulling, AnimusConfig.ritualCulling);
 		ritualSteadfastHeart = new RitualSteadfastHeart();
 		RitualRegistry.registerRitual(ritualSteadfastHeart, AnimusConfig.ritualSteadfastHeart);
-		ritualVengefulSpirit = new RitualVengefulSpirit();
-		RitualRegistry.registerRitual(ritualVengefulSpirit, AnimusConfig.ritualVengefulSpirit);
-		ritualVengefulSpirit = new RitualVengefulSpirit();
-		RitualRegistry.registerRitual(ritualVengefulSpirit, AnimusConfig.ritualVengefulSpirit);
-
 		ritualRegression = new RitualRegression();
 		ImperfectRitualRegistry.registerRitual(ritualRegression, AnimusConfig.ritualRegression);
 	}

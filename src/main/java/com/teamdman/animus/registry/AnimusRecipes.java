@@ -1,11 +1,11 @@
 package com.teamdman.animus.registry;
 
 import WayofTime.bloodmagic.alchemyArray.AlchemyArrayEffectBinding;
-import WayofTime.bloodmagic.api.altar.EnumAltarTier;
-import WayofTime.bloodmagic.api.registry.AlchemyArrayRecipeRegistry;
-import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry;
+import WayofTime.bloodmagic.altar.AltarTier;
 import WayofTime.bloodmagic.client.render.alchemyArray.BindingAlchemyCircleRenderer;
-import WayofTime.bloodmagic.item.ItemComponent;
+import WayofTime.bloodmagic.core.registry.AlchemyArrayRecipeRegistry;
+import WayofTime.bloodmagic.core.registry.AltarRecipeRegistry;
+import WayofTime.bloodmagic.item.types.ComponentTypes;
 import WayofTime.bloodmagic.util.Utils;
 
 import com.teamdman.animus.AnimusConfig;
@@ -51,10 +51,10 @@ public class AnimusRecipes {
 		//GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilLeech), "dad", "aba", "dcd", 'a', Blocks.LEAVES, 'b', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 1), 'c', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_APPRENTICE), 'd', Items.GOLDEN_APPLE));
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemfragmenthealing"))
-		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PRISMARINE_SHARD), new ItemStack(AnimusItems.fragmentHealing), EnumAltarTier.TWO, 1000, 20, 25));
+		AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PRISMARINE_SHARD), new ItemStack(AnimusItems.fragmentHealing), AltarTier.TWO, 1000, 20, 25));
 		
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamabound") && !AnimusConfig.itemBlacklist.contains("animus:itemkamadiamond"))
-		AlchemyArrayRecipeRegistry.registerRecipe(ItemComponent.getStack(ItemComponent.REAGENT_BINDING), new ItemStack(AnimusItems.kamaDiamond), new AlchemyArrayEffectBinding("boundKama", Utils.setUnbreakable(new ItemStack(AnimusItems.kamaBound))), new BindingAlchemyCircleRenderer());
+		AlchemyArrayRecipeRegistry.registerRecipe(ComponentTypes.REAGENT_BINDING.getStack(),new ItemStack(AnimusItems.kamaDiamond), new AlchemyArrayEffectBinding("boundKama", Utils.setUnbreakable(new ItemStack(AnimusItems.kamaBound))), new BindingAlchemyCircleRenderer());
 
 	}
 

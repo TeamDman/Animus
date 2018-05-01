@@ -3,17 +3,18 @@ package com.teamdman.animus.rituals;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
+import WayofTime.bloodmagic.ritual.*;
+import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import com.teamdman.animus.Animus;
 
-import WayofTime.bloodmagic.api.ritual.AreaDescriptor;
-import WayofTime.bloodmagic.api.ritual.EnumRuneType;
-import WayofTime.bloodmagic.api.ritual.IMasterRitualStone;
-import WayofTime.bloodmagic.api.ritual.Ritual;
-import WayofTime.bloodmagic.api.ritual.RitualComponent;
-import WayofTime.bloodmagic.api.saving.SoulNetwork;
-import WayofTime.bloodmagic.api.soul.EnumDemonWillType;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.ritual.Ritual;
+import WayofTime.bloodmagic.ritual.Ritual;
+import WayofTime.bloodmagic.ritual.Ritual;
+import WayofTime.bloodmagic.ritual.Ritual;
+import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,9 +51,9 @@ public class RitualSteadfastHeart extends Ritual {
 		
 		World world = masterRitualStone.getWorldObj();
 		
-		EnumDemonWillType type = EnumDemonWillType.STEADFAST;
-		BlockPos pos = masterRitualStone.getBlockPos();
-		double currentAmount = WorldDemonWillHandler.getCurrentWill(world, pos, type);
+		EnumDemonWillType type          = EnumDemonWillType.STEADFAST;
+		BlockPos          pos           = masterRitualStone.getBlockPos();
+		double            currentAmount = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
 
 		AreaDescriptor damageRange = getBlockRange(EFFECT_RANGE);
@@ -107,18 +108,16 @@ public class RitualSteadfastHeart extends Ritual {
     }
 
 	@Override
-	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> ritualBlocks = new ArrayList<RitualComponent>();
-		this.addRune(ritualBlocks, 1, 0, 1, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, -1, 0, 1, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, 1, 0, -1, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, -1, 0, -1, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, 0, -1, 0, EnumRuneType.AIR);
-		this.addRune(ritualBlocks, 2, -1, 2, EnumRuneType.EARTH);
-		this.addRune(ritualBlocks, 2, -1, -2, EnumRuneType.EARTH);
-		this.addRune(ritualBlocks, -2, -1, 2, EnumRuneType.EARTH);
-		this.addRune(ritualBlocks, -2, -1, -2, EnumRuneType.EARTH);
-		return ritualBlocks;
+	public void gatherComponents(Consumer<RitualComponent> components) {
+		components.accept(new RitualComponent(new BlockPos(1, 0, 1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, 1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(1, 0, -1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, -1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(0, -1, 0), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(2, -1, 2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(2, -1, -2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(-2, -1, 2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(-2, -1, -2), EnumRuneType.EARTH));
 	}
 
 	@Override

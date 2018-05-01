@@ -1,114 +1,82 @@
 buildscript {
     repositories {
-        mavenCentral()
-        maven { url "http://files.minecraftforge.net/maven" }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
+apply plugin: 'net.minecraftforge.gradle.forge'
 
-plugins {
-	id "net.minecraftforge.gradle.forge" version "2.0.2"
-    id 'com.matthewprenger.cursegradle' version '1.0.9'
-	id 'io.franzbecker.gradle-lombok' version '1.6'
-	id 'maven-publish'
-}
+version = "2.0.0"
+group = "com.teamdman.animus"
+archivesBaseName = "animus"
 
-version = "${getDate()}"
-group= "com.teamdman.animus"
-archivesBaseName = "Animus"
-
-def getDate() {
-    def date = new Date()
-    def formattedDate = date.format('yyyy-MM-dd')
-    return formattedDate
-}
-
-
-sourceCompatibility = targetCompatibility = "1.8"
+sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
+    sourceCompatibility = targetCompatibility = '1.8'
 }
 
 minecraft {
-    version = "${mc_version}-${forge_version}"
+    version = "1.12.2-14.23.3.2655"
     runDir = "run"
-
-    replace "@VERSION@", project.version
-    replaceIn "Animus.java"
-
-
-    clientRunArgs += "--username=AnimusDev"
-    if (project.hasProperty('mappings_version'))
-        mappings = project.mappings_version
- 
+    mappings = "snapshot_20171003"
 }
-
-
 repositories {
     maven { // JEI
-	    name "JEI Repo"
+        name "JEI Repo"
         url "http://dvs1.progwml6.com/files/maven"
     }
     maven {	// BloodMagic
-	    name "TehNut Repo"
-		url "http://tehnut.info/maven" 
-	}
+        name "TehNut Repo"
+        url "http://tehnut.info/maven"
+    }
+    maven { // TOP
+        name "tterrag maven"
+        url "http://maven.tterrag.com/"
+    }
+    maven { // RF
+        name "covers1624 maven"
+        url "http://maven.covers1624.net"
+    }
 }
-
 dependencies {
-    deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"   
-    deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
-	deobfCompile "info.amerifrance.guideapi:Guide-API:${major_version}-${guideapi_version}"
-    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${bloodmagic_version}"
+    deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
+    deobfCompile "cofh:RedstoneFlux:1.12-2.+:deobf"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-${major_version}:${major_version}-${theoneprobe_version}"
+    deobfCompile "info.amerifrance.guideapi:Guide-API:${major_version}-${guideapi_version}"
+    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${bloodmagic_version}"
+    // you may put jars on which you depend on in ./libs
+    // or you may define them like so..
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
+      
+    // real examples
+    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
+    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
+    // except that these dependencies get remapped to your current MCP mappings
+    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // for more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
 processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
     from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
-        include '**/*.properties'
-
-        expand 'version': project.version, 'mcversion': project.minecraft.version
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
     from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.info'
-        exclude '**/*.properties'
+        exclude 'mcmod.info'
     }
 }
-
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
-    }
-}
-
-jar {
-    classifier = ''
-    manifest.mainAttributes(
-        "Built-By": System.getProperty('user.name'),
-        "Created-By": "${System.getProperty('java.vm.version')} + (${System.getProperty('java.vm.vendor')})",
-        "Implementation-Title": project.name,
-        "Implementation-Version": project.version,
-        "Built-On": "${mc_version}-${forge_version}"
-    )
-}
-
-// Javadoc jar
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    from javadoc.destinationDir
-    classifier = 'javadoc'
-}
-tasks.build.dependsOn javadoc, javadocJar
-
-tasks.withType(JavaCompile) { task ->
-    task.options.encoding = 'UTF-8'
-}
-
-

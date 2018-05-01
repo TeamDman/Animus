@@ -1,6 +1,7 @@
 package com.teamdman.animus.items;
 
 import WayofTime.bloodmagic.client.IVariantProvider;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class ItemKama extends ItemSword implements IVariantProvider {
 	public ItemKama(Item.ToolMaterial material) {
 		super(material);
 		mat = material;
-		attackDamage = 2.0F + material.getDamageVsEntity();
+		attackDamage = 2.0F + material.getAttackDamage();
 		setFull3D();
 	}
 
@@ -61,10 +63,5 @@ public class ItemKama extends ItemSword implements IVariantProvider {
 		return false;
 	}
 
-	@Override
-	public List<Pair<Integer, String>> getVariants() {
-		List<Pair<Integer, String>> ret = new ArrayList<Pair<Integer, String>>();
-		ret.add(new ImmutablePair<Integer, String>(0, "type=normal"));
-		return ret;
-	}
+@Override	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {		variants.put(0,"type=normal");	}
 }

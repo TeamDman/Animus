@@ -5,11 +5,12 @@ import java.util.Map;
 import java.util.Random;
 
 
+import WayofTime.bloodmagic.item.sigil.ItemSigilToggleableBase;
+import WayofTime.bloodmagic.ritual.AreaDescriptor;
+import WayofTime.bloodmagic.util.Constants;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 
-import WayofTime.bloodmagic.api.Constants;
-import WayofTime.bloodmagic.api.ritual.AreaDescriptor;
-import WayofTime.bloodmagic.api.util.helper.NBTHelper;
+import WayofTime.bloodmagic.util.helper.NBTHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockDoublePlant;

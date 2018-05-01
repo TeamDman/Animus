@@ -1,9 +1,9 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.api.ritual.*;
-import WayofTime.bloodmagic.api.saving.SoulNetwork;
-import WayofTime.bloodmagic.api.soul.EnumDemonWillType;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.ritual.*;
+import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.soul.EnumDemonWillType;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import WayofTime.bloodmagic.tile.TileAltar;
 import com.teamdman.animus.Animus;
@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class RitualNaturesLeech extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
@@ -41,30 +42,28 @@ public class RitualNaturesLeech extends Ritual {
 	}
 
 	@Override
-	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> ritualBlocks = new ArrayList<RitualComponent>();
-		this.addRune(ritualBlocks, -2, 1, -2, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, -2, 1, 0, EnumRuneType.AIR);
-		this.addRune(ritualBlocks, -2, 1, 2, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, -1, 0, -1, EnumRuneType.EARTH);
-		this.addRune(ritualBlocks, -1, 0, 1, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, 0, 1, -2, EnumRuneType.AIR);
-		this.addRune(ritualBlocks, 0, 1, 2, EnumRuneType.AIR);
-		this.addRune(ritualBlocks, 1, 0, -1, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, 1, 0, 1, EnumRuneType.AIR);
-		this.addRune(ritualBlocks, 2, 1, -2, EnumRuneType.WATER);
-		this.addRune(ritualBlocks, 2, 1, 0, EnumRuneType.AIR);
-		this.addRune(ritualBlocks, 2, 1, 2, EnumRuneType.WATER);
-		return ritualBlocks;
+	public void gatherComponents(Consumer<RitualComponent> components) {
+		components.accept(new RitualComponent(new BlockPos(-2, 1, -2), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(-2, 1, 0), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(-2, 1, 2), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, -1), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, 1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(0, 1, -2), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0, 1, 2), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(1, 0, -1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(1, 0, 1), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(2, 1, -2), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(2, 1, 0), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(2, 1, 2), EnumRuneType.WATER));
 	}
 
 	public void performRitual(IMasterRitualStone ritualStone) {
-		Random random = new Random();
-		World world = ritualStone.getWorldObj();
-		BlockPos pos = ritualStone.getBlockPos();
-		EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
-		BlockPos altarPos = pos.add(altarOffsetPos);
-		TileEntity tile = world.getTileEntity(altarPos);
+		Random            random   = new Random();
+		World             world    = ritualStone.getWorldObj();
+		BlockPos          pos      = ritualStone.getBlockPos();
+		EnumDemonWillType type     = EnumDemonWillType.CORROSIVE;
+		BlockPos          altarPos = pos.add(altarOffsetPos);
+		TileEntity        tile     = world.getTileEntity(altarPos);
 		will = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
 		SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());

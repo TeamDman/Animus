@@ -1,8 +1,9 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.api.Constants;
-import WayofTime.bloodmagic.api.util.helper.NBTHelper;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.item.sigil.ItemSigilToggleableBase;
+import WayofTime.bloodmagic.util.Constants;
+import WayofTime.bloodmagic.util.helper.NBTHelper;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.AnimusConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -45,6 +46,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 		if (getActivated(stack))
 			ItemSigilBuilder.removeDelay();
 	}
+
+
 
 	@SuppressWarnings({"deprecation"})
 	@Override

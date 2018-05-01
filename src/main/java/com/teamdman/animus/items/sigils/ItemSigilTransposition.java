@@ -1,15 +1,18 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.api.impl.ItemSigil;
-import WayofTime.bloodmagic.api.util.helper.NBTHelper;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
-import WayofTime.bloodmagic.api.util.helper.PlayerHelper;
+import WayofTime.bloodmagic.core.data.Binding;
+import WayofTime.bloodmagic.item.ItemSigil;
+import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
+import WayofTime.bloodmagic.util.helper.NBTHelper;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.util.helper.PlayerHelper;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.google.common.base.Strings;
 import com.teamdman.animus.AnimusConfig;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -25,15 +28,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by TeamDman on 2015-06-09.
  */
-public class ItemSigilTransposition extends ItemSigil implements IVariantProvider {
+public class ItemSigilTransposition extends ItemSigilBase implements IVariantProvider {
 	public ItemSigilTransposition() {
-		super(AnimusConfig.transpositionConsumption);
+		super("transposition",AnimusConfig.transpositionConsumption);
 
 	}
 
@@ -94,17 +98,12 @@ public class ItemSigilTransposition extends ItemSigil implements IVariantProvide
 
 		NBTHelper.checkNBT(stack);
 
-		if (!Strings.isNullOrEmpty(getOwnerName(stack)))
-			tooltip.add(TextHelper.localizeEffect("tooltip.BloodMagic.currentOwner", PlayerHelper.getUsernameFromStack(stack)));
+		if (!Strings.isNullOrEmpty(getBinding(stack).getOwnerName()))
+			tooltip.add(TextHelper.localizeEffect("tooltip.BloodMagic.currentOwner", getBinding(stack).getOwnerName()));
 		if (stack.getTagCompound().getLong("pos") != 0)
 			tooltip.add("Position stored");
 		super.addInformation(stack, world, tooltip, flag);
 	}
 
-	@Override
-	public List<Pair<Integer, String>> getVariants() {
-		List<Pair<Integer, String>> ret = new ArrayList<Pair<Integer, String>>();
-		ret.add(new ImmutablePair<Integer, String>(0, "type=normal"));
-		return ret;
-	}
+@Override	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {		variants.put(0,"type=normal");	}
 }

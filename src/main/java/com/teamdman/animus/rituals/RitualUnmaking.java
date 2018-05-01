@@ -1,8 +1,8 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.api.ritual.*;
-import WayofTime.bloodmagic.api.saving.SoulNetwork;
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.ritual.*;
+import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Animus;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Created by TeamDman on 2015-05-28.
@@ -43,8 +44,8 @@ public class RitualUnmaking extends Ritual {
 				return;
 			}
 
-			AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
-			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, effectRange.getAABB(masterRitualStone.getBlockPos()));
+			AreaDescriptor   effectRange = getBlockRange(EFFECT_RANGE);
+			List<EntityItem> itemList    = world.getEntitiesWithinAABB(EntityItem.class, effectRange.getAABB(masterRitualStone.getBlockPos()));
 			if (itemList != null) {
 				EntityItem books = null;
 				for (EntityItem entityItem : itemList) {
@@ -138,49 +139,47 @@ public class RitualUnmaking extends Ritual {
 	}
 
 	@Override
-	public ArrayList<RitualComponent> getComponents() {
-		ArrayList<RitualComponent> components = new ArrayList<RitualComponent>();
-		this.addRune(components, -4, 0, -2, EnumRuneType.FIRE);
-		this.addRune(components, -4, 0, 0, EnumRuneType.FIRE);
-		this.addRune(components, -4, 0, 2, EnumRuneType.FIRE);
-		this.addRune(components, -3, 0, -3, EnumRuneType.DUSK);
-		this.addRune(components, -3, 0, -1, EnumRuneType.FIRE);
-		this.addRune(components, -3, 0, 1, EnumRuneType.FIRE);
-		this.addRune(components, -3, 0, 3, EnumRuneType.DUSK);
-		this.addRune(components, -2, 0, -4, EnumRuneType.AIR);
-		this.addRune(components, -2, 0, -2, EnumRuneType.DUSK);
-		this.addRune(components, -2, 0, 0, EnumRuneType.FIRE);
-		this.addRune(components, -2, 0, 2, EnumRuneType.DUSK);
-		this.addRune(components, -2, 0, 4, EnumRuneType.EARTH);
-		this.addRune(components, -1, 0, -3, EnumRuneType.AIR);
-		this.addRune(components, -1, 0, -1, EnumRuneType.DUSK);
-		this.addRune(components, -1, 0, 0, EnumRuneType.FIRE);
-		this.addRune(components, -1, 0, 1, EnumRuneType.DUSK);
-		this.addRune(components, -1, 0, 3, EnumRuneType.EARTH);
-		this.addRune(components, 0, 0, -4, EnumRuneType.AIR);
-		this.addRune(components, 0, 0, -2, EnumRuneType.AIR);
-		this.addRune(components, 0, 0, -1, EnumRuneType.AIR);
-		this.addRune(components, 0, 0, 1, EnumRuneType.EARTH);
-		this.addRune(components, 0, 0, 2, EnumRuneType.EARTH);
-		this.addRune(components, 0, 0, 4, EnumRuneType.EARTH);
-		this.addRune(components, 1, 0, -3, EnumRuneType.AIR);
-		this.addRune(components, 1, 0, -1, EnumRuneType.DUSK);
-		this.addRune(components, 1, 0, 0, EnumRuneType.WATER);
-		this.addRune(components, 1, 0, 1, EnumRuneType.DUSK);
-		this.addRune(components, 1, 0, 3, EnumRuneType.EARTH);
-		this.addRune(components, 2, 0, -4, EnumRuneType.AIR);
-		this.addRune(components, 2, 0, -2, EnumRuneType.DUSK);
-		this.addRune(components, 2, 0, 0, EnumRuneType.WATER);
-		this.addRune(components, 2, 0, 2, EnumRuneType.DUSK);
-		this.addRune(components, 2, 0, 4, EnumRuneType.EARTH);
-		this.addRune(components, 3, 0, -3, EnumRuneType.DUSK);
-		this.addRune(components, 3, 0, -1, EnumRuneType.WATER);
-		this.addRune(components, 3, 0, 1, EnumRuneType.WATER);
-		this.addRune(components, 3, 0, 3, EnumRuneType.DUSK);
-		this.addRune(components, 4, 0, -2, EnumRuneType.WATER);
-		this.addRune(components, 4, 0, 0, EnumRuneType.WATER);
-		this.addRune(components, 4, 0, 2, EnumRuneType.WATER);
-		return components;
+	public void gatherComponents(Consumer<RitualComponent> components) {
+		components.accept(new RitualComponent(new BlockPos( -4, 0, -2), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( -4, 0, 0), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( -4, 0, 2), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( -3, 0, -3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -3, 0, -1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( -3, 0, 1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( -3, 0, 3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -2, 0, -4), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos( -2, 0, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -2, 0, 0), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( -2, 0, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -2, 0, 4), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos( -1, 0, -3), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos( -1, 0, -1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -1, 0, 0), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos( -1, 0, 1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( -1, 0, 3), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos( 0, 0, -4), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos( 0, 0, -2), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos( 0, 0, -1), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos( 0, 0, 1), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos( 0, 0, 2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos( 0, 0, 4), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos( 1, 0, -3), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos( 1, 0, -1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 1, 0, 0), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos( 1, 0, 1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 1, 0, 3), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos( 2, 0, -4), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos( 2, 0, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 2, 0, 0), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos( 2, 0, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 2, 0, 4), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos( 3, 0, -3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 3, 0, -1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos( 3, 0, 1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos( 3, 0, 3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos( 4, 0, -2), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos( 4, 0, 0),  EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos( 4, 0, 2), EnumRuneType.WATER));
 	}
 
 	@Override

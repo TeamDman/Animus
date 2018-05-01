@@ -1,10 +1,11 @@
 package com.teamdman.animus.blocks;
 
-import WayofTime.bloodmagic.api.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.tiles.TileAntimatter;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -21,6 +22,7 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -112,11 +114,8 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 		worldIn.setBlockToAir(pos);
 	}
 
-
 	@Override
-	public List<Pair<Integer, String>> getVariants() {
-		List<Pair<Integer, String>> ret = new ArrayList<Pair<Integer, String>>();
-		ret.add(new ImmutablePair<Integer, String>(0, "normal"));
-		return ret;
+	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
+		variants.put(0,"normal");
 	}
 }

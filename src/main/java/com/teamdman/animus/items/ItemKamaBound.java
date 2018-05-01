@@ -1,7 +1,7 @@
 package com.teamdman.animus.items;
 
-import WayofTime.bloodmagic.api.altar.IBloodAltar;
-import WayofTime.bloodmagic.api.util.helper.PlayerSacrificeHelper;
+import WayofTime.bloodmagic.altar.IBloodAltar;
+import WayofTime.bloodmagic.util.helper.PlayerSacrificeHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -124,11 +124,6 @@ public class ItemKamaBound extends ItemKama {
 			return true;
 		else
 			return false;
-	}
-
-	@Override
-	public float getDamageVsEntity() {
-		return this.attackDamage;
 	}
 
 	@Override
