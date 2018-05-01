@@ -1,6 +1,5 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.client.mesh.CustomMeshDefinitionActivatable;
 import WayofTime.bloodmagic.item.sigil.ItemSigilToggleableBase;
 import WayofTime.bloodmagic.util.Constants;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
@@ -9,7 +8,6 @@ import com.teamdman.animus.AnimusConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -28,14 +26,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
-import java.util.Locale;
 
 import static net.minecraft.client.Minecraft.getMinecraft;
 
 /**
  * Created by TeamDman on 2015-06-09.
  */
-public class ItemSigilBuilder extends ItemSigilToggleableBase {
+public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 	public ItemSigilBuilder() {
 		super("builder", 100);
 	}
@@ -44,18 +41,12 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 		return hand == EnumHand.MAIN_HAND ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
 	}
 
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		if (getActivated(stack))
 			ItemSigilBuilder.removeDelay();
 	}
-//
-//	@Override
-//	public ItemMeshDefinition getMeshDefinition() {
-//		return new CustomMeshDefinitionActivatable("sigil_builder"); //
-//	}
 
 	@SuppressWarnings({"deprecation"})
 	@Override
