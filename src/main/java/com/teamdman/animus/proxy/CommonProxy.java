@@ -1,6 +1,7 @@
 package com.teamdman.animus.proxy;
 
 //import WayofTime.bloodmagic.util.helper.InventoryRenderHelperV2; <-- no longer exists
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

@@ -1,10 +1,9 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.core.data.SoulNetwork;
-import WayofTime.bloodmagic.ritual.Ritual;
-import WayofTime.bloodmagic.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.Utils;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Animus;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.IInventory;
@@ -14,7 +13,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 /**
@@ -22,7 +20,7 @@ import java.util.function.Consumer;
  */
 public class RitualLuna extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
-	public static final String CHEST_RANGE = "chest";
+	public static final String CHEST_RANGE  = "chest";
 
 	public RitualLuna() {
 		super("ritualLuna", 0, 1000, "ritual." + Animus.MODID + ".luna");
@@ -36,12 +34,12 @@ public class RitualLuna extends Ritual {
 
 	@Override
 	public void performRitual(IMasterRitualStone masterRitualStone) {
-		World world = masterRitualStone.getWorldObj();
-		SoulNetwork network = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
-		int currentEssence = network.getCurrentEssence();
-		BlockPos masterPos = masterRitualStone.getBlockPos();
-		AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
-		TileEntity tileInventory = world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
+		World          world          = masterRitualStone.getWorldObj();
+		SoulNetwork    network        = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
+		int            currentEssence = network.getCurrentEssence();
+		BlockPos       masterPos      = masterRitualStone.getBlockPos();
+		AreaDescriptor chestRange     = getBlockRange(CHEST_RANGE);
+		TileEntity     tileInventory  = world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
 
 
 		if (!masterRitualStone.getWorldObj().isRemote && tileInventory != null && tileInventory instanceof IInventory) {

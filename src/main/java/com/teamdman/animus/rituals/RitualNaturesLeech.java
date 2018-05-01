@@ -1,11 +1,11 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.core.data.SoulNetwork;
-import WayofTime.bloodmagic.soul.EnumDemonWillType;
-import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
+import WayofTime.bloodmagic.ritual.*;
+import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import WayofTime.bloodmagic.tile.TileAltar;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.block.*;
@@ -16,15 +16,14 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.Consumer;
 
 public class RitualNaturesLeech extends Ritual {
-	public static final String EFFECT_RANGE = "effect";
-	public static final String ALTAR_RANGE = "altar";
-	public double will = 100;
-	public BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
+	public static final String   EFFECT_RANGE   = "effect";
+	public static final String   ALTAR_RANGE    = "altar";
+	public              double   will           = 100;
+	public              BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
 
 	public RitualNaturesLeech() {
 		super("ritualNaturesLeech", 0, 3000, "ritual." + Animus.MODID + ".naturesleech");
@@ -66,9 +65,9 @@ public class RitualNaturesLeech extends Ritual {
 		TileEntity        tile     = world.getTileEntity(altarPos);
 		will = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
-		SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
-		int currentEssence = network.getCurrentEssence();
-		TileAltar tileAltar = new TileAltar();
+		SoulNetwork network        = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
+		int         currentEssence = network.getCurrentEssence();
+		TileAltar   tileAltar      = new TileAltar();
 
 		if (!ritualStone.getWorldObj().isRemote) {
 			if (currentEssence < getRefreshCost()) {
@@ -80,7 +79,7 @@ public class RitualNaturesLeech extends Ritual {
 			network.syphon(this.getRefreshCost());
 
 			AreaDescriptor altarRange = getBlockRange(ALTAR_RANGE);
-			boolean testFlag = false;
+			boolean        testFlag   = false;
 
 			if (!altarRange.isWithinArea(altarOffsetPos) || !(tile instanceof TileAltar)) {
 				for (BlockPos newPos : altarRange.getContainedPositions(pos)) {
@@ -110,8 +109,8 @@ public class RitualNaturesLeech extends Ritual {
 
 			while (eatRange.hasNext() && eaten <= randFood) {
 
-				BlockPos nextPos = eatRange.next().add(pos);
-				Block thisBlock = world.getBlockState(nextPos).getBlock();
+				BlockPos nextPos   = eatRange.next().add(pos);
+				Block    thisBlock = world.getBlockState(nextPos).getBlock();
 				if (thisBlock == Blocks.AIR)
 					continue;
 
@@ -132,14 +131,14 @@ public class RitualNaturesLeech extends Ritual {
 					if (!edible)
 						continue;
 
-//					EffectHandler.getInstance().registerFX(
-//							new EntityFXBurst(1, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
+					//					EffectHandler.getInstance().registerFX(
+					//							new EntityFXBurst(1, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
 
-					if (world.isRemote){
-		                world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
-		                        (random.nextDouble() - 0.5D) * 2.0D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2.0D, new int[0]);	
-						}
-					
+					if (world.isRemote) {
+						world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
+								(random.nextDouble() - 0.5D) * 2.0D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2.0D, new int[0]);
+					}
+
 					world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
 					world.setBlockToAir(nextPos);
 					eaten++;

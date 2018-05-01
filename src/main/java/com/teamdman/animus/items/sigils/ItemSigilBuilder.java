@@ -48,7 +48,6 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 	}
 
 
-
 	@SuppressWarnings({"deprecation"})
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
@@ -56,8 +55,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 		if (!world.isRemote && !isUnusable(stack)) {
 			if (player.isSneaking()) {
 
-				NBTTagCompound comp = NBTHelper.checkNBT(stack).getTagCompound();
-				boolean activated = getActivated(stack);
+				NBTTagCompound comp      = NBTHelper.checkNBT(stack).getTagCompound();
+				boolean        activated = getActivated(stack);
 				comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
 			} else {
 				ItemStack _stack = getStackToUse(hand, player);
@@ -84,8 +83,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 	@SuppressWarnings("deprecation")
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		BlockPos air = blockPos;
-		int dist = 0;
+		BlockPos air  = blockPos;
+		int      dist = 0;
 		if (player.isSneaking()) {
 			for (int radius = 1; radius <= Math.sqrt(AnimusConfig.builderRange); radius++) {
 				for (int x = -radius; x <= radius; x++) {

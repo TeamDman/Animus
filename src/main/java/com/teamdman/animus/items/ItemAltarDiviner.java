@@ -28,11 +28,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -62,7 +59,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		
+
 		if (world.getTileEntity(blockPos) == null || !(world.getTileEntity(blockPos) instanceof IBloodAltar))
 			return EnumActionResult.PASS;
 
@@ -91,7 +88,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 					int invSlot = getSlotFor(altarComponent, player);
 					if (invSlot != -1) {
 						ItemStack _stack = player.inventory.getStackInSlot(invSlot);
-						ItemBlock _item = (ItemBlock) player.inventory.getStackInSlot(invSlot).getItem();
+						ItemBlock _item  = (ItemBlock) player.inventory.getStackInSlot(invSlot).getItem();
 						@SuppressWarnings("deprecation")
 						IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 						world.setBlockState(componentPos, _state);
@@ -117,5 +114,8 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 	}
 
 
-@Override	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {		variants.put(0,"type=normal");	}
+	@Override
+	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
+		variants.put(0, "type=normal");
+	}
 }

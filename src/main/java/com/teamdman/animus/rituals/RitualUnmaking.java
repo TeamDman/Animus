@@ -1,7 +1,7 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Animus;
 import net.minecraft.entity.item.EntityItem;
@@ -14,7 +14,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -33,10 +32,10 @@ public class RitualUnmaking extends Ritual {
 
 	@Override
 	public void performRitual(IMasterRitualStone masterRitualStone) {
-		World world = masterRitualStone.getWorldObj();
-		SoulNetwork network = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
-		int currentEssence = network.getCurrentEssence();
-		BlockPos masterPos = masterRitualStone.getBlockPos();
+		World       world          = masterRitualStone.getWorldObj();
+		SoulNetwork network        = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
+		int         currentEssence = network.getCurrentEssence();
+		BlockPos    masterPos      = masterRitualStone.getBlockPos();
 
 		if (!masterRitualStone.getWorldObj().isRemote) {
 			if (currentEssence < getRefreshCost()) {
@@ -70,16 +69,16 @@ public class RitualUnmaking extends Ritual {
 							if (books == null || books.getItem() == null)
 								break;
 
-							NBTTagCompound data = enchants.getCompoundTagAt(i);
-							short enchID = data.getShort("id");
-							short enchLVL = data.getShort("lvl");
+							NBTTagCompound data    = enchants.getCompoundTagAt(i);
+							short          enchID  = data.getShort("id");
+							short          enchLVL = data.getShort("lvl");
 							enchants.removeTag(i);
 
 
 							ItemStack enchBook = new ItemStack(Items.ENCHANTED_BOOK);
 							enchBook.setTagCompound(new NBTTagCompound());
-							NBTTagList bookTags = new NBTTagList();
-							NBTTagCompound comp = new NBTTagCompound();
+							NBTTagList     bookTags = new NBTTagList();
+							NBTTagCompound comp     = new NBTTagCompound();
 							comp.setShort("id", enchID);
 							comp.setShort("lvl", enchLVL);
 							bookTags.appendTag(comp);
@@ -99,10 +98,10 @@ public class RitualUnmaking extends Ritual {
 								if (books == null || books.getItem() == null) {
 									break;
 								}
-								ItemStack enchBook = new ItemStack(Items.ENCHANTED_BOOK);
-								NBTTagCompound data = enchants.getCompoundTagAt(i);
-								short enchID = data.getShort("id");
-								short enchLVL = data.getShort("lvl");
+								ItemStack      enchBook = new ItemStack(Items.ENCHANTED_BOOK);
+								NBTTagCompound data     = enchants.getCompoundTagAt(i);
+								short          enchID   = data.getShort("id");
+								short          enchLVL  = data.getShort("lvl");
 								enchants.removeTag(i);
 								enchBook.setTagCompound(new NBTTagCompound());
 								NBTTagList bookTags = new NBTTagList();
@@ -140,46 +139,46 @@ public class RitualUnmaking extends Ritual {
 
 	@Override
 	public void gatherComponents(Consumer<RitualComponent> components) {
-		components.accept(new RitualComponent(new BlockPos( -4, 0, -2), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( -4, 0, 0), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( -4, 0, 2), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( -3, 0, -3), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -3, 0, -1), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( -3, 0, 1), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( -3, 0, 3), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -2, 0, -4), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos( -2, 0, -2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -2, 0, 0), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( -2, 0, 2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -2, 0, 4), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos( -1, 0, -3), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos( -1, 0, -1), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -1, 0, 0), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( -1, 0, 1), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -1, 0, 3), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos( 0, 0, -4), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos( 0, 0, -2), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos( 0, 0, -1), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos( 0, 0, 1), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos( 0, 0, 2), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos( 0, 0, 4), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos( 1, 0, -3), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos( 1, 0, -1), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 1, 0, 0), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos( 1, 0, 1), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 1, 0, 3), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos( 2, 0, -4), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos( 2, 0, -2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 2, 0, 0), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos( 2, 0, 2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 2, 0, 4), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos( 3, 0, -3), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 3, 0, -1), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos( 3, 0, 1), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos( 3, 0, 3), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 4, 0, -2), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos( 4, 0, 0),  EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos( 4, 0, 2), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(-4, 0, -2), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(-4, 0, 0), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(-4, 0, 2), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(-3, 0, -3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-3, 0, -1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(-3, 0, 1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(-3, 0, 3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-2, 0, -4), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(-2, 0, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-2, 0, 0), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(-2, 0, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-2, 0, 4), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, -3), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, -1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, 0), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, 1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, 3), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(0, 0, -4), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0, 0, -2), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0, 0, -1), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0, 0, 1), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(0, 0, 2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(0, 0, 4), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(1, 0, -3), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(1, 0, -1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(1, 0, 0), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(1, 0, 1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(1, 0, 3), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(2, 0, -4), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(2, 0, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(2, 0, 0), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(2, 0, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(2, 0, 4), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(3, 0, -3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(3, 0, -1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(3, 0, 1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(3, 0, 3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(4, 0, -2), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(4, 0, 0), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(4, 0, 2), EnumRuneType.WATER));
 	}
 
 	@Override

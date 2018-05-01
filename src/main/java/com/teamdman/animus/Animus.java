@@ -6,7 +6,6 @@ import com.teamdman.animus.handlers.EventHandler;
 import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.*;
 import net.minecraft.creativetab.CreativeTabs;
-import com.teamdman.animus.Constants;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -22,11 +21,11 @@ import java.util.Locale;
 @Mod(modid = Constants.Mod.MODID, name = Constants.Mod.NAME, version = Constants.Mod.VERSION, dependencies = Constants.Mod.DEPEND, guiFactory = "com.teamdman.animus.client.gui.ConfigGuiFactory")
 
 public class Animus {
-	
-	public static final String MODID = "animus";
-	public static final String DOMAIN = MODID.toLowerCase(Locale.ENGLISH) + ":";
-	public static final String NAME = "Animus";
-	public static final String VERSION = "@VERSION@";
+
+	public static final String MODID        = "animus";
+	public static final String DOMAIN       = MODID.toLowerCase(Locale.ENGLISH) + ":";
+	public static final String NAME         = "Animus";
+	public static final String VERSION      = "@VERSION@";
 	public static final String DEPENDENCIES = "required-after:BloodMagic;required-after:guideapi;after:Waila";
 
 	@SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
@@ -34,7 +33,7 @@ public class Animus {
 
 	@Mod.Instance(Constants.Mod.MODID)
 	public static Animus instance;
-	
+
 	public static CreativeTabs tabMain = new CreativeTabs(MODID) {
 		@Override
 		public ItemStack getTabIconItem() {

@@ -1,7 +1,7 @@
 package com.teamdman.animus.blocks;
 
-import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.client.IVariantProvider;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.tiles.TileAntimatter;
@@ -19,8 +19,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -55,8 +53,8 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		TileAntimatter tile = (TileAntimatter) worldIn.getTileEntity(pos);
-		boolean decaying = state.getValue(DECAYING);
+		TileAntimatter tile     = (TileAntimatter) worldIn.getTileEntity(pos);
+		boolean        decaying = state.getValue(DECAYING);
 		if (tile.range <= 0) {
 			return;
 		}
@@ -116,6 +114,6 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 
 	@Override
 	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
-		variants.put(0,"normal");
+		variants.put(0, "normal");
 	}
 }

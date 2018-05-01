@@ -18,10 +18,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EventHandler {
-	
+
 	@SideOnly(Side.CLIENT)
-    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = false)
-    public void onPlaySoundEvent(PlaySoundEvent e) {
+	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = false)
+	public void onPlaySoundEvent(PlaySoundEvent e) {
 		if (AnimusConfig.muteWither && (e.getName().equals("entity.wither.spawn"))) {
 			e.setResultSound(null);
 		}
@@ -36,9 +36,9 @@ public class EventHandler {
 			AnimusConfig.syncConfig();
 		}
 	}
-	
+
 	@SubscribeEvent
-    public void onAttacked(LivingAttackEvent event) {
+	public void onAttacked(LivingAttackEvent event) {
 /*		EntityLivingBase el;
 		el = event.getEntityLiving();
         if(!(el instanceof EntityPlayer))
@@ -65,7 +65,7 @@ public class EventHandler {
         	ew.spawnEntity(spirit);
         	
         }
-        */ 
+        */
 		//VengeFul Spirit stuff for later
 	}
 

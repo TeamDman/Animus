@@ -25,7 +25,7 @@ import java.util.stream.Stream;
  */
 public class RitualSol extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
-	public static final String CHEST_RANGE = "chest";
+	public static final String CHEST_RANGE  = "chest";
 
 
 	public RitualSol() {
@@ -100,10 +100,10 @@ public class RitualSol extends Ritual {
 
 	@Override
 	public void gatherComponents(Consumer<RitualComponent> components) {
-		components.accept(new RitualComponent(new BlockPos(0,-1,0),EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(0,-2,0),EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(0,-3,0),EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(1,-3,0),EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0, -1, 0), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0, -2, 0), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0, -3, 0), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(1, -3, 0), EnumRuneType.AIR));
 	}
 
 	@Override

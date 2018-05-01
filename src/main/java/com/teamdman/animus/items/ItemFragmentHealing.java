@@ -10,11 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemFragmentHealing extends Item implements IVariantProvider {
@@ -43,5 +39,8 @@ public class ItemFragmentHealing extends Item implements IVariantProvider {
 		return false;
 	}
 
-@Override	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {		variants.put(0,"type=normal");	}
+	@Override
+	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
+		variants.put(0, "type=normal");
+	}
 }

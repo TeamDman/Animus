@@ -47,7 +47,7 @@ public class AnimusConfig {
 	public static boolean muteWither;
 	public static boolean muteDragon;
 	public static boolean killWither;
-	public static int witherCost;
+	public static int     witherCost;
 
 	public static void init(File file) {
 		config = new Configuration(file);
@@ -102,6 +102,6 @@ public class AnimusConfig {
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent event) {
 		//if (event.getModID().equals(Animus.MODID))
-			//ConfigHandler.syncConfig();
+		//ConfigHandler.syncConfig();
 	}
 }

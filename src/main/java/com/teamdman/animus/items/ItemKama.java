@@ -10,18 +10,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by TeamDman on 9/18/2016.
  */
 public class ItemKama extends ItemSword implements IVariantProvider {
-	float attackDamage;
+	float             attackDamage;
 	Item.ToolMaterial mat;
 
 	public ItemKama(Item.ToolMaterial material) {
@@ -44,11 +41,11 @@ public class ItemKama extends ItemSword implements IVariantProvider {
 
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase hit, EntityLivingBase attacker) {
-		double x = hit.posX;
-		double y = hit.posY;
-		double z = hit.posZ;
-		int d0 = (mat.getHarvestLevel() + 1) * 2;
-		AxisAlignedBB region = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
+		double                 x        = hit.posX;
+		double                 y        = hit.posY;
+		double                 z        = hit.posZ;
+		int                    d0       = (mat.getHarvestLevel() + 1) * 2;
+		AxisAlignedBB          region   = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
 		List<EntityLivingBase> entities = hit.world.getEntitiesWithinAABB(EntityLivingBase.class, region);
 		if (entities == null || entities.isEmpty())
 			return false;
@@ -63,5 +60,8 @@ public class ItemKama extends ItemSword implements IVariantProvider {
 		return false;
 	}
 
-@Override	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {		variants.put(0,"type=normal");	}
+	@Override
+	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
+		variants.put(0, "type=normal");
+	}
 }

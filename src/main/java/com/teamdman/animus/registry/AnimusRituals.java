@@ -1,8 +1,6 @@
 package com.teamdman.animus.registry;
 
 import WayofTime.bloodmagic.ritual.Ritual;
-import WayofTime.bloodmagic.ritual.Ritual;
-import WayofTime.bloodmagic.ritual.Ritual;
 import WayofTime.bloodmagic.ritual.RitualRegistry;
 import WayofTime.bloodmagic.ritual.imperfect.ImperfectRitual;
 import WayofTime.bloodmagic.ritual.imperfect.ImperfectRitualRegistry;
@@ -23,7 +21,7 @@ public class AnimusRituals {
 	public static Ritual ritualCulling;
 	public static Ritual ritualSteadfastHeart;
 	public static Ritual ritualVengefulSpirit;
-	
+
 	public static ImperfectRitual ritualRegression;
 
 	public static void init() {

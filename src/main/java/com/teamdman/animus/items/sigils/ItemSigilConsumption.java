@@ -1,8 +1,6 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.item.ItemSigil;
 import WayofTime.bloodmagic.client.IVariantProvider;
-import WayofTime.bloodmagic.item.ItemSigil;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import com.teamdman.animus.blocks.BlockAntimatter;
 import com.teamdman.animus.registry.AnimusBlocks;
@@ -14,18 +12,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by TeamDman on 2015-06-09.
  */
 public class ItemSigilConsumption extends ItemSigilBase implements IVariantProvider {
 	public ItemSigilConsumption() {
-		super("consumption",200);
+		super("consumption", 200);
 	}
 
 	@SuppressWarnings("deprecation")

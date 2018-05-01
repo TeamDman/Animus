@@ -11,8 +11,8 @@ public final class AnimusSounds {
 		};*/
 
 		//for (String s : sounds) {
-			//ResourceLocation location = new ResourceLocation(s);
-			//GameRegistry.register(new SoundEvent(location), location);
+		//ResourceLocation location = new ResourceLocation(s);
+		//GameRegistry.register(new SoundEvent(location), location);
 		//}
 	}
 

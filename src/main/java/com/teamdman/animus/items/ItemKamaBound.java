@@ -52,11 +52,11 @@ public class ItemKamaBound extends ItemKama {
 	}
 
 	private boolean checkAndDamage(double x, double y, double z, World world, EntityLivingBase attacker) {
-		int d0 = 5;
-		boolean hit = false;
+		int     d0     = 5;
+		boolean hit    = false;
 		boolean result = false;
 
-		AxisAlignedBB region = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
+		AxisAlignedBB          region   = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, region);
 		if (entities == null || entities.isEmpty())
 			return false;
@@ -80,9 +80,9 @@ public class ItemKamaBound extends ItemKama {
 
 	private boolean checkAndKill(double x, double y, double z, World world, EntityLivingBase attacker,
 								 boolean efficient) {
-		int d0 = 5;
-		boolean killed = false;
-		AxisAlignedBB region = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
+		int                    d0       = 5;
+		boolean                killed   = false;
+		AxisAlignedBB          region   = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, region);
 		if (entities == null || entities.isEmpty())
 			return false;
@@ -98,10 +98,10 @@ public class ItemKamaBound extends ItemKama {
 			int lifeEssence = 500;
 
 			//if (ConfigHandler.entitySacrificeValues.containsKey(entityName))
-				//lifeEssence = ConfigHandler.entitySacrificeValues.get(entityName);
+			//lifeEssence = ConfigHandler.entitySacrificeValues.get(entityName);
 
 			//if (BloodMagicAPI.getEntitySacrificeValues().containsKey(entityName))
-				//lifeEssence = BloodMagicAPI.getEntitySacrificeValues().get(entityName);
+			//lifeEssence = BloodMagicAPI.getEntitySacrificeValues().get(entityName);
 
 			if (lifeEssence <= 0)
 				continue;

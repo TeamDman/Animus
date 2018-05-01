@@ -245,7 +245,7 @@ public class Vector3 {
 	}
 
 	public Vector3 xCrossProduct() {
-		double d = this.z;
+		double d  = this.z;
 		double d1 = -this.y;
 		this.x = 0.0D;
 		this.y = d;
@@ -264,7 +264,7 @@ public class Vector3 {
 	}
 
 	public Vector3 yCrossProduct() {
-		double d = -this.z;
+		double d  = -this.z;
 		double d1 = this.x;
 		this.x = d;
 		this.y = 0.0D;
@@ -299,7 +299,7 @@ public class Vector3 {
 	//~50% faster than 1/Math.sqrt(x) in its ~3-4th iterations for about the same numbers.
 	public static double fastInvSqrt(double x) {
 		double xhalf = 0.5d * x;
-		long i = Double.doubleToLongBits(x);
+		long   i     = Double.doubleToLongBits(x);
 		i = 0x5fe6ec85e7de30daL - (i >> 1);
 		x = Double.longBitsToDouble(i);
 		for (int it = 0; it < 4; it++) {
@@ -498,7 +498,7 @@ public class Vector3 {
 		}
 
 		public void multiply(Quat quat) {
-			double d = this.s * quat.s - this.x * quat.x - this.y * quat.y - this.z * quat.z;
+			double d  = this.s * quat.s - this.x * quat.x - this.y * quat.y - this.z * quat.z;
 			double d1 = this.s * quat.x + this.x * quat.s - this.y * quat.z + this.z * quat.y;
 			double d2 = this.s * quat.y + this.x * quat.z + this.y * quat.s - this.z * quat.x;
 			double d3 = this.s * quat.z - this.x * quat.y + this.y * quat.x + this.z * quat.s;
@@ -509,7 +509,7 @@ public class Vector3 {
 		}
 
 		public void rightMultiply(Quat quat) {
-			double d = this.s * quat.s - this.x * quat.x - this.y * quat.y - this.z * quat.z;
+			double d  = this.s * quat.s - this.x * quat.x - this.y * quat.y - this.z * quat.z;
 			double d1 = this.s * quat.x + this.x * quat.s + this.y * quat.z - this.z * quat.y;
 			double d2 = this.s * quat.y - this.x * quat.z + this.y * quat.s + this.z * quat.x;
 			double d3 = this.s * quat.z + this.x * quat.y - this.y * quat.x + this.z * quat.s;
@@ -536,7 +536,7 @@ public class Vector3 {
 		}
 
 		public void rotate(Vector3 vec) {
-			double d = -this.x * vec.x - this.y * vec.y - this.z * vec.z;
+			double d  = -this.x * vec.x - this.y * vec.y - this.z * vec.z;
 			double d1 = this.s * vec.x + this.y * vec.z - this.z * vec.y;
 			double d2 = this.s * vec.y - this.x * vec.z + this.z * vec.x;
 			double d3 = this.s * vec.z + this.x * vec.y - this.y * vec.x;
@@ -547,7 +547,7 @@ public class Vector3 {
 
 		public String toString() {
 			StringBuilder stringbuilder = new StringBuilder();
-			Formatter formatter = new Formatter(stringbuilder, Locale.US);
+			Formatter     formatter     = new Formatter(stringbuilder, Locale.US);
 			formatter.format("Quaternion:\n");
 			formatter.format("  < %f %f %f %f >\n", this.s, this.x, this.y, this.z);
 			formatter.close();

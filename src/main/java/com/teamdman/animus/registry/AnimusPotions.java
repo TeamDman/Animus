@@ -1,11 +1,11 @@
 package com.teamdman.animus.registry;
 
 import com.teamdman.animus.common.potion.PotionVengefulSpirits;
-
 import net.minecraft.potion.Potion;
 
 public class AnimusPotions {
 	public static Potion VENGEFULSPIRITS;
+
 	public static void init() {
 		VENGEFULSPIRITS = register(new PotionVengefulSpirits(), "vengefulspirits");
 	}

@@ -14,12 +14,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -29,14 +25,14 @@ public class ItemMobSoul extends Item implements IVariantProvider {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
-		
+
 		Random bRand = new Random();
 
 		if (stack.getTagCompound() == null)
 			return EnumActionResult.PASS;
 		if (world.isRemote)
 			return EnumActionResult.PASS;
-		Entity mob;
+		Entity         mob;
 		NBTTagCompound root = stack.getTagCompound();
 		if (root.hasKey("id")) {
 			int entityId = Integer.parseInt(root.getString("id"));
@@ -63,5 +59,8 @@ public class ItemMobSoul extends Item implements IVariantProvider {
 		return EnumActionResult.PASS;
 	}
 
-@Override	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {		variants.put(0,"type=normal");	}
+	@Override
+	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
+		variants.put(0, "type=normal");
+	}
 }

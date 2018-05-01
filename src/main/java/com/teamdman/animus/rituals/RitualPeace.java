@@ -1,10 +1,10 @@
 package com.teamdman.animus.rituals;
 
-import WayofTime.bloodmagic.ritual.*;
-import WayofTime.bloodmagic.ritual.Ritual;
-import WayofTime.bloodmagic.ritual.Ritual;
-import WayofTime.bloodmagic.ritual.Ritual;
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.ritual.EnumRuneType;
+import WayofTime.bloodmagic.ritual.IMasterRitualStone;
+import WayofTime.bloodmagic.ritual.Ritual;
+import WayofTime.bloodmagic.ritual.RitualComponent;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Animus;
 import net.minecraft.entity.Entity;
@@ -16,7 +16,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 /**
@@ -30,9 +29,9 @@ public class RitualPeace extends Ritual {
 
 	@Override
 	public void performRitual(IMasterRitualStone masterRitualStone) {
-		World world = masterRitualStone.getWorldObj();
-		SoulNetwork network = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
-		BlockPos masterPos = masterRitualStone.getBlockPos();
+		World       world     = masterRitualStone.getWorldObj();
+		SoulNetwork network   = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
+		BlockPos    masterPos = masterRitualStone.getBlockPos();
 
 		if (!masterRitualStone.getWorldObj().isRemote) {
 			Entity mob;
@@ -61,14 +60,13 @@ public class RitualPeace extends Ritual {
 
 	@Override
 	public void gatherComponents(Consumer<RitualComponent> components) {
-		components.accept(new RitualComponent( new BlockPos(0,4, 0), EnumRuneType.EARTH));
 		components.accept(new RitualComponent(new BlockPos(0, 4, 0), EnumRuneType.EARTH));
-		components.accept(new RitualComponent( new BlockPos(4, 1, 0), EnumRuneType.EARTH));
-		components.accept(new RitualComponent( new BlockPos(4, 2, 0), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(0, 4, 0), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(4, 1, 0), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(4, 2, 0), EnumRuneType.EARTH));
 
 		this.addCornerRunes(components, 1, 0, EnumRuneType.WATER);
 	}
-
 
 
 	@Override

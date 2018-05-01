@@ -1,17 +1,13 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.core.data.Binding;
-import WayofTime.bloodmagic.item.ItemSigil;
+import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
+import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
-import WayofTime.bloodmagic.util.helper.PlayerHelper;
-import WayofTime.bloodmagic.client.IVariantProvider;
-import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.google.common.base.Strings;
 import com.teamdman.animus.AnimusConfig;
-
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,11 +21,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,13 +30,13 @@ import java.util.List;
  */
 public class ItemSigilTransposition extends ItemSigilBase implements IVariantProvider {
 	public ItemSigilTransposition() {
-		super("transposition",AnimusConfig.transpositionConsumption);
+		super("transposition", AnimusConfig.transpositionConsumption);
 
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+		ItemStack      stack  = player.getHeldItem(hand);
 		RayTraceResult result = this.rayTrace(world, player, true);
 		if (result == null || result.typeOfHit == RayTraceResult.Type.MISS) {
 			NBTHelper.checkNBT(stack);
@@ -57,7 +50,7 @@ public class ItemSigilTransposition extends ItemSigilBase implements IVariantPro
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
-		BlockPos pos = blockPos.offset(side);
+		BlockPos  pos   = blockPos.offset(side);
 		if (!isUnusable(stack)) {
 			NBTHelper.checkNBT(stack);
 			if (stack.getTagCompound().getLong("pos") == 0) {
@@ -65,9 +58,9 @@ public class ItemSigilTransposition extends ItemSigilBase implements IVariantPro
 				ChatUtil.sendNoSpamUnloc(player, "text.component.transposition.set");
 				world.playSound(null, pos, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1);
 			} else if (stack.getTagCompound().getLong("pos") != 0) {
-				BlockPos _pos = BlockPos.fromLong(stack.getTagCompound().getLong("pos"));
-				TileEntity _tile = world.getTileEntity(_pos);
-				BlockPos _place = pos.offset(side);
+				BlockPos   _pos   = BlockPos.fromLong(stack.getTagCompound().getLong("pos"));
+				TileEntity _tile  = world.getTileEntity(_pos);
+				BlockPos   _place = pos.offset(side);
 				if (world.isAirBlock(_place)) {
 					NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
 					world.setBlockState(_place, world.getBlockState(_pos));
@@ -105,5 +98,8 @@ public class ItemSigilTransposition extends ItemSigilBase implements IVariantPro
 		super.addInformation(stack, world, tooltip, flag);
 	}
 
-@Override	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {		variants.put(0,"type=normal");	}
+	@Override
+	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
+		variants.put(0, "type=normal");
+	}
 }

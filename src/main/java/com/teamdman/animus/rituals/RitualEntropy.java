@@ -2,10 +2,9 @@ package com.teamdman.animus.rituals;
 
 import WayofTime.bloodmagic.core.data.SoulNetwork;
 import WayofTime.bloodmagic.ritual.*;
-import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.Utils;
+import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Animus;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -17,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.*;
@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  */
 public class RitualEntropy extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
-	public static final String CHEST_RANGE = "chest";
+	public static final String CHEST_RANGE  = "chest";
 	HashMap<Item, Integer> indexed = new HashMap<Item, Integer>();
 
 	public RitualEntropy() {
@@ -112,7 +112,7 @@ public class RitualEntropy extends Ritual {
 							continue;
 						} else {
 							Collection recipeItemCollection = ((Collection) recipeItem);
-							int value = -1;
+							int        value                = -1;
 							for (Object option : recipeItemCollection) {
 								if (option instanceof ItemStack) {
 									int v = getCobbleValue(fetchList, (ItemStack) option, layer);

@@ -29,8 +29,8 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class RitualCulling extends Ritual {
-	public static final String ALTAR_RANGE  = "altar";
-	public static final String EFFECT_RANGE = "effect";
+	public static final String                             ALTAR_RANGE    = "altar";
+	public static final String                             EFFECT_RANGE   = "effect";
 	public static final int                                amount         = 200;
 	public final        int                                maxWill        = 100;
 	public              BlockPos                           altarOffsetPos = new BlockPos(0, 0, 0);
@@ -43,6 +43,7 @@ public class RitualCulling extends Ritual {
 	public              HashMap<EnumDemonWillType, Double> willMap        = new HashMap<EnumDemonWillType, Double>();
 	DamageSource culled = new DamageSource("animus.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor()
 			.setDamageIsAbsolute();
+
 	public RitualCulling() {
 		super("ritualCulling", 0, 50000, "ritual." + Animus.MODID + ".culling");
 
@@ -230,42 +231,42 @@ public class RitualCulling extends Ritual {
 
 	@Override
 	public void gatherComponents(Consumer<RitualComponent> components) {
-		components.accept(new RitualComponent(new BlockPos( 1, 0, 1), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( -1, 0, 1), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( 1, 0, -1), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( -1, 0, -1), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos( 2, -1, 2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 2, -1, -2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -2, -1, 2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -2, -1, -2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 0, -1, 2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 2, -1, 0), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 0, -1, -2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -2, -1, 0), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -3, -1, -3), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 3, -1, -3), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -3, -1, 3), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 3, -1, 3), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 2, -1, 4), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 4, -1, 2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -2, -1, 4), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 4, -1, -2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 2, -1, -4), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -4, -1, 2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -2, -1, -4), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -4, -1, -2), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 1, 0, 4), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 4, 0, 1), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 1, 0, -4), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -4, 0, 1), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -1, 0, 4), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 4, 0, -1), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -1, 0, -4), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -4, 0, -1), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 4, 1, 0), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 0, 1, 4), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( -4, 1, 0), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos( 0, 1, -4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(1, 0, 1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, 1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(1, 0, -1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, -1), EnumRuneType.FIRE));
+		components.accept(new RitualComponent(new BlockPos(2, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(2, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-2, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-2, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(0, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(2, -1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(0, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-2, -1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-3, -1, -3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(3, -1, -3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-3, -1, 3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(3, -1, 3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(2, -1, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(4, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-2, -1, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(4, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(2, -1, -4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-4, -1, 2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-2, -1, -4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-4, -1, -2), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(1, 0, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(4, 0, 1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(1, 0, -4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-4, 0, 1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(4, 0, -1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, -4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-4, 0, -1), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(4, 1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(0, 1, 4), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-4, 1, 0), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(0, 1, -4), EnumRuneType.DUSK));
 	}
 
 	@Override

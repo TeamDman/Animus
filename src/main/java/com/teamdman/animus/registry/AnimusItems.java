@@ -33,34 +33,34 @@ public class AnimusItems {
 
 	public static void init() {
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamawood"))
-		kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood");
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamastone"))		
-		kamaStone = setupItem(new ItemKama(Item.ToolMaterial.STONE), "itemkamastone");
+			kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood");
+		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamastone"))
+			kamaStone = setupItem(new ItemKama(Item.ToolMaterial.STONE), "itemkamastone");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamairon"))
-		kamaIron = setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemkamairon");
+			kamaIron = setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemkamairon");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamagold"))
-		kamaGold = setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemkamagold");
+			kamaGold = setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemkamagold");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamadiamond"))
-		kamaDiamond = setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemkamadiamond");
+			kamaDiamond = setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemkamadiamond");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamabound"))
-		kamaBound = setupItem(new ItemKamaBound(), "itemkamabound");
+			kamaBound = setupItem(new ItemKamaBound(), "itemkamabound");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemaltardiviner"))
-		altarDiviner = setupItem(new ItemAltarDiviner(), "itemaltardiviner");
+			altarDiviner = setupItem(new ItemAltarDiviner(), "itemaltardiviner");
 		mobSoul = setupItem(new ItemMobSoul(), "itemmobsoul");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilchains"))
-		sigilChains = setupItem(new ItemSigilChains(), "itemsigilchains");
+			sigilChains = setupItem(new ItemSigilChains(), "itemsigilchains");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigiltransposition"))
-		sigilTransposition = setupItem(new ItemSigilTransposition(), "itemsigiltransposition");
+			sigilTransposition = setupItem(new ItemSigilTransposition(), "itemsigiltransposition");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilbuilder"))
-		sigilBuilder = setupItem(new ItemSigilBuilder(), "itemsigilbuilder");
+			sigilBuilder = setupItem(new ItemSigilBuilder(), "itemsigilbuilder");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilconsumption"))
-		sigilConsumption = setupItem(new ItemSigilConsumption(), "itemsigilconsumption");
+			sigilConsumption = setupItem(new ItemSigilConsumption(), "itemsigilconsumption");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemfragmenthealing"))
-		fragmentHealing = setupItem(new ItemFragmentHealing(), "itemfragmenthealing");
+			fragmentHealing = setupItem(new ItemFragmentHealing(), "itemfragmenthealing");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilstorm"))
-		sigilStorm = setupItem(new ItemSigilStorm(), "itemsigilstorm");
+			sigilStorm = setupItem(new ItemSigilStorm(), "itemsigilstorm");
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilleech"))
-		sigilLeech = setupItem(new ItemSigilLeech(), "itemsigilleech");
+			sigilLeech = setupItem(new ItemSigilLeech(), "itemsigilleech");
 	}
 
 	private static Item setupItem(Item item, String name) {
