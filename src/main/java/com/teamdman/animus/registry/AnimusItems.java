@@ -55,35 +55,35 @@ public class AnimusItems {
 			}
 		});
 
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamawood"))
-			items.add(setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamastone"))
-			items.add(setupItem(new ItemKama(Item.ToolMaterial.STONE), "itemkamastone"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamairon"))
-			items.add(setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemkamairon"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamagold"))
-			items.add(setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemkamagold"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamadiamond"))
-			items.add(setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemkamadiamond"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamabound"))
-			items.add(setupItem(new ItemKamaBound(), "itemkamabound"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemaltardiviner"))
-			items.add(setupItem(new ItemAltarDiviner(), "itemaltardiviner"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilchains"))
-			items.add(setupItem(new ItemSigilChains(), "itemsigilchains"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigiltransposition"))
-			items.add(setupItem(new ItemSigilTransposition(), "itemsigiltransposition"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilbuilder"))
-			items.add(setupItem(new ItemSigilBuilder(), "itemsigilbuilder"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilconsumption"))
-			items.add(setupItem(new ItemSigilConsumption(), "itemsigilconsumption"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemfragmenthealing"))
-			items.add(setupItem(new ItemFragmentHealing(), "itemfragmenthealing"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilstorm"))
-			items.add(setupItem(new ItemSigilStorm(), "itemsigilstorm"));
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilleech"))
-			items.add(setupItem(new ItemSigilLeech(), "itemsigilleech"));
-		items.add(setupItem(new ItemMobSoul(), "itemmobsoul"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:kama_wood"))
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.WOOD), "kama_wood"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:kama_stone"))
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.STONE), "kama_stone"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:kama_iron"))
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.IRON), "kama_iron"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:kama_gold"))
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.GOLD), "kama_gold"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:kama_diamond"))
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "kama_diamond"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:kama_bound"))
+			items.add(setupItem(new ItemKamaBound(), "kama_bound"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:altardiviner"))
+			items.add(setupItem(new ItemAltarDiviner(), "altardiviner"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:sigil)chains"))
+			items.add(setupItem(new ItemSigilChains(), "sigil_chains"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:sigil_transposition"))
+			items.add(setupItem(new ItemSigilTransposition(), "sigil_transposition"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:sigil_builder"))
+			items.add(setupItem(new ItemSigilBuilder(), "sigil_builder"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:sigil_consumption"))
+			items.add(setupItem(new ItemSigilConsumption(), "sigil_consumption"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:fragmenthealing"))
+			items.add(setupItem(new ItemFragmentHealing(), "fragmenthealing"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:sigil_storm"))
+			items.add(setupItem(new ItemSigilStorm(), "sigil_storm"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:sigil_leech"))
+			items.add(setupItem(new ItemSigilLeech(), "sigil_leech"));
+		items.add(setupItem(new ItemMobSoul(), "mobsoul"));
 
 		items.forEach(event.getRegistry()::register);
 	}
@@ -94,7 +94,9 @@ public class AnimusItems {
 			return item;
 		if (item.getRegistryName() == null)
 			item.setRegistryName(name);
+		System.out.println(item.getUnlocalizedName());
 		item.setUnlocalizedName(name);
+		System.out.println(item.getUnlocalizedName());
 		item.setCreativeTab(Animus.tabMain);
 		//GameRegistry.register(item);
 //		Animus.proxy.tryHandleItemModel(item, name);
