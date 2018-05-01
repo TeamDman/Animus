@@ -1,6 +1,5 @@
 package com.teamdman.animus;
 
-import WayofTime.bloodmagic.BloodMagic;
 import com.teamdman.animus.client.gui.GuiHandler;
 import com.teamdman.animus.handlers.AnimusSounds;
 import com.teamdman.animus.handlers.EventHandler;
@@ -17,33 +16,28 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.io.File;
-import java.util.Locale;
 
 @Mod(modid = Constants.Mod.MODID, name = Constants.Mod.NAME, version = Constants.Mod.VERSION, dependencies = Constants.Mod.DEPEND, guiFactory = "com.teamdman.animus.client.gui.ConfigGuiFactory")
 public class Animus {
 
 
-	@SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
-	public static CommonProxy proxy;
-
 	@Mod.Instance(Constants.Mod.MODID)
 	public static Animus instance;
-
-	public static CreativeTabs tabMain = BloodMagic.TAB_BM;
-//			new CreativeTabs(BloodMagic.TAB_BM) {
-//		@Override
-//		public ItemStack getTabIconItem() {
-//			return AnimusItems.altarDiviner.getDefaultInstance();
-//		}
-//	};
+	@SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
+	public static CommonProxy proxy;
+	//	public static CreativeTabs tabMain = BloodMagic.TAB_BM;
+	public static CreativeTabs tabMain = new CreativeTabs(Constants.Mod.MODID) {
+		@Override
+		public ItemStack getTabIconItem() {
+			return AnimusItems.altarDiviner.getDefaultInstance();
+		}
+	};
 
 	// init blocks and items
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
 		AnimusConfig.init(new File(event.getModConfigurationDirectory(), Constants.Mod.MODID + ".cfg"));
-		AnimusItems.init();
 		AnimusPotions.init();
-		AnimusBlocks.init();
 		AnimusTiles.init();
 		AnimusEntities.init();
 		proxy.preInit(event);

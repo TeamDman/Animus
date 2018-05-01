@@ -51,9 +51,9 @@ public class AnimusRecipes {
 
 														if (!AnimusConfig.itemBlacklist.contains("animus:itemfragmenthealing"))
 															AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PRISMARINE_SHARD), new ItemStack(AnimusItems.fragmentHealing), AltarTier.TWO, 1000, 20, 25));
-
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamabound") && !AnimusConfig.itemBlacklist.contains("animus:itemkamadiamond"))
-			AlchemyArrayRecipeRegistry.registerRecipe(ComponentTypes.REAGENT_BINDING.getStack(), new ItemStack(AnimusItems.kamaDiamond), new AlchemyArrayEffectBinding("boundKama", Utils.setUnbreakable(new ItemStack(AnimusItems.kamaBound))), new BindingAlchemyCircleRenderer());
+		//TODO: fix guidebook crash with this
+//		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamabound") && !AnimusConfig.itemBlacklist.contains("animus:itemkamadiamond"))
+//			AlchemyArrayRecipeRegistry.registerRecipe(ComponentTypes.REAGENT_BINDING.getStack(), new ItemStack(AnimusItems.kamaDiamond), new AlchemyArrayEffectBinding("boundKama", Utils.setUnbreakable(new ItemStack(AnimusItems.kamaBound))), new BindingAlchemyCircleRenderer());
 
 	}
 

@@ -90,7 +90,8 @@ public class ItemSigilTransposition extends ItemSigilBase implements IVariantPro
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 
 		NBTHelper.checkNBT(stack);
-
+		if (getBinding(stack) == null) return;
+		//TODO: fix custom binding info
 		if (!Strings.isNullOrEmpty(getBinding(stack).getOwnerName()))
 			tooltip.add(TextHelper.localizeEffect("tooltip.BloodMagic.currentOwner", getBinding(stack).getOwnerName()));
 		if (stack.getTagCompound().getLong("pos") != 0)

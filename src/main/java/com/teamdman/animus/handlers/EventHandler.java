@@ -38,37 +38,7 @@ public class EventHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public void onAttacked(LivingAttackEvent event) {
-/*		EntityLivingBase el;
-		el = event.getEntityLiving();
-        if(!(el instanceof EntityPlayer))
-            return;
 
-        PotionEffect vPotion = (el.getActivePotionEffect(AnimusPotions.VENGEFULSPIRITS));
-        if (vPotion.equals(null))
-        	return;
-        
-        int count = vPotion.getAmplifier();
-        Random rand = new Random();
-        
-		EntityVengefulSpirit spirit;
-		World ew = el.getEntityWorld();
-        
-        for (int i = 0; i < count; i++){
-  
-        	spirit = new EntityVengefulSpirit(ew);
-        	double posX = el.posX+0.5+rand.nextInt(3);
-        	double posY = el.posY;
-        	double posZ = el.posZ+0.5+rand.nextInt(3);
-        	spirit.setRevengeTarget(el.getAttackingEntity());
-        	spirit.setPosition(posX, posY, posZ);
-        	ew.spawnEntity(spirit);
-        	
-        }
-        */
-		//VengeFul Spirit stuff for later
-	}
 
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent eventArgs) {

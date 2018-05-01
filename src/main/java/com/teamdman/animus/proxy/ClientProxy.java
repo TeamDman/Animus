@@ -1,9 +1,6 @@
 package com.teamdman.animus.proxy;
 
-import com.teamdman.animus.client.render.entity.RenderVengefulSpirit;
-import com.teamdman.animus.entity.EntityVengefulSpirit;
 import com.teamdman.animus.registry.AnimusItems;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -32,7 +29,6 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	private void initRenderers() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityVengefulSpirit.class, RenderVengefulSpirit::new);
 	}
 
 	@Override

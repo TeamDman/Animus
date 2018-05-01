@@ -2,66 +2,85 @@ package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.*;
 import com.teamdman.animus.items.sigils.*;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TeamDman on 9/18/2016.
  */
+@Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
+@GameRegistry.ObjectHolder(Constants.Mod.MODID)
 public class AnimusItems {
-	public static Item kamaWood;
-	public static Item kamaStone;
-	public static Item kamaIron;
-	public static Item kamaGold;
-	public static Item kamaDiamond;
-	public static Item kamaBound;
+	public static final Item kamaWood = Items.AIR;
+	public static final Item kamaStone = Items.AIR;
+	public static final Item kamaIron = Items.AIR;
+	public static final Item kamaGold = Items.AIR;
+	public static final Item kamaDiamond = Items.AIR;
+	public static final Item kamaBound = Items.AIR;
+	public static final Item altarDiviner = Items.AIR;
+	public static final Item mobSoul = Items.AIR;
+	public static final Item fragmentHealing = Items.AIR;
+	//	public static final Item keyBinding = Items.AIR;
+	public static final Item sigilChains = Items.AIR;
+	public static final Item sigilTransposition = Items.AIR;
+	public static final Item sigilBuilder = Items.AIR;
+	public static final Item sigilConsumption = Items.AIR;
+	public static final Item sigilStorm = Items.AIR;
+	public static final Item sigilLeech = Items.AIR;
 
-	public static Item altarDiviner;
-	public static Item mobSoul;
-	public static Item fragmentHealing;
-	public static Item keyBinding;
+	public static List<Item> items;
 
-	public static Item sigilChains;
-	public static Item sigilTransposition;
-	public static Item sigilBuilder;
-	public static Item sigilConsumption;
-	public static Item sigilStorm;
-	public static Item sigilLeech;
+	@SubscribeEvent
+	@SuppressWarnings("unused")
+	public static void registerItems(RegistryEvent.Register<Item> event) {
+		items = new ArrayList<>();
 
-	public static void init() {
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamawood"))
-			kamaWood = setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood");
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamastone"))
-			kamaStone = setupItem(new ItemKama(Item.ToolMaterial.STONE), "itemkamastone");
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.STONE), "itemkamastone"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamairon"))
-			kamaIron = setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemkamairon");
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.IRON), "itemkamairon"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamagold"))
-			kamaGold = setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemkamagold");
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.GOLD), "itemkamagold"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamadiamond"))
-			kamaDiamond = setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemkamadiamond");
+			items.add(setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "itemkamadiamond"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamabound"))
-			kamaBound = setupItem(new ItemKamaBound(), "itemkamabound");
+			items.add(setupItem(new ItemKamaBound(), "itemkamabound"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemaltardiviner"))
-			altarDiviner = setupItem(new ItemAltarDiviner(), "itemaltardiviner");
-		mobSoul = setupItem(new ItemMobSoul(), "itemmobsoul");
+			items.add(setupItem(new ItemAltarDiviner(), "itemaltardiviner"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilchains"))
-			sigilChains = setupItem(new ItemSigilChains(), "itemsigilchains");
+			items.add(setupItem(new ItemSigilChains(), "itemsigilchains"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigiltransposition"))
-			sigilTransposition = setupItem(new ItemSigilTransposition(), "itemsigiltransposition");
+			items.add(setupItem(new ItemSigilTransposition(), "itemsigiltransposition"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilbuilder"))
-			sigilBuilder = setupItem(new ItemSigilBuilder(), "itemsigilbuilder");
+			items.add(setupItem(new ItemSigilBuilder(), "itemsigilbuilder"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilconsumption"))
-			sigilConsumption = setupItem(new ItemSigilConsumption(), "itemsigilconsumption");
+			items.add(setupItem(new ItemSigilConsumption(), "itemsigilconsumption"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemfragmenthealing"))
-			fragmentHealing = setupItem(new ItemFragmentHealing(), "itemfragmenthealing");
+			items.add(setupItem(new ItemFragmentHealing(), "itemfragmenthealing"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilstorm"))
-			sigilStorm = setupItem(new ItemSigilStorm(), "itemsigilstorm");
+			items.add(setupItem(new ItemSigilStorm(), "itemsigilstorm"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilleech"))
-			sigilLeech = setupItem(new ItemSigilLeech(), "itemsigilleech");
+			items.add(setupItem(new ItemSigilLeech(), "itemsigilleech"));
+		items.add(setupItem(new ItemMobSoul(), "itemmobsoul"));
+
+		items.forEach(event.getRegistry()::register);
 	}
+
 
 	private static Item setupItem(Item item, String name) {
 		if (AnimusConfig.itemBlacklist.contains(name))
