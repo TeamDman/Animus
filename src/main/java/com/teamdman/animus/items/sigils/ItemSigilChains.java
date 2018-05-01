@@ -29,7 +29,7 @@ public class ItemSigilChains extends ItemSigilBase implements IVariantProvider {
 		boolean unusable = isUnusable(stack);
 		if (!playerIn.world.isRemote && !unusable) {
 			NetworkHelper.getSoulNetwork(playerIn).syphonAndDamage(playerIn, getLpUsed());
-			ItemStack      soul       = new ItemStack(AnimusItems.mobSoul);
+			ItemStack      soul       = new ItemStack(AnimusItems.MOBSOUL);
 			NBTTagCompound tag        = new NBTTagCompound();
 			NBTTagCompound targetData = new NBTTagCompound();
 			target.setUniqueId(new UUID(playerIn.world.rand.nextInt(100000), playerIn.world.rand.nextInt(100000000)));

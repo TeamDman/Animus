@@ -20,9 +20,9 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
 @GameRegistry.ObjectHolder(Constants.Mod.MODID)
 public class AnimusBlocks {
-	public static final Block blockAntimatter = Blocks.AIR;
-	public static final Block phantomBuilder  = Blocks.AIR;
-	static List<Block> blocks;
+	public static final Block BLOCKANTIMATTER = Blocks.AIR;
+	public static final Block PHANTOMBUILDER  = Blocks.AIR;
+	public static List<Block> blocks;
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -40,10 +40,10 @@ public class AnimusBlocks {
 			block.setRegistryName(name);
 
 		block.setUnlocalizedName(name);
-		//GameRegistry.register(block);
+//		GameRegistry.register(block);
 		//GameRegistry.register(new ItemBlock(block).setRegistryName(name));
 		block.setCreativeTab(Animus.tabMain);
-		Animus.proxy.tryHandleBlockModel(block, name);
+//		Animus.proxy.tryHandleBlockModel(block, name);
 		return block;
 	}
 }

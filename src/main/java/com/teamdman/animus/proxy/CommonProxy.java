@@ -25,10 +25,10 @@ public class CommonProxy {
 
 	}
 
-	public void tryHandleItemModel(Item item, String name) {
+	public void tryHandleItemModel(Item item) {
 	}
 
-	public void tryHandleBlockModel(Block block, String name) {
+	public void tryHandleBlockModel(Block block) {
 	}
 
 	/*public InventoryRenderHelperV2 getRenderHelper() {

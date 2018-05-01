@@ -48,7 +48,7 @@ public class EventHandler {
 		int frags = 0;
 		for (int i = 0; i < open.inventorySlots.size(); i++) {
 			Slot slot = (Slot) open.inventorySlots.get(i);
-			if (slot.getHasStack() && slot.getStack().getItem() == AnimusItems.fragmentHealing) {
+			if (slot.getHasStack() && slot.getStack().getItem() == AnimusItems.FRAGMENTHEALING) {
 				frags++;
 				if (!eventArgs.player.capabilities.isCreativeMode && slot.getClass() == Slot.class) {
 					open.inventorySlots.set(i, new SlotNoPickup(slot.inventory, slot.getSlotIndex(), slot.xPos, slot.yPos));

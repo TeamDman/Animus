@@ -10,6 +10,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -62,7 +64,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 				ItemStack _stack = getStackToUse(hand, player);
 				if (_stack != null) {
 					BlockPos air = player.getPosition().offset(player.getHorizontalFacing(), 2).up();
-					if (world.isAirBlock(air)) {
+					if (world.isAirBlock(air) && _stack.getItem() != Items.AIR) {
 						ItemBlock _item = (ItemBlock) _stack.getItem();
 						if (_item != null) {
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
@@ -129,7 +131,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 			if (_stack == null)
 				return EnumActionResult.SUCCESS;
 			ItemBlock _item = (ItemBlock) _stack.getItem();
-			if (_item == null)
+			if (_item == null || _item.getBlock() == Blocks.AIR)
+				//todo: fix crashses when no offhand item present
 				return EnumActionResult.SUCCESS;
 
 			IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));

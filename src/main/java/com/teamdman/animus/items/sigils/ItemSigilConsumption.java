@@ -27,11 +27,11 @@ public class ItemSigilConsumption extends ItemSigilBase implements IVariantProvi
 		if (world.getTileEntity(blockPos) != null || world.getBlockState(blockPos).getBlock().getBlockHardness(null, null, null) == -1.0F)
 			return EnumActionResult.SUCCESS;
 		Block seeking = world.getBlockState(blockPos).getBlock();
-		world.setBlockState(blockPos, AnimusBlocks.blockAntimatter.getDefaultState().withProperty(BlockAntimatter.DECAYING, false));
+		world.setBlockState(blockPos, AnimusBlocks.BLOCKANTIMATTER.getDefaultState().withProperty(BlockAntimatter.DECAYING, false));
 		((TileAntimatter) world.getTileEntity(blockPos)).seeking = seeking;
 		((TileAntimatter) world.getTileEntity(blockPos)).player = player;
 
-		world.scheduleBlockUpdate(blockPos, AnimusBlocks.blockAntimatter, 5, 0);
+		world.scheduleBlockUpdate(blockPos, AnimusBlocks.BLOCKANTIMATTER, 5, 0);
 		return EnumActionResult.SUCCESS;
 	}
 }

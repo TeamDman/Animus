@@ -73,7 +73,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 		for (AltarComponent altarComponent : AltarTier.values()[hand.compareTo(EnumHand.OFF_HAND) == 0 ? AltarTier.MAXTIERS - 1 : altar.getTier().toInt()].getAltarComponents()) {
 			BlockPos componentPos = blockPos.add(altarComponent.getOffset());
 			if (world.isAirBlock(componentPos)) {
-				world.setBlockState(componentPos, AnimusBlocks.phantomBuilder.getDefaultState());
+				world.setBlockState(componentPos, AnimusBlocks.PHANTOMBUILDER.getDefaultState());
 				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 			}
 		}
@@ -84,7 +84,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			BlockStack worldBlock   = new BlockStack(world.getBlockState(componentPos).getBlock(), world.getBlockState(componentPos).getBlock().getMetaFromState(world.getBlockState(componentPos)));
 
 			if (altarComponent.getComponent() != ComponentType.NOTAIR) {
-				if (worldBlock.getBlock() == AnimusBlocks.phantomBuilder || world.isAirBlock(componentPos)) {
+				if (worldBlock.getBlock() == AnimusBlocks.PHANTOMBUILDER || world.isAirBlock(componentPos)) {
 					int invSlot = getSlotFor(altarComponent, player);
 					if (invSlot != -1) {
 						ItemStack _stack = player.inventory.getStackInSlot(invSlot);

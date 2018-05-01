@@ -1,9 +1,29 @@
 package com.teamdman.animus.proxy;
 
+import WayofTime.bloodmagic.client.IMeshProvider;
+import WayofTime.bloodmagic.client.IVariantProvider;
+import com.teamdman.animus.Animus;
+import com.teamdman.animus.Constants;
+import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import javafx.util.Pair;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.HashSet;
+import java.util.Set;
 
 //import WayofTime.bloodmagic.util.helper.InventoryRenderHelperV2; no longer exists
 
@@ -11,70 +31,33 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * Created by TeamDman on 9/18/2016.
  */
 public class ClientProxy extends CommonProxy {
-	//InventoryRenderHelperV2 renderHelper;
-
-
-	/*public InventoryRenderHelperV2 getRenderHelper() {
-		return renderHelper;
-	}*/
-
 	@Override
-	public void preInit(FMLPreInitializationEvent event) {
-		super.preInit(event);
+	public void tryHandleItemModel(Item item) {
+		if (item instanceof IVariantProvider) {
+			Int2ObjectMap<String> variants = new Int2ObjectOpenHashMap<>();
+			((IVariantProvider) item).gatherVariants(variants);
+			variants.forEach((i, v) -> {
+				ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName(), v));
+			});
+		} else if (item instanceof IMeshProvider) {
+			IMeshProvider mesh = (IMeshProvider) item;
+			final ResourceLocation location = mesh.getCustomLocation() != null ? mesh.getCustomLocation() : item.getRegistryName();
+			Set<String> variants = new HashSet<>();
+			mesh.gatherVariants(variants::add);
+			variants.forEach(v -> ModelLoader.registerItemVariants(item, new ModelResourceLocation(location, v)));
+			ModelLoader.setCustomMeshDefinition(item, mesh.getMeshDefinition());
 
-
-		//renderHelper = new InventoryRenderHelperV2(Animus.DOMAIN);
-		AnimusItems.initRenders();
-		initRenderers();
-	}
-
-	private void initRenderers() {
-	}
-
-	@Override
-	public void init(FMLInitializationEvent event) {
-		super.init(event);
-
+		}
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent event) {
-		super.postInit(event);
+	public void tryHandleBlockModel(Block block) {
+		if (block instanceof IVariantProvider) {
+			Int2ObjectMap<String> variants = new Int2ObjectOpenHashMap<>();
+			((IVariantProvider) block).gatherVariants(variants);
+			variants.forEach((i, v) -> {
+				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i, new ModelResourceLocation(block.getRegistryName(), v));
+			});
+		}
 	}
-
-	//
-	//	@Override
-	//	public void tryHandleItemModel(Item item, String name) {
-	//
-	//		if (item instanceof IMeshProvider) {
-	//			System.out.println("IMeshProvider");
-	//			IMeshProvider meshProvider = (IMeshProvider) item;
-	//			ModelLoader.setCustomMeshDefinition(item, meshProvider.getMeshDefinition());
-	//			ResourceLocation resourceLocation = meshProvider.getCustomLocation();
-	//			if (resourceLocation == null)
-	//				resourceLocation = new ResourceLocation(Constants.Mod.MODID, "item/" + name);
-	//
-	//			for (String variant : meshProvider.getVariants())
-	//				ModelLoader.registerItemVariants(item, new ModelResourceLocation(resourceLocation, variant));
-	//		} else if (item instanceof IVariantProvider) {
-	//			IVariantProvider variantProvider = (IVariantProvider) item;
-	//			for (Pair<Integer, String> variant : variantProvider.getVariants()) {
-	//				ModelLoader.setCustomModelResourceLocation(item, variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Constants.Mod.MODID, "item/" + name), variant.getRight()));
-	//
-	//
-	//			}
-	//		}
-	//	}
-	//
-	//
-	//	@Override
-	//	public void tryHandleBlockModel(Block block, String name) {
-	//		if (block instanceof IVariantProvider) {
-	//			IVariantProvider variantProvider = (IVariantProvider) block;
-	//			for (Pair<Integer, String> variant : variantProvider.getVariants())
-	//				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Constants.Mod.MODID, name), variant.getRight()));
-	//		}
-	//	}
-
-
 }

@@ -29,7 +29,7 @@ public class Animus {
 	public static CreativeTabs tabMain = new CreativeTabs(Constants.Mod.MODID) {
 		@Override
 		public ItemStack getTabIconItem() {
-			return AnimusItems.altarDiviner.getDefaultInstance();
+			return AnimusItems.ALTARDIVINER.getDefaultInstance();
 		}
 	};
 

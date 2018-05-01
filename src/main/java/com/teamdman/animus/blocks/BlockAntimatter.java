@@ -60,17 +60,17 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 		}
 		for (BlockPos newpos : getNeighbours(pos)) {
 			if (decaying) {
-				if (worldIn.getBlockState(newpos).getBlock() == AnimusBlocks.blockAntimatter) {
+				if (worldIn.getBlockState(newpos).getBlock() == AnimusBlocks.BLOCKANTIMATTER) {
 					worldIn.setBlockState(newpos, getDefaultState().withProperty(DECAYING, true));
-					worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.blockAntimatter, 0, 1);
+					worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, 0, 1);
 					worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 0.01F, 0.75F);
 				}
 			} else if (!worldIn.isAirBlock(newpos) && worldIn.getBlockState(newpos).getBlock() == tile.seeking) {
-				worldIn.setBlockState(newpos, AnimusBlocks.blockAntimatter.getDefaultState().withProperty(DECAYING, false));
+				worldIn.setBlockState(newpos, AnimusBlocks.BLOCKANTIMATTER.getDefaultState().withProperty(DECAYING, false));
 				((TileAntimatter) worldIn.getTileEntity(newpos)).seeking = tile.seeking;
 				((TileAntimatter) worldIn.getTileEntity(newpos)).range = tile.range - 1;
 				((TileAntimatter) worldIn.getTileEntity(newpos)).player = tile.player;
-				worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.blockAntimatter, worldIn.rand.nextInt(25), 1);
+				worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, worldIn.rand.nextInt(25), 1);
 				if (tile.player != null)
 					NetworkHelper.getSoulNetwork(tile.player).syphonAndDamage(tile.player, AnimusConfig.antimatterConsumption);
 				worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.01F, 0.75F);
@@ -104,9 +104,9 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 	@Override
 	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
 		for (BlockPos newpos : getNeighbours(pos)) {
-			if (worldIn.getBlockState(newpos).getBlock() == AnimusBlocks.blockAntimatter) {
+			if (worldIn.getBlockState(newpos).getBlock() == AnimusBlocks.BLOCKANTIMATTER) {
 				worldIn.setBlockState(newpos, getDefaultState().withProperty(DECAYING, true));
-				worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.blockAntimatter, 5, 1);
+				worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, 5, 1);
 			}
 		}
 		worldIn.setBlockToAir(pos);

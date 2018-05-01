@@ -8,6 +8,7 @@ import com.teamdman.animus.items.sigils.*;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -24,22 +25,22 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
 @GameRegistry.ObjectHolder(Constants.Mod.MODID)
 public class AnimusItems {
-	public static final Item kamaWood = Items.AIR;
-	public static final Item kamaStone = Items.AIR;
-	public static final Item kamaIron = Items.AIR;
-	public static final Item kamaGold = Items.AIR;
-	public static final Item kamaDiamond = Items.AIR;
-	public static final Item kamaBound = Items.AIR;
-	public static final Item altarDiviner = Items.AIR;
-	public static final Item mobSoul = Items.AIR;
-	public static final Item fragmentHealing = Items.AIR;
-	//	public static final Item keyBinding = Items.AIR;
-	public static final Item sigilChains = Items.AIR;
-	public static final Item sigilTransposition = Items.AIR;
-	public static final Item sigilBuilder = Items.AIR;
-	public static final Item sigilConsumption = Items.AIR;
-	public static final Item sigilStorm = Items.AIR;
-	public static final Item sigilLeech = Items.AIR;
+	public static final Item KAMAWOOD = Items.AIR;
+	public static final Item KAMASTONE = Items.AIR;
+	public static final Item KAMAIRON = Items.AIR;
+	public static final Item KAMAGOLD = Items.AIR;
+	public static final Item KAMADIAMOND = Items.AIR;
+	public static final Item KAMABOUND = Items.AIR;
+	public static final Item ALTARDIVINER = Items.AIR;
+	public static final Item MOBSOUL = Items.AIR;
+	public static final Item FRAGMENTHEALING = Items.AIR;
+	//	public static final Item KEYBINDING = Items.AIR;
+	public static final Item SIGILCHAINS = Items.AIR;
+	public static final Item SIGILTRANSPOSITION = Items.AIR;
+	public static final Item SIGILBUILDER = Items.AIR;
+	public static final Item SIGILCONSUMPTION = Items.AIR;
+	public static final Item SIGILSTORM = Items.AIR;
+	public static final Item SIGILLEECH = Items.AIR;
 
 	public static List<Item> items;
 
@@ -47,6 +48,12 @@ public class AnimusItems {
 	@SuppressWarnings("unused")
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		items = new ArrayList<>();
+
+		AnimusBlocks.blocks.forEach(b -> {
+			if (Item.getItemFromBlock(b) instanceof ItemBlock){
+				items.add(Item.getItemFromBlock(b).setRegistryName(b.getRegistryName()));
+			}
+		});
 
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamawood"))
 			items.add(setupItem(new ItemKama(Item.ToolMaterial.WOOD), "itemkamawood"));
@@ -90,15 +97,18 @@ public class AnimusItems {
 		item.setUnlocalizedName(name);
 		item.setCreativeTab(Animus.tabMain);
 		//GameRegistry.register(item);
-		Animus.proxy.tryHandleItemModel(item, name);
+//		Animus.proxy.tryHandleItemModel(item, name);
 
 		return item;
 		//TODO: Animus Config Blacklist
 	}
 
-	@SideOnly(Side.CLIENT)
-	public static void initRenders() {
 
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public static void registerRenders(ModelRegistryEvent event) {
+		AnimusItems.items.forEach(Animus.proxy::tryHandleItemModel);
+		AnimusBlocks.blocks.forEach(Animus.proxy::tryHandleBlockModel);
 	}
 
 }
