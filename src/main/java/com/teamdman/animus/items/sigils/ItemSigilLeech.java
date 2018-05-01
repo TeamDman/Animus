@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class ItemSigilLeech extends ItemSigilToggleableBase {
+public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 	public static final String EFFECT_RANGE = "effect";
 	Random random = new Random();
 	protected final Map<String, AreaDescriptor> modableRangeMap = new HashMap<String, AreaDescriptor>();
