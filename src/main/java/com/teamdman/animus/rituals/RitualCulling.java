@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 
 import java.util.*;
 import java.util.function.Consumer;
-
+import com.teamdman.animus.Constants;
 public class RitualCulling extends Ritual {
 	public static final String                             ALTAR_RANGE    = "altar";
 	public static final String                             EFFECT_RANGE   = "effect";
@@ -45,7 +45,7 @@ public class RitualCulling extends Ritual {
 			.setDamageIsAbsolute();
 
 	public RitualCulling() {
-		super("ritualCulling", 0, 50000, "ritual." + Animus.MODID + ".culling");
+		super("ritualCulling", 0, 50000, "ritual." + Constants.Mod.MODID + ".culling");
 
 		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 21));

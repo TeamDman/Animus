@@ -21,7 +21,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.*;
 import java.util.function.Consumer;
-
+import com.teamdman.animus.Constants;
 /**
  * Created by TeamDman on 2015-05-28.
  */
@@ -31,7 +31,7 @@ public class RitualEntropy extends Ritual {
 	HashMap<Item, Integer> indexed = new HashMap<Item, Integer>();
 
 	public RitualEntropy() {
-		super("ritualEntropy", 0, 1000, "ritual." + Animus.MODID + ".entropy");
+		super("ritualEntropy", 0, 1000, "ritual." + Constants.Mod.MODID + ".entropy");
 
 		addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
 		setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);

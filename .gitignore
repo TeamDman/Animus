@@ -1,8 +1,3 @@
-# custom
-forge*.zip
-README_FORGE.txt
-classes
-
 # eclipse
 bin
 *.launch
@@ -25,4 +20,3 @@ build
 # other
 eclipse
 run
-*.log

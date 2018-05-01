@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.function.Consumer;
-
+import com.teamdman.animus.Constants;
 /**
  * Created by TeamDman on 2015-05-28.
  */
@@ -23,7 +23,7 @@ public class RitualLuna extends Ritual {
 	public static final String CHEST_RANGE  = "chest";
 
 	public RitualLuna() {
-		super("ritualLuna", 0, 1000, "ritual." + Animus.MODID + ".luna");
+		super("ritualLuna", 0, 1000, "ritual." + Constants.Mod.MODID + ".luna");
 
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
 		addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));

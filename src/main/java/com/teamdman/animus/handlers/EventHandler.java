@@ -2,6 +2,7 @@ package com.teamdman.animus.handlers;
 
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.slots.SlotNoPickup;
 import net.minecraft.init.MobEffects;
@@ -32,7 +33,7 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent e) {
-		if (e.getModID().equals(Animus.MODID)) {
+		if (e.getModID().equals(Constants.Mod.MODID)) {
 			AnimusConfig.syncConfig();
 		}
 	}

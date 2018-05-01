@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.function.Consumer;
-
+import com.teamdman.animus.Constants;
 /**
  * Created by TeamDman on 2015-05-28.
  */
@@ -24,7 +24,7 @@ public class RitualUnmaking extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 
 	public RitualUnmaking() {
-		super("ritualUnmaking", 0, 3000, "ritual." + Animus.MODID + ".unmaking");
+		super("ritualUnmaking", 0, 3000, "ritual." + Constants.Mod.MODID + ".unmaking");
 
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-2, -2, -2), 5));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 8, 8);

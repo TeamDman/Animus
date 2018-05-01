@@ -7,11 +7,11 @@ import com.teamdman.animus.Animus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-
+import com.teamdman.animus.Constants;
 public class RitualRegression extends ImperfectRitual {
 
 	public RitualRegression() {
-		super("ritualRegression", e -> e.getBlock() == Blocks.BOOKSHELF, 3000, true, "ritual." + Animus.MODID + ".regression");
+		super("ritualRegression", e -> e.getBlock() == Blocks.BOOKSHELF, 3000, true, "ritual." + Constants.Mod.MODID + ".regression");
 	}
 
 	@Override

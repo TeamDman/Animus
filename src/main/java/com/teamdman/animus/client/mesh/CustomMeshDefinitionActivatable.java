@@ -2,6 +2,7 @@ package com.teamdman.animus.client.mesh;
 
 import WayofTime.bloodmagic.iface.IActivatable;
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.Constants;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
@@ -18,8 +19,8 @@ public class CustomMeshDefinitionActivatable implements ItemMeshDefinition {
 	public ModelResourceLocation getModelLocation(ItemStack stack) {
 		if (stack != null && stack.getItem() instanceof IActivatable)
 			if (((IActivatable) stack.getItem()).getActivated(stack))
-				return new ModelResourceLocation(new ResourceLocation(Animus.MODID, "item/" + name), "active=true");
+				return new ModelResourceLocation(new ResourceLocation(Constants.Mod.MODID, "item/" + name), "active=true");
 
-		return new ModelResourceLocation(new ResourceLocation(Animus.MODID, "item/" + name), "active=false");
+		return new ModelResourceLocation(new ResourceLocation(Constants.Mod.MODID, "item/" + name), "active=false");
 	}
 }

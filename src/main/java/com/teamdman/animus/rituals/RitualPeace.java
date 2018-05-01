@@ -17,13 +17,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.function.Consumer;
-
+import com.teamdman.animus.Constants;
 /**
  * Created by TeamDman on 2015-05-28.
  */
 public class RitualPeace extends Ritual {
 	public RitualPeace() {
-		super("ritualPeace", 0, 5000, "ritual." + Animus.MODID + ".peace");
+		super("ritualPeace", 0, 5000, "ritual." + Constants.Mod.MODID + ".peace");
 
 	}
 

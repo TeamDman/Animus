@@ -16,7 +16,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-
+import com.teamdman.animus.Constants;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -29,7 +29,7 @@ public class RitualSteadfastHeart extends Ritual {
 
 	public RitualSteadfastHeart() {
 
-		super("ritualSteadfastHeart", 0, 20000, "ritual." + Animus.MODID + ".steadfastheart");
+		super("ritualSteadfastHeart", 0, 20000, "ritual." + Constants.Mod.MODID + ".steadfastheart");
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-16, -16, -16), 32));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
 

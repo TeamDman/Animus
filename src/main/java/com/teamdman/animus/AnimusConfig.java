@@ -101,7 +101,7 @@ public class AnimusConfig {
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent event) {
-		//if (event.getModID().equals(Animus.MODID))
+		//if (event.getModID().equals(Constants.Mod.MODID))
 		//ConfigHandler.syncConfig();
 	}
 }

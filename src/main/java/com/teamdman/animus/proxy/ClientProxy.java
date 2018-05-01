@@ -56,14 +56,14 @@ public class ClientProxy extends CommonProxy {
 	//			ModelLoader.setCustomMeshDefinition(item, meshProvider.getMeshDefinition());
 	//			ResourceLocation resourceLocation = meshProvider.getCustomLocation();
 	//			if (resourceLocation == null)
-	//				resourceLocation = new ResourceLocation(Animus.MODID, "item/" + name);
+	//				resourceLocation = new ResourceLocation(Constants.Mod.MODID, "item/" + name);
 	//
 	//			for (String variant : meshProvider.getVariants())
 	//				ModelLoader.registerItemVariants(item, new ModelResourceLocation(resourceLocation, variant));
 	//		} else if (item instanceof IVariantProvider) {
 	//			IVariantProvider variantProvider = (IVariantProvider) item;
 	//			for (Pair<Integer, String> variant : variantProvider.getVariants()) {
-	//				ModelLoader.setCustomModelResourceLocation(item, variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, "item/" + name), variant.getRight()));
+	//				ModelLoader.setCustomModelResourceLocation(item, variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Constants.Mod.MODID, "item/" + name), variant.getRight()));
 	//
 	//
 	//			}
@@ -76,7 +76,7 @@ public class ClientProxy extends CommonProxy {
 	//		if (block instanceof IVariantProvider) {
 	//			IVariantProvider variantProvider = (IVariantProvider) block;
 	//			for (Pair<Integer, String> variant : variantProvider.getVariants())
-	//				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Animus.MODID, name), variant.getRight()));
+	//				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), variant.getLeft(), new ModelResourceLocation(new ResourceLocation(Constants.Mod.MODID, name), variant.getRight()));
 	//		}
 	//	}
 

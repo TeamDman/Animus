@@ -1,6 +1,7 @@
 package com.teamdman.animus.common.potion;
 
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -19,7 +20,7 @@ public class PotionVengefulSpirits extends Potion {
 
 
 	//@SideOnly(Side.CLIENT)
-	static final ResourceLocation rl = new ResourceLocation(Animus.MODID, "textures/misc/vengefulpotion.png");
+	static final ResourceLocation rl = new ResourceLocation(Constants.Mod.MODID, "textures/misc/vengefulpotion.png");
 
 	@Override
 	public boolean hasStatusIcon() {

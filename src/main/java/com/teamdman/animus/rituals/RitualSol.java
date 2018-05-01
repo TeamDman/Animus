@@ -5,7 +5,7 @@ import WayofTime.bloodmagic.core.RegistrarBloodMagicItems;
 import WayofTime.bloodmagic.core.data.SoulNetwork;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
-import com.teamdman.animus.Animus;
+import com.teamdman.animus.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ public class RitualSol extends Ritual {
 
 
 	public RitualSol() {
-		super("ritualSol", 0, 1000, "ritual." + Animus.MODID + ".sol");
+		super("ritualSol", 0, 1000, "ritual." + Constants.Mod.MODID + ".sol");
 
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
 		addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));

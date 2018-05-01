@@ -1,5 +1,6 @@
 package com.teamdman.animus;
 
+import WayofTime.bloodmagic.BloodMagic;
 import com.teamdman.animus.client.gui.GuiHandler;
 import com.teamdman.animus.handlers.AnimusSounds;
 import com.teamdman.animus.handlers.EventHandler;
@@ -19,14 +20,8 @@ import java.io.File;
 import java.util.Locale;
 
 @Mod(modid = Constants.Mod.MODID, name = Constants.Mod.NAME, version = Constants.Mod.VERSION, dependencies = Constants.Mod.DEPEND, guiFactory = "com.teamdman.animus.client.gui.ConfigGuiFactory")
-
 public class Animus {
 
-	public static final String MODID        = "animus";
-	public static final String DOMAIN       = MODID.toLowerCase(Locale.ENGLISH) + ":";
-	public static final String NAME         = "Animus";
-	public static final String VERSION      = "@VERSION@";
-	public static final String DEPENDENCIES = "required-after:BloodMagic;required-after:guideapi;after:Waila";
 
 	@SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
 	public static CommonProxy proxy;
@@ -34,17 +29,18 @@ public class Animus {
 	@Mod.Instance(Constants.Mod.MODID)
 	public static Animus instance;
 
-	public static CreativeTabs tabMain = new CreativeTabs(MODID) {
-		@Override
-		public ItemStack getTabIconItem() {
-			return AnimusItems.altarDiviner.getDefaultInstance();
-		}
-	};
+	public static CreativeTabs tabMain = BloodMagic.TAB_BM;
+//			new CreativeTabs(BloodMagic.TAB_BM) {
+//		@Override
+//		public ItemStack getTabIconItem() {
+//			return AnimusItems.altarDiviner.getDefaultInstance();
+//		}
+//	};
 
 	// init blocks and items
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
-		AnimusConfig.init(new File(event.getModConfigurationDirectory(), Animus.MODID + ".cfg"));
+		AnimusConfig.init(new File(event.getModConfigurationDirectory(), Constants.Mod.MODID + ".cfg"));
 		AnimusItems.init();
 		AnimusPotions.init();
 		AnimusBlocks.init();

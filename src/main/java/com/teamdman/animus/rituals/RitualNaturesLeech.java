@@ -15,7 +15,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
+import com.teamdman.animus.Constants;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -26,7 +26,7 @@ public class RitualNaturesLeech extends Ritual {
 	public              BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
 
 	public RitualNaturesLeech() {
-		super("ritualNaturesLeech", 0, 3000, "ritual." + Animus.MODID + ".naturesleech");
+		super("ritualNaturesLeech", 0, 3000, "ritual." + Constants.Mod.MODID + ".naturesleech");
 
 		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
