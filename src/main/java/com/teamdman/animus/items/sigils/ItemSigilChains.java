@@ -3,6 +3,7 @@ package com.teamdman.animus.items.sigils;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.entity.EntityList;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
@@ -32,14 +34,14 @@ public class ItemSigilChains extends ItemSigilBase implements IVariantProvider {
 			ItemStack      soul       = new ItemStack(AnimusItems.MOBSOUL);
 			NBTTagCompound tag        = new NBTTagCompound();
 			NBTTagCompound targetData = new NBTTagCompound();
-			target.setUniqueId(new UUID(playerIn.world.rand.nextInt(100000), playerIn.world.rand.nextInt(100000000)));
 			target.writeToNBT(targetData);
-			tag.setString("id", EntityList.getEntityString(target));
+			tag.setString("entity", EntityList.getKey(target).toString());
+			targetData.setInteger("id", EntityList.getID(target.getClass()));
 			if (target instanceof EntityLiving && target.hasCustomName())
 				tag.setString("name", target.getCustomNameTag());
 			tag.setTag("MobData", targetData);
 			soul.setTagCompound(tag);
-			soul.setStackDisplayName((tag.hasKey("name") ? tag.getString("name") + "" : tag.getString("id")) + " Soul");
+			soul.setStackDisplayName((tag.hasKey("name") ? tag.getString("name") : EntityList.getTranslationName(new ResourceLocation(tag.getString("entity"))) + " Soul"));
 			if (!playerIn.inventory.addItemStackToInventory(soul))
 				playerIn.world.spawnEntity(new EntityItem(playerIn.world, target.posX, target.posY, target.posZ, soul));
 			target.setDead();
