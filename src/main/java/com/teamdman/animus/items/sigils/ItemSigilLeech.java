@@ -9,6 +9,7 @@ import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +28,7 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 	public static final String EFFECT_RANGE = "effect";
 	Random random = new Random();
 	protected final Map<String, AreaDescriptor> modableRangeMap = new HashMap<String, AreaDescriptor>();
-
+	//todo: cleanup all of this
 	public ItemSigilLeech() {
 		super("leech", 5);
 	}
@@ -35,18 +36,16 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 	public ItemStack getFood(EntityPlayer player) {
 		int i;
 		for (i = 0; i < player.inventory.mainInventory.size(); i++) {
-			if (player.inventory.mainInventory.get(i) == null)
+			if (player.inventory.mainInventory.get(i) == ItemStack.EMPTY)
 				continue;
 			Item food = player.inventory.mainInventory.get(i).getItem();
-			if (food == null)
+			if (food == Items.AIR)
 				continue;
 
 			if (food instanceof IPlantable) {
 				return player.inventory.mainInventory.get(i);
 			}
-
 		}
-
 		return null;
 	}
 
@@ -115,7 +114,7 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 					if (haseditable != null) {
 						haseditable.shrink(Math.min(random.nextInt(4), haseditable.getCount()));
 						eaten = true;
-					} else if (eatGrowables(player) == true) {
+					} else if (eatGrowables(player)) {
 						eaten = true;
 					}
 					if (eaten) {
