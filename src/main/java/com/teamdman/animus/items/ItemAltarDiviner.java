@@ -4,7 +4,6 @@ package com.teamdman.animus.items;
 import WayofTime.bloodmagic.altar.AltarComponent;
 import WayofTime.bloodmagic.altar.AltarTier;
 import WayofTime.bloodmagic.altar.ComponentType;
-import WayofTime.bloodmagic.altar.IBloodAltar;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
 import WayofTime.bloodmagic.tile.TileAltar;
@@ -17,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -39,9 +39,10 @@ import java.util.List;
 public class ItemAltarDiviner extends Item implements IVariantProvider {
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		tooltip.add("Shift-rightclick on an altar to show altar outline");
-		tooltip.add("Keep using to automatically place altar blocks");
-		tooltip.add("Use in off hand to display max tier altar outline");
+		tooltip.add("Shift-rightclick on an altar to show altar outline.");
+		tooltip.add("Keep clicking to automatically place altar blocks.");
+		tooltip.add("Use in off hand to display max tier altar outline.");
+		//TODO: localization
 	}
 
 	private boolean isItemComponent(AltarComponent component, ItemStack stack2) {
@@ -50,7 +51,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 
 	private int getSlotFor(AltarComponent component, EntityPlayer player) {
 		for (int i = 0; i < player.inventory.mainInventory.size(); ++i) {
-			if (player.inventory.mainInventory.get(i) != null && isItemComponent(component, player.inventory.mainInventory.get(i))) {
+			if (isItemComponent(component, player.inventory.mainInventory.get(i))) {
 				return i;
 			}
 		}
@@ -59,21 +60,20 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-
-		if (world.getTileEntity(blockPos) == null || !(world.getTileEntity(blockPos) instanceof IBloodAltar))
+		if (world.getTileEntity(blockPos) == null || !(world.getTileEntity(blockPos) instanceof TileAltar))
 			return EnumActionResult.PASS;
 
 		TileAltar altar = (TileAltar) world.getTileEntity(blockPos);
 		altar.checkTier();
 
-		if (!player.isSneaking() || altar == null || altar.getTier().toInt() >= AltarTier.MAXTIERS)
+		if (!player.isSneaking() || altar.getTier().toInt() >= AltarTier.MAXTIERS)
 			return EnumActionResult.PASS;
-
 
 		for (AltarComponent altarComponent : AltarTier.values()[hand.compareTo(EnumHand.OFF_HAND) == 0 ? AltarTier.MAXTIERS - 1 : altar.getTier().toInt()].getAltarComponents()) {
 			BlockPos componentPos = blockPos.add(altarComponent.getOffset());
 			if (world.isAirBlock(componentPos)) {
-				world.setBlockState(componentPos, AnimusBlocks.PHANTOMBUILDER.getDefaultState());
+				world.setBlockState(componentPos, AnimusBlocks.BLOCKPHANTOMBUILDER.getDefaultState());
+//				world.setBlockState(componentPos, Blocks.DIAMOND_BLOCK.getDefaultState());
 				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 			}
 		}
@@ -84,7 +84,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			BlockStack worldBlock   = new BlockStack(world.getBlockState(componentPos).getBlock(), world.getBlockState(componentPos).getBlock().getMetaFromState(world.getBlockState(componentPos)));
 
 			if (altarComponent.getComponent() != ComponentType.NOTAIR) {
-				if (worldBlock.getBlock() == AnimusBlocks.PHANTOMBUILDER || world.isAirBlock(componentPos)) {
+				if (worldBlock.getBlock() == AnimusBlocks.BLOCKPHANTOMBUILDER || world.isAirBlock(componentPos)) {
 					int invSlot = getSlotFor(altarComponent, player);
 					if (invSlot != -1) {
 						ItemStack _stack = player.inventory.getStackInSlot(invSlot);

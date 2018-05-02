@@ -20,8 +20,8 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
 @GameRegistry.ObjectHolder(Constants.Mod.MODID)
 public class AnimusBlocks {
-	public static final Block BLOCKANTIMATTER = Blocks.AIR;
-	public static final Block PHANTOMBUILDER  = Blocks.AIR;
+	public static final Block BLOCKANTIMATTER     = Blocks.AIR;
+	public static final Block BLOCKPHANTOMBUILDER = Blocks.AIR;
 	public static List<Block> blocks;
 
 	@SubscribeEvent
@@ -34,16 +34,11 @@ public class AnimusBlocks {
 	}
 
 	private static Block setupBlock(Block block, String name) {
-		/*if (ConfigHandler.blockBlacklist.contains(name))
-			return block;*/
 		if (block.getRegistryName() == null)
 			block.setRegistryName(name);
 
 		block.setUnlocalizedName(name);
-//		GameRegistry.register(block);
-		//GameRegistry.register(new ItemBlock(block).setRegistryName(name));
 		block.setCreativeTab(Animus.tabMain);
-//		Animus.proxy.tryHandleBlockModel(block, name);
 		return block;
 	}
 }

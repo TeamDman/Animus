@@ -55,9 +55,7 @@ public class ClientProxy extends CommonProxy {
 		if (block instanceof IVariantProvider) {
 			Int2ObjectMap<String> variants = new Int2ObjectOpenHashMap<>();
 			((IVariantProvider) block).gatherVariants(variants);
-			variants.forEach((i, v) -> {
-				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i, new ModelResourceLocation(block.getRegistryName(), v));
-			});
+			variants.forEach((i, v) -> ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i, new ModelResourceLocation(block.getRegistryName(), v)));
 		}
 	}
 }

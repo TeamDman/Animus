@@ -41,7 +41,7 @@ public class ItemSigilChains extends ItemSigilBase implements IVariantProvider {
 				tag.setString("name", target.getCustomNameTag());
 			tag.setTag("MobData", targetData);
 			soul.setTagCompound(tag);
-			soul.setStackDisplayName((tag.hasKey("name") ? tag.getString("name") : EntityList.getTranslationName(new ResourceLocation(tag.getString("entity"))) + " Soul"));
+			soul.setTranslatableName((tag.hasKey("name") ? tag.getString("name") : EntityList.getTranslationName(new ResourceLocation(tag.getString("entity"))) + " Soul"));
 			if (!playerIn.inventory.addItemStackToInventory(soul))
 				playerIn.world.spawnEntity(new EntityItem(playerIn.world, target.posX, target.posY, target.posZ, soul));
 			target.setDead();

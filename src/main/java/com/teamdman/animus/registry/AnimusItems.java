@@ -25,22 +25,22 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
 @GameRegistry.ObjectHolder(Constants.Mod.MODID)
 public class AnimusItems {
-	public static final Item KAMAWOOD = Items.AIR;
-	public static final Item KAMASTONE = Items.AIR;
-	public static final Item KAMAIRON = Items.AIR;
-	public static final Item KAMAGOLD = Items.AIR;
-	public static final Item KAMADIAMOND = Items.AIR;
-	public static final Item KAMABOUND = Items.AIR;
+	public static final Item KAMA_WOOD = Items.AIR;
+	public static final Item KAMA_STONE = Items.AIR;
+	public static final Item KAMA_IRON = Items.AIR;
+	public static final Item KAMA_GOLD = Items.AIR;
+	public static final Item KAMA_DIAMOND = Items.AIR;
+	public static final Item KAMA_BOUND = Items.AIR;
 	public static final Item ALTARDIVINER = Items.AIR;
 	public static final Item MOBSOUL = Items.AIR;
 	public static final Item FRAGMENTHEALING = Items.AIR;
 	//	public static final Item KEYBINDING = Items.AIR;
-	public static final Item SIGILCHAINS = Items.AIR;
-	public static final Item SIGILTRANSPOSITION = Items.AIR;
-	public static final Item SIGILBUILDER = Items.AIR;
-	public static final Item SIGILCONSUMPTION = Items.AIR;
-	public static final Item SIGILSTORM = Items.AIR;
-	public static final Item SIGILLEECH = Items.AIR;
+	public static final Item SIGIL_CHAINS = Items.AIR;
+	public static final Item SIGIL_TRANSPOSITION = Items.AIR;
+	public static final Item SIGIL_BUILDER = Items.AIR;
+	public static final Item SIGIL_CONSUMPTION = Items.AIR;
+	public static final Item SIGIL_STORM = Items.AIR;
+	public static final Item SIGIL_LEECH = Items.AIR;
 
 	public static List<Item> items;
 
@@ -94,13 +94,8 @@ public class AnimusItems {
 			return item;
 		if (item.getRegistryName() == null)
 			item.setRegistryName(name);
-		System.out.println(item.getUnlocalizedName());
 		item.setUnlocalizedName(name);
-		System.out.println(item.getUnlocalizedName());
 		item.setCreativeTab(Animus.tabMain);
-		//GameRegistry.register(item);
-//		Animus.proxy.tryHandleItemModel(item, name);
-
 		return item;
 		//TODO: Animus Config Blacklist
 	}
