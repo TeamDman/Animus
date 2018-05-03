@@ -8,6 +8,7 @@ import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
@@ -53,7 +54,7 @@ public class RitualSol extends Ritual {
 		if (!masterRitualStone.getWorldObj().isRemote) {
 			Optional<Integer> slot = Stream.iterate(0, n -> ++n)
 					.limit(handler.getSlots() - 1)
-					.filter((e) -> handler.getStackInSlot(e) != null)
+					.filter((e) -> handler.getStackInSlot(e) != ItemStack.EMPTY)
 					.filter((e) -> this.isOkayToUse(handler.getStackInSlot(e)))
 					.findAny();
 			if (!slot.isPresent())
@@ -76,7 +77,7 @@ public class RitualSol extends Ritual {
 	}
 
 	private boolean isOkayToUse(ItemStack in) {
-		return in != null && (in.getItem() == RegistrarBloodMagicItems.SIGIL_BLOOD_LIGHT || Block.getBlockFromItem(in.getItem()) != null);
+		return in != ItemStack.EMPTY && (in.getItem() == RegistrarBloodMagicItems.SIGIL_BLOOD_LIGHT || Block.getBlockFromItem(in.getItem()) != Blocks.AIR);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -100,10 +101,12 @@ public class RitualSol extends Ritual {
 
 	@Override
 	public void gatherComponents(Consumer<RitualComponent> components) {
-		components.accept(new RitualComponent(new BlockPos(0, -1, 0), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(0, -2, 0), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(0, -3, 0), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(1, -3, 0), EnumRuneType.AIR));
+		for (int layer = 0; layer < 3; layer++) {
+			components.accept(new RitualComponent(new BlockPos(2,layer,2), EnumRuneType.AIR));
+			components.accept(new RitualComponent(new BlockPos(-2,layer,2), EnumRuneType.AIR));
+			components.accept(new RitualComponent(new BlockPos(2,layer,-2), EnumRuneType.AIR));
+			components.accept(new RitualComponent(new BlockPos(-2,layer,-2), EnumRuneType.AIR));
+		}
 	}
 
 	@Override

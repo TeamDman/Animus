@@ -20,7 +20,7 @@ public class ItemFragmentHealing extends Item implements IVariantProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		tooltip.add("More the merrier!");
+		tooltip.add("More the merrier!"); //todo: unlocalize
 		tooltip.add("This item cannot be moved.");
 	}
 

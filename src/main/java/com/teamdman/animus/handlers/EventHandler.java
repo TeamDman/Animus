@@ -56,7 +56,7 @@ public class EventHandler {
 			}
 		}
 		if (eventArgs.player.world.getWorldTime() % 20 == 0 && frags >= 9 && !eventArgs.player.world.isRemote) {
-			eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, frags / 9 - 1));
+			eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 200, frags / 9 - 1));
 			if (frags >= 35 && eventArgs.player.world.getWorldTime() % 200 == 0)
 				eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 200, 4));
 		}

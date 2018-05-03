@@ -5,10 +5,15 @@
     "transform": "forge:default-item"
   },
   "variants": {
-    "type": {
-      "normal": {
+    "active": {
+      "false": {
         "textures": {
-          "layer0": "animus:items/itemsigiltransposition"
+          "layer0": "animus:items/sigil_transposition_deactivated"
+        }
+      },
+      "true": {
+        "textures": {
+          "layer0": "animus:items/sigil_transposition_activated"
         }
       }
     }

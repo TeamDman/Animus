@@ -82,7 +82,7 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess p_getDrops_1_, BlockPos p_getDrops_2_, IBlockState p_getDrops_3_, int p_getDrops_4_) {
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override

@@ -102,10 +102,10 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 						}
 						if (world.isAirBlock(air)) {
 							ItemStack _stack = getStackToUse(hand, player);
-							if (_stack == null)
+							if (_stack == ItemStack.EMPTY)
 								return EnumActionResult.SUCCESS;
 							ItemBlock _item = (ItemBlock) _stack.getItem();
-							if (_item == null)
+							if (_item == Items.AIR)
 								return EnumActionResult.SUCCESS;
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 							world.setBlockState(air, _state);

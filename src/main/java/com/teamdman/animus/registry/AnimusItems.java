@@ -99,13 +99,4 @@ public class AnimusItems {
 		return item;
 		//TODO: Animus Config Blacklist
 	}
-
-
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public static void registerRenders(ModelRegistryEvent event) {
-		AnimusItems.items.forEach(Animus.proxy::tryHandleItemModel);
-		AnimusBlocks.blocks.forEach(Animus.proxy::tryHandleBlockModel);
-	}
-
 }

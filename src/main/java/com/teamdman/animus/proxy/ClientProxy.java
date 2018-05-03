@@ -2,6 +2,7 @@ package com.teamdman.animus.proxy;
 
 import WayofTime.bloodmagic.client.IMeshProvider;
 import WayofTime.bloodmagic.client.IVariantProvider;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
@@ -15,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -30,6 +32,7 @@ import java.util.Set;
 /**
  * Created by TeamDman on 9/18/2016.
  */
+@Mod.EventBusSubscriber(modid=Constants.Mod.MODID)
 public class ClientProxy extends CommonProxy {
 	@Override
 	public void tryHandleItemModel(Item item) {
@@ -58,4 +61,12 @@ public class ClientProxy extends CommonProxy {
 			variants.forEach((i, v) -> ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i, new ModelResourceLocation(block.getRegistryName(), v)));
 		}
 	}
+
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public static void registerRenders(ModelRegistryEvent event) {
+		AnimusItems.items.forEach(Animus.proxy::tryHandleItemModel);
+		AnimusBlocks.blocks.forEach(Animus.proxy::tryHandleBlockModel);
+	}
+
 }
