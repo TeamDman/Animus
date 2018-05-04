@@ -133,12 +133,12 @@ public class RitualNaturesLeech extends Ritual {
 
 					//					EffectHandler.getInstance().registerFX(
 					//							new EntityFXBurst(1, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
-
 					if (world.isRemote) {
 						world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
 								(random.nextDouble() - 0.5D) * 2.0D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2.0D, new int[0]);
 					}
 
+					//TODO: fix particles and sounds
 					world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
 					world.setBlockToAir(nextPos);
 					eaten++;
