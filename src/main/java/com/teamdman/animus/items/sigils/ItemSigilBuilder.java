@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.lang.reflect.Field;
 
@@ -44,7 +45,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (getActivated(stack))
+		if (getActivated(stack) && !isSelected)
 			ItemSigilBuilder.removeDelay();
 	}
 
@@ -62,7 +63,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 				ItemStack _stack = getStackToUse(hand, player);
 				if (_stack != null) {
 					BlockPos air = player.getPosition().offset(player.getHorizontalFacing(), 2).up();
-					if (world.isAirBlock(air) && _stack.getItem() != Items.AIR) {
+					if (world.isAirBlock(air) && !_stack.isEmpty()) {
 						ItemBlock _item = (ItemBlock) _stack.getItem();
 						if (_item != null) {
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
@@ -102,11 +103,9 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 						}
 						if (world.isAirBlock(air)) {
 							ItemStack _stack = getStackToUse(hand, player);
-							if (_stack == ItemStack.EMPTY)
+							if (_stack.isEmpty())
 								return EnumActionResult.SUCCESS;
 							ItemBlock _item = (ItemBlock) _stack.getItem();
-							if (_item == Items.AIR)
-								return EnumActionResult.SUCCESS;
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 							world.setBlockState(air, _state);
 							_stack.shrink(1);
@@ -126,13 +125,9 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 			} while (!world.isAirBlock(air) || air.getY() <= 0);
 
 			ItemStack _stack = getStackToUse(hand, player);
-			if (_stack == null)
+			if (_stack.isEmpty())
 				return EnumActionResult.SUCCESS;
 			ItemBlock _item = (ItemBlock) _stack.getItem();
-			if (_item == null || _item.getBlock() == Blocks.AIR)
-				//todo: fix crashses when no offhand item present
-				return EnumActionResult.SUCCESS;
-
 			IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 			world.setBlockState(air, _state);
 			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());

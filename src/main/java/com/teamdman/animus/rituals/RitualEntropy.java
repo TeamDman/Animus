@@ -6,6 +6,7 @@ import WayofTime.bloodmagic.util.Utils;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Animus;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.*;
@@ -47,34 +51,33 @@ public class RitualEntropy extends Ritual {
 		TileEntity     tileInventory  = world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
 
 
-		if (!masterRitualStone.getWorldObj().isRemote && tileInventory != null && tileInventory instanceof IInventory) {
+		if (!masterRitualStone.getWorldObj().isRemote && tileInventory != null && tileInventory.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null)) {
 			if (currentEssence < getRefreshCost()) {
 				network.causeNausea();
 				return;
 			}
 			for (int slot = 0; slot < ((IInventory) tileInventory).getSizeInventory(); slot++) {
 				ItemStack stack = ((IInventory) tileInventory).getStackInSlot(slot);
-				if (stack == null)
+				if (stack.isEmpty())
 					continue;
 				if (!stack.isItemEqual(new ItemStack(Blocks.COBBLESTONE))) {
-					int cobble = getCobbleValue(new ArrayList<Item>(), stack, 0);
+					int cobble = getCobbleValue(new ArrayList<>(), stack, 0);
 					if (cobble > 0) {
 						((IInventory) tileInventory).decrStackSize(slot, 1);
 						while (cobble > 0) {
-							Utils.insertStackIntoInventory(new ItemStack(Blocks.COBBLESTONE, cobble > 64 ? 64 : cobble), (IInventory) tileInventory, EnumFacing.UP);
+							ItemHandlerHelper.insertItemStacked(tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null),new ItemStack(Blocks.COBBLESTONE, cobble > 64 ? 64 : cobble),false);
 							cobble -= cobble > 64 ? 64 : cobble;
 						}
 					}
 				}
 			}
 			network.syphon(getRefreshCost());
-
 		}
 	}
 
 	@SuppressWarnings("rawtypes")
 	public int getCobbleValue(List<Item> fetchList, ItemStack input, int layer) {
-		System.out.printf("%s requested on layer %d\n", input.getDisplayName(), layer);
+//		System.out.printf("%s requested on layer %d\n", input.getDisplayName(), layer);
 		if (indexed.get(input.getItem()) != null)
 			return indexed.get(input.getItem());
 		if (fetchList.contains(input.getItem()))
@@ -85,8 +88,8 @@ public class RitualEntropy extends Ritual {
 		fetchList.add(input.getItem());
 		int rtn = 1;
 
-		for (IRecipe recipe : ForgeRegistries.RECIPES.getValues()) {
-			if (recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(input)) {
+		for (IRecipe recipe : ForgeRegistries.RECIPES.getValuesCollection()) {
+			if (!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().isItemEqual(input)) {
 				rtn += recipe.getIngredients().size();
 				List components;
 				if (recipe instanceof ShapelessRecipes) {
@@ -145,9 +148,16 @@ public class RitualEntropy extends Ritual {
 
 	@Override
 	public void gatherComponents(Consumer<RitualComponent> components) {
-		components.accept(new RitualComponent(new BlockPos(0, 1, 1), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos(0, 2, 0), EnumRuneType.FIRE));
-		components.accept(new RitualComponent(new BlockPos(0, 3, -1), EnumRuneType.WATER));
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				if (x == 0 && y == 0) continue;
+				components.accept(new RitualComponent(new BlockPos(x, 0, y), EnumRuneType.EARTH));
+			}
+		}
+		components.accept(new RitualComponent(new BlockPos(-2, 0, -2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(-2, 0, 2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(2, 0, -2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(2, 0, 2), EnumRuneType.EARTH));
 	}
 
 	@Override

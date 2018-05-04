@@ -54,7 +54,7 @@ public class RitualSol extends Ritual {
 		if (!masterRitualStone.getWorldObj().isRemote) {
 			Optional<Integer> slot = Stream.iterate(0, n -> ++n)
 					.limit(handler.getSlots() - 1)
-					.filter((e) -> handler.getStackInSlot(e) != ItemStack.EMPTY)
+					.filter((e) -> !handler.getStackInSlot(e).isEmpty())
 					.filter((e) -> this.isOkayToUse(handler.getStackInSlot(e)))
 					.findAny();
 			if (!slot.isPresent())
@@ -77,7 +77,7 @@ public class RitualSol extends Ritual {
 	}
 
 	private boolean isOkayToUse(ItemStack in) {
-		return in != ItemStack.EMPTY && (in.getItem() == RegistrarBloodMagicItems.SIGIL_BLOOD_LIGHT || Block.getBlockFromItem(in.getItem()) != Blocks.AIR);
+		return !in.isEmpty() && (in.getItem() == RegistrarBloodMagicItems.SIGIL_BLOOD_LIGHT || Block.getBlockFromItem(in.getItem()) != Blocks.AIR);
 	}
 
 	@SuppressWarnings("deprecation")

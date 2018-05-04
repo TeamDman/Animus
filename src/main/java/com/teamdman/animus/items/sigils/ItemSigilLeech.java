@@ -36,11 +36,9 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 	public ItemStack getFood(EntityPlayer player) {
 		int i;
 		for (i = 0; i < player.inventory.mainInventory.size(); i++) {
-			if (player.inventory.mainInventory.get(i) == ItemStack.EMPTY)
+			if (player.inventory.mainInventory.get(i).isEmpty())
 				continue;
 			Item food = player.inventory.mainInventory.get(i).getItem();
-			if (food == Items.AIR)
-				continue;
 
 			if (food instanceof IPlantable) {
 				return player.inventory.mainInventory.get(i);

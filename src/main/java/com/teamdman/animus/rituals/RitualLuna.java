@@ -4,10 +4,7 @@ import WayofTime.bloodmagic.core.data.SoulNetwork;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.Utils;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -56,9 +53,9 @@ public class RitualLuna extends Ritual {
 			for (BlockPos pos : effectRange.getContainedPositions(masterPos)) {
 				IBlockState state = world.getBlockState(pos);
 				if (state.getBlock().getLightValue(state, world, pos) != 0) {
-					IItemHandler handler = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.UP);
+					IItemHandler handler = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
 					ItemStack stack = new ItemStack(state.getBlock().getItemDropped(state, world.rand, 0));
-					if (ItemHandlerHelper.insertItem(handler, stack, true) == ItemStack.EMPTY) {
+					if (ItemHandlerHelper.insertItem(handler, stack, true).isEmpty()) {
 						ItemHandlerHelper.insertItem(handler, stack, false);
 						world.setBlockToAir(pos);
 						network.syphon(getRefreshCost());
