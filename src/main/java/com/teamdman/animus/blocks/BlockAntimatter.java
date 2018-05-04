@@ -92,12 +92,6 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 	}
 
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(DECAYING, meta == 1);
-	}
-
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		return state.getValue(DECAYING) ? 1 : 0;

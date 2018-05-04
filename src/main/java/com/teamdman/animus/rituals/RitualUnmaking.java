@@ -92,9 +92,9 @@ public class RitualUnmaking extends Ritual {
 					} else {
 						NBTTagList enchants = entityItem.getItem().getEnchantmentTagList();
 						for (int i = enchants.tagCount() - 1; i >= 0; --i) {
-							if (!books.getItem().isEmpty()) {
+							if (books.getItem().isEmpty())
 								break;
-							}
+
 							ItemStack      enchBook = new ItemStack(Items.ENCHANTED_BOOK);
 							NBTTagCompound data     = enchants.getCompoundTagAt(i);
 							short          enchID   = data.getShort("id");
@@ -112,9 +112,9 @@ public class RitualUnmaking extends Ritual {
 							world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
 							books.getItem().shrink(1);
 						}
-						if (entityItem.getItem().getEnchantmentTagList().tagCount() == 0) {
-							entityItem.getItem().getTagCompound().removeTag("ench");
-						}
+						//						if (entityItem.getItem().getEnchantmentTagList().tagCount() == 0) {
+						//							entityItem.getItem().getTagCompound().removeTag("ench");
+						//						}
 
 						world.playSound(null, masterPos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 0.5F, 1.0F);
 						masterRitualStone.stopRitual(BreakType.DEACTIVATE);
