@@ -1,6 +1,5 @@
 package com.teamdman.animus.common.potion;
 
-import com.teamdman.animus.Animus;
 import com.teamdman.animus.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;

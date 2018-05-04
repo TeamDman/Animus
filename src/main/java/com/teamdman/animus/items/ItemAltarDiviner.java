@@ -7,7 +7,6 @@ import WayofTime.bloodmagic.altar.ComponentType;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
 import WayofTime.bloodmagic.tile.TileAltar;
-import WayofTime.bloodmagic.util.BlockStack;
 import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.registry.AnimusBlocks;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -16,7 +15,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -64,6 +62,8 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			return EnumActionResult.PASS;
 
 		TileAltar altar = (TileAltar) world.getTileEntity(blockPos);
+		if (altar == null)
+			return EnumActionResult.PASS;
 		altar.checkTier();
 
 		if (!player.isSneaking() || altar.getTier().toInt() >= AltarTier.MAXTIERS)
@@ -80,11 +80,11 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 
 		String playerinfomsg = "";
 		for (AltarComponent altarComponent : AltarTier.values()[altar.getTier().toInt()].getAltarComponents()) {
-			BlockPos   componentPos = blockPos.add(altarComponent.getOffset());
-			BlockStack worldBlock   = new BlockStack(world.getBlockState(componentPos).getBlock(), world.getBlockState(componentPos).getBlock().getMetaFromState(world.getBlockState(componentPos)));
+			BlockPos componentPos = blockPos.add(altarComponent.getOffset());
+			Block    worldBlock   = world.getBlockState(componentPos).getBlock();
 
 			if (altarComponent.getComponent() != ComponentType.NOTAIR) {
-				if (worldBlock.getBlock() == AnimusBlocks.BLOCKPHANTOMBUILDER || world.isAirBlock(componentPos)) {
+				if (worldBlock == AnimusBlocks.BLOCKPHANTOMBUILDER || world.isAirBlock(componentPos)) {
 					int invSlot = getSlotFor(altarComponent, player);
 					if (invSlot != -1) {
 						ItemStack _stack = player.inventory.getStackInSlot(invSlot);
@@ -102,7 +102,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 							playerinfomsg = I18n.format("text.component.diviner.missing") + " " + (altarComponent.getComponent() == ComponentType.GLOWSTONE ? "Glowstone Block" : (I18n.format(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())).getItem().getUnlocalizedName(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()))) + ".name")));
 						}
 					}
-				} else if (worldBlock.getBlock() != RegistrarBloodMagicBlocks.BLOOD_RUNE) {
+				} else if (worldBlock != RegistrarBloodMagicBlocks.BLOOD_RUNE) {
 					playerinfomsg = "text.component.diviner.obstructed";
 				}
 			}

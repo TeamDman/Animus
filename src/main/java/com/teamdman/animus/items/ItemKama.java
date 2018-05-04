@@ -18,8 +18,8 @@ import java.util.List;
  * Created by TeamDman on 9/18/2016.
  */
 public class ItemKama extends ItemSword implements IVariantProvider {
-	float             attackDamage;
-	Item.ToolMaterial mat;
+	final float             attackDamage;
+	final Item.ToolMaterial mat;
 
 	public ItemKama(Item.ToolMaterial material) {
 		super(material);
@@ -47,12 +47,12 @@ public class ItemKama extends ItemSword implements IVariantProvider {
 		int                    d0       = (mat.getHarvestLevel() + 1) * 2;
 		AxisAlignedBB          region   = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
 		List<EntityLivingBase> entities = hit.world.getEntitiesWithinAABB(EntityLivingBase.class, region);
-		if (entities == null || entities.isEmpty())
+		if (entities.isEmpty())
 			return false;
 		for (EntityLivingBase target : entities) {
 			if (target instanceof EntityPlayer)
 				continue;
-			if (attacker == null || target == null || attacker.world.isRemote)
+			if (target == null || attacker.world.isRemote)
 				continue;
 			target.attackEntityFrom(DamageSource.causeMobDamage(attacker), attackDamage);
 			stack.damageItem(1, attacker);

@@ -1,6 +1,5 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.BloodMagic;
 import WayofTime.bloodmagic.iface.IActivatable;
 import WayofTime.bloodmagic.item.sigil.ItemSigilToggleableBase;
 import com.teamdman.animus.Constants;
@@ -14,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Locale;
 
 public class ItemSigilToggleableBaseBase extends ItemSigilToggleableBase {
-	String name;
+	final String name;
 	public ItemSigilToggleableBaseBase(String name, int lpUsed) {
 		super(name, lpUsed);
 		this.name = name;

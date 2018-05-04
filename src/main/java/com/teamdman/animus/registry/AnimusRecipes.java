@@ -1,12 +1,7 @@
 package com.teamdman.animus.registry;
 
-import WayofTime.bloodmagic.alchemyArray.AlchemyArrayEffectBinding;
 import WayofTime.bloodmagic.altar.AltarTier;
-import WayofTime.bloodmagic.client.render.alchemyArray.BindingAlchemyCircleRenderer;
-import WayofTime.bloodmagic.core.registry.AlchemyArrayRecipeRegistry;
 import WayofTime.bloodmagic.core.registry.AltarRecipeRegistry;
-import WayofTime.bloodmagic.item.types.ComponentTypes;
-import WayofTime.bloodmagic.util.Utils;
 import com.teamdman.animus.AnimusConfig;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

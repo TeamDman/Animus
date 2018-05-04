@@ -28,6 +28,7 @@ public class ItemSigilConsumption extends ItemSigilBase implements IVariantProvi
 			return EnumActionResult.SUCCESS;
 		Block seeking = world.getBlockState(blockPos).getBlock();
 		world.setBlockState(blockPos, AnimusBlocks.BLOCKANTIMATTER.getDefaultState().withProperty(BlockAntimatter.DECAYING, false));
+
 		((TileAntimatter) world.getTileEntity(blockPos)).seeking = seeking;
 		((TileAntimatter) world.getTileEntity(blockPos)).player = player;
 

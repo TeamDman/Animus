@@ -1,20 +1,15 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.core.data.Binding;
 import WayofTime.bloodmagic.iface.ISigil;
-import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.helper.PlayerHelper;
 import WayofTime.bloodmagic.util.helper.TextHelper;
-import com.google.common.base.Strings;
 import com.teamdman.animus.AnimusConfig;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,7 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -52,6 +46,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 		//noinspection ConstantConditions
 		if (result == null || result.typeOfHit == RayTraceResult.Type.MISS || result.typeOfHit != RayTraceResult.Type.BLOCK) {
 			NBTHelper.checkNBT(stack);
+			//noinspection ConstantConditions
 			stack.getTagCompound().setLong("pos", 0);
 			ChatUtil.sendNoSpam(player, "Position cleared!");
 			setActivatedState(stack,false);
@@ -73,11 +68,13 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 		if (!isUnusable(stack) && !world.isRemote) {
 			NBTHelper.checkNBT(stack);
 			if (!getActivated(stack)) {
+				//noinspection ConstantConditions
 				stack.getTagCompound().setLong("pos", posNew.offset(side.getOpposite()).toLong());
 				ChatUtil.sendNoSpamUnloc(player, "text.component.transposition.set");
 				world.playSound(null, posNew, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1);
 				setActivatedState(stack,true);
 			} else {
+				//noinspection ConstantConditions
 				BlockPos   posOld   = BlockPos.fromLong(stack.getTagCompound().getLong("pos"));
 				TileEntity tileOld  = world.getTileEntity(posOld);
 				if (world.isAirBlock(posNew)) {
@@ -111,6 +108,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		NBTHelper.checkNBT(stack);
+		//noinspection ConstantConditions
 		if (stack.getTagCompound().getLong("pos") != 0)
 			tooltip.add("Position stored."); //TODO: unlocalize
 		Binding binding = getBinding(stack);

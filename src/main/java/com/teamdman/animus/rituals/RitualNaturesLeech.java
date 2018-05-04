@@ -6,7 +6,7 @@ import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
-import com.teamdman.animus.Animus;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
@@ -15,7 +15,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import com.teamdman.animus.Constants;
+
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -135,7 +135,7 @@ public class RitualNaturesLeech extends Ritual {
 					//							new EntityFXBurst(1, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
 					if (world.isRemote) {
 						world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
-								(random.nextDouble() - 0.5D) * 2.0D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2.0D, new int[0]);
+								(random.nextDouble() - 0.5D) * 2.0D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2.0D);
 					}
 
 					//TODO: fix particles and sounds
@@ -156,15 +156,9 @@ public class RitualNaturesLeech extends Ritual {
 
 	}
 
-	public double smallGauss(double d) {
-		Random myRand = new Random();
-		return (myRand.nextFloat() - 0.5D) * d;
-	}
-
 	@Override
 	public int getRefreshTime() {
-		int rt = (int) Math.min(80, (100 * (100 / (Math.max(1, will) * 6))));
-		return rt;
+		return (int) Math.min(80, (100 * (100 / (Math.max(1, will) * 6))));
 	}
 
 	@Override

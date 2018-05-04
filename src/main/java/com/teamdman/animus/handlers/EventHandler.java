@@ -1,6 +1,5 @@
 package com.teamdman.animus.handlers;
 
-import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusItems;
@@ -10,7 +9,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -47,7 +45,7 @@ public class EventHandler {
 			return;
 		int frags = 0;
 		for (int i = 0; i < open.inventorySlots.size(); i++) {
-			Slot slot = (Slot) open.inventorySlots.get(i);
+			Slot slot = open.inventorySlots.get(i);
 			if (slot.getHasStack() && slot.getStack().getItem() == AnimusItems.FRAGMENTHEALING) {
 				frags++;
 				if (!eventArgs.player.capabilities.isCreativeMode && slot.getClass() == Slot.class) {

@@ -6,20 +6,18 @@ import WayofTime.bloodmagic.ritual.IMasterRitualStone;
 import WayofTime.bloodmagic.ritual.Ritual;
 import WayofTime.bloodmagic.ritual.RitualComponent;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
-import com.teamdman.animus.Animus;
+import com.teamdman.animus.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.UUID;
 import java.util.function.Consumer;
-import com.teamdman.animus.Constants;
 /**
  * Created by TeamDman on 2015-05-28.
  */

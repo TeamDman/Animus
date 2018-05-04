@@ -1,6 +1,5 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.item.sigil.ItemSigilToggleableBase;
 import WayofTime.bloodmagic.util.Constants;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
@@ -10,7 +9,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBlock;
@@ -24,7 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.lang.reflect.Field;
 
@@ -58,6 +55,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 
 				NBTTagCompound comp      = NBTHelper.checkNBT(stack).getTagCompound();
 				boolean        activated = getActivated(stack);
+				//noinspection ConstantConditions
 				comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
 			} else {
 				ItemStack _stack = getStackToUse(hand, player);
@@ -65,20 +63,20 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 					BlockPos air = player.getPosition().offset(player.getHorizontalFacing(), 2).up();
 					if (world.isAirBlock(air) && !_stack.isEmpty()) {
 						ItemBlock _item = (ItemBlock) _stack.getItem();
-						if (_item != null) {
+						if (_item != Items.AIR) {
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 							world.setBlockState(air, _state);
 							NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
 							_stack.shrink(1);
 							if (hand == EnumHand.MAIN_HAND && _stack.getCount() <= 0)
-								player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
+								player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
 						}
 					}
 				}
 			}
 		}
 
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+		return new ActionResult<>(EnumActionResult.PASS, stack);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -110,7 +108,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 							world.setBlockState(air, _state);
 							_stack.shrink(1);
 							if (hand == EnumHand.MAIN_HAND && _stack.getCount() <= 0)
-								player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
+								player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
 							return EnumActionResult.SUCCESS;
 						}
 					}
@@ -133,7 +131,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
 			_stack.shrink(1);
 			if (hand == EnumHand.MAIN_HAND && _stack.getCount() <= 0)
-				player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
+				player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
 		}
 		return EnumActionResult.SUCCESS;
 	}

@@ -8,13 +8,13 @@ import com.teamdman.animus.tiles.TileAntimatter;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class BlockAntimatter extends Block implements IVariantProvider {
@@ -55,6 +54,7 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 		TileAntimatter tile     = (TileAntimatter) worldIn.getTileEntity(pos);
 		boolean        decaying = state.getValue(DECAYING);
+		//noinspection ConstantConditions
 		if (tile.range <= 0) {
 			return;
 		}
@@ -67,8 +67,11 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 				}
 			} else if (!worldIn.isAirBlock(newpos) && worldIn.getBlockState(newpos).getBlock() == tile.seeking) {
 				worldIn.setBlockState(newpos, AnimusBlocks.BLOCKANTIMATTER.getDefaultState().withProperty(DECAYING, false));
+				//noinspection ConstantConditions
 				((TileAntimatter) worldIn.getTileEntity(newpos)).seeking = tile.seeking;
+				//noinspection ConstantConditions
 				((TileAntimatter) worldIn.getTileEntity(newpos)).range = tile.range - 1;
+				//noinspection ConstantConditions
 				((TileAntimatter) worldIn.getTileEntity(newpos)).player = tile.player;
 				worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, worldIn.rand.nextInt(25), 1);
 				if (tile.player != null)
@@ -81,13 +84,12 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 	}
 
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess p_getDrops_1_, BlockPos p_getDrops_2_, IBlockState p_getDrops_3_, int p_getDrops_4_) {
-		return new ArrayList<>();
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, DECAYING);
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{DECAYING});
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 	}
 
 

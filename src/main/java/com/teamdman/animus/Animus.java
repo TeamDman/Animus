@@ -26,7 +26,7 @@ public class Animus {
 	@SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
 	public static CommonProxy proxy;
 	//	public static CreativeTabs tabMain = BloodMagic.TAB_BM;
-	public static CreativeTabs tabMain = new CreativeTabs(Constants.Mod.MODID) {
+	public static final CreativeTabs tabMain = new CreativeTabs(Constants.Mod.MODID) {
 		@Override
 		public ItemStack getTabIconItem() {
 			return AnimusItems.ALTARDIVINER.getDefaultInstance();

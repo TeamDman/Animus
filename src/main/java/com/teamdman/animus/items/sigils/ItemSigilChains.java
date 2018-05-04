@@ -3,7 +3,6 @@ package com.teamdman.animus.items.sigils;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
-import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.entity.EntityList;
@@ -15,8 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.UUID;
 
 /**
  * Created by TeamDman on 2015-06-09.
@@ -35,6 +32,8 @@ public class ItemSigilChains extends ItemSigilBase implements IVariantProvider {
 			NBTTagCompound tag        = new NBTTagCompound();
 			NBTTagCompound targetData = new NBTTagCompound();
 			target.writeToNBT(targetData);
+			//if they mess with the nbt, then the game will crash /shrug
+			//noinspection ConstantConditions
 			tag.setString("entity", EntityList.getKey(target).toString());
 			targetData.setInteger("id", EntityList.getID(target.getClass()));
 			if (target instanceof EntityLiving && target.hasCustomName())

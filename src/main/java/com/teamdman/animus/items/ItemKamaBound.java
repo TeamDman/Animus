@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class ItemKamaBound extends ItemKama {
 
-	DamageSource khopeshDamage = new DamageSource("animus.absolute");
+	static final DamageSource khopeshDamage = new DamageSource("animus.absolute");
 
 	public ItemKamaBound() {
 		super(Item.ToolMaterial.DIAMOND);
@@ -43,12 +43,11 @@ public class ItemKamaBound extends ItemKama {
 		double x = hit.posX;
 		double y = hit.posY;
 		double z = hit.posZ;
-		if (checkAndKill(x, y, z, hit.world, attacker, false) == true)
+		if (checkAndKill(x, y, z, hit.world, attacker, false))
 			return false;
-		else if (checkAndDamage(x, y, z, hit.world, attacker))
-			return false;
+		else
+			return !checkAndDamage(x, y, z, hit.world, attacker);
 
-		return true;
 	}
 
 	private boolean checkAndDamage(double x, double y, double z, World world, EntityLivingBase attacker) {
@@ -58,24 +57,22 @@ public class ItemKamaBound extends ItemKama {
 
 		AxisAlignedBB          region   = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, region);
-		if (entities == null || entities.isEmpty())
+		if (entities.isEmpty())
 			return false;
 		for (EntityLivingBase target : entities) {
 			if (target == null || target.isDead || attacker == null || !(attacker instanceof EntityPlayer)
 					|| attacker == target)
 				continue;
 
-			result = target.attackEntityFrom(this.khopeshDamage, this.attackDamage);
+			result = target.attackEntityFrom(khopeshDamage, this.attackDamage);
 
 
 			if (result)
 				hit = true;
 
 		}
-		if (hit)
-			return true;
+		return hit;
 
-		return false;
 	}
 
 	private boolean checkAndKill(double x, double y, double z, World world, EntityLivingBase attacker,
@@ -84,7 +81,7 @@ public class ItemKamaBound extends ItemKama {
 		boolean                killed   = false;
 		AxisAlignedBB          region   = new AxisAlignedBB(x, y, z, x, y, z).expand(d0, d0, d0);
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, region);
-		if (entities == null || entities.isEmpty())
+		if (entities.isEmpty())
 			return false;
 		for (EntityLivingBase target : entities) {
 
@@ -102,7 +99,7 @@ public class ItemKamaBound extends ItemKama {
 
 			//if (BloodMagicAPI.getEntitySacrificeValues().containsKey(entityName))
 			//lifeEssence = BloodMagicAPI.getEntitySacrificeValues().get(entityName);
-
+			//TODO: fix essence values
 			if (lifeEssence <= 0)
 				continue;
 
@@ -120,10 +117,7 @@ public class ItemKamaBound extends ItemKama {
 			}
 		}
 
-		if (killed)
-			return true;
-		else
-			return false;
+		return killed;
 	}
 
 	@Override

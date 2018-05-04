@@ -1,6 +1,5 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.item.sigil.ItemSigilToggleableBase;
 import WayofTime.bloodmagic.ritual.AreaDescriptor;
 import WayofTime.bloodmagic.util.Constants;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
@@ -9,7 +8,6 @@ import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,9 +23,9 @@ import java.util.Random;
 
 
 public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
-	public static final String EFFECT_RANGE = "effect";
-	Random random = new Random();
-	protected final Map<String, AreaDescriptor> modableRangeMap = new HashMap<String, AreaDescriptor>();
+	public static final String                      EFFECT_RANGE    = "effect";
+	protected final     Map<String, AreaDescriptor> modableRangeMap = new HashMap<>();
+	final               Random                      random          = new Random();
 	//todo: cleanup all of this
 	public ItemSigilLeech() {
 		super("leech", 5);
@@ -78,7 +76,7 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 
 			if (player.world.isRemote) {
 				player.world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
-						(this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D, new int[0]);
+						(this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
 			}
 
 			player.world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
@@ -132,10 +130,11 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 		if (!world.isRemote && !isUnusable(stack)) {
 			NBTTagCompound comp      = NBTHelper.checkNBT(stack).getTagCompound();
 			boolean        activated = getActivated(stack);
+			//noinspection ConstantConditions
 			comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
 		}
 
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+		return new ActionResult<>(EnumActionResult.PASS, stack);
 	}
 
 	public void addBlockRange(String range, AreaDescriptor defaultRange) {

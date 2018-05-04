@@ -7,8 +7,8 @@ import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import amerifrance.guideapi.util.LogHelper;
-import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
@@ -27,7 +27,6 @@ import net.minecraft.world.World;
 
 import java.util.*;
 import java.util.function.Consumer;
-import com.teamdman.animus.Constants;
 public class RitualCulling extends Ritual {
 	public static final String                             ALTAR_RANGE    = "altar";
 	public static final String                             EFFECT_RANGE   = "effect";
@@ -35,14 +34,14 @@ public class RitualCulling extends Ritual {
 	public final        int                                maxWill        = 100;
 	public              BlockPos                           altarOffsetPos = new BlockPos(0, 0, 0);
 	public              double                             crystalBuffer  = 0;
+	static final        DamageSource                       culled         = new DamageSource("animus.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor()
+			.setDamageIsAbsolute();
+	public final        Random                             rand           = new Random();
 	public              LogHelper                          logger         = new LogHelper();
-	public              Random                             rand           = new Random();
 	public              int                                reagentDrain   = 2;
 	public              boolean                            result         = false;
 	public              double                             willBuffer     = 0;
-	public              HashMap<EnumDemonWillType, Double> willMap        = new HashMap<EnumDemonWillType, Double>();
-	DamageSource culled = new DamageSource("animus.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor()
-			.setDamageIsAbsolute();
+	public              HashMap<EnumDemonWillType, Double> willMap        = new HashMap<>();
 
 	public RitualCulling() {
 		super("ritualCulling", 0, 50000, "ritual." + Constants.Mod.MODID + ".culling");
@@ -153,9 +152,8 @@ public class RitualCulling extends Ritual {
 
 				if (effect.isEmpty()) {
 					float    damage = 0;
-					BlockPos at     = null;
+					BlockPos at     = livingEntity.getPosition();
 					soundSource = livingEntity.world;
-					at = livingEntity.getPosition();
 					boolean isNonBoss = livingEntity.isNonBoss();
 
 					if (livingEntity.getName().contains("Gaia"))
@@ -176,7 +174,7 @@ public class RitualCulling extends Ritual {
 
 					result = (livingEntity.attackEntityFrom(culled, damage));
 
-					if (result != false) {
+					if (result) {
 						entityCount++;
 						tileAltar.sacrificialDaggerCall(RitualCulling.amount, true);
 
@@ -189,19 +187,13 @@ public class RitualCulling extends Ritual {
 							}
 							willBuffer += modifier * Math.min(15.00, livingEntity.getMaxHealth());
 						}
-
-						if (at != null) {
-
-							if (world.isRemote) {
-								for (int i = 0; i < rand.nextInt(4); i++)
-									world.spawnParticle(EnumParticleTypes.PORTAL, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + .5,
-											(rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D, new int[0]);
-							}
-							soundSource.playSound(null, at, AnimusSoundEventHandler.ghostly, SoundCategory.BLOCKS, 1F,
-									1F);
-
+						if (world.isRemote) {
+							for (int i = 0; i < rand.nextInt(4); i++)
+								world.spawnParticle(EnumParticleTypes.PORTAL, at.getX() + 0.5, at.getY() + 0.5, at.getZ() + .5,
+										(rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
 						}
-
+						soundSource.playSound(null, at, AnimusSoundEventHandler.ghostly, SoundCategory.BLOCKS, 1F,
+								1F);
 					}
 				}
 

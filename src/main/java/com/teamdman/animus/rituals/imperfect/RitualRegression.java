@@ -3,11 +3,10 @@ package com.teamdman.animus.rituals.imperfect;
 import WayofTime.bloodmagic.ritual.imperfect.IImperfectRitualStone;
 import WayofTime.bloodmagic.ritual.imperfect.ImperfectRitual;
 import WayofTime.bloodmagic.util.ChatUtil;
-import com.teamdman.animus.Animus;
+import com.teamdman.animus.Constants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import com.teamdman.animus.Constants;
 public class RitualRegression extends ImperfectRitual {
 
 	public RitualRegression() {
@@ -16,7 +15,7 @@ public class RitualRegression extends ImperfectRitual {
 
 	@Override
 	public boolean onActivate(IImperfectRitualStone imperfectRitualStone, EntityPlayer player) {
-		if (player.getHeldItemMainhand() == null) {
+		if (player.getHeldItemMainhand().isEmpty()) {
 			ChatUtil.sendNoSpamUnloc(player, "text.component.holdingitem");
 			return false;
 		}

@@ -8,7 +8,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -27,6 +26,7 @@ public class ItemMobSoul extends Item implements IVariantProvider {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 		if (world.isRemote) return EnumActionResult.FAIL;
+		//noinspection ConstantConditions
 		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("entity")) return EnumActionResult.FAIL;
 		Entity mob = EntityList.createEntityByIDFromName(new ResourceLocation(stack.getTagCompound().getString("entity")), world);
 		if (mob == null) return EnumActionResult.FAIL;

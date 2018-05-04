@@ -23,7 +23,7 @@ public class BlockPhantomBuilder extends BlockPhantom {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack heldItem = player.getHeldItem(hand);
-		if (heldItem == null)
+		if (heldItem.isEmpty())
 			return false;
 		if (heldItem.getItem() instanceof ItemBlock) {
 			Item _item = heldItem.getItem();
