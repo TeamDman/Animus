@@ -7,12 +7,13 @@ item.kama_diamond.name=Diamond Khopesh
 item.kama_bound.name=Bound Khopesh
 item.altardiviner.name=Altar Diviner
 item.mobsoul.name=Mob Soul
-item.sigil_chains.name=Sigil of Phantom Chains
-item.sigil_transposition.name=Sigil of Aquisition
-item.sigil_builder.name=Sigil of the Fast Builder
 item.fragmenthealing.name=Healing Fragment
+item.keybinding.name=Key of Binding
+
+item.sigil_chains.name=Sigil of Phantom Chains
+item.sigil_transposition.name=Sigil of Acquisition
+item.sigil_builder.name=Sigil of the Fast Builder
 item.sigil_consumption.name=Sigil of Consumption
-item.keybinding=Key of Binding
 item.sigil_storm.name=Sigil of the Storm
 item.sigil_leech.name=Sigil of Nature's Leech
 
@@ -26,6 +27,7 @@ text.component.transposition.set=Position set!
 text.component.transposition.obstructed=Target location obstructed! Try again.
 text.component.holdingitem=You must be holding an item!
 
+tooltip.animus.currentOwner=Current Owner: %s
 
 ritual.animus.sol=Ritual of Sol
 ritual.animus.luna=Ritual of Luna
@@ -45,6 +47,7 @@ death.attack.animus.storm=%1$s felt the wrath of the storm.
 
 potion.vengefulspirits.name=Ven Spirits
 
+
 guide.animus.displayname=Animus Compendium
 guide.animus.title=Animus Compendium
 guide.animus.welcome=§4Written in blood...
@@ -53,7 +56,6 @@ guide.animus.category.rituals=Rituals
 guide.animus.category.sigils=Sigils
 guide.animus.category.blocks=Blocks
 guide.animus.category.items=Items
-
 
 guide.animus.rituals.sol.entry=Ritual of Sol
 guide.animus.rituals.sol.page0=Tier 0\nTakes light sources from an adjacent inventory and distributes them evenly in the world. Blood lamp sigil also works in the inventory

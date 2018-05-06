@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public class AnimusRecipes {
 	public static void init() {
 		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamawood"))
-			//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaWood), " a ", "a a", "  b", 'a', Blocks.PLANKS, 'b', Items.STICK));
+			//			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaWood), " a ", "a a", "  b", 'a', Blocks.PLANKS, 'b', Items.STICK));
 
 			if (!AnimusConfig.itemBlacklist.contains("animus:itemkamastone"))
 				//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaStone), " a ", "a a", "  b", 'a', Blocks.COBBLESTONE, 'b', Items.STICK));

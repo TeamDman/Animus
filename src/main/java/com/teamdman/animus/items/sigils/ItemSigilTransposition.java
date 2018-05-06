@@ -115,6 +115,6 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 		if (binding == null) return;
 		//TODO: fix custom binding info
 		tooltip.add(TextHelper.localizeEffect("tooltip.animus.currentOwner", binding.getOwnerName()));
-		super.addInformation(stack, world, tooltip, flag);
+		//		super.addInformation(stack, world, tooltip, flag);
 	}
 }

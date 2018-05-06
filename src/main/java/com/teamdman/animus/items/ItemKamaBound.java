@@ -2,6 +2,7 @@ package com.teamdman.animus.items;
 
 import WayofTime.bloodmagic.altar.IBloodAltar;
 import WayofTime.bloodmagic.util.helper.PlayerSacrificeHelper;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +14,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -118,6 +120,12 @@ public class ItemKamaBound extends ItemKama {
 		}
 
 		return killed;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.add("Use on mobs near a blood altar.");
+		tooltip.add("Doesn't actually bind..."); //TODO: unlocalize
 	}
 
 	@Override

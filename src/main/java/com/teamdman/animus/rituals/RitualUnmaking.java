@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+
 /**
  * Created by TeamDman on 2015-05-28.
  */
@@ -37,92 +38,83 @@ public class RitualUnmaking extends Ritual {
 		int         currentEssence = network.getCurrentEssence();
 		BlockPos    masterPos      = masterRitualStone.getBlockPos();
 
-		if (!masterRitualStone.getWorldObj().isRemote) {
-			if (currentEssence < getRefreshCost()) {
-				network.causeNausea();
-				return;
-			}
+		if (masterRitualStone.getWorldObj().isRemote)
+			return;
+		if (currentEssence < getRefreshCost()) {
+			network.causeNausea();
+			return;
+		}
+		AreaDescriptor   effectRange = getBlockRange(EFFECT_RANGE);
+		List<EntityItem> itemList    = world.getEntitiesWithinAABB(EntityItem.class, effectRange.getAABB(masterPos));
+		if (itemList.isEmpty())
+			return;
 
-			AreaDescriptor   effectRange = getBlockRange(EFFECT_RANGE);
-			List<EntityItem> itemList    = world.getEntitiesWithinAABB(EntityItem.class, effectRange.getAABB(masterRitualStone.getBlockPos()));
-			if (!itemList.isEmpty()) {
-				// find blank books to put enchantments on
-				Optional<EntityItem> booksOpt = itemList.stream()
-						.filter(e -> !e.isDead)
-						.filter(e -> e.getItem().getItem() == Items.BOOK)
-						.findFirst();
-				if (!booksOpt.isPresent())
-					return;
-				EntityItem books = booksOpt.get();
+		Optional<EntityItem> booksOpt = itemList.stream()
+				.filter(e -> !e.isDead)
+				.filter(e -> e.getItem().getItem() == Items.BOOK)
+				.findFirst();
 
-				for (EntityItem entityItem : itemList) {
-					if (entityItem.getItem().getItem() == Items.ENCHANTED_BOOK) {
-						if (!entityItem.getItem().hasTagCompound())
-							continue;
-						//noinspection ConstantConditions
-						NBTTagList enchants = entityItem.getItem().getTagCompound().getTagList("StoredEnchantments", 10);
-						if (enchants.hasNoTags())
-							continue;
-						for (int i = enchants.tagCount() - 1; i >= 0; i--) {
-							if (books.getItem().isEmpty())
-								break;
+		if (!booksOpt.isPresent())
+			return;
 
-							NBTTagCompound data    = enchants.getCompoundTagAt(i);
-							short          enchID  = data.getShort("id");
-							short          enchLVL = data.getShort("lvl");
-							enchants.removeTag(i);
+		EntityItem books = booksOpt.get();
 
-							ItemStack      enchBook        = new ItemStack(Items.ENCHANTED_BOOK);
-							NBTTagList     tagEnchantments = new NBTTagList();
-							NBTTagCompound tagEnchInfo     = new NBTTagCompound();
-							tagEnchInfo.setShort("id", enchID);
-							tagEnchInfo.setShort("lvl", (short) (enchLVL > 2 ? enchLVL - 1 : 1));
-							tagEnchantments.appendTag(tagEnchInfo);
-							NBTTagCompound tag = new NBTTagCompound();
-							tag.setTag("StoredEnchantments", tagEnchantments);
-							enchBook.setTagCompound(tag);
-							world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook.copy()));
-							world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
-
-							books.getItem().shrink(1);
-						}
-						entityItem.getItem().shrink(1);
-						world.playSound(null, masterPos, SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.BLOCKS, 0.5F, 1.0F);
-						masterRitualStone.stopRitual(BreakType.DEACTIVATE);
-					} else {
-						NBTTagList enchants = entityItem.getItem().getEnchantmentTagList();
-						for (int i = enchants.tagCount() - 1; i >= 0; --i) {
-							if (books.getItem().isEmpty())
-								break;
-
-							ItemStack      enchBook = new ItemStack(Items.ENCHANTED_BOOK);
-							NBTTagCompound data     = enchants.getCompoundTagAt(i);
-							short          enchID   = data.getShort("id");
-							short          enchLVL  = data.getShort("lvl");
-							enchants.removeTag(i);
-							enchBook.setTagCompound(new NBTTagCompound());
-							NBTTagList     bookTags       = new NBTTagList();
-							NBTTagCompound nbttagcompound = new NBTTagCompound();
-							nbttagcompound.setShort("id", enchID);
-							nbttagcompound.setShort("lvl", enchLVL);
-							bookTags.appendTag(nbttagcompound);
-							NBTTagCompound tag = new NBTTagCompound();
-							tag.setTag("StoredEnchantments", bookTags);
-							enchBook.setTagCompound(tag);
-							world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
-							books.getItem().shrink(1);
-						}
-						//						if (entityItem.getItem().getEnchantmentTagList().tagCount() == 0) {
-						//							entityItem.getItem().getTagCompound().removeTag("ench");
-						//						}
-
-						world.playSound(null, masterPos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 0.5F, 1.0F);
-						masterRitualStone.stopRitual(BreakType.DEACTIVATE);
-					}
+		for (EntityItem entityItem : itemList) {
+			if (entityItem.getItem().getItem() == Items.ENCHANTED_BOOK) {
+				if (!entityItem.getItem().hasTagCompound())
+					continue;
+				//noinspection ConstantConditions
+				NBTTagList enchants = entityItem.getItem().getTagCompound().getTagList("StoredEnchantments", 10);
+				if (enchants.hasNoTags())
+					continue;
+				for (int i = enchants.tagCount() - 1; i >= 0; i--) {
+					if (books.getItem().isEmpty())
+						break;
+					NBTTagCompound data    = enchants.getCompoundTagAt(i);
+					short          enchID  = data.getShort("id");
+					short          enchLVL = data.getShort("lvl");
+					enchants.removeTag(i);
+					ItemStack enchBook = getEnchantedBook(enchID, (short) (enchLVL > 2 ? enchLVL - 1 : 1));
+					world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook.copy()));
+					world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
+					books.getItem().shrink(1);
 				}
-				network.syphon(getRefreshCost());
+				entityItem.getItem().shrink(1);
+				world.playSound(null, masterPos, SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.BLOCKS, 0.5F, 1.0F);
+				masterRitualStone.stopRitual(BreakType.DEACTIVATE);
+			} else {
+				NBTTagList enchants = entityItem.getItem().getEnchantmentTagList();
+				for (int i = enchants.tagCount() - 1; i >= 0; --i) {
+					if (books.getItem().isEmpty())
+						break;
+					NBTTagCompound data    = enchants.getCompoundTagAt(i);
+					short          enchID  = data.getShort("id");
+					short          enchLVL = data.getShort("lvl");
+					enchants.removeTag(i);
+					ItemStack enchBook = getEnchantedBook(enchID, enchLVL);
+					world.spawnEntity(new EntityItem(world, masterPos.getX(), masterPos.getY() + 1, masterPos.getZ(), enchBook));
+					books.getItem().shrink(1);
+				}
+				world.playSound(null, masterPos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 0.5F, 1.0F);
+				masterRitualStone.stopRitual(BreakType.DEACTIVATE);
 			}
 		}
+		network.syphon(getRefreshCost());
+	}
+
+	private ItemStack getEnchantedBook(short id, short level) {
+		ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
+		book.setTagCompound(new NBTTagCompound());
+		NBTTagList     enchantmentList = new NBTTagList();
+		NBTTagCompound enchantment     = new NBTTagCompound();
+		enchantment.setShort("id", id);
+		enchantment.setShort("lvl", level);
+		enchantmentList.appendTag(enchantment);
+
+		NBTTagCompound compound = new NBTTagCompound();
+		compound.setTag("StoredEnchantments", enchantmentList);
+		book.setTagCompound(compound);
+		return book;
 	}
 
 	@Override

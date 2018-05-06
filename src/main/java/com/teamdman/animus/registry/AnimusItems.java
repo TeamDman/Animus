@@ -22,22 +22,23 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
 @GameRegistry.ObjectHolder(Constants.Mod.MODID)
 public class AnimusItems {
-	public static final Item KAMA_WOOD = Items.AIR;
-	public static final Item KAMA_STONE = Items.AIR;
-	public static final Item KAMA_IRON = Items.AIR;
-	public static final Item KAMA_GOLD = Items.AIR;
-	public static final Item KAMA_DIAMOND = Items.AIR;
-	public static final Item KAMA_BOUND = Items.AIR;
-	public static final Item ALTARDIVINER = Items.AIR;
-	public static final Item MOBSOUL = Items.AIR;
-	public static final Item FRAGMENTHEALING = Items.AIR;
+	public static final Item KAMA_WOOD           = Items.AIR;
+	public static final Item KAMA_STONE          = Items.AIR;
+	public static final Item KAMA_IRON           = Items.AIR;
+	public static final Item KAMA_GOLD           = Items.AIR;
+	public static final Item KAMA_DIAMOND        = Items.AIR;
+	public static final Item KAMA_BOUND          = Items.AIR;
+	public static final Item ALTARDIVINER        = Items.AIR;
+	public static final Item MOBSOUL             = Items.AIR;
+	public static final Item FRAGMENTHEALING     = Items.AIR;
+	public static final Item KEYBINDING          = Items.AIR;
 	//	public static final Item KEYBINDING = Items.AIR;
-	public static final Item SIGIL_CHAINS = Items.AIR;
+	public static final Item SIGIL_CHAINS        = Items.AIR;
 	public static final Item SIGIL_TRANSPOSITION = Items.AIR;
-	public static final Item SIGIL_BUILDER = Items.AIR;
-	public static final Item SIGIL_CONSUMPTION = Items.AIR;
-	public static final Item SIGIL_STORM = Items.AIR;
-	public static final Item SIGIL_LEECH = Items.AIR;
+	public static final Item SIGIL_BUILDER       = Items.AIR;
+	public static final Item SIGIL_CONSUMPTION   = Items.AIR;
+	public static final Item SIGIL_STORM         = Items.AIR;
+	public static final Item SIGIL_LEECH         = Items.AIR;
 
 	public static List<Item> items;
 
@@ -81,6 +82,8 @@ public class AnimusItems {
 			items.add(setupItem(new ItemSigilStorm(), "sigil_storm"));
 		if (!AnimusConfig.itemBlacklist.contains("animus:sigil_leech"))
 			items.add(setupItem(new ItemSigilLeech(), "sigil_leech"));
+		if (!AnimusConfig.itemBlacklist.contains("animus:keybinding"))
+			items.add(setupItem(new ItemKeyBinding(), "keybinding"));
 		items.add(setupItem(new ItemMobSoul(), "mobsoul"));
 
 		items.forEach(event.getRegistry()::register);
