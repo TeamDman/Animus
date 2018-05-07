@@ -15,9 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-import java.io.File;
-
-@Mod(modid = Constants.Mod.MODID, name = Constants.Mod.NAME, version = Constants.Mod.VERSION, dependencies = Constants.Mod.DEPEND, guiFactory = "com.teamdman.animus.client.gui.ConfigGuiFactory")
+@Mod(modid = Constants.Mod.MODID, name = Constants.Mod.NAME, version = Constants.Mod.VERSION, dependencies = Constants.Mod.DEPEND)
 public class Animus {
 
 
@@ -36,7 +34,7 @@ public class Animus {
 	// init blocks and items
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
-		AnimusConfig.init(new File(event.getModConfigurationDirectory(), Constants.Mod.MODID + ".cfg"));
+		//		AnimusConfig.init(new File(event.getModConfigurationDirectory(), Constants.Mod.MODID + ".cfg"));
 		AnimusPotions.init();
 		AnimusTiles.init();
 		AnimusEntities.init();

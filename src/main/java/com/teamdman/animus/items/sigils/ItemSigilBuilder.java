@@ -85,7 +85,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 		BlockPos air  = blockPos;
 		int      dist = 0;
 		if (player.isSneaking()) {
-			for (int radius = 1; radius <= Math.sqrt(AnimusConfig.builderRange); radius++) {
+			for (int radius = 1; radius <= Math.sqrt(AnimusConfig.sigils.builderRange); radius++) {
 				for (int x = -radius; x <= radius; x++) {
 					for (int z = -radius; z <= radius; z++) {
 						switch (side.getAxis()) {
@@ -118,7 +118,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 			do {
 				air = air.offset(side.getOpposite(), 1);
 				dist++;
-				if (dist > AnimusConfig.builderRange)
+				if (dist > AnimusConfig.sigils.builderRange)
 					return EnumActionResult.SUCCESS;
 			} while (!world.isAirBlock(air) || air.getY() <= 0);
 

@@ -26,22 +26,22 @@ public class AnimusRituals {
 
 	public static void init() {
 		ritualSol = new RitualSol();
-		RitualRegistry.registerRitual(ritualSol, AnimusConfig.ritualSol);
+		RitualRegistry.registerRitual(ritualSol, AnimusConfig.ritualList.ritualSol);
 		ritualLuna = new RitualLuna();
-		RitualRegistry.registerRitual(ritualLuna, AnimusConfig.ritualLuna);
+		RitualRegistry.registerRitual(ritualLuna, AnimusConfig.ritualList.ritualLuna);
 		ritualEntropy = new RitualEntropy();
-		RitualRegistry.registerRitual(ritualEntropy, AnimusConfig.ritualEntropy);
+		RitualRegistry.registerRitual(ritualEntropy, AnimusConfig.ritualList.ritualEntropy);
 		ritualUnmaking = new RitualUnmaking();
-		RitualRegistry.registerRitual(ritualUnmaking, AnimusConfig.ritualUnmaking);
+		RitualRegistry.registerRitual(ritualUnmaking, AnimusConfig.ritualList.ritualUnmaking);
 		ritualPeace = new RitualPeace();
-		RitualRegistry.registerRitual(ritualPeace, AnimusConfig.ritualPeace);
+		RitualRegistry.registerRitual(ritualPeace, AnimusConfig.ritualList.ritualPeace);
 		ritualNaturesLeech = new RitualNaturesLeech();
-		RitualRegistry.registerRitual(ritualNaturesLeech, AnimusConfig.ritualNaturesLeech);
+		RitualRegistry.registerRitual(ritualNaturesLeech, AnimusConfig.ritualList.ritualNaturesLeech);
 		ritualCulling = new RitualCulling();
-		RitualRegistry.registerRitual(ritualCulling, AnimusConfig.ritualCulling);
+		RitualRegistry.registerRitual(ritualCulling, AnimusConfig.ritualList.ritualCulling);
 		ritualSteadfastHeart = new RitualSteadfastHeart();
-		RitualRegistry.registerRitual(ritualSteadfastHeart, AnimusConfig.ritualSteadfastHeart);
+		RitualRegistry.registerRitual(ritualSteadfastHeart, AnimusConfig.ritualList.ritualSteadfastHeart);
 		ritualRegression = new RitualRegression();
-		ImperfectRitualRegistry.registerRitual(ritualRegression, AnimusConfig.ritualRegression);
+		ImperfectRitualRegistry.registerRitual(ritualRegression, AnimusConfig.ritualList.ritualRegression);
 	}
 }

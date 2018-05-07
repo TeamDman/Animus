@@ -7,7 +7,6 @@ import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.helper.PlayerHelper;
 import WayofTime.bloodmagic.util.helper.TextHelper;
-import com.teamdman.animus.AnimusConfig;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -28,7 +27,7 @@ import java.util.List;
  */
 public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 	public ItemSigilTransposition() {
-		super("transposition", AnimusConfig.transpositionConsumption);
+		super("transposition", 5000);
 	}
 
 	@Override

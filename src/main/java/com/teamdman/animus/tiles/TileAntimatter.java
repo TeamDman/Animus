@@ -13,6 +13,6 @@ public class TileAntimatter extends TileEntity {
 
 	public TileAntimatter() {
 		this.seeking = Blocks.AIR;
-		this.range = AnimusConfig.antimatterRange;
+		this.range = AnimusConfig.sigils.antimatterRange;
 	}
 }

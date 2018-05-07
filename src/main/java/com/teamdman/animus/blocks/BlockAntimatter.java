@@ -75,7 +75,7 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 				((TileAntimatter) worldIn.getTileEntity(newpos)).player = tile.player;
 				worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, worldIn.rand.nextInt(25), 1);
 				if (tile.player != null)
-					NetworkHelper.getSoulNetwork(tile.player).syphonAndDamage(tile.player, AnimusConfig.antimatterConsumption);
+					NetworkHelper.getSoulNetwork(tile.player).syphonAndDamage(tile.player, AnimusConfig.sigils.antimatterConsumption);
 				worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.01F, 0.75F);
 			}
 		}

@@ -1,7 +1,6 @@
 package com.teamdman.animus.handlers;
 
 import com.teamdman.animus.AnimusConfig;
-import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.slots.SlotNoPickup;
 import net.minecraft.init.MobEffects;
@@ -9,7 +8,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -21,22 +19,13 @@ public class EventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = false)
 	public void onPlaySoundEvent(PlaySoundEvent e) {
-		if (AnimusConfig.muteWither && (e.getName().equals("entity.wither.spawn"))) {
+		if (AnimusConfig.general.muteWither && (e.getName().equals("entity.wither.spawn"))) {
 			e.setResultSound(null);
 		}
-		if (AnimusConfig.muteDragon && (e.getName().equals("entity.enderdragon.death"))) {
+		if (AnimusConfig.general.muteDragon && (e.getName().equals("entity.enderdragon.death"))) {
 			e.setResultSound(null);
 		}
 	}
-
-	@SubscribeEvent
-	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent e) {
-		if (e.getModID().equals(Constants.Mod.MODID)) {
-			AnimusConfig.syncConfig();
-		}
-	}
-
-
 
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent eventArgs) {

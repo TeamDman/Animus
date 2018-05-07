@@ -163,7 +163,7 @@ public class RitualCulling extends Ritual {
 
 					damage = Integer.MAX_VALUE;
 
-					if (AnimusConfig.killWither && !isNonBoss && currentAmount > 99
+					if (AnimusConfig.rituals.killWither && !isNonBoss && currentAmount > 99
 							&& (currentEssence >= 25000 + (this.getRefreshCost() * list.size()))) { // Special case for Bosses, they require maxed vengeful will and 50k LP per kill
 						livingEntity.setEntityInvulnerable(false);
 						if (livingEntity instanceof EntityWither) {

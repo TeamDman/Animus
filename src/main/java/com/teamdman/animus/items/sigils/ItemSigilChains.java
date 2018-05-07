@@ -3,7 +3,6 @@ package com.teamdman.animus.items.sigils;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
-import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -20,7 +19,7 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ItemSigilChains extends ItemSigilBase implements IVariantProvider {
 	public ItemSigilChains() {
-		super("chains", AnimusConfig.chainsConsumption);
+		super("chains", 500);
 	}
 
 	@Override

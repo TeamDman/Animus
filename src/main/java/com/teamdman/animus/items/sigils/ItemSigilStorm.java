@@ -4,7 +4,6 @@ import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.ritual.AreaDescriptor;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
-import com.teamdman.animus.AnimusConfig;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -33,7 +32,7 @@ public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
 	public static final String                      EFFECT_RANGE    = "effect";
 
 	public ItemSigilStorm() {
-		super("storm", AnimusConfig.stormConsumption);
+		super("storm", 500);
 	}
 
 	@Override

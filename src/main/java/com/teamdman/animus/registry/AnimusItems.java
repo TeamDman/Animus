@@ -2,7 +2,6 @@ package com.teamdman.animus.registry;
 
 import WayofTime.bloodmagic.item.ItemEnum;
 import com.teamdman.animus.Animus;
-import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.*;
 import com.teamdman.animus.items.sigils.*;
@@ -35,7 +34,6 @@ public class AnimusItems {
 	public static final Item KAMA_WOOD           = Items.AIR;
 	public static final Item KEYBINDING          = Items.AIR;
 	public static final Item MOBSOUL             = Items.AIR;
-	//	public static final Item KEYBINDING = Items.AIR;
 	public static final Item SIGIL_BUILDER       = Items.AIR;
 	public static final Item SIGIL_CHAINS        = Items.AIR;
 	public static final Item SIGIL_CONSUMPTION   = Items.AIR;
@@ -78,8 +76,8 @@ public class AnimusItems {
 
 
 	private static Item setupItem(Item item, String name) {
-		if (AnimusConfig.itemBlacklist.contains(name))
-			return item;
+		//		if (AnimusConfig.itemBlacklist.contains(name))
+		//			return item;
 		if (item.getRegistryName() == null)
 			item.setRegistryName(name);
 		item.setUnlocalizedName(name);
