@@ -40,6 +40,7 @@ public class Animus {
 		AnimusPotions.init();
 		AnimusTiles.init();
 		AnimusEntities.init();
+		AnimusRecipes.init();
 		proxy.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
@@ -50,7 +51,6 @@ public class Animus {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		AnimusRituals.init();
 		AnimusSounds.init();
-		AnimusRecipes.init();
 		proxy.init(event);
 	}
 
@@ -59,6 +59,4 @@ public class Animus {
 	public void postinit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);
 	}
-
-
 }

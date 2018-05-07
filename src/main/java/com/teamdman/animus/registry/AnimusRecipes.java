@@ -1,55 +1,51 @@
 package com.teamdman.animus.registry;
 
 import WayofTime.bloodmagic.altar.AltarTier;
-import WayofTime.bloodmagic.core.registry.AltarRecipeRegistry;
-import com.teamdman.animus.AnimusConfig;
+import WayofTime.bloodmagic.api.impl.BloodMagicRecipeRegistrar;
+import WayofTime.bloodmagic.item.ItemSlate;
+import WayofTime.bloodmagic.util.Utils;
+import com.teamdman.animus.types.ComponentTypes;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class AnimusRecipes {
 	public static void init() {
-		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamawood"))
-			//			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaWood), " a ", "a a", "  b", 'a', Blocks.PLANKS, 'b', Items.STICK));
+		OreDictionary.registerOre("foodCooked", Items.COOKED_BEEF);
+		OreDictionary.registerOre("foodCooked", Items.COOKED_CHICKEN);
+		OreDictionary.registerOre("foodCooked", Items.COOKED_FISH);
+		OreDictionary.registerOre("foodCooked", Items.COOKED_MUTTON);
+		OreDictionary.registerOre("foodCooked", Items.COOKED_PORKCHOP);
+		OreDictionary.registerOre("foodCooked", Items.COOKED_RABBIT);
+	}
 
-			if (!AnimusConfig.itemBlacklist.contains("animus:itemkamastone"))
-				//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaStone), " a ", "a a", "  b", 'a', Blocks.COBBLESTONE, 'b', Items.STICK));
+	public static void registerAltarRecipes(BloodMagicRecipeRegistrar registrar) {
+		registrar.addBloodAltar(Ingredient.fromItem(Items.PRISMARINE_SHARD), new ItemStack(AnimusItems.FRAGMENTHEALING), AltarTier.TWO.toInt(), 1000, 20, 25);
+	}
 
-				if (!AnimusConfig.itemBlacklist.contains("animus:itemkamairon"))
-					//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaIron), " a ", "a a", "  b", 'a', Items.IRON_INGOT, 'b', Items.STICK));
+	public static void registerAlchemyTableRecipes(BloodMagicRecipeRegistrar registrar) {
 
-					if (!AnimusConfig.itemBlacklist.contains("animus:itemkamagold"))
-						//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaGold), " a ", "a a", "  b", 'a', Items.GOLD_INGOT, 'b', Items.STICK));
+	}
 
-						if (!AnimusConfig.itemBlacklist.contains("animus:itemkamadiamond"))
-							//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.kamaDiamond), " a ", "a a", "  b", 'a', Items.DIAMOND, 'b', Items.STICK));
+	public static void registerTartaricForgeRecipes(BloodMagicRecipeRegistrar registrar) {
+		registrar.addTartaricForge(ComponentTypes.REAGENT_BUILDER.getStack(), 128, 32, Items.SUGAR, Blocks.CRAFTING_TABLE, Blocks.DISPENSER, Blocks.BRICK_BLOCK);
+		registrar.addTartaricForge(ComponentTypes.REAGENT_CHAINS.getStack(), 128, 32, Blocks.IRON_BARS, Items.ENDER_PEARL, Items.GLASS_BOTTLE, Blocks.END_STONE);
+		registrar.addTartaricForge(ComponentTypes.REAGENT_CONSUMPTION.getStack(), 128, 32, Items.IRON_PICKAXE, Items.IRON_PICKAXE, Items.IRON_PICKAXE, Items.IRON_PICKAXE);
+		registrar.addTartaricForge(ComponentTypes.REAGENT_LEECH.getStack(), 64, 20, "treeSapling", "treeLeaves", Blocks.TALLGRASS, "foodCooked"); //todo: add oredict entry
+		registrar.addTartaricForge(ComponentTypes.REAGENT_STORM.getStack(), 64, 20, Blocks.SAND, Items.WATER_BUCKET, Items.FISHING_ROD, Items.GHAST_TEAR);
+		registrar.addTartaricForge(ComponentTypes.REAGENT_TRANSPOSITION.getStack(), 128, 32, Blocks.END_STONE, Items.ENDER_PEARL, Blocks.OBSIDIAN, Blocks.CHEST);
+	}
 
-							if (!AnimusConfig.itemBlacklist.contains("animus:itemaltardiviner"))
-								//GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(AnimusItems.altarDiviner), "aaa", "aba", "aaa", 'a', RegistrarBloodMagicBlocks.BLOOD_RUNE, 'b', RegistrarBloodMagicItems.RITUAL_DIVINER));
-
-								if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilchains"))
-									//GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilChains), "aba", "bcb", "ada", 'a', Blocks.END_STONE, 'b', Blocks.OBSIDIAN, 'c', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_MAGICIAN)));
-
-									if (!AnimusConfig.itemBlacklist.contains("animus:itemsigiltransposition"))
-										//GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilTransposition), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Items.ENDER_PEARL, 'c', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_MAGICIAN)));
-
-										if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilbuilder"))
-											//GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilBuilder), "aba", "bcb", "ada", 'a', Items.SUGAR, 'b', Items.POTIONITEM, 'c', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_MAGICIAN)));
-
-											if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilconsumption"))
-												//GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilConsumption), "aba", "bcb", "ada", 'a', Blocks.OBSIDIAN, 'b', Blocks.END_STONE, 'c', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 2), 'd', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_MAGICIAN)));
-
-												if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilstorm"))
-													//GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilStorm), "aaa", "aba", "aca", 'a', Items.FISHING_ROD, 'b', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 1), 'c', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_APPRENTICE)));
-
-													if (!AnimusConfig.itemBlacklist.contains("animus:itemsigilleech"))
-														//GameRegistry.addRecipe(new ShapedBloodOrbRecipe(new ItemStack(AnimusItems.sigilLeech), "dad", "aba", "dcd", 'a', Blocks.LEAVES, 'b', new ItemStack(RegistrarBloodMagicItems.SLATE, 1, 1), 'c', OrbRegistry.getOrbStack(RegistrarBloodMagicItems.ORB_APPRENTICE), 'd', Items.GOLDEN_APPLE));
-
-														if (!AnimusConfig.itemBlacklist.contains("animus:itemfragmenthealing"))
-															AltarRecipeRegistry.registerRecipe(new AltarRecipeRegistry.AltarRecipe(new ItemStack(Items.PRISMARINE_SHARD), new ItemStack(AnimusItems.FRAGMENTHEALING), AltarTier.TWO, 1000, 20, 25));
-		//TODO: fix guidebook crash with this
-//		if (!AnimusConfig.itemBlacklist.contains("animus:itemkamabound") && !AnimusConfig.itemBlacklist.contains("animus:itemkamadiamond"))
-//			AlchemyArrayRecipeRegistry.registerRecipe(ComponentTypes.REAGENT_BINDING.getStack(), new ItemStack(AnimusItems.kamaDiamond), new AlchemyArrayEffectBinding("boundKama", Utils.setUnbreakable(new ItemStack(AnimusItems.kamaBound))), new BindingAlchemyCircleRenderer());
-
+	public static void registerAlchemyArrayRecipes(BloodMagicRecipeRegistrar registrar) {
+		registrar.addAlchemyArray(new ItemStack(AnimusItems.KAMA_DIAMOND), WayofTime.bloodmagic.item.types.ComponentTypes.REAGENT_BINDING.getStack(), Utils.setUnbreakable(new ItemStack(AnimusItems.KAMA_BOUND)), null);
+		registrar.addAlchemyArray(ComponentTypes.REAGENT_BUILDER.getStack(), ItemSlate.SlateType.REINFORCED.getStack(), new ItemStack(AnimusItems.SIGIL_BUILDER), null);
+		registrar.addAlchemyArray(ComponentTypes.REAGENT_CHAINS.getStack(), ItemSlate.SlateType.IMBUED.getStack(), new ItemStack(AnimusItems.SIGIL_CHAINS), null);
+		registrar.addAlchemyArray(ComponentTypes.REAGENT_CONSUMPTION.getStack(), ItemSlate.SlateType.IMBUED.getStack(), new ItemStack(AnimusItems.SIGIL_CONSUMPTION), null);
+		registrar.addAlchemyArray(ComponentTypes.REAGENT_LEECH.getStack(), ItemSlate.SlateType.REINFORCED.getStack(), new ItemStack(AnimusItems.SIGIL_LEECH), null);
+		registrar.addAlchemyArray(ComponentTypes.REAGENT_STORM.getStack(), ItemSlate.SlateType.REINFORCED.getStack(), new ItemStack(AnimusItems.SIGIL_STORM), null);
+		registrar.addAlchemyArray(ComponentTypes.REAGENT_TRANSPOSITION.getStack(), ItemSlate.SlateType.DEMONIC.getStack(), new ItemStack(AnimusItems.SIGIL_TRANSPOSITION), null);
 	}
 
 	public static void addGuideRecipe() {

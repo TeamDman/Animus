@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "animus:altardiviner"
+  },
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "item": "bloodmagic:blood_rune",
+      "data": 0
+    },
+    "b": {
+      "item": "bloodmagic:ritual_diviner",
+      "data": 0
+    }
+  }
+}

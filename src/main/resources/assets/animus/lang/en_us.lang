@@ -17,6 +17,13 @@ item.sigil_consumption.name=Sigil of Consumption
 item.sigil_storm.name=Sigil of the Storm
 item.sigil_leech.name=Sigil of Nature's Leech
 
+item.component.reagent_builder.name=Builder Reagent
+item.component.reagent_chains.name=Chains Reagent
+item.component.reagent_consumption.name=Consumption Reagent
+item.component.reagent_leech.name=Leech Reagent
+item.component.reagent_storm.name=Storm Reagent
+item.component.reagent_transposition.name=Transposition Reagent
+
 tile.blockphantombuilder.name=Phantom Builder Block
 tile.blockantimatter.name=Antimatter
 tile.lightgem.name=Glowstone
