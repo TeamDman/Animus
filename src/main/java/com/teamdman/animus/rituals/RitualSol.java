@@ -80,7 +80,6 @@ public class RitualSol extends Ritual {
 		return !in.isEmpty() && (in.getItem() == RegistrarBloodMagicItems.SIGIL_BLOOD_LIGHT || Block.getBlockFromItem(in.getItem()) != Blocks.AIR);
 	}
 
-	@SuppressWarnings("deprecation")
 	private IBlockState getStateToUse(ItemStack in) {
 		if (in.getItem() == RegistrarBloodMagicItems.SIGIL_BLOOD_LIGHT) {
 			return RegistrarBloodMagicBlocks.BLOOD_LIGHT.getDefaultState();

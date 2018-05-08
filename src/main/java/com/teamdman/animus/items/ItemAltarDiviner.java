@@ -56,6 +56,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 		return -1;
 	}
 
+	@SuppressWarnings("NullableProblems")
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (world.getTileEntity(blockPos) == null || !(world.getTileEntity(blockPos) instanceof TileAltar))
@@ -73,7 +74,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			BlockPos componentPos = blockPos.add(altarComponent.getOffset());
 			if (world.isAirBlock(componentPos)) {
 				world.setBlockState(componentPos, AnimusBlocks.BLOCKPHANTOMBUILDER.getDefaultState());
-//				world.setBlockState(componentPos, Blocks.DIAMOND_BLOCK.getDefaultState());
+				//				world.setBlockState(componentPos, Blocks.DIAMOND_BLOCK.getDefaultState());
 				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 			}
 		}
@@ -87,9 +88,8 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 				if (worldBlock == AnimusBlocks.BLOCKPHANTOMBUILDER || world.isAirBlock(componentPos)) {
 					int invSlot = getSlotFor(altarComponent, player);
 					if (invSlot != -1) {
-						ItemStack _stack = player.inventory.getStackInSlot(invSlot);
-						ItemBlock _item  = (ItemBlock) player.inventory.getStackInSlot(invSlot).getItem();
-						@SuppressWarnings("deprecation")
+						ItemStack   _stack = player.inventory.getStackInSlot(invSlot);
+						ItemBlock   _item  = (ItemBlock) player.inventory.getStackInSlot(invSlot).getItem();
 						IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 						world.setBlockState(componentPos, _state);
 

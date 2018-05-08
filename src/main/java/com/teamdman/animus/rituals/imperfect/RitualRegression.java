@@ -7,12 +7,14 @@ import com.teamdman.animus.Constants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+
 public class RitualRegression extends ImperfectRitual {
 
 	public RitualRegression() {
 		super("ritualRegression", e -> e.getBlock() == Blocks.BOOKSHELF, 3000, true, "ritual." + Constants.Mod.MODID + ".regression");
 	}
 
+	@SuppressWarnings("NullableProblems")
 	@Override
 	public boolean onActivate(IImperfectRitualStone imperfectRitualStone, EntityPlayer player) {
 		if (player.getHeldItemMainhand().isEmpty()) {

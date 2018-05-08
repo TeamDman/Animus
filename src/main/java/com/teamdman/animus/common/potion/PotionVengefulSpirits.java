@@ -37,6 +37,7 @@ public class PotionVengefulSpirits extends Potion {
 		return true;
 	}
 
+	@SuppressWarnings("NullableProblems")
 	@Override
 	public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier) {
 		//Do stuff

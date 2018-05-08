@@ -26,6 +26,7 @@ public class ItemKeyBinding extends Item implements IBindable, IVariantProvider 
 			return;
 		//TODO: fix custom binding info
 		tooltip.add(TextHelper.localizeEffect("tooltip.animus.currentOwner", binding.getOwnerName()));
+		setContainerItem(this);
 	}
 
 	@Override

@@ -62,7 +62,7 @@ public class ItemKamaBound extends ItemKama {
 		if (entities.isEmpty())
 			return false;
 		for (EntityLivingBase target : entities) {
-			if (target == null || target.isDead || attacker == null || !(attacker instanceof EntityPlayer)
+			if (target == null || target.isDead || !(attacker instanceof EntityPlayer)
 					|| attacker == target)
 				continue;
 

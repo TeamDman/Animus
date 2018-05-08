@@ -31,6 +31,7 @@ public class ItemSigilToggleableBaseBase extends ItemSigilToggleableBase {
 			this.name = name;
 		}
 
+		@SuppressWarnings("NullableProblems")
 		@Override
 		public ModelResourceLocation getModelLocation(ItemStack stack) {
 			if (!stack.isEmpty() && stack.getItem() instanceof IActivatable)

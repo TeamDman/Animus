@@ -27,7 +27,6 @@ public class BlockPhantomBuilder extends BlockPhantom {
 			return false;
 		if (heldItem.getItem() instanceof ItemBlock) {
 			Item _item = heldItem.getItem();
-			@SuppressWarnings("deprecation")
 			IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(heldItem));
 			world.setBlockState(pos, _state);
 			heldItem.shrink(player.capabilities.isCreativeMode ? 0 : 1);

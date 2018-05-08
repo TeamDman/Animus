@@ -12,6 +12,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class ItemKama extends ItemSword implements IVariantProvider {
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase hit, EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack stack, EntityLivingBase hit, @Nullable EntityLivingBase attacker) {
 		double                 x        = hit.posX;
 		double                 y        = hit.posY;
 		double                 z        = hit.posZ;

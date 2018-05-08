@@ -21,7 +21,7 @@ public class ItemSigilConsumption extends ItemSigilBase implements IVariantProvi
 		super("consumption", 200);
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("NullableProblems")
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (world.getTileEntity(blockPos) != null || world.getBlockState(blockPos).getBlock().getBlockHardness(null, null, null) == -1.0F)

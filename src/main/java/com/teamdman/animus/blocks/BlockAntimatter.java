@@ -31,9 +31,10 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 		super(Material.SPONGE);
 	}
 
+	@SuppressWarnings("NullableProblems")
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileAntimatter();
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, DECAYING);
 	}
 
 	@Override
@@ -83,11 +84,13 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 			worldIn.setBlockToAir(pos);
 	}
 
+	@SuppressWarnings("NullableProblems")
 	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, DECAYING);
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileAntimatter();
 	}
 
+	@SuppressWarnings("NullableProblems")
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 	}

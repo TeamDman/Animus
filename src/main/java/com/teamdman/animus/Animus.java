@@ -17,8 +17,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod(modid = Constants.Mod.MODID, name = Constants.Mod.NAME, version = Constants.Mod.VERSION, dependencies = Constants.Mod.DEPEND)
 public class Animus {
-
-
 	@Mod.Instance(Constants.Mod.MODID)
 	public static Animus instance;
 	@SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
@@ -31,10 +29,8 @@ public class Animus {
 		}
 	};
 
-	// init blocks and items
 	@Mod.EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
-		//		AnimusConfig.init(new File(event.getModConfigurationDirectory(), Constants.Mod.MODID + ".cfg"));
 		AnimusPotions.init();
 		AnimusTiles.init();
 		AnimusEntities.init();
@@ -43,7 +39,6 @@ public class Animus {
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
-	// mod setup, register recipes
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
@@ -52,7 +47,6 @@ public class Animus {
 		proxy.init(event);
 	}
 
-	// mod interaction
 	@Mod.EventHandler
 	public void postinit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);

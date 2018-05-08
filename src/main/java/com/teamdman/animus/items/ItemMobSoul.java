@@ -22,6 +22,7 @@ import java.util.Random;
  * Created by TeamDman on 2015-06-10.
  */
 public class ItemMobSoul extends Item implements IVariantProvider {
+	@SuppressWarnings("NullableProblems")
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);

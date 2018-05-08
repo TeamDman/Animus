@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * Created by TeamDman on 10/1/2016.
  */
+@SuppressWarnings("CanBeFinal")
 @Config(modid = Constants.Mod.MODID, name = Constants.Mod.NAME, category = "")
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
 public class AnimusConfig {
@@ -51,6 +52,7 @@ public class AnimusConfig {
 		public int     witherCost = 25000;
 	}
 
+	@SuppressWarnings("CanBeFinal")
 	public static class ConfigSigils {
 		public int antimatterConsumption = 25;
 		public int antimatterRange       = 8;

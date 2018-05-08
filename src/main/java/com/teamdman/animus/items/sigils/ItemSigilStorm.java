@@ -35,6 +35,7 @@ public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
 		super("storm", 500);
 	}
 
+	@SuppressWarnings("NullableProblems")
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);

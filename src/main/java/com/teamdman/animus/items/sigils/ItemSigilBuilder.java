@@ -46,7 +46,6 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 			ItemSigilBuilder.removeDelay();
 	}
 
-	@SuppressWarnings({"deprecation"})
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
@@ -79,7 +78,6 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 		return new ActionResult<>(EnumActionResult.PASS, stack);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		BlockPos air  = blockPos;
