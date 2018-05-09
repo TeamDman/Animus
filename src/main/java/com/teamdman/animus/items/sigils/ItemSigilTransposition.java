@@ -107,12 +107,14 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_FLAVOUR));
 		NBTHelper.checkNBT(stack);
 		//noinspection ConstantConditions
 		if (stack.getTagCompound().getLong("pos") != 0)
 			tooltip.add(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_STORED);
 		Binding binding = getBinding(stack);
-		if (binding == null) return;
+		if (binding == null)
+			return;
 		tooltip.add(TextHelper.localizeEffect(Constants.Localizations.Tooltips.OWNER, binding.getOwnerName()));
 	}
 }

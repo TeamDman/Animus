@@ -2,9 +2,11 @@ package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.ritual.AreaDescriptor;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
+import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.block.*;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -18,6 +20,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -153,6 +156,13 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 		}
 
 		return null;
+	}
+
+
+	@Override
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.SIGIL_LEECH_FLAVOUR));
+		super.addInformation(stack, world, tooltip, flag);
 	}
 
 
