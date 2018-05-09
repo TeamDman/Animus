@@ -40,6 +40,7 @@ public class AnimusItems {
 	public static final Item SIGIL_LEECH         = Items.AIR;
 	public static final Item SIGIL_STORM         = Items.AIR;
 	public static final Item SIGIL_TRANSPOSITION = Items.AIR;
+	public static final Item BLOOD_APPLE		 = Items.AIR;
 
 	public static List<Item> items;
 
@@ -71,6 +72,7 @@ public class AnimusItems {
 		items.add(setupItem(new ItemSigilLeech(), "sigil_leech"));
 		items.add(setupItem(new ItemKeyBinding(), "keybinding"));
 		items.add(setupItem(new ItemMobSoul(), "mobsoul"));
+		items.add(setupItem(new ItemBloodApple(), "bloodapple"));
 		items.add(setupItem(new ItemEnum.Variant<>(ComponentTypes.class, "baseComponent"), "component"));
 		items.forEach(event.getRegistry()::register);
 	}
