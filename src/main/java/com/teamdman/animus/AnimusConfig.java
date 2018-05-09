@@ -37,6 +37,7 @@ public class AnimusConfig {
 	public static class ConfigRitualList {
 		public boolean ritualCulling        = true;
 		public boolean ritualEntropy        = true;
+		public boolean ritualHunger         = true;
 		public boolean ritualLuna           = true;
 		public boolean ritualNaturesLeech   = true;
 		public boolean ritualPeace          = true;

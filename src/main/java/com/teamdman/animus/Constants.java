@@ -54,7 +54,8 @@ public class Constants {
 	}
 
 	public static class Rituals {
-
+		public static final String HUNGER     = "ritualHunger";
+		public static final String REGRESSION = "ritualRegression";
 	}
 
 	public static class Sigils {

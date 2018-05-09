@@ -6,42 +6,35 @@ import WayofTime.bloodmagic.ritual.imperfect.ImperfectRitual;
 import WayofTime.bloodmagic.ritual.imperfect.ImperfectRitualRegistry;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.rituals.*;
+import com.teamdman.animus.rituals.imperfect.RitualHunger;
 import com.teamdman.animus.rituals.imperfect.RitualRegression;
 
 /**
  * Created by TeamDman on 10/1/2016.
  */
 public class AnimusRituals {
-	public static Ritual ritualSol;
-	public static Ritual ritualLuna;
-	public static Ritual ritualEntropy;
-	public static Ritual ritualUnmaking;
-	public static Ritual ritualPeace;
-	public static Ritual ritualNaturesLeech;
-	public static Ritual ritualCulling;
-	public static Ritual ritualSteadfastHeart;
-	public static Ritual ritualVengefulSpirit;
-
+	public static Ritual          ritualCulling;
+	public static Ritual          ritualEntropy;
+	public static ImperfectRitual ritualHunger;
+	public static Ritual          ritualLuna;
+	public static Ritual          ritualNaturesLeech;
+	public static Ritual          ritualPeace;
 	public static ImperfectRitual ritualRegression;
+	public static Ritual          ritualSol;
+	public static Ritual          ritualSteadfastHeart;
+	public static Ritual          ritualUnmaking;
+	public static Ritual          ritualVengefulSpirit;
 
 	public static void init() {
-		ritualSol = new RitualSol();
-		RitualRegistry.registerRitual(ritualSol, AnimusConfig.ritualList.ritualSol);
-		ritualLuna = new RitualLuna();
-		RitualRegistry.registerRitual(ritualLuna, AnimusConfig.ritualList.ritualLuna);
-		ritualEntropy = new RitualEntropy();
-		RitualRegistry.registerRitual(ritualEntropy, AnimusConfig.ritualList.ritualEntropy);
-		ritualUnmaking = new RitualUnmaking();
-		RitualRegistry.registerRitual(ritualUnmaking, AnimusConfig.ritualList.ritualUnmaking);
-		ritualPeace = new RitualPeace();
-		RitualRegistry.registerRitual(ritualPeace, AnimusConfig.ritualList.ritualPeace);
-		ritualNaturesLeech = new RitualNaturesLeech();
-		RitualRegistry.registerRitual(ritualNaturesLeech, AnimusConfig.ritualList.ritualNaturesLeech);
-		ritualCulling = new RitualCulling();
-		RitualRegistry.registerRitual(ritualCulling, AnimusConfig.ritualList.ritualCulling);
-		ritualSteadfastHeart = new RitualSteadfastHeart();
-		RitualRegistry.registerRitual(ritualSteadfastHeart, AnimusConfig.ritualList.ritualSteadfastHeart);
-		ritualRegression = new RitualRegression();
-		ImperfectRitualRegistry.registerRitual(ritualRegression, AnimusConfig.ritualList.ritualRegression);
+		RitualRegistry.registerRitual(ritualSol = new RitualSol(), AnimusConfig.ritualList.ritualSol);
+		RitualRegistry.registerRitual(ritualLuna = new RitualLuna(), AnimusConfig.ritualList.ritualLuna);
+		RitualRegistry.registerRitual(ritualEntropy = new RitualEntropy(), AnimusConfig.ritualList.ritualEntropy);
+		RitualRegistry.registerRitual(ritualUnmaking = new RitualUnmaking(), AnimusConfig.ritualList.ritualUnmaking);
+		RitualRegistry.registerRitual(ritualPeace = new RitualPeace(), AnimusConfig.ritualList.ritualPeace);
+		RitualRegistry.registerRitual(ritualNaturesLeech = new RitualNaturesLeech(), AnimusConfig.ritualList.ritualNaturesLeech);
+		RitualRegistry.registerRitual(ritualCulling = new RitualCulling(), AnimusConfig.ritualList.ritualCulling);
+		RitualRegistry.registerRitual(ritualSteadfastHeart = new RitualSteadfastHeart(), AnimusConfig.ritualList.ritualSteadfastHeart);
+		ImperfectRitualRegistry.registerRitual(ritualRegression = new RitualRegression(), AnimusConfig.ritualList.ritualRegression);
+		ImperfectRitualRegistry.registerRitual(ritualHunger = new RitualHunger(), AnimusConfig.ritualList.ritualHunger);
 	}
 }
