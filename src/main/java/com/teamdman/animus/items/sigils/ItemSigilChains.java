@@ -3,8 +3,10 @@ package com.teamdman.animus.items.sigils;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
+import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusItems;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,6 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 /**
  * Created by TeamDman on 2015-06-09.
@@ -47,4 +52,11 @@ public class ItemSigilChains extends ItemSigilBase implements IVariantProvider {
 		}
 		return super.itemInteractionForEntity(stack, playerIn, target, hand);
 	}
+
+	@Override
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.SIGIL_CHAINS_FLAVOUR));
+		super.addInformation(stack, world, tooltip, flag);
+	}
+
 }

@@ -2,11 +2,13 @@ package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
+import amerifrance.guideapi.api.util.TextHelper;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -24,6 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import static net.minecraft.client.Minecraft.getMinecraft;
 
@@ -132,6 +135,12 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 				player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
 		}
 		return EnumActionResult.SUCCESS;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.SIGIL_BUILDER_FLAVOUR));
+		super.addInformation(stack, world, tooltip, flag);
 	}
 
 	public static void removeDelay() {

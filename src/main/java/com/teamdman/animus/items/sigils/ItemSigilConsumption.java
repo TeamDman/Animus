@@ -2,17 +2,22 @@ package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
+import amerifrance.guideapi.api.util.TextHelper;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.blocks.BlockAntimatter;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.tiles.TileAntimatter;
 import net.minecraft.block.Block;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 /**
  * Created by TeamDman on 2015-06-09.
@@ -36,4 +41,11 @@ public class ItemSigilConsumption extends ItemSigilBase implements IVariantProvi
 		world.scheduleBlockUpdate(blockPos, AnimusBlocks.BLOCKANTIMATTER, 5, 0);
 		return EnumActionResult.SUCCESS;
 	}
+
+	@Override
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.SIGIL_CONSUMPTION_FLAVOUR));
+		super.addInformation(stack, world, tooltip, flag);
+	}
+
 }
