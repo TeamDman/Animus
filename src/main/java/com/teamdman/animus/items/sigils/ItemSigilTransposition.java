@@ -7,6 +7,7 @@ import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.helper.PlayerHelper;
 import WayofTime.bloodmagic.util.helper.TextHelper;
+import com.teamdman.animus.Constants;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -27,7 +28,7 @@ import java.util.List;
  */
 public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 	public ItemSigilTransposition() {
-		super("transposition", 5000);
+		super(Constants.Sigils.TRANSPOSITION, 5000);
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 			NBTHelper.checkNBT(stack);
 			//noinspection ConstantConditions
 			stack.getTagCompound().setLong("pos", 0);
-			ChatUtil.sendNoSpam(player, "Position cleared!");
+			ChatUtil.sendNoSpam(player, Constants.Localizations.Text.TRANSPOSITION_CLEARED);
 			setActivatedState(stack,false);
 		}
 		return new ActionResult<>(EnumActionResult.PASS, stack);
@@ -56,7 +57,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand); //todo: multi texture when holding pos
+		ItemStack stack = player.getHeldItem(hand);
 		if (stack.getItem() instanceof Holding)
 			stack = ((Holding) stack.getItem()).getHeldItem(stack,player);
 		Binding  binding = getBinding(stack);
@@ -69,7 +70,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 			if (!getActivated(stack)) {
 				//noinspection ConstantConditions
 				stack.getTagCompound().setLong("pos", posNew.offset(side.getOpposite()).toLong());
-				ChatUtil.sendNoSpamUnloc(player, "text.component.transposition.set");
+				ChatUtil.sendNoSpamUnloc(player, Constants.Localizations.Text.TRANSPOSITION_SET);
 				world.playSound(null, posNew, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1);
 				setActivatedState(stack,true);
 			} else {
@@ -95,7 +96,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 					stack.getTagCompound().setLong("pos", 0);
 					setActivatedState(stack,false);
 				} else {
-					ChatUtil.sendNoSpamUnloc(player, "text.component.transposition.obstructed");
+					ChatUtil.sendNoSpamUnloc(player, Constants.Localizations.Text.DIVINER_OBSTRUCTED);
 				}
 				return EnumActionResult.SUCCESS;
 			}
@@ -109,11 +110,9 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 		NBTHelper.checkNBT(stack);
 		//noinspection ConstantConditions
 		if (stack.getTagCompound().getLong("pos") != 0)
-			tooltip.add("Position stored."); //TODO: unlocalize
+			tooltip.add(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_STORED);
 		Binding binding = getBinding(stack);
 		if (binding == null) return;
-		//TODO: fix custom binding info
-		tooltip.add(TextHelper.localizeEffect("tooltip.animus.currentOwner", binding.getOwnerName()));
-		//		super.addInformation(stack, world, tooltip, flag);
+		tooltip.add(TextHelper.localizeEffect(Constants.Localizations.Tooltips.OWNER, binding.getOwnerName()));
 	}
 }

@@ -3,6 +3,7 @@ package com.teamdman.animus.items.sigils;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -19,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ItemSigilChains extends ItemSigilBase implements IVariantProvider {
 	public ItemSigilChains() {
-		super("chains", 500);
+		super(Constants.Sigils.CHAINS, 500);
 	}
 
 	@Override
@@ -33,13 +34,13 @@ public class ItemSigilChains extends ItemSigilBase implements IVariantProvider {
 			target.writeToNBT(targetData);
 			//if they mess with the nbt, then the game will crash /shrug
 			//noinspection ConstantConditions
-			tag.setString("entity", EntityList.getKey(target).toString());
-			targetData.setInteger("id", EntityList.getID(target.getClass()));
+			tag.setString(Constants.NBT.SOUL_ENTITY_NAME, EntityList.getKey(target).toString());
+			targetData.setInteger(Constants.NBT.SOUL_ENTITY_ID, EntityList.getID(target.getClass()));
 			if (target instanceof EntityLiving && target.hasCustomName())
-				tag.setString("name", target.getCustomNameTag());
-			tag.setTag("MobData", targetData);
+				tag.setString(Constants.NBT.SOUL_NAME, target.getCustomNameTag());
+			tag.setTag(Constants.NBT.SOUL_DATA, targetData);
 			soul.setTagCompound(tag);
-			soul.setTranslatableName((tag.hasKey("name") ? tag.getString("name") : EntityList.getTranslationName(new ResourceLocation(tag.getString("entity"))) + " Soul"));
+			soul.setTranslatableName((tag.hasKey(Constants.NBT.SOUL_NAME) ? tag.getString(Constants.NBT.SOUL_NAME) : EntityList.getTranslationName(new ResourceLocation(tag.getString(Constants.NBT.SOUL_ENTITY_NAME))) + " Soul"));
 			if (!playerIn.inventory.addItemStackToInventory(soul))
 				playerIn.world.spawnEntity(new EntityItem(playerIn.world, target.posX, target.posY, target.posZ, soul));
 			target.setDead();

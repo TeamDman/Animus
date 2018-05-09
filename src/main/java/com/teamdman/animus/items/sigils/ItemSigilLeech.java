@@ -1,8 +1,8 @@
 package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.ritual.AreaDescriptor;
-import WayofTime.bloodmagic.util.Constants;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
@@ -28,7 +28,7 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 	final               Random                      random          = new Random();
 	//todo: cleanup all of this
 	public ItemSigilLeech() {
-		super("leech", 5);
+		super(Constants.Sigils.LEECH, 5);
 	}
 
 	public ItemStack getFood(EntityPlayer player) {
@@ -131,7 +131,7 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 			NBTTagCompound comp      = NBTHelper.checkNBT(stack).getTagCompound();
 			boolean        activated = getActivated(stack);
 			//noinspection ConstantConditions
-			comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
+			comp.setBoolean(WayofTime.bloodmagic.util.Constants.NBT.ACTIVATED, !activated);
 		}
 
 		return new ActionResult<>(EnumActionResult.PASS, stack);

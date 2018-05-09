@@ -1,9 +1,9 @@
 package com.teamdman.animus.items.sigils;
 
-import WayofTime.bloodmagic.util.Constants;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -32,7 +32,7 @@ import static net.minecraft.client.Minecraft.getMinecraft;
  */
 public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 	public ItemSigilBuilder() {
-		super("builder", 100);
+		super(Constants.Sigils.BUILDER, 100);
 	}
 
 	public ItemStack getStackToUse(EnumHand hand, EntityPlayer player) {
@@ -55,7 +55,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 				NBTTagCompound comp      = NBTHelper.checkNBT(stack).getTagCompound();
 				boolean        activated = getActivated(stack);
 				//noinspection ConstantConditions
-				comp.setBoolean(Constants.NBT.ACTIVATED, !activated);
+				comp.setBoolean(WayofTime.bloodmagic.util.Constants.NBT.ACTIVATED, !activated);
 			} else {
 				ItemStack _stack = getStackToUse(hand, player);
 				if (_stack != null) {
@@ -137,7 +137,6 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 	public static void removeDelay() {
 		//ObfuscationReflectionHelper.setPrivateValue(Minecraft.class, getMinecraft(), Integer.valueOf(0), 46);
 		try {
-
 			Field delay = Minecraft.class.getDeclaredField("rightClickDelayTimer");
 			delay.setAccessible(true);
 			delay.set(getMinecraft(), 0);

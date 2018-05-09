@@ -1,6 +1,8 @@
 package com.teamdman.animus.items;
 
 import WayofTime.bloodmagic.client.IVariantProvider;
+import amerifrance.guideapi.api.util.TextHelper;
+import com.teamdman.animus.Constants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -20,8 +22,8 @@ public class ItemFragmentHealing extends Item implements IVariantProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		tooltip.add("More the merrier!"); //todo: unlocalize
-		tooltip.add("This item cannot be moved.");
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.HEALING_FLAVOUR));
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.HEALING_INFO));
 	}
 
 	@Override

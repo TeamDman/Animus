@@ -2,6 +2,8 @@ package com.teamdman.animus.items;
 
 import WayofTime.bloodmagic.altar.IBloodAltar;
 import WayofTime.bloodmagic.util.helper.PlayerSacrificeHelper;
+import WayofTime.bloodmagic.util.helper.TextHelper;
+import com.teamdman.animus.Constants;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,7 +24,7 @@ import java.util.List;
  */
 public class ItemKamaBound extends ItemKama {
 
-	static final DamageSource khopeshDamage = new DamageSource("animus.absolute");
+	static final DamageSource khopeshDamage = new DamageSource(Constants.Misc.DAMAGE_ABSOLUTE);
 
 	public ItemKamaBound() {
 		super(Item.ToolMaterial.DIAMOND);
@@ -124,8 +126,8 @@ public class ItemKamaBound extends ItemKama {
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		tooltip.add("Use on mobs near a blood altar.");
-		tooltip.add("Doesn't actually bind..."); //TODO: unlocalize
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.KAMA_FIRST));
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.KAMA_SECOND));
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.core.data.Binding;
 import WayofTime.bloodmagic.iface.IBindable;
 import WayofTime.bloodmagic.util.helper.TextHelper;
+import com.teamdman.animus.Constants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -21,12 +22,11 @@ public class ItemKeyBinding extends Item implements IBindable, IVariantProvider 
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		tooltip.add("Craft with another bound item to transfer owners."); //todo: unlocalize
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.KEY));
 		Binding binding = getBinding(stack);
 		if (binding == null)
 			return;
-		//TODO: fix custom binding info
-		tooltip.add(TextHelper.localizeEffect("tooltip.animus.currentOwner", binding.getOwnerName()));
+		tooltip.add(TextHelper.localizeEffect(Constants.Localizations.Tooltips.OWNER, binding.getOwnerName()));
 	}
 
 	@Override

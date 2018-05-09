@@ -1,6 +1,7 @@
 package com.teamdman.animus.items;
 
 import WayofTime.bloodmagic.client.IVariantProvider;
+import com.teamdman.animus.Constants;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -28,11 +29,12 @@ public class ItemMobSoul extends Item implements IVariantProvider {
 		ItemStack stack = player.getHeldItem(hand);
 		if (world.isRemote) return EnumActionResult.FAIL;
 		//noinspection ConstantConditions
-		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("entity")) return EnumActionResult.FAIL;
+		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(Constants.NBT.SOUL_ENTITY_NAME))
+			return EnumActionResult.FAIL;
 		Entity mob = EntityList.createEntityByIDFromName(new ResourceLocation(stack.getTagCompound().getString("entity")), world);
 		if (mob == null) return EnumActionResult.FAIL;
-		if (stack.getTagCompound().hasKey("MobData"))
-			mob.readFromNBT(stack.getTagCompound().getCompoundTag("MobData"));
+		if (stack.getTagCompound().hasKey(Constants.NBT.SOUL_DATA))
+			mob.readFromNBT(stack.getTagCompound().getCompoundTag(Constants.NBT.SOUL_DATA));
 		mob.setLocationAndAngles(blockPos.getX(), blockPos.getY() + 2, blockPos.getZ(), new Random().nextFloat() * 360.0F, 0);
 		world.spawnEntity(mob);
 		if (mob instanceof EntityLiving)

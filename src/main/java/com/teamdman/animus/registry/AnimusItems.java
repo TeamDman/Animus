@@ -40,6 +40,7 @@ public class AnimusItems {
 	public static final Item SIGIL_LEECH         = Items.AIR;
 	public static final Item SIGIL_STORM         = Items.AIR;
 	public static final Item SIGIL_TRANSPOSITION = Items.AIR;
+
 	public static List<Item> items;
 
 	@SubscribeEvent

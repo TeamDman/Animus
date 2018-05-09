@@ -2,6 +2,7 @@ package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.blocks.BlockAntimatter;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.tiles.TileAntimatter;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
  */
 public class ItemSigilConsumption extends ItemSigilBase implements IVariantProvider {
 	public ItemSigilConsumption() {
-		super("consumption", 200);
+		super(Constants.Sigils.CONSUMPTION, 200);
 	}
 
 	@SuppressWarnings("NullableProblems")

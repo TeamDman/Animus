@@ -30,7 +30,7 @@ public class KeyBindingRecipeFactory implements IRecipeFactory {
 		primer.mirrored = JsonUtils.getBoolean(json, "mirrored", true);
 		primer.input = recipe.getIngredients();
 
-		return new KeyBindingRecipe(new ResourceLocation(Constants.Mod.MODID, "keybindingcrafting"), recipe.getRecipeOutput(), primer);
+		return new KeyBindingRecipe(new ResourceLocation(Constants.Mod.MODID, Constants.Misc.CRAFTING_KEYBINDING), recipe.getRecipeOutput(), primer);
 	}
 
 	public static class KeyBindingRecipe extends ShapedOreRecipe {

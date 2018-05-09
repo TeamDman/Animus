@@ -8,6 +8,8 @@ import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.Utils;
+import amerifrance.guideapi.api.util.TextHelper;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.Block;
@@ -15,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -35,27 +38,6 @@ import java.util.List;
  * Created by TeamDman on 2015-08-30.
  */
 public class ItemAltarDiviner extends Item implements IVariantProvider {
-	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		tooltip.add("Shift-rightclick on an altar to show altar outline.");
-		tooltip.add("Keep clicking to automatically place altar blocks.");
-		tooltip.add("Use in off hand to display max tier altar outline.");
-		//TODO: localization
-	}
-
-	private boolean isItemComponent(AltarComponent component, ItemStack stack2) {
-		return Utils.getBlockForComponent(component.getComponent()) == Block.getBlockFromItem(stack2.getItem());
-	}
-
-	private int getSlotFor(AltarComponent component, EntityPlayer player) {
-		for (int i = 0; i < player.inventory.mainInventory.size(); ++i) {
-			if (isItemComponent(component, player.inventory.mainInventory.get(i))) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
 	@SuppressWarnings("NullableProblems")
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -74,7 +56,6 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			BlockPos componentPos = blockPos.add(altarComponent.getOffset());
 			if (world.isAirBlock(componentPos)) {
 				world.setBlockState(componentPos, AnimusBlocks.BLOCKPHANTOMBUILDER.getDefaultState());
-				//				world.setBlockState(componentPos, Blocks.DIAMOND_BLOCK.getDefaultState());
 				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 			}
 		}
@@ -99,11 +80,11 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 						return EnumActionResult.PASS;
 					} else {
 						if (world.isRemote) {
-							playerinfomsg = I18n.format("text.component.diviner.missing") + " " + (altarComponent.getComponent() == ComponentType.GLOWSTONE ? "Glowstone Block" : (I18n.format(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())).getItem().getUnlocalizedName(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()))) + ".name")));
+							playerinfomsg = I18n.format(Constants.Localizations.Text.DIVINER_MISSING) + " " + (altarComponent.getComponent() == ComponentType.GLOWSTONE ? Blocks.GLOWSTONE.getLocalizedName() : (I18n.format(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())).getItem().getUnlocalizedName(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()))) + ".name")));
 						}
 					}
 				} else if (worldBlock != RegistrarBloodMagicBlocks.BLOOD_RUNE) {
-					playerinfomsg = "text.component.diviner.obstructed";
+					playerinfomsg = Constants.Localizations.Text.DIVINER_OBSTRUCTED;
 				}
 			}
 		}
@@ -111,6 +92,26 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 			player.sendMessage(new TextComponentTranslation(playerinfomsg));
 		}
 		return EnumActionResult.PASS;
+	}
+
+	private int getSlotFor(AltarComponent component, EntityPlayer player) {
+		for (int i = 0; i < player.inventory.mainInventory.size(); ++i) {
+			if (isItemComponent(component, player.inventory.mainInventory.get(i))) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private boolean isItemComponent(AltarComponent component, ItemStack stack2) {
+		return Utils.getBlockForComponent(component.getComponent()) == Block.getBlockFromItem(stack2.getItem());
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.DIVINER_FIRST));
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.DIVINER_SECOND));
+		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.DIVINER_THIRD));
 	}
 
 
