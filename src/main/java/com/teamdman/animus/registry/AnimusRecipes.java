@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
 
 public class AnimusRecipes {
 	public static void init() {
@@ -22,7 +23,8 @@ public class AnimusRecipes {
 	}
 
 	public static void registerAltarRecipes(BloodMagicRecipeRegistrar registrar) {
-		registrar.addBloodAltar(Ingredient.fromItem(Items.PRISMARINE_SHARD), new ItemStack(AnimusItems.FRAGMENTHEALING), AltarTier.TWO.toInt(), 1000, 20, 25);
+		registrar.addBloodAltar(Ingredient.fromItem(Items.PRISMARINE_SHARD), new ItemStack(AnimusItems.FRAGMENTHEALING), AltarTier.TWO.ordinal(), 1000, 20, 25);
+		registrar.addBloodAltar(new OreIngredient("ingotGold"), new ItemStack(AnimusItems.KEYBINDING), AltarTier.THREE.ordinal(), 1000, 20, 25);
 	}
 
 	public static void registerAlchemyTableRecipes(BloodMagicRecipeRegistrar registrar) {
@@ -33,7 +35,7 @@ public class AnimusRecipes {
 		registrar.addTartaricForge(ComponentTypes.REAGENT_BUILDER.getStack(), 128, 32, Items.SUGAR, Blocks.CRAFTING_TABLE, Blocks.DISPENSER, Blocks.BRICK_BLOCK);
 		registrar.addTartaricForge(ComponentTypes.REAGENT_CHAINS.getStack(), 128, 32, Blocks.IRON_BARS, Items.ENDER_PEARL, Items.GLASS_BOTTLE, Blocks.END_STONE);
 		registrar.addTartaricForge(ComponentTypes.REAGENT_CONSUMPTION.getStack(), 128, 32, Items.IRON_PICKAXE, Items.IRON_PICKAXE, Items.IRON_PICKAXE, Items.IRON_PICKAXE);
-		registrar.addTartaricForge(ComponentTypes.REAGENT_LEECH.getStack(), 64, 20, "treeSapling", "treeLeaves", Blocks.TALLGRASS, "foodCooked"); //todo: add oredict entry
+		registrar.addTartaricForge(ComponentTypes.REAGENT_LEECH.getStack(), 64, 20, "treeSapling", "treeLeaves", Blocks.TALLGRASS, "foodCooked");
 		registrar.addTartaricForge(ComponentTypes.REAGENT_STORM.getStack(), 64, 20, Blocks.SAND, Items.WATER_BUCKET, Items.FISHING_ROD, Items.GHAST_TEAR);
 		registrar.addTartaricForge(ComponentTypes.REAGENT_TRANSPOSITION.getStack(), 128, 32, Blocks.END_STONE, Items.ENDER_PEARL, Blocks.OBSIDIAN, Blocks.CHEST);
 	}

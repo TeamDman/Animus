@@ -1,17 +1,14 @@
 {
   "result": {
-    "item": "minecraft:torch"
+    "item": "animus:keybinding"
   },
   "pattern": [
-    "ab"
+    "a"
   ],
   "type": "animus:keybinding",
   "key": {
     "a": {
       "item": "animus:keybinding"
-    },
-    "b": {
-      "item": "minecraft:cobblestone"
     }
   }
 }
