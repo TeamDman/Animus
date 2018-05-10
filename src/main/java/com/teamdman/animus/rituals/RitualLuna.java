@@ -4,8 +4,10 @@ import WayofTime.bloodmagic.core.data.SoulNetwork;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Constants;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -54,9 +56,18 @@ public class RitualLuna extends Ritual {
 			AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
 			for (BlockPos pos : effectRange.getContainedPositions(masterPos)) {
 				IBlockState state = world.getBlockState(pos);
+				Block       block = state.getBlock();
 				if (state.getBlock().getLightValue(state, world, pos) != 0) {
-					Item      item  = Item.getItemFromBlock(state.getBlock());
-					ItemStack stack = new ItemStack(item, 1, item.getHasSubtypes() ? state.getBlock().getMetaFromState(state) : 0);
+					Item      item = Item.getItemFromBlock(block);
+					ItemStack stack;
+					if (item == Items.AIR) {
+						stack = block.getPickBlock(state, null, world, pos, null);
+						if (stack.isEmpty()) {
+							stack = new ItemStack(block.getItemDropped(state, world.rand, 0));
+						}
+					} else {
+						stack = new ItemStack(item, 1, item.getHasSubtypes() ? block.getMetaFromState(state) : 0);
+					}
 					if (tileInventory != null && tileInventory.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)) {
 						IItemHandler handler = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 						if (ItemHandlerHelper.insertItem(handler, stack, true).isEmpty()) {
