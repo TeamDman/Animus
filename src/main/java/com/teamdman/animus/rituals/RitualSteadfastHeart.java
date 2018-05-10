@@ -27,10 +27,23 @@ public class RitualSteadfastHeart extends Ritual {
 
 	public RitualSteadfastHeart() {
 
-		super("ritualSteadfastHeart", 0, 20000, "ritual." + Constants.Mod.MODID + ".steadfastheart");
+		super(Constants.Rituals.STEADFAST, 0, 20000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.STEADFAST);
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-16, -16, -16), 32));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
 
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		willBuffer = tag.getDouble("willBuffer");
+
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setDouble("willBuffer", willBuffer);
 	}
 
 	@Override
@@ -109,20 +122,6 @@ public class RitualSteadfastHeart extends Ritual {
 		components.accept(new RitualComponent(new BlockPos(-2, -1, 2), EnumRuneType.WATER));
 		components.accept(new RitualComponent(new BlockPos(-2, -1, -2), EnumRuneType.WATER));
 	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		willBuffer = tag.getDouble("willBuffer");
-
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
-		tag.setDouble("willBuffer", willBuffer);
-	}
-
 
 	@Override
 	public Ritual getNewCopy() {

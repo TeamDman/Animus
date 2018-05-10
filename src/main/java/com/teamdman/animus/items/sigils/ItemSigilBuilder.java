@@ -45,7 +45,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (getActivated(stack) && !isSelected)
+		if (getActivated(stack)) // && !isSelected) // prevents working with offhand building
 			ItemSigilBuilder.removeDelay();
 	}
 

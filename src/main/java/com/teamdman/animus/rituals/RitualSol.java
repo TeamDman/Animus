@@ -25,12 +25,12 @@ import java.util.stream.Stream;
  * Created by TeamDman on 2015-05-28.
  */
 public class RitualSol extends Ritual {
-	public static final String EFFECT_RANGE = "effect";
 	public static final String CHEST_RANGE  = "chest";
+	public static final String EFFECT_RANGE = "effect";
 
 
 	public RitualSol() {
-		super("ritualSol", 0, 1000, "ritual." + Constants.Mod.MODID + ".sol");
+		super(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL);
 
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
 		addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
@@ -101,10 +101,10 @@ public class RitualSol extends Ritual {
 	@Override
 	public void gatherComponents(Consumer<RitualComponent> components) {
 		for (int layer = 0; layer < 3; layer++) {
-			components.accept(new RitualComponent(new BlockPos(2,layer,2), EnumRuneType.AIR));
-			components.accept(new RitualComponent(new BlockPos(-2,layer,2), EnumRuneType.AIR));
-			components.accept(new RitualComponent(new BlockPos(2,layer,-2), EnumRuneType.AIR));
-			components.accept(new RitualComponent(new BlockPos(-2,layer,-2), EnumRuneType.AIR));
+			components.accept(new RitualComponent(new BlockPos(2, layer, 2), EnumRuneType.AIR));
+			components.accept(new RitualComponent(new BlockPos(-2, layer, 2), EnumRuneType.AIR));
+			components.accept(new RitualComponent(new BlockPos(2, layer, -2), EnumRuneType.AIR));
+			components.accept(new RitualComponent(new BlockPos(-2, layer, -2), EnumRuneType.AIR));
 		}
 	}
 

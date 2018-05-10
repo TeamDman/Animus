@@ -20,40 +20,19 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 public class RitualNaturesLeech extends Ritual {
-	public static final String   EFFECT_RANGE   = "effect";
 	public static final String   ALTAR_RANGE    = "altar";
-	public              double   will           = 100;
+	public static final String   EFFECT_RANGE   = "effect";
 	public              BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
+	public              double   will           = 100;
 
 	public RitualNaturesLeech() {
-		super("ritualNaturesLeech", 0, 3000, "ritual." + Constants.Mod.MODID + ".naturesleech");
+		super(Constants.Rituals.LEECH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEECH);
 
 		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 20, 20, 20);
 		setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
 
-	}
-
-	@Override
-	public int getRefreshCost() {
-		return 10;
-	}
-
-	@Override
-	public void gatherComponents(Consumer<RitualComponent> components) {
-		components.accept(new RitualComponent(new BlockPos(-2, 1, -2), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos(-2, 1, 0), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(-2, 1, 2), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos(-1, 0, -1), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos(-1, 0, 1), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos(0, 1, -2), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(0, 1, 2), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(1, 0, -1), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos(1, 0, 1), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(2, 1, -2), EnumRuneType.WATER));
-		components.accept(new RitualComponent(new BlockPos(2, 1, 0), EnumRuneType.AIR));
-		components.accept(new RitualComponent(new BlockPos(2, 1, 2), EnumRuneType.WATER));
 	}
 
 	public void performRitual(IMasterRitualStone ritualStone) {
@@ -157,8 +136,29 @@ public class RitualNaturesLeech extends Ritual {
 	}
 
 	@Override
+	public int getRefreshCost() {
+		return 10;
+	}
+
+	@Override
 	public int getRefreshTime() {
 		return (int) Math.min(80, (100 * (100 / (Math.max(1, will) * 6))));
+	}
+
+	@Override
+	public void gatherComponents(Consumer<RitualComponent> components) {
+		components.accept(new RitualComponent(new BlockPos(-2, 1, -2), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(-2, 1, 0), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(-2, 1, 2), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, -1), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(-1, 0, 1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(0, 1, -2), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(0, 1, 2), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(1, 0, -1), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(1, 0, 1), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(2, 1, -2), EnumRuneType.WATER));
+		components.accept(new RitualComponent(new BlockPos(2, 1, 0), EnumRuneType.AIR));
+		components.accept(new RitualComponent(new BlockPos(2, 1, 2), EnumRuneType.WATER));
 	}
 
 	@Override

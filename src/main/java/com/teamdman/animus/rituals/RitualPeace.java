@@ -18,14 +18,16 @@ import net.minecraft.world.World;
 
 import java.util.UUID;
 import java.util.function.Consumer;
+
 /**
  * Created by TeamDman on 2015-05-28.
  */
 public class RitualPeace extends Ritual {
-	public RitualPeace() {
-		super("ritualPeace", 0, 5000, "ritual." + Constants.Mod.MODID + ".peace");
-	}
 	EntityList.EntityEggInfo[] targets;
+
+	public RitualPeace() {
+		super(Constants.Rituals.PEACE, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PEACE);
+	}
 
 	@Override
 	public boolean activateRitual(IMasterRitualStone masterRitualStone, EntityPlayer player, UUID owner) {
@@ -33,7 +35,7 @@ public class RitualPeace extends Ritual {
 			targets = EntityList.ENTITY_EGGS.values().stream()
 					.filter(e -> e.spawnedID.getResourceDomain().equals("minecraft"))
 					.filter(e -> EntityList.createEntityByIDFromName(e.spawnedID, masterRitualStone.getWorldObj()) != null)
-					.filter(e -> !EntityList.createEntityByIDFromName(e.spawnedID, masterRitualStone.getWorldObj()).isCreatureType(EnumCreatureType.MONSTER,false))
+					.filter(e -> !EntityList.createEntityByIDFromName(e.spawnedID, masterRitualStone.getWorldObj()).isCreatureType(EnumCreatureType.MONSTER, false))
 					.toArray(EntityList.EntityEggInfo[]::new);
 			return true;
 		} catch (Exception e) {
@@ -78,18 +80,18 @@ public class RitualPeace extends Ritual {
 
 	@Override
 	public void gatherComponents(Consumer<RitualComponent> components) {
-		addRune(components,4, 0, 0, EnumRuneType.EARTH);
-		addRune(components,4, 1, 0, EnumRuneType.EARTH);
-		addRune(components,4, 2, 0, EnumRuneType.WATER);
-		addRune(components,0, 1, 4, EnumRuneType.EARTH);
-		addRune(components,0, 2, 4, EnumRuneType.EARTH);
-		addRune(components,0, 3, 4, EnumRuneType.WATER);
-		addRune(components,-4, 2, 0, EnumRuneType.EARTH);
-		addRune(components,-4, 3, 0, EnumRuneType.EARTH);
-		addRune(components,-4, 4, 0, EnumRuneType.WATER);
-		addRune(components,0, 3, -4, EnumRuneType.EARTH);
-		addRune(components,0, 4, -4, EnumRuneType.EARTH);
-		addRune(components,0, 5, -4, EnumRuneType.WATER);
+		addRune(components, 4, 0, 0, EnumRuneType.EARTH);
+		addRune(components, 4, 1, 0, EnumRuneType.EARTH);
+		addRune(components, 4, 2, 0, EnumRuneType.WATER);
+		addRune(components, 0, 1, 4, EnumRuneType.EARTH);
+		addRune(components, 0, 2, 4, EnumRuneType.EARTH);
+		addRune(components, 0, 3, 4, EnumRuneType.WATER);
+		addRune(components, -4, 2, 0, EnumRuneType.EARTH);
+		addRune(components, -4, 3, 0, EnumRuneType.EARTH);
+		addRune(components, -4, 4, 0, EnumRuneType.WATER);
+		addRune(components, 0, 3, -4, EnumRuneType.EARTH);
+		addRune(components, 0, 4, -4, EnumRuneType.EARTH);
+		addRune(components, 0, 5, -4, EnumRuneType.WATER);
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.*;
 import java.util.function.Consumer;
+
 /**
  * Created by TeamDman on 2015-05-28.
  */
@@ -29,7 +30,7 @@ public class RitualEntropy extends Ritual {
 	final               HashMap<Item, Integer> indexed     = new HashMap<>();
 
 	public RitualEntropy() {
-		super("ritualEntropy", 0, 1000, "ritual." + Constants.Mod.MODID + ".entropy");
+		super(Constants.Rituals.ENTROPY, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENTROPY);
 
 		addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
 		setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
@@ -45,7 +46,7 @@ public class RitualEntropy extends Ritual {
 		TileEntity     tileInventory  = world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
 
 
-		if (!masterRitualStone.getWorldObj().isRemote && tileInventory != null && tileInventory.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null)) {
+		if (!masterRitualStone.getWorldObj().isRemote && tileInventory != null && tileInventory.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
 			if (currentEssence < getRefreshCost()) {
 				network.causeNausea();
 				return;
@@ -59,7 +60,7 @@ public class RitualEntropy extends Ritual {
 					if (cobble > 0) {
 						((IInventory) tileInventory).decrStackSize(slot, 1);
 						while (cobble > 0) {
-							ItemHandlerHelper.insertItemStacked(tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null),new ItemStack(Blocks.COBBLESTONE, cobble > 64 ? 64 : cobble),false);
+							ItemHandlerHelper.insertItemStacked(tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), new ItemStack(Blocks.COBBLESTONE, cobble > 64 ? 64 : cobble), false);
 							cobble -= cobble > 64 ? 64 : cobble;
 						}
 					}
@@ -69,9 +70,39 @@ public class RitualEntropy extends Ritual {
 		}
 	}
 
+	@Override
+	public int getRefreshCost() {
+		return 1;
+	}
+
+	@Override
+	public int getRefreshTime() {
+		return 1;
+	}
+
+	@Override
+	public void gatherComponents(Consumer<RitualComponent> components) {
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				if (x == 0 && y == 0)
+					continue;
+				components.accept(new RitualComponent(new BlockPos(x, 0, y), EnumRuneType.EARTH));
+			}
+		}
+		components.accept(new RitualComponent(new BlockPos(-2, 0, -2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(-2, 0, 2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(2, 0, -2), EnumRuneType.EARTH));
+		components.accept(new RitualComponent(new BlockPos(2, 0, 2), EnumRuneType.EARTH));
+	}
+
+	@Override
+	public Ritual getNewCopy() {
+		return new RitualEntropy();
+	}
+
 	@SuppressWarnings("rawtypes")
 	public int getCobbleValue(List<Item> fetchList, ItemStack input, int layer) {
-//		System.out.printf("%s requested on layer %d\n", input.getDisplayName(), layer);
+		//		System.out.printf("%s requested on layer %d\n", input.getDisplayName(), layer);
 		if (indexed.get(input.getItem()) != null)
 			return indexed.get(input.getItem());
 		if (fetchList.contains(input.getItem()))
@@ -123,37 +154,6 @@ public class RitualEntropy extends Ritual {
 		System.out.printf("Returning %d for item %s on layer %d\n", rtn, input.getDisplayName(), layer);
 		indexed.put(input.getItem(), rtn);
 		return rtn;
-	}
-
-
-	@Override
-	public int getRefreshCost() {
-		return 1;
-	}
-
-	@Override
-	public int getRefreshTime() {
-		return 1;
-	}
-
-
-	@Override
-	public void gatherComponents(Consumer<RitualComponent> components) {
-		for (int x = -1; x <= 1; x++) {
-			for (int y = -1; y <= 1; y++) {
-				if (x == 0 && y == 0) continue;
-				components.accept(new RitualComponent(new BlockPos(x, 0, y), EnumRuneType.EARTH));
-			}
-		}
-		components.accept(new RitualComponent(new BlockPos(-2, 0, -2), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos(-2, 0, 2), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos(2, 0, -2), EnumRuneType.EARTH));
-		components.accept(new RitualComponent(new BlockPos(2, 0, 2), EnumRuneType.EARTH));
-	}
-
-	@Override
-	public Ritual getNewCopy() {
-		return new RitualEntropy();
 	}
 
 }

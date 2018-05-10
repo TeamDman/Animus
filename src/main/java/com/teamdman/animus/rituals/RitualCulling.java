@@ -27,16 +27,16 @@ import net.minecraft.world.World;
 
 import java.util.*;
 import java.util.function.Consumer;
+
 public class RitualCulling extends Ritual {
 	public static final String                             ALTAR_RANGE    = "altar";
 	public static final String                             EFFECT_RANGE   = "effect";
 	public static final int                                amount         = 200;
+	static final        DamageSource                       culled         = new DamageSource(Constants.Misc.DAMAGE_ABSOLUTE).setDamageAllowedInCreativeMode().setDamageBypassesArmor().setDamageIsAbsolute();
 	public final        int                                maxWill        = 100;
+	public final        Random                             rand           = new Random();
 	public              BlockPos                           altarOffsetPos = new BlockPos(0, 0, 0);
 	public              double                             crystalBuffer  = 0;
-	static final        DamageSource                       culled         = new DamageSource("animus.absolute").setDamageAllowedInCreativeMode().setDamageBypassesArmor()
-			.setDamageIsAbsolute();
-	public final        Random                             rand           = new Random();
 	public              LogHelper                          logger         = new LogHelper();
 	public              int                                reagentDrain   = 2;
 	public              boolean                            result         = false;
@@ -44,13 +44,32 @@ public class RitualCulling extends Ritual {
 	public              HashMap<EnumDemonWillType, Double> willMap        = new HashMap<>();
 
 	public RitualCulling() {
-		super("ritualCulling", 0, 50000, "ritual." + Constants.Mod.MODID + ".culling");
+		super(Constants.Rituals.CULLING, 0, 50000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.CULLING);
 
 		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 21));
 
 		setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
+
+	}
+
+	public double smallGauss(double d) {
+		Random myRand = new Random();
+		return (myRand.nextFloat() - 0.5D) * d;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		willBuffer = tag.getDouble(Constants.NBT.CULLING_BUFFER_WILL);
+
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setDouble(Constants.NBT.CULLING_BUFFER_WILL, willBuffer);
 
 	}
 
@@ -66,25 +85,6 @@ public class RitualCulling extends Ritual {
 			player.world.addWeatherEffect(new EntityLightningBolt(player.world, xCoord, yCoord, zCoord, false));
 
 		return true;
-	}
-
-	public double smallGauss(double d) {
-		Random myRand = new Random();
-		return (myRand.nextFloat() - 0.5D) * d;
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
-		willBuffer = tag.getDouble("willBuffer");
-
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
-		tag.setDouble("willBuffer", willBuffer);
-
 	}
 
 	@Override

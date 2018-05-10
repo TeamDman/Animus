@@ -47,15 +47,25 @@ public class Constants {
 	}
 
 	public static class NBT {
-		public static final String SOUL_DATA        = "mobdata";
-		public static final String SOUL_ENTITY_ID   = "id";
-		public static final String SOUL_ENTITY_NAME = "entity";
-		public static final String SOUL_NAME        = "name";
+		public static final String CULLING_BUFFER_WILL = "willBuffer";
+		public static final String SOUL_DATA           = "mobdata";
+		public static final String SOUL_ENTITY_ID      = "id";
+		public static final String SOUL_ENTITY_NAME    = "entity";
+		public static final String SOUL_NAME           = "name";
 	}
 
 	public static class Rituals {
 		public static final String HUNGER     = "ritualHunger";
 		public static final String REGRESSION = "ritualRegression";
+		public static final String CULLING    = "ritualCulling";
+		public static final String ENTROPY    = "ritualEntropy";
+		public static final String LEECH      = "ritualNaturesLeech";
+		public static final String LUNA       = "ritualLuna";
+		public static final String PEACE      = "ritualPeace";
+		public static final String SOL        = "ritualSol";
+		public static final String STEADFAST  = "ritualSteadfastHeart";
+		public static final String UNMAKING   = "ritualUnmaking";
+
 	}
 
 	public static class Sigils {
