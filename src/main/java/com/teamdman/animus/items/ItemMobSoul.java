@@ -28,7 +28,7 @@ public class ItemMobSoul extends Item implements IVariantProvider {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 		if (world.isRemote) return EnumActionResult.FAIL;
-		//noinspection ConstantConditions
+		//no inspection ConstantConditions
 		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(Constants.NBT.SOUL_ENTITY_NAME))
 			return EnumActionResult.FAIL;
 		Entity mob = EntityList.createEntityByIDFromName(new ResourceLocation(stack.getTagCompound().getString("entity")), world);
