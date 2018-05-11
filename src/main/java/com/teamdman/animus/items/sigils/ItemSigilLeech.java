@@ -10,7 +10,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
@@ -19,111 +18,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 
 public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
-	public static final String                      EFFECT_RANGE    = "effect";
-	protected final     Map<String, AreaDescriptor> modableRangeMap = new HashMap<>();
-	final               Random                      random          = new Random();
+	private final AreaDescriptor eatRange = new AreaDescriptor.Rectangle(new BlockPos(-5, 0, -5), 10);
+
 	//todo: cleanup all of this
 	public ItemSigilLeech() {
 		super(Constants.Sigils.LEECH, 5);
-	}
-
-	public ItemStack getFood(EntityPlayer player) {
-		int i;
-		for (i = 0; i < player.inventory.mainInventory.size(); i++) {
-			if (player.inventory.mainInventory.get(i).isEmpty())
-				continue;
-			Item food = player.inventory.mainInventory.get(i).getItem();
-
-			if (food instanceof IPlantable) {
-				return player.inventory.mainInventory.get(i);
-			}
-		}
-		return null;
-	}
-
-	public boolean eatGrowables(EntityPlayer player) {
-		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 0, 0), 10));
-		AreaDescriptor eatRange;
-		eatRange = getBlockRange(EFFECT_RANGE);
-		eatRange.resetIterator();
-		int count = random.nextInt(2);
-
-		while (eatRange.hasNext()) {
-			int      i         = 0;
-			BlockPos nextPos   = eatRange.next().add(player.getPosition());
-			Block    thisBlock = player.world.getBlockState(nextPos).getBlock();
-			if (thisBlock == Blocks.AIR)
-				continue;
-			boolean edible = false;
-
-			String blockName = thisBlock.getUnlocalizedName().toLowerCase();
-
-			if (thisBlock instanceof BlockCrops || thisBlock instanceof BlockLog
-					|| thisBlock instanceof BlockLeaves || thisBlock instanceof BlockFlower
-					|| thisBlock instanceof BlockTallGrass || thisBlock instanceof BlockDoublePlant
-					|| blockName.contains("extrabiomesxl.flower"))
-				edible = true;
-
-			if (blockName.contains("specialflower") || blockName.contains("shinyflower"))
-				edible = false;
-
-			if (!edible)
-				continue;
-
-			if (player.world.isRemote) {
-				player.world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
-						(this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
-			}
-
-			player.world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
-			player.world.setBlockToAir(nextPos);
-			i++;
-			if (i >= count)
-				return true;
-
-		}
-		return false;
-	}
-
-
-	public ItemStack getEdible(EntityPlayer player) {
-		ItemStack food;
-		if ((food = getFood(player)) != null)
-			return food;
-		else
-			return null;
-	}
-
-	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		boolean eaten = false;
-		if (getActivated(stack)) {
-			if (entityIn instanceof EntityPlayer && !(entityIn instanceof FakePlayer)) {
-				EntityPlayer player = (EntityPlayer) entityIn;
-				if (player.canEat(false)) {
-					ItemStack haseditable = null;
-					haseditable = getEdible(player);
-					if (haseditable != null) {
-						haseditable.shrink(Math.min(random.nextInt(4), haseditable.getCount()));
-						eaten = true;
-					} else if (eatGrowables(player)) {
-						eaten = true;
-					}
-					if (eaten) {
-						int fill = 1 + random.nextInt(3);
-						player.getFoodStats().addStats(fill, 2F);
-					}
-				}
-			}
-		}
-		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 	}
 
 	@Override
@@ -140,30 +43,69 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 		return new ActionResult<>(EnumActionResult.PASS, stack);
 	}
 
-	public void addBlockRange(String range, AreaDescriptor defaultRange) {
-		modableRangeMap.put(range, defaultRange);
-	}
+	@Override
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		if (!getActivated(stack) || !(entityIn instanceof EntityPlayer) || entityIn instanceof FakePlayer)
+			return;
 
-	/**
-	 * Used to grab the range of a ritual for a given effect.
-	 *
-	 * @param range - Range that needs to be pulled.
-	 * @return -
-	 */
-	public AreaDescriptor getBlockRange(String range) {
-		if (modableRangeMap.containsKey(range)) {
-			return modableRangeMap.get(range);
+		EntityPlayer player = (EntityPlayer) entityIn;
+		if (!player.canEat(false) && !player.isSneaking())
+			return;
+
+		ItemStack stackFood = getFood(player);
+		if ((!stackFood.isEmpty() || eatGrowables(player)) && !worldIn.isRemote) {
+			if (!stackFood.isEmpty())
+				stackFood.shrink(Math.min(worldIn.rand.nextInt(4), stackFood.getCount()));
+			player.getFoodStats().addStats(1 + worldIn.rand.nextInt(3), 2F);
 		}
 
-		return null;
+		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 	}
 
+	private ItemStack getFood(EntityPlayer player) {
+		for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+			ItemStack stack = player.inventory.mainInventory.get(i);
+			if (stack.isEmpty() || !(stack.getItem() instanceof IPlantable || Block.getBlockFromItem(stack.getItem()) instanceof IPlantable))
+				continue;
+			return stack;
+		}
+		return ItemStack.EMPTY;
+	}
+
+	private boolean eatGrowables(EntityPlayer player) {
+		if (!eatRange.hasNext())
+			eatRange.resetIterator();
+		for (int i = 0; i < 32 && eatRange.hasNext(); i++) {
+			BlockPos nextPos   = eatRange.next().add(player.getPosition());
+			Block    thisBlock = player.world.getBlockState(nextPos).getBlock();
+			if (thisBlock == Blocks.AIR)
+				continue;
+			String blockName = thisBlock.getUnlocalizedName().toLowerCase();
+
+			if (!(thisBlock instanceof BlockCrops || thisBlock instanceof BlockLog
+					|| thisBlock instanceof BlockLeaves || thisBlock instanceof BlockFlower
+					|| thisBlock instanceof BlockTallGrass || thisBlock instanceof BlockDoublePlant
+					|| thisBlock instanceof IPlantable
+					|| blockName.contains("extrabiomesxl.flower"))
+					|| blockName.contains("specialflower") || blockName.contains("shinyflower"))
+				continue;
+
+			if (player.world.isRemote)
+				player.world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
+						(player.world.rand.nextDouble() - 0.5D) * 2.0D, -player.world.rand.nextDouble(), (player.world.rand.nextDouble() - 0.5D) * 2.0D);
+
+			player.world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
+			player.world.setBlockToAir(nextPos);
+
+			if (player.canEat(false) || !player.isSneaking())
+				return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.SIGIL_LEECH_FLAVOUR));
 		super.addInformation(stack, world, tooltip, flag);
 	}
-
-
 }

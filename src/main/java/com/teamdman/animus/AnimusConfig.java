@@ -60,9 +60,9 @@ public class AnimusConfig {
 		public int antimatterRange                = 8;
 		public int builderRange                   = 64;
 		@Config.Comment({"Determines if the transposition sigil is allowed to move unbreakable blocks.",
-				"	0: Never move blocks",
+				"	0: Never move unbreakable blocks.",
 				"	1: Allow moving unbreakables, but prevent setting source _position_ to an unbreakable block.",
-				"	2: Always allow moving unbreakable blocks"})
+				"	2: Always allow moving unbreakable blocks."})
 		public int transpositionMovesUnbreakables = 1;
 	}
 }

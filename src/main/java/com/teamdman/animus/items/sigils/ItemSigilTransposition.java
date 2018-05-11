@@ -123,7 +123,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 		NBTHelper.checkNBT(stack);
 		//noinspection ConstantConditions
 		if (stack.getTagCompound().getLong(Constants.NBT.TRANSPOSITION_POS) != 0)
-			tooltip.add(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_STORED);
+			tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_STORED));
 		Binding binding = getBinding(stack);
 		if (binding == null)
 			return;
