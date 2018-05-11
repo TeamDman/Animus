@@ -7,7 +7,9 @@ import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.helper.PlayerHelper;
 import WayofTime.bloodmagic.util.helper.TextHelper;
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -47,7 +49,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 		if (result == null || result.typeOfHit == RayTraceResult.Type.MISS || result.typeOfHit != RayTraceResult.Type.BLOCK) {
 			NBTHelper.checkNBT(stack);
 			//noinspection ConstantConditions
-			stack.getTagCompound().setLong("pos", 0);
+			stack.getTagCompound().setLong(Constants.NBT.TRANSPOSITION_POS, 0);
 			ChatUtil.sendNoSpam(player, Constants.Localizations.Text.TRANSPOSITION_CLEARED);
 			setActivatedState(stack,false);
 		}
@@ -64,18 +66,28 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 		if (binding == null)
 			return EnumActionResult.PASS;
 
-		BlockPos posNew     = blockPos.offset(side);
 		if (!isUnusable(stack) && !world.isRemote) {
 			NBTHelper.checkNBT(stack);
+			IBlockState state = world.getBlockState(blockPos);
 			if (!getActivated(stack)) {
+				if (AnimusConfig.sigils.transpositionMovesUnbreakables < 2 && state.getBlock().getBlockHardness(state, world, blockPos) == -1)
+					return EnumActionResult.PASS;
 				//noinspection ConstantConditions
-				stack.getTagCompound().setLong("pos", posNew.offset(side.getOpposite()).toLong());
+				stack.getTagCompound().setLong(Constants.NBT.TRANSPOSITION_POS, blockPos.toLong());
 				ChatUtil.sendNoSpamUnloc(player, Constants.Localizations.Text.TRANSPOSITION_SET);
-				world.playSound(null, posNew, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1);
+				world.playSound(null, blockPos, SoundEvents.ENTITY_SHULKER_TELEPORT, SoundCategory.BLOCKS, 1, 1);
 				setActivatedState(stack,true);
 			} else {
 				//noinspection ConstantConditions
-				BlockPos   posOld   = BlockPos.fromLong(stack.getTagCompound().getLong("pos"));
+				BlockPos posOld = BlockPos.fromLong(stack.getTagCompound().getLong(Constants.NBT.TRANSPOSITION_POS));
+				BlockPos posNew = blockPos.offset(side);
+				if (AnimusConfig.sigils.transpositionMovesUnbreakables == 0 && world.getBlockState(posOld).getBlock().getBlockHardness(world.getBlockState(posOld), world, posOld) == -1) {
+					stack.getTagCompound().setLong(Constants.NBT.TRANSPOSITION_POS, 0);
+					world.playSound(null, posNew, SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.BLOCKS, 1, 1);
+					setActivatedState(stack, false);
+					ChatUtil.sendNoSpamUnloc(player, Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE);
+					return EnumActionResult.PASS;
+				}
 				TileEntity tileOld  = world.getTileEntity(posOld);
 				if (world.isAirBlock(posNew)) {
 					NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
@@ -93,7 +105,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 
 					world.setBlockToAir(posOld);
 					world.playSound(null, posNew, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1, 1);
-					stack.getTagCompound().setLong("pos", 0);
+					stack.getTagCompound().setLong(Constants.NBT.TRANSPOSITION_POS, 0);
 					setActivatedState(stack,false);
 				} else {
 					ChatUtil.sendNoSpamUnloc(player, Constants.Localizations.Text.DIVINER_OBSTRUCTED);
@@ -110,7 +122,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_FLAVOUR));
 		NBTHelper.checkNBT(stack);
 		//noinspection ConstantConditions
-		if (stack.getTagCompound().getLong("pos") != 0)
+		if (stack.getTagCompound().getLong(Constants.NBT.TRANSPOSITION_POS) != 0)
 			tooltip.add(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_STORED);
 		Binding binding = getBinding(stack);
 		if (binding == null)

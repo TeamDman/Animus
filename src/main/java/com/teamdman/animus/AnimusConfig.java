@@ -24,7 +24,8 @@ public class AnimusConfig {
 	public static ConfigSigils     sigils     = new ConfigSigils();
 
 	@SubscribeEvent
-	public void onConfigChanged(ConfigChangedEvent event) {
+	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		System.out.println("Syncing Animus Config");
 		if (event.getModID().equals(Constants.Mod.MODID))
 			ConfigManager.sync(event.getModID(), Config.Type.INSTANCE);
 	}
@@ -55,8 +56,13 @@ public class AnimusConfig {
 
 	@SuppressWarnings("CanBeFinal")
 	public static class ConfigSigils {
-		public int antimatterConsumption = 25;
-		public int antimatterRange       = 8;
-		public int builderRange          = 64;
+		public int antimatterConsumption          = 25;
+		public int antimatterRange                = 8;
+		public int builderRange                   = 64;
+		@Config.Comment({"Determines if the transposition sigil is allowed to move unbreakable blocks.",
+				"	0: Never move blocks",
+				"	1: Allow moving unbreakables, but prevent setting source _position_ to an unbreakable block.",
+				"	2: Always allow moving unbreakable blocks"})
+		public int transpositionMovesUnbreakables = 1;
 	}
 }

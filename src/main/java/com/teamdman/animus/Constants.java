@@ -6,10 +6,11 @@ public class Constants {
 	//todo: add flavour texts
 	public static class Localizations {
 		public static class Text {
-			public static final String DIVINER_MISSING       = "text.component.diviner.missing";
-			public static final String DIVINER_OBSTRUCTED    = "text.component.diviner.obstructed";
-			public static final String TRANSPOSITION_CLEARED = "text.component.transposition.cleared";
-			public static final String TRANSPOSITION_SET     = "text.component.transposition.set";
+			public static final String DIVINER_MISSING         = "text.component.animus.diviner.missing";
+			public static final String DIVINER_OBSTRUCTED      = "text.component.animus.diviner.obstructed";
+			public static final String TRANSPOSITION_CLEARED   = "text.component.animus.transposition.cleared";
+			public static final String TRANSPOSITION_SET       = "text.component.animus.transposition.set";
+			public static final String TRANSPOSITION_UNMOVABLE = "text.component.animus.transposition.unmovable";
 		}
 
 		public static class Tooltips {
@@ -52,16 +53,17 @@ public class Constants {
 		public static final String SOUL_ENTITY_ID      = "id";
 		public static final String SOUL_ENTITY_NAME    = "entity";
 		public static final String SOUL_NAME           = "name";
+		public static final String TRANSPOSITION_POS   = "pos";
 	}
 
 	public static class Rituals {
-		public static final String HUNGER     = "ritualHunger";
-		public static final String REGRESSION = "ritualRegression";
 		public static final String CULLING    = "ritualCulling";
 		public static final String ENTROPY    = "ritualEntropy";
+		public static final String HUNGER     = "ritualHunger";
 		public static final String LEECH      = "ritualNaturesLeech";
 		public static final String LUNA       = "ritualLuna";
 		public static final String PEACE      = "ritualPeace";
+		public static final String REGRESSION = "ritualRegression";
 		public static final String SOL        = "ritualSol";
 		public static final String STEADFAST  = "ritualSteadfastHeart";
 		public static final String UNMAKING   = "ritualUnmaking";
