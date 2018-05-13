@@ -45,7 +45,8 @@ repositories {
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
     deobfCompile "cofh:RedstoneFlux:1.12-2.+:deobf"
-    deobfCompile "mcjty.theoneprobe:TheOneProbe-${major_version}:${major_version}-${theoneprobe_version}"
+//    deobfCompile "mcjty.theoneprobe:TheOneProbe-${major_version}:${major_version}-${theoneprobe_version}"
+    deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}"
     deobfCompile "info.amerifrance.guideapi:Guide-API:${major_version}-${guideapi_version}"
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${bloodmagic_version}"
     // you may put jars on which you depend on in ./libs

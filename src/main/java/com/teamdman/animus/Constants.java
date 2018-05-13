@@ -1,5 +1,7 @@
 package com.teamdman.animus;
 
+import net.minecraft.util.ResourceLocation;
+
 import java.util.Locale;
 
 public class Constants {
@@ -36,7 +38,17 @@ public class Constants {
 
 	public static class Misc {
 		public static final String CRAFTING_KEYBINDING = "keybindingcrafting";
+		public static final String CRAFTING_DIRTBUCKET = "dirtbucketcrafting";
 		public static final String DAMAGE_ABSOLUTE     = "animus.absolute";
+		public static final String FLUID_ANTIMATTER    = "blockfluidantimatter";
+		public static final String FLUID_DIRT          = "blockfluiddirt";
+	}
+
+	public static class Resource {
+		public static final ResourceLocation fluidAntimatterFlowing = new ResourceLocation(Mod.MODID + ":blocks/fluid/antimatter_flowing");
+		public static final ResourceLocation fluidAntimatterStill   = new ResourceLocation(Mod.MODID + ":blocks/fluid/antimatter_still");
+		public static final ResourceLocation fluidDirtFlowing       = new ResourceLocation(Mod.MODID + ":blocks/fluid/dirt_flowing");
+		public static final ResourceLocation fluidDirtStill         = new ResourceLocation(Mod.MODID + ":blocks/fluid/dirt_still");
 	}
 
 	public static class Mod {
