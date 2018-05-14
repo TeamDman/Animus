@@ -24,7 +24,7 @@ public class AnimusConfig {
 	public static ConfigSigils     sigils     = new ConfigSigils();
 
 	@SubscribeEvent
-	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		System.out.println("Syncing Animus Config");
 		if (event.getModID().equals(Constants.Mod.MODID))
 			ConfigManager.sync(event.getModID(), Config.Type.INSTANCE);
