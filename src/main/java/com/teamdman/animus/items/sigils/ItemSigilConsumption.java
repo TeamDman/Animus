@@ -5,16 +5,14 @@ import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import amerifrance.guideapi.api.util.TextHelper;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.blocks.BlockAntimatter;
-import com.teamdman.animus.registry.AnimusBlocks;
-import com.teamdman.animus.tiles.TileAntimatter;
-import net.minecraft.block.Block;
+import com.teamdman.animus.common.util.AnimusUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -27,19 +25,15 @@ public class ItemSigilConsumption extends ItemSigilBase implements IVariantProvi
 		super(Constants.Sigils.CONSUMPTION, 200);
 	}
 
+
 	@SuppressWarnings("NullableProblems")
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos blockPos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (world.getTileEntity(blockPos) != null || world.getBlockState(blockPos).getBlock().getBlockHardness(null, null, null) == -1.0F)
-			return EnumActionResult.SUCCESS;
-		Block seeking = world.getBlockState(blockPos).getBlock();
-		world.setBlockState(blockPos, AnimusBlocks.BLOCKANTIMATTER.getDefaultState().withProperty(BlockAntimatter.DECAYING, false));
-
-		((TileAntimatter) world.getTileEntity(blockPos)).seeking = seeking;
-		((TileAntimatter) world.getTileEntity(blockPos)).player = player;
-
-		world.scheduleBlockUpdate(blockPos, AnimusBlocks.BLOCKANTIMATTER, 5, 0);
-		return EnumActionResult.SUCCESS;
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		RayTraceResult result = AnimusUtil.raytraceFromEntity(worldIn, playerIn, true, 5);
+		if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK) {
+			return new ActionResult<>(BlockAntimatter.setBlockToAntimatter(worldIn, result.getBlockPos(), playerIn), playerIn.getHeldItem(handIn));
+		}
+		return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
 	}
 
 	@Override

@@ -6,10 +6,10 @@ import WayofTime.bloodmagic.ritual.AreaDescriptor;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.helper.TextHelper;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.common.util.AnimusUtil;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
@@ -21,7 +21,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -47,7 +49,7 @@ public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
 		int       damage;
 
 
-		RayTraceResult result = ItemSigilStorm.raytraceFromEntity(world, player, true, 64);
+		RayTraceResult result = AnimusUtil.raytraceFromEntity(world, player, true, 64);
 
 		if (result != null) {
 
@@ -93,29 +95,6 @@ public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
-
-	/**
-	 * @author mDiyo
-	 */
-	public static RayTraceResult raytraceFromEntity(World world, Entity player, boolean useLiquids, double range) {
-		float  f  = 1.0F;
-		float  f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * f;
-		float  f2 = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * f;
-		double d0 = player.prevPosX + (player.posX - player.prevPosX) * f;
-		double d1 = player.prevPosY + (player.posY - player.prevPosY) * f;
-		if (player instanceof EntityPlayer)
-			d1 += ((EntityPlayer) player).eyeHeight;
-		double d2    = player.prevPosZ + (player.posZ - player.prevPosZ) * f;
-		Vec3d  vec3  = new Vec3d(d0, d1, d2);
-		float  f3    = MathHelper.cos(-f2 * 0.017453292F - (float) Math.PI);
-		float  f4    = MathHelper.sin(-f2 * 0.017453292F - (float) Math.PI);
-		float  f5    = -MathHelper.cos(-f1 * 0.017453292F);
-		float  f6    = MathHelper.sin(-f1 * 0.017453292F);
-		float  f7    = f4 * f5;
-		float  f8    = f3 * f5;
-		Vec3d  vec31 = vec3.addVector(f7 * range, f6 * range, f8 * range);
-		return world.rayTraceBlocks(vec3, vec31, useLiquids);
-	}
 
 	@Override
 	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {

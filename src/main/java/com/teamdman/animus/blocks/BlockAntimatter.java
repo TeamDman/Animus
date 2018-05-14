@@ -11,9 +11,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -31,24 +33,17 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 		super(Material.SPONGE);
 	}
 
-	@SuppressWarnings("NullableProblems")
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, DECAYING);
-	}
+	public static EnumActionResult setBlockToAntimatter(World world, BlockPos blockPos, EntityPlayer player) {
+		if (world.getTileEntity(blockPos) != null || world.getBlockState(blockPos).getBlock().getBlockHardness(null, null, null) == -1.0F)
+			return EnumActionResult.PASS;
+		Block seeking = world.getBlockState(blockPos).getBlock();
+		world.setBlockState(blockPos, AnimusBlocks.BLOCKANTIMATTER.getDefaultState().withProperty(BlockAntimatter.DECAYING, false));
 
-	@Override
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
-	}
+		((TileAntimatter) world.getTileEntity(blockPos)).seeking = seeking;
+		((TileAntimatter) world.getTileEntity(blockPos)).player = player;
 
-	private ArrayList<BlockPos> getNeighbours(BlockPos pos) {
-		ArrayList<BlockPos> neighbours = new ArrayList<>();
-		for (int x = -1; x <= 1; x++)
-			for (int y = -1; y <= 1; y++)
-				for (int z = -1; z <= 1; z++)
-					neighbours.add(pos.add(x, y, z));
-		return neighbours;
+		world.scheduleBlockUpdate(blockPos, AnimusBlocks.BLOCKANTIMATTER, 5, 0);
+		return EnumActionResult.SUCCESS;
 	}
 
 	@Override
@@ -84,17 +79,6 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 			worldIn.setBlockToAir(pos);
 	}
 
-	@SuppressWarnings("NullableProblems")
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileAntimatter();
-	}
-
-	@SuppressWarnings("NullableProblems")
-	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-	}
-
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		return state.getValue(DECAYING) ? 1 : 0;
@@ -111,8 +95,39 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 		worldIn.setBlockToAir(pos);
 	}
 
+	private ArrayList<BlockPos> getNeighbours(BlockPos pos) {
+		ArrayList<BlockPos> neighbours = new ArrayList<>();
+		for (int x = -1; x <= 1; x++)
+			for (int y = -1; y <= 1; y++)
+				for (int z = -1; z <= 1; z++)
+					neighbours.add(pos.add(x, y, z));
+		return neighbours;
+	}
+
+	@SuppressWarnings("NullableProblems")
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, DECAYING);
+	}
+
+	@SuppressWarnings("NullableProblems")
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileAntimatter();
+	}
+
+	@SuppressWarnings("NullableProblems")
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+	}
+
 	@Override
 	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
 		variants.put(0, "normal");
+	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
 	}
 }
