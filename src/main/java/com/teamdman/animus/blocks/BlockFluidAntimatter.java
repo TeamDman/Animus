@@ -40,8 +40,8 @@ public class BlockFluidAntimatter extends BlockFluidClassic {
 			super(Constants.Misc.FLUID_ANTIMATTER, Constants.Resource.fluidAntimatterStill, Constants.Resource.fluidAntimatterFlowing);
 			setUnlocalizedName(Constants.Misc.FLUID_ANTIMATTER);
 			setRarity(EnumRarity.UNCOMMON);
-			setDensity(250);
-			setViscosity(250);
+			setDensity(10000);
+			setViscosity(1);
 			setTemperature(0);
 		}
 	}

@@ -42,7 +42,7 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 		((TileAntimatter) world.getTileEntity(blockPos)).seeking = seeking;
 		((TileAntimatter) world.getTileEntity(blockPos)).player = player;
 
-		world.scheduleBlockUpdate(blockPos, AnimusBlocks.BLOCKANTIMATTER, 5, 0);
+		world.scheduleBlockUpdate(blockPos, AnimusBlocks.BLOCKANTIMATTER, 0, 0);
 		return EnumActionResult.SUCCESS;
 	}
 
@@ -58,7 +58,7 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 			if (decaying) {
 				if (worldIn.getBlockState(newpos).getBlock() == AnimusBlocks.BLOCKANTIMATTER) {
 					worldIn.setBlockState(newpos, getDefaultState().withProperty(DECAYING, true));
-					worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, 0, 1);
+					worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, worldIn.rand.nextInt(10) + 10, 1);
 					worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 0.01F, 0.75F);
 				}
 			} else if (!worldIn.isAirBlock(newpos) && worldIn.getBlockState(newpos).getBlock() == tile.seeking) {
@@ -89,7 +89,7 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 		for (BlockPos newpos : getNeighbours(pos)) {
 			if (worldIn.getBlockState(newpos).getBlock() == AnimusBlocks.BLOCKANTIMATTER) {
 				worldIn.setBlockState(newpos, getDefaultState().withProperty(DECAYING, true));
-				worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, 5, 1);
+				worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, worldIn.rand.nextInt(10) + 10, 1);
 			}
 		}
 		worldIn.setBlockToAir(pos);

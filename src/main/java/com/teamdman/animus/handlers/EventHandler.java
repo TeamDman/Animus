@@ -1,13 +1,17 @@
 package com.teamdman.animus.handlers;
 
+import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.slots.SlotNoPickup;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -46,6 +50,15 @@ public class EventHandler {
 			eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 200, frags / 9 - 1));
 			if (frags >= 35 && eventArgs.player.world.getWorldTime() % 200 == 0)
 				eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 200, 4));
+		}
+	}
+
+	@SubscribeEvent
+	public void onEntityJoined(EntityJoinWorldEvent event) {
+		if (event.getEntity() instanceof EntityLightningBolt) {
+			EntityLightningBolt bolt = ((EntityLightningBolt) event.getEntity());
+			if (event.getWorld().getBlockState(bolt.getPosition().down()).getBlock() == RegistrarBloodMagicBlocks.LIFE_ESSENCE)
+				event.getWorld().setBlockState(bolt.getPosition().down(), AnimusBlocks.BLOCKFLUIDANTIMATTER.getDefaultState());
 		}
 	}
 }

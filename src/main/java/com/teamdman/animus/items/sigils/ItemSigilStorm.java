@@ -33,8 +33,8 @@ import java.util.Map;
 import java.util.Random;
 
 public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
-	protected final     Map<String, AreaDescriptor> modableRangeMap = new HashMap<>();
 	public static final String                      EFFECT_RANGE    = "effect";
+	protected final     Map<String, AreaDescriptor> modableRangeMap = new HashMap<>();
 
 	public ItemSigilStorm() {
 		super(Constants.Sigils.STORM, 500);
@@ -62,7 +62,7 @@ public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
 				return new ActionResult<>(EnumActionResult.FAIL, stack);
 			}
 
-			world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY() + .5, pos.getZ(), false));
+			world.spawnEntity(new EntityLightningBolt(world, pos.getX(), pos.getY() + .5, pos.getZ(), false));
 
 			IBlockState state = world.getBlockState(pos);
 			if ((state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && !world.isRemote) {
@@ -74,8 +74,6 @@ public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
 
 
 			if (world.isRaining()) {
-
-
 				addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-1, -1, -1), 4));
 				AreaDescriptor         damageRange = getBlockRange(EFFECT_RANGE);
 				AxisAlignedBB          range       = damageRange.getAABB(pos);
@@ -95,12 +93,6 @@ public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
-
-	@Override
-	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
-		variants.put(0, "type=normal");
-	}
-
 	public void addBlockRange(String range, AreaDescriptor defaultRange) {
 		modableRangeMap.put(range, defaultRange);
 	}
@@ -113,11 +105,15 @@ public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
 		return null;
 	}
 
-
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.SIGIL_STORM_FLAVOUR));
 		super.addInformation(stack, world, tooltip, flag);
+	}
+
+	@Override
+	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
+		variants.put(0, "type=normal");
 	}
 
 }
