@@ -15,4 +15,14 @@ public class TileAntimatter extends TileEntity {
 		this.seeking = Blocks.AIR;
 		this.range = AnimusConfig.sigils.antimatterRange;
 	}
+
+	public TileAntimatter setSeeking(Block seeking) {
+		this.seeking = seeking;
+		return this;
+	}
+
+	public TileAntimatter setPlayer(EntityPlayer player) {
+		this.player = player;
+		return this;
+	}
 }

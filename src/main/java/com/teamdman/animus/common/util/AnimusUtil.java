@@ -1,11 +1,17 @@
 package com.teamdman.animus.common.util;
 
+import WayofTime.bloodmagic.ritual.AreaDescriptor;
+import WayofTime.bloodmagic.tile.TileAltar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.Optional;
 
 public class AnimusUtil {
 	/**
@@ -29,5 +35,19 @@ public class AnimusUtil {
 		float  f8    = f3 * f5;
 		Vec3d  vec31 = vec3.addVector(f7 * range, f6 * range, f8 * range);
 		return world.rayTraceBlocks(vec3, vec31, useLiquids);
+	}
+
+	public static TileAltar getNearbyAltar(World world, AreaDescriptor area, BlockPos offset, BlockPos previous) {
+		TileEntity tile;
+		if (area.isWithinArea(previous) && (tile = world.getTileEntity(previous)) instanceof TileAltar)
+			return (TileAltar) tile;
+
+		Optional<TileEntity> found = area.getContainedPositions(offset).stream()
+				.map(world::getTileEntity)
+				.filter(e -> e instanceof TileAltar)
+				.findFirst();
+
+		area.resetCache();
+		return (TileAltar) found.orElse(null);
 	}
 }

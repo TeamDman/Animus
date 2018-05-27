@@ -9,6 +9,7 @@ import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import amerifrance.guideapi.util.LogHelper;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.common.util.AnimusUtil;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
@@ -17,7 +18,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -101,35 +101,11 @@ public class RitualCulling extends Ritual {
 		BlockPos          pos            = ritualStone.getBlockPos();
 		double            currentAmount  = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
-		TileAltar tileAltar = null;
-		boolean   testFlag  = false;
 
-		BlockPos altarPos = pos.add(altarOffsetPos);
-
-		TileEntity tile = world.getTileEntity(altarPos);
-
-		AreaDescriptor altarRange = getBlockRange(ALTAR_RANGE);
-
-		if (!altarRange.isWithinArea(altarOffsetPos) || !(tile instanceof TileAltar)) {
-			for (BlockPos newPos : altarRange.getContainedPositions(pos)) {
-				TileEntity nextTile = world.getTileEntity(newPos);
-				if (nextTile instanceof TileAltar) {
-					tile = nextTile;
-					altarOffsetPos = newPos.subtract(pos);
-
-					altarRange.resetCache();
-					break;
-				}
-			}
-		}
-
-		if (tile instanceof TileAltar) {
-			tileAltar = (TileAltar) tile;
-			testFlag = true;
-		}
-		if (!testFlag) {
+		TileAltar tileAltar = AnimusUtil.getNearbyAltar(world, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
+		if (tileAltar == null)
 			return;
-		}
+		altarOffsetPos = tileAltar.getPos();
 
 		AreaDescriptor damageRange = getBlockRange(EFFECT_RANGE);
 		AxisAlignedBB  range       = damageRange.getAABB(pos);

@@ -7,10 +7,10 @@ import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.common.util.AnimusUtil;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -32,21 +32,17 @@ public class RitualNaturesLeech extends Ritual {
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 20, 20, 20);
 		setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-
 	}
 
 	public void performRitual(IMasterRitualStone ritualStone) {
-		Random            random   = new Random();
-		World             world    = ritualStone.getWorldObj();
-		BlockPos          pos      = ritualStone.getBlockPos();
-		EnumDemonWillType type     = EnumDemonWillType.CORROSIVE;
-		BlockPos          altarPos = pos.add(altarOffsetPos);
-		TileEntity        tile     = world.getTileEntity(altarPos);
+		World             world  = ritualStone.getWorldObj();
+		Random            random = world.rand;
+		BlockPos          pos    = ritualStone.getBlockPos();
+		EnumDemonWillType type   = EnumDemonWillType.CORROSIVE;
 		will = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
 		SoulNetwork network        = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
 		int         currentEssence = network.getCurrentEssence();
-		TileAltar   tileAltar      = new TileAltar();
 
 		if (!ritualStone.getWorldObj().isRemote) {
 			if (currentEssence < getRefreshCost()) {
@@ -54,38 +50,17 @@ public class RitualNaturesLeech extends Ritual {
 				return;
 			}
 
-			int eaten = 0;
 			network.syphon(this.getRefreshCost());
 
-			AreaDescriptor altarRange = getBlockRange(ALTAR_RANGE);
-			boolean        testFlag   = false;
-
-			if (!altarRange.isWithinArea(altarOffsetPos) || !(tile instanceof TileAltar)) {
-				for (BlockPos newPos : altarRange.getContainedPositions(pos)) {
-					TileEntity nextTile = world.getTileEntity(newPos);
-					if (nextTile instanceof TileAltar) {
-						tile = nextTile;
-						altarOffsetPos = newPos.subtract(pos);
-
-						altarRange.resetCache();
-						break;
-					}
-				}
-			}
-
-			if (tile instanceof TileAltar) {
-				tileAltar = (TileAltar) tile;
-				testFlag = true;
-			}
-			if (!testFlag) {
+			TileAltar tileAltar = AnimusUtil.getNearbyAltar(world, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
+			if (tileAltar == null)
 				return;
-			}
+			altarOffsetPos = tileAltar.getPos();
 
 			AreaDescriptor eatRange = getBlockRange(EFFECT_RANGE);
-
 			eatRange.resetIterator();
 			int randFood = 1 + random.nextInt(3);
-
+			int eaten    = 0;
 			while (eatRange.hasNext() && eaten <= randFood) {
 
 				BlockPos nextPos   = eatRange.next().add(pos);
@@ -121,9 +96,7 @@ public class RitualNaturesLeech extends Ritual {
 					world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
 					world.setBlockToAir(nextPos);
 					eaten++;
-
 				}
-
 			}
 
 			tileAltar.sacrificialDaggerCall(eaten * 50, true);

@@ -36,13 +36,12 @@ public class BlockAntimatter extends Block implements IVariantProvider, IBMBlock
 	}
 
 	public static EnumActionResult setBlockToAntimatter(World world, BlockPos blockPos, EntityPlayer player) {
-		if (world.getTileEntity(blockPos) != null || world.getBlockState(blockPos).getBlock().getBlockHardness(null, null, null) == -1.0F)
+		if (world.getTileEntity(blockPos) != null || world.getBlockState(blockPos).getBlockHardness(world, blockPos) == -1.0F)
 			return EnumActionResult.PASS;
 		Block seeking = world.getBlockState(blockPos).getBlock();
 		world.setBlockState(blockPos, AnimusBlocks.BLOCKANTIMATTER.getDefaultState().withProperty(BlockAntimatter.DECAYING, false));
-
-		((TileAntimatter) world.getTileEntity(blockPos)).seeking = seeking;
-		((TileAntimatter) world.getTileEntity(blockPos)).player = player;
+		//noinspection ConstantConditions
+		((TileAntimatter) world.getTileEntity(blockPos)).setSeeking(seeking).setPlayer(player);
 
 		world.scheduleBlockUpdate(blockPos, AnimusBlocks.BLOCKANTIMATTER, 0, 0);
 		return EnumActionResult.SUCCESS;
