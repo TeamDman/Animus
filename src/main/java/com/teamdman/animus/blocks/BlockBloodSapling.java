@@ -1,21 +1,20 @@
 package com.teamdman.animus.blocks;
 
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
-import com.teamdman.animus.Constants;
-import com.teamdman.animus.world.generation.BloodTreeGenerator;
-
+import WayofTime.bloodmagic.block.IBMBlock;
 import WayofTime.bloodmagic.client.IVariantProvider;
+import com.teamdman.animus.world.generation.BloodTreeGenerator;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockBloodSapling extends BlockSapling implements IVariantProvider {
+import javax.annotation.Nonnull;
+import java.util.Random;
+
+public class BlockBloodSapling extends BlockSapling implements IVariantProvider, IBMBlock {
 
 	 private BloodTreeGenerator treeGenerator;
 	
@@ -42,6 +41,9 @@ public class BlockBloodSapling extends BlockSapling implements IVariantProvider 
 	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
 		variants.put(0, "normal");
 	}
-    
 
+	@Override
+	public ItemBlock getItem() {
+		return new ItemBlock(this);
+	}
 }

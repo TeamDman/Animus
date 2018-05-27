@@ -30,16 +30,16 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
 @GameRegistry.ObjectHolder(Constants.Mod.MODID)
 public class AnimusBlocks {
-	public static final Block       BLOCKANTIMATTER      = Blocks.AIR;
-	public static final Block       BLOCKBLOODCORE       = Blocks.AIR;
-	public static final BlockLeaves       BLOCKBLOODLEAVES     = Blocks.LEAVES;
-	public static final Block       BLOCKBLOODPLANK      = Blocks.AIR;
-	public static final BlockSapling       BLOCKBLOODSAPLING    = (BlockSapling) Blocks.SAPLING;
-	public static final BlockLog       BLOCKBLOODWOOD       = (BlockLog) Blocks.LOG;
-	public static final Block       BLOCKFLUIDANTIMATTER = Blocks.AIR;
-	public static final Block       BLOCKFLUIDDIRT       = Blocks.AIR;
-	public static final Block       BLOCKPHANTOMBUILDER  = Blocks.AIR;
-	public static       List<Block> blocks;
+	public static final Block        BLOCKANTIMATTER      = Blocks.AIR;
+	public static final Block        BLOCKBLOODCORE       = Blocks.AIR;
+	public static final BlockLeaves  BLOCKBLOODLEAVES     = Blocks.LEAVES;
+	public static final Block        BLOCKBLOODPLANK      = Blocks.AIR;
+	public static final BlockSapling BLOCKBLOODSAPLING    = (BlockSapling) Blocks.SAPLING;
+	public static final BlockLog     BLOCKBLOODWOOD       = (BlockLog) Blocks.LOG;
+	public static final Block        BLOCKFLUIDANTIMATTER = Blocks.AIR;
+	public static final Block        BLOCKFLUIDDIRT       = Blocks.AIR;
+	public static final Block        BLOCKPHANTOMBUILDER  = Blocks.AIR;
+	public static       List<Block>  blocks;
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {

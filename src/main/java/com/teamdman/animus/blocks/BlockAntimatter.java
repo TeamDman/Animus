@@ -1,5 +1,6 @@
 package com.teamdman.animus.blocks;
 
+import WayofTime.bloodmagic.block.IBMBlock;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.AnimusConfig;
@@ -13,6 +14,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
@@ -26,7 +28,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BlockAntimatter extends Block implements IVariantProvider {
+public class BlockAntimatter extends Block implements IVariantProvider, IBMBlock {
 	public static final PropertyBool DECAYING = PropertyBool.create("decaying");
 
 	public BlockAntimatter() {
@@ -48,6 +50,7 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		//todo: config hardness check
 		TileAntimatter tile     = (TileAntimatter) worldIn.getTileEntity(pos);
 		boolean        decaying = state.getValue(DECAYING);
 		//noinspection ConstantConditions
@@ -129,5 +132,10 @@ public class BlockAntimatter extends Block implements IVariantProvider {
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
+	}
+
+	@Override
+	public ItemBlock getItem() {
+		return new ItemBlock(this);
 	}
 }

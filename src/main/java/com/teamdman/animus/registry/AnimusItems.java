@@ -1,5 +1,6 @@
 package com.teamdman.animus.registry;
 
+import WayofTime.bloodmagic.block.IBMBlock;
 import WayofTime.bloodmagic.item.ItemEnum;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.Constants;
@@ -8,7 +9,6 @@ import com.teamdman.animus.items.sigils.*;
 import com.teamdman.animus.types.ComponentTypes;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -50,44 +50,42 @@ public class AnimusItems {
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		items = new ArrayList<>();
 
-		AnimusBlocks.blocks.forEach(b -> {
-			if (Item.getItemFromBlock(b) instanceof ItemBlock) {
-				//noinspection ConstantConditions
-				items.add(Item.getItemFromBlock(b).setRegistryName(b.getRegistryName()));
-			}
-		});
+		//noinspection ConstantConditions
+		AnimusBlocks.blocks.stream()
+				.filter(b -> b instanceof IBMBlock)
+				.forEach(b -> setupItem(((IBMBlock) b).getItem(), b.getRegistryName().getResourcePath()));
 
-		items.add(setupItem(new ItemKama(Item.ToolMaterial.WOOD), "kama_wood"));
-		items.add(setupItem(new ItemKama(Item.ToolMaterial.STONE), "kama_stone"));
-		items.add(setupItem(new ItemKama(Item.ToolMaterial.IRON), "kama_iron"));
-		items.add(setupItem(new ItemKama(Item.ToolMaterial.GOLD), "kama_gold"));
-		items.add(setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "kama_diamond"));
-		items.add(setupItem(new ItemKamaBound(), "kama_bound"));
-		items.add(setupItem(new ItemAltarDiviner(), "altardiviner"));
-		items.add(setupItem(new ItemSigilChains(), "sigil_chains"));
-		items.add(setupItem(new ItemSigilTransposition(), "sigil_transposition"));
-		items.add(setupItem(new ItemSigilBuilder(), "sigil_builder"));
-		items.add(setupItem(new ItemSigilConsumption(), "sigil_consumption"));
-		items.add(setupItem(new ItemFragmentHealing(), "fragmenthealing"));
-		items.add(setupItem(new ItemSigilStorm(), "sigil_storm"));
-		items.add(setupItem(new ItemSigilLeech(), "sigil_leech"));
-		items.add(setupItem(new ItemKeyBinding(), "keybinding"));
-		items.add(setupItem(new ItemMobSoul(), "mobsoul"));
-		items.add(setupItem(new ItemBloodApple(), "bloodapple"));
-		items.add(setupItem(new ItemActivationCrystalFragile(), "activationcrystalfragile"));
-		items.add(setupItem(new ItemEnum.Variant<>(ComponentTypes.class, "baseComponent"), "component"));
+		setupItem(new ItemKama(Item.ToolMaterial.WOOD), "kama_wood");
+		setupItem(new ItemKama(Item.ToolMaterial.STONE), "kama_stone");
+		setupItem(new ItemKama(Item.ToolMaterial.IRON), "kama_iron");
+		setupItem(new ItemKama(Item.ToolMaterial.GOLD), "kama_gold");
+		setupItem(new ItemKama(Item.ToolMaterial.DIAMOND), "kama_diamond");
+		setupItem(new ItemKamaBound(), "kama_bound");
+		setupItem(new ItemAltarDiviner(), "altardiviner");
+		setupItem(new ItemSigilChains(), "sigil_chains");
+		setupItem(new ItemSigilTransposition(), "sigil_transposition");
+		setupItem(new ItemSigilBuilder(), "sigil_builder");
+		setupItem(new ItemSigilConsumption(), "sigil_consumption");
+		setupItem(new ItemFragmentHealing(), "fragmenthealing");
+		setupItem(new ItemSigilStorm(), "sigil_storm");
+		setupItem(new ItemSigilLeech(), "sigil_leech");
+		setupItem(new ItemKeyBinding(), "keybinding");
+		setupItem(new ItemMobSoul(), "mobsoul");
+		setupItem(new ItemBloodApple(), "bloodapple");
+		setupItem(new ItemActivationCrystalFragile(), "activationcrystalfragile");
+		setupItem(new ItemEnum.Variant<>(ComponentTypes.class, "baseComponent"), "component");
 		items.forEach(event.getRegistry()::register);
 	}
 
 
-	private static Item setupItem(Item item, String name) {
+	private static void setupItem(Item item, String name) {
 		//		if (AnimusConfig.itemBlacklist.contains(name))
 		//			return item;
 		if (item.getRegistryName() == null)
 			item.setRegistryName(name);
 		item.setUnlocalizedName(name);
 		item.setCreativeTab(Animus.tabMain);
-		return item;
+		items.add(item);
 		//TODO: Animus Config Blacklist
 	}
 }
