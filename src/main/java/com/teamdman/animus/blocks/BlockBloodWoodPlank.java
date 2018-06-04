@@ -7,9 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 
-public class BlockBloodWood extends Block implements IVariantProvider, IBMBlock {
+public class BlockBloodWoodPlank extends Block implements IVariantProvider, IBMBlock {
 
-	public BlockBloodWood() {
+	public BlockBloodWoodPlank() {
 		super(Material.WOOD);
 	}
 
@@ -22,5 +22,4 @@ public class BlockBloodWood extends Block implements IVariantProvider, IBMBlock 
 	public ItemBlock getItem() {
 		return new ItemBlock(this);
 	}
-
 }

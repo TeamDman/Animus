@@ -77,6 +77,7 @@ public class BlockAntimatter extends Block implements IVariantProvider, IBMBlock
 				worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.01F, 0.75F);
 			}
 		}
+		
 		if (decaying)
 			worldIn.setBlockToAir(pos);
 	}

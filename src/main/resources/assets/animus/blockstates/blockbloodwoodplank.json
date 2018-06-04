@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": { "model": "animus:blockbloodwoodplank" },
+		"inventory": { "model": "animus:blockbloodwoodplank" },
+    }
+}

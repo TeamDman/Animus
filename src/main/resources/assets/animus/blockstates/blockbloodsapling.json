@@ -1,0 +1,6 @@
+{
+	"variants": {
+    "normal": { "model": "animus:blockbloodsapling" },
+	"inventory": { "model": "animus:blockbloodsapling" }
+	}
+}

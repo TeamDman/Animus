@@ -51,7 +51,7 @@ public class AnimusBlocks {
 				setupBlock(new BlockPhantomBuilder(), "blockphantombuilder"),
 				setupBlock(new BlockBloodCore(), "blockbloodcore"),
 				setupBlock(new BlockBloodSapling(), "blockbloodsapling"),
-				setupBlock(new BlockBloodPlank(), "blockbloodplank"),
+				setupBlock(new BlockBloodWoodPlank(), "blockbloodwoodplank"),
 				setupBlock(new BlockBloodWood(), "blockbloodwood"),
 				setupBlock(new BlockBloodLeaves(), "blockbloodleaves"),
 				setupBlock(new BlockAntimatter(), "blockantimatter"),

@@ -1,5 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "animus:blockbloodcore" }
+        "normal": { "model": "animus:blockbloodcore" },
+		"inventory": { "model": "animus:blockbloodcore" }
     }
 }

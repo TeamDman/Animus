@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": { "model": "animus:blockbloodleaves" },
+		"fancy": { "model": "animus:blockbloodleavesfancy" },
+		"inventory": { "model": "animus:blockbloodleaves" }
+    }
+}
