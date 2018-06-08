@@ -1,7 +1,17 @@
 {
-    "variants": {
-        "normal": { "model": "animus:blockbloodleaves" },
-		"fancy": { "model": "animus:blockbloodleavesfancy" },
-		"inventory": { "model": "animus:blockbloodleaves" }
-    }
-}
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "all": "animus:blocks/blockbloodleaves"
+    },
+    "model": "cube_all",
+    "uvlock": true
+  },
+  "variants": {
+    "inventory": [
+      {}
+    ],
+    "normal": [
+      {}
+    ]
+  }

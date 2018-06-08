@@ -2,16 +2,24 @@ package com.teamdman.animus.blocks;
 
 import WayofTime.bloodmagic.block.IBMBlock;
 import WayofTime.bloodmagic.client.IVariantProvider;
+
+import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.world.generation.BloodTreeGenerator;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -22,17 +30,19 @@ public class BlockBloodSapling extends BlockSapling implements IVariantProvider,
 	public BlockBloodSapling() {
 		super();
 		this.treeGenerator =  new BloodTreeGenerator(true);
-		setSoundType(SoundType.GROUND);
+		this.setDefaultState(this.getDefaultState().withProperty(STAGE, 0));
+		setSoundType(SoundType.PLANT);		
 	}
 	
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return 0;
-	}
+    @SideOnly(Side.CLIENT)
+    public void initModel() {
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+    }	
+	
 	
 	@Override
 	public ItemBlock getItem() {
-		return new ItemBlock(this);
+		return new ItemBlock(AnimusBlocks.BLOCKBLOODSAPLING);
 	}
 	
     @Override
@@ -49,6 +59,9 @@ public class BlockBloodSapling extends BlockSapling implements IVariantProvider,
         }
     }
     
-  
+	@Override
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+	}  
     
 }

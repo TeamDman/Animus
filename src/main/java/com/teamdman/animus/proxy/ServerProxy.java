@@ -22,5 +22,9 @@ public class ServerProxy extends CommonProxy {
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
 	}
+	
+	public boolean fancyGraphics(){
+		return true;
+	}
 
 }

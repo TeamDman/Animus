@@ -31,6 +31,10 @@ public class CommonProxy {
 	public void tryHandleBlockModel(Block block) {
 	}
 
+	public boolean fancyGraphics(){
+		return true;
+	}
+
 	/*public InventoryRenderHelperV2 getRenderHelper() {
 		return null;
 	}*/

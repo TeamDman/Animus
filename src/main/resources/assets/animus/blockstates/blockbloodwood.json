@@ -1,6 +1,22 @@
 {
-    "variants": {
-        "normal": { "model": "animus:blockbloodwood" },
-		"normal": { "model": "animus:blockbloodwood" }
-    }
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "#side",
+      "north": "#side",
+      "south": "#side",
+      "east": "#side",
+      "west": "#side",
+      "up": "#end",
+      "down": "#end",
+      "end": "animus:blocks/blockbloodwoodcore",
+      "side": "animus:blocks/blockbloodwood"
+    },
+    "model": "cube",
+    "uvlock": true
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
 }

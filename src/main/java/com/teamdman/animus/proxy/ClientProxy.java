@@ -9,6 +9,7 @@ import com.teamdman.animus.registry.AnimusItems;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -64,5 +65,10 @@ public class ClientProxy extends CommonProxy {
 		AnimusItems.items.forEach(Animus.proxy::tryHandleItemModel);
 		AnimusBlocks.blocks.forEach(Animus.proxy::tryHandleBlockModel);
 	}
-
+	
+	@Override
+	public boolean fancyGraphics() {
+		return Minecraft.getMinecraft().gameSettings.fancyGraphics;
+	}
+	
 }

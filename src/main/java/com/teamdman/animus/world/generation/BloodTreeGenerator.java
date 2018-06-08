@@ -15,6 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.common.IPlantable;
 
 public class BloodTreeGenerator extends WorldGenerator {
 
@@ -47,9 +48,14 @@ public class BloodTreeGenerator extends WorldGenerator {
     
     protected static int baseHeight = 8;
     protected static int baseHeightRandomRange = 3;
-    public BlockLeaves leaves = AnimusBlocks.BLOCKBLOODLEAVES;
-    public BlockLog logs = AnimusBlocks.BLOCKBLOODWOOD;
-    public BlockSapling saplings = AnimusBlocks.BLOCKBLOODSAPLING;
+    /*
+    public Block leaves = AnimusBlocks.BLOCKBLOODLEAVES;
+    public Block logs = AnimusBlocks.BLOCKBLOODWOOD;
+    public Block saplings = AnimusBlocks.BLOCKBLOODSAPLING;
+    */
+    public Block leaves = Blocks.LEAVES;
+    public Block logs = AnimusBlocks.BLOCKBLOODWOOD;
+    public Block saplings = Blocks.SAPLING;
     
     
     public boolean growTree(World world, Random rand, BlockPos blockPos) {
@@ -70,7 +76,7 @@ public class BloodTreeGenerator extends WorldGenerator {
             int z = blockPos.getZ();
 
             if((block != null && block.canSustainPlant(blockState, world, basePos, EnumFacing.UP,
-            		saplings)) && y < worldHeight - treeHeight - 1) {
+            		(IPlantable) saplings)) && y < worldHeight - treeHeight - 1) {
                 for(yOffset = y; yOffset <= y + 1 + treeHeight; ++yOffset) {
                     byte radius = 1;
 

@@ -32,10 +32,9 @@ import java.util.List;
 public class AnimusBlocks {
 	public static final Block        BLOCKANTIMATTER      = Blocks.AIR;
 	public static final Block        BLOCKBLOODCORE       = Blocks.AIR;
-	public static final BlockLeaves  BLOCKBLOODLEAVES     = Blocks.LEAVES;
-	public static final Block        BLOCKBLOODPLANK      = Blocks.AIR;
-	public static final BlockSapling BLOCKBLOODSAPLING    = (BlockSapling) Blocks.SAPLING;
-	public static final BlockLog     BLOCKBLOODWOOD       = (BlockLog) Blocks.LOG;
+	//public static final Block  		 BLOCKBLOODLEAVES     = Blocks.AIR;
+	public static final Block 	 BLOCKBLOODSAPLING    = Blocks.AIR;
+	public static final Block      BLOCKBLOODWOOD       = Blocks.AIR;
 	public static final Block        BLOCKFLUIDANTIMATTER = Blocks.AIR;
 	public static final Block        BLOCKFLUIDDIRT       = Blocks.AIR;
 	public static final Block        BLOCKPHANTOMBUILDER  = Blocks.AIR;
@@ -51,9 +50,8 @@ public class AnimusBlocks {
 				setupBlock(new BlockPhantomBuilder(), "blockphantombuilder"),
 				setupBlock(new BlockBloodCore(), "blockbloodcore"),
 				setupBlock(new BlockBloodSapling(), "blockbloodsapling"),
-				setupBlock(new BlockBloodWoodPlank(), "blockbloodwoodplank"),
 				setupBlock(new BlockBloodWood(), "blockbloodwood"),
-				setupBlock(new BlockBloodLeaves(), "blockbloodleaves"),
+				//setupBlock(new BlockBloodLeaves(), "blockbloodleaves"),
 				setupBlock(new BlockAntimatter(), "blockantimatter"),
 				setupBlock(new BlockFluidDirt(), "blockfluiddirt"),
 				setupBlock(new BlockFluidAntimatter(), "blockfluidantimatter")
