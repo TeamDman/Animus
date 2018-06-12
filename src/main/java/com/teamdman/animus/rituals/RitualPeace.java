@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -54,9 +55,20 @@ public class RitualPeace extends Ritual {
 
 		if (!world.isRemote) {
 			Entity mob;
-			mob = EntityList.createEntityByIDFromName(targets[world.rand.nextInt(targets.length)].spawnedID, world);
-			if (mob == null) // _should_ never happen
+			int numTargets = targets.length-1;
+			int arrayTarget = world.rand.nextInt(numTargets);
+			ResourceLocation spawnResource = targets[arrayTarget].spawnedID;
+			if (spawnResource == null){ //should not happen
 				masterRitualStone.stopRitual(BreakType.DEACTIVATE);
+				return;
+			}
+				
+			mob = EntityList.createEntityByIDFromName(spawnResource, world);
+
+			if (mob == null) {// _should_ never happen
+				masterRitualStone.stopRitual(BreakType.DEACTIVATE);
+				return;
+			}
 			for (int i = 0; i < 16; i++) {
 				mob.setPosition(masterPos.getX() + world.rand.nextInt(8) - 4, masterPos.getY() + 1, masterPos.getZ() + world.rand.nextInt(8) - 4);
 				if (!world.isAirBlock(mob.getPosition()))
