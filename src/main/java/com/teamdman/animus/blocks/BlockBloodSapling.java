@@ -53,10 +53,10 @@ public class BlockBloodSapling extends BlockSapling implements IVariantProvider,
         }
 
         world.setBlockToAir(pos);
-
-        if(!treeGenerator.growTree(world, rand, pos)) {
-            world.setBlockState(pos, state, 4);
-        }
+//		TODO: Enable
+//        if(!treeGenerator.growTree(world, rand, pos)) {
+//            world.setBlockState(pos, state, 4);
+//        }
     }
     
 	@Override

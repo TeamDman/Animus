@@ -12,7 +12,6 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -24,7 +23,7 @@ import java.util.function.Consumer;
  * Created by TeamDman on 2015-05-28.
  */
 public class RitualPeace extends Ritual {
-	EntityList.EntityEggInfo[] targets;
+	private EntityList.EntityEggInfo[] targets;
 
 	public RitualPeace() {
 		super(Constants.Rituals.PEACE, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PEACE);
@@ -32,13 +31,19 @@ public class RitualPeace extends Ritual {
 
 	@Override
 	public boolean activateRitual(IMasterRitualStone masterRitualStone, EntityPlayer player, UUID owner) {
+		return rebuildList(masterRitualStone);
+	}
+
+	private boolean rebuildList(IMasterRitualStone masterRitualStone) {
 		try {
+			System.out.println("Rebuilding Ritual of Peace entity list. [" + masterRitualStone.getBlockPos().toString() + "]");
 			targets = EntityList.ENTITY_EGGS.values().stream()
+					.filter(e -> e.spawnedID != null)
 					.filter(e -> e.spawnedID.getResourceDomain().equals("minecraft"))
 					.filter(e -> EntityList.createEntityByIDFromName(e.spawnedID, masterRitualStone.getWorldObj()) != null)
 					.filter(e -> !EntityList.createEntityByIDFromName(e.spawnedID, masterRitualStone.getWorldObj()).isCreatureType(EnumCreatureType.MONSTER, false))
 					.toArray(EntityList.EntityEggInfo[]::new);
-			return true;
+			return targets.length > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Peace ritual creation failed. Entity List:");
@@ -52,23 +57,19 @@ public class RitualPeace extends Ritual {
 		World       world     = masterRitualStone.getWorldObj();
 		SoulNetwork network   = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
 		BlockPos    masterPos = masterRitualStone.getBlockPos();
-
 		if (!world.isRemote) {
 			Entity mob;
-			int numTargets = targets.length-1;
-			int arrayTarget = world.rand.nextInt(numTargets);
-			ResourceLocation spawnResource = targets[arrayTarget].spawnedID;
-			if (spawnResource == null){ //should not happen
-				masterRitualStone.stopRitual(BreakType.DEACTIVATE);
+			int    index;
+			if (targets == null ||
+					targets[index = world.rand.nextInt(targets.length)] == null ||
+					targets[index].spawnedID == null ||
+					(mob = EntityList.createEntityByIDFromName(targets[index].spawnedID, world)) == null
+					) {
+				if (!rebuildList(masterRitualStone))
+					masterRitualStone.stopRitual(BreakType.DEACTIVATE);
 				return;
 			}
-				
-			mob = EntityList.createEntityByIDFromName(spawnResource, world);
 
-			if (mob == null) {// _should_ never happen
-				masterRitualStone.stopRitual(BreakType.DEACTIVATE);
-				return;
-			}
 			for (int i = 0; i < 16; i++) {
 				mob.setPosition(masterPos.getX() + world.rand.nextInt(8) - 4, masterPos.getY() + 1, masterPos.getZ() + world.rand.nextInt(8) - 4);
 				if (!world.isAirBlock(mob.getPosition()))
