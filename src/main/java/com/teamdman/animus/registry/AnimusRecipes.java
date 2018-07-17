@@ -41,7 +41,7 @@ public class AnimusRecipes {
 	}
 
 	public static void registerAlchemyArrayRecipes(BloodMagicRecipeRegistrar registrar) {
-		registrar.addAlchemyArray(new ItemStack(AnimusItems.KAMA_DIAMOND), WayofTime.bloodmagic.item.types.ComponentTypes.REAGENT_BINDING.getStack(), Utils.setUnbreakable(new ItemStack(AnimusItems.KAMA_BOUND)), null);
+		registrar.addAlchemyArray(WayofTime.bloodmagic.item.types.ComponentTypes.REAGENT_BINDING.getStack(), new ItemStack(AnimusItems.KAMA_DIAMOND), Utils.setUnbreakable(new ItemStack(AnimusItems.KAMA_BOUND)), null);
 		registrar.addAlchemyArray(ComponentTypes.REAGENT_BUILDER.getStack(), ItemSlate.SlateType.REINFORCED.getStack(), new ItemStack(AnimusItems.SIGIL_BUILDER), null);
 		registrar.addAlchemyArray(ComponentTypes.REAGENT_CHAINS.getStack(), ItemSlate.SlateType.IMBUED.getStack(), new ItemStack(AnimusItems.SIGIL_CHAINS), null);
 		registrar.addAlchemyArray(ComponentTypes.REAGENT_CONSUMPTION.getStack(), ItemSlate.SlateType.IMBUED.getStack(), new ItemStack(AnimusItems.SIGIL_CONSUMPTION), null);

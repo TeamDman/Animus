@@ -15,6 +15,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -47,10 +48,10 @@ public class ItemKamaBound extends ItemKama {
 		double x = hit.posX;
 		double y = hit.posY;
 		double z = hit.posZ;
-		if (checkAndKill(x, y, z, hit.world, attacker, false))
+		if (checkAndKill(x, y, z, hit.world, attacker, false)) // If the sac check works, return
 			return false;
 		else
-			return !checkAndDamage(x, y, z, hit.world, attacker);
+			return !checkAndDamage(x, y, z, hit.world, attacker); // Else, do AOE khopesh damage
 
 	}
 
@@ -89,7 +90,7 @@ public class ItemKamaBound extends ItemKama {
 			return false;
 		for (EntityLivingBase target : entities) {
 
-			if (target == null || attacker == null || attacker.world.isRemote || !(attacker instanceof EntityPlayer))
+			if (target == null || attacker == null || attacker.world.isRemote || attacker instanceof FakePlayer)
 				continue;
 
 			if (target.isDead || target.getHealth() < 0.5F || !target.isNonBoss() || target instanceof EntityPlayer)
