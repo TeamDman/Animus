@@ -28,6 +28,7 @@ import net.minecraft.world.World;
 import java.util.*;
 import java.util.function.Consumer;
 
+@RitualRegister(Constants.Rituals.CULLING)
 public class RitualCulling extends Ritual {
 	public static final String                             ALTAR_RANGE    = "altar";
 	public static final String                             EFFECT_RANGE   = "effect";

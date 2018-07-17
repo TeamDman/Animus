@@ -42,7 +42,6 @@ public class Animus {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-		AnimusRituals.init();
 		AnimusSounds.init();
 		proxy.init(event);
 	}

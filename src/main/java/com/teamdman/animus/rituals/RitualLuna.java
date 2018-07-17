@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 /**
  * Created by TeamDman on 2015-05-28.
  */
+@RitualRegister(Constants.Rituals.LUNA)
 public class RitualLuna extends Ritual {
 	public static final String CHEST_RANGE  = "chest";
 	public static final String EFFECT_RANGE = "effect";

@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals.imperfect;
 
+import WayofTime.bloodmagic.ritual.RitualRegister;
 import WayofTime.bloodmagic.ritual.imperfect.IImperfectRitualStone;
 import WayofTime.bloodmagic.ritual.imperfect.ImperfectRitual;
 import WayofTime.bloodmagic.util.ChatUtil;
@@ -9,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 
+@RitualRegister.Imperfect(Constants.Rituals.REGRESSION)
 public class RitualRegression extends ImperfectRitual {
 
 	public RitualRegression() {

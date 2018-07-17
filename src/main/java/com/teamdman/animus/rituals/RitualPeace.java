@@ -1,10 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import WayofTime.bloodmagic.core.data.SoulNetwork;
-import WayofTime.bloodmagic.ritual.EnumRuneType;
-import WayofTime.bloodmagic.ritual.IMasterRitualStone;
-import WayofTime.bloodmagic.ritual.Ritual;
-import WayofTime.bloodmagic.ritual.RitualComponent;
+import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Constants;
 import net.minecraft.entity.Entity;
@@ -22,6 +19,7 @@ import java.util.function.Consumer;
 /**
  * Created by TeamDman on 2015-05-28.
  */
+@RitualRegister(Constants.Rituals.PEACE)
 public class RitualPeace extends Ritual {
 	private EntityList.EntityEggInfo[] targets;
 

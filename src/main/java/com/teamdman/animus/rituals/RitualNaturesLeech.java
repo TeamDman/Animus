@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 import java.util.function.Consumer;
 
+@RitualRegister(Constants.Rituals.LEECH)
 public class RitualNaturesLeech extends Ritual {
 	public static final String   ALTAR_RANGE    = "altar";
 	public static final String   EFFECT_RANGE   = "effect";

@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 /**
  * Created by TeamDman on 2015-05-28.
  */
+@RitualRegister(Constants.Rituals.SOL)
 public class RitualSol extends Ritual {
 	public static final String CHEST_RANGE  = "chest";
 	public static final String EFFECT_RANGE = "effect";

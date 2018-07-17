@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 /**
  * Created by TeamDman on 2015-05-28.
  */
+@RitualRegister(Constants.Rituals.UNMAKING)
 public class RitualUnmaking extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 

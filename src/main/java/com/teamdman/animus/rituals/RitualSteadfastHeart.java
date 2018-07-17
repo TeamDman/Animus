@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import java.util.List;
 import java.util.function.Consumer;
 
+@RitualRegister(Constants.Rituals.STEADFAST)
 public class RitualSteadfastHeart extends Ritual {
 	public static final String EFFECT_RANGE = "effect";
 	public final        int    maxWill      = 100;
