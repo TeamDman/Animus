@@ -52,7 +52,7 @@ public class Constants {
 	}
 
 	public static class Mod {
-		public static final String DEPEND  = "required-after:bloodmagic;required-after:guideapi;after:theoneprobe;";
+		public static final String DEPEND  = "required-after:bloodmagic@[1.12.2-2.3.0,);required-after:guideapi;after:theoneprobe;";
 		public static final String MODID   = "animus";
 		public static final String DOMAIN  = MODID.toLowerCase(Locale.ENGLISH) + ":";
 		public static final String NAME    = "Animus";

@@ -15,9 +15,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class AnimusConfig {
 	@Config.Comment({"General Options"})
 	public static ConfigGeneral    general    = new ConfigGeneral();
-	@Config.Comment({"Ritual List"})
-	@Config.RequiresMcRestart
-	public static ConfigRitualList ritualList = new ConfigRitualList();
 	@Config.Comment({"Ritual Numbers Balance"})
 	public static ConfigRituals    rituals    = new ConfigRituals();
 	@Config.Comment({"Sigil Numbers Balance"})
@@ -34,20 +31,6 @@ public class AnimusConfig {
 		public boolean muteDragon    = false;
 		public boolean muteWither    = false;
 		public int     bloodPerApple = 50;
-	}
-
-	public static class ConfigRitualList {
-		public boolean ritualCulling        = true;
-		public boolean ritualEntropy        = true;
-		public boolean ritualHunger         = true;
-		public boolean ritualLuna           = true;
-		public boolean ritualNaturesLeech   = true;
-		public boolean ritualPeace          = true;
-		public boolean ritualRegression     = true;
-		public boolean ritualSol            = true;
-		public boolean ritualSteadfastHeart = true;
-		public boolean ritualUnmaking       = true;
-		public boolean ritualVengefulSpirit = true;
 	}
 
 	public static class ConfigRituals {

@@ -77,15 +77,17 @@ public class RitualSteadfastHeart extends Ritual {
 
 			entityCount++;
 			PotionEffect abs = livingEntity.getActivePotionEffect(absPotion);
-			if (abs == null)
-				livingEntity.addPotionEffect(new PotionEffect(absPotion, 800, 0, true, false));
-			else
-				livingEntity.addPotionEffect(new PotionEffect(absPotion, Math.min(((abs.getDuration() + 800) * 2), 36000), Math.min(1 + ((5 * abs.getDuration() + 60) / 36000), 4), true, false));
-
-			int dur    = abs.getDuration(); //todo: fix nullpointerexception
+			//			if (abs == null)
+			//				livingEntity.addPotionEffect(new PotionEffect(absPotion, 800, 0, true, false));
+			//			else
+			//				livingEntity.addPotionEffect(new PotionEffect(absPotion, Math.min(((abs.getDuration() + 800) * 2), 36000), Math.min(1 + ((5 * abs.getDuration() + 60) / 36000), 4), true, false));
+			int dur = 0;
+			if (abs != null) {
+				dur = abs.getDuration();
+				livingEntity.removePotionEffect(abs.getPotion());
+			}
 			int newdur = Math.min(((dur + 800) * 2), 30000);
 			int pow    = Math.min((5 * (1 + (newdur + 60)) / 36000), 4);
-			livingEntity.removePotionEffect(abs.getPotion());
 			livingEntity.addPotionEffect(new PotionEffect(absPotion, newdur, pow, true, false));
 
 
