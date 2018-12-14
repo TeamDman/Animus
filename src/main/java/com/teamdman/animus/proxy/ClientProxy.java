@@ -31,6 +31,7 @@ import java.util.Set;
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
 // todo: investigate `value = Side.CLIENT` and change renderRegisters to use this::
 public class ClientProxy extends CommonProxy {
+
 	@Override
 	public void tryHandleItemModel(Item item) {
 		if (item instanceof IVariantProvider) {

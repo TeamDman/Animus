@@ -34,10 +34,4 @@ public class CommonProxy {
 	public boolean fancyGraphics(){
 		return true;
 	}
-
-	/*public InventoryRenderHelperV2 getRenderHelper() {
-		return null;
-	}*/
-
-
 }
