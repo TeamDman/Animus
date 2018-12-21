@@ -1,5 +1,6 @@
 package com.teamdman.animus.blocks;
 
+import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.block.material.MapColor;
@@ -29,7 +30,9 @@ public class BlockFluidAntimatter extends BlockFluidClassic {
 	public void updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
 		for (EnumFacing dir : EnumFacing.VALUES) {
 			IBlockState offState = world.getBlockState(pos.offset(dir));
-			if (!world.isAirBlock(pos.offset(dir)) && offState.getBlock() != AnimusBlocks.BLOCKANTIMATTER && offState.getBlock() != AnimusBlocks.BLOCKFLUIDANTIMATTER)
+			if (offState.getBlock() == RegistrarBloodMagicBlocks.LIFE_ESSENCE)
+				world.setBlockState(pos.offset(dir), AnimusBlocks.BLOCKFLUIDANTIMATTER.getDefaultState());
+			else if (!world.isAirBlock(pos.offset(dir)) && offState.getBlock() != AnimusBlocks.BLOCKANTIMATTER && offState.getBlock() != AnimusBlocks.BLOCKFLUIDANTIMATTER)
 				world.setBlockState(pos.offset(dir), AnimusBlocks.BLOCKANTIMATTER.getDefaultState());
 		}
 		super.updateTick(world, pos, state, rand);

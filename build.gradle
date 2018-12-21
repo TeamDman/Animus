@@ -37,7 +37,8 @@ dependencies {
     deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}"
     deobfCompile "info.amerifrance.guideapi:Guide-API:${major_version}-${guideapi_version}"
 //    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${bloodmagic_version}"
-    compile files("libs/BloodMagic-1.12.2-2.3.3-CUSTOM-sources.jar")
+    compile files("libs/BloodMagic-1.12.2-2.3.3-Teamy-0-sources.jar")
+
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+"
 }
 
