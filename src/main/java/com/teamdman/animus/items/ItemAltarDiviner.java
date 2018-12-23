@@ -4,6 +4,7 @@ package com.teamdman.animus.items;
 import WayofTime.bloodmagic.altar.AltarComponent;
 import WayofTime.bloodmagic.altar.AltarTier;
 import WayofTime.bloodmagic.altar.ComponentType;
+import WayofTime.bloodmagic.api.impl.BloodMagicAPI;
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
 import WayofTime.bloodmagic.tile.TileAltar;
@@ -17,7 +18,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -67,7 +67,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 
 			if (altarComponent.getComponent() != ComponentType.NOTAIR) {
 				if (worldBlock == AnimusBlocks.BLOCKPHANTOMBUILDER || world.isAirBlock(componentPos)) {
-					int invSlot = getSlotFor(altarComponent, player);
+					int invSlot = getComponentSlot(altarComponent, player);
 					if (invSlot != -1) {
 						ItemStack   _stack = player.inventory.getStackInSlot(invSlot);
 						ItemBlock   _item  = (ItemBlock) player.inventory.getStackInSlot(invSlot).getItem();
@@ -80,7 +80,8 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 						return EnumActionResult.PASS;
 					} else {
 						if (world.isRemote) {
-							playerinfomsg = I18n.format(Constants.Localizations.Text.DIVINER_MISSING) + " " + (altarComponent.getComponent() == ComponentType.GLOWSTONE ? Blocks.GLOWSTONE.getLocalizedName() : (I18n.format(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent())).getItem().getUnlocalizedName(new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()))) + ".name")));
+							ItemStack stackDisplay = new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()));
+							playerinfomsg = I18n.format(Constants.Localizations.Text.DIVINER_MISSING) + " " + I18n.format(stackDisplay.getItem().getUnlocalizedName(stackDisplay) + ".name");
 						}
 					}
 				} else if (worldBlock != RegistrarBloodMagicBlocks.BLOOD_RUNE) {
@@ -94,9 +95,10 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 		return EnumActionResult.PASS;
 	}
 
-	private int getSlotFor(AltarComponent component, EntityPlayer player) {
+	private int getComponentSlot(AltarComponent component, EntityPlayer player) {
 		for (int i = 0; i < player.inventory.mainInventory.size(); ++i) {
-			if (isItemComponent(component, player.inventory.mainInventory.get(i))) {
+			ItemStack stack = player.inventory.mainInventory.get(i);
+			if (BloodMagicAPI.INSTANCE.getComponentStates(component.getComponent()).stream().anyMatch(c -> c.getBlock() == Block.getBlockFromItem(stack.getItem()))) {
 				return i;
 			}
 		}

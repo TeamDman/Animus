@@ -8,7 +8,7 @@
   "url": "https://github.com/TeamDman/Animus",
   "updateUrl": "",
   "authorList": ["TeamDman","Saereth"],
-  "credits": "",
+  "credits": "ProfHugo for the NoDamI (No Damage Immunity) implementation",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
