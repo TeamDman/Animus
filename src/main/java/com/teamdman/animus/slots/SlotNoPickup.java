@@ -11,6 +11,7 @@ public class SlotNoPickup extends Slot {
 
 	@Override
 	public boolean canTakeStack(EntityPlayer playerIn) {
-		return false;
+		return playerIn.capabilities.isCreativeMode;
 	}
+
 }

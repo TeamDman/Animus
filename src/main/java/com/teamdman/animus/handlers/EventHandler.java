@@ -36,22 +36,26 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent eventArgs) {
-		Container open = eventArgs.player.openContainer;
+		Container open = eventArgs.player.inventoryContainer;
 		if (open == null)
 			return;
 		int frags = 0;
 		for (int i = 0; i < open.inventorySlots.size(); i++) {
-			Slot slot = open.inventorySlots.get(i);
-			
-			if (slot instanceof SlotNoPickup)
-				if (!slot.getHasStack() || slot.getStack().getItem() != AnimusItems.FRAGMENTHEALING)
-					open.inventorySlots.set(i, new Slot(slot.inventory, slot.getSlotIndex(), slot.xPos, slot.yPos));
-			
-			if (slot.getHasStack() && slot.getStack().getItem() == AnimusItems.FRAGMENTHEALING) {
+			Slot    slot   = open.inventorySlots.get(i);
+			boolean isFrag = slot.getHasStack() && slot.getStack().getItem() == AnimusItems.FRAGMENTHEALING;
+			if (isFrag) {
 				frags++;
-				if (!eventArgs.player.capabilities.isCreativeMode && slot.getClass() == Slot.class) {
-					open.inventorySlots.set(i, new SlotNoPickup(slot.inventory, slot.getSlotIndex(), slot.xPos, slot.yPos));
+			}
+			if (slot instanceof SlotNoPickup) {
+				if (eventArgs.player.capabilities.isCreativeMode || !slot.getHasStack() || slot.getStack().getItem() != AnimusItems.FRAGMENTHEALING) {
+					Slot repl = new Slot(slot.inventory, slot.getSlotIndex(), slot.xPos, slot.yPos);
+					repl.slotNumber = slot.slotNumber;
+					open.inventorySlots.set(i, repl);
 				}
+			} else if (isFrag && !eventArgs.player.capabilities.isCreativeMode && slot.getClass() == Slot.class) {
+				Slot repl = new SlotNoPickup(slot.inventory, slot.getSlotIndex(), slot.xPos, slot.yPos);
+				repl.slotNumber = slot.slotNumber;
+				open.inventorySlots.set(i, repl);
 			}
 		}
 		if (eventArgs.player.world.getWorldTime() % 20 == 0 && frags >= 9 && !eventArgs.player.world.isRemote) {
@@ -60,6 +64,7 @@ public class EventHandler {
 				eventArgs.player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 200, 4));
 		}
 	}
+
 
 	@SubscribeEvent
 	public void onEntityJoined(EntityJoinWorldEvent event) {
@@ -77,10 +82,10 @@ public class EventHandler {
 
 		if (
 				!source.equals(DamageSource.IN_FIRE) &&
-				!source.equals(DamageSource.LAVA) &&
-				!source.equals(DamageSource.CACTUS) &&
-				!source.equals(DamageSource.LIGHTNING_BOLT) &&
-				!source.equals(DamageSource.IN_WALL)
+						!source.equals(DamageSource.LAVA) &&
+						!source.equals(DamageSource.CACTUS) &&
+						!source.equals(DamageSource.LIGHTNING_BOLT) &&
+						!source.equals(DamageSource.IN_WALL)
 		) {
 			entity.hurtResistantTime = 0;
 			entity.hurtTime = 1;

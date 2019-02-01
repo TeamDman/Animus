@@ -32,16 +32,19 @@ repositories {
     maven { url "http://tehnut.info/maven" } // BM
     maven { url "http://maven.tterrag.com/" } // TOP
     maven { url "http://maven.covers1624.net" } // RF
-    maven { url "http://maven.blamejared.com/" }
+    maven { url "http://maven.blamejared.com/" } // CT
+    maven { url "https://minecraft.curseforge.com/api/maven/" } // TC
 }
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
     deobfCompile "cofh:RedstoneFlux:1.12-2.+:deobf"
     deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}"
-	deobfCompile "thaumcraft:Thaumcraft:1.12.2:6.1.BETA26"
+
+//    deobfCompile "thaumcraft:Thaumcraft:1.12.2:6.1.BETA26"
+    // need bauble dep as well, 2 lazy to fix right now
+
     deobfCompile "info.amerifrance.guideapi:Guide-API:${guideapi_version}"
-//    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${bloodmagic_version}"
-    compile files("libs/BloodMagic-1.12.2-2.3.3-Teamy-0-sources.jar")
+    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${bloodmagic_version}"
 
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+"
 }

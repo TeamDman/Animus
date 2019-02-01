@@ -28,7 +28,7 @@ public class ItemFragmentHealing extends Item implements IVariantProvider {
 
 	@Override
 	public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player) {
-		return false;
+		return player.capabilities.isCreativeMode;
 	}
 
 	@Override
@@ -45,4 +45,5 @@ public class ItemFragmentHealing extends Item implements IVariantProvider {
 	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
 		variants.put(0, "type=normal");
 	}
+
 }
