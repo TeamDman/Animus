@@ -38,6 +38,7 @@ dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
     deobfCompile "cofh:RedstoneFlux:1.12-2.+:deobf"
     deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}"
+	deobfCompile "thaumcraft:Thaumcraft:1.12.2:6.1.BETA26"
     deobfCompile "info.amerifrance.guideapi:Guide-API:${guideapi_version}"
 //    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${bloodmagic_version}"
     compile files("libs/BloodMagic-1.12.2-2.3.3-Teamy-0-sources.jar")
