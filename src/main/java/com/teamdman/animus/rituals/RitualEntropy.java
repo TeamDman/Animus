@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Constants;
@@ -13,6 +14,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -66,7 +68,8 @@ public class RitualEntropy extends Ritual {
 					}
 				}
 			}
-			network.syphon(getRefreshCost());
+			network.syphon(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_ENTROPY), getRefreshCost()));
+
 		}
 	}
 

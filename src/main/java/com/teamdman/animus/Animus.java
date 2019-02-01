@@ -24,7 +24,7 @@ public class Animus {
 	//	public static CreativeTabs tabMain = BloodMagic.TAB_BM;
 	public static final CreativeTabs tabMain = new CreativeTabs(Constants.Mod.MODID) {
 		@Override
-		public ItemStack getTabIconItem() {
+		public ItemStack createIcon() {
 			return AnimusItems.ALTARDIVINER.getDefaultInstance();
 		}
 	};

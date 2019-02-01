@@ -22,7 +22,7 @@ public class BlockFluidDirt extends BlockFluidClassic {
 
 	public BlockFluidDirt() {
 		super(FLUID_INSTANCE, new MaterialLiquid(MapColor.BROWN));
-		setUnlocalizedName(Constants.Mod.MODID + ".fluid." + fluidName);
+		setTranslationKey(Constants.Mod.MODID + ".fluid." + fluidName);
 		setRegistryName(fluidName);
 		FLUID_INSTANCE.setBlock(this);
 	}

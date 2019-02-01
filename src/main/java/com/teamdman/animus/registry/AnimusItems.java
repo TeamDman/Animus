@@ -53,7 +53,7 @@ public class AnimusItems {
 		//noinspection ConstantConditions
 		AnimusBlocks.blocks.stream()
 				.filter(b -> b instanceof IBMBlock)
-				.forEach(b -> setupItem(((IBMBlock) b).getItem(), b.getRegistryName().getResourcePath()));
+				.forEach(b -> setupItem(((IBMBlock) b).getItem(), b.getRegistryName().getPath()));
 
 		setupItem(new ItemKama(Item.ToolMaterial.WOOD), "kama_wood");
 		setupItem(new ItemKama(Item.ToolMaterial.STONE), "kama_stone");
@@ -83,7 +83,7 @@ public class AnimusItems {
 		//			return item;
 		if (item.getRegistryName() == null)
 			item.setRegistryName(name);
-		item.setUnlocalizedName(name);
+		item.setTranslationKey(name);
 		item.setCreativeTab(Animus.tabMain);
 		items.add(item);
 		//TODO: Animus Config Blacklist

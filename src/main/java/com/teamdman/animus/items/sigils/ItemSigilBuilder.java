@@ -1,5 +1,6 @@
 package com.teamdman.animus.items.sigils;
 
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import amerifrance.guideapi.api.util.TextHelper;
@@ -21,6 +22,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -68,7 +70,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 						if (_item != Items.AIR) {
 							IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 							world.setBlockState(air, _state);
-							NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
+							NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_BUILDER), getLpUsed()));
 							_stack.shrink(1);
 							if (hand == EnumHand.MAIN_HAND && _stack.getCount() <= 0)
 								player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
@@ -129,7 +131,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBaseBase {
 			ItemBlock _item = (ItemBlock) _stack.getItem();
 			IBlockState _state = Block.getBlockFromItem(_item).getStateFromMeta(_item.getDamage(_stack));
 			world.setBlockState(air, _state);
-			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
+			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_BUILDER),getLpUsed()));
 			_stack.shrink(1);
 			if (hand == EnumHand.MAIN_HAND && _stack.getCount() <= 0)
 				player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);

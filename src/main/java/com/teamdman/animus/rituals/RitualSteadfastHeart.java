@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
@@ -14,6 +15,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
@@ -92,7 +94,7 @@ public class RitualSteadfastHeart extends Ritual {
 
 
 		}
-		network.syphon(getRefreshCost() * entityCount);
+		network.syphon(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_STEADFAST), getRefreshCost() * entityCount));
 		double drainAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2, 10));
 
 

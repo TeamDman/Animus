@@ -3,6 +3,7 @@ package com.teamdman.animus.rituals;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicBlocks;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicItems;
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Constants;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
@@ -73,7 +75,7 @@ public class RitualSol extends Ritual {
 			if (state.getBlock() != RegistrarBloodMagicBlocks.BLOOD_LIGHT) {
 				handler.extractItem(slot.get(), 1, false);
 			}
-			network.syphon(getRefreshCost());
+			network.syphon(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_SOL), getRefreshCost()));
 		}
 	}
 

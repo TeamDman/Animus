@@ -63,14 +63,14 @@ public class AnimusBlocks {
 		if (block.getRegistryName() == null)
 			block.setRegistryName(name);
 
-		block.setUnlocalizedName(name);
+		block.setTranslationKey(name);
 		block.setCreativeTab(Animus.tabMain);
 		return block;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public static void registerModels(ModelRegistryEvent event) {
+	public static void registerModels(ModelRegistryEvent event) { //todo: move to client proxy
 		ModelLoader.setCustomStateMapper(BLOCKFLUIDDIRT, new StateMapperBase() {
 			@SuppressWarnings("NullableProblems")
 			@Override

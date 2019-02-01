@@ -1,6 +1,7 @@
 package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.client.IVariantProvider;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import WayofTime.bloodmagic.util.helper.TextHelper;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -32,7 +34,7 @@ public class ItemSigilChains extends ItemSigilBase implements IVariantProvider {
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
 		boolean unusable = isUnusable(stack);
 		if (!playerIn.world.isRemote && !unusable) {
-			NetworkHelper.getSoulNetwork(playerIn).syphonAndDamage(playerIn, getLpUsed());
+			NetworkHelper.getSoulNetwork(playerIn).syphonAndDamage(playerIn, new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_CHAINS), getLpUsed()));
 			ItemStack      soul       = new ItemStack(AnimusItems.MOBSOUL);
 			NBTTagCompound tag        = new NBTTagCompound();
 			NBTTagCompound targetData = new NBTTagCompound();

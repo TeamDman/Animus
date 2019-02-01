@@ -1,6 +1,7 @@
 package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.core.data.Binding;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.iface.ISigil;
 import WayofTime.bloodmagic.util.ChatUtil;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
@@ -19,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -70,7 +72,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 			NBTHelper.checkNBT(stack);
 			IBlockState state = world.getBlockState(blockPos);
 			if (!getActivated(stack)) {
-				if (AnimusConfig.sigils.transpositionMovesUnbreakables < 2 && state.getBlock().getBlockHardness(state, world, blockPos) == -1)
+				if (AnimusConfig.sigils.transpositionMovesUnbreakables < 2 && state.getBlockHardness(world, blockPos) == -1)
 					return EnumActionResult.PASS;
 				//noinspection ConstantConditions
 				stack.getTagCompound().setLong(Constants.NBT.TRANSPOSITION_POS, blockPos.toLong());
@@ -81,7 +83,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 				//noinspection ConstantConditions
 				BlockPos posOld = BlockPos.fromLong(stack.getTagCompound().getLong(Constants.NBT.TRANSPOSITION_POS));
 				BlockPos posNew = blockPos.offset(side);
-				if (AnimusConfig.sigils.transpositionMovesUnbreakables == 0 && world.getBlockState(posOld).getBlock().getBlockHardness(world.getBlockState(posOld), world, posOld) == -1) {
+				if (AnimusConfig.sigils.transpositionMovesUnbreakables == 0 && world.getBlockState(posOld).getBlockHardness(world, posOld) == -1) {
 					stack.getTagCompound().setLong(Constants.NBT.TRANSPOSITION_POS, 0);
 					world.playSound(null, posNew, SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.BLOCKS, 1, 1);
 					setActivatedState(stack, false);
@@ -90,7 +92,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBaseBase {
 				}
 				TileEntity tileOld  = world.getTileEntity(posOld);
 				if (world.isAirBlock(posNew)) {
-					NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
+					NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_TRANSPOSITION), getLpUsed()));
 					world.setBlockState(posNew, world.getBlockState(posOld));
 
 					TileEntity tileNew = world.getTileEntity(posNew);

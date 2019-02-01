@@ -81,7 +81,7 @@ public class ItemAltarDiviner extends Item implements IVariantProvider {
 					} else {
 						if (world.isRemote) {
 							ItemStack stackDisplay = new ItemStack(Utils.getBlockForComponent(altarComponent.getComponent()));
-							playerinfomsg = I18n.format(Constants.Localizations.Text.DIVINER_MISSING) + " " + I18n.format(stackDisplay.getItem().getUnlocalizedName(stackDisplay) + ".name");
+							playerinfomsg = I18n.format(Constants.Localizations.Text.DIVINER_MISSING) + " " + I18n.format(stackDisplay.getItem().getTranslationKey(stackDisplay) + ".name");
 						}
 					}
 				} else if (worldBlock != RegistrarBloodMagicBlocks.BLOOD_RUNE) {

@@ -80,11 +80,10 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 			Block    thisBlock = player.world.getBlockState(nextPos).getBlock();
 			if (thisBlock == Blocks.AIR)
 				continue;
-			String blockName = thisBlock.getUnlocalizedName().toLowerCase();
+			String blockName = thisBlock.getTranslationKey().toLowerCase();
 
-			if (!(thisBlock instanceof BlockCrops || thisBlock instanceof BlockLog
-					|| thisBlock instanceof BlockLeaves || thisBlock instanceof BlockFlower
-					|| thisBlock instanceof BlockTallGrass || thisBlock instanceof BlockDoublePlant
+			if (!(thisBlock instanceof BlockLog
+					|| thisBlock instanceof BlockLeaves
 					|| thisBlock instanceof IPlantable
 					|| blockName.contains("extrabiomesxl.flower"))
 					|| blockName.contains("specialflower") || blockName.contains("shinyflower"))

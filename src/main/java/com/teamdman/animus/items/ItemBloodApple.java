@@ -2,10 +2,12 @@ package com.teamdman.animus.items;
 
 import WayofTime.bloodmagic.client.IVariantProvider;
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.ritual.AreaDescriptor;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.common.util.AnimusUtil;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -21,6 +23,7 @@ import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
@@ -57,7 +60,7 @@ public class ItemBloodApple extends ItemFood implements IVariantProvider {
 			} else { //Player is not near an altar, give their LP network blood directly
 				SoulNetwork network = NetworkHelper.getSoulNetwork(entityLiving.getUniqueID());
 				if (network != null) {
-					network.add(AnimusConfig.general.bloodPerApple, 10000);
+					network.add(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_APPLE), AnimusConfig.general.bloodPerApple), 10000);
 				}
 			}
 		}

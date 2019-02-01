@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Constants;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -66,7 +68,7 @@ public class RitualUnmaking extends Ritual {
 					continue;
 				//noinspection ConstantConditions
 				NBTTagList enchants = entityItem.getItem().getTagCompound().getTagList("StoredEnchantments", 10);
-				if (enchants.hasNoTags())
+				if (enchants.isEmpty())
 					continue;
 				for (int i = enchants.tagCount() - 1; i >= 0; i--) {
 					if (books.getItem().isEmpty())
@@ -100,7 +102,7 @@ public class RitualUnmaking extends Ritual {
 				masterRitualStone.stopRitual(BreakType.DEACTIVATE);
 			}
 		}
-		network.syphon(getRefreshCost());
+		network.syphon(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_UNMAKING), getRefreshCost()));
 	}
 
 	private ItemStack getEnchantedBook(short id, short level) {

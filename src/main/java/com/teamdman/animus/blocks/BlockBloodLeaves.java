@@ -46,11 +46,8 @@ public class BlockBloodLeaves extends BlockLeaves {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
-		if(!fancyLeaves()){
-			return super.getBlockLayer();
-		}
-		return BlockRenderLayer.CUTOUT_MIPPED;
+	public BlockRenderLayer getRenderLayer() {
+		return fancyLeaves() ? BlockRenderLayer.CUTOUT_MIPPED : super.getRenderLayer();
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.teamdman.animus.items.sigils;
 
 import WayofTime.bloodmagic.client.IVariantProvider;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.item.sigil.ItemSigilBase;
 import WayofTime.bloodmagic.ritual.AreaDescriptor;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
@@ -24,6 +25,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -87,7 +89,7 @@ public class ItemSigilStorm extends ItemSigilBase implements IVariantProvider {
 				}
 			}
 
-			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, getLpUsed());
+			NetworkHelper.getSoulNetwork(player).syphonAndDamage(player, new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_STORM), getLpUsed()));
 
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);

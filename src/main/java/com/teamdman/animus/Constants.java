@@ -13,6 +13,20 @@ public class Constants {
 			public static final String TRANSPOSITION_CLEARED   = "text.component.animus.transposition.cleared";
 			public static final String TRANSPOSITION_SET       = "text.component.animus.transposition.set";
 			public static final String TRANSPOSITION_UNMOVABLE = "text.component.animus.transposition.unmovable";
+			public static final String TICKET_SOL			   = "text.component.animus.ticket.sol";
+			public static final String TICKET_TRANSPOSITION    = "text.component.animus.ticket.transposition";
+			public static final String TICKET_STORM = "text.component.animus.ticket.storm";
+			public static final String TICKET_ANTIMATTER = "text.component.animus.ticket.antimatter";
+			public static final String TICKET_PEACE = "text.component.animus.ticket.peace";
+			public static final String TICKET_ENTROPY = "text.component.animus.ticket.entropy";
+			public static final String TICKET_LUNA = "text.component.animus.ticket.luna";
+			public static final String TICKET_BUILDER = "text.component.animus.ticket.builder";
+			public static final String TICKET_CULLING = "text.component.animus.ticket.culling";
+			public static final String TICKET_LEECH = "text.component.animus.ticket.leech";
+			public static final String TICKET_UNMAKING = "text.component.animus.ticket.unmaking";
+			public static final String TICKET_APPLE = "text.component.animus.ticket.apple";
+			public static final String TICKET_CHAINS = "text.component.animus.ticket.chains";
+			public static final String TICKET_STEADFAST = "text.component.animus.ticket.steadfast";
 		}
 
 		public static class Tooltips {

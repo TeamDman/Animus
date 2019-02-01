@@ -33,7 +33,7 @@ public class AnimusUtil {
 		float  f6    = MathHelper.sin(-f1 * 0.017453292F);
 		float  f7    = f4 * f5;
 		float  f8    = f3 * f5;
-		Vec3d  vec31 = vec3.addVector(f7 * range, f6 * range, f8 * range);
+		Vec3d  vec31 = vec3.add(f7 * range, f6 * range, f8 * range);
 		return world.rayTraceBlocks(vec3, vec31, useLiquids);
 	}
 

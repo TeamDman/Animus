@@ -21,7 +21,7 @@ public class BlockFluidAntimatter extends BlockFluidClassic {
 
 	public BlockFluidAntimatter() {
 		super(FLUID_INSTANCE, new MaterialLiquid(MapColor.WHITE_STAINED_HARDENED_CLAY));
-		setUnlocalizedName(Constants.Mod.MODID + ".fluid." + fluidName);
+		setTranslationKey(Constants.Mod.MODID + ".fluid." + fluidName);
 		setRegistryName(fluidName);
 		FLUID_INSTANCE.setBlock(this);
 	}

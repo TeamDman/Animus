@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
@@ -23,8 +24,10 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
+import javax.naming.CompositeName;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -156,7 +159,7 @@ public class RitualCulling extends Ritual {
 						tileAltar.sacrificialDaggerCall(RitualCulling.amount, true);
 
 						if (!isNonBoss) {
-							network.syphon(25000);
+							network.syphon(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_CULLING), 25000));
 						} else {
 							double modifier = .5;
 							if (livingEntity instanceof EntityAnimal) {//&& !livingEntity.isCollided
@@ -176,7 +179,7 @@ public class RitualCulling extends Ritual {
 
 			}
 
-			network.syphon(getRefreshCost() * entityCount);
+			network.syphon(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_CULLING), getRefreshCost() * entityCount));
 			double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2, 10));
 
 			if (rand.nextInt(30) == 0) { // 3% chance per cycle to generate destructive will

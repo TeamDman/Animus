@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.Constants;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import java.util.UUID;
@@ -37,7 +39,7 @@ public class RitualPeace extends Ritual {
 			System.out.println("Rebuilding Ritual of Peace entity list. [" + masterRitualStone.getBlockPos().toString() + "]");
 			targets = EntityList.ENTITY_EGGS.values().stream()
 					.filter(e -> e.spawnedID != null)
-					.filter(e -> e.spawnedID.getResourceDomain().equals("minecraft"))
+					.filter(e -> e.spawnedID.getNamespace().equals("minecraft"))
 					.filter(e -> EntityList.createEntityByIDFromName(e.spawnedID, masterRitualStone.getWorldObj()) != null)
 					.filter(e -> !EntityList.createEntityByIDFromName(e.spawnedID, masterRitualStone.getWorldObj()).isCreatureType(EnumCreatureType.MONSTER, false))
 					.toArray(EntityList.EntityEggInfo[]::new);
@@ -75,7 +77,7 @@ public class RitualPeace extends Ritual {
 			}
 			world.spawnEntity(mob);
 			world.playSound(null, mob.getPosition(), SoundEvents.BLOCK_SNOW_STEP, SoundCategory.BLOCKS, 1, 1);
-			network.syphon(getRefreshCost());
+			network.syphon(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_PEACE), getRefreshCost()));
 		}
 	}
 

@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import WayofTime.bloodmagic.core.data.SoulNetwork;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.demonAura.WorldDemonWillHandler;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
@@ -14,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -51,7 +53,7 @@ public class RitualNaturesLeech extends Ritual {
 				return;
 			}
 
-			network.syphon(this.getRefreshCost());
+			network.syphon(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_LEECH), this.getRefreshCost()));
 
 			TileAltar tileAltar = AnimusUtil.getNearbyAltar(world, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
 			if (tileAltar == null)
@@ -72,7 +74,7 @@ public class RitualNaturesLeech extends Ritual {
 				boolean edible = false;
 
 				if (random.nextInt(100) < 20) {
-					String blockName = thisBlock.getUnlocalizedName().toLowerCase();
+					String blockName = thisBlock.getTranslationKey().toLowerCase();
 
 					if (thisBlock instanceof BlockCrops || thisBlock instanceof BlockLog
 							|| thisBlock instanceof BlockLeaves || thisBlock instanceof BlockFlower

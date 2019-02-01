@@ -2,8 +2,10 @@ package com.teamdman.animus.blocks;
 
 import WayofTime.bloodmagic.block.IBMBlock;
 import WayofTime.bloodmagic.client.IVariantProvider;
+import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.tiles.TileAntimatter;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -21,6 +23,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -73,7 +76,7 @@ public class BlockAntimatter extends Block implements IVariantProvider, IBMBlock
 				((TileAntimatter) worldIn.getTileEntity(newpos)).player = tile.player;
 				worldIn.scheduleBlockUpdate(newpos, AnimusBlocks.BLOCKANTIMATTER, worldIn.rand.nextInt(25), 1);
 				if (tile.player != null)
-					NetworkHelper.getSoulNetwork(tile.player).syphonAndDamage(tile.player, AnimusConfig.sigils.antimatterConsumption);
+					NetworkHelper.getSoulNetwork(tile.player).syphonAndDamage(tile.player, new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_ANTIMATTER), AnimusConfig.sigils.antimatterConsumption));
 				worldIn.playSound(null, pos, SoundEvents.BLOCK_STONE_PLACE, SoundCategory.BLOCKS, 0.01F, 0.75F);
 			}
 		}
@@ -88,7 +91,7 @@ public class BlockAntimatter extends Block implements IVariantProvider, IBMBlock
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state) {
 		for (BlockPos newpos : getNeighbours(pos)) {
 			if (worldIn.getBlockState(newpos).getBlock() == AnimusBlocks.BLOCKANTIMATTER) {
 				worldIn.setBlockState(newpos, getDefaultState().withProperty(DECAYING, true));
