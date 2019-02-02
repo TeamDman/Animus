@@ -46,7 +46,7 @@ public class RitualLuna extends Ritual {
 		SoulNetwork    network        = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
 		int            currentEssence = network.getCurrentEssence();
 		BlockPos       masterPos      = masterRitualStone.getBlockPos();
-		AreaDescriptor chestRange     = getBlockRange(CHEST_RANGE);
+		AreaDescriptor chestRange     = masterRitualStone.getBlockRange(CHEST_RANGE);
 		TileEntity     tileInventory  = world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
 
 
