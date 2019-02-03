@@ -55,12 +55,12 @@ public class RitualNaturesLeech extends Ritual {
 
 			network.syphon(new SoulTicket(new TextComponentTranslation(Constants.Localizations.Text.TICKET_LEECH), this.getRefreshCost()));
 
-			TileAltar tileAltar = AnimusUtil.getNearbyAltar(world, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
+			TileAltar tileAltar = AnimusUtil.getNearbyAltar(world, ritualStone.getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
 			if (tileAltar == null)
 				return;
 			altarOffsetPos = tileAltar.getPos();
 
-			AreaDescriptor eatRange = getBlockRange(EFFECT_RANGE);
+			AreaDescriptor eatRange = ritualStone.getBlockRange(EFFECT_RANGE);
 			eatRange.resetIterator();
 			int randFood = 1 + random.nextInt(3);
 			int eaten    = 0;

@@ -48,7 +48,7 @@ public class RitualSol extends Ritual {
 		World           world         = masterRitualStone.getWorldObj();
 		SoulNetwork     network       = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
 		BlockPos        masterPos     = masterRitualStone.getBlockPos();
-		AreaDescriptor  chestRange    = getBlockRange(CHEST_RANGE);
+		AreaDescriptor  chestRange    = masterRitualStone.getBlockRange(CHEST_RANGE);
 		TileEntityChest tileInventory = (TileEntityChest) world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
 		if (tileInventory == null)
 			return;
@@ -62,7 +62,7 @@ public class RitualSol extends Ritual {
 					.findAny();
 			if (!slot.isPresent())
 				return;
-			Optional<BlockPos> toPlace = getBlockRange(EFFECT_RANGE).getContainedPositions(masterRitualStone.getBlockPos()).stream()
+			Optional<BlockPos> toPlace = masterRitualStone.getBlockRange(EFFECT_RANGE).getContainedPositions(masterRitualStone.getBlockPos()).stream()
 					.filter(world::isAirBlock)
 					.filter((e) -> world.getLightFromNeighbors(e) < 8)
 					.filter((e) -> world.isSideSolid(e.down(1), EnumFacing.UP))
