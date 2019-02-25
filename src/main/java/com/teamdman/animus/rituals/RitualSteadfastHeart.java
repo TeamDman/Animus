@@ -64,7 +64,7 @@ public class RitualSteadfastHeart extends Ritual {
 		double            currentAmount = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
 
-		AreaDescriptor damageRange = getBlockRange(EFFECT_RANGE);
+		AreaDescriptor damageRange = masterRitualStone.getBlockRange(EFFECT_RANGE);
 		AxisAlignedBB  range       = damageRange.getAABB(pos);
 
 		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, range);

@@ -47,7 +47,7 @@ public class RitualUnmaking extends Ritual {
 			network.causeNausea();
 			return;
 		}
-		AreaDescriptor   effectRange = getBlockRange(EFFECT_RANGE);
+		AreaDescriptor   effectRange = masterRitualStone.getBlockRange(EFFECT_RANGE);
 		List<EntityItem> itemList    = world.getEntitiesWithinAABB(EntityItem.class, effectRange.getAABB(masterPos));
 		if (itemList.isEmpty())
 			return;

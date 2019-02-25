@@ -106,12 +106,12 @@ public class RitualCulling extends Ritual {
 		double            currentAmount  = WorldDemonWillHandler.getCurrentWill(world, pos, type);
 
 
-		TileAltar tileAltar = AnimusUtil.getNearbyAltar(world, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
+		TileAltar tileAltar = AnimusUtil.getNearbyAltar(world, ritualStone.getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
 		if (tileAltar == null)
 			return;
 		altarOffsetPos = tileAltar.getPos();
 
-		AreaDescriptor damageRange = getBlockRange(EFFECT_RANGE);
+		AreaDescriptor damageRange = ritualStone.getBlockRange(EFFECT_RANGE);
 		AxisAlignedBB  range       = damageRange.getAABB(pos);
 
 		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, range);
