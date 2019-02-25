@@ -81,7 +81,8 @@ public class EventHandler {
 		DamageSource     source = event.getSource();
 
 		if (
-				!source.equals(DamageSource.IN_FIRE) &&
+				AnimusConfig.general.disableHurtCooldown &&
+						!source.equals(DamageSource.IN_FIRE) &&
 						!source.equals(DamageSource.LAVA) &&
 						!source.equals(DamageSource.CACTUS) &&
 						!source.equals(DamageSource.LIGHTNING_BOLT) &&

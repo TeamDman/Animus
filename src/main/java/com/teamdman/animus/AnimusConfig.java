@@ -30,6 +30,7 @@ public class AnimusConfig {
 	public static class ConfigGeneral {
 		public boolean muteDragon    = false;
 		public boolean muteWither    = false;
+		public boolean disableHurtCooldown = false;
 		public int     bloodPerApple = 50;
 	}
 
