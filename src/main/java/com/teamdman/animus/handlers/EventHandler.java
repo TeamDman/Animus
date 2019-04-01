@@ -7,6 +7,7 @@ import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.slots.SlotNoPickup;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -79,15 +80,27 @@ public class EventHandler {
 	public void onEntityHurt(LivingHurtEvent event) {
 		EntityLivingBase entity = event.getEntityLiving();
 		DamageSource     source = event.getSource();
+		boolean shouldDisable = false;
 
-		if (
-				AnimusConfig.general.disableHurtCooldown &&
-						!source.equals(DamageSource.IN_FIRE) &&
-						!source.equals(DamageSource.LAVA) &&
-						!source.equals(DamageSource.CACTUS) &&
-						!source.equals(DamageSource.LIGHTNING_BOLT) &&
-						!source.equals(DamageSource.IN_WALL)
-		) {
+		if (AnimusConfig.general.disableHurtCooldown == true)
+			shouldDisable = true;
+		
+		if (entity instanceof EntityPlayer && AnimusConfig.general.disableHurtCooldownPlayers == true)
+			shouldDisable = true;
+		
+		if (entity.isNonBoss() == false && AnimusConfig.general.disableHurtCooldownBoss == true)
+			shouldDisable = true;
+
+		
+		if (source.equals(DamageSource.IN_FIRE) ||
+		source.equals(DamageSource.LAVA) ||
+		source.equals(DamageSource.CACTUS) ||
+		source.equals(DamageSource.LIGHTNING_BOLT) ||
+		source.equals(DamageSource.IN_WALL))
+			shouldDisable = false;
+
+		
+		if (shouldDisable == true) {
 			entity.hurtResistantTime = 0;
 			entity.hurtTime = 1;
 		}
