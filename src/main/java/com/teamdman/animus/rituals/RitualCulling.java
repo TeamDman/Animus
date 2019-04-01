@@ -122,15 +122,14 @@ public class RitualCulling extends Ritual {
 			network.causeNausea();
 		} else {
 			for (EntityLivingBase livingEntity : list) {
-				/*if (ConfigHandler.wellOfSufferingBlacklist.contains(livingEntity.getClass().getSimpleName()))
-					continue;*/
+
 
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
 
-				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Disallows cursed earth spawned mobs
+				Collection<PotionEffect> effect = livingEntity.getActivePotionEffects(); // Disallows cursed earth spawned mobs unless specified otherwise
 
-				if (effect.isEmpty()) {
+				if (effect.isEmpty() || AnimusConfig.general.canKillBuffedMobs) {
 					float    damage = 0;
 					BlockPos at     = livingEntity.getPosition();
 					soundSource = livingEntity.world;
