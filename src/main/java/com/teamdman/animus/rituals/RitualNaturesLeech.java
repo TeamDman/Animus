@@ -27,6 +27,7 @@ public class RitualNaturesLeech extends Ritual {
 	public static final String   EFFECT_RANGE   = "effect";
 	public              BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
 	public              double   will           = 100;
+	public final        int    maxWill      = 100;	
 
 	public RitualNaturesLeech() {
 		super(Constants.Rituals.LEECH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEECH);
@@ -104,9 +105,11 @@ public class RitualNaturesLeech extends Ritual {
 
 			tileAltar.sacrificialDaggerCall(eaten * 50, true);
 			int drainAmount = 1 + (int) (Math.random() * ((5 - 1) + 1));
-			if (will > 5 && random.nextInt(100) < 30) {
-				WorldDemonWillHandler.drainWill(world, pos, type, drainAmount, true);
-			}
+			double filled = WorldDemonWillHandler.fillWillToMaximum(world, pos, type, drainAmount, maxWill, false);
+			if (filled > 0)
+				WorldDemonWillHandler.fillWillToMaximum(world, pos, type, filled, maxWill, true);
+		
+	
 		}
 
 	}

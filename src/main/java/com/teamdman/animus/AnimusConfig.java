@@ -30,7 +30,14 @@ public class AnimusConfig {
 	public static class ConfigGeneral {
 		public boolean muteDragon    = false;
 		public boolean muteWither    = false;
+		@Config.Comment({"Should Animus override the vanilla invulnerablity time between hits for everything?"})		
 		public boolean disableHurtCooldown = false;
+		@Config.Comment({"Should Animus override the vanilla invulnerablity time between hits for bosses"})		
+		public boolean disableHurtCooldownBoss = false;
+		@Config.Comment({"Should Animus override the vanilla invulnerablity time between hits for players"})		
+		public boolean disableHurtCooldownPlayers = false;
+		@Config.Comment({"Determines if the Ritual of Culling can kill mobs with potion effects"})		
+		public boolean canKillBuffedMobs = false;
 		public int     bloodPerApple = 50;
 	}
 
