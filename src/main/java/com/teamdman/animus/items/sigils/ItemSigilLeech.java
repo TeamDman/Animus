@@ -3,6 +3,7 @@ package com.teamdman.animus.items.sigils;
 import WayofTime.bloodmagic.ritual.AreaDescriptor;
 import WayofTime.bloodmagic.util.helper.NBTHelper;
 import WayofTime.bloodmagic.util.helper.TextHelper;
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
 import net.minecraft.block.*;
@@ -18,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -65,7 +67,13 @@ public class ItemSigilLeech extends ItemSigilToggleableBaseBase {
 	private ItemStack getFood(EntityPlayer player) {
 		for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
 			ItemStack stack = player.inventory.mainInventory.get(i);
-			if (stack.isEmpty() || !(stack.getItem() instanceof IPlantable || Block.getBlockFromItem(stack.getItem()) instanceof IPlantable))
+			Block block = Block.getBlockFromItem(stack.getItem());
+			if (stack.isEmpty() || !(stack.getItem() instanceof IPlantable || block instanceof IPlantable))
+				continue;
+			if (Arrays.stream(AnimusConfig.sigils.leechBlacklist).anyMatch(x -> stack.getItem().getRegistryName() == null
+					|| stack.getItem().getRegistryName().toString().equals(x)
+					|| block.getRegistryName() == null
+					|| block.getRegistryName().toString().equals(x)))
 				continue;
 			return stack;
 		}

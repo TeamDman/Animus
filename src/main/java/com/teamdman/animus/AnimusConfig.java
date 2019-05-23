@@ -15,9 +15,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class AnimusConfig {
 	@Config.Comment({"General Options"})
 	public static ConfigGeneral    general    = new ConfigGeneral();
-	@Config.Comment({"Ritual Numbers Balance"})
+	@Config.Comment({"Rituals"})
 	public static ConfigRituals    rituals    = new ConfigRituals();
-	@Config.Comment({"Sigil Numbers Balance"})
+	@Config.Comment({"Sigils"})
 	public static ConfigSigils     sigils     = new ConfigSigils();
 
 	@SubscribeEvent
@@ -49,5 +49,6 @@ public class AnimusConfig {
 				"	1: Allow moving unbreakables, but prevent setting source _position_ to an unbreakable block.",
 				"	2: Always allow moving unbreakable blocks."})
 		public int transpositionMovesUnbreakables = 1;
+		public String[] leechBlacklist = {"ic2:te"};
 	}
 }
