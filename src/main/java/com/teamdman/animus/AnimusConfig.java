@@ -1,5 +1,6 @@
 package com.teamdman.animus;
 
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -19,6 +20,8 @@ public class AnimusConfig {
 	public static ConfigRituals    rituals    = new ConfigRituals();
 	@Config.Comment({"Sigils"})
 	public static ConfigSigils     sigils     = new ConfigSigils();
+	@Config.Comment({"Hurt Cooldown (iframes)"})
+	public static ConfigHurtCooldown iFrames = new ConfigHurtCooldown();
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
@@ -30,15 +33,35 @@ public class AnimusConfig {
 	public static class ConfigGeneral {
 		public boolean muteDragon    = false;
 		public boolean muteWither    = false;
-		@Config.Comment({"Should Animus override the vanilla invulnerablity time between hits for everything?"})		
-		public boolean disableHurtCooldown = false;
-		@Config.Comment({"Should Animus override the vanilla invulnerablity time between hits for bosses"})		
-		public boolean disableHurtCooldownBoss = false;
-		@Config.Comment({"Should Animus override the vanilla invulnerablity time between hits for players"})		
-		public boolean disableHurtCooldownPlayers = false;
-		@Config.Comment({"Determines if the Ritual of Culling can kill mobs with potion effects"})		
 		public boolean canKillBuffedMobs = false;
 		public int     bloodPerApple = 50;
+	}
+
+	public enum Mode {
+		DISABLED,
+		WHITELIST,
+		BLACKLIST
+	}
+
+	public static class ConfigHurtCooldown {
+		@Config.Comment({
+				"How will the Hurt Cooldown (iframes) of vanilla be affected, per damage source.",
+				"An empty list on [Blacklist] mode will remove the cooldown for all damage types."
+		})
+		public Mode mode = Mode.BLACKLIST;
+		@Config.Comment({"If true, bosses will have no iframes."})
+		public boolean affectBosses = false;
+		@Config.Comment({"If true, players will have no iframes."})
+		public boolean affectPlayers = false;
+		@Config.Comment({"List to be used when evaluating whitelist/blacklist functionality."})
+		public String[] sources = {
+				DamageSource.IN_FIRE.getDamageType(),
+				DamageSource.IN_WALL.getDamageType(),
+				DamageSource.CACTUS.getDamageType(),
+				DamageSource.LIGHTNING_BOLT.getDamageType(),
+				DamageSource.LAVA.getDamageType(),
+				DamageSource.OUT_OF_WORLD.getDamageType()
+		};
 	}
 
 	public static class ConfigRituals {
