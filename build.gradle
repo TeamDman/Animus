@@ -34,14 +34,15 @@ repositories {
     maven { url "http://maven.covers1624.net" } // RF
     maven { url "http://maven.blamejared.com/" } // CT
     maven { url "https://minecraft.curseforge.com/api/maven/" } // TC
+    maven { url = "https://minecraft.curseforge.com/api/maven/" }
+    maven { url = "http://maven.thiakil.com" }
 }
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
     deobfCompile "cofh:RedstoneFlux:1.12-2.+:deobf"
     deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}"
-
-//    deobfCompile "thaumcraft:Thaumcraft:1.12.2:6.1.BETA26"
-    // need bauble dep as well, 2 lazy to fix right now
+	deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
+	deobfCompile "thaumcraft:Thaumcraft:${mc_version}:${thaumcraft_version}"
 
     deobfCompile "info.amerifrance.guideapi:Guide-API:${guideapi_version}"
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${bloodmagic_version}"

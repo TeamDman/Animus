@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -116,8 +117,16 @@ public class RitualCulling extends Ritual {
 
 		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, range);
 
+		if (AnimusConfig.rituals.CullingKillsTnT) {
+			List<EntityTNTPrimed> Itemlist = world.getEntitiesWithinAABB(EntityTNTPrimed.class, range);
+			for (EntityTNTPrimed tnt : Itemlist) {
+				tnt.setFuse(1000);
+				tnt.setDead();
+			}
+		}
+		
 		int entityCount = 0;
-
+		
 		if (currentEssence < this.getRefreshCost() * list.size()) {
 			network.causeNausea();
 		} else {

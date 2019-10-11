@@ -67,6 +67,16 @@ public class AnimusConfig {
 	public static class ConfigRituals {
 		public boolean killWither = true;
 		public int     witherCost = 25000;
+		@Config.Comment({"Will the ritual of Culling Destroy Primed TNT true/false"})
+		public boolean CullingKillsTnT = true;
+		@Config.Comment({"How much should each point of flux be multiplied by when converting to demon will 0 for no will generation."})
+		public int     fluxToWillConversionMultiplier = 1;
+		@Config.Comment({"Maximum amount of flux drained per update for Eldritch Will. Must be non zero positive number"})
+		public int     fluxDrainMax = 10;
+		@Config.Comment({"Eldritch Will update speed. Should be non zero positive number."})
+		public int     eldritchWillSpeed = 30;
+		@Config.Comment({"Eldritch Will cost per update. Should be non zero positive number."})
+		public int     eldritchWillCost = 60;				
 	}
 
 	@SuppressWarnings("CanBeFinal")

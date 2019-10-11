@@ -23,6 +23,7 @@ public class Constants {
 			public static final String TICKET_BUILDER = "text.component.animus.ticket.builder";
 			public static final String TICKET_CULLING = "text.component.animus.ticket.culling";
 			public static final String TICKET_LEECH = "text.component.animus.ticket.leech";
+			public static final String TICKET_ELDRITCH = "text.component.animus.ticket.eldritch";
 			public static final String TICKET_UNMAKING = "text.component.animus.ticket.unmaking";
 			public static final String TICKET_APPLE = "text.component.animus.ticket.apple";
 			public static final String TICKET_CHAINS = "text.component.animus.ticket.chains";
@@ -87,6 +88,7 @@ public class Constants {
 		public static final String ENTROPY    = "ritualEntropy";
 		public static final String HUNGER     = "ritualHunger";
 		public static final String LEECH      = "ritualNaturesLeech";
+		public static final String ELDRITCH      = "ritualEldritchWill";
 		public static final String LUNA       = "ritualLuna";
 		public static final String PEACE      = "ritualPeace";
 		public static final String REGRESSION = "ritualRegression";
