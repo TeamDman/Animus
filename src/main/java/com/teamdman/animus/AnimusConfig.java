@@ -76,7 +76,9 @@ public class AnimusConfig {
 		@Config.Comment({"Eldritch Will update speed. Should be non zero positive number."})
 		public int     eldritchWillSpeed = 30;
 		@Config.Comment({"Eldritch Will cost per update. Should be non zero positive number."})
-		public int     eldritchWillCost = 60;				
+		public int     eldritchWillCost = 60;		
+		@Config.Comment({"Added debug logging for culling ritual."})
+		public boolean CullingDebug = false;
 	}
 
 	@SuppressWarnings("CanBeFinal")
