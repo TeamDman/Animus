@@ -8,6 +8,7 @@ import com.teamdman.animus.registry.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -19,6 +20,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 public class Animus {
 	@Mod.Instance(Constants.Mod.MODID)
 	public static Animus instance;
+	public static boolean thaumcraftLoaded = false;
+	
 	@SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
 	public static CommonProxy proxy;
 	//	public static CreativeTabs tabMain = BloodMagic.TAB_BM;
@@ -37,6 +40,7 @@ public class Animus {
 		AnimusRecipes.init();
 		proxy.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
+		thaumcraftLoaded = Loader.isModLoaded("thaumcraft");
 	}
 
 	@Mod.EventHandler

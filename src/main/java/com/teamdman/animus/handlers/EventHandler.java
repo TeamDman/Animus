@@ -22,6 +22,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Objects;
+
 public class EventHandler {
 
 	@SideOnly(Side.CLIENT)
@@ -80,29 +84,25 @@ public class EventHandler {
 	public void onEntityHurt(LivingHurtEvent event) {
 		EntityLivingBase entity = event.getEntityLiving();
 		DamageSource     source = event.getSource();
-		boolean shouldDisable = false;
+		if (AnimusConfig.iFrames.mode == AnimusConfig.Mode.DISABLED)
+			return;
+		if (entity instanceof EntityPlayer && !AnimusConfig.iFrames.affectPlayers)
+			return;
+		if (!entity.isNonBoss() && !AnimusConfig.iFrames.affectBosses)
+			return;
 
-		if (AnimusConfig.general.disableHurtCooldown == true)
-			shouldDisable = true;
-		
-		if (entity instanceof EntityPlayer && AnimusConfig.general.disableHurtCooldownPlayers == true)
-			shouldDisable = true;
-		
-		if (entity.isNonBoss() == false && AnimusConfig.general.disableHurtCooldownBoss == true)
-			shouldDisable = true;
-
-		
-		if (source.equals(DamageSource.IN_FIRE) ||
-		source.equals(DamageSource.LAVA) ||
-		source.equals(DamageSource.CACTUS) ||
-		source.equals(DamageSource.LIGHTNING_BOLT) ||
-		source.equals(DamageSource.IN_WALL))
-			shouldDisable = false;
-
-		
-		if (shouldDisable == true) {
-			entity.hurtResistantTime = 0;
-			entity.hurtTime = 1;
+		switch (AnimusConfig.iFrames.mode) {
+			case WHITELIST:
+				if (Arrays.stream(AnimusConfig.iFrames.sources).noneMatch(s -> Objects.equals(s, source.getDamageType())))
+					return;
+				break;
+			case BLACKLIST:
+				if (Arrays.stream(AnimusConfig.iFrames.sources).anyMatch(s -> Objects.equals(s, source.getDamageType())))
+					return;
+				break;
 		}
+
+		entity.hurtResistantTime = 0;
+		entity.hurtTime = 1;
 	}
 }

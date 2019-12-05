@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -107,8 +108,12 @@ public class RitualCulling extends Ritual {
 
 
 		TileAltar tileAltar = AnimusUtil.getNearbyAltar(world, ritualStone.getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
-		if (tileAltar == null)
+		if (tileAltar == null) {
+			if (AnimusConfig.rituals.CullingDebug)
+				System.out.println("Animus: [Ritual of Culling Debug]: No valid altar found within altar range for MRS at " + ritualStone.getBlockPos().toString());
+
 			return;
+		}
 		altarOffsetPos = tileAltar.getPos();
 
 		AreaDescriptor damageRange = ritualStone.getBlockRange(EFFECT_RANGE);
@@ -116,13 +121,34 @@ public class RitualCulling extends Ritual {
 
 		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, range);
 
-		int entityCount = 0;
+		if (AnimusConfig.rituals.CullingDebug)
+		System.out.println("Animus: [Ritual of Culling Debug]: Starting Ritual perform for MRS at " + ritualStone.getBlockPos().toString());
+		
+		if (AnimusConfig.rituals.CullingKillsTnT) {
+			List<EntityTNTPrimed> Itemlist = world.getEntitiesWithinAABB(EntityTNTPrimed.class, range);
+			for (EntityTNTPrimed tnt : Itemlist) {
+				tnt.setFuse(1000);
+				tnt.setDead();
+				if (AnimusConfig.rituals.CullingDebug)
+					System.out.println("Animus: [Ritual of Culling Debug]: Found TNT entity, killing");
 
+			}
+		}
+		
+		int entityCount = 0;
+		
 		if (currentEssence < this.getRefreshCost() * list.size()) {
 			network.causeNausea();
-		} else {
-			for (EntityLivingBase livingEntity : list) {
+			if (AnimusConfig.rituals.CullingDebug)
+				System.out.println("Animus: [Ritual of Culling Debug]: Culling MRS at " + ritualStone.getBlockPos().toString() + " does not have sufficient LP from the owner");
 
+		} else {
+
+			if (AnimusConfig.rituals.CullingDebug)
+				System.out.println("Animus: [Ritual of Culling Debug]: Starting culling for loop for MRS at " + ritualStone.getBlockPos().toString());
+
+			
+			for (EntityLivingBase livingEntity : list) {
 
 				if (livingEntity instanceof EntityPlayer && livingEntity.getHealth() > 4)
 					continue;
@@ -140,6 +166,10 @@ public class RitualCulling extends Ritual {
 
 					livingEntity.setSilent(true); // The screams of the weak fall on deaf ears.
 
+					if (AnimusConfig.rituals.CullingDebug)
+						System.out.println("Animus: [Ritual of Culling Debug]: MRS at " + ritualStone.getBlockPos().toString() + " Found entity, killing");
+
+					
 					damage = Integer.MAX_VALUE;
 
 					if (AnimusConfig.rituals.killWither && !isNonBoss && currentAmount > 99
