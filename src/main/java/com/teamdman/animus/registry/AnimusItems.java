@@ -72,7 +72,6 @@ public class AnimusItems {
 		setupItem(new ItemKeyBinding(), "keybinding");
 		setupItem(new ItemMobSoul(), "mobsoul");
 		setupItem(new ItemBloodApple(), "bloodapple");
-		setupItem(new ItemActivationCrystalFragile(), "activationcrystalfragile");
 		setupItem(new ItemEnum.Variant<>(ComponentTypes.class, "baseComponent"), "component");
 		items.forEach(event.getRegistry()::register);
 	}

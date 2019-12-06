@@ -55,6 +55,7 @@ guide.animus.sigils.transposition.page0=Right click marks a block in the world, 
 guide.animus.title=Animus Compendium
 guide.animus.welcome=§4Written in blood...
 item.activationcrystalfragile.name=Fragile Activation Crystal
+item.activationcrystalfragile.weak.name=Fragile Activation Crystal
 item.altardiviner.name=Altar Diviner
 item.bloodapple.name=Blood Apple
 item.component.reagent_builder.name=Builder Reagent

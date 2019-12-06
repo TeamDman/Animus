@@ -52,7 +52,9 @@ public class RitualEldritchWill extends Ritual {
 		else if (willRadius < 0)
 				willRadius = 0;
 	}
-		
+
+	
+	
 
 	public void performRitual(IMasterRitualStone ritualStone) {
 		World             world  = ritualStone.getWorldObj();
