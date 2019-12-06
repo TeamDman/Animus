@@ -20,9 +20,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import thaumcraft.api.aura.AuraHelper;
 import thaumcraft.common.lib.SoundsTC;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -35,6 +38,7 @@ public class RitualEldritchWill extends Ritual {
 	public              BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
 	public              double   will           = 100;
 	public final        int    maxWill      = 100;	
+	public int willRadius = AnimusConfig.rituals.willRadius;
 
 	
 	public RitualEldritchWill() {
@@ -43,7 +47,12 @@ public class RitualEldritchWill extends Ritual {
 		addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 1, 1, 1);
+		if (willRadius > 1)
+				willRadius = 1;
+		else if (willRadius < 0)
+				willRadius = 0;
 	}
+		
 
 	public void performRitual(IMasterRitualStone ritualStone) {
 		World             world  = ritualStone.getWorldObj();
@@ -70,9 +79,39 @@ public class RitualEldritchWill extends Ritual {
 			float reduction = random.nextInt(fluxConfig);
 			if (reduction > flux)
 				reduction = flux;
-			AuraHelper.drainFlux(world, pos, reduction, false);
-			AuraHelper.polluteAura(world, pos, 0, true);
 			
+			
+			List<BlockPos> UpdateChunks = new ArrayList<BlockPos>();
+			Chunk chunk = world.getChunk(pos);
+			BlockPos centeredPos = new BlockPos(getCenterX(chunk),1,getCenterZ(chunk));
+			UpdateChunks.add(centeredPos);
+			
+			//Get list of centered chunk block positions that we'll run the aura helper on
+			switch (willRadius) {
+				case 1:
+					UpdateChunks.add((new BlockPos((getCenterX(chunk,-1)),4,getCenterZ(chunk,-1))));
+					UpdateChunks.add((new BlockPos((getCenterX(chunk,-1)),4,getCenterZ(chunk))));
+					UpdateChunks.add((new BlockPos((getCenterX(chunk,-1)),4,getCenterZ(chunk,1))));
+					UpdateChunks.add((new BlockPos((getCenterX(chunk)),4,getCenterZ(chunk,1))));
+					UpdateChunks.add((new BlockPos((getCenterX(chunk)),4,getCenterZ(chunk,-1))));
+					UpdateChunks.add((new BlockPos((getCenterX(chunk,1)),4,getCenterZ(chunk,-1))));
+					UpdateChunks.add((new BlockPos((getCenterX(chunk,1)),4,getCenterZ(chunk))));
+					UpdateChunks.add((new BlockPos((getCenterX(chunk,1)),4,getCenterZ(chunk,1))));
+					break;
+				default:
+					break;
+			}
+					
+			//run the aura helper on those blocks
+			for (int z = 0; z < UpdateChunks.size(); z++) {
+				//System.out.println("Running Aura helper on Block : " + UpdateChunks.get(z).toString());
+				BlockPos updatePos = UpdateChunks.get(z);	    
+				
+				AuraHelper.drainFlux(world, updatePos, reduction, false);
+				AuraHelper.polluteAura(world, updatePos, 0, true);				
+			}
+			
+
 			
 			int fluxMulti = AnimusConfig.rituals.fluxToWillConversionMultiplier;
 			if (fluxMulti < 0)
@@ -90,7 +129,7 @@ public class RitualEldritchWill extends Ritual {
 
 	@Override
 	public int getRefreshCost() {
-		if (Animus.thaumcraftLoaded)
+		if (!Animus.thaumcraftLoaded)
 			return 0;
 		else
 			return AnimusConfig.rituals.eldritchWillCost;
@@ -98,7 +137,7 @@ public class RitualEldritchWill extends Ritual {
 	
 	@Override
 	public int getRefreshTime() {
-		if (Animus.thaumcraftLoaded)
+		if (!Animus.thaumcraftLoaded)
 			return 10000;
 		else
 			return AnimusConfig.rituals.eldritchWillSpeed;
@@ -121,7 +160,7 @@ public class RitualEldritchWill extends Ritual {
 		components.accept(new RitualComponent(new BlockPos(2, 1, 2), EnumRuneType.EARTH));
 		components.accept(new RitualComponent(new BlockPos(3, 1, 3), EnumRuneType.DUSK));
 		components.accept(new RitualComponent(new BlockPos(3, 1, -3), EnumRuneType.DUSK));
-		components.accept(new RitualComponent(new BlockPos(-3, 1, 3), EnumRuneType.DUSK));
+		components.accept(new RitualComponent(new BlockPos(-3, 1, -3), EnumRuneType.DUSK));
 		components.accept(new RitualComponent(new BlockPos(-3, 1, 3), EnumRuneType.DUSK));
 	}
 
@@ -130,6 +169,20 @@ public class RitualEldritchWill extends Ritual {
 		return new RitualEldritchWill();
 	}
 
+	public int getCenterX(Chunk chunk) {
 
-	
+		return (chunk.x << 4) + 8;
+	}
+	public int getCenterZ(Chunk chunk) {
+
+		return (chunk.z << 4) + 8;
+	}
+	public int getCenterX(Chunk chunk, int offset) {
+
+		return ((chunk.x << 4) + 8) + (offset * 16);
+	}
+	public int getCenterZ(Chunk chunk,int offset) {
+
+		return ((chunk.z << 4) + 8) + (offset * 16);
+	}	
 }

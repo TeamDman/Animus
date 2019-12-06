@@ -71,6 +71,8 @@ public class AnimusConfig {
 		public boolean CullingKillsTnT = true;
 		@Config.Comment({"How much should each point of flux be multiplied by when converting to demon will 0 for no will generation."})
 		public int     fluxToWillConversionMultiplier = 1;
+		@Config.Comment({"Eldritch Will ritual radius in chunks default is 0 for single chunk, or 1 for a 3x3 chunk area."})
+		public int     willRadius = 0;
 		@Config.Comment({"Maximum amount of flux drained per update for Eldritch Will. Must be non zero positive number"})
 		public int     fluxDrainMax = 10;
 		@Config.Comment({"Eldritch Will update speed. Should be non zero positive number."})
@@ -79,6 +81,8 @@ public class AnimusConfig {
 		public int     eldritchWillCost = 60;		
 		@Config.Comment({"Added debug logging for culling ritual."})
 		public boolean CullingDebug = false;
+		@Config.Comment({"Upkeep cost for ritual of peace."})
+		public int peaceCost = 1000;
 	}
 
 	@SuppressWarnings("CanBeFinal")

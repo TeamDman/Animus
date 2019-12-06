@@ -4,6 +4,8 @@ import WayofTime.bloodmagic.core.data.SoulNetwork;
 import WayofTime.bloodmagic.core.data.SoulTicket;
 import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
+
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -83,7 +85,7 @@ public class RitualPeace extends Ritual {
 
 	@Override
 	public int getRefreshCost() {
-		return 1000;
+		return AnimusConfig.rituals.peaceCost;
 	}
 
 	@Override
