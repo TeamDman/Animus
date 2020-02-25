@@ -36,6 +36,7 @@ repositories {
     maven { url "https://minecraft.curseforge.com/api/maven/" } // TC
     maven { url = "https://minecraft.curseforge.com/api/maven/" }
     maven { url = "http://maven.thiakil.com" }
+    maven { url = "http://maven.ic2.player.to" } // IC2
 }
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
@@ -48,6 +49,7 @@ dependencies {
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${bloodmagic_version}"
 
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+"
+    compile "net.industrial-craft:industrialcraft-2:2.8.+"
 }
 
 processResources {
