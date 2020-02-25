@@ -7,17 +7,25 @@ import WayofTime.bloodmagic.ritual.*;
 import WayofTime.bloodmagic.soul.EnumDemonWillType;
 import WayofTime.bloodmagic.tile.TileAltar;
 import WayofTime.bloodmagic.util.helper.NetworkHelper;
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.common.util.AnimusUtil;
 import com.teamdman.animus.handlers.AnimusSoundEventHandler;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.IGrowable;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.IShearable;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -25,9 +33,9 @@ import java.util.function.Consumer;
 public class RitualNaturesLeech extends Ritual {
 	public static final String   ALTAR_RANGE    = "altar";
 	public static final String   EFFECT_RANGE   = "effect";
+	public final        int      maxWill        = 100;
 	public              BlockPos altarOffsetPos = new BlockPos(0, 0, 0);
 	public              double   will           = 100;
-	public final        int    maxWill      = 100;	
 
 	public RitualNaturesLeech() {
 		super(Constants.Rituals.LEECH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEECH);
@@ -36,6 +44,17 @@ public class RitualNaturesLeech extends Ritual {
 		addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
 		setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 20, 20, 20);
 		setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
+	}
+
+	public static boolean isBlacklisted(ResourceLocation resourceLocation) {
+		return resourceLocation != null && isBlacklisted(resourceLocation.toString());
+	}
+
+	public static boolean isBlacklisted(String registryName) {
+		for (String entry : AnimusConfig.sigils.leechBlacklist)
+			if (Objects.equals(entry, registryName))
+				return true;
+		return false;
 	}
 
 	public void performRitual(IMasterRitualStone ritualStone) {
@@ -67,51 +86,52 @@ public class RitualNaturesLeech extends Ritual {
 			int eaten    = 0;
 			while (eatRange.hasNext() && eaten <= randFood) {
 
-				BlockPos nextPos   = eatRange.next().add(pos);
-				Block    thisBlock = world.getBlockState(nextPos).getBlock();
-				if (thisBlock == Blocks.AIR)
+				BlockPos eatPos   = eatRange.next().add(pos);
+				Block    eatBlock = world.getBlockState(eatPos).getBlock();
+				if (eatBlock == Blocks.AIR)
 					continue;
 
-				boolean edible = false;
-
-				if (random.nextInt(100) < 20) {
-					String blockName = thisBlock.getTranslationKey().toLowerCase();
-
-					if (thisBlock instanceof BlockCrops || thisBlock instanceof BlockLog
-							|| thisBlock instanceof BlockLeaves || thisBlock instanceof BlockFlower
-							|| thisBlock instanceof BlockTallGrass || thisBlock instanceof BlockDoublePlant
-							|| blockName.contains("extrabiomesxl.flower"))
-						edible = true;
-
-					if (blockName.contains("specialflower") || blockName.contains("shinyflower"))
-						edible = false;
-
-					if (!edible)
-						continue;
-
+				if (random.nextInt(100) < 20 && isConsumable(eatBlock)) {
 					//					EffectHandler.getInstance().registerFX(
 					//							new EntityFXBurst(1, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5, 1F));
 					if (world.isRemote) {
-						world.spawnParticle(EnumParticleTypes.SPELL, nextPos.getX() + 0.5, nextPos.getY() + 0.5, nextPos.getZ() + .5,
+						world.spawnParticle(EnumParticleTypes.SPELL, eatPos.getX() + 0.5, eatPos.getY() + 0.5, eatPos.getZ() + .5,
 								(random.nextDouble() - 0.5D) * 2.0D, -random.nextDouble(), (random.nextDouble() - 0.5D) * 2.0D);
 					}
 
 					//TODO: fix particles and sounds
-					world.playSound(null, nextPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
-					world.setBlockToAir(nextPos);
+					world.playSound(null, eatPos, AnimusSoundEventHandler.naturesleech, SoundCategory.BLOCKS, .4F, 1F);
+					world.setBlockToAir(eatPos);
 					eaten++;
 				}
 			}
 
 			tileAltar.sacrificialDaggerCall(eaten * 50, true);
-			int drainAmount = 1 + (int) (Math.random() * ((5 - 1) + 1));
-			double filled = WorldDemonWillHandler.fillWillToMaximum(world, pos, type, drainAmount, maxWill, false);
+			int    drainAmount = 1 + (int) (Math.random() * ((5 - 1) + 1));
+			double filled      = WorldDemonWillHandler.fillWillToMaximum(world, pos, type, drainAmount, maxWill, false);
 			if (filled > 0)
 				WorldDemonWillHandler.fillWillToMaximum(world, pos, type, filled, maxWill, true);
-		
-	
+
+
 		}
 
+	}
+
+	public static boolean isConsumable(Block block) {
+		if (block == null)
+			return false;
+		if (block == Blocks.AIR)
+			return false;
+		String blockName = block.getTranslationKey().toLowerCase();
+		if (blockName.contains("specialflower") || blockName.contains("shinyflower"))
+			return false;
+		if (!(block instanceof BlockLog
+				|| block instanceof IPlantable
+				|| block instanceof IShearable
+				|| block instanceof IGrowable
+				|| blockName.contains("extrabiomesxl.flower")))
+			return false;
+		return !isBlacklisted(block.getRegistryName());
 	}
 
 	@Override

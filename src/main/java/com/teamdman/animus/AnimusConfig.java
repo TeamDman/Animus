@@ -95,6 +95,6 @@ public class AnimusConfig {
 				"	1: Allow moving unbreakables, but prevent setting source _position_ to an unbreakable block.",
 				"	2: Always allow moving unbreakable blocks."})
 		public int transpositionMovesUnbreakables = 1;
-		public String[] leechBlacklist = {"ic2:te"};
+		public String[] leechBlacklist = {"ic2:te", "minecraft:grass"};
 	}
 }
