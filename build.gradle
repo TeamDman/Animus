@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "2.1.7"
+version = "2.1.8"
 group = "com.teamdman.animus"
 archivesBaseName = "Animus-1.12"
 
