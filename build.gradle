@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "2.1.7"
 group = "com.teamdman.animus"
-archivesBaseName = "Animus-${major_version}"
+archivesBaseName = "Animus-1.12"
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
@@ -19,7 +19,7 @@ compileJava {
 }
 
 minecraft {
-    version = "${mc_version}-${forge_version}"
+    version = forge_version
     runDir = "run"
     mappings = "${mappings_version}"
     replace "@VERSION", project.version
@@ -29,7 +29,8 @@ minecraft {
 
 repositories {
     maven { url "http://dvs1.progwml6.com/files/maven" } // JEI
-    maven { url "http://tehnut.info/maven" } // BM
+//    maven { url "http://tehnut.info/maven" } // BM rip
+    maven { url "https://github.com/TehNut/temporary-maven-thing/tree/master/maven" } // BM
     maven { url "http://maven.tterrag.com/" } // TOP
     maven { url "http://maven.covers1624.net" } // RF
     maven { url "http://maven.blamejared.com/" } // CT
@@ -39,16 +40,23 @@ repositories {
     maven { url = "http://maven.ic2.player.to" } // IC2
 }
 dependencies {
-    deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
-    deobfCompile "cofh:RedstoneFlux:1.12-2.+:deobf"
-    deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}"
-	deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
-	deobfCompile "thaumcraft:Thaumcraft:${mc_version}:${thaumcraft_version}"
 
-    deobfCompile "info.amerifrance.guideapi:Guide-API:${guideapi_version}"
-    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${mc_version}-${bloodmagic_version}"
+    def jei_version="4.15.0.293"
+    deobfCompile "mezz.jei:jei_1.12.2:${jei_version}"
 
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.+"
+    def hwyla_version="1.8.26-B41_1.12.2"
+//    deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}"
+
+    def guideapi_version="1.12-2.1.8-63"
+//    deobfCompile "info.amerifrance.guideapi:Guide-API:${guideapi_version}"
+
+    def bloodmagic_version="1.12.2-2.4.3-105"
+//    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${bloodmagic_version}"
+    compile fileTree(dir: "libs", include: ["*.jar"])
+
+    def crafttweaker_version="1.12-4.1.20.576"
+    compile "CraftTweaker2:CraftTweaker2-MC1120-Main:${crafttweaker_version}"
+
     compile "net.industrial-craft:industrialcraft-2:2.8.+"
 }
 
