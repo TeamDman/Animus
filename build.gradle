@@ -14,7 +14,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "${getDate()}"
+version = "${mc_version}-${mod_version}"
 group= "com.teamdman.animus"
 archivesBaseName = "Animus"
 
@@ -47,13 +47,16 @@ minecraft {
 repositories {
     maven { url "http://dvs1.progwml6.com/files/maven" }
     maven {	url "http://mobiusstrip.eu/maven" }
-    maven {	url "http://tehnut.info/maven" }
+    maven {	url "http://maven.tehnut.info/" }
+    maven { url "https://cursemaven.com"}
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_${mc_version}:${jei_version}"
-	deobfCompile "info.amerifrance.guideapi:Guide-API:${mc_version}-${guideapi_version}"
-    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${bloodmagic_version}"
+//	deobfCompile "info.amerifrance.guideapi:Guide-API:${mc_version}-${guideapi_version}"
+//    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${bloodmagic_version}"
+    deobfCompile "curse.maven:guideapi-228832:2380911"
+    deobfCompile "curse.maven:bloodmagic-224791:2439437"
 }
 
 processResources {
