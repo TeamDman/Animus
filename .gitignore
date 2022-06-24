@@ -23,5 +23,3 @@ run
 *.txt
 *.gz
 *.log
-
-/libs/
