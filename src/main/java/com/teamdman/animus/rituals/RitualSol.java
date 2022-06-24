@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -49,9 +50,15 @@ public class RitualSol extends Ritual {
 		SoulNetwork     network       = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
 		BlockPos        masterPos     = masterRitualStone.getBlockPos();
 		AreaDescriptor  chestRange    = masterRitualStone.getBlockRange(CHEST_RANGE);
-		TileEntityChest tileInventory = (TileEntityChest) world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
+		tileEntity tileEntity = world.getTileEntity(chestRange.getContainedPositions(masterPos).get(0));
+		
+		if (!tileEntity instanceof TileEntityChest) 
+			return;
+		
+		TileEntityChest tileInventory = (TileEntityChest) tileEntity;
 		if (tileInventory == null)
 			return;
+		
 		IItemHandler handler = tileInventory.getSingleChestHandler();
 
 		if (!masterRitualStone.getWorldObj().isRemote) {
