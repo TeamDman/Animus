@@ -1,91 +1,31 @@
 package com.teamdman.animus.registry;
 
-import com.teamdman.animus.Animus;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.blocks.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.init.Blocks;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-import java.util.Arrays;
-import java.util.List;
-
-/**
- * Created by TeamDman on 9/25/2016.
- */
-@Mod.EventBusSubscriber(modid = Constants.Mod.MODID)
-@GameRegistry.ObjectHolder(Constants.Mod.MODID)
 public class AnimusBlocks {
-	public static final Block        BLOCKANTIMATTER      = Blocks.AIR;
-	public static final Block        BLOCKBLOODCORE       = Blocks.AIR;
-	//public static final Block  		 BLOCKBLOODLEAVES     = Blocks.AIR;
-	public static final Block 	 BLOCKBLOODSAPLING    = Blocks.AIR;
-	public static final Block      BLOCKBLOODWOOD       = Blocks.AIR;
-	public static final Block        BLOCKFLUIDANTIMATTER = Blocks.AIR;
-	public static final Block        BLOCKFLUIDDIRT       = Blocks.AIR;
-	public static final Block        BLOCKPHANTOMBUILDER  = Blocks.AIR;
-	public static       List<Block>  blocks;
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.Mod.MODID);
 
-	@SubscribeEvent
-	public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		FluidRegistry.registerFluid(BlockFluidDirt.FLUID_INSTANCE);
-		FluidRegistry.addBucketForFluid(BlockFluidDirt.FLUID_INSTANCE);
-		FluidRegistry.registerFluid(BlockFluidAntimatter.FLUID_INSTANCE);
-		FluidRegistry.addBucketForFluid(BlockFluidAntimatter.FLUID_INSTANCE);
-		blocks = Arrays.asList(
-				setupBlock(new BlockPhantomBuilder(), "blockphantombuilder"),
-				setupBlock(new BlockBloodCore(), "blockbloodcore"),
-				setupBlock(new BlockBloodSapling(), "blockbloodsapling"),
-				setupBlock(new BlockBloodWood(), "blockbloodwood"),
-				//setupBlock(new BlockBloodLeaves(), "blockbloodleaves"),
-				setupBlock(new BlockAntimatter(), "blockantimatter"),
-				setupBlock(new BlockFluidDirt(), "blockfluiddirt"),
-				setupBlock(new BlockFluidAntimatter(), "blockfluidantimatter")
-		);
-		blocks.forEach(event.getRegistry()::register);
-	}
+    // Basic blocks
+    public static final RegistryObject<Block> BLOCK_BLOOD_WOOD = BLOCKS.register("blockbloodwood",
+        BlockBloodWood::new);
 
-	private static Block setupBlock(Block block, String name) {
-		if (block.getRegistryName() == null)
-			block.setRegistryName(name);
+    public static final RegistryObject<Block> BLOCK_BLOOD_SAPLING = BLOCKS.register("blockbloodsapling",
+        BlockBloodSapling::new);
 
-		block.setTranslationKey(name);
-		block.setCreativeTab(Animus.tabMain);
-		return block;
-	}
+    public static final RegistryObject<Block> BLOCK_BLOOD_CORE = BLOCKS.register("blockbloodcore",
+        BlockBloodCore::new);
 
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public static void registerModels(ModelRegistryEvent event) { //todo: move to client proxy
-		ModelLoader.setCustomStateMapper(BLOCKFLUIDDIRT, new StateMapperBase() {
-			@SuppressWarnings("NullableProblems")
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				//noinspection ConstantConditions
-				return new ModelResourceLocation(Constants.Mod.MODID + ":" + Constants.Misc.FLUID_DIRT, "fluid");
-			}
-		});
-		ModelLoader.setCustomStateMapper(BLOCKFLUIDANTIMATTER, new StateMapperBase() {
-			@SuppressWarnings("NullableProblems")
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				//noinspection ConstantConditions
-				return new ModelResourceLocation(Constants.Mod.MODID + ":" + Constants.Misc.FLUID_ANTIMATTER, "fluid");
-			}
-		});
-	}
+    public static final RegistryObject<Block> BLOCK_PHANTOM_BUILDER = BLOCKS.register("blockphantombuilder",
+        BlockPhantomBuilder::new);
+
+    // TODO: Port remaining blocks:
+    // - BlockAntimatter
+    // - BlockBloodLeaves
+    // - BlockFluidAntimatter (via AnimusFluids)
+    // - BlockFluidDirt (via AnimusFluids)
 }
