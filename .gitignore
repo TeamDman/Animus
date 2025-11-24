@@ -23,3 +23,11 @@ run
 *.txt
 *.gz
 *.log
+
+PORTING_GUIDE.md
+
+PROGRESS_REPORT.md
+
+PROJECT_STATUS.md
+
+SETUP_INSTRUCTIONS.md

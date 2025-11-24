@@ -1,25 +1,35 @@
-# Animus [![](http://cf.way2muchnoise.eu/full_animus_downloads.svg)](https://minecraft.curseforge.com/projects/animus)
-This is an addon for the mod [Blood Magic](https://github.com/WayofTime/BloodMagic/)
+# Animus - Blood Magic Addon
 
-A feature overview can be seen on the [curseforge link](https://minecraft.curseforge.com/projects/animus)
+A comprehensive addon for Blood Magic that brings new tools, mechanics, and automation to blood magic rituals and systems.
 
-Here's an example CraftTweaker script for modifying altar components
-```zenscript
-import crafttweaker.block.IBlockState;
-import mods.animus.AnimusPlugin;
+## Version Information
 
-print("-------------------------modify altar ----------------------------");
-AnimusPlugin.removeComponentMapping(<blockstate:minecraft:glowstone>,"GLOWSTONE");
-AnimusPlugin.addComponentMapping(<blockstate:minecraft:dirt>, "GLOWSTONE");
+- **Minecraft Version:** 1.20.1
+- **Forge Version:** 47.1.0+
+- **Blood Magic Version:** 3.3.5+
+
+## Development
+
+This is a port of the original Animus mod from Minecraft 1.12.2 to 1.20.1.
+
+### Building
+
+```bash
+./gradlew build
 ```
 
-Excerpt from BloodMagic API:
+### Running in Development
+
+```bash
+./gradlew runClient
 ```
-Valid component types:
-GLOWSTONE
-BLOODSTONE
-BEACON
-BLOODRUNE
-CRYSTAL
-NOTAIR
-```
+
+## Credits
+
+- **Original Author:** TeamDman
+- **Port & Development:** Saereth
+- **Special Thanks:** ProfHugo for the NoDamI (No Damage Immunity) implementation
+
+## License
+
+MIT License
