@@ -21,9 +21,6 @@ public class AnimusItems {
     public static final RegistryObject<Item> BLOCK_BLOOD_CORE = ITEMS.register("blockbloodcore",
         () -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_CORE.get(), new Item.Properties()));
 
-    public static final RegistryObject<Item> BLOCK_PHANTOM_BUILDER = ITEMS.register("blockphantombuilder",
-        () -> new BlockItem(AnimusBlocks.BLOCK_PHANTOM_BUILDER.get(), new Item.Properties()));
-
     // Regular Items
     public static final RegistryObject<Item> BLOOD_APPLE = ITEMS.register("bloodapple",
         ItemBloodApple::new);
