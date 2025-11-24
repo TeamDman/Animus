@@ -23,7 +23,7 @@ run
 *.txt
 *.gz
 *.log
-
+run-data/
 PORTING_GUIDE.md
 
 PROGRESS_REPORT.md
