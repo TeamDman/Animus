@@ -1,49 +1,44 @@
 package com.teamdman.animus.items;
 
-import WayofTime.bloodmagic.client.IVariantProvider;
-import amerifrance.guideapi.api.util.TextHelper;
 import com.teamdman.animus.Constants;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
-public class ItemFragmentHealing extends Item implements IVariantProvider {
-	public ItemFragmentHealing() {
-		setMaxStackSize(1);
-	}
+/**
+ * Fragment of Healing - special item that cannot be dropped or used to break blocks
+ */
+public class ItemFragmentHealing extends Item {
 
-	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.HEALING_FLAVOUR));
-		tooltip.add(TextHelper.localize(Constants.Localizations.Tooltips.HEALING_INFO));
-	}
+    public ItemFragmentHealing() {
+        super(new Item.Properties()
+            .stacksTo(1)
+        );
+    }
 
-	@Override
-	public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player) {
-		return player.capabilities.isCreativeMode;
-	}
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HEALING_FLAVOUR));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HEALING_INFO));
+    }
 
-	@Override
-	public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
-		return true;
-	}
+    @Override
+    public boolean onDroppedByPlayer(ItemStack item, Player player) {
+        // Only allow dropping in creative mode
+        return player.getAbilities().instabuild;
+    }
 
-	@Override
-	public boolean canHarvestBlock(IBlockState blockIn) {
-		return false;
-	}
-
-	@Override
-	public void gatherVariants(@Nonnull Int2ObjectMap<String> variants) {
-		variants.put(0, "type=normal");
-	}
-
+    @Override
+    public boolean canAttackBlock(BlockState state, Level level, net.minecraft.core.BlockPos pos, Player player) {
+        // Prevent breaking blocks with this item
+        return false;
+    }
 }
