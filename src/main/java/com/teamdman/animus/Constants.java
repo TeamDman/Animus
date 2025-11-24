@@ -58,10 +58,10 @@ public class Constants {
     }
 
     public static class Resource {
-        public static final ResourceLocation fluidAntimatterFlowing = new ResourceLocation(Mod.MODID, "block/fluid/antimatter_flowing");
-        public static final ResourceLocation fluidAntimatterStill = new ResourceLocation(Mod.MODID, "block/fluid/antimatter_still");
-        public static final ResourceLocation fluidDirtFlowing = new ResourceLocation(Mod.MODID, "block/fluid/dirt_flowing");
-        public static final ResourceLocation fluidDirtStill = new ResourceLocation(Mod.MODID, "block/fluid/dirt_still");
+        public static final ResourceLocation fluidAntimatterFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antimatter_flowing");
+        public static final ResourceLocation fluidAntimatterStill = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antimatter_still");
+        public static final ResourceLocation fluidDirtFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/dirt_flowing");
+        public static final ResourceLocation fluidDirtStill = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/dirt_still");
     }
 
     public static class Mod {
@@ -104,6 +104,6 @@ public class Constants {
     }
 
     public static ResourceLocation rl(String path) {
-        return new ResourceLocation(Mod.MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(Mod.MODID, path);
     }
 }
