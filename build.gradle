@@ -1,80 +1,161 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "2.1.8"
-group = "com.teamdman.animus"
-archivesBaseName = "Animus-1.12"
+version = mod_version
+group = mod_group_id
 
-sourceCompatibility = targetCompatibility = '1.8'
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
+base {
+    archivesName = mod_id
 }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    version = forge_version
-    runDir = "run"
-    mappings = "${mappings_version}"
-    replace "@VERSION", project.version
-    replaceIn "Constants.java"
-    clientRunArgs += "--username=AnimusDev"
+    mappings channel: mapping_channel, version: mapping_version
+
+    // Automatically enable forge AccessTransformers if the file exists
+    // This allows you to use the `public`, `protected`, etc. keywords
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+        }
+
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        data {
+            workingDirectory project.file('run-data')
+
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
+    }
 }
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven { url "http://dvs1.progwml6.com/files/maven" } // JEI
-//    maven { url "http://tehnut.info/maven" } // BM rip
-    maven { url "https://github.com/TehNut/temporary-maven-thing/tree/master/maven" } // BM
-    maven { url "http://maven.tterrag.com/" } // TOP
-    maven { url "http://maven.covers1624.net" } // RF
-    maven { url "http://maven.blamejared.com/" } // CT
-    maven { url "https://minecraft.curseforge.com/api/maven/" } // TC
-    maven { url = "https://minecraft.curseforge.com/api/maven/" }
-    maven { url = "http://maven.thiakil.com" }
-    maven { url = "http://maven.ic2.player.to" } // IC2
+    maven {
+        // JEI
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // Curios
+        name = "Thehippomaster"
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        // Patchouli
+        name = "BlameJared"
+        url = "https://maven.blamejared.com"
+    }
+    maven {
+        // CurseForge Maven (for Blood Magic)
+        name = "CurseForge"
+        url = "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    mavenLocal()
 }
+
 dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    def jei_version="4.15.0.293"
-    deobfCompile "mezz.jei:jei_1.12.2:${jei_version}"
+    // Blood Magic - via CurseForge Maven (File ID 4779711 = BloodMagic-1.20.1-3.3.2-44)
+    implementation fg.deobf("curse.maven:blood-magic-224791:4779711")
 
-    def hwyla_version="1.8.26-B41_1.12.2"
-//    deobfCompile "mcp.mobius.waila:Hwyla:${hwyla_version}"
+    // JEI - compile only for development
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
-    def guideapi_version="1.12-2.1.8-63"
-//    deobfCompile "info.amerifrance.guideapi:Guide-API:${guideapi_version}"
+    // Curios - for bauble integration
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 
-    def bloodmagic_version="1.12.2-2.4.3-105"
-//    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:${bloodmagic_version}"
-    compile fileTree(dir: "libs", include: ["*.jar"])
-
-    def crafttweaker_version="1.12-4.1.20.576"
-    compile "CraftTweaker2:CraftTweaker2-MC1120-Main:${crafttweaker_version}"
-
-    compile "net.industrial-craft:industrialcraft-2:2.8.+"
+    // Patchouli - for documentation books
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 }
 
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            minecraft_version: minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            forge_version: forge_version,
+            forge_version_range: forge_version_range,
+            loader_version_range: loader_version_range,
+            mod_id: mod_id,
+            mod_name: mod_name,
+            mod_license: mod_license,
+            mod_version: mod_version,
+            mod_authors: mod_authors,
+            mod_description: mod_description
+    ]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml']) {
+        expand replaceProperties
     }
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
-//jar {
-//    manifest {
-//        attributes 'FMLAT': 'animus_at.cfg'
-//    }
-//}
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_id,
+                'Specification-Vendor'    : mod_authors,
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : mod_authors,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
+    finalizedBy 'reobfJar'
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
