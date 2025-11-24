@@ -24,7 +24,7 @@ public class AnimusConfig {
         SPEC = BUILDER.build();
     }
 
-    public static void register() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SPEC);
+    public static void register(ModLoadingContext context) {
+        context.registerConfig(ModConfig.Type.COMMON, SPEC);
     }
 }
