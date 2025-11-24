@@ -1,67 +1,47 @@
 package com.teamdman.animus.blocks;
 
-import WayofTime.bloodmagic.block.IBMBlock;
-import WayofTime.bloodmagic.client.IVariantProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.data.worldgen.features.TreeFeatures;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import org.jetbrains.annotations.Nullable;
 
-import com.teamdman.animus.registry.AnimusBlocks;
-import com.teamdman.animus.world.generation.BloodTreeGenerator;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+/**
+ * Blood Sapling - grows into blood trees
+ * Note: Tree generation requires world gen features to be set up
+ */
+public class BlockBloodSapling extends SaplingBlock {
 
-import java.util.Random;
-
-public class BlockBloodSapling extends BlockSapling implements IVariantProvider, IBMBlock {
-
-	 private BloodTreeGenerator treeGenerator;
-	
-	public BlockBloodSapling() {
-		super();
-		this.treeGenerator =  new BloodTreeGenerator(true);
-		this.setDefaultState(this.getDefaultState().withProperty(STAGE, 0));
-		setSoundType(SoundType.PLANT);		
-	}
-	
-    @SideOnly(Side.CLIENT)
-    public void initModel() {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-    }	
-	
-	
-	@Override
-	public ItemBlock getItem() {
-		return new ItemBlock(AnimusBlocks.BLOCKBLOODSAPLING);
-	}
-	
-    @Override
-    public void generateTree(World world, BlockPos pos, IBlockState state, Random rand) {
-        if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, pos)) return;
-        if (world.isRemote) {
-            return;
-        }
-
-        world.setBlockToAir(pos);
-//		TODO: Enable
-//        if(!treeGenerator.growTree(world, rand, pos)) {
-//            world.setBlockState(pos, state, 4);
-//        }
+    public BlockBloodSapling() {
+        super(new BloodTreeGrower(), BlockBehaviour.Properties.of()
+            .noCollission()
+            .randomTicks()
+            .strength(0.0F)
+            .sound(SoundType.GRASS)
+        );
     }
-    
-	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-		list.add(new ItemStack(this, 1, 0));
-	}  
-    
+
+    /**
+     * Tree grower for blood trees
+     * TODO: Implement proper blood tree feature once world gen is set up
+     */
+    private static class BloodTreeGrower extends AbstractTreeGrower {
+        @Nullable
+        @Override
+        protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean hasFlowers) {
+            // TODO: Return custom blood tree feature
+            // For now, return null to prevent crashes
+            // You'll need to create a custom tree feature in world gen
+            return null;
+        }
+    }
 }
