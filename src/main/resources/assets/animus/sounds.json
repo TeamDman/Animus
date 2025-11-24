@@ -1,6 +1,0 @@
-{
-	"ghostly": {"category:": "block", "sounds":[{"name": "animus:ghostly", "stream": false}]},
-	"naturesleech": {"category:": "block", "sounds":[{"name": "animus:naturesleech", "stream": false}]},	
-	"vengefulspiritambient": {"category:": "block", "sounds":[{"name": "animus:vengefulspiritambient", "stream": false}]}
-}
-

@@ -1,6 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "animus:blocks/blockbloodsapling"
-  }
-}
