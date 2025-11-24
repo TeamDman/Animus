@@ -1,57 +1,42 @@
 package com.teamdman.animus;
 
-import com.teamdman.animus.client.gui.GuiHandler;
-import com.teamdman.animus.handlers.AnimusSounds;
-import com.teamdman.animus.handlers.EventHandler;
-import com.teamdman.animus.proxy.CommonProxy;
 import com.teamdman.animus.registry.*;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Mod(modid = Constants.Mod.MODID, name = Constants.Mod.NAME, version = Constants.Mod.VERSION, dependencies = Constants.Mod.DEPEND)
+@Mod(Constants.Mod.MODID)
 public class Animus {
-	@Mod.Instance(Constants.Mod.MODID)
-	public static Animus instance;
-	public static boolean thaumcraftLoaded = false;
-	
-	@SidedProxy(clientSide = "com.teamdman.animus.proxy.ClientProxy", serverSide = "com.teamdman.animus.proxy.ServerProxy")
-	public static CommonProxy proxy;
-	//	public static CreativeTabs tabMain = BloodMagic.TAB_BM;
-	public static final CreativeTabs tabMain = new CreativeTabs(Constants.Mod.MODID) {
-		@Override
-		public ItemStack createIcon() {
-			return AnimusItems.ALTARDIVINER.getDefaultInstance();
-		}
-	};
+    public static final Logger LOGGER = LogManager.getLogger();
+    public static Animus instance;
 
-	@Mod.EventHandler
-	public void preinit(FMLPreInitializationEvent event) {
-		AnimusPotions.init();
-		AnimusTiles.init();
-		AnimusEntities.init();
-		AnimusRecipes.init();
-		proxy.preInit(event);
-		MinecraftForge.EVENT_BUS.register(new EventHandler());
-		thaumcraftLoaded = Loader.isModLoaded("thaumcraft");
-	}
+    public Animus() {
+        instance = this;
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-	@Mod.EventHandler
-	public void init(FMLInitializationEvent event) {
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-		AnimusSounds.init();
-		proxy.init(event);
-	}
+        // Register all deferred registers
+        AnimusBlocks.BLOCKS.register(modEventBus);
+        AnimusItems.ITEMS.register(modEventBus);
+        AnimusBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        AnimusFluids.FLUID_TYPES.register(modEventBus);
+        AnimusFluids.FLUIDS.register(modEventBus);
+        AnimusMobEffects.MOB_EFFECTS.register(modEventBus);
+        AnimusSounds.SOUNDS.register(modEventBus);
+        AnimusCreativeTabs.CREATIVE_TABS.register(modEventBus);
 
-	@Mod.EventHandler
-	public void postinit(FMLPostInitializationEvent event) {
-		proxy.postInit(event);
-	}
+        // Register event listeners
+        modEventBus.addListener(this::commonSetup);
+
+        LOGGER.info("Animus mod loading...");
+    }
+
+    private void commonSetup(final net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) {
+        LOGGER.info("Animus common setup");
+        event.enqueueWork(() -> {
+            // Register rituals here
+            // Register other things that need to happen during setup
+        });
+    }
 }
