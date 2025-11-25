@@ -116,11 +116,10 @@ public class ItemKamaBound extends ItemKama {
                 continue;
             }
 
-            // Calculate life essence (default 500, half for babies)
-            int lifeEssence = 500;
+            // Calculate life essence
             // TODO: Use Blood Magic's entity sacrifice values when API is available
-            // EntityType<?> entityType = target.getType();
-            // lifeEssence = BloodMagicAPI.getEntitySacrificeValue(entityType);
+            // For now, use default of 500 (half for babies)
+            int lifeEssence = 500;
 
             if (target.isBaby()) {
                 lifeEssence /= 2;
@@ -158,19 +157,33 @@ public class ItemKamaBound extends ItemKama {
 
     /**
      * Finds a nearby Blood Altar and fills it with life essence
-     * TODO: Integrate with Blood Magic's altar system
      */
     private boolean findAndFillAltar(Level level, LivingEntity sacrificingEntity, int amount, boolean efficient) {
-        // TODO: Implement Blood Magic altar finding and filling
-        // This is a placeholder that will need to use Blood Magic's API:
-        // IBloodAltar altar = PlayerSacrificeHelper.getAltar(level, sacrificingEntity.blockPosition());
-        // if (altar == null) return false;
-        // if (altar.getCurrentBlood() + amount > altar.getCapacity()) return false;
-        // altar.sacrificialDaggerCall(amount, true);
-        // altar.startCycle();
-        // return true;
+        if (efficient) {
+            // Efficient mode - direct altar check
+            wayoftime.bloodmagic.altar.IBloodAltar altar =
+                wayoftime.bloodmagic.util.helper.PlayerSacrificeHelper.getAltar(level, sacrificingEntity.blockPosition());
 
-        return false; // Placeholder
+            if (altar == null) {
+                return false;
+            }
+
+            if (altar.getCurrentBlood() + amount > altar.getCapacity()) {
+                return false;
+            }
+
+            altar.sacrificialDaggerCall(amount, true);
+            altar.startCycle();
+            return true;
+        } else {
+            // Standard mode - use Blood Magic's helper which searches for altars
+            return wayoftime.bloodmagic.util.helper.PlayerSacrificeHelper.findAndFillAltar(
+                level,
+                sacrificingEntity,
+                amount,
+                true
+            );
+        }
     }
 
     @Override
