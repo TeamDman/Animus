@@ -3,7 +3,7 @@
   "defaults": {
     "model": "cross",
     "textures": {
-      "cross": "animus:blocks/blockbloodsapling"
+      "cross": "animus:block/blockbloodsapling"
     }
   },
   "variants": {
@@ -53,13 +53,13 @@
     "normal": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "animus:blocks/blockbloodsapling"
+        "layer0": "animus:block/blockbloodsapling"
       }
     },
     "inventory": {
       "parent": "item/generated",
       "textures": {
-        "layer0": "animus:blocks/blockbloodsapling"
+        "layer0": "animus:block/blockbloodsapling"
       }
     }
   }

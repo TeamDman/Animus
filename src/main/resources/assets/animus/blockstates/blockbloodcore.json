@@ -9,8 +9,8 @@
       "west": "#side",
       "up": "#end",
       "down": "#end",
-      "end": "animus:blocks/blockbloodcoreheart",
-      "side": "animus:blocks/blockbloodcore"
+      "end": "animus:block/blockbloodcoreheart",
+      "side": "animus:block/blockbloodcore"
     },
     "model": "cube",
     "uvlock": true

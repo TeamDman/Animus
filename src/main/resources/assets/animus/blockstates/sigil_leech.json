@@ -8,12 +8,12 @@
     "active": {
       "false": {
         "textures": {
-          "layer0": "animus:items/itemsigilleech_deactivated"
+          "layer0": "animus:item/itemsigilleech_deactivated"
         }
       },
       "true": {
         "textures": {
-          "layer0": "animus:items/itemsigilleech_activated"
+          "layer0": "animus:item/itemsigilleech_activated"
         }
       }
     }

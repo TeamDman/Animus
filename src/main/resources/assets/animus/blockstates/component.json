@@ -8,32 +8,32 @@
     "type": {
       "reagent_builder": {
         "textures": {
-          "layer0": "animus:items/reagentbuilder"
+          "layer0": "animus:item/reagentbuilder"
         }
       },
       "reagent_chains": {
         "textures": {
-          "layer0": "animus:items/reagentchains"
+          "layer0": "animus:item/reagentchains"
         }
       },
       "reagent_consumption": {
         "textures": {
-          "layer0": "animus:items/reagentconsumption"
+          "layer0": "animus:item/reagentconsumption"
         }
       },
       "reagent_leech": {
         "textures": {
-          "layer0": "animus:items/reagentleech"
+          "layer0": "animus:item/reagentleech"
         }
       },
       "reagent_storm": {
         "textures": {
-          "layer0": "animus:items/reagentstorm"
+          "layer0": "animus:item/reagentstorm"
         }
       },
       "reagent_transposition": {
         "textures": {
-          "layer0": "animus:items/reagenttransposition"
+          "layer0": "animus:item/reagenttransposition"
         }
       }
     }

@@ -8,12 +8,12 @@
     "active": {
       "false": {
         "textures": {
-          "layer0": "animus:items/sigil_transposition_deactivated"
+          "layer0": "animus:item/sigil_transposition_deactivated"
         }
       },
       "true": {
         "textures": {
-          "layer0": "animus:items/sigil_transposition_activated"
+          "layer0": "animus:item/sigil_transposition_activated"
         }
       }
     }

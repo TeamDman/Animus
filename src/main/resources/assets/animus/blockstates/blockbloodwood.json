@@ -9,8 +9,8 @@
       "west": "#side",
       "up": "#end",
       "down": "#end",
-      "end": "animus:blocks/blockbloodwoodcore",
-      "side": "animus:blocks/blockbloodwood"
+      "end": "animus:block/blockbloodwoodcore",
+      "side": "animus:block/blockbloodwood"
     },
     "model": "cube",
     "uvlock": true
