@@ -15,5 +15,9 @@ public class AnimusSounds {
     public static final RegistryObject<SoundEvent> NATURESLEECH = SOUNDS.register("naturesleech",
         () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "naturesleech")));
 
+    // Blood Core awakening sound
+    public static final RegistryObject<SoundEvent> AWAKEN_CORE = SOUNDS.register("awaken_core",
+        () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "awaken_core")));
+
     // Additional sounds can be registered here
 }

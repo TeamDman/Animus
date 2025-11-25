@@ -2,9 +2,11 @@ package com.teamdman.animus.blocks;
 
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
 import com.teamdman.animus.registry.AnimusBlockEntities;
+import com.teamdman.animus.registry.AnimusSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -65,6 +67,10 @@ public class BlockBloodCore extends Block implements EntityBlock {
 
                 // Send feedback to player
                 if (newSpreading) {
+                    // Play awakening sound when activating
+                    level.playSound(null, pos, AnimusSounds.AWAKEN_CORE.get(),
+                        SoundSource.BLOCKS, 1.0f, 1.0f);
+
                     player.displayClientMessage(
                         Component.literal("Blood Core: Spreading enabled")
                             .withStyle(ChatFormatting.DARK_RED),

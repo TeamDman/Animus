@@ -83,5 +83,11 @@
   "text.component.animus.ticket.unmaking": "Unmaking",
   "text.component.animus.ticket.apple": "Blood Apple",
   "text.component.animus.ticket.chains": "Chains",
-  "text.component.animus.ticket.steadfast": "Steadfast Heart"
+  "text.component.animus.ticket.steadfast": "Steadfast Heart",
+
+  "_comment": "Subtitles",
+  "animus.subtitle.awaken_core": "Blood Core awakens",
+  "animus.subtitle.naturesleech": "Nature's Leech drains",
+  "animus.subtitle.ghostly": "Ghostly sound",
+  "animus.subtitle.vengefulspiritambient": "Vengeful spirit whispers"
 }

@@ -1,0 +1,26 @@
+{
+  "naturesleech": {
+    "subtitle": "animus.subtitle.naturesleech",
+    "sounds": [
+      "animus:naturesleech"
+    ]
+  },
+  "awaken_core": {
+    "subtitle": "animus.subtitle.awaken_core",
+    "sounds": [
+      "animus:awaken_core"
+    ]
+  },
+  "ghostly": {
+    "subtitle": "animus.subtitle.ghostly",
+    "sounds": [
+      "animus:ghostly"
+    ]
+  },
+  "vengefulspiritambient": {
+    "subtitle": "animus.subtitle.vengefulspiritambient",
+    "sounds": [
+      "animus:vengefulspiritambient"
+    ]
+  }
+}
