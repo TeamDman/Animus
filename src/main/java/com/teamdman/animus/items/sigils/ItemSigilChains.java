@@ -38,10 +38,13 @@ public class ItemSigilChains extends AnimusSigilBase {
             return InteractionResult.PASS;
         }
 
-        // TODO: Check if sigil is bound to player
-        // TODO: Check if player has enough LP
+        // Check if sigil is bound to the player
+        var binding = getBinding(stack);
+        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+            return InteractionResult.FAIL;
+        }
 
-        // Consume LP
+        // Consume LP and check if player has enough
         SoulNetwork network = NetworkHelper.getSoulNetwork(player);
         SoulTicket ticket = new SoulTicket(
             Component.translatable(Constants.Localizations.Text.TICKET_CHAINS),

@@ -1,5 +1,6 @@
 package com.teamdman.animus;
 
+import com.teamdman.animus.config.AnimusConfig;
 import com.teamdman.animus.registry.*;
 import com.teamdman.animus.worldgen.AnimusTreeDecoratorTypes;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +19,7 @@ public class Animus {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register config
-        AnimusConfig.register(ModLoadingContext.get());
+        AnimusConfig.register();
 
         // Register all deferred registers
         AnimusBlocks.BLOCKS.register(modEventBus);

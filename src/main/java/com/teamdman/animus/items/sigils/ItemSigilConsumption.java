@@ -37,6 +37,12 @@ public class ItemSigilConsumption extends AnimusSigilBase {
             return InteractionResultHolder.pass(stack);
         }
 
+        // Check if sigil is bound to a player
+        var binding = getBinding(stack);
+        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+            return InteractionResultHolder.fail(stack);
+        }
+
         // Raycast to find target block
         Vec3 eyePos = player.getEyePosition();
         Vec3 lookVec = player.getLookAngle();
@@ -51,19 +57,22 @@ public class ItemSigilConsumption extends AnimusSigilBase {
         ));
 
         if (result.getType() != HitResult.Type.MISS && result.getType() == HitResult.Type.BLOCK) {
-            // TODO: Check if player has binding
-            // TODO: Consume LP from soul network
+            // Consume LP from soul network
             SoulNetwork network = NetworkHelper.getSoulNetwork(player);
             SoulTicket ticket = new SoulTicket(
                 Component.translatable(Constants.Localizations.Text.TICKET_CONSUMPTION),
                 getLpUsed()
             );
 
+            var syphonResult = network.syphonAndDamage(player, ticket);
+            if (!syphonResult.isSuccess()) {
+                return InteractionResultHolder.fail(stack);
+            }
+
             // TODO: Implement BlockAntimatter.setBlockToAntimatter(level, result.getBlockPos(), player)
             // For now, placeholder:
             // EnumActionResult antimatterResult = BlockAntimatter.setBlockToAntimatter(level, result.getBlockPos(), player);
             // if (antimatterResult == EnumActionResult.SUCCESS) {
-            //     network.syphonAndDamage(player, ticket);
             //     return InteractionResultHolder.success(stack);
             // }
 

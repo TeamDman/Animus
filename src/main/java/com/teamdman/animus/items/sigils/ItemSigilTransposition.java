@@ -91,6 +91,12 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             return InteractionResult.PASS;
         }
 
+        // Check binding
+        var binding = getBinding(stack);
+        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+            return InteractionResult.FAIL;
+        }
+
         CompoundTag tag = stack.getOrCreateTag();
         BlockState clickedState = level.getBlockState(clickedPos);
 

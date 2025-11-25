@@ -36,8 +36,11 @@ public class ItemSigilStorm extends AnimusSigilBase {
             return InteractionResultHolder.pass(stack);
         }
 
-        // TODO: Check if player has binding
-        // TODO: Check if player has enough LP (500)
+        // Check binding
+        var binding = getBinding(stack);
+        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+            return InteractionResultHolder.fail(stack);
+        }
 
         // Raycast to find target position
         Vec3 eyePos = player.getEyePosition();
@@ -55,6 +58,18 @@ public class ItemSigilStorm extends AnimusSigilBase {
         if (result.getType() != HitResult.Type.MISS) {
             BlockPos pos = result.getBlockPos();
 
+            // Consume LP from soul network
+            wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
+            wayoftime.bloodmagic.core.data.SoulTicket ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
+                net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_STORM),
+                getLpUsed()
+            );
+
+            var syphonResult = network.syphonAndDamage(player, ticket);
+            if (!syphonResult.isSuccess()) {
+                return InteractionResultHolder.fail(stack);
+            }
+
             // Spawn lightning
             LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
             if (lightning != null) {
@@ -65,7 +80,6 @@ public class ItemSigilStorm extends AnimusSigilBase {
 
             // TODO: Implement fish spawning if targeting water
             // TODO: Implement area damage if raining
-            // TODO: Consume LP from soul network
 
             return InteractionResultHolder.success(stack);
         }

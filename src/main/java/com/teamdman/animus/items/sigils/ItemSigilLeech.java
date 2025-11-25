@@ -58,6 +58,12 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
 
         Player player = (Player) entity;
 
+        // Check if sigil is bound to the player
+        var binding = getBinding(stack);
+        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+            return;
+        }
+
         // Only consume food if player can eat or is sneaking
         if (!player.canEat(false) && !player.isShiftKeyDown()) {
             return;
@@ -66,6 +72,20 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
         // Try to eat from inventory first, then from the world
         if (eatFromInventory(player) || eatFromSurroundingWorld(player, level)) {
             if (!level.isClientSide) {
+                // Consume LP
+                var network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
+                var ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
+                    net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_LEECH),
+                    getLpUsed()
+                );
+
+                var syphonResult = network.syphonAndDamage(player, ticket);
+                if (!syphonResult.isSuccess()) {
+                    // Not enough LP - deactivate sigil
+                    setActivatedState(stack, false);
+                    return;
+                }
+
                 // Restore hunger
                 int foodAmount = 1 + level.random.nextInt(3);
                 player.getFoodData().eat(foodAmount, 2.0F);

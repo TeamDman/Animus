@@ -66,6 +66,12 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
             return InteractionResultHolder.pass(stack);
         }
 
+        // Check binding
+        var binding = getBinding(stack);
+        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+            return InteractionResultHolder.fail(stack);
+        }
+
         if (player.isShiftKeyDown()) {
             // Toggle activation
             setActivatedState(stack, !getActivated(stack));
@@ -84,16 +90,19 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
                     Block block = blockItem.getBlock();
                     BlockState state = block.defaultBlockState();
 
-                    // Place the block
-                    level.setBlock(placePos, state, 3);
-
-                    // Consume LP
+                    // Consume LP first
                     SoulNetwork network = NetworkHelper.getSoulNetwork(player);
                     SoulTicket ticket = new SoulTicket(
                         Component.translatable(Constants.Localizations.Text.TICKET_BUILDER),
                         getLpUsed()
                     );
-                    network.syphonAndDamage(player, ticket);
+                    var result = network.syphonAndDamage(player, ticket);
+                    if (!result.isSuccess()) {
+                        return InteractionResultHolder.fail(stack);
+                    }
+
+                    // Place the block
+                    level.setBlock(placePos, state, 3);
 
                     // Consume item
                     buildStack.shrink(1);
@@ -124,6 +133,12 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
         if (isUnusable(stack) || level.isClientSide) {
             return InteractionResult.PASS;
+        }
+
+        // Check binding
+        var binding = getBinding(stack);
+        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+            return InteractionResult.FAIL;
         }
 
         ItemStack buildStack = getStackToUse(hand, player);
@@ -179,16 +194,19 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
             } while (!level.isEmptyBlock(placePos) && placePos.getY() > level.getMinBuildHeight());
 
             if (level.isEmptyBlock(placePos) && !buildStack.isEmpty()) {
-                BlockState state = block.defaultBlockState();
-                level.setBlock(placePos, state, 3);
-
-                // Consume LP
+                // Consume LP first
                 SoulNetwork network = NetworkHelper.getSoulNetwork(player);
                 SoulTicket ticket = new SoulTicket(
                     Component.translatable(Constants.Localizations.Text.TICKET_BUILDER),
                     getLpUsed()
                 );
-                network.syphonAndDamage(player, ticket);
+                var result = network.syphonAndDamage(player, ticket);
+                if (!result.isSuccess()) {
+                    return InteractionResult.FAIL;
+                }
+
+                BlockState state = block.defaultBlockState();
+                level.setBlock(placePos, state, 3);
 
                 buildStack.shrink(1);
                 if (buildStack.isEmpty() && hand == InteractionHand.MAIN_HAND) {

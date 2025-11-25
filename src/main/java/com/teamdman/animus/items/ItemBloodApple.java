@@ -1,6 +1,7 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.config.AnimusConfig;
 import com.teamdman.animus.util.AnimusUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -33,9 +34,6 @@ public class ItemBloodApple extends Item {
     private final AreaDescriptor altarRange = new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11);
     private BlockPos offsetCached = BlockPos.ZERO;
 
-    // TODO: Move to config system - AnimusConfig.general.bloodPerApple
-    private static final int BLOOD_PER_APPLE = 50;
-
     public ItemBloodApple() {
         super(new Item.Properties()
             .food(FOOD_PROPERTIES)
@@ -48,9 +46,11 @@ public class ItemBloodApple extends Item {
             // Search for nearby altar in range
             TileAltar altar = AnimusUtil.getNearbyAltar(level, altarRange, entity.blockPosition(), offsetCached);
 
+            int bloodAmount = AnimusConfig.COMMON.general.bloodPerApple.get();
+
             if (altar != null) {
                 // Altar found - add blood to altar (doubled like in original)
-                altar.sacrificialDaggerCall(BLOOD_PER_APPLE * 2, true);
+                altar.sacrificialDaggerCall(bloodAmount * 2, true);
                 offsetCached = altar.getBlockPos();
             } else {
                 // No altar nearby - add blood to player's soul network
@@ -58,7 +58,7 @@ public class ItemBloodApple extends Item {
                 network.add(
                     new SoulTicket(
                         Component.translatable(Constants.Localizations.Text.TICKET_APPLE),
-                        BLOOD_PER_APPLE
+                        bloodAmount
                     ),
                     10000
                 );
