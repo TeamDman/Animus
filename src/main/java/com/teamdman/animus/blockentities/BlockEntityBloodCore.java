@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class BlockEntityBloodCore extends BlockEntity {
 
-    private int delayCounter = 1200; // 1 minute (60 seconds * 20 ticks)
-    private boolean spreading = false;
-    private boolean removed = false;
+    private volatile int delayCounter = 1200; // 1 minute (60 seconds * 20 ticks)
+    private volatile boolean spreading = false;
+    private volatile boolean removed = false;
 
     public BlockEntityBloodCore(BlockPos pos, BlockState state) {
         super(AnimusBlockEntities.BLOOD_CORE.get(), pos, state);
