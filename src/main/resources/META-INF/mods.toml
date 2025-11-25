@@ -10,7 +10,7 @@ displayName="${mod_name}"
 updateJSONURL="https://github.com/TeamDman/Animus/releases"
 displayURL="https://github.com/TeamDman/Animus"
 logoFile="logo.png"
-credits="ProfHugo for the NoDamI (No Damage Immunity) implementation"
+credits="WayOfTime for Blood Magic"
 authors="${mod_authors}"
 description='''${mod_description}'''
 
