@@ -14,8 +14,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.FakePlayer;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
+import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.types.RitualType;
+import wayoftime.bloodmagic.soul.EnumDemonWillType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.List;
@@ -68,9 +70,9 @@ public class RitualSteadfastHeart extends Ritual {
 
         BlockPos pos = mrs.getBlockPos();
 
-        // TODO: Integrate with demon will system when available
-        // EnumDemonWillType type = EnumDemonWillType.STEADFAST;
-        // double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+        // Get current steadfast demon will
+        EnumDemonWillType type = EnumDemonWillType.STEADFAST;
+        double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
         // Get all players in range
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
@@ -118,12 +120,12 @@ public class RitualSteadfastHeart extends Ritual {
         );
         network.syphon(ticket, false);
 
-        // TODO: Integrate demon will generation when available
-        // double drainAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2, 10));
-        // double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-        // if (filled > 0) {
-        //     WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-        // }
+        // Generate steadfast demon will
+        double drainAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2, 10));
+        double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
+        if (filled > 0) {
+            WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
+        }
     }
 
     @Override

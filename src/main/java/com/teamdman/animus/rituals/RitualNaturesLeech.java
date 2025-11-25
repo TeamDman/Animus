@@ -19,8 +19,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.common.tile.TileAltar;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
+import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.types.RitualType;
+import wayoftime.bloodmagic.soul.EnumDemonWillType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.Objects;
@@ -69,9 +71,9 @@ public class RitualNaturesLeech extends Ritual {
         Random random = level.random;
         BlockPos pos = ritualStone.getBlockPos();
 
-        // TODO: Integrate with demon will system when available
-        // EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
-        // will = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+        // Get current corrosive demon will
+        EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
+        will = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
         if (network == null) {
@@ -144,12 +146,12 @@ public class RitualNaturesLeech extends Ritual {
         // Add blood to altar
         tileAltar.sacrificialDaggerCall(eaten * 50, true);
 
-        // TODO: Integrate demon will generation when available
-        // int drainAmount = 1 + random.nextInt(5);
-        // double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-        // if (filled > 0) {
-        //     WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-        // }
+        // Generate corrosive demon will
+        int drainAmount = 1 + random.nextInt(5);
+        double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
+        if (filled > 0) {
+            WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
+        }
     }
 
     public static boolean isConsumable(Block block) {
