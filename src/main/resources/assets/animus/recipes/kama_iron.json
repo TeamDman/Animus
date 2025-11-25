@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "animus:kama_iron"
+  },
+  "pattern": [
+    " a ",
+    "a a",
+    "  b"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "a": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "b": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    }
+  }
+}

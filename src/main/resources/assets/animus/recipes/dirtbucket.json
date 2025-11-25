@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "forge:bucketfilled"
+  },
+  "pattern": [
+    "abc"
+  ],
+  "type": "animus:dirtbucket",
+  "key": {
+    "a": {
+      "item": "minecraft:redstone_torch"
+    },
+    "b": {
+      "item": "animus:sigil_consumption"
+    },
+    "c": {
+      "item": "minecraft:bucket"
+    }
+  }
+}
