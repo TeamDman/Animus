@@ -1,5 +1,6 @@
 package com.teamdman.animus.blockentities;
 
+import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusBlockEntities;
@@ -50,6 +51,9 @@ public class BlockEntityBloodCore extends BlockEntity {
             // More corrosive will = slower growth (up to 2x slower at 100+ will)
             double willMultiplier = 1.0 + Math.min(corrosiveWill / 100.0, 1.0);
             delayCounter = (int)(baseTimer * willMultiplier);
+
+            Animus.LOGGER.debug("Blood Core at {} timer expired. Spreading: {}, Next interval: {} ticks",
+                worldPosition, spreading, delayCounter);
 
             // Attempt to spread blood trees
             if (spreading) {
@@ -118,34 +122,59 @@ public class BlockEntityBloodCore extends BlockEntity {
         int searchRadius = AnimusConfig.bloodCore.treeSpreadRadius.get();
         int maxAttempts = 10;
 
+        Animus.LOGGER.debug("Blood Core at {} attempting to spread trees (radius: {})", worldPosition, searchRadius);
+
         for (int attempt = 0; attempt < maxAttempts; attempt++) {
             // Pick a random position in range
             int xOffset = random.nextInt(searchRadius * 2 + 1) - searchRadius;
             int zOffset = random.nextInt(searchRadius * 2 + 1) - searchRadius;
+
+            // Skip if too close to the blood core (within 3 blocks)
+            double distance = Math.sqrt(xOffset * xOffset + zOffset * zOffset);
+            if (distance < 3.0) {
+                continue;
+            }
+
             BlockPos targetPos = worldPosition.offset(xOffset, 0, zOffset);
 
             // Find the top solid block
             targetPos = level.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, targetPos);
-            BlockPos saplingPos = targetPos.above();
 
             // Check if we can place a sapling here
             BlockState groundState = level.getBlockState(targetPos);
+            BlockPos saplingPos = targetPos.above();
             BlockState aboveState = level.getBlockState(saplingPos);
 
-            // Must be on grass/dirt and have air above
+            // If the heightmap gave us a grass plant, the actual ground is below it
+            if (groundState.is(Blocks.GRASS) || groundState.is(Blocks.TALL_GRASS)) {
+                saplingPos = targetPos; // The grass position is where we'll place the sapling
+                targetPos = targetPos.below(); // The actual ground is below
+                groundState = level.getBlockState(targetPos);
+                aboveState = level.getBlockState(saplingPos); // This is the grass we'll replace
+            }
+
+            Animus.LOGGER.debug("Attempt {}: target={}, ground={}, above={}",
+                attempt, targetPos, groundState.getBlock(), aboveState.getBlock());
+
+            // Must be on grass/dirt and have air/grass above (can replace grass)
             if ((groundState.is(Blocks.GRASS_BLOCK) || groundState.is(Blocks.DIRT)) &&
-                aboveState.isAir()) {
+                (aboveState.isAir() || aboveState.is(Blocks.GRASS) || aboveState.is(Blocks.TALL_GRASS))) {
 
                 // Check if there's enough space for a tree (at least 7 blocks high)
+                // Can replace air, grass, and tall grass
                 boolean hasSpace = true;
                 for (int y = 0; y < 7; y++) {
-                    if (!level.getBlockState(saplingPos.above(y)).isAir()) {
+                    BlockState checkState = level.getBlockState(saplingPos.above(y));
+                    if (!checkState.isAir() && !checkState.is(Blocks.GRASS) && !checkState.is(Blocks.TALL_GRASS)) {
                         hasSpace = false;
+                        Animus.LOGGER.debug("  No space at y={}, block={}", y, checkState.getBlock());
                         break;
                     }
                 }
 
                 if (hasSpace) {
+                    Animus.LOGGER.info("Blood Core at {} spawning blood tree at {}", worldPosition, saplingPos);
+
                     // Place and immediately grow a blood sapling
                     level.setBlock(saplingPos, AnimusBlocks.BLOCK_BLOOD_SAPLING.get().defaultBlockState(), 3);
 
@@ -153,6 +182,9 @@ public class BlockEntityBloodCore extends BlockEntity {
                     BlockState saplingState = level.getBlockState(saplingPos);
                     if (saplingState.getBlock() instanceof net.minecraft.world.level.block.SaplingBlock saplingBlock) {
                         saplingBlock.advanceTree(level, saplingPos, saplingState, random);
+                        Animus.LOGGER.debug("  Tree grown successfully");
+                    } else {
+                        Animus.LOGGER.warn("  Failed to grow tree - block is not a sapling: {}", saplingState.getBlock());
                     }
 
                     // Consume some corrosive will for the growth
