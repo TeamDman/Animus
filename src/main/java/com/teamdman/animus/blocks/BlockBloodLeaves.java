@@ -30,17 +30,13 @@ public class BlockBloodLeaves extends LeavesBlock {
             .isValidSpawn((state, world, pos, type) -> false)
             .isSuffocating((state, world, pos) -> false)
             .isViewBlocking((state, world, pos) -> false)
-            .ignitedByLava()
+            // Blood leaves are non-flammable
         );
     }
 
     // Note: In 1.20.1, item drops are handled through loot tables
-    // Create a loot table at: data/animus/loot_tables/blocks/blood_leaves.json
-    // For now, leaves will drop themselves when broken with shears (handled by LeavesBlock)
+    // Loot table at: data/animus/loot_tables/blocks/blood_leaves.json
 
     // Note: Render layer (cutout_mipped) is set via ItemBlockRenderTypes in client setup
     // See: ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_LEAVES.get(), RenderType.cutoutMipped());
-
-    // Note: Flammability is now handled through BlockBehaviour.Properties or data packs
-    // In 1.12.2 this was: Blocks.FIRE.setFireInfo(this, 30, 60);
 }

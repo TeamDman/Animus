@@ -14,11 +14,7 @@ public class BlockBloodWood extends Block {
         super(BlockBehaviour.Properties.of()
             .strength(2.0F)
             .sound(SoundType.WOOD)
-            .ignitedByLava()
+            // Blood wood is non-flammable
         );
     }
-
-    // Note: Flammability is now handled through BlockBehaviour.Properties or data packs
-    // In 1.12.2 this was: Blocks.FIRE.setFireInfo(this, 5, 5);
-    // In 1.20.1, implement FlammableBlockRegistry or use tags
 }

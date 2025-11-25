@@ -36,7 +36,7 @@ public class BlockBloodCore extends Block implements EntityBlock {
             .strength(10.0F)
             .sound(SoundType.WOOD)
             .randomTicks()
-            .ignitedByLava()
+            // Blood core is non-flammable
         );
         this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
     }
