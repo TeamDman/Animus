@@ -20,15 +20,15 @@ public class AnimusItems {
     }
 
     // Block Items
-    public static final RegistryObject<Item> BLOCK_BLOOD_WOOD = registerBlockItem("blockbloodwood", AnimusBlocks.BLOCK_BLOOD_WOOD);
-    public static final RegistryObject<Item> BLOCK_BLOOD_SAPLING = registerBlockItem("blockbloodsapling", AnimusBlocks.BLOCK_BLOOD_SAPLING);
-    public static final RegistryObject<Item> BLOCK_BLOOD_CORE = registerBlockItem("blockbloodcore", AnimusBlocks.BLOCK_BLOOD_CORE);
+    public static final RegistryObject<Item> BLOCK_BLOOD_WOOD = registerBlockItem("blood_wood", AnimusBlocks.BLOCK_BLOOD_WOOD);
+    public static final RegistryObject<Item> BLOCK_BLOOD_SAPLING = registerBlockItem("blood_sapling", AnimusBlocks.BLOCK_BLOOD_SAPLING);
+    public static final RegistryObject<Item> BLOCK_BLOOD_CORE = registerBlockItem("blood_core", AnimusBlocks.BLOCK_BLOOD_CORE);
 
     // Regular Items
-    public static final RegistryObject<Item> BLOOD_APPLE = ITEMS.register("bloodapple",
+    public static final RegistryObject<Item> BLOOD_APPLE = ITEMS.register("blood_apple",
         ItemBloodApple::new);
 
-    public static final RegistryObject<Item> FRAGMENT_HEALING = ITEMS.register("fragmenthealing",
+    public static final RegistryObject<Item> FRAGMENT_HEALING = ITEMS.register("fragment_healing",
         ItemFragmentHealing::new);
 
     // TODO: Port remaining items:

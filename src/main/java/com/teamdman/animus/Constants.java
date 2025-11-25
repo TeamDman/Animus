@@ -3,11 +3,20 @@ package com.teamdman.animus;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.ModList;
 
-import java.util.Locale;
-
 public class Constants {
+    private Constants() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static class Localizations {
+        private Localizations() {
+            throw new UnsupportedOperationException("Utility class");
+        }
+
         public static class Text {
+            private Text() {
+                throw new UnsupportedOperationException("Utility class");
+            }
             public static final String DIVINER_MISSING = "text.component.animus.diviner.missing";
             public static final String DIVINER_OBSTRUCTED = "text.component.animus.diviner.obstructed";
             public static final String TRANSPOSITION_CLEARED = "text.component.animus.transposition.cleared";
@@ -31,6 +40,10 @@ public class Constants {
         }
 
         public static class Tooltips {
+            private Tooltips() {
+                throw new UnsupportedOperationException("Utility class");
+            }
+
             public static final String DIVINER_FIRST = "tooltip.animus.diviner.first";
             public static final String DIVINER_SECOND = "tooltip.animus.diviner.second";
             public static final String DIVINER_THIRD = "tooltip.animus.diviner.third";
@@ -51,14 +64,22 @@ public class Constants {
     }
 
     public static class Misc {
-        public static final String CRAFTING_KEYBINDING = "keybindingcrafting";
-        public static final String CRAFTING_DIRTBUCKET = "dirtbucketcrafting";
+        private Misc() {
+            throw new UnsupportedOperationException("Utility class");
+        }
+
+        public static final String CRAFTING_KEYBINDING = "keybinding_crafting";
+        public static final String CRAFTING_DIRTBUCKET = "dirt_bucket_crafting";
         public static final String DAMAGE_ABSOLUTE = "animus.absolute";
-        public static final String FLUID_ANTIMATTER = "blockfluidantimatter";
-        public static final String FLUID_DIRT = "blockfluiddirt";
+        public static final String FLUID_ANTIMATTER = "fluid_antimatter";
+        public static final String FLUID_DIRT = "fluid_dirt";
     }
 
     public static class Resource {
+        private Resource() {
+            throw new UnsupportedOperationException("Utility class");
+        }
+
         public static final ResourceLocation fluidAntimatterFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antimatter_flowing");
         public static final ResourceLocation fluidAntimatterStill = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antimatter_still");
         public static final ResourceLocation fluidDirtFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/dirt_flowing");
@@ -66,8 +87,12 @@ public class Constants {
     }
 
     public static class Mod {
+        private Mod() {
+            throw new UnsupportedOperationException("Utility class");
+        }
+
         public static final String MODID = "animus";
-        public static final String DOMAIN = MODID.toLowerCase(Locale.ENGLISH) + ":";
+        public static final String DOMAIN = MODID + ":";
         public static final String NAME = "Animus";
         public static final String VERSION = ModList.get()
             .getModContainerById(MODID)
@@ -76,6 +101,10 @@ public class Constants {
     }
 
     public static class NBT {
+        private NBT() {
+            throw new UnsupportedOperationException("Utility class");
+        }
+
         public static final String CULLING_BUFFER_WILL = "willBuffer";
         public static final String SOUL_DATA = "mobdata";
         public static final String SOUL_ENTITY_ID = "id";
@@ -85,6 +114,10 @@ public class Constants {
     }
 
     public static class Rituals {
+        private Rituals() {
+            throw new UnsupportedOperationException("Utility class");
+        }
+
         public static final String CULLING = "ritualCulling";
         public static final String ENTROPY = "ritualEntropy";
         public static final String HUNGER = "ritualHunger";
@@ -99,6 +132,10 @@ public class Constants {
     }
 
     public static class Sigils {
+        private Sigils() {
+            throw new UnsupportedOperationException("Utility class");
+        }
+
         public static final String BUILDER = "builder";
         public static final String CHAINS = "chains";
         public static final String CONSUMPTION = "consumption";

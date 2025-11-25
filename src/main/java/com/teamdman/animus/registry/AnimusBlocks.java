@@ -11,13 +11,13 @@ public class AnimusBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.Mod.MODID);
 
     // Basic blocks
-    public static final RegistryObject<Block> BLOCK_BLOOD_WOOD = BLOCKS.register("blockbloodwood",
+    public static final RegistryObject<Block> BLOCK_BLOOD_WOOD = BLOCKS.register("blood_wood",
         BlockBloodWood::new);
 
-    public static final RegistryObject<Block> BLOCK_BLOOD_SAPLING = BLOCKS.register("blockbloodsapling",
+    public static final RegistryObject<Block> BLOCK_BLOOD_SAPLING = BLOCKS.register("blood_sapling",
         BlockBloodSapling::new);
 
-    public static final RegistryObject<Block> BLOCK_BLOOD_CORE = BLOCKS.register("blockbloodcore",
+    public static final RegistryObject<Block> BLOCK_BLOOD_CORE = BLOCKS.register("blood_core",
         BlockBloodCore::new);
 
     // TODO: Port remaining blocks:
