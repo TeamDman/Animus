@@ -20,9 +20,11 @@ public class AnimusBlocks {
     public static final RegistryObject<Block> BLOCK_BLOOD_CORE = BLOCKS.register("blood_core",
         BlockBloodCore::new);
 
+    public static final RegistryObject<Block> BLOCK_BLOOD_LEAVES = BLOCKS.register("blood_leaves",
+        BlockBloodLeaves::new);
+
     // TODO: Port remaining blocks:
     // - BlockAntimatter
-    // - BlockBloodLeaves
     // - BlockFluidAntimatter (via AnimusFluids)
     // - BlockFluidDirt (via AnimusFluids)
 }

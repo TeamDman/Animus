@@ -1,6 +1,6 @@
 {
   "parent": "block/leaves",
   "textures": {
-    "all": "animus:block/bloodleaves"
+    "all": "animus:block/blockbloodleaves"
   }
 }

@@ -1,0 +1,46 @@
+package com.teamdman.animus.blocks;
+
+import com.teamdman.animus.registry.AnimusBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootParams;
+
+import java.util.List;
+
+/**
+ * Blood Leaves block - decorative leaves that drop blood saplings
+ * Original: 1.12.2 BlockLeaves based
+ * Ported: 1.20.1 LeavesBlock based
+ */
+public class BlockBloodLeaves extends LeavesBlock {
+
+    public BlockBloodLeaves() {
+        super(BlockBehaviour.Properties.of()
+            .strength(0.2F)
+            .sound(SoundType.GRASS)
+            .randomTicks()
+            .noOcclusion()
+            .isValidSpawn((state, world, pos, type) -> false)
+            .isSuffocating((state, world, pos) -> false)
+            .isViewBlocking((state, world, pos) -> false)
+            .ignitedByLava()
+        );
+    }
+
+    // Note: In 1.20.1, item drops are handled through loot tables
+    // Create a loot table at: data/animus/loot_tables/blocks/blood_leaves.json
+    // For now, leaves will drop themselves when broken with shears (handled by LeavesBlock)
+
+    // Note: Render layer (cutout_mipped) is set via ItemBlockRenderTypes in client setup
+    // See: ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_LEAVES.get(), RenderType.cutoutMipped());
+
+    // Note: Flammability is now handled through BlockBehaviour.Properties or data packs
+    // In 1.12.2 this was: Blocks.FIRE.setFireInfo(this, 30, 60);
+}
