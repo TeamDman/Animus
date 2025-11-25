@@ -1,6 +1,7 @@
 package com.teamdman.animus;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fml.ModList;
 
 import java.util.Locale;
 
@@ -68,7 +69,10 @@ public class Constants {
         public static final String MODID = "animus";
         public static final String DOMAIN = MODID.toLowerCase(Locale.ENGLISH) + ":";
         public static final String NAME = "Animus";
-        public static final String VERSION = "3.0.0";
+        public static final String VERSION = ModList.get()
+            .getModContainerById(MODID)
+            .map(mc -> mc.getModInfo().getVersion().toString())
+            .orElse("UNKNOWN");
     }
 
     public static class NBT {
