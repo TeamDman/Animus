@@ -4,6 +4,7 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -11,15 +12,17 @@ import net.minecraftforge.registries.RegistryObject;
 public class AnimusItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.Mod.MODID);
 
+    /**
+     * Helper method to register a BlockItem for a given block
+     */
+    private static RegistryObject<Item> registerBlockItem(String name, RegistryObject<? extends Block> block) {
+        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+
     // Block Items
-    public static final RegistryObject<Item> BLOCK_BLOOD_WOOD = ITEMS.register("blockbloodwood",
-        () -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_WOOD.get(), new Item.Properties()));
-
-    public static final RegistryObject<Item> BLOCK_BLOOD_SAPLING = ITEMS.register("blockbloodsapling",
-        () -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_SAPLING.get(), new Item.Properties()));
-
-    public static final RegistryObject<Item> BLOCK_BLOOD_CORE = ITEMS.register("blockbloodcore",
-        () -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_CORE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> BLOCK_BLOOD_WOOD = registerBlockItem("blockbloodwood", AnimusBlocks.BLOCK_BLOOD_WOOD);
+    public static final RegistryObject<Item> BLOCK_BLOOD_SAPLING = registerBlockItem("blockbloodsapling", AnimusBlocks.BLOCK_BLOOD_SAPLING);
+    public static final RegistryObject<Item> BLOCK_BLOOD_CORE = registerBlockItem("blockbloodcore", AnimusBlocks.BLOCK_BLOOD_CORE);
 
     // Regular Items
     public static final RegistryObject<Item> BLOOD_APPLE = ITEMS.register("bloodapple",
