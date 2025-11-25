@@ -194,14 +194,14 @@ public class AnimusConfig {
 
             treeSpreadRadius = builder
                 .comment("Radius in blocks for blood tree spreading")
-                .defineInRange("treeSpreadRadius", 8, 1, 32);
+                .defineInRange("treeSpreadRadius", 16, 1, 32);
 
             treeSpreadInterval = builder
                 .comment(
                     "Base interval in ticks between tree spreading attempts",
-                    "Default: 1200 (60 seconds)"
+                    "Default: 600 (30 seconds)"
                 )
-                .defineInRange("treeSpreadInterval", 1200, 200, 12000);
+                .defineInRange("treeSpreadInterval", 600, 200, 12000);
 
             builder.pop();
         }
