@@ -50,8 +50,8 @@ public class Constants {
             public static final String DIVINER_THIRD = "tooltip.animus.diviner.third";
             public static final String HEALING_FLAVOUR = "tooltip.animus.healing.flavour";
             public static final String HEALING_INFO = "tooltip.animus.healing.info";
-            public static final String KAMA_FIRST = "tooltip.animus.kama_bound.first";
-            public static final String KAMA_SECOND = "tooltip.animus.kama_bound.second";
+            public static final String PILUM_FIRST = "tooltip.animus.pilum_bound.first";
+            public static final String PILUM_SECOND = "tooltip.animus.pilum_bound.second";
             public static final String KEY = "tooltip.animus.key";
             public static final String OWNER = "tooltip.animus.currentOwner";
             public static final String SIGIL_BUILDER_FLAVOUR = "tooltip.animus.sigil.builder.flavour";

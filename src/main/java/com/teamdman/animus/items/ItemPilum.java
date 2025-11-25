@@ -1,40 +1,34 @@
 package com.teamdman.animus.items;
 
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
 /**
- * Kama - An AOE melee weapon
- * Attacks all entities in an area based on the tool material's harvest level
+ * Pilum - A Roman-style javelin with AOE melee capabilities
+ * Can be thrown like a trident but also damages nearby entities when used in melee
  */
-public class ItemKama extends SwordItem {
+public class ItemPilum extends TridentItem {
     protected final Tier tier;
 
-    public ItemKama(Tier tier) {
-        super(tier, 3, -2.4F, new Properties());
+    public ItemPilum(Tier tier) {
+        super(new Properties()
+            .durability(tier.getUses())
+        );
         this.tier = tier;
     }
 
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if (entity instanceof LivingEntity livingEntity) {
-            hurtEnemy(stack, livingEntity, player);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        // Call parent for standard trident behavior
+        super.hurtEnemy(stack, target, attacker);
+
         Level level = target.level();
 
         if (level.isClientSide) {
@@ -55,10 +49,11 @@ public class ItemKama extends SwordItem {
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, region);
 
         if (entities.isEmpty()) {
-            return false;
+            return true;
         }
 
-        float damage = getDamage();
+        // Get damage from tier
+        float damage = 6.0F + tier.getAttackDamageBonus();
 
         for (LivingEntity entity : entities) {
             // Skip players
@@ -66,18 +61,25 @@ public class ItemKama extends SwordItem {
                 continue;
             }
 
-            // Skip null or same entity
-            if (entity == null || entity == attacker) {
+            // Skip null, dead, or same entity
+            if (entity == null || entity == attacker || entity == target) {
                 continue;
             }
 
             // Damage the entity
             entity.hurt(level.damageSources().mobAttack(attacker), damage);
 
-            // Damage the kama
+            // Damage the pilum
             stack.hurtAndBreak(1, attacker, (e) -> e.broadcastBreakEvent(attacker.getUsedItemHand()));
         }
 
-        return false;
+        return true;
+    }
+
+    /**
+     * Get the tier of this pilum
+     */
+    public Tier getTier() {
+        return tier;
     }
 }

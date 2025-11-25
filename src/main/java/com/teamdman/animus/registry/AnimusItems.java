@@ -58,14 +58,14 @@ public class AnimusItems {
         ItemSigilTransposition::new);
 
     // Tools & Weapons
-    public static final RegistryObject<Item> KAMA_IRON = ITEMS.register("kama_iron",
-        () -> new ItemKama(Tiers.IRON));
+    public static final RegistryObject<Item> PILUM_IRON = ITEMS.register("pilum_iron",
+        () -> new ItemPilum(Tiers.IRON));
 
-    public static final RegistryObject<Item> KAMA_DIAMOND = ITEMS.register("kama_diamond",
-        () -> new ItemKama(Tiers.DIAMOND));
+    public static final RegistryObject<Item> PILUM_DIAMOND = ITEMS.register("pilum_diamond",
+        () -> new ItemPilum(Tiers.DIAMOND));
 
-    public static final RegistryObject<Item> KAMA_BOUND = ITEMS.register("kama_bound",
-        ItemKamaBound::new);
+    public static final RegistryObject<Item> PILUM_BOUND = ITEMS.register("pilum_bound",
+        ItemPilumBound::new);
 
     // Crafting Components
     public static final RegistryObject<Item> KEY_BINDING = ITEMS.register("key_binding",

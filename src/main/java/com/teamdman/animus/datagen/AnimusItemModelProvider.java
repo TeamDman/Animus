@@ -35,10 +35,10 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.KEY_BINDING, "item/itemkeybinding");
         simpleItem(AnimusItems.MOBSOUL, "item/itemmobsoul");
 
-        // Kamas
-        simpleItem(AnimusItems.KAMA_IRON, "item/itemkamairon");
-        simpleItem(AnimusItems.KAMA_DIAMOND, "item/itemkamadiamond");
-        simpleItem(AnimusItems.KAMA_BOUND, "item/itemkamabound");
+        // Pilums (Roman Javelins)
+        simpleItem(AnimusItems.PILUM_IRON, "item/itempilumiron");
+        simpleItem(AnimusItems.PILUM_DIAMOND, "item/itempilumdiamond");
+        simpleItem(AnimusItems.PILUM_BOUND, "item/itempilumbound");
 
         // Sigils
         simpleItem(AnimusItems.SIGIL_BUILDER, "item/reagentbuilder");

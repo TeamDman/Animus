@@ -1,11 +1,9 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,15 +17,13 @@ import net.minecraftforge.common.util.FakePlayer;
 import java.util.List;
 
 /**
- * Bound Kama of Feasting - AOE weapon that sacrifices low-health entities to fill nearby Blood Altars
+ * Bound Pilum of Feasting - A Roman javelin that sacrifices low-health entities to fill nearby Blood Altars
  * Kills entities below 0.5 health and adds their life essence to nearby altars
  * If no altars are found or entities can't be killed, does AOE damage instead
  */
-public class ItemKamaBound extends ItemKama {
+public class ItemPilumBound extends ItemPilum {
 
-    // Damage source is created per-level in 1.20.1, not static
-
-    public ItemKamaBound() {
+    public ItemPilumBound() {
         super(Tiers.DIAMOND);
     }
 
@@ -63,7 +59,7 @@ public class ItemKamaBound extends ItemKama {
     }
 
     /**
-     * Damages all entities in range with khopesh damage
+     * Damages all entities in range
      */
     private boolean checkAndDamage(double x, double y, double z, Level level, LivingEntity attacker) {
         int range = 5;
@@ -76,7 +72,7 @@ public class ItemKamaBound extends ItemKama {
             return false;
         }
 
-        float damage = getDamage();
+        float damage = 6.0F + getTier().getAttackDamageBonus();
 
         for (LivingEntity target : entities) {
             if (target == null || target.isDeadOrDying() || !(attacker instanceof Player) || attacker == target) {
@@ -131,7 +127,6 @@ public class ItemKamaBound extends ItemKama {
 
             // Try to find and fill altar
             // TODO: Integrate with Blood Magic's PlayerSacrificeHelper
-            // For now, this is a placeholder
             if (findAndFillAltar(level, attacker, lifeEssence, efficient)) {
                 // Play sound effect
                 level.playSound(
@@ -188,8 +183,8 @@ public class ItemKamaBound extends ItemKama {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.KAMA_FIRST));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.KAMA_SECOND));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_FIRST));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_SECOND));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 
