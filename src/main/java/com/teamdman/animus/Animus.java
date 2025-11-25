@@ -11,9 +11,9 @@ import org.apache.logging.log4j.Logger;
 public class Animus {
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public Animus(IEventBus modEventBus, ModLoadingContext modLoadingContext) {
+    public Animus(IEventBus modEventBus) {
         // Register config
-        AnimusConfig.register(modLoadingContext);
+        AnimusConfig.register(ModLoadingContext.get());
 
         // Register all deferred registers
         AnimusBlocks.BLOCKS.register(modEventBus);
