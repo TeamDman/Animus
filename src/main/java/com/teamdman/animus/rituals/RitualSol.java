@@ -38,8 +38,8 @@ import java.util.stream.IntStream;
 public class RitualSol extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
-    private static final ResourceLocation BLOOD_LIGHT_SIGIL = new ResourceLocation("bloodmagic", "bloodlightsigil");
-    private static final ResourceLocation BLOOD_LIGHT_BLOCK = new ResourceLocation("bloodmagic", "bloodlight");
+    private static final ResourceLocation BLOOD_LIGHT_SIGIL = ResourceLocation.fromNamespaceAndPath("bloodmagic", "bloodlightsigil");
+    private static final ResourceLocation BLOOD_LIGHT_BLOCK = ResourceLocation.fromNamespaceAndPath("bloodmagic", "bloodlight");
 
     public RitualSol() {
         super(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL);

@@ -17,13 +17,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.common.tile.TileAltar;
+import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
-// TODO: Demon will system not available in Blood Magic 1.20.1
-// import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-// import wayoftime.bloodmagic.soul.EnumDemonWillType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.Objects;
@@ -74,11 +73,9 @@ public class RitualNaturesLeech extends Ritual {
         Random random = new Random(randomSource.nextLong());
         BlockPos pos = ritualStone.getMasterBlockPos();
 
-        // TODO: Demon will system not available in Blood Magic 1.20.1
         // Get current corrosive demon will
-        // EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
-        // will = WorldDemonWillHandler.getCurrentWill(level, pos, type);
-        will = 100;
+        EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
+        will = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
         if (network == null) {
@@ -151,13 +148,12 @@ public class RitualNaturesLeech extends Ritual {
         // Add blood to altar
         tileAltar.sacrificialDaggerCall(eaten * 50, true);
 
-        // TODO: Demon will system not available in Blood Magic 1.20.1
         // Generate corrosive demon will
-        // int drainAmount = 1 + random.nextInt(5);
-        // double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-        // if (filled > 0) {
-        //     WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-        // }
+        int drainAmount = 1 + random.nextInt(5);
+        double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
+        if (filled > 0) {
+            WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
+        }
     }
 
     public static boolean isConsumable(Block block) {

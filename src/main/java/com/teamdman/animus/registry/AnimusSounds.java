@@ -13,7 +13,7 @@ public class AnimusSounds {
 
     // Nature's Leech sound effect
     public static final RegistryObject<SoundEvent> NATURESLEECH = SOUNDS.register("naturesleech",
-        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Constants.Mod.MODID, "naturesleech")));
+        () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "naturesleech")));
 
     // Additional sounds can be registered here
 }

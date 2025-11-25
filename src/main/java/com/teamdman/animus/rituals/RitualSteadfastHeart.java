@@ -12,13 +12,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.FakePlayer;
+import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
-// TODO: Demon will system not available in Blood Magic 1.20.1
-// import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-// import wayoftime.bloodmagic.soul.EnumDemonWillType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.List;
@@ -71,11 +70,9 @@ public class RitualSteadfastHeart extends Ritual {
 
         BlockPos pos = mrs.getMasterBlockPos();
 
-        // TODO: Demon will system not available in Blood Magic 1.20.1
         // Get current steadfast demon will
-        // EnumDemonWillType type = EnumDemonWillType.STEADFAST;
-        // double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
-        double currentAmount = 0;
+        EnumDemonWillType type = EnumDemonWillType.STEADFAST;
+        double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
         // Get all players in range
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
@@ -123,13 +120,12 @@ public class RitualSteadfastHeart extends Ritual {
         );
         network.syphon(ticket, false);
 
-        // TODO: Demon will system not available in Blood Magic 1.20.1
         // Generate steadfast demon will
-        // double drainAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2, 10));
-        // double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-        // if (filled > 0) {
-        //     WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-        // }
+        double drainAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2, 10));
+        double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
+        if (filled > 0) {
+            WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
+        }
     }
 
     @Override

@@ -20,14 +20,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
 import wayoftime.bloodmagic.common.tile.TileAltar;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
-// TODO: Demon will system not available in Blood Magic 1.20.1
-// import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-// import wayoftime.bloodmagic.soul.EnumDemonWillType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.*;
@@ -123,11 +122,9 @@ public class RitualCulling extends Ritual {
             return;
         }
 
-        // TODO: Demon will system not available in Blood Magic 1.20.1
         // Get current destructive demon will
-        // EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;
-        // double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
-        double currentAmount = 0;
+        EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;
+        double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
         // Find nearby altar
         TileAltar tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
@@ -257,15 +254,14 @@ public class RitualCulling extends Ritual {
                 getRefreshCost() * entityCount
             ), false);
 
-            // TODO: Demon will system not available in Blood Magic 1.20.1
             // Generate destructive demon will (3% chance per cycle)
-            // double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2, 10));
-            // if (rand.nextInt(30) == 0) {
-            //     double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-            //     if (filled > 0) {
-            //         WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-            //     }
-            // }
+            double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2, 10));
+            if (rand.nextInt(30) == 0) {
+                double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
+                if (filled > 0) {
+                    WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
+                }
+            }
         }
     }
 
