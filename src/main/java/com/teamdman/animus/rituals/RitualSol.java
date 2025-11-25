@@ -4,6 +4,7 @@ import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
@@ -27,14 +29,17 @@ import java.util.stream.IntStream;
  * Ritual of Sol - Places light sources in dark areas
  * Takes blocks from chest above ritual and places them in dark spots (light level < 8)
  * with solid ground below
+ * Supports Blood Magic's Sigil of Blood Light for placing blood lights without consuming the sigil
  * Activation Cost: 1000 LP
- * Refresh Cost: 1 LP
+ * Refresh Cost: 1 LP (regular blocks) or 1 LP (blood light)
  * Refresh Time: 5 ticks
  */
 @RitualRegister(Constants.Rituals.SOL)
 public class RitualSol extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
+    private static final ResourceLocation BLOOD_LIGHT_SIGIL = new ResourceLocation("bloodmagic", "bloodlightsigil");
+    private static final ResourceLocation BLOOD_LIGHT_BLOCK = new ResourceLocation("bloodmagic", "bloodlight");
 
     public RitualSol() {
         super(new RitualType(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL));
@@ -104,9 +109,11 @@ public class RitualSol extends Ritual {
         // Place the block
         level.setBlock(placePos.get(), stateToPlace, 3);
 
-        // Extract item from chest (unless it's a special item that doesn't consume)
-        // TODO: Check for Blood Magic's Blood Light sigil
-        if (stack.getItem() instanceof BlockItem) {
+        // Check if this is a blood light sigil (doesn't consume)
+        boolean isBloodLightSigil = isBloodLightSigil(stack);
+
+        // Extract item from chest (unless it's the blood light sigil)
+        if (!isBloodLightSigil && stack.getItem() instanceof BlockItem) {
             handler.extractItem(slot, 1, false);
         }
 
@@ -119,6 +126,17 @@ public class RitualSol extends Ritual {
     }
 
     /**
+     * Check if an item is the Blood Light sigil
+     */
+    private boolean isBloodLightSigil(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+        ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        return BLOOD_LIGHT_SIGIL.equals(itemId);
+    }
+
+    /**
      * Check if an item can be used by this ritual
      */
     private boolean isOkayToUse(ItemStack stack) {
@@ -126,8 +144,12 @@ public class RitualSol extends Ritual {
             return false;
         }
 
-        // TODO: Check for Blood Magic's Sigil of Blood Light
-        // For now, just check if it's a block item
+        // Check for Blood Magic's Sigil of Blood Light
+        if (isBloodLightSigil(stack)) {
+            return true;
+        }
+
+        // Check if it's a block item
         return stack.getItem() instanceof BlockItem;
     }
 
@@ -135,8 +157,15 @@ public class RitualSol extends Ritual {
      * Get the block state to place
      */
     private BlockState getStateToUse(ItemStack stack) {
-        // TODO: Check for Blood Magic's Sigil of Blood Light and return BLOOD_LIGHT block
-        // For now, just get the block from the item
+        // Check for Blood Magic's Sigil of Blood Light
+        if (isBloodLightSigil(stack)) {
+            Block bloodLight = ForgeRegistries.BLOCKS.getValue(BLOOD_LIGHT_BLOCK);
+            if (bloodLight != null && bloodLight != Blocks.AIR) {
+                return bloodLight.defaultBlockState();
+            }
+        }
+
+        // Get the block from the item
         if (stack.getItem() instanceof BlockItem blockItem) {
             return blockItem.getBlock().defaultBlockState();
         }
