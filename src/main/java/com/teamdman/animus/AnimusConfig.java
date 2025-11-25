@@ -176,11 +176,43 @@ public class AnimusConfig {
         BLACKLIST
     }
 
+    // Blood Core Configuration
+    public static class BloodCore {
+        public final ForgeConfigSpec.IntValue leafRegrowthSpeed;
+        public final ForgeConfigSpec.IntValue treeSpreadRadius;
+        public final ForgeConfigSpec.IntValue treeSpreadInterval;
+
+        public BloodCore(ForgeConfigSpec.Builder builder) {
+            builder.push("bloodCore");
+
+            leafRegrowthSpeed = builder
+                .comment(
+                    "Ticks between leaf regrowth attempts (when spreading is enabled)",
+                    "Lower = faster regrowth. Default: 100 (5 seconds)"
+                )
+                .defineInRange("leafRegrowthSpeed", 100, 20, 6000);
+
+            treeSpreadRadius = builder
+                .comment("Radius in blocks for blood tree spreading")
+                .defineInRange("treeSpreadRadius", 8, 1, 32);
+
+            treeSpreadInterval = builder
+                .comment(
+                    "Base interval in ticks between tree spreading attempts",
+                    "Default: 1200 (60 seconds)"
+                )
+                .defineInRange("treeSpreadInterval", 1200, 200, 12000);
+
+            builder.pop();
+        }
+    }
+
     // Config instances
     public static General general;
     public static Rituals rituals;
     public static Sigils sigils;
     public static HurtCooldown hurtCooldown;
+    public static BloodCore bloodCore;
 
     static {
         BUILDER.comment("Animus Configuration").push("animus");
@@ -189,6 +221,7 @@ public class AnimusConfig {
         rituals = new Rituals(BUILDER);
         sigils = new Sigils(BUILDER);
         hurtCooldown = new HurtCooldown(BUILDER);
+        bloodCore = new BloodCore(BUILDER);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

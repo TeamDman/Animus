@@ -2,7 +2,12 @@ package com.teamdman.animus.blocks;
 
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
 import com.teamdman.animus.registry.AnimusBlockEntities;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -12,12 +17,17 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Blood Core block - has a tile entity for special functionality
+ * Shows different texture when active (spreading enabled)
  */
 public class BlockBloodCore extends Block implements EntityBlock {
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public BlockBloodCore() {
         super(BlockBehaviour.Properties.of()
@@ -26,12 +36,52 @@ public class BlockBloodCore extends Block implements EntityBlock {
             .randomTicks()
             .ignitedByLava()
         );
+        this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(ACTIVE);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BlockEntityBloodCore(pos, state);
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
+                                 InteractionHand hand, BlockHitResult hit) {
+        if (!level.isClientSide && hand == InteractionHand.MAIN_HAND) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof BlockEntityBloodCore bloodCore) {
+                // Toggle spreading
+                boolean newSpreading = !bloodCore.isSpreading();
+                bloodCore.setSpreading(newSpreading);
+
+                // Update block state to reflect active status
+                level.setBlock(pos, state.setValue(ACTIVE, newSpreading), 3);
+
+                // Send feedback to player
+                if (newSpreading) {
+                    player.displayClientMessage(
+                        Component.literal("Blood Core: Spreading enabled")
+                            .withStyle(ChatFormatting.DARK_RED),
+                        true
+                    );
+                } else {
+                    player.displayClientMessage(
+                        Component.literal("Blood Core: Spreading disabled")
+                            .withStyle(ChatFormatting.GRAY),
+                        true
+                    );
+                }
+
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return super.use(state, level, pos, player, hand, hit);
     }
 
     // Static server ticker to avoid lambda allocation
