@@ -96,7 +96,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
         if (!getActivated(stack)) {
             // First click - select block to move
-            if (AnimusConfig.sigils.transpositionMovesUnbreakables < 2
+            if (AnimusConfig.sigils.transpositionMovesUnbreakables.get() < 2
                 && clickedState.getDestroySpeed(level, clickedPos) == -1) {
                 return InteractionResult.PASS;
             }
@@ -116,7 +116,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             BlockPos newPos = clickedPos.relative(face);
 
             // Check if old block is still movable
-            if (AnimusConfig.sigils.transpositionMovesUnbreakables == 0
+            if (AnimusConfig.sigils.transpositionMovesUnbreakables.get() == 0
                 && level.getBlockState(oldPos).getDestroySpeed(level, oldPos) == -1) {
                 tag.putLong(POS_KEY, 0);
                 level.playSound(null, newPos, SoundEvents.SHIELD_BLOCK, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -138,7 +138,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
                 );
 
                 var result = network.syphonAndDamage(player, ticket);
-                if (!result.getValue()) {
+                if (!result.isSuccess()) {
                     return InteractionResult.FAIL;
                 }
 

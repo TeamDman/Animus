@@ -18,7 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.ritual.types.RitualType;
+import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.Optional;
@@ -42,7 +42,7 @@ public class RitualSol extends Ritual {
     private static final ResourceLocation BLOOD_LIGHT_BLOCK = new ResourceLocation("bloodmagic", "bloodlight");
 
     public RitualSol() {
-        super(new RitualType(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL));
+        super(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL);
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
         addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
@@ -55,7 +55,7 @@ public class RitualSol extends Ritual {
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
-        BlockPos masterPos = mrs.getBlockPos();
+        BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {
             return;
@@ -186,10 +186,10 @@ public class RitualSol extends Ritual {
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
         for (int layer = 0; layer < 3; layer++) {
-            addRune(components, 2, layer, 2, RitualType.EnumRuneType.AIR);
-            addRune(components, -2, layer, 2, RitualType.EnumRuneType.AIR);
-            addRune(components, 2, layer, -2, RitualType.EnumRuneType.AIR);
-            addRune(components, -2, layer, -2, RitualType.EnumRuneType.AIR);
+            addRune(components, 2, layer, 2, EnumRuneType.AIR);
+            addRune(components, -2, layer, 2, EnumRuneType.AIR);
+            addRune(components, 2, layer, -2, EnumRuneType.AIR);
+            addRune(components, -2, layer, -2, EnumRuneType.AIR);
         }
     }
 

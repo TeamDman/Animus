@@ -11,10 +11,9 @@ public class AnimusSounds {
     public static final DeferredRegister<SoundEvent> SOUNDS =
         DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Constants.Mod.MODID);
 
-    // Sound events will be registered here
-    // Example pattern:
-    // public static final RegistryObject<SoundEvent> CUSTOM_SOUND = SOUNDS.register("custom_sound",
-    //     () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Constants.Mod.MODID, "custom_sound")));
+    // Nature's Leech sound effect
+    public static final RegistryObject<SoundEvent> NATURESLEECH = SOUNDS.register("naturesleech",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Constants.Mod.MODID, "naturesleech")));
 
-    // Placeholder for sounds to be ported
+    // Additional sounds can be registered here
 }

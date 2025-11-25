@@ -13,7 +13,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.ritual.types.RitualType;
+import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.function.Consumer;
@@ -30,7 +30,7 @@ public class RitualEntropy extends Ritual {
     public static final String CHEST_RANGE = "chest";
 
     public RitualEntropy() {
-        super(new RitualType(Constants.Rituals.ENTROPY, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENTROPY));
+        super(Constants.Rituals.ENTROPY, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENTROPY);
 
         addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
@@ -45,7 +45,7 @@ public class RitualEntropy extends Ritual {
         }
 
         int currentEssence = network.getCurrentEssence();
-        BlockPos masterPos = masterRitualStone.getBlockPos();
+        BlockPos masterPos = masterRitualStone.getMasterBlockPos();
 
         if (level.isClientSide) {
             return;
@@ -115,13 +115,13 @@ public class RitualEntropy extends Ritual {
                 if (x == 0 && z == 0) {
                     continue;
                 }
-                addRune(components, x, 0, z, RitualType.EnumRuneType.EARTH);
+                addRune(components, x, 0, z, EnumRuneType.EARTH);
             }
         }
-        addRune(components, -2, 0, -2, RitualType.EnumRuneType.EARTH);
-        addRune(components, -2, 0, 2, RitualType.EnumRuneType.EARTH);
-        addRune(components, 2, 0, -2, RitualType.EnumRuneType.EARTH);
-        addRune(components, 2, 0, 2, RitualType.EnumRuneType.EARTH);
+        addRune(components, -2, 0, -2, EnumRuneType.EARTH);
+        addRune(components, -2, 0, 2, EnumRuneType.EARTH);
+        addRune(components, 2, 0, -2, EnumRuneType.EARTH);
+        addRune(components, 2, 0, 2, EnumRuneType.EARTH);
     }
 
     @Override

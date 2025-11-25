@@ -31,6 +31,7 @@ public class Constants {
             public static final String TICKET_LUNA = "text.component.animus.ticket.luna";
             public static final String TICKET_BUILDER = "text.component.animus.ticket.builder";
             public static final String TICKET_CULLING = "text.component.animus.ticket.culling";
+            public static final String TICKET_CONSUMPTION = "text.component.animus.ticket.consumption";
             public static final String TICKET_LEECH = "text.component.animus.ticket.leech";
             public static final String TICKET_ELDRITCH = "text.component.animus.ticket.eldritch";
             public static final String TICKET_UNMAKING = "text.component.animus.ticket.unmaking";
@@ -118,17 +119,17 @@ public class Constants {
             throw new UnsupportedOperationException("Utility class");
         }
 
-        public static final String CULLING = "ritualCulling";
-        public static final String ENTROPY = "ritualEntropy";
-        public static final String HUNGER = "ritualHunger";
-        public static final String LEECH = "ritualNaturesLeech";
-        public static final String ELDRITCH = "ritualEldritchWill";
-        public static final String LUNA = "ritualLuna";
-        public static final String PEACE = "ritualPeace";
-        public static final String REGRESSION = "ritualRegression";
-        public static final String SOL = "ritualSol";
-        public static final String STEADFAST = "ritualSteadfastHeart";
-        public static final String UNMAKING = "ritualUnmaking";
+        public static final String CULLING = "ritual_culling";
+        public static final String ENTROPY = "ritual_entropy";
+        public static final String HUNGER = "ritual_hunger";
+        public static final String LEECH = "ritual_natures_leech";
+        public static final String ELDRITCH = "ritual_eldritch_will";
+        public static final String LUNA = "ritual_luna";
+        public static final String PEACE = "ritual_peace";
+        public static final String REGRESSION = "ritual_regression";
+        public static final String SOL = "ritual_sol";
+        public static final String STEADFAST = "ritual_steadfast_heart";
+        public static final String UNMAKING = "ritual_unmaking";
     }
 
     public static class Sigils {

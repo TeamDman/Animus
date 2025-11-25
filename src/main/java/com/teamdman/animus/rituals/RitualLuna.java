@@ -14,7 +14,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.ritual.types.RitualType;
+import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.function.Consumer;
@@ -32,7 +32,7 @@ public class RitualLuna extends Ritual {
     public static final String EFFECT_RANGE = "effect";
 
     public RitualLuna() {
-        super(new RitualType(Constants.Rituals.LUNA, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LUNA));
+        super(Constants.Rituals.LUNA, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LUNA);
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
         addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
@@ -46,7 +46,7 @@ public class RitualLuna extends Ritual {
         Level level = mrs.getWorldObj();
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
         int currentEssence = network.getCurrentEssence();
-        BlockPos masterPos = mrs.getBlockPos();
+        BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {
             return;
@@ -135,10 +135,10 @@ public class RitualLuna extends Ritual {
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
         for (int layer = 0; layer < 3; layer++) {
-            addRune(components, 2, layer, 2, RitualType.EnumRuneType.DUSK);
-            addRune(components, -2, layer, 2, RitualType.EnumRuneType.DUSK);
-            addRune(components, 2, layer, -2, RitualType.EnumRuneType.DUSK);
-            addRune(components, -2, layer, -2, RitualType.EnumRuneType.DUSK);
+            addRune(components, 2, layer, 2, EnumRuneType.DUSK);
+            addRune(components, -2, layer, 2, EnumRuneType.DUSK);
+            addRune(components, 2, layer, -2, EnumRuneType.DUSK);
+            addRune(components, -2, layer, -2, EnumRuneType.DUSK);
         }
     }
 

@@ -23,10 +23,11 @@ import net.minecraft.world.phys.AABB;
 import wayoftime.bloodmagic.common.tile.TileAltar;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+// TODO: Demon will system not available in Blood Magic 1.20.1
+// import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.ritual.types.RitualType;
-import wayoftime.bloodmagic.soul.EnumDemonWillType;
+import wayoftime.bloodmagic.ritual.EnumRuneType;
+// import wayoftime.bloodmagic.soul.EnumDemonWillType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.*;
@@ -46,9 +47,7 @@ public class RitualCulling extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public static final int amount = 200;
 
-    static final DamageSource culled = new DamageSource(
-        Level.damageSources().genericKill().typeHolder()
-    );
+    // Damage source is created per-level in 1.20.1, not static
 
     public final int maxWill = 100;
     public final Random rand = new Random();
@@ -60,7 +59,7 @@ public class RitualCulling extends Ritual {
     public HashMap<String, Double> willMap = new HashMap<>();
 
     public RitualCulling() {
-        super(new RitualType(Constants.Rituals.CULLING, 0, 50000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.CULLING));
+        super(Constants.Rituals.CULLING, 0, 50000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.CULLING);
 
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 21));
@@ -88,9 +87,9 @@ public class RitualCulling extends Ritual {
 
     @Override
     public boolean activateRitual(IMasterRitualStone ritualStone, Player player, UUID owner) {
-        double xCoord = ritualStone.getBlockPos().getX();
-        double yCoord = ritualStone.getBlockPos().getY();
-        double zCoord = ritualStone.getBlockPos().getZ();
+        double xCoord = ritualStone.getMasterBlockPos().getX();
+        double yCoord = ritualStone.getMasterBlockPos().getY();
+        double zCoord = ritualStone.getMasterBlockPos().getZ();
 
         if (player != null && player.level() instanceof ServerLevel serverLevel) {
             // Spawn lightning effect at ritual
@@ -103,7 +102,7 @@ public class RitualCulling extends Ritual {
                 0.5, 1.0, 0.5,
                 0.1
             );
-            player.level().playSound(null, ritualStone.getBlockPos(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.BLOCKS, 1.0F, 1.0F);
+            player.level().playSound(null, ritualStone.getMasterBlockPos(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
 
         return true;
@@ -118,21 +117,23 @@ public class RitualCulling extends Ritual {
 
         int currentEssence = network.getCurrentEssence();
         Level level = ritualStone.getWorldObj();
-        BlockPos pos = ritualStone.getBlockPos();
+        BlockPos pos = ritualStone.getMasterBlockPos();
 
         if (level.isClientSide) {
             return;
         }
 
+        // TODO: Demon will system not available in Blood Magic 1.20.1
         // Get current destructive demon will
-        EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;
-        double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+        // EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;
+        // double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+        double currentAmount = 0;
 
         // Find nearby altar
         TileAltar tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
         if (tileAltar == null) {
             if (AnimusConfig.rituals.cullingDebug.get()) {
-                System.out.println("Animus: [Ritual of Culling Debug]: No valid altar found within altar range for MRS at " + ritualStone.getBlockPos());
+                System.out.println("Animus: [Ritual of Culling Debug]: No valid altar found within altar range for MRS at " + ritualStone.getMasterBlockPos());
             }
             return;
         }
@@ -144,7 +145,7 @@ public class RitualCulling extends Ritual {
         List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, range);
 
         if (AnimusConfig.rituals.cullingDebug.get()) {
-            System.out.println("Animus: [Ritual of Culling Debug]: Starting Ritual perform for MRS at " + ritualStone.getBlockPos());
+            System.out.println("Animus: [Ritual of Culling Debug]: Starting Ritual perform for MRS at " + ritualStone.getMasterBlockPos());
         }
 
         // Kill primed TNT if configured
@@ -164,11 +165,11 @@ public class RitualCulling extends Ritual {
         if (currentEssence < getRefreshCost() * list.size()) {
             network.causeNausea();
             if (AnimusConfig.rituals.cullingDebug.get()) {
-                System.out.println("Animus: [Ritual of Culling Debug]: Culling MRS at " + ritualStone.getBlockPos() + " does not have sufficient LP from the owner");
+                System.out.println("Animus: [Ritual of Culling Debug]: Culling MRS at " + ritualStone.getMasterBlockPos() + " does not have sufficient LP from the owner");
             }
         } else {
             if (AnimusConfig.rituals.cullingDebug.get()) {
-                System.out.println("Animus: [Ritual of Culling Debug]: Starting culling for loop for MRS at " + ritualStone.getBlockPos());
+                System.out.println("Animus: [Ritual of Culling Debug]: Starting culling for loop for MRS at " + ritualStone.getMasterBlockPos());
             }
 
             for (LivingEntity livingEntity : list) {
@@ -193,7 +194,7 @@ public class RitualCulling extends Ritual {
                     livingEntity.setSilent(true);
 
                     if (AnimusConfig.rituals.cullingDebug.get()) {
-                        System.out.println("Animus: [Ritual of Culling Debug]: MRS at " + ritualStone.getBlockPos() + " Found entity, killing");
+                        System.out.println("Animus: [Ritual of Culling Debug]: MRS at " + ritualStone.getMasterBlockPos() + " Found entity, killing");
                     }
 
                     float damage = Float.MAX_VALUE;
@@ -205,11 +206,11 @@ public class RitualCulling extends Ritual {
                         livingEntity.setInvulnerable(false);
 
                         if (livingEntity instanceof WitherBoss wither) {
-                            wither.setInvulTime(0);
+                            wither.setInvulnerableTicks(0);
                         }
                     }
 
-                    result = livingEntity.hurt(culled, damage);
+                    result = livingEntity.hurt(level.damageSources().genericKill(), damage);
 
                     if (result) {
                         entityCount++;
@@ -256,14 +257,15 @@ public class RitualCulling extends Ritual {
                 getRefreshCost() * entityCount
             ), false);
 
+            // TODO: Demon will system not available in Blood Magic 1.20.1
             // Generate destructive demon will (3% chance per cycle)
-            double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2, 10));
-            if (rand.nextInt(30) == 0) {
-                double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-                if (filled > 0) {
-                    WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-                }
-            }
+            // double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2, 10));
+            // if (rand.nextInt(30) == 0) {
+            //     double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
+            //     if (filled > 0) {
+            //         WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
+            //     }
+            // }
         }
     }
 
@@ -279,42 +281,42 @@ public class RitualCulling extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        addRune(components, 1, 0, 1, RitualType.EnumRuneType.FIRE);
-        addRune(components, -1, 0, 1, RitualType.EnumRuneType.FIRE);
-        addRune(components, 1, 0, -1, RitualType.EnumRuneType.FIRE);
-        addRune(components, -1, 0, -1, RitualType.EnumRuneType.FIRE);
-        addRune(components, 2, -1, 2, RitualType.EnumRuneType.DUSK);
-        addRune(components, 2, -1, -2, RitualType.EnumRuneType.DUSK);
-        addRune(components, -2, -1, 2, RitualType.EnumRuneType.DUSK);
-        addRune(components, -2, -1, -2, RitualType.EnumRuneType.DUSK);
-        addRune(components, 0, -1, 2, RitualType.EnumRuneType.DUSK);
-        addRune(components, 2, -1, 0, RitualType.EnumRuneType.DUSK);
-        addRune(components, 0, -1, -2, RitualType.EnumRuneType.DUSK);
-        addRune(components, -2, -1, 0, RitualType.EnumRuneType.DUSK);
-        addRune(components, -3, -1, -3, RitualType.EnumRuneType.DUSK);
-        addRune(components, 3, -1, -3, RitualType.EnumRuneType.DUSK);
-        addRune(components, -3, -1, 3, RitualType.EnumRuneType.DUSK);
-        addRune(components, 3, -1, 3, RitualType.EnumRuneType.DUSK);
-        addRune(components, 2, -1, 4, RitualType.EnumRuneType.DUSK);
-        addRune(components, 4, -1, 2, RitualType.EnumRuneType.DUSK);
-        addRune(components, -2, -1, 4, RitualType.EnumRuneType.DUSK);
-        addRune(components, 4, -1, -2, RitualType.EnumRuneType.DUSK);
-        addRune(components, 2, -1, -4, RitualType.EnumRuneType.DUSK);
-        addRune(components, -4, -1, 2, RitualType.EnumRuneType.DUSK);
-        addRune(components, -2, -1, -4, RitualType.EnumRuneType.DUSK);
-        addRune(components, -4, -1, -2, RitualType.EnumRuneType.DUSK);
-        addRune(components, 1, 0, 4, RitualType.EnumRuneType.DUSK);
-        addRune(components, 4, 0, 1, RitualType.EnumRuneType.DUSK);
-        addRune(components, 1, 0, -4, RitualType.EnumRuneType.DUSK);
-        addRune(components, -4, 0, 1, RitualType.EnumRuneType.DUSK);
-        addRune(components, -1, 0, 4, RitualType.EnumRuneType.DUSK);
-        addRune(components, 4, 0, -1, RitualType.EnumRuneType.DUSK);
-        addRune(components, -1, 0, -4, RitualType.EnumRuneType.DUSK);
-        addRune(components, -4, 0, -1, RitualType.EnumRuneType.DUSK);
-        addRune(components, 4, 1, 0, RitualType.EnumRuneType.DUSK);
-        addRune(components, 0, 1, 4, RitualType.EnumRuneType.DUSK);
-        addRune(components, -4, 1, 0, RitualType.EnumRuneType.DUSK);
-        addRune(components, 0, 1, -4, RitualType.EnumRuneType.DUSK);
+        addRune(components, 1, 0, 1, EnumRuneType.FIRE);
+        addRune(components, -1, 0, 1, EnumRuneType.FIRE);
+        addRune(components, 1, 0, -1, EnumRuneType.FIRE);
+        addRune(components, -1, 0, -1, EnumRuneType.FIRE);
+        addRune(components, 2, -1, 2, EnumRuneType.DUSK);
+        addRune(components, 2, -1, -2, EnumRuneType.DUSK);
+        addRune(components, -2, -1, 2, EnumRuneType.DUSK);
+        addRune(components, -2, -1, -2, EnumRuneType.DUSK);
+        addRune(components, 0, -1, 2, EnumRuneType.DUSK);
+        addRune(components, 2, -1, 0, EnumRuneType.DUSK);
+        addRune(components, 0, -1, -2, EnumRuneType.DUSK);
+        addRune(components, -2, -1, 0, EnumRuneType.DUSK);
+        addRune(components, -3, -1, -3, EnumRuneType.DUSK);
+        addRune(components, 3, -1, -3, EnumRuneType.DUSK);
+        addRune(components, -3, -1, 3, EnumRuneType.DUSK);
+        addRune(components, 3, -1, 3, EnumRuneType.DUSK);
+        addRune(components, 2, -1, 4, EnumRuneType.DUSK);
+        addRune(components, 4, -1, 2, EnumRuneType.DUSK);
+        addRune(components, -2, -1, 4, EnumRuneType.DUSK);
+        addRune(components, 4, -1, -2, EnumRuneType.DUSK);
+        addRune(components, 2, -1, -4, EnumRuneType.DUSK);
+        addRune(components, -4, -1, 2, EnumRuneType.DUSK);
+        addRune(components, -2, -1, -4, EnumRuneType.DUSK);
+        addRune(components, -4, -1, -2, EnumRuneType.DUSK);
+        addRune(components, 1, 0, 4, EnumRuneType.DUSK);
+        addRune(components, 4, 0, 1, EnumRuneType.DUSK);
+        addRune(components, 1, 0, -4, EnumRuneType.DUSK);
+        addRune(components, -4, 0, 1, EnumRuneType.DUSK);
+        addRune(components, -1, 0, 4, EnumRuneType.DUSK);
+        addRune(components, 4, 0, -1, EnumRuneType.DUSK);
+        addRune(components, -1, 0, -4, EnumRuneType.DUSK);
+        addRune(components, -4, 0, -1, EnumRuneType.DUSK);
+        addRune(components, 4, 1, 0, EnumRuneType.DUSK);
+        addRune(components, 0, 1, 4, EnumRuneType.DUSK);
+        addRune(components, -4, 1, 0, EnumRuneType.DUSK);
+        addRune(components, 0, 1, -4, EnumRuneType.DUSK);
     }
 
     @Override

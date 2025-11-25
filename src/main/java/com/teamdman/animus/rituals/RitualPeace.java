@@ -17,7 +17,7 @@ import wayoftime.bloodmagic.ritual.IMasterRitualStone;
 import wayoftime.bloodmagic.ritual.Ritual;
 import wayoftime.bloodmagic.ritual.RitualComponent;
 import wayoftime.bloodmagic.ritual.RitualRegister;
-import wayoftime.bloodmagic.ritual.types.RitualType;
+import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class RitualPeace extends Ritual {
     private List<EntityType<?>> targets;
 
     public RitualPeace() {
-        super(new RitualType(Constants.Rituals.PEACE, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PEACE));
+        super(Constants.Rituals.PEACE, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PEACE);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class RitualPeace extends Ritual {
 
     private boolean rebuildList(IMasterRitualStone mrs) {
         try {
-            System.out.println("Rebuilding Ritual of Peace entity list. [" + mrs.getBlockPos().toString() + "]");
+            System.out.println("Rebuilding Ritual of Peace entity list. [" + mrs.getMasterBlockPos().toString() + "]");
 
             targets = new ArrayList<>();
 
@@ -76,7 +76,7 @@ public class RitualPeace extends Ritual {
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
-        BlockPos masterPos = mrs.getBlockPos();
+        BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {
             return;
@@ -140,7 +140,7 @@ public class RitualPeace extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return AnimusConfig.rituals.peaceCost;
+        return AnimusConfig.rituals.peaceCost.get();
     }
 
     @Override
@@ -150,18 +150,18 @@ public class RitualPeace extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        addRune(components, 4, 0, 0, RitualType.EnumRuneType.EARTH);
-        addRune(components, 4, 1, 0, RitualType.EnumRuneType.EARTH);
-        addRune(components, 4, 2, 0, RitualType.EnumRuneType.WATER);
-        addRune(components, 0, 1, 4, RitualType.EnumRuneType.EARTH);
-        addRune(components, 0, 2, 4, RitualType.EnumRuneType.EARTH);
-        addRune(components, 0, 3, 4, RitualType.EnumRuneType.WATER);
-        addRune(components, -4, 2, 0, RitualType.EnumRuneType.EARTH);
-        addRune(components, -4, 3, 0, RitualType.EnumRuneType.EARTH);
-        addRune(components, -4, 4, 0, RitualType.EnumRuneType.WATER);
-        addRune(components, 0, 3, -4, RitualType.EnumRuneType.EARTH);
-        addRune(components, 0, 4, -4, RitualType.EnumRuneType.EARTH);
-        addRune(components, 0, 5, -4, RitualType.EnumRuneType.WATER);
+        addRune(components, 4, 0, 0, EnumRuneType.EARTH);
+        addRune(components, 4, 1, 0, EnumRuneType.EARTH);
+        addRune(components, 4, 2, 0, EnumRuneType.WATER);
+        addRune(components, 0, 1, 4, EnumRuneType.EARTH);
+        addRune(components, 0, 2, 4, EnumRuneType.EARTH);
+        addRune(components, 0, 3, 4, EnumRuneType.WATER);
+        addRune(components, -4, 2, 0, EnumRuneType.EARTH);
+        addRune(components, -4, 3, 0, EnumRuneType.EARTH);
+        addRune(components, -4, 4, 0, EnumRuneType.WATER);
+        addRune(components, 0, 3, -4, EnumRuneType.EARTH);
+        addRune(components, 0, 4, -4, EnumRuneType.EARTH);
+        addRune(components, 0, 5, -4, EnumRuneType.WATER);
     }
 
     @Override

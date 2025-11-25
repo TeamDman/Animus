@@ -25,8 +25,7 @@ import java.util.List;
  */
 public class ItemKamaBound extends ItemKama {
 
-    // Custom damage source for absolute damage
-    private static final DamageSource KHOPESH_DAMAGE = new DamageSource("khopesh");
+    // Damage source is created per-level in 1.20.1, not static
 
     public ItemKamaBound() {
         super(Tiers.DIAMOND);
@@ -84,7 +83,7 @@ public class ItemKamaBound extends ItemKama {
                 continue;
             }
 
-            boolean result = target.hurt(KHOPESH_DAMAGE, damage);
+            boolean result = target.hurt(level.damageSources().genericKill(), damage);
             if (result) {
                 hit = true;
             }
@@ -149,7 +148,7 @@ public class ItemKamaBound extends ItemKama {
 
                 // Kill the entity
                 target.setHealth(-1);
-                target.die(KHOPESH_DAMAGE);
+                target.die(level.damageSources().genericKill());
                 killed = true;
             }
         }

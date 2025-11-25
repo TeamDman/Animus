@@ -19,10 +19,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.common.tile.TileAltar;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+// TODO: Demon will system not available in Blood Magic 1.20.1
+// import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.ritual.types.RitualType;
-import wayoftime.bloodmagic.soul.EnumDemonWillType;
+import wayoftime.bloodmagic.ritual.EnumRuneType;
+// import wayoftime.bloodmagic.soul.EnumDemonWillType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.Objects;
@@ -45,7 +46,7 @@ public class RitualNaturesLeech extends Ritual {
     public double will = 100;
 
     public RitualNaturesLeech() {
-        super(new RitualType(Constants.Rituals.LEECH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEECH));
+        super(Constants.Rituals.LEECH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEECH);
 
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
@@ -68,12 +69,16 @@ public class RitualNaturesLeech extends Ritual {
 
     public void performRitual(IMasterRitualStone ritualStone) {
         Level level = ritualStone.getWorldObj();
-        Random random = level.random;
-        BlockPos pos = ritualStone.getBlockPos();
+        // RandomSource in 1.20.1
+        net.minecraft.util.RandomSource randomSource = level.random;
+        Random random = new Random(randomSource.nextLong());
+        BlockPos pos = ritualStone.getMasterBlockPos();
 
+        // TODO: Demon will system not available in Blood Magic 1.20.1
         // Get current corrosive demon will
-        EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
-        will = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+        // EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
+        // will = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+        will = 100;
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
         if (network == null) {
@@ -146,12 +151,13 @@ public class RitualNaturesLeech extends Ritual {
         // Add blood to altar
         tileAltar.sacrificialDaggerCall(eaten * 50, true);
 
+        // TODO: Demon will system not available in Blood Magic 1.20.1
         // Generate corrosive demon will
-        int drainAmount = 1 + random.nextInt(5);
-        double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-        if (filled > 0) {
-            WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-        }
+        // int drainAmount = 1 + random.nextInt(5);
+        // double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
+        // if (filled > 0) {
+        //     WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
+        // }
     }
 
     public static boolean isConsumable(Block block) {
@@ -220,18 +226,18 @@ public class RitualNaturesLeech extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        addRune(components, -2, 1, -2, RitualType.EnumRuneType.WATER);
-        addRune(components, -2, 1, 0, RitualType.EnumRuneType.AIR);
-        addRune(components, -2, 1, 2, RitualType.EnumRuneType.WATER);
-        addRune(components, -1, 0, -1, RitualType.EnumRuneType.EARTH);
-        addRune(components, -1, 0, 1, RitualType.EnumRuneType.WATER);
-        addRune(components, 0, 1, -2, RitualType.EnumRuneType.AIR);
-        addRune(components, 0, 1, 2, RitualType.EnumRuneType.AIR);
-        addRune(components, 1, 0, -1, RitualType.EnumRuneType.WATER);
-        addRune(components, 1, 0, 1, RitualType.EnumRuneType.AIR);
-        addRune(components, 2, 1, -2, RitualType.EnumRuneType.WATER);
-        addRune(components, 2, 1, 0, RitualType.EnumRuneType.AIR);
-        addRune(components, 2, 1, 2, RitualType.EnumRuneType.WATER);
+        addRune(components, -2, 1, -2, EnumRuneType.WATER);
+        addRune(components, -2, 1, 0, EnumRuneType.AIR);
+        addRune(components, -2, 1, 2, EnumRuneType.WATER);
+        addRune(components, -1, 0, -1, EnumRuneType.EARTH);
+        addRune(components, -1, 0, 1, EnumRuneType.WATER);
+        addRune(components, 0, 1, -2, EnumRuneType.AIR);
+        addRune(components, 0, 1, 2, EnumRuneType.AIR);
+        addRune(components, 1, 0, -1, EnumRuneType.WATER);
+        addRune(components, 1, 0, 1, EnumRuneType.AIR);
+        addRune(components, 2, 1, -2, EnumRuneType.WATER);
+        addRune(components, 2, 1, 0, EnumRuneType.AIR);
+        addRune(components, 2, 1, 2, EnumRuneType.WATER);
     }
 
     @Override

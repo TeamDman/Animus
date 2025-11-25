@@ -49,7 +49,7 @@ public class ItemSigilChains extends ItemSigilBase {
         );
 
         var result = network.syphonAndDamage(player, ticket);
-        if (!result.getValue()) {
+        if (!result.isSuccess()) {
             return InteractionResult.FAIL;
         }
 

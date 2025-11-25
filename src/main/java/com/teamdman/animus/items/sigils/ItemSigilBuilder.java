@@ -135,7 +135,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
         if (player.isShiftKeyDown()) {
             // Fill area
-            int radius = (int) Math.sqrt(AnimusConfig.sigils.builderRange);
+            int radius = (int) Math.sqrt(AnimusConfig.sigils.builderRange.get());
 
             for (int r = 1; r <= radius; r++) {
                 for (int x = -r; x <= r; x++) {
@@ -173,7 +173,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
             do {
                 placePos = placePos.relative(face.getOpposite());
                 distance++;
-                if (distance > AnimusConfig.sigils.builderRange) {
+                if (distance > AnimusConfig.sigils.builderRange.get()) {
                     return InteractionResult.SUCCESS;
                 }
             } while (!level.isEmptyBlock(placePos) && placePos.getY() > level.getMinBuildHeight());

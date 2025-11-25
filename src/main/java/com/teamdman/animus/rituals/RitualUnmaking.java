@@ -17,7 +17,7 @@ import net.minecraft.world.phys.AABB;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.ritual.types.RitualType;
+import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class RitualUnmaking extends Ritual {
     public static final String EFFECT_RANGE = "effect";
 
     public RitualUnmaking() {
-        super(new RitualType(Constants.Rituals.UNMAKING, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.UNMAKING));
+        super(Constants.Rituals.UNMAKING, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.UNMAKING);
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-2, -2, -2), 5));
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 8, 8);
@@ -49,7 +49,7 @@ public class RitualUnmaking extends Ritual {
         Level level = mrs.getWorldObj();
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
         int currentEssence = network.getCurrentEssence();
-        BlockPos masterPos = mrs.getBlockPos();
+        BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {
             return;
@@ -184,46 +184,46 @@ public class RitualUnmaking extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        addRune(components, -4, 0, -2, RitualType.EnumRuneType.FIRE);
-        addRune(components, -4, 0, 0, RitualType.EnumRuneType.FIRE);
-        addRune(components, -4, 0, 2, RitualType.EnumRuneType.FIRE);
-        addRune(components, -3, 0, -3, RitualType.EnumRuneType.DUSK);
-        addRune(components, -3, 0, -1, RitualType.EnumRuneType.FIRE);
-        addRune(components, -3, 0, 1, RitualType.EnumRuneType.FIRE);
-        addRune(components, -3, 0, 3, RitualType.EnumRuneType.DUSK);
-        addRune(components, -2, 0, -4, RitualType.EnumRuneType.AIR);
-        addRune(components, -2, 0, -2, RitualType.EnumRuneType.DUSK);
-        addRune(components, -2, 0, 0, RitualType.EnumRuneType.FIRE);
-        addRune(components, -2, 0, 2, RitualType.EnumRuneType.DUSK);
-        addRune(components, -2, 0, 4, RitualType.EnumRuneType.EARTH);
-        addRune(components, -1, 0, -3, RitualType.EnumRuneType.AIR);
-        addRune(components, -1, 0, -1, RitualType.EnumRuneType.DUSK);
-        addRune(components, -1, 0, 0, RitualType.EnumRuneType.FIRE);
-        addRune(components, -1, 0, 1, RitualType.EnumRuneType.DUSK);
-        addRune(components, -1, 0, 3, RitualType.EnumRuneType.EARTH);
-        addRune(components, 0, 0, -4, RitualType.EnumRuneType.AIR);
-        addRune(components, 0, 0, -2, RitualType.EnumRuneType.AIR);
-        addRune(components, 0, 0, -1, RitualType.EnumRuneType.AIR);
-        addRune(components, 0, 0, 1, RitualType.EnumRuneType.EARTH);
-        addRune(components, 0, 0, 2, RitualType.EnumRuneType.EARTH);
-        addRune(components, 0, 0, 4, RitualType.EnumRuneType.EARTH);
-        addRune(components, 1, 0, -3, RitualType.EnumRuneType.AIR);
-        addRune(components, 1, 0, -1, RitualType.EnumRuneType.DUSK);
-        addRune(components, 1, 0, 0, RitualType.EnumRuneType.WATER);
-        addRune(components, 1, 0, 1, RitualType.EnumRuneType.DUSK);
-        addRune(components, 1, 0, 3, RitualType.EnumRuneType.EARTH);
-        addRune(components, 2, 0, -4, RitualType.EnumRuneType.AIR);
-        addRune(components, 2, 0, -2, RitualType.EnumRuneType.DUSK);
-        addRune(components, 2, 0, 0, RitualType.EnumRuneType.WATER);
-        addRune(components, 2, 0, 2, RitualType.EnumRuneType.DUSK);
-        addRune(components, 2, 0, 4, RitualType.EnumRuneType.EARTH);
-        addRune(components, 3, 0, -3, RitualType.EnumRuneType.DUSK);
-        addRune(components, 3, 0, -1, RitualType.EnumRuneType.WATER);
-        addRune(components, 3, 0, 1, RitualType.EnumRuneType.WATER);
-        addRune(components, 3, 0, 3, RitualType.EnumRuneType.DUSK);
-        addRune(components, 4, 0, -2, RitualType.EnumRuneType.WATER);
-        addRune(components, 4, 0, 0, RitualType.EnumRuneType.WATER);
-        addRune(components, 4, 0, 2, RitualType.EnumRuneType.WATER);
+        addRune(components, -4, 0, -2, EnumRuneType.FIRE);
+        addRune(components, -4, 0, 0, EnumRuneType.FIRE);
+        addRune(components, -4, 0, 2, EnumRuneType.FIRE);
+        addRune(components, -3, 0, -3, EnumRuneType.DUSK);
+        addRune(components, -3, 0, -1, EnumRuneType.FIRE);
+        addRune(components, -3, 0, 1, EnumRuneType.FIRE);
+        addRune(components, -3, 0, 3, EnumRuneType.DUSK);
+        addRune(components, -2, 0, -4, EnumRuneType.AIR);
+        addRune(components, -2, 0, -2, EnumRuneType.DUSK);
+        addRune(components, -2, 0, 0, EnumRuneType.FIRE);
+        addRune(components, -2, 0, 2, EnumRuneType.DUSK);
+        addRune(components, -2, 0, 4, EnumRuneType.EARTH);
+        addRune(components, -1, 0, -3, EnumRuneType.AIR);
+        addRune(components, -1, 0, -1, EnumRuneType.DUSK);
+        addRune(components, -1, 0, 0, EnumRuneType.FIRE);
+        addRune(components, -1, 0, 1, EnumRuneType.DUSK);
+        addRune(components, -1, 0, 3, EnumRuneType.EARTH);
+        addRune(components, 0, 0, -4, EnumRuneType.AIR);
+        addRune(components, 0, 0, -2, EnumRuneType.AIR);
+        addRune(components, 0, 0, -1, EnumRuneType.AIR);
+        addRune(components, 0, 0, 1, EnumRuneType.EARTH);
+        addRune(components, 0, 0, 2, EnumRuneType.EARTH);
+        addRune(components, 0, 0, 4, EnumRuneType.EARTH);
+        addRune(components, 1, 0, -3, EnumRuneType.AIR);
+        addRune(components, 1, 0, -1, EnumRuneType.DUSK);
+        addRune(components, 1, 0, 0, EnumRuneType.WATER);
+        addRune(components, 1, 0, 1, EnumRuneType.DUSK);
+        addRune(components, 1, 0, 3, EnumRuneType.EARTH);
+        addRune(components, 2, 0, -4, EnumRuneType.AIR);
+        addRune(components, 2, 0, -2, EnumRuneType.DUSK);
+        addRune(components, 2, 0, 0, EnumRuneType.WATER);
+        addRune(components, 2, 0, 2, EnumRuneType.DUSK);
+        addRune(components, 2, 0, 4, EnumRuneType.EARTH);
+        addRune(components, 3, 0, -3, EnumRuneType.DUSK);
+        addRune(components, 3, 0, -1, EnumRuneType.WATER);
+        addRune(components, 3, 0, 1, EnumRuneType.WATER);
+        addRune(components, 3, 0, 3, EnumRuneType.DUSK);
+        addRune(components, 4, 0, -2, EnumRuneType.WATER);
+        addRune(components, 4, 0, 0, EnumRuneType.WATER);
+        addRune(components, 4, 0, 2, EnumRuneType.WATER);
     }
 
     @Override
