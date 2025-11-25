@@ -35,7 +35,7 @@ public class AnimusConfig {
 
             canKillBuffedMobs = builder
                 .comment("Allow rituals to kill mobs with potion effects")
-                .define("canKillBuffedMobs", false);
+                .define("canKillBuffedMobs", true);
 
             bloodPerApple = builder
                 .comment("Amount of blood to add to altar per Blood Apple")

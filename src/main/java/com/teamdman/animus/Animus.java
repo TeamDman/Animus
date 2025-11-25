@@ -1,6 +1,7 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.registry.*;
+import com.teamdman.animus.worldgen.AnimusTreeDecoratorTypes;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -28,6 +29,7 @@ public class Animus {
         AnimusMobEffects.MOB_EFFECTS.register(modEventBus);
         AnimusSounds.SOUNDS.register(modEventBus);
         AnimusCreativeTabs.CREATIVE_TABS.register(modEventBus);
+        AnimusTreeDecoratorTypes.TREE_DECORATOR_TYPES.register(modEventBus);
 
         // Register event listeners
         modEventBus.addListener(this::commonSetup);
