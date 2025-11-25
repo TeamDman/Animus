@@ -10,11 +10,8 @@ import org.apache.logging.log4j.Logger;
 @Mod(Constants.Mod.MODID)
 public class Animus {
     public static final Logger LOGGER = LogManager.getLogger();
-    public static Animus instance;
 
     public Animus(IEventBus modEventBus, ModLoadingContext modLoadingContext) {
-        instance = this;
-
         // Register config
         AnimusConfig.register(modLoadingContext);
 
