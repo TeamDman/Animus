@@ -2,6 +2,7 @@ package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.*;
+import com.teamdman.animus.items.sigils.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -31,11 +32,32 @@ public class AnimusItems {
     public static final RegistryObject<Item> FRAGMENT_HEALING = ITEMS.register("fragment_healing",
         ItemFragmentHealing::new);
 
+    // Mob Soul - used by Sigil of Chains
+    public static final RegistryObject<Item> MOBSOUL = ITEMS.register("mob_soul",
+        () -> new Item(new Item.Properties().stacksTo(1)));
+
+    // Sigils
+    public static final RegistryObject<Item> SIGIL_BUILDER = ITEMS.register("sigil_builder",
+        ItemSigilBuilder::new);
+
+    public static final RegistryObject<Item> SIGIL_CHAINS = ITEMS.register("sigil_chains",
+        ItemSigilChains::new);
+
+    public static final RegistryObject<Item> SIGIL_CONSUMPTION = ITEMS.register("sigil_consumption",
+        ItemSigilConsumption::new);
+
+    public static final RegistryObject<Item> SIGIL_LEECH = ITEMS.register("sigil_leech",
+        ItemSigilLeech::new);
+
+    public static final RegistryObject<Item> SIGIL_STORM = ITEMS.register("sigil_storm",
+        ItemSigilStorm::new);
+
+    public static final RegistryObject<Item> SIGIL_TRANSPOSITION = ITEMS.register("sigil_transposition",
+        ItemSigilTransposition::new);
+
     // TODO: Port remaining items:
     // - ItemAltarDiviner (complex Blood Magic integration)
     // - ItemKama
     // - ItemKamaBound
     // - ItemKeyBinding
-    // - ItemMobSoul
-    // - All Sigils (separate phase)
 }
