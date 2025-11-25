@@ -6,6 +6,7 @@
   "block.animus.blood_wood": "Blood Wood",
   "block.animus.blood_sapling": "Blood Sapling",
   "block.animus.blood_core": "Blood Core",
+  "block.animus.blood_leaves": "Blood Leaves",
   "block.animus.antimatter": "Antimatter",
 
   "_comment": "Items",
@@ -13,7 +14,10 @@
   "item.animus.blood_apple": "Blood Apple",
   "item.animus.fragment_healing": "Fragment of Healing",
   "item.animus.kama": "Kama",
+  "item.animus.kama_iron": "Iron Kama",
+  "item.animus.kama_diamond": "Diamond Kama",
   "item.animus.kama_bound": "Bound Kama",
+  "item.animus.key_binding": "Key of Binding",
   "item.animus.mob_soul": "Mob Soul",
 
   "_comment": "Sigils",
