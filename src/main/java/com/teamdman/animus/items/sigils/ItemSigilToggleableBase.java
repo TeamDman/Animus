@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
  * TODO: Implement proper activation state management with Blood Magic API
  * TODO: Add visual indicators for activated state (model overrides)
  */
-public abstract class ItemSigilToggleableBase extends ItemSigilBase {
+public abstract class ItemSigilToggleableBase extends AnimusSigilBase {
     private static final String ACTIVATED_KEY = "activated";
 
     public ItemSigilToggleableBase(String name, int lpUsed) {

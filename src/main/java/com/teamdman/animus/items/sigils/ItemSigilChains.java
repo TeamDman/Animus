@@ -27,7 +27,7 @@ import java.util.List;
  * Sigil of Chains - captures entities into soul items
  * Consumes 500 LP to capture a living entity into a mob soul item
  */
-public class ItemSigilChains extends ItemSigilBase {
+public class ItemSigilChains extends AnimusSigilBase {
     public ItemSigilChains() {
         super(Constants.Sigils.CHAINS, 500);
     }

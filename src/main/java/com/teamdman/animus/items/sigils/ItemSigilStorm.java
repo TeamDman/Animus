@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
  * - Add area damage during rain
  * - Implement binding system
  */
-public class ItemSigilStorm extends ItemSigilBase {
+public class ItemSigilStorm extends AnimusSigilBase {
 
     public ItemSigilStorm() {
         super(Constants.Sigils.STORM, 500);

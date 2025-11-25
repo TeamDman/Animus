@@ -24,7 +24,7 @@ import java.util.List;
  * TODO: Add proper LP consumption with soul network integration
  * TODO: Implement binding system check
  */
-public class ItemSigilConsumption extends ItemSigilBase {
+public class ItemSigilConsumption extends AnimusSigilBase {
     public ItemSigilConsumption() {
         super(Constants.Sigils.CONSUMPTION, 200);
     }
