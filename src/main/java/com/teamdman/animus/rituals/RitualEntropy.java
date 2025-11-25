@@ -3,10 +3,8 @@ package com.teamdman.animus.rituals;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -18,12 +16,11 @@ import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.types.RitualType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
-import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * Ritual of Entropy - Converts items to cobblestone value
- * Analyzes crafting recipes to determine cobblestone value of items
+ * Ritual of Entropy - Converts items to cobblestone
+ * Takes items from chest and converts them to 1 cobblestone per item
  * Activation Cost: 1000 LP
  * Refresh Cost: 1 LP
  * Refresh Time: 1 tick
@@ -31,7 +28,6 @@ import java.util.function.Consumer;
 @RitualRegister(Constants.Rituals.ENTROPY)
 public class RitualEntropy extends Ritual {
     public static final String CHEST_RANGE = "chest";
-    final HashMap<Item, Integer> indexed = new HashMap<>();
 
     public RitualEntropy() {
         super(new RitualType(Constants.Rituals.ENTROPY, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENTROPY));
@@ -75,7 +71,7 @@ public class RitualEntropy extends Ritual {
             return;
         }
 
-        // Process items in chest
+        // Process items in chest - convert to 1 cobblestone each
         for (int slot = 0; slot < handler.getSlots(); slot++) {
             ItemStack stack = handler.getStackInSlot(slot);
             if (stack.isEmpty()) {
@@ -87,28 +83,18 @@ public class RitualEntropy extends Ritual {
                 continue;
             }
 
-            // Calculate cobblestone value
-            int cobbleValue = getCobbleValue(new ArrayList<>(), stack, 0);
-            if (cobbleValue > 0) {
-                // Extract one item
-                handler.extractItem(slot, 1, false);
+            // Extract one item and give one cobblestone
+            handler.extractItem(slot, 1, false);
+            ItemHandlerHelper.insertItemStacked(handler, new ItemStack(Items.COBBLESTONE, 1), false);
 
-                // Insert cobblestone
-                while (cobbleValue > 0) {
-                    int stackSize = Math.min(cobbleValue, 64);
-                    ItemHandlerHelper.insertItemStacked(handler, new ItemStack(Items.COBBLESTONE, stackSize), false);
-                    cobbleValue -= stackSize;
-                }
+            // Consume LP
+            SoulTicket ticket = new SoulTicket(
+                Component.translatable(Constants.Localizations.Text.TICKET_ENTROPY),
+                getRefreshCost()
+            );
+            network.syphon(ticket, false);
 
-                // Consume LP
-                SoulTicket ticket = new SoulTicket(
-                    Component.translatable(Constants.Localizations.Text.TICKET_ENTROPY),
-                    getRefreshCost()
-                );
-                network.syphon(ticket, false);
-
-                return; // Only process one item per tick
-            }
+            return; // Only process one item per tick
         }
     }
 
@@ -141,59 +127,5 @@ public class RitualEntropy extends Ritual {
     @Override
     public Ritual getNewCopy() {
         return new RitualEntropy();
-    }
-
-    /**
-     * Calculate the cobblestone value of an item by analyzing crafting recipes
-     * TODO: Implement full recipe tree walking for 1.20.1
-     * Currently returns a simple heuristic value
-     */
-    public int getCobbleValue(List<Item> fetchList, ItemStack input, int layer) {
-        if (input.isEmpty()) {
-            return 0;
-        }
-
-        // Check cache
-        if (indexed.containsKey(input.getItem())) {
-            return indexed.get(input.getItem());
-        }
-
-        // Prevent infinite recursion
-        if (fetchList.contains(input.getItem())) {
-            return 1;
-        }
-
-        // Limit recursion depth
-        if (layer > 8) {
-            return 0;
-        }
-
-        // TODO: Implement recipe tree walking for 1.20.1
-        // The recipe system has changed significantly in 1.20.1
-        // For now, return a simple heuristic based on item properties
-        int value = getSimpleHeuristicValue(input);
-
-        indexed.put(input.getItem(), value);
-        return value;
-    }
-
-    /**
-     * Simple heuristic for item value when recipe walking is not implemented
-     */
-    private int getSimpleHeuristicValue(ItemStack stack) {
-        // Basic heuristic - can be improved
-        if (stack.is(Items.DIRT) || stack.is(Items.SAND) || stack.is(Items.GRAVEL)) {
-            return 1;
-        } else if (stack.is(Items.STONE) || stack.is(Items.COBBLED_DEEPSLATE)) {
-            return 1;
-        } else if (stack.is(Items.IRON_INGOT)) {
-            return 4;
-        } else if (stack.is(Items.GOLD_INGOT)) {
-            return 8;
-        } else if (stack.is(Items.DIAMOND)) {
-            return 16;
-        }
-        // Default value for unknown items
-        return 2;
     }
 }
