@@ -1,0 +1,72 @@
+package com.teamdman.animus.datagen;
+
+import com.teamdman.animus.Constants;
+import com.teamdman.animus.registry.AnimusBlocks;
+import com.teamdman.animus.registry.AnimusItems;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
+
+public class AnimusItemModelProvider extends ItemModelProvider {
+    public AnimusItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, Constants.Mod.MODID, existingFileHelper);
+    }
+
+    @Override
+    protected void registerModels() {
+        // Block items - use parent block model
+        blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD);
+        blockItem(AnimusBlocks.BLOCK_BLOOD_CORE);
+        blockItem(AnimusBlocks.BLOCK_BLOOD_LEAVES);
+
+        // Blood Sapling - special case, uses generated item model
+        withExistingParent("blood_sapling", mcLoc("item/generated"))
+            .texture("layer0", modLoc("block/blockbloodsapling"));
+
+        // Simple items with textures
+        simpleItem(AnimusItems.BLOOD_APPLE, "item/itembloodapple");
+        simpleItem(AnimusItems.ALTAR_DIVINER, "item/itemaltardiviner");
+        simpleItem(AnimusItems.FRAGMENT_HEALING, "item/itemfragmenthealing");
+        simpleItem(AnimusItems.KEY_BINDING, "item/itemkeybinding");
+        simpleItem(AnimusItems.MOBSOUL, "item/itemmobsoul");
+
+        // Kamas
+        simpleItem(AnimusItems.KAMA_IRON, "item/itemkamairon");
+        simpleItem(AnimusItems.KAMA_DIAMOND, "item/itemkamadiamond");
+        simpleItem(AnimusItems.KAMA_BOUND, "item/itemkamabound");
+
+        // Sigils
+        simpleItem(AnimusItems.SIGIL_BUILDER, "item/reagentbuilder");
+        simpleItem(AnimusItems.SIGIL_CHAINS, "item/itemsigilchains");
+        simpleItem(AnimusItems.SIGIL_CONSUMPTION, "item/itemsigilconsumption");
+        simpleItem(AnimusItems.SIGIL_LEECH, "item/itemsigilleech_deactivated");
+        simpleItem(AnimusItems.SIGIL_STORM, "item/itemsigilstorm");
+        simpleItem(AnimusItems.SIGIL_TRANSPOSITION, "item/reagenttransposition");
+    }
+
+    private void blockItem(RegistryObject<Block> block) {
+        String name = block.getId().getPath();
+        withExistingParent(name, modLoc("block/" + name));
+    }
+
+    private void simpleItem(RegistryObject<Item> item, String texturePath) {
+        String name = item.getId().getPath();
+        withExistingParent(name, mcLoc("item/generated"))
+            .texture("layer0", modLoc(texturePath));
+    }
+
+    @Override
+    public ResourceLocation modLoc(String name) {
+        return ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, name);
+    }
+
+    @Override
+    public ResourceLocation mcLoc(String name) {
+        return ResourceLocation.fromNamespaceAndPath("minecraft", name);
+    }
+}

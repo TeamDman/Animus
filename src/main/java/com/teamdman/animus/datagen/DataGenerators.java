@@ -22,15 +22,17 @@ public class DataGenerators {
         var lookupProvider = event.getLookupProvider();
 
         // Client-side data generators
-        // generator.addProvider(event.includeClient(), new AnimusBlockStateProvider(output, existingFileHelper));
-        // generator.addProvider(event.includeClient(), new AnimusItemModelProvider(output, existingFileHelper));
+        generator.addProvider(event.includeClient(), new AnimusBlockStateProvider(output, existingFileHelper));
+        generator.addProvider(event.includeClient(), new AnimusItemModelProvider(output, existingFileHelper));
 
         // Server-side data generators
-        // generator.addProvider(event.includeServer(), new AnimusRecipeProvider(output));
-        // generator.addProvider(event.includeServer(), new AnimusLootTableProvider(output));
-        // generator.addProvider(event.includeServer(), new AnimusBlockTagsProvider(output, lookupProvider, existingFileHelper));
-        // generator.addProvider(event.includeServer(), new AnimusItemTagsProvider(output, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new AnimusRecipeProvider(output));
+        generator.addProvider(event.includeServer(), new AnimusLootTableProvider(output));
 
-        // TODO: Implement the above provider classes as you port blocks and items
+        // Tags - block tags must be added before item tags for proper dependency
+        var blockTagsProvider = generator.addProvider(event.includeServer(),
+            new AnimusBlockTagsProvider(output, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(),
+            new AnimusItemTagsProvider(output, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
     }
 }

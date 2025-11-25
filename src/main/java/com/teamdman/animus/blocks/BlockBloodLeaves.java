@@ -16,9 +16,8 @@ import java.util.List;
 
 /**
  * Blood Leaves block - decorative leaves that drop blood saplings
- * Original: 1.12.2 BlockLeaves based
- * Ported: 1.20.1 LeavesBlock based
- */
+*/
+
 public class BlockBloodLeaves extends LeavesBlock {
 
     public BlockBloodLeaves() {

@@ -1,7 +1,0 @@
-{
-  "parent": "block/cube_column",
-  "textures": {
-    "end": "animus:block/blockbloodcoreheart",
-    "side": "animus:block/blockbloodcore"
-  }
-}
