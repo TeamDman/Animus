@@ -34,14 +34,26 @@ public class BlockBloodCore extends Block implements EntityBlock {
         return new BlockEntityBloodCore(pos, state);
     }
 
+    // Static server ticker to avoid lambda allocation
+    private static final BlockEntityTicker<BlockEntityBloodCore> SERVER_TICKER =
+        (level, pos, state, blockEntity) -> blockEntity.tick();
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide ? null :
-            (level1, pos, state1, blockEntity) -> {
-                if (blockEntity instanceof BlockEntityBloodCore bloodCore) {
-                    bloodCore.tick();
-                }
-            };
+            createTickerHelper(type, AnimusBlockEntities.BLOOD_CORE.get(), SERVER_TICKER);
+    }
+
+    /**
+     * Helper method for type-safe ticker creation
+     */
+    @Nullable
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
+        BlockEntityType<A> givenType,
+        BlockEntityType<E> expectedType,
+        BlockEntityTicker<? super E> ticker
+    ) {
+        return expectedType == givenType ? (BlockEntityTicker<A>) ticker : null;
     }
 }

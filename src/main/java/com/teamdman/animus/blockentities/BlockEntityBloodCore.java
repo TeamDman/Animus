@@ -14,13 +14,19 @@ public class BlockEntityBloodCore extends BlockEntity {
 
     private int delayCounter = 1200; // 1 minute (60 seconds * 20 ticks)
     private boolean spreading = false;
+    private boolean removed = false;
 
     public BlockEntityBloodCore(BlockPos pos, BlockState state) {
         super(AnimusBlockEntities.BLOOD_CORE.get(), pos, state);
     }
 
     public void tick() {
-        if (level == null || level.isClientSide) {
+        if (level == null || level.isClientSide || removed) {
+            return;
+        }
+
+        // Verify the block entity is still valid
+        if (level.getBlockEntity(worldPosition) != this) {
             return;
         }
 
@@ -59,5 +65,12 @@ public class BlockEntityBloodCore extends BlockEntity {
         super.load(tag);
         delayCounter = tag.getInt("DelayCounter");
         spreading = tag.getBoolean("Spreading");
+    }
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        this.removed = true;
+        // Clean up any resources here if needed
     }
 }
