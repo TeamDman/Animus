@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "animus:block/blood_sapling"
+    },
+    "stage=1": {
+      "model": "animus:block/blood_sapling"
+    }
+  }
+}

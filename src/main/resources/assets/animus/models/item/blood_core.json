@@ -1,5 +1,5 @@
 {
-  "parent": "animus:block/blockbloodcore",
+  "parent": "animus:block/blood_core",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

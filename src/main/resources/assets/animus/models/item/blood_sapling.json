@@ -1,5 +1,5 @@
 {
-  "parent": "animus:block/blockbloodsapling",
+  "parent": "animus:block/blood_sapling",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],
