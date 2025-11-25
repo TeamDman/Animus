@@ -5,6 +5,7 @@ import com.teamdman.animus.items.*;
 import com.teamdman.animus.items.sigils.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -55,9 +56,21 @@ public class AnimusItems {
     public static final RegistryObject<Item> SIGIL_TRANSPOSITION = ITEMS.register("sigil_transposition",
         ItemSigilTransposition::new);
 
-    // TODO: Port remaining items:
-    // - ItemAltarDiviner (complex Blood Magic integration)
-    // - ItemKama
-    // - ItemKamaBound
-    // - ItemKeyBinding
+    // Tools & Weapons
+    public static final RegistryObject<Item> KAMA_IRON = ITEMS.register("kama_iron",
+        () -> new ItemKama(Tiers.IRON));
+
+    public static final RegistryObject<Item> KAMA_DIAMOND = ITEMS.register("kama_diamond",
+        () -> new ItemKama(Tiers.DIAMOND));
+
+    public static final RegistryObject<Item> KAMA_BOUND = ITEMS.register("kama_bound",
+        ItemKamaBound::new);
+
+    // Crafting Components
+    public static final RegistryObject<Item> KEY_BINDING = ITEMS.register("key_binding",
+        ItemKeyBinding::new);
+
+    // Utilities
+    public static final RegistryObject<Item> ALTAR_DIVINER = ITEMS.register("altar_diviner",
+        ItemAltarDiviner::new);
 }
