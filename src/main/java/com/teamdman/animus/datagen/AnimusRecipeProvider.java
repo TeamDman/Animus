@@ -11,13 +11,15 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
+import java.util.function.Consumer;
+
 public class AnimusRecipeProvider extends RecipeProvider implements IConditionBuilder {
     public AnimusRecipeProvider(PackOutput output) {
         super(output);
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput consumer) {
+    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         // Pilum recipes (Roman javelins)
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AnimusItems.PILUM_IRON.get())
             .pattern(" a ")
@@ -55,12 +57,6 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .requires(Items.REDSTONE)
             .requires(Items.REDSTONE)
             .unlockedBy("has_apple", has(Items.APPLE))
-            .save(consumer);
-
-        // Blood Sapling can be crafted from blood leaves
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, AnimusBlocks.BLOOD_SAPLING.get())
-            .requires(AnimusBlocks.BLOCK_BLOOD_LEAVES.get())
-            .unlockedBy("has_blood_leaves", has(AnimusBlocks.BLOCK_BLOOD_LEAVES.get()))
             .save(consumer);
     }
 

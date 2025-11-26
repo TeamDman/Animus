@@ -15,12 +15,8 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * Sigil of the Storm - summons lightning
- * TODO: Implement full Blood Magic integration:
- * - Check player's soul network for LP
- * - Consume LP on use
- * - Add fish spawning in water
- * - Add area damage during rain
- * - Implement binding system
+ * TODO: Add fish spawning when targeting water
+ * TODO: Add area damage during rain
  */
 public class ItemSigilStorm extends AnimusSigilBase {
 
@@ -38,7 +34,7 @@ public class ItemSigilStorm extends AnimusSigilBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -77,9 +73,6 @@ public class ItemSigilStorm extends AnimusSigilBase {
                 lightning.setVisualOnly(false);
                 level.addFreshEntity(lightning);
             }
-
-            // TODO: Implement fish spawning if targeting water
-            // TODO: Implement area damage if raining
 
             return InteractionResultHolder.success(stack);
         }

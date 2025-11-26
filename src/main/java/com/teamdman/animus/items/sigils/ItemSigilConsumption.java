@@ -1,6 +1,7 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.blocks.BlockAntimatter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,9 +21,7 @@ import java.util.List;
 
 /**
  * Sigil of Consumption - converts blocks to antimatter
- * TODO: Implement antimatter block conversion once BlockAntimatter is ported
- * TODO: Add proper LP consumption with soul network integration
- * TODO: Implement binding system check
+ * Consumes LP to convert blocks into spreading antimatter that destroys matching blocks
  */
 public class ItemSigilConsumption extends AnimusSigilBase {
     public ItemSigilConsumption() {
@@ -39,7 +38,7 @@ public class ItemSigilConsumption extends AnimusSigilBase {
 
         // Check if sigil is bound to a player
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -69,12 +68,11 @@ public class ItemSigilConsumption extends AnimusSigilBase {
                 return InteractionResultHolder.fail(stack);
             }
 
-            // TODO: Implement BlockAntimatter.setBlockToAntimatter(level, result.getBlockPos(), player)
-            // For now, placeholder:
-            // EnumActionResult antimatterResult = BlockAntimatter.setBlockToAntimatter(level, result.getBlockPos(), player);
-            // if (antimatterResult == EnumActionResult.SUCCESS) {
-            //     return InteractionResultHolder.success(stack);
-            // }
+            // Convert block to antimatter
+            var antimatterResult = BlockAntimatter.setBlockToAntimatter(level, result.getBlockPos(), player);
+            if (antimatterResult.consumesAction()) {
+                return InteractionResultHolder.success(stack);
+            }
 
             return InteractionResultHolder.fail(stack);
         }

@@ -68,7 +68,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -137,7 +137,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
             return InteractionResult.FAIL;
         }
 

@@ -1,6 +1,7 @@
 package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.blockentities.BlockEntityAntimatter;
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -19,6 +20,11 @@ public class AnimusBlockEntities {
         ).build(null)
     );
 
-    // TODO: Port remaining block entities:
-    // - BlockEntityAntimatter (if it exists)
+    public static final RegistryObject<BlockEntityType<BlockEntityAntimatter>> ANTIMATTER = BLOCK_ENTITIES.register(
+        "antimatter",
+        () -> BlockEntityType.Builder.of(
+            BlockEntityAntimatter::new,
+            AnimusBlocks.BLOCK_ANTIMATTER.get()
+        ).build(null)
+    );
 }

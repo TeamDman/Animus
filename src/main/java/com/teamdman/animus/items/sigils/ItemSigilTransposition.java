@@ -93,7 +93,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
             return InteractionResult.FAIL;
         }
 
@@ -198,7 +198,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_STORED));
         }
 
-        // TODO: Add binding owner tooltip when binding system is implemented
+        // TODO: Add binding owner name to tooltip
         super.appendHoverText(stack, level, tooltip, flag);
     }
 }

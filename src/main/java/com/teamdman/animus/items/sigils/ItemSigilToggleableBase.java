@@ -5,7 +5,6 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * Base class for toggleable sigils
- * TODO: Implement proper activation state management with Blood Magic API
  * TODO: Add visual indicators for activated state (model overrides)
  */
 public abstract class ItemSigilToggleableBase extends AnimusSigilBase {
@@ -35,12 +34,10 @@ public abstract class ItemSigilToggleableBase extends AnimusSigilBase {
     }
 
     /**
-     * Check if sigil is unusable (e.g., not bound, not enough LP)
-     * TODO: Implement proper checks with Blood Magic API
+     * Check if sigil is unusable (not currently implemented)
+     * Individual sigils handle their own binding and LP checks
      */
     public boolean isUnusable(ItemStack stack) {
-        // TODO: Check binding
-        // TODO: Check LP availability
         return false;
     }
 }

@@ -60,7 +60,7 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
 
         // Check if sigil is bound to the player
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerUUID().equals(player.getUUID())) {
+        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
             return;
         }
 
