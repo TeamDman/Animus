@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "animus:blood_wood"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "animus:blood_wood_planks"
+  }
+}

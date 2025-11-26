@@ -18,20 +18,23 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        // Blood Wood Log - pillar block (rotatable)
-        logBlock((net.minecraft.world.level.block.RotatedPillarBlock) AnimusBlocks.BLOCK_BLOOD_WOOD.get());
+        // Blood Wood Log - pillar block (rotatable) with custom texture names
+        axisBlock((net.minecraft.world.level.block.RotatedPillarBlock) AnimusBlocks.BLOCK_BLOOD_WOOD.get(),
+            modLoc("block/blockbloodwood"),
+            modLoc("block/blockbloodwood_top")
+        );
 
         // Stripped Blood Wood Log - pillar block (rotatable)
         axisBlock((net.minecraft.world.level.block.RotatedPillarBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get(),
-            modLoc("block/blockbloodwoodstripped"),
-            modLoc("block/blockbloodwoodstripped_top")
+            modLoc("block/stripped_bloodwood_log"),
+            modLoc("block/stripped_bloodwood_log_top")
         );
 
         // Blood Wood Planks - simple cube all
         simpleBlock(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS.get(),
             models().cubeAll(
                 "blood_wood_planks",
-                modLoc("block/blockbloodwoodplanks")
+                modLoc("block/bloodwood_planks")
             )
         );
 

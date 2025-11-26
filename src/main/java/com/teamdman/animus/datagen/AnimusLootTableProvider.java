@@ -41,6 +41,12 @@ public class AnimusLootTableProvider extends LootTableProvider {
             // Blood Wood - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD.get());
 
+            // Stripped Blood Wood - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get());
+
+            // Blood Wood Planks - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS.get());
+
             // Blood Sapling - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_SAPLING.get());
 
