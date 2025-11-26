@@ -126,6 +126,22 @@ public class EntityThrownPilum extends AbstractArrow {
     }
 
     @Override
+    protected void onHit(net.minecraft.world.phys.HitResult result) {
+        super.onHit(result);
+
+        // Bound pilum creates lightning at any impact point
+        if ("bound".equals(this.getVariant()) && !this.level().isClientSide) {
+            Entity owner = this.getOwner();
+            net.minecraft.world.entity.LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(this.level());
+            if (lightning != null) {
+                lightning.moveTo(result.getLocation().x, result.getLocation().y, result.getLocation().z);
+                lightning.setCause(owner instanceof net.minecraft.server.level.ServerPlayer ? (net.minecraft.server.level.ServerPlayer)owner : null);
+                this.level().addFreshEntity(lightning);
+            }
+        }
+    }
+
+    @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         float damage = 8.0F;
@@ -153,7 +169,10 @@ public class EntityThrownPilum extends AbstractArrow {
         }
 
         // AOE damage on impact
-        dealAOEDamage(entity.getX(), entity.getY(), entity.getZ(), damage * 0.75F);
+        // Bound pilum deals more AOE damage (lightning is handled in onHit)
+        boolean isBound = "bound".equals(this.getVariant());
+        float aoeDamage = isBound ? damage * 1.0F : damage * 0.75F;
+        dealAOEDamage(entity.getX(), entity.getY(), entity.getZ(), aoeDamage);
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
