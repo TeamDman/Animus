@@ -24,6 +24,7 @@ public class Animus {
         AnimusBlocks.BLOCKS.register(modEventBus);
         AnimusItems.ITEMS.register(modEventBus);
         AnimusBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        AnimusEntityTypes.ENTITY_TYPES.register(modEventBus);
         AnimusFluids.FLUID_TYPES.register(modEventBus);
         AnimusFluids.FLUIDS.register(modEventBus);
         AnimusMobEffects.MOB_EFFECTS.register(modEventBus);

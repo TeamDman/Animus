@@ -1,13 +1,18 @@
 package com.teamdman.animus;
 
+import com.teamdman.animus.client.models.AnimusModelLayers;
+import com.teamdman.animus.client.models.PilumModel;
+import com.teamdman.animus.client.renderers.ThrownPilumRenderer;
 import com.teamdman.animus.items.sigils.ItemSigilToggleableBase;
 import com.teamdman.animus.registry.AnimusBlocks;
+import com.teamdman.animus.registry.AnimusEntityTypes;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -34,6 +39,18 @@ public class AnimusClientSetup {
             registerToggleableSigilProperty(AnimusItems.SIGIL_LEECH.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_TRANSPOSITION.get());
         });
+    }
+
+    @SubscribeEvent
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        // Register custom renderer for thrown pilum
+        event.registerEntityRenderer(AnimusEntityTypes.THROWN_PILUM.get(), ThrownPilumRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        // Register custom model layer for pilum
+        event.registerLayerDefinition(AnimusModelLayers.PILUM, PilumModel::createBodyLayer);
     }
 
     /**

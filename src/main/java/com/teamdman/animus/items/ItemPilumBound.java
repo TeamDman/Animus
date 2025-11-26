@@ -33,6 +33,21 @@ public class ItemPilumBound extends ItemPilum {
     }
 
     @Override
+    public boolean canBeDepleted() {
+        return false; // Unbreakable - never takes damage
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return 0; // No durability bar
+    }
+
+    @Override
+    public boolean isDamaged(ItemStack stack) {
+        return false; // Never damaged
+    }
+
+    @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             hurtEnemy(stack, livingEntity, player);
@@ -43,6 +58,9 @@ public class ItemPilumBound extends ItemPilum {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        // Call parent to apply normal attack damage
+        super.hurtEnemy(stack, target, attacker);
+
         Level level = target.level();
 
         if (level.isClientSide) {
