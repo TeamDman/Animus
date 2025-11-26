@@ -14,6 +14,12 @@ public class AnimusBlocks {
     public static final RegistryObject<Block> BLOCK_BLOOD_WOOD = BLOCKS.register("blood_wood",
         BlockBloodWood::new);
 
+    public static final RegistryObject<Block> BLOCK_BLOOD_WOOD_STRIPPED = BLOCKS.register("blood_wood_stripped",
+        BlockBloodWoodStripped::new);
+
+    public static final RegistryObject<Block> BLOCK_BLOOD_WOOD_PLANKS = BLOCKS.register("blood_wood_planks",
+        BlockBloodWoodPlanks::new);
+
     public static final RegistryObject<Block> BLOCK_BLOOD_SAPLING = BLOCKS.register("blood_sapling",
         BlockBloodSapling::new);
 

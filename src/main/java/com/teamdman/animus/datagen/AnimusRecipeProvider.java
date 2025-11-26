@@ -58,6 +58,18 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .requires(Items.REDSTONE)
             .unlockedBy("has_apple", has(Items.APPLE))
             .save(consumer);
+
+        // Blood Wood Planks from Log (1 log = 4 planks)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get(), 4)
+            .requires(AnimusBlocks.BLOCK_BLOOD_WOOD.get())
+            .unlockedBy("has_blood_wood", has(AnimusBlocks.BLOCK_BLOOD_WOOD.get()))
+            .save(consumer);
+
+        // Blood Wood Planks from Stripped Log (1 log = 4 planks)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get(), 4)
+            .requires(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get())
+            .unlockedBy("has_stripped_blood_wood", has(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get()))
+            .save(consumer, ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "blood_wood_planks_from_stripped"));
     }
 
     private net.minecraft.world.level.ItemLike itemFromMod(String modid, String name) {

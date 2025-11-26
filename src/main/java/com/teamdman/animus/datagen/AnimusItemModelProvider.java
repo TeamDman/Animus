@@ -21,6 +21,8 @@ public class AnimusItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         // Block items - use parent block model
         blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD);
+        blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED);
+        blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS);
         blockItem(AnimusBlocks.BLOCK_BLOOD_CORE);
         blockItem(AnimusBlocks.BLOCK_BLOOD_LEAVES);
 

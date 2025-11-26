@@ -5,12 +5,11 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 /**
- * Blood Wood Log block
- * Original: 1.12.2 Material.WOOD based block
- * Ported: 1.20.1 RotatedPillarBlock for proper log behavior (can be rotated and stripped)
+ * Stripped Blood Wood Log block
+ * Behaves like stripped oak log - rotatable pillar block
  */
-public class BlockBloodWood extends RotatedPillarBlock {
-    public BlockBloodWood() {
+public class BlockBloodWoodStripped extends RotatedPillarBlock {
+    public BlockBloodWoodStripped() {
         super(BlockBehaviour.Properties.of()
             .strength(2.0F)
             .sound(SoundType.WOOD)
