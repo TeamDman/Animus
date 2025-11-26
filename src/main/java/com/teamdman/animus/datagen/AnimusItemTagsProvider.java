@@ -19,8 +19,9 @@ public class AnimusItemTagsProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        // Copy block tags to item tags
+        // Copy block tags to item tags for wood-related items
         copy(net.minecraft.tags.BlockTags.LOGS, ItemTags.LOGS);
+        copy(net.minecraft.tags.BlockTags.PLANKS, ItemTags.PLANKS);
         copy(net.minecraft.tags.BlockTags.LEAVES, ItemTags.LEAVES);
         copy(net.minecraft.tags.BlockTags.SAPLINGS, ItemTags.SAPLINGS);
     }

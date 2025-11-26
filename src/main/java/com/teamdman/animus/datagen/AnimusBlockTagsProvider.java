@@ -19,25 +19,39 @@ public class AnimusBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        // Blood Wood - logs tag
+        // LOGS TAG - All log variants
         this.tag(BlockTags.LOGS)
-            .add(AnimusBlocks.BLOCK_BLOOD_WOOD.get());
-
-        // Blood Wood - mineable with axe
-        this.tag(BlockTags.MINEABLE_WITH_AXE)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD.get())
-            .add(AnimusBlocks.BLOCK_BLOOD_CORE.get());
+            .add(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get());
 
-        // Blood Leaves - leaves tag
+        // PLANKS TAG - All plank variants
+        this.tag(BlockTags.PLANKS)
+            .add(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS.get());
+
+        // LEAVES TAG
         this.tag(BlockTags.LEAVES)
             .add(AnimusBlocks.BLOCK_BLOOD_LEAVES.get());
 
-        // Blood Leaves - mineable with hoe
+        // SAPLINGS TAG
+        this.tag(BlockTags.SAPLINGS)
+            .add(AnimusBlocks.BLOCK_BLOOD_SAPLING.get());
+
+        // MINEABLE WITH AXE - Wood blocks and core
+        this.tag(BlockTags.MINEABLE_WITH_AXE)
+            .add(AnimusBlocks.BLOCK_BLOOD_WOOD.get())
+            .add(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get())
+            .add(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS.get())
+            .add(AnimusBlocks.BLOCK_BLOOD_CORE.get());
+
+        // MINEABLE WITH HOE - Leaves
         this.tag(BlockTags.MINEABLE_WITH_HOE)
             .add(AnimusBlocks.BLOCK_BLOOD_LEAVES.get());
 
-        // Blood Sapling - saplings tag
-        this.tag(BlockTags.SAPLINGS)
-            .add(AnimusBlocks.BLOCK_BLOOD_SAPLING.get());
+        // MINEABLE WITH PICKAXE - Antimatter block
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+            .add(AnimusBlocks.BLOCK_ANTIMATTER.get());
+
+        // No mining level requirements - all blocks mineable with any tier
+        // (Blood wood blocks are wood tier, antimatter has no special requirements)
     }
 }
