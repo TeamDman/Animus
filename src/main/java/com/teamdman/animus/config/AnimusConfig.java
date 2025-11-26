@@ -23,12 +23,14 @@ public class AnimusConfig {
         public final Rituals rituals;
         public final Sigils sigils;
         public final HurtCooldown hurtCooldown;
+        public final BloodCore bloodCore;
 
         Common(ForgeConfigSpec.Builder builder) {
             general = new General(builder);
             rituals = new Rituals(builder);
             sigils = new Sigils(builder);
             hurtCooldown = new HurtCooldown(builder);
+            bloodCore = new BloodCore(builder);
         }
     }
 
@@ -190,6 +192,30 @@ public class AnimusConfig {
                 .defineList("sources",
                     Arrays.asList("inFire", "inWall", "cactus", "lightningBolt", "lava", "outOfWorld"),
                     obj -> obj instanceof String);
+
+            builder.pop();
+        }
+    }
+
+    public static class BloodCore {
+        public final ForgeConfigSpec.IntValue treeSpreadInterval;
+        public final ForgeConfigSpec.IntValue treeSpreadRadius;
+        public final ForgeConfigSpec.IntValue leafRegrowthSpeed;
+
+        BloodCore(ForgeConfigSpec.Builder builder) {
+            builder.push("bloodCore");
+
+            treeSpreadInterval = builder
+                .comment("Ticks between Blood Tree spreading attempts")
+                .defineInRange("treeSpreadInterval", 20, 1, 6000);
+
+            treeSpreadRadius = builder
+                .comment("Radius in which Blood Core searches for valid sapling positions")
+                .defineInRange("treeSpreadRadius", 8, 1, 32);
+
+            leafRegrowthSpeed = builder
+                .comment("Ticks between Blood Leaves regrowth attempts")
+                .defineInRange("leafRegrowthSpeed", 10, 1, 6000);
 
             builder.pop();
         }
