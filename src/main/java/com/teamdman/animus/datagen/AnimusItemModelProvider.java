@@ -35,7 +35,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.KEY_BINDING, "item/itemkeybinding");
         simpleItem(AnimusItems.MOBSOUL, "item/itemmobsoul");
 
-        // Pilums (Roman Javelins) - TODO: Add textures
+        // Pilums (Roman Javelins)
         simpleItem(AnimusItems.PILUM_IRON, "item/itempilumiron");
         simpleItem(AnimusItems.PILUM_DIAMOND, "item/itempilumdiamond");
         simpleItem(AnimusItems.PILUM_BOUND, "item/itempilumbound");
