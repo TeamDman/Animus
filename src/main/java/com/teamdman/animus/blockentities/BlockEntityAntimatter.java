@@ -1,6 +1,6 @@
 package com.teamdman.animus.blockentities;
 
-import com.teamdman.animus.config.AnimusConfig;
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +23,7 @@ public class BlockEntityAntimatter extends BlockEntity {
 
     public BlockEntityAntimatter(BlockPos pos, BlockState state) {
         super(AnimusBlockEntities.ANTIMATTER.get(), pos, state);
-        this.range = AnimusConfig.COMMON.sigils.antimatterRange.get();
+        this.range = AnimusConfig.sigils.antimatterRange.get();
     }
 
     public Block getSeeking() {

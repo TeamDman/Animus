@@ -1,7 +1,7 @@
 package com.teamdman.animus.items;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.config.AnimusConfig;
 import com.teamdman.animus.util.AnimusUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -46,7 +46,7 @@ public class ItemBloodApple extends Item {
             // Search for nearby altar in range
             TileAltar altar = AnimusUtil.getNearbyAltar(level, altarRange, entity.blockPosition(), offsetCached);
 
-            int bloodAmount = AnimusConfig.COMMON.general.bloodPerApple.get();
+            int bloodAmount = AnimusConfig.general.bloodPerApple.get();
 
             if (altar != null) {
                 // Altar found - add blood to altar (doubled like in original)

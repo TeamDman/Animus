@@ -1,8 +1,8 @@
 package com.teamdman.animus.blocks;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.blockentities.BlockEntityAntimatter;
-import com.teamdman.animus.config.AnimusConfig;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -138,7 +138,7 @@ public class BlockAntimatter extends BaseEntityBlock {
                             SoulNetwork network = NetworkHelper.getSoulNetwork(player);
                             SoulTicket ticket = new SoulTicket(
                                 Component.translatable(Constants.Localizations.Text.TICKET_ANTIMATTER),
-                                AnimusConfig.COMMON.sigils.antimatterConsumption.get()
+                                AnimusConfig.sigils.antimatterConsumption.get()
                             );
                             network.syphonAndDamage(player, ticket);
                         }
