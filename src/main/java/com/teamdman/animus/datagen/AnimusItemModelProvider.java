@@ -49,6 +49,10 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         toggleableSigil(AnimusItems.SIGIL_BUILDER, "sigil_builder");
         toggleableSigil(AnimusItems.SIGIL_LEECH, "itemsigilleech");
         toggleableSigil(AnimusItems.SIGIL_TRANSPOSITION, "sigil_transposition");
+
+        // Fluid Buckets - use vanilla bucket model
+        bucketItem(AnimusItems.ANTIMATTER_BUCKET);
+        bucketItem(AnimusItems.DIRT_BUCKET);
     }
 
     /**
@@ -79,6 +83,12 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         String name = item.getId().getPath();
         withExistingParent(name, mcLoc("item/generated"))
             .texture("layer0", modLoc(texturePath));
+    }
+
+    private void bucketItem(RegistryObject<Item> item) {
+        String name = item.getId().getPath();
+        withExistingParent(name, mcLoc("item/generated"))
+            .texture("layer0", mcLoc("item/bucket"));
     }
 
     @Override
