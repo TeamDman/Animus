@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * Base class for toggleable sigils
- * TODO: Add visual indicators for activated state (model overrides)
+ * Visual indicators are provided via model overrides (registered in AnimusClientSetup)
  */
 public abstract class ItemSigilToggleableBase extends AnimusSigilBase {
     private static final String ACTIVATED_KEY = "activated";
