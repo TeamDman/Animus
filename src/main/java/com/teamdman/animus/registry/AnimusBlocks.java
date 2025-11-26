@@ -26,7 +26,10 @@ public class AnimusBlocks {
     public static final RegistryObject<Block> BLOCK_ANTIMATTER = BLOCKS.register("antimatter",
         BlockAntimatter::new);
 
-    // TODO: Port remaining blocks:
-    // - BlockFluidAntimatter (via AnimusFluids)
-    // - BlockFluidDirt (via AnimusFluids)
+    // Fluid blocks
+    public static final RegistryObject<Block> BLOCK_FLUID_ANTIMATTER = BLOCKS.register("antimatter_fluid",
+        BlockFluidAntimatter::new);
+
+    public static final RegistryObject<Block> BLOCK_FLUID_DIRT = BLOCKS.register("dirt_fluid",
+        BlockFluidDirt::new);
 }

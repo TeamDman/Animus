@@ -198,7 +198,6 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_STORED));
         }
 
-        // TODO: Add binding owner name to tooltip
         super.appendHoverText(stack, level, tooltip, flag);
     }
 }

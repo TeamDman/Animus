@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "animus:item/itemkamairon"
+    "layer0": "animus:item/sigil_builder_activated"
   }
 }

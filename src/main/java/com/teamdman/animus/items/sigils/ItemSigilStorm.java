@@ -2,21 +2,26 @@ package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.animal.Cod;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 /**
  * Sigil of the Storm - summons lightning
- * TODO: Add fish spawning when targeting water
- * TODO: Add area damage during rain
+ * When targeting water, spawns fish
+ * When raining, deals area damage to nearby entities
  */
 public class ItemSigilStorm extends AnimusSigilBase {
 
@@ -72,6 +77,36 @@ public class ItemSigilStorm extends AnimusSigilBase {
                 lightning.moveTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
                 lightning.setVisualOnly(false);
                 level.addFreshEntity(lightning);
+            }
+
+            // Fish spawning when targeting water
+            if (level instanceof ServerLevel serverLevel) {
+                // Check if the target block is water
+                if (level.getFluidState(pos).is(Fluids.WATER) || level.getBlockState(pos).is(Blocks.WATER)) {
+                    // Spawn 1-3 fish
+                    int fishCount = 1 + level.random.nextInt(3);
+                    for (int i = 0; i < fishCount; i++) {
+                        Cod fish = EntityType.COD.create(level);
+                        if (fish != null) {
+                            // Spawn fish near the target position
+                            double offsetX = (level.random.nextDouble() - 0.5) * 2.0;
+                            double offsetZ = (level.random.nextDouble() - 0.5) * 2.0;
+                            fish.moveTo(pos.getX() + 0.5 + offsetX, pos.getY() + 1, pos.getZ() + 0.5 + offsetZ);
+                            serverLevel.addFreshEntity(fish);
+                        }
+                    }
+                }
+
+                // Area damage during rain
+                if (level.isRaining() && level.canSeeSky(pos)) {
+                    // Deal damage to entities in a 5 block radius
+                    AABB damageArea = new AABB(pos).inflate(5.0);
+                    level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class, damageArea).forEach(entity -> {
+                        if (entity != player && level.canSeeSky(entity.blockPosition())) {
+                            entity.hurt(level.damageSources().lightningBolt(), 4.0F);
+                        }
+                    });
+                }
             }
 
             return InteractionResultHolder.success(stack);

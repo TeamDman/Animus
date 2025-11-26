@@ -35,18 +35,39 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.KEY_BINDING, "item/itemkeybinding");
         simpleItem(AnimusItems.MOBSOUL, "item/itemmobsoul");
 
-        // Pilums (Roman Javelins)
-        simpleItem(AnimusItems.PILUM_IRON, "item/itempilumiron");
-        simpleItem(AnimusItems.PILUM_DIAMOND, "item/itempilumdiamond");
-        simpleItem(AnimusItems.PILUM_BOUND, "item/itempilumbound");
+        // Pilums (Roman Javelins) - TODO: Add textures
+        // simpleItem(AnimusItems.PILUM_IRON, "item/itempilumiron");
+        // simpleItem(AnimusItems.PILUM_DIAMOND, "item/itempilumdiamond");
+        // simpleItem(AnimusItems.PILUM_BOUND, "item/itempilumbound");
 
-        // Sigils
-        simpleItem(AnimusItems.SIGIL_BUILDER, "item/reagentbuilder");
+        // Sigils - Simple (non-toggleable)
         simpleItem(AnimusItems.SIGIL_CHAINS, "item/itemsigilchains");
         simpleItem(AnimusItems.SIGIL_CONSUMPTION, "item/itemsigilconsumption");
-        simpleItem(AnimusItems.SIGIL_LEECH, "item/itemsigilleech_deactivated");
         simpleItem(AnimusItems.SIGIL_STORM, "item/itemsigilstorm");
-        simpleItem(AnimusItems.SIGIL_TRANSPOSITION, "item/reagenttransposition");
+
+        // Toggleable Sigils - with activation states
+        toggleableSigil(AnimusItems.SIGIL_BUILDER, "sigil_builder");
+        toggleableSigil(AnimusItems.SIGIL_LEECH, "itemsigilleech");
+        toggleableSigil(AnimusItems.SIGIL_TRANSPOSITION, "sigil_transposition");
+    }
+
+    /**
+     * Creates a toggleable sigil model with activated/deactivated texture variants
+     */
+    private void toggleableSigil(RegistryObject<Item> item, String baseTextureName) {
+        String name = item.getId().getPath();
+
+        // Main model (deactivated state)
+        withExistingParent(name, mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + baseTextureName + "_deactivated"))
+            .override()
+                .predicate(modLoc("activated"), 1.0F)
+                .model(getBuilder(name + "_activated"))
+            .end();
+
+        // Activated variant model
+        withExistingParent(name + "_activated", mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + baseTextureName + "_activated"));
     }
 
     private void blockItem(RegistryObject<Block> block) {

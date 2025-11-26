@@ -4,7 +4,9 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.*;
 import com.teamdman.animus.items.sigils.*;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
@@ -74,4 +76,17 @@ public class AnimusItems {
     // Utilities
     public static final RegistryObject<Item> ALTAR_DIVINER = ITEMS.register("altar_diviner",
         ItemAltarDiviner::new);
+
+    // Fluid Buckets
+    public static final RegistryObject<Item> ANTIMATTER_BUCKET = ITEMS.register("antimatter_bucket",
+        () -> new BucketItem(
+            AnimusFluids.ANTIMATTER_SOURCE,
+            new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)
+        ));
+
+    public static final RegistryObject<Item> DIRT_BUCKET = ITEMS.register("dirt_bucket",
+        () -> new BucketItem(
+            AnimusFluids.DIRT_SOURCE,
+            new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)
+        ));
 }
