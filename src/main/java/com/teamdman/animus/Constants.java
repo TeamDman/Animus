@@ -50,16 +50,23 @@ public class Constants {
             public static final String DIVINER_THIRD = "tooltip.animus.diviner.third";
             public static final String HEALING_FLAVOUR = "tooltip.animus.healing.flavour";
             public static final String HEALING_INFO = "tooltip.animus.healing.info";
+            public static final String HEALING_RATE = "tooltip.animus.healing.rate";
             public static final String PILUM_FIRST = "tooltip.animus.pilum_bound.first";
             public static final String PILUM_SECOND = "tooltip.animus.pilum_bound.second";
             public static final String KEY = "tooltip.animus.key";
             public static final String OWNER = "tooltip.animus.currentOwner";
             public static final String SIGIL_BUILDER_FLAVOUR = "tooltip.animus.sigil.builder.flavour";
+            public static final String SIGIL_BUILDER_INFO = "tooltip.animus.sigil.builder.info";
             public static final String SIGIL_CHAINS_FLAVOUR = "tooltip.animus.sigil.chains.flavour";
+            public static final String SIGIL_CHAINS_INFO = "tooltip.animus.sigil.chains.info";
             public static final String SIGIL_CONSUMPTION_FLAVOUR = "tooltip.animus.sigil.consumption.flavour";
+            public static final String SIGIL_CONSUMPTION_INFO = "tooltip.animus.sigil.consumption.info";
             public static final String SIGIL_LEECH_FLAVOUR = "tooltip.animus.sigil.leech.flavour";
+            public static final String SIGIL_LEECH_INFO = "tooltip.animus.sigil.leech.info";
             public static final String SIGIL_STORM_FLAVOUR = "tooltip.animus.sigil.storm.flavour";
+            public static final String SIGIL_STORM_INFO = "tooltip.animus.sigil.storm.info";
             public static final String SIGIL_TRANSPOSITION_FLAVOUR = "tooltip.animus.sigil.transposition.flavour";
+            public static final String SIGIL_TRANSPOSITION_INFO = "tooltip.animus.sigil.transposition.info";
             public static final String SIGIL_TRANSPOSITION_STORED = "tooltip.animus.sigil.transposition.stored";
         }
     }
