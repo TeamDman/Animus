@@ -6,6 +6,7 @@ import com.teamdman.animus.client.renderers.ThrownPilumRenderer;
 import com.teamdman.animus.items.sigils.ItemSigilToggleableBase;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusEntityTypes;
+import com.teamdman.animus.registry.AnimusFluids;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -33,6 +35,12 @@ public class AnimusClientSetup {
 
             // Leaves use cutout_mipped for transparency (fancy graphics support)
             ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_LEAVES.get(), RenderType.cutoutMipped());
+
+            // Set render layers for fluids (translucent for transparency)
+            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.ANTIMATTER_SOURCE.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.ANTIMATTER_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.DIRT_SOURCE.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.DIRT_FLOWING.get(), RenderType.translucent());
 
             // Register item properties for toggleable sigils
             registerToggleableSigilProperty(AnimusItems.SIGIL_BUILDER.get());

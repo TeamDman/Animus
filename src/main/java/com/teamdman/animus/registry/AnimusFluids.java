@@ -36,6 +36,21 @@ public class AnimusFluids {
             public String getDescriptionId() {
                 return "fluid.animus.antimatter";
             }
+
+            @Override
+            public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer) {
+                consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions() {
+                    @Override
+                    public net.minecraft.resources.ResourceLocation getStillTexture() {
+                        return Constants.Resource.fluidAntimatterStill;
+                    }
+
+                    @Override
+                    public net.minecraft.resources.ResourceLocation getFlowingTexture() {
+                        return Constants.Resource.fluidAntimatterFlowing;
+                    }
+                });
+            }
         }
     );
 
@@ -56,6 +71,21 @@ public class AnimusFluids {
             @Override
             public String getDescriptionId() {
                 return "fluid.animus.dirt";
+            }
+
+            @Override
+            public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer) {
+                consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions() {
+                    @Override
+                    public net.minecraft.resources.ResourceLocation getStillTexture() {
+                        return Constants.Resource.fluidDirtStill;
+                    }
+
+                    @Override
+                    public net.minecraft.resources.ResourceLocation getFlowingTexture() {
+                        return Constants.Resource.fluidDirtFlowing;
+                    }
+                });
             }
         }
     );
