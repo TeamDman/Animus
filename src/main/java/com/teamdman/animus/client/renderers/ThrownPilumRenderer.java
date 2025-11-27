@@ -41,11 +41,14 @@ public class ThrownPilumRenderer extends EntityRenderer<EntityThrownPilum> {
     public void render(EntityThrownPilum entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
 
-        // Rotate to match entity yaw (horizontal direction)
-        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
+        // Rotate to match entity yaw (horizontal direction) and flip 180 degrees
+        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) + 90.0F));
 
-        // Rotate to match entity pitch (vertical angle)
-        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
+        // Rotate to match entity pitch (vertical angle) with 45 degree offset to lean tip back
+        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 45.0F));
+
+        // Additional rotation to align model tip forward (model is built along -Z axis)
+        poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
 
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, this.model.renderType(this.getTextureLocation(entity)), false, entity.isFoil());
 

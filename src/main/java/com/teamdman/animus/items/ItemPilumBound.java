@@ -33,6 +33,11 @@ public class ItemPilumBound extends ItemPilum {
     }
 
     @Override
+    public boolean isFireResistant() {
+        return true; // Fireproof - won't burn in lava/fire
+    }
+
+    @Override
     public boolean canBeDepleted() {
         return false; // Unbreakable - never takes damage
     }
@@ -45,6 +50,18 @@ public class ItemPilumBound extends ItemPilum {
     @Override
     public boolean isDamaged(ItemStack stack) {
         return false; // Never damaged
+    }
+
+    @Override
+    public net.minecraft.world.InteractionResultHolder<ItemStack> use(net.minecraft.world.level.Level level, net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        // Bound pilum is unbreakable, so skip durability check
+        if (net.minecraft.world.item.enchantment.EnchantmentHelper.getRiptide(stack) > 0 && !player.isInWaterOrRain()) {
+            return net.minecraft.world.InteractionResultHolder.fail(stack);
+        } else {
+            player.startUsingItem(hand);
+            return net.minecraft.world.InteractionResultHolder.consume(stack);
+        }
     }
 
     @Override
