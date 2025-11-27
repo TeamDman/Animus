@@ -40,7 +40,7 @@ public class AnimusItems {
 
     // Mob Soul - used by Sigil of Chains
     public static final RegistryObject<Item> MOBSOUL = ITEMS.register("mob_soul",
-        () -> new Item(new Item.Properties().stacksTo(1)));
+        com.teamdman.animus.items.ItemMobSoul::new);
 
     // Sigils
     public static final RegistryObject<Item> SIGIL_BUILDER = ITEMS.register("sigil_builder",

@@ -105,6 +105,7 @@ public class ItemSigilChains extends AnimusSigilBase {
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_CHAINS_FLAVOUR));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_CHAINS_INFO));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 }

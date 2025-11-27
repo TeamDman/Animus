@@ -114,4 +114,11 @@ public class ItemSigilStorm extends AnimusSigilBase {
 
         return InteractionResultHolder.fail(stack);
     }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level level, java.util.List<net.minecraft.network.chat.Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
+        tooltip.add(net.minecraft.network.chat.Component.translatable(Constants.Localizations.Tooltips.SIGIL_STORM_FLAVOUR));
+        tooltip.add(net.minecraft.network.chat.Component.translatable(Constants.Localizations.Tooltips.SIGIL_STORM_INFO));
+        super.appendHoverText(stack, level, tooltip, flag);
+    }
 }

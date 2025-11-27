@@ -264,6 +264,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_BUILDER_FLAVOUR));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_BUILDER_INFO));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 }

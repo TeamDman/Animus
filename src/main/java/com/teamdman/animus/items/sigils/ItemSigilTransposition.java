@@ -192,6 +192,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_FLAVOUR));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_INFO));
 
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.getLong(POS_KEY) != 0) {
