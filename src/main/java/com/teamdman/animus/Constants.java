@@ -110,6 +110,12 @@ public class Constants {
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_capturing")
             );
 
+        public static final net.minecraft.tags.TagKey<net.minecraft.world.entity.EntityType<?>> DISALLOW_CULLING =
+            net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.ENTITY_TYPE,
+                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_culling")
+            );
+
         public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_LEACH =
             net.minecraft.tags.TagKey.create(
                 net.minecraft.core.registries.Registries.BLOCK,

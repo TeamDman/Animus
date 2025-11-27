@@ -15,7 +15,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.level.Level;
@@ -180,10 +179,10 @@ public class RitualCulling extends Ritual {
 
                 if (effects.isEmpty() || AnimusConfig.general.canKillBuffedMobs.get()) {
                     BlockPos at = livingEntity.blockPosition();
-                    boolean isNonBoss = !livingEntity.canChangeDimensions();
+                    boolean isBoss = !livingEntity.canChangeDimensions();
 
-                    // Skip Gaia Guardian (Botania boss)
-                    if (livingEntity.getName().getString().contains("Gaia")) {
+                    // Check if entity is in the disallow_culling tag
+                    if (livingEntity.getType().is(Constants.Tags.DISALLOW_CULLING)) {
                         continue;
                     }
 
@@ -197,14 +196,11 @@ public class RitualCulling extends Ritual {
                     float damage = Float.MAX_VALUE;
 
                     // Special handling for bosses
-                    if (AnimusConfig.rituals.killWither.get() && !isNonBoss && currentAmount > 99
-                        && (currentEssence >= AnimusConfig.rituals.witherCost.get() + (getRefreshCost() * list.size()))) {
+                    if (AnimusConfig.rituals.killBoss.get() && isBoss && currentAmount > 99
+                        && (currentEssence >= AnimusConfig.rituals.bossCost.get() + (getRefreshCost() * list.size()))) {
 
+                        // Make boss vulnerable so it can be killed
                         livingEntity.setInvulnerable(false);
-
-                        if (livingEntity instanceof WitherBoss wither) {
-                            wither.setInvulnerableTicks(0);
-                        }
                     }
 
                     result = livingEntity.hurt(level.damageSources().genericKill(), damage);
@@ -213,11 +209,11 @@ public class RitualCulling extends Ritual {
                         entityCount++;
                         tileAltar.sacrificialDaggerCall(amount, true);
 
-                        if (!isNonBoss) {
-                            // Boss kill - high LP cost
+                        if (isBoss) {
+                            // Boss kill - extra LP cost
                             network.syphon(new SoulTicket(
                                 Component.translatable(Constants.Localizations.Text.TICKET_CULLING),
-                                AnimusConfig.rituals.witherCost.get()
+                                AnimusConfig.rituals.bossCost.get()
                             ), false);
                         } else {
                             // Regular mob - add to will buffer

@@ -47,8 +47,8 @@ public class AnimusConfig {
 
     // Ritual Configuration
     public static class Rituals {
-        public final ForgeConfigSpec.BooleanValue killWither;
-        public final ForgeConfigSpec.IntValue witherCost;
+        public final ForgeConfigSpec.BooleanValue killBoss;
+        public final ForgeConfigSpec.IntValue bossCost;
         public final ForgeConfigSpec.BooleanValue cullingKillsTnT;
         public final ForgeConfigSpec.BooleanValue cullingDebug;
         public final ForgeConfigSpec.IntValue peaceCost;
@@ -56,13 +56,13 @@ public class AnimusConfig {
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
 
-            killWither = builder
-                .comment("Allow Ritual of Culling to kill Withers")
-                .define("killWither", true);
+            killBoss = builder
+                .comment("Allow Ritual of Culling to kill boss monsters (Wither, Ender Dragon, etc.)")
+                .define("killBoss", true);
 
-            witherCost = builder
-                .comment("LP cost for killing a Wither")
-                .defineInRange("witherCost", 25000, 0, 1000000);
+            bossCost = builder
+                .comment("Extra LP cost for killing boss monsters")
+                .defineInRange("bossCost", 25000, 0, 1000000);
 
             cullingKillsTnT = builder
                 .comment("Allow Ritual of Culling to destroy primed TNT")
