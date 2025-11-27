@@ -72,6 +72,18 @@ public class Constants {
             public static final String SIGIL_TRANSPOSITION_FLAVOUR = "tooltip.animus.sigil.transposition.flavour";
             public static final String SIGIL_TRANSPOSITION_INFO = "tooltip.animus.sigil.transposition.info";
             public static final String SIGIL_TRANSPOSITION_STORED = "tooltip.animus.sigil.transposition.stored";
+            public static final String BLOOD_APPLE_FLAVOUR = "tooltip.animus.blood_apple.flavour";
+            public static final String BLOOD_APPLE_INFO = "tooltip.animus.blood_apple.info";
+            public static final String BLOOD_APPLE_LP = "tooltip.animus.blood_apple.lp";
+            public static final String BLOOD_SAPLING_FLAVOUR = "tooltip.animus.blood_sapling.flavour";
+            public static final String BLOOD_SAPLING_INFO = "tooltip.animus.blood_sapling.info";
+            public static final String PILUM_IRON_FLAVOUR = "tooltip.animus.pilum_iron.flavour";
+            public static final String PILUM_IRON_INFO = "tooltip.animus.pilum_iron.info";
+            public static final String PILUM_DIAMOND_FLAVOUR = "tooltip.animus.pilum_diamond.flavour";
+            public static final String PILUM_DIAMOND_INFO = "tooltip.animus.pilum_diamond.info";
+            public static final String BLOOD_CORE_FLAVOUR = "tooltip.animus.blood_core.flavour";
+            public static final String BLOOD_CORE_INFO = "tooltip.animus.blood_core.info";
+            public static final String BLOOD_CORE_MULTIBLOCK = "tooltip.animus.blood_core.multiblock";
         }
     }
 

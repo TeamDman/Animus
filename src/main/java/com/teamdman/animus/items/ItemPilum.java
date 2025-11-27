@@ -1,6 +1,8 @@
 package com.teamdman.animus.items;
 
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.entities.EntityThrownPilum;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -11,10 +13,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+
+import java.util.List;
 
 /**
  * Pilum - A Roman-style throwable javelin
@@ -27,6 +33,18 @@ public class ItemPilum extends TridentItem {
     public ItemPilum(Tier tier) {
         super(new Properties().durability(tier.getUses()));
         this.tier = tier;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+        if (tier == Tiers.IRON) {
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_IRON_FLAVOUR));
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_IRON_INFO));
+        } else if (tier == Tiers.DIAMOND) {
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_DIAMOND_FLAVOUR));
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_DIAMOND_INFO));
+        }
+        super.appendHoverText(stack, level, tooltip, flag);
     }
 
     @Override

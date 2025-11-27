@@ -56,7 +56,8 @@ public abstract class AnimusSigilBase extends ItemSigilBase {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
+        // DON'T call super.appendHoverText() - Blood Magic's ItemSigilBase adds bloodmagic namespace tooltips
+        // We handle all tooltips in the individual sigil classes using the animus namespace
 
         // Add binding owner information
         Binding binding = getBinding(stack);

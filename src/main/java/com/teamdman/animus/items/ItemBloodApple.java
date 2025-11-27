@@ -12,7 +12,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+
+import java.util.List;
 import wayoftime.bloodmagic.common.tile.TileAltar;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
@@ -38,6 +41,14 @@ public class ItemBloodApple extends Item {
         super(new Item.Properties()
             .food(FOOD_PROPERTIES)
         );
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_FLAVOUR));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_INFO));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_LP));
+        super.appendHoverText(stack, level, tooltip, flag);
     }
 
     @Override
