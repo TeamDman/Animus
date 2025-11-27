@@ -53,8 +53,8 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         toggleableSigil(AnimusItems.SIGIL_TRANSPOSITION, "sigil_transposition");
 
         // Fluid Buckets - use custom bucket textures (like Blood Magic's lifebucket.png)
-        simpleItem(AnimusItems.ANTIMATTER_BUCKET, "item/antimatter_bucket");
-        simpleItem(AnimusItems.DIRT_BUCKET, "item/dirt_bucket");
+        simpleItem(AnimusItems.ANTILIFE_BUCKET, "item/antilife_bucket");
+        simpleItem(AnimusItems.LIVING_TERRA_BUCKET, "item/living_terra_bucket");
     }
 
     /**

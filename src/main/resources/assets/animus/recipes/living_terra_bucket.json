@@ -5,7 +5,7 @@
   "pattern": [
     "abc"
   ],
-  "type": "animus:dirtbucket",
+  "type": "animus:living_terra_bucket",
   "key": {
     "a": {
       "item": "minecraft:redstone_torch"

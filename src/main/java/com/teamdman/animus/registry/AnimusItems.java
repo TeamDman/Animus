@@ -58,7 +58,7 @@ public class AnimusItems {
         });
 
     public static final RegistryObject<Item> BLOCK_BLOOD_LEAVES = registerBlockItem("blood_leaves", AnimusBlocks.BLOCK_BLOOD_LEAVES);
-    public static final RegistryObject<Item> BLOCK_ANTIMATTER = registerBlockItem("antimatter", AnimusBlocks.BLOCK_ANTIMATTER);
+    public static final RegistryObject<Item> BLOCK_ANTILIFE = registerBlockItem("antilife", AnimusBlocks.BLOCK_ANTILIFE);
 
     // Regular Items
     public static final RegistryObject<Item> BLOOD_APPLE = ITEMS.register("blood_apple",
@@ -109,15 +109,15 @@ public class AnimusItems {
         ItemAltarDiviner::new);
 
     // Fluid Buckets
-    public static final RegistryObject<Item> ANTIMATTER_BUCKET = ITEMS.register("antimatter_bucket",
+    public static final RegistryObject<Item> ANTILIFE_BUCKET = ITEMS.register("antilife_bucket",
         () -> new BucketItem(
-            AnimusFluids.ANTIMATTER_SOURCE,
+            AnimusFluids.ANTILIFE_SOURCE,
             new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)
         ));
 
-    public static final RegistryObject<Item> DIRT_BUCKET = ITEMS.register("dirt_bucket",
+    public static final RegistryObject<Item> LIVING_TERRA_BUCKET = ITEMS.register("living_terra_bucket",
         () -> new BucketItem(
-            AnimusFluids.DIRT_SOURCE,
+            AnimusFluids.LIVING_TERRA_SOURCE,
             new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)
         ));
 }

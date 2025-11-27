@@ -1,6 +1,6 @@
 {
   "recipes": {
     "keybinding": "com.teamdman.animus.recipes.KeyBindingRecipeFactory",
-    "dirtbucket": "com.teamdman.animus.recipes.DirtBucketRecipeFactory"
+    "living_terra_bucket": "com.teamdman.animus.recipes.LivingTerraBucketRecipeFactory"
   }
 }

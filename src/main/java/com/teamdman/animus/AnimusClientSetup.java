@@ -37,10 +37,10 @@ public class AnimusClientSetup {
             ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_LEAVES.get(), RenderType.cutoutMipped());
 
             // Set render layers for fluids (translucent for transparency)
-            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.ANTIMATTER_SOURCE.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.ANTIMATTER_FLOWING.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.DIRT_SOURCE.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.DIRT_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.ANTILIFE_SOURCE.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.ANTILIFE_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.LIVING_TERRA_SOURCE.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.LIVING_TERRA_FLOWING.get(), RenderType.translucent());
 
             // Register item properties for toggleable sigils
             registerToggleableSigilProperty(AnimusItems.SIGIL_BUILDER.get());

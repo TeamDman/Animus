@@ -1,7 +1,7 @@
 package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.blockentities.BlockEntityAntimatter;
+import com.teamdman.animus.blockentities.BlockEntityAntiLife;
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,11 +20,11 @@ public class AnimusBlockEntities {
         ).build(null)
     );
 
-    public static final RegistryObject<BlockEntityType<BlockEntityAntimatter>> ANTIMATTER = BLOCK_ENTITIES.register(
-        "antimatter",
+    public static final RegistryObject<BlockEntityType<BlockEntityAntiLife>> ANTILIFE = BLOCK_ENTITIES.register(
+        "antilife",
         () -> BlockEntityType.Builder.of(
-            BlockEntityAntimatter::new,
-            AnimusBlocks.BLOCK_ANTIMATTER.get()
+            BlockEntityAntiLife::new,
+            AnimusBlocks.BLOCK_ANTILIFE.get()
         ).build(null)
     );
 }

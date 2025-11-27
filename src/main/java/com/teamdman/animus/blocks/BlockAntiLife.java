@@ -2,7 +2,7 @@ package com.teamdman.animus.blocks;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.blockentities.BlockEntityAntimatter;
+import com.teamdman.animus.blockentities.BlockEntityAntiLife;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -30,14 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Antimatter Block - Consumes nearby blocks of a specific type
- * Used by the Sigil of Consumption to convert blocks into antimatter
+ * AntiLife Block - Consumes nearby blocks of a specific type
+ * Used by the Sigil of Consumption to convert blocks into antilife
  * Spreads to adjacent blocks of the same type, consuming LP per spread
  */
-public class BlockAntimatter extends BaseEntityBlock {
+public class BlockAntiLife extends BaseEntityBlock {
     public static final BooleanProperty DECAYING = BooleanProperty.create("decaying");
 
-    public BlockAntimatter() {
+    public BlockAntiLife() {
         super(Properties.of()
             .mapColor(MapColor.COLOR_BLACK)
             .strength(0.5F)
@@ -48,13 +48,13 @@ public class BlockAntimatter extends BaseEntityBlock {
     }
 
     /**
-     * Converts a block at the given position to antimatter
+     * Converts a block at the given position to antilife
      * @param level The level
      * @param blockPos Position of block to convert
      * @param player Player using the sigil (for LP consumption)
      * @return SUCCESS if converted, PASS if cannot convert
      */
-    public static InteractionResult setBlockToAntimatter(Level level, BlockPos blockPos, Player player) {
+    public static InteractionResult setBlockToAntiLife(Level level, BlockPos blockPos, Player player) {
         // Don't convert blocks with tile entities or unbreakable blocks
         if (level.getBlockEntity(blockPos) != null) {
             return InteractionResult.PASS;
@@ -67,17 +67,17 @@ public class BlockAntimatter extends BaseEntityBlock {
 
         Block seeking = state.getBlock();
 
-        // Set to antimatter
-        level.setBlock(blockPos, AnimusBlocks.BLOCK_ANTIMATTER.get().defaultBlockState()
+        // Set to antilife
+        level.setBlock(blockPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState()
             .setValue(DECAYING, false), 3);
 
         // Configure block entity
-        if (level.getBlockEntity(blockPos) instanceof BlockEntityAntimatter antimatter) {
-            antimatter.setSeeking(seeking).setPlayer(player);
+        if (level.getBlockEntity(blockPos) instanceof BlockEntityAntiLife antilife) {
+            antilife.setSeeking(seeking).setPlayer(player);
         }
 
         // Schedule first tick
-        level.scheduleTick(blockPos, AnimusBlocks.BLOCK_ANTIMATTER.get(), 0);
+        level.scheduleTick(blockPos, AnimusBlocks.BLOCK_ANTILIFE.get(), 0);
 
         return InteractionResult.SUCCESS;
     }
@@ -90,12 +90,12 @@ public class BlockAntimatter extends BaseEntityBlock {
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (!(blockEntity instanceof BlockEntityAntimatter antimatter)) {
+        if (!(blockEntity instanceof BlockEntityAntiLife antilife)) {
             return;
         }
 
         boolean decaying = state.getValue(DECAYING);
-        int range = antimatter.getRange();
+        int range = antilife.getRange();
 
         // Get neighbors (3x3x3 cube around this block)
         List<BlockPos> neighbors = getNeighbors(pos);
@@ -104,8 +104,8 @@ public class BlockAntimatter extends BaseEntityBlock {
             BlockState neighborState = level.getBlockState(neighborPos);
 
             if (decaying) {
-                // If decaying, ALWAYS spread decay to adjacent antimatter (ignore range)
-                if (neighborState.getBlock() == AnimusBlocks.BLOCK_ANTIMATTER.get()) {
+                // If decaying, ALWAYS spread decay to adjacent antilife (ignore range)
+                if (neighborState.getBlock() == AnimusBlocks.BLOCK_ANTILIFE.get()) {
                     level.setBlock(neighborPos, defaultBlockState().setValue(DECAYING, true), 3);
                     level.scheduleTick(neighborPos, this, random.nextInt(10) + 10);
                     level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.01F, 0.75F);
@@ -113,29 +113,29 @@ public class BlockAntimatter extends BaseEntityBlock {
             } else if (range > 0) {
                 // Only spread conversion if we have range remaining
                 // If not decaying, spread to matching blocks
-                if (!level.isEmptyBlock(neighborPos) && neighborState.getBlock() == antimatter.getSeeking()) {
-                    // Set neighbor to antimatter
-                    level.setBlock(neighborPos, AnimusBlocks.BLOCK_ANTIMATTER.get().defaultBlockState()
+                if (!level.isEmptyBlock(neighborPos) && neighborState.getBlock() == antilife.getSeeking()) {
+                    // Set neighbor to antilife
+                    level.setBlock(neighborPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState()
                         .setValue(DECAYING, false), 3);
 
                     // Configure neighbor's block entity
-                    if (level.getBlockEntity(neighborPos) instanceof BlockEntityAntimatter neighborAntimatter) {
-                        neighborAntimatter.setSeeking(antimatter.getSeeking());
-                        neighborAntimatter.setRange(range - 1);
-                        neighborAntimatter.setPlayerUUID(antimatter.getPlayerUUID());
+                    if (level.getBlockEntity(neighborPos) instanceof BlockEntityAntiLife neighborAntiLife) {
+                        neighborAntiLife.setSeeking(antilife.getSeeking());
+                        neighborAntiLife.setRange(range - 1);
+                        neighborAntiLife.setPlayerUUID(antilife.getPlayerUUID());
                     }
 
                     // Schedule neighbor tick
                     level.scheduleTick(neighborPos, this, random.nextInt(25));
 
                     // Consume LP from player
-                    if (antimatter.getPlayerUUID() != null) {
-                        Player player = level.getPlayerByUUID(antimatter.getPlayerUUID());
+                    if (antilife.getPlayerUUID() != null) {
+                        Player player = level.getPlayerByUUID(antilife.getPlayerUUID());
                         if (player != null) {
                             SoulNetwork network = NetworkHelper.getSoulNetwork(player);
                             SoulTicket ticket = new SoulTicket(
-                                Component.translatable(Constants.Localizations.Text.TICKET_ANTIMATTER),
-                                AnimusConfig.sigils.antimatterConsumption.get()
+                                Component.translatable(Constants.Localizations.Text.TICKET_ANTILIFE),
+                                AnimusConfig.sigils.antiLifeConsumption.get()
                             );
                             network.syphonAndDamage(player, ticket);
                         }
@@ -154,11 +154,11 @@ public class BlockAntimatter extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        // When broken, start decay on adjacent antimatter
+        // When broken, start decay on adjacent antilife
         if (!level.isClientSide && state.getBlock() != newState.getBlock()) {
             for (BlockPos neighborPos : getNeighbors(pos)) {
                 BlockState neighborState = level.getBlockState(neighborPos);
-                if (neighborState.getBlock() == AnimusBlocks.BLOCK_ANTIMATTER.get()) {
+                if (neighborState.getBlock() == AnimusBlocks.BLOCK_ANTILIFE.get()) {
                     level.setBlock(neighborPos, defaultBlockState().setValue(DECAYING, true), 3);
                     level.scheduleTick(neighborPos, this, level.getRandom().nextInt(10) + 10);
                 }
@@ -187,7 +187,7 @@ public class BlockAntimatter extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityAntimatter(pos, state);
+        return new BlockEntityAntiLife(pos, state);
     }
 
     @Override

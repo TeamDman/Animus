@@ -1,7 +1,7 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.blocks.BlockAntimatter;
+import com.teamdman.animus.blocks.BlockAntiLife;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,8 +20,8 @@ import wayoftime.bloodmagic.util.helper.NetworkHelper;
 import java.util.List;
 
 /**
- * Sigil of Consumption - converts blocks to antimatter
- * Consumes LP to convert blocks into spreading antimatter that destroys matching blocks
+ * Sigil of Consumption - converts blocks to antilife
+ * Consumes LP to convert blocks into spreading antilife that destroys matching blocks
  */
 public class ItemSigilConsumption extends AnimusSigilBase {
     public ItemSigilConsumption() {
@@ -68,9 +68,9 @@ public class ItemSigilConsumption extends AnimusSigilBase {
                 return InteractionResultHolder.fail(stack);
             }
 
-            // Convert block to antimatter
-            var antimatterResult = BlockAntimatter.setBlockToAntimatter(level, result.getBlockPos(), player);
-            if (antimatterResult.consumesAction()) {
+            // Convert block to antilife
+            var antiLifeResult = BlockAntiLife.setBlockToAntiLife(level, result.getBlockPos(), player);
+            if (antiLifeResult.consumesAction()) {
                 return InteractionResultHolder.success(stack);
             }
 

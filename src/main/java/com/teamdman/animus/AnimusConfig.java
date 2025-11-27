@@ -82,8 +82,8 @@ public class AnimusConfig {
 
     // Sigil Configuration
     public static class Sigils {
-        public final ForgeConfigSpec.IntValue antimatterConsumption;
-        public final ForgeConfigSpec.IntValue antimatterRange;
+        public final ForgeConfigSpec.IntValue antiLifeConsumption;
+        public final ForgeConfigSpec.IntValue antiLifeRange;
         public final ForgeConfigSpec.IntValue builderRange;
         public final ForgeConfigSpec.IntValue leachRange;
         public final ForgeConfigSpec.IntValue transpositionMovesUnbreakables;
@@ -91,13 +91,13 @@ public class AnimusConfig {
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
 
-            antimatterConsumption = builder
+            antiLifeConsumption = builder
                 .comment("LP cost for Sigil of Consumption per block")
-                .defineInRange("antimatterConsumption", 25, 1, 10000);
+                .defineInRange("antiLifeConsumption", 25, 1, 10000);
 
-            antimatterRange = builder
+            antiLifeRange = builder
                 .comment("Range of Sigil of Consumption in blocks")
-                .defineInRange("antimatterRange", 8, 1, 64);
+                .defineInRange("antiLifeRange", 8, 1, 64);
 
             builderRange = builder
                 .comment("Range of Sigil of Builder in blocks")

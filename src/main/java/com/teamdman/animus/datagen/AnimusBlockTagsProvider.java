@@ -47,11 +47,11 @@ public class AnimusBlockTagsProvider extends BlockTagsProvider {
         this.tag(BlockTags.MINEABLE_WITH_HOE)
             .add(AnimusBlocks.BLOCK_BLOOD_LEAVES.get());
 
-        // MINEABLE WITH PICKAXE - Antimatter block
+        // MINEABLE WITH PICKAXE - AntiLife block
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-            .add(AnimusBlocks.BLOCK_ANTIMATTER.get());
+            .add(AnimusBlocks.BLOCK_ANTILIFE.get());
 
         // No mining level requirements - all blocks mineable with any tier
-        // (Blood wood blocks are wood tier, antimatter has no special requirements)
+        // (Blood wood blocks are wood tier, antilife has no special requirements)
     }
 }

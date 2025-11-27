@@ -29,13 +29,13 @@ public class AnimusBlocks {
     public static final RegistryObject<Block> BLOCK_BLOOD_LEAVES = BLOCKS.register("blood_leaves",
         BlockBloodLeaves::new);
 
-    public static final RegistryObject<Block> BLOCK_ANTIMATTER = BLOCKS.register("antimatter",
-        BlockAntimatter::new);
+    public static final RegistryObject<Block> BLOCK_ANTILIFE = BLOCKS.register("antilife",
+        BlockAntiLife::new);
 
     // Fluid blocks
-    public static final RegistryObject<Block> BLOCK_FLUID_ANTIMATTER = BLOCKS.register("antimatter_fluid",
-        BlockFluidAntimatter::new);
+    public static final RegistryObject<Block> BLOCK_FLUID_ANTILIFE = BLOCKS.register("antilife_fluid",
+        BlockFluidAntiLife::new);
 
-    public static final RegistryObject<Block> BLOCK_FLUID_DIRT = BLOCKS.register("dirt_fluid",
-        BlockFluidDirt::new);
+    public static final RegistryObject<Block> BLOCK_FLUID_LIVING_TERRA = BLOCKS.register("living_terra_fluid",
+        BlockFluidLivingTerra::new);
 }

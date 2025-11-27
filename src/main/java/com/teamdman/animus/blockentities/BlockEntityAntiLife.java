@@ -13,24 +13,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.UUID;
 
 /**
- * Block Entity for Antimatter blocks
+ * Block Entity for AntiLife blocks
  * Stores information about what block type to seek and consume
  */
-public class BlockEntityAntimatter extends BlockEntity {
+public class BlockEntityAntiLife extends BlockEntity {
     private Block seeking = Blocks.AIR;
     private int range = 0;
     private UUID playerUUID = null;
 
-    public BlockEntityAntimatter(BlockPos pos, BlockState state) {
-        super(AnimusBlockEntities.ANTIMATTER.get(), pos, state);
-        this.range = AnimusConfig.sigils.antimatterRange.get();
+    public BlockEntityAntiLife(BlockPos pos, BlockState state) {
+        super(AnimusBlockEntities.ANTILIFE.get(), pos, state);
+        this.range = AnimusConfig.sigils.antiLifeRange.get();
     }
 
     public Block getSeeking() {
         return seeking;
     }
 
-    public BlockEntityAntimatter setSeeking(Block seeking) {
+    public BlockEntityAntiLife setSeeking(Block seeking) {
         this.seeking = seeking;
         setChanged();
         return this;
@@ -49,13 +49,13 @@ public class BlockEntityAntimatter extends BlockEntity {
         return playerUUID;
     }
 
-    public BlockEntityAntimatter setPlayer(Player player) {
+    public BlockEntityAntiLife setPlayer(Player player) {
         this.playerUUID = player.getUUID();
         setChanged();
         return this;
     }
 
-    public BlockEntityAntimatter setPlayerUUID(UUID uuid) {
+    public BlockEntityAntiLife setPlayerUUID(UUID uuid) {
         this.playerUUID = uuid;
         setChanged();
         return this;

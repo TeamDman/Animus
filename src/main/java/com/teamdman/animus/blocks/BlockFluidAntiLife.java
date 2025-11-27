@@ -13,15 +13,15 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
 
 /**
- * Antimatter fluid block - spreads and converts blocks to antimatter
+ * AntiLife fluid block - spreads and converts blocks to antilife
  * When it touches Blood Magic's life essence, it spreads as fluid
- * When it touches other blocks, it converts them to antimatter blocks
+ * When it touches other blocks, it converts them to antilife blocks
  */
-public class BlockFluidAntimatter extends LiquidBlock {
+public class BlockFluidAntiLife extends LiquidBlock {
 
-    public BlockFluidAntimatter() {
+    public BlockFluidAntiLife() {
         super(
-            () -> (FlowingFluid) AnimusFluids.ANTIMATTER_SOURCE.get(),
+            () -> (FlowingFluid) AnimusFluids.ANTILIFE_SOURCE.get(),
             Properties.of()
                 .noCollission()
                 .strength(100.0F)
@@ -54,7 +54,7 @@ public class BlockFluidAntimatter extends LiquidBlock {
 
         boolean converted = false;
 
-        // Spread antimatter to adjacent blocks
+        // Spread antilife to adjacent blocks
         for (Direction dir : Direction.values()) {
             BlockPos offsetPos = pos.relative(dir);
             BlockState offsetState = level.getBlockState(offsetPos);
@@ -64,23 +64,23 @@ public class BlockFluidAntimatter extends LiquidBlock {
                 continue;
             }
 
-            // Skip if already antimatter (block or fluid)
-            if (offsetState.getBlock() == AnimusBlocks.BLOCK_ANTIMATTER.get()
-                || offsetState.getBlock() == AnimusBlocks.BLOCK_FLUID_ANTIMATTER.get()) {
+            // Skip if already antilife (block or fluid)
+            if (offsetState.getBlock() == AnimusBlocks.BLOCK_ANTILIFE.get()
+                || offsetState.getBlock() == AnimusBlocks.BLOCK_FLUID_ANTILIFE.get()) {
                 continue;
             }
 
             // Check if it's life essence from Blood Magic
             if (offsetState.getBlock().getDescriptionId().contains("life_essence")) {
-                // Convert to antimatter fluid
+                // Convert to antilife fluid
                 level.setBlock(offsetPos, this.defaultBlockState(), 3);
                 converted = true;
             } else {
-                // Convert solid blocks to antimatter blocks
+                // Convert solid blocks to antilife blocks
                 // Skip blocks with tile entities or unbreakable blocks
                 if (level.getBlockEntity(offsetPos) == null
                     && offsetState.getDestroySpeed(level, offsetPos) != -1.0F) {
-                    level.setBlock(offsetPos, AnimusBlocks.BLOCK_ANTIMATTER.get().defaultBlockState(), 3);
+                    level.setBlock(offsetPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState(), 3);
                     converted = true;
                 }
             }

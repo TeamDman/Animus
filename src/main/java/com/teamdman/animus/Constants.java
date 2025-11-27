@@ -28,7 +28,7 @@ public class Constants {
             public static final String TICKET_SOL = "text.component.animus.ticket.sol";
             public static final String TICKET_TRANSPOSITION = "text.component.animus.ticket.transposition";
             public static final String TICKET_STORM = "text.component.animus.ticket.storm";
-            public static final String TICKET_ANTIMATTER = "text.component.animus.ticket.antimatter";
+            public static final String TICKET_ANTILIFE = "text.component.animus.ticket.antilife";
             public static final String TICKET_PEACE = "text.component.animus.ticket.peace";
             public static final String TICKET_ENTROPY = "text.component.animus.ticket.entropy";
             public static final String TICKET_LUNA = "text.component.animus.ticket.luna";
@@ -93,10 +93,10 @@ public class Constants {
         }
 
         public static final String CRAFTING_KEYBINDING = "keybinding_crafting";
-        public static final String CRAFTING_DIRTBUCKET = "dirt_bucket_crafting";
+        public static final String CRAFTING_LIVING_TERRA_BUCKET = "living_terra_bucket_crafting";
         public static final String DAMAGE_ABSOLUTE = "animus.absolute";
-        public static final String FLUID_ANTIMATTER = "fluid_antimatter";
-        public static final String FLUID_DIRT = "fluid_dirt";
+        public static final String FLUID_ANTILIFE = "fluid_antilife";
+        public static final String FLUID_LIVING_TERRA = "fluid_living_terra";
     }
 
     public static class Tags {
@@ -128,10 +128,10 @@ public class Constants {
             throw new UnsupportedOperationException("Utility class");
         }
 
-        public static final ResourceLocation fluidAntimatterFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antimatter_flowing");
-        public static final ResourceLocation fluidAntimatterStill = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antimatter_still");
-        public static final ResourceLocation fluidDirtFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/dirt_flowing");
-        public static final ResourceLocation fluidDirtStill = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/dirt_still");
+        public static final ResourceLocation fluidAntiLifeFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antilife_flowing");
+        public static final ResourceLocation fluidAntiLifeStill = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antilife_still");
+        public static final ResourceLocation fluidLivingTerraFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/living_terra_flowing");
+        public static final ResourceLocation fluidLivingTerraStill = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/living_terra_still");
     }
 
     public static class Mod {

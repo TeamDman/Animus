@@ -1,10 +1,10 @@
 {
   "variants": {
     "decaying=true": {
-      "model": "animus:block/antimatter"
+      "model": "animus:block/antilife"
     },
     "decaying=false": {
-      "model": "animus:block/antimatter"
+      "model": "animus:block/antilife"
     }
   }
 }

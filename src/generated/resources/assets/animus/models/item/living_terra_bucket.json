@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "animus:item/dirt_bucket"
+    "layer0": "animus:item/living_terra_bucket"
   }
 }

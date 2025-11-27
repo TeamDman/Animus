@@ -91,7 +91,7 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
                 // Consume LP
                 var network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
                 var ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
-                    net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_LEECH),
+                    net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_LEACH),
                     getLpUsed()
                 );
 

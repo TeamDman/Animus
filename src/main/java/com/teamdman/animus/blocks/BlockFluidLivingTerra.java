@@ -13,15 +13,15 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
 
 /**
- * Dirt fluid block - slowly solidifies into dirt
+ * Living Terra fluid block - slowly solidifies into dirt
  * When the fluid level is high enough (> 6), it solidifies
  * When it touches dirt blocks, it also solidifies
  */
-public class BlockFluidDirt extends LiquidBlock {
+public class BlockFluidLivingTerra extends LiquidBlock {
 
-    public BlockFluidDirt() {
+    public BlockFluidLivingTerra() {
         super(
-            () -> (FlowingFluid) AnimusFluids.DIRT_SOURCE.get(),
+            () -> (FlowingFluid) AnimusFluids.LIVING_TERRA_SOURCE.get(),
             Properties.of()
                 .noCollission()
                 .strength(100.0F)

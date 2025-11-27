@@ -18,9 +18,9 @@ public class AnimusFluids {
     public static final DeferredRegister<Fluid> FLUIDS =
         DeferredRegister.create(ForgeRegistries.FLUIDS, Constants.Mod.MODID);
 
-    // Antimatter Fluid Type
-    public static final RegistryObject<FluidType> ANTIMATTER_FLUID_TYPE = FLUID_TYPES.register(
-        "antimatter",
+    // AntiLife Fluid Type
+    public static final RegistryObject<FluidType> ANTILIFE_FLUID_TYPE = FLUID_TYPES.register(
+        "antilife",
         () -> new FluidType(FluidType.Properties.create()
             .density(10000)
             .viscosity(1)
@@ -34,7 +34,7 @@ public class AnimusFluids {
         ) {
             @Override
             public String getDescriptionId() {
-                return "fluid.animus.antimatter";
+                return "fluid.animus.antilife";
             }
 
             @Override
@@ -42,17 +42,17 @@ public class AnimusFluids {
                 consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions() {
                     @Override
                     public net.minecraft.resources.ResourceLocation getStillTexture() {
-                        return Constants.Resource.fluidAntimatterStill;
+                        return Constants.Resource.fluidAntiLifeStill;
                     }
 
                     @Override
                     public net.minecraft.resources.ResourceLocation getFlowingTexture() {
-                        return Constants.Resource.fluidAntimatterFlowing;
+                        return Constants.Resource.fluidAntiLifeFlowing;
                     }
 
                     @Override
                     public int getTintColor() {
-                        // White/light gray color for antimatter
+                        // White/light gray color for antilife
                         return 0xFFEEEEEE;
                     }
                 });
@@ -60,9 +60,9 @@ public class AnimusFluids {
         }
     );
 
-    // Dirt Fluid Type
-    public static final RegistryObject<FluidType> DIRT_FLUID_TYPE = FLUID_TYPES.register(
-        "dirt",
+    // Living Terra Fluid Type
+    public static final RegistryObject<FluidType> LIVING_TERRA_FLUID_TYPE = FLUID_TYPES.register(
+        "living_terra",
         () -> new FluidType(FluidType.Properties.create()
             .density(750)
             .viscosity(200)
@@ -76,7 +76,7 @@ public class AnimusFluids {
         ) {
             @Override
             public String getDescriptionId() {
-                return "fluid.animus.dirt";
+                return "fluid.animus.living_terra";
             }
 
             @Override
@@ -84,17 +84,17 @@ public class AnimusFluids {
                 consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions() {
                     @Override
                     public net.minecraft.resources.ResourceLocation getStillTexture() {
-                        return Constants.Resource.fluidDirtStill;
+                        return Constants.Resource.fluidLivingTerraStill;
                     }
 
                     @Override
                     public net.minecraft.resources.ResourceLocation getFlowingTexture() {
-                        return Constants.Resource.fluidDirtFlowing;
+                        return Constants.Resource.fluidLivingTerraFlowing;
                     }
 
                     @Override
                     public int getTintColor() {
-                        // Brown color for dirt
+                        // Brown color for living terra
                         return 0xFF8B6F47;
                     }
                 });
@@ -102,42 +102,42 @@ public class AnimusFluids {
         }
     );
 
-    // Antimatter Fluids
-    public static final RegistryObject<FlowingFluid> ANTIMATTER_FLOWING = FLUIDS.register(
-        "antimatter_flowing",
-        () -> new ForgeFlowingFluid.Flowing(AnimusFluids.ANTIMATTER_PROPERTIES)
+    // AntiLife Fluids
+    public static final RegistryObject<FlowingFluid> ANTILIFE_FLOWING = FLUIDS.register(
+        "antilife_flowing",
+        () -> new ForgeFlowingFluid.Flowing(AnimusFluids.ANTILIFE_PROPERTIES)
     );
 
-    public static final RegistryObject<FlowingFluid> ANTIMATTER_SOURCE = FLUIDS.register(
-        "antimatter",
-        () -> new ForgeFlowingFluid.Source(AnimusFluids.ANTIMATTER_PROPERTIES)
+    public static final RegistryObject<FlowingFluid> ANTILIFE_SOURCE = FLUIDS.register(
+        "antilife",
+        () -> new ForgeFlowingFluid.Source(AnimusFluids.ANTILIFE_PROPERTIES)
     );
 
-    // Dirt Fluids
-    public static final RegistryObject<FlowingFluid> DIRT_FLOWING = FLUIDS.register(
-        "dirt_flowing",
-        () -> new ForgeFlowingFluid.Flowing(AnimusFluids.DIRT_PROPERTIES)
+    // Living Terra Fluids
+    public static final RegistryObject<FlowingFluid> LIVING_TERRA_FLOWING = FLUIDS.register(
+        "living_terra_flowing",
+        () -> new ForgeFlowingFluid.Flowing(AnimusFluids.LIVING_TERRA_PROPERTIES)
     );
 
-    public static final RegistryObject<FlowingFluid> DIRT_SOURCE = FLUIDS.register(
-        "dirt",
-        () -> new ForgeFlowingFluid.Source(AnimusFluids.DIRT_PROPERTIES)
+    public static final RegistryObject<FlowingFluid> LIVING_TERRA_SOURCE = FLUIDS.register(
+        "living_terra",
+        () -> new ForgeFlowingFluid.Source(AnimusFluids.LIVING_TERRA_PROPERTIES)
     );
 
     // Fluid Properties
-    public static final ForgeFlowingFluid.Properties ANTIMATTER_PROPERTIES = new ForgeFlowingFluid.Properties(
-        ANTIMATTER_FLUID_TYPE,
-        ANTIMATTER_SOURCE,
-        ANTIMATTER_FLOWING
+    public static final ForgeFlowingFluid.Properties ANTILIFE_PROPERTIES = new ForgeFlowingFluid.Properties(
+        ANTILIFE_FLUID_TYPE,
+        ANTILIFE_SOURCE,
+        ANTILIFE_FLOWING
     )
-        .block(() -> (net.minecraft.world.level.block.LiquidBlock) AnimusBlocks.BLOCK_FLUID_ANTIMATTER.get())
-        .bucket(() -> AnimusItems.ANTIMATTER_BUCKET.get());
+        .block(() -> (net.minecraft.world.level.block.LiquidBlock) AnimusBlocks.BLOCK_FLUID_ANTILIFE.get())
+        .bucket(() -> AnimusItems.ANTILIFE_BUCKET.get());
 
-    public static final ForgeFlowingFluid.Properties DIRT_PROPERTIES = new ForgeFlowingFluid.Properties(
-        DIRT_FLUID_TYPE,
-        DIRT_SOURCE,
-        DIRT_FLOWING
+    public static final ForgeFlowingFluid.Properties LIVING_TERRA_PROPERTIES = new ForgeFlowingFluid.Properties(
+        LIVING_TERRA_FLUID_TYPE,
+        LIVING_TERRA_SOURCE,
+        LIVING_TERRA_FLOWING
     )
-        .block(() -> (net.minecraft.world.level.block.LiquidBlock) AnimusBlocks.BLOCK_FLUID_DIRT.get())
-        .bucket(() -> AnimusItems.DIRT_BUCKET.get());
+        .block(() -> (net.minecraft.world.level.block.LiquidBlock) AnimusBlocks.BLOCK_FLUID_LIVING_TERRA.get())
+        .bucket(() -> AnimusItems.LIVING_TERRA_BUCKET.get());
 }
