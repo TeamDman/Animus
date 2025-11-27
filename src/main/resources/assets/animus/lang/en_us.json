@@ -26,6 +26,7 @@
   "text.component.animus.transposition.cleared": "Transposition cleared",
   "text.component.animus.transposition.set": "Position set",
   "text.component.animus.transposition.unmovable": "Block cannot be moved",
+  "text.component.animus.chains.capture_failed": "This entity is too powerful to capture!",
   "tooltip.animus.diviner.first": "Right-click altar to divine structure",
   "tooltip.animus.diviner.second": "Sneak right-click to place phantom blocks",
   "tooltip.animus.diviner.third": "Right-click with components to build",

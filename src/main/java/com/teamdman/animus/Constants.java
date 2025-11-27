@@ -22,6 +22,7 @@ public class Constants {
             public static final String TRANSPOSITION_CLEARED = "text.component.animus.transposition.cleared";
             public static final String TRANSPOSITION_SET = "text.component.animus.transposition.set";
             public static final String TRANSPOSITION_UNMOVABLE = "text.component.animus.transposition.unmovable";
+            public static final String CHAINS_CAPTURE_FAILED = "text.component.animus.chains.capture_failed";
             public static final String TICKET_SOL = "text.component.animus.ticket.sol";
             public static final String TICKET_TRANSPOSITION = "text.component.animus.ticket.transposition";
             public static final String TICKET_STORM = "text.component.animus.ticket.storm";
@@ -81,6 +82,18 @@ public class Constants {
         public static final String DAMAGE_ABSOLUTE = "animus.absolute";
         public static final String FLUID_ANTIMATTER = "fluid_antimatter";
         public static final String FLUID_DIRT = "fluid_dirt";
+    }
+
+    public static class Tags {
+        private Tags() {
+            throw new UnsupportedOperationException("Utility class");
+        }
+
+        public static final net.minecraft.tags.TagKey<net.minecraft.world.entity.EntityType<?>> DISALLOW_CAPTURING =
+            net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.ENTITY_TYPE,
+                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_capturing")
+            );
     }
 
     public static class Resource {

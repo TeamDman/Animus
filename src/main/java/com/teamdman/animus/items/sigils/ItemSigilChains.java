@@ -44,6 +44,15 @@ public class ItemSigilChains extends AnimusSigilBase {
             return InteractionResult.FAIL;
         }
 
+        // Check if entity can be captured (before consuming LP)
+        if (target.getType().is(Constants.Tags.DISALLOW_CAPTURING)) {
+            player.displayClientMessage(
+                Component.translatable(Constants.Localizations.Text.CHAINS_CAPTURE_FAILED),
+                true
+            );
+            return InteractionResult.FAIL;
+        }
+
         // Consume LP and check if player has enough
         SoulNetwork network = NetworkHelper.getSoulNetwork(player);
         SoulTicket ticket = new SoulTicket(
