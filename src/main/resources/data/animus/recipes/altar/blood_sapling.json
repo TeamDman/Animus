@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:altar",
+  "input": {
+    "tag": "minecraft:saplings"
+  },
+  "output": {
+    "item": "animus:blood_sapling"
+  },
+  "upgradeLevel": 0,
+  "altarSyphon": 5000,
+  "consumptionRate": 5,
+  "drainRate": 5
+}
