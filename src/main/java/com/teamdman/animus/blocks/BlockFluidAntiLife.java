@@ -1,5 +1,6 @@
 package com.teamdman.animus.blocks;
 
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusFluids;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.material.FluidState;
  * AntiLife fluid block - spreads and converts blocks to antilife
  * When it touches Blood Magic's life essence, it spreads as fluid
  * When it touches other blocks, it converts them to antilife blocks
+ * Will convert ANY block unless it's in the animus:disallow_antilife tag
  */
 public class BlockFluidAntiLife extends LiquidBlock {
 
@@ -76,10 +78,9 @@ public class BlockFluidAntiLife extends LiquidBlock {
                 level.setBlock(offsetPos, this.defaultBlockState(), 3);
                 converted = true;
             } else {
-                // Convert solid blocks to antilife blocks
-                // Skip blocks with tile entities or unbreakable blocks
-                if (level.getBlockEntity(offsetPos) == null
-                    && offsetState.getDestroySpeed(level, offsetPos) != -1.0F) {
+                // Convert ANY solid block to antilife blocks unless blacklisted
+                // Check if block is in the disallow_antilife tag
+                if (!offsetState.is(Constants.Tags.DISALLOW_ANTILIFE)) {
                     level.setBlock(offsetPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState(), 3);
                     converted = true;
                 }

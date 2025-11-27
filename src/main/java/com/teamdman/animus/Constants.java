@@ -121,6 +121,12 @@ public class Constants {
                 net.minecraft.core.registries.Registries.BLOCK,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_leach")
             );
+
+        public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_ANTILIFE =
+            net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.BLOCK,
+                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_antilife")
+            );
     }
 
     public static class Resource {

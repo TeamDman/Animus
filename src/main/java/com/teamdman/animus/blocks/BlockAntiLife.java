@@ -55,13 +55,10 @@ public class BlockAntiLife extends BaseEntityBlock {
      * @return SUCCESS if converted, PASS if cannot convert
      */
     public static InteractionResult setBlockToAntiLife(Level level, BlockPos blockPos, Player player) {
-        // Don't convert blocks with tile entities or unbreakable blocks
-        if (level.getBlockEntity(blockPos) != null) {
-            return InteractionResult.PASS;
-        }
-
         BlockState state = level.getBlockState(blockPos);
-        if (state.getDestroySpeed(level, blockPos) == -1.0F) {
+
+        // Don't convert blocks in the disallow_antilife tag
+        if (state.is(Constants.Tags.DISALLOW_ANTILIFE)) {
             return InteractionResult.PASS;
         }
 
