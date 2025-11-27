@@ -1,11 +1,18 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.items.ItemFragmentHealing;
+import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +25,7 @@ import java.util.UUID;
  * Event handler for Animus mod
  * Handles passive healing from Fragment of Healing items
  * Prevents moving Fragment of Healing in inventory
+ * Converts Life Essence to AntiLife when struck by lightning
  */
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AnimusEventHandler {
@@ -147,6 +155,41 @@ public class AnimusEventHandler {
                         .withStyle(net.minecraft.ChatFormatting.GOLD),
                     false
                 );
+            }
+        }
+    }
+
+    /**
+     * Convert Life Essence to AntiLife when struck by lightning
+     * This creates a dramatic transformation effect
+     */
+    @SubscribeEvent
+    public static void onLightningStrike(EntityJoinLevelEvent event) {
+        Entity entity = event.getEntity();
+
+        // Only handle lightning bolts on server side
+        if (!(entity instanceof LightningBolt) || event.getLevel().isClientSide()) {
+            return;
+        }
+
+        LightningBolt lightning = (LightningBolt) entity;
+        Level level = event.getLevel();
+        BlockPos strikePos = lightning.blockPosition();
+
+        // Check a 3x3x3 area around the lightning strike
+        for (BlockPos pos : BlockPos.betweenClosed(
+            strikePos.offset(-1, -1, -1),
+            strikePos.offset(1, 1, 1)
+        )) {
+            BlockState state = level.getBlockState(pos);
+
+            // Check if this block is Blood Magic's life essence fluid
+            if (state.getBlock().getDescriptionId().contains("life_essence")) {
+                // Convert to AntiLife fluid
+                level.setBlock(pos, AnimusBlocks.BLOCK_FLUID_ANTILIFE.get().defaultBlockState(), 3);
+
+                // Schedule tick so it starts spreading
+                level.scheduleTick(pos, AnimusBlocks.BLOCK_FLUID_ANTILIFE.get(), 1);
             }
         }
     }
