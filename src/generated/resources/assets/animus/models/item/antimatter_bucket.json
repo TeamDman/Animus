@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/bucket"
+    "layer0": "animus:item/antimatter_bucket"
   }
 }

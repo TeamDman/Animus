@@ -26,6 +26,7 @@ public class BlockFluidAntimatter extends LiquidBlock {
                 .noCollission()
                 .strength(100.0F)
                 .noLootTable()
+                .replaceable()  // Allow blocks to be placed in the fluid
         );
     }
 

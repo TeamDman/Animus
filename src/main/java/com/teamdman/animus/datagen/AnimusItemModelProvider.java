@@ -52,9 +52,9 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         toggleableSigil(AnimusItems.SIGIL_LEECH, "itemsigilleech");
         toggleableSigil(AnimusItems.SIGIL_TRANSPOSITION, "sigil_transposition");
 
-        // Fluid Buckets - use Forge DynamicFluidContainerModel
-        bucketItem(AnimusItems.ANTIMATTER_BUCKET, com.teamdman.animus.registry.AnimusFluids.ANTIMATTER_SOURCE);
-        bucketItem(AnimusItems.DIRT_BUCKET, com.teamdman.animus.registry.AnimusFluids.DIRT_SOURCE);
+        // Fluid Buckets - use custom bucket textures (like Blood Magic's lifebucket.png)
+        simpleItem(AnimusItems.ANTIMATTER_BUCKET, "item/antimatter_bucket");
+        simpleItem(AnimusItems.DIRT_BUCKET, "item/dirt_bucket");
     }
 
     /**
@@ -85,13 +85,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         String name = item.getId().getPath();
         withExistingParent(name, mcLoc("item/generated"))
             .texture("layer0", modLoc(texturePath));
-    }
-
-    private void bucketItem(RegistryObject<Item> item, RegistryObject<? extends net.minecraft.world.level.material.Fluid> fluid) {
-        String name = item.getId().getPath();
-        // Simple vanilla bucket texture - works reliably
-        withExistingParent(name, mcLoc("item/generated"))
-            .texture("layer0", mcLoc("item/bucket"));
     }
 
     @Override

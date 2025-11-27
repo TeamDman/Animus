@@ -97,10 +97,6 @@ public class BlockAntimatter extends BaseEntityBlock {
         boolean decaying = state.getValue(DECAYING);
         int range = antimatter.getRange();
 
-        if (range <= 0) {
-            return;
-        }
-
         // Get neighbors (3x3x3 cube around this block)
         List<BlockPos> neighbors = getNeighbors(pos);
 
@@ -108,13 +104,14 @@ public class BlockAntimatter extends BaseEntityBlock {
             BlockState neighborState = level.getBlockState(neighborPos);
 
             if (decaying) {
-                // If decaying, spread decay to adjacent antimatter
+                // If decaying, ALWAYS spread decay to adjacent antimatter (ignore range)
                 if (neighborState.getBlock() == AnimusBlocks.BLOCK_ANTIMATTER.get()) {
                     level.setBlock(neighborPos, defaultBlockState().setValue(DECAYING, true), 3);
                     level.scheduleTick(neighborPos, this, random.nextInt(10) + 10);
                     level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.01F, 0.75F);
                 }
-            } else {
+            } else if (range > 0) {
+                // Only spread conversion if we have range remaining
                 // If not decaying, spread to matching blocks
                 if (!level.isEmptyBlock(neighborPos) && neighborState.getBlock() == antimatter.getSeeking()) {
                     // Set neighbor to antimatter
