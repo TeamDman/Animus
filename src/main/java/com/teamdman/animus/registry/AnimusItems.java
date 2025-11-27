@@ -81,8 +81,8 @@ public class AnimusItems {
     public static final RegistryObject<Item> SIGIL_CONSUMPTION = ITEMS.register("sigil_consumption",
         ItemSigilConsumption::new);
 
-    public static final RegistryObject<Item> SIGIL_LEECH = ITEMS.register("sigil_leech",
-        ItemSigilLeech::new);
+    public static final RegistryObject<Item> SIGIL_LEACH = ITEMS.register("sigil_leach",
+        ItemSigilLeach::new);
 
     public static final RegistryObject<Item> SIGIL_STORM = ITEMS.register("sigil_storm",
         ItemSigilStorm::new);

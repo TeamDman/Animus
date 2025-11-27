@@ -12,8 +12,8 @@ public class AnimusSounds {
         DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Constants.Mod.MODID);
 
     // Nature's Leech sound effect
-    public static final RegistryObject<SoundEvent> NATURESLEECH = SOUNDS.register("naturesleech",
-        () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "naturesleech")));
+    public static final RegistryObject<SoundEvent> NATURESLEACH = SOUNDS.register("naturesleach",
+        () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "naturesleach")));
 
     // Blood Core awakening sound
     public static final RegistryObject<SoundEvent> AWAKEN_CORE = SOUNDS.register("awaken_core",

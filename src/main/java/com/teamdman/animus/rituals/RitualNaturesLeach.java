@@ -30,22 +30,22 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 /**
- * Ritual of Nature's Leech - Consumes plants to fill blood altar
+ * Ritual of Nature's Leach - Consumes plants to fill blood altar
  * Scans area for consumable plant matter and destroys it to fill the altar
  * Activation Cost: 3000 LP
  * Refresh Cost: 10 LP
  * Refresh Time: 80 ticks (varies with demon will)
  */
-@RitualRegister(Constants.Rituals.LEECH)
-public class RitualNaturesLeech extends Ritual {
+@RitualRegister(Constants.Rituals.LEACH)
+public class RitualNaturesLeach extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
     public final int maxWill = 100;
     public BlockPos altarOffsetPos = BlockPos.ZERO;
     public double will = 100;
 
-    public RitualNaturesLeech() {
-        super(Constants.Rituals.LEECH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEECH);
+    public RitualNaturesLeach() {
+        super(Constants.Rituals.LEACH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEACH);
 
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
@@ -58,7 +58,7 @@ public class RitualNaturesLeech extends Ritual {
     }
 
     public static boolean isBlacklisted(String registryName) {
-        for (String entry : AnimusConfig.sigils.leechBlacklist.get()) {
+        for (String entry : AnimusConfig.sigils.leachBlacklist.get()) {
             if (Objects.equals(entry, registryName)) {
                 return true;
             }
@@ -94,7 +94,7 @@ public class RitualNaturesLeech extends Ritual {
         }
 
         network.syphon(new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_LEECH),
+            Component.translatable(Constants.Localizations.Text.TICKET_LEACH),
             getRefreshCost()
         ), false);
 
@@ -238,6 +238,6 @@ public class RitualNaturesLeech extends Ritual {
 
     @Override
     public Ritual getNewCopy() {
-        return new RitualNaturesLeech();
+        return new RitualNaturesLeach();
     }
 }

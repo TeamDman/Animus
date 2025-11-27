@@ -1,8 +1,8 @@
 {
-  "naturesleech": {
-    "subtitle": "animus.subtitle.naturesleech",
+  "naturesleach": {
+    "subtitle": "animus.subtitle.naturesleach",
     "sounds": [
-      "animus:naturesleech"
+      "animus:naturesleach"
     ]
   },
   "awaken_core": {

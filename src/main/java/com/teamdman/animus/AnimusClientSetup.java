@@ -44,7 +44,7 @@ public class AnimusClientSetup {
 
             // Register item properties for toggleable sigils
             registerToggleableSigilProperty(AnimusItems.SIGIL_BUILDER.get());
-            registerToggleableSigilProperty(AnimusItems.SIGIL_LEECH.get());
+            registerToggleableSigilProperty(AnimusItems.SIGIL_LEACH.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_TRANSPOSITION.get());
         });
     }

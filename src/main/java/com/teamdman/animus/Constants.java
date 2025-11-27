@@ -35,7 +35,7 @@ public class Constants {
             public static final String TICKET_BUILDER = "text.component.animus.ticket.builder";
             public static final String TICKET_CULLING = "text.component.animus.ticket.culling";
             public static final String TICKET_CONSUMPTION = "text.component.animus.ticket.consumption";
-            public static final String TICKET_LEECH = "text.component.animus.ticket.leech";
+            public static final String TICKET_LEACH = "text.component.animus.ticket.leach";
             public static final String TICKET_ELDRITCH = "text.component.animus.ticket.eldritch";
             public static final String TICKET_UNMAKING = "text.component.animus.ticket.unmaking";
             public static final String TICKET_APPLE = "text.component.animus.ticket.apple";
@@ -65,8 +65,8 @@ public class Constants {
             public static final String SIGIL_CHAINS_INFO = "tooltip.animus.sigil.chains.info";
             public static final String SIGIL_CONSUMPTION_FLAVOUR = "tooltip.animus.sigil.consumption.flavour";
             public static final String SIGIL_CONSUMPTION_INFO = "tooltip.animus.sigil.consumption.info";
-            public static final String SIGIL_LEECH_FLAVOUR = "tooltip.animus.sigil.leech.flavour";
-            public static final String SIGIL_LEECH_INFO = "tooltip.animus.sigil.leech.info";
+            public static final String SIGIL_LEACH_FLAVOUR = "tooltip.animus.sigil.leach.flavour";
+            public static final String SIGIL_LEACH_INFO = "tooltip.animus.sigil.leach.info";
             public static final String SIGIL_STORM_FLAVOUR = "tooltip.animus.sigil.storm.flavour";
             public static final String SIGIL_STORM_INFO = "tooltip.animus.sigil.storm.info";
             public static final String SIGIL_TRANSPOSITION_FLAVOUR = "tooltip.animus.sigil.transposition.flavour";
@@ -157,7 +157,7 @@ public class Constants {
         public static final String CULLING = "ritual_culling";
         public static final String ENTROPY = "ritual_entropy";
         public static final String HUNGER = "ritual_hunger";
-        public static final String LEECH = "ritual_natures_leech";
+        public static final String LEACH = "ritual_natures_leach";
         public static final String ELDRITCH = "ritual_eldritch_will";
         public static final String LUNA = "ritual_luna";
         public static final String PEACE = "ritual_peace";
@@ -175,7 +175,7 @@ public class Constants {
         public static final String BUILDER = "builder";
         public static final String CHAINS = "chains";
         public static final String CONSUMPTION = "consumption";
-        public static final String LEECH = "leech";
+        public static final String LEACH = "leach";
         public static final String STORM = "storm";
         public static final String TRANSPOSITION = "transposition";
     }

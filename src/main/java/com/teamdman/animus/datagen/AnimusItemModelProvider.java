@@ -49,7 +49,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
 
         // Toggleable Sigils - with activation states
         toggleableSigil(AnimusItems.SIGIL_BUILDER, "sigil_builder");
-        toggleableSigil(AnimusItems.SIGIL_LEECH, "itemsigilleech");
+        toggleableSigil(AnimusItems.SIGIL_LEACH, "itemsigilleach");
         toggleableSigil(AnimusItems.SIGIL_TRANSPOSITION, "sigil_transposition");
 
         // Fluid Buckets - use custom bucket textures (like Blood Magic's lifebucket.png)

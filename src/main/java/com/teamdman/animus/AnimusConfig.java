@@ -85,8 +85,9 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue antimatterConsumption;
         public final ForgeConfigSpec.IntValue antimatterRange;
         public final ForgeConfigSpec.IntValue builderRange;
+        public final ForgeConfigSpec.IntValue leachRange;
         public final ForgeConfigSpec.IntValue transpositionMovesUnbreakables;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> leechBlacklist;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> leachBlacklist;
 
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -103,6 +104,10 @@ public class AnimusConfig {
                 .comment("Range of Sigil of Builder in blocks")
                 .defineInRange("builderRange", 64, 1, 256);
 
+            leachRange = builder
+                .comment("Range of Sigil of Nature's Leach for consuming blocks in the world (in blocks)")
+                .defineInRange("leachRange", 8, 1, 64);
+
             transpositionMovesUnbreakables = builder
                 .comment(
                     "Determines if Sigil of Transposition can move unbreakable blocks",
@@ -112,10 +117,10 @@ public class AnimusConfig {
                 )
                 .defineInRange("transpositionMovesUnbreakables", 1, 0, 2);
 
-            leechBlacklist = builder
-                .comment("Block IDs that Sigil of Leech cannot consume")
+            leachBlacklist = builder
+                .comment("Block IDs that Sigil of Nature's Leach cannot consume")
                 .defineList(
-                    "leechBlacklist",
+                    "leachBlacklist",
                     Arrays.asList("ic2:te", "minecraft:grass"),
                     obj -> obj instanceof String
                 );

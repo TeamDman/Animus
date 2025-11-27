@@ -1,5 +1,6 @@
 package com.teamdman.animus.items.sigils;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusSounds;
 import net.minecraft.core.BlockPos;
@@ -23,18 +24,33 @@ import wayoftime.bloodmagic.ritual.AreaDescriptor;
 import java.util.List;
 import java.util.Optional;
 
-import static com.teamdman.animus.rituals.RitualNaturesLeech.isConsumable;
+import static com.teamdman.animus.rituals.RitualNaturesLeach.isConsumable;
 
 /**
- * Sigil of Nature's Leech - consumes plants and organic matter to restore hunger
+ * Sigil of Nature's Leach - consumes plants and organic matter to restore hunger
  * When activated, automatically consumes consumable blocks from inventory or nearby world
  * to feed the player
  */
-public class ItemSigilLeech extends ItemSigilToggleableBase {
-    private final AreaDescriptor eatRange = new AreaDescriptor.Rectangle(new BlockPos(-5, 0, -5), 10);
+public class ItemSigilLeach extends ItemSigilToggleableBase {
+    private AreaDescriptor eatRange;
+    private int lastConfigRange = -1;
 
-    public ItemSigilLeech() {
-        super(Constants.Sigils.LEECH, 5);
+    public ItemSigilLeach() {
+        super(Constants.Sigils.LEACH, 5);
+    }
+
+    /**
+     * Get or create the area descriptor based on current config value
+     */
+    private AreaDescriptor getEatRange() {
+        int configRange = AnimusConfig.sigils.leachRange.get();
+        if (eatRange == null || lastConfigRange != configRange) {
+            // Range is from -range to +range, so size is range * 2 + 1
+            int size = configRange * 2 + 1;
+            eatRange = new AreaDescriptor.Rectangle(new BlockPos(-configRange, 0, -configRange), size);
+            lastConfigRange = configRange;
+        }
+        return eatRange;
     }
 
     @Override
@@ -118,13 +134,14 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
     }
 
     private boolean eatFromSurroundingWorld(Player player, Level level) {
-        if (!eatRange.hasNext()) {
-            eatRange.resetIterator();
+        AreaDescriptor range = getEatRange();
+        if (!range.hasNext()) {
+            range.resetIterator();
         }
 
         // Check up to 32 blocks per tick
-        for (int i = 0; i < 32 && eatRange.hasNext(); i++) {
-            BlockPos eatPos = eatRange.next().offset(player.blockPosition());
+        for (int i = 0; i < 32 && range.hasNext(); i++) {
+            BlockPos eatPos = range.next().offset(player.blockPosition());
             BlockState state = level.getBlockState(eatPos);
             Block eatBlock = state.getBlock();
 
@@ -147,14 +164,14 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
                 );
             }
 
-            // Remove the block
-            level.removeBlock(eatPos, false);
+            // Destroy the block (respects protections like FTB Chunks)
+            level.destroyBlock(eatPos, false);
 
             // Play sound
             level.playSound(
                 null,
                 eatPos,
-                AnimusSounds.NATURESLEECH.get(),
+                AnimusSounds.NATURESLEACH.get(),
                 SoundSource.BLOCKS,
                 0.4F,
                 1.0F
@@ -168,8 +185,8 @@ public class ItemSigilLeech extends ItemSigilToggleableBase {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_LEECH_FLAVOUR));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_LEECH_INFO));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_LEACH_FLAVOUR));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_LEACH_INFO));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 }
