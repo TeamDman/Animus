@@ -26,8 +26,16 @@ public class BlockFluidDirt extends LiquidBlock {
                 .noCollission()
                 .strength(100.0F)
                 .noLootTable()
-                .randomTicks()
         );
+    }
+
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+        super.onPlace(state, level, pos, oldState, isMoving);
+        // Schedule immediate tick when placed
+        if (!level.isClientSide()) {
+            level.scheduleTick(pos, this, 1);
+        }
     }
 
     @Override
@@ -54,10 +62,8 @@ public class BlockFluidDirt extends LiquidBlock {
                 return;
             }
         }
-    }
 
-    @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        tick(state, level, pos, random);
+        // Schedule next tick to keep checking
+        level.scheduleTick(pos, this, 10);
     }
 }
