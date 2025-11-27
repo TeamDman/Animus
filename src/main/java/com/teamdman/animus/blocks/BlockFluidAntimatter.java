@@ -31,24 +31,37 @@ public class BlockFluidAntimatter extends LiquidBlock {
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        super.tick(state, level, pos, random);
+
         // Spread antimatter to adjacent blocks
         for (Direction dir : Direction.values()) {
             BlockPos offsetPos = pos.relative(dir);
             BlockState offsetState = level.getBlockState(offsetPos);
 
+            // Skip if empty/air
+            if (level.isEmptyBlock(offsetPos)) {
+                continue;
+            }
+
+            // Skip if already antimatter (block or fluid)
+            if (offsetState.getBlock() == AnimusBlocks.BLOCK_ANTIMATTER.get()
+                || offsetState.getBlock() == AnimusBlocks.BLOCK_FLUID_ANTIMATTER.get()) {
+                continue;
+            }
+
             // Check if it's life essence from Blood Magic
             if (offsetState.getBlock().getDescriptionId().contains("life_essence")) {
                 // Convert to antimatter fluid
                 level.setBlock(offsetPos, this.defaultBlockState(), 3);
-            } else if (!level.isEmptyBlock(offsetPos)
-                && offsetState.getBlock() != AnimusBlocks.BLOCK_ANTIMATTER.get()
-                && offsetState.getBlock() != AnimusBlocks.BLOCK_FLUID_ANTIMATTER.get()) {
-                // Convert to antimatter block
-                level.setBlock(offsetPos, AnimusBlocks.BLOCK_ANTIMATTER.get().defaultBlockState(), 3);
+            } else {
+                // Convert solid blocks to antimatter blocks
+                // Skip blocks with tile entities or unbreakable blocks
+                if (level.getBlockEntity(offsetPos) == null
+                    && offsetState.getDestroySpeed(level, offsetPos) != -1.0F) {
+                    level.setBlock(offsetPos, AnimusBlocks.BLOCK_ANTIMATTER.get().defaultBlockState(), 3);
+                }
             }
         }
-
-        super.tick(state, level, pos, random);
     }
 
     @Override

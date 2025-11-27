@@ -32,15 +32,18 @@ public class BlockFluidDirt extends LiquidBlock {
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        super.tick(state, level, pos, random);
+
         FluidState fluidState = state.getFluidState();
 
-        // If the fluid level is high enough (> 6 out of 8), solidify to dirt
-        if (fluidState.getAmount() > 6) {
+        // If this is a flowing block (not source), solidify to dirt
+        // Amount < 8 means it's flowing fluid, not a source block
+        if (fluidState.getAmount() < 8) {
             level.setBlock(pos, Blocks.DIRT.defaultBlockState(), 3);
             return;
         }
 
-        // Check adjacent blocks for dirt
+        // If the fluid level is high enough (source block with amount == 8), check for adjacent dirt
         for (Direction face : Direction.values()) {
             BlockPos offsetPos = pos.relative(face);
             BlockState offsetState = level.getBlockState(offsetPos);
@@ -51,8 +54,6 @@ public class BlockFluidDirt extends LiquidBlock {
                 return;
             }
         }
-
-        super.tick(state, level, pos, random);
     }
 
     @Override
