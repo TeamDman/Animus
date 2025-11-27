@@ -39,6 +39,15 @@ public class BlockFluidAntimatter extends LiquidBlock {
     }
 
     @Override
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, net.minecraft.world.level.block.Block block, BlockPos fromPos, boolean isMoving) {
+        super.neighborChanged(state, level, pos, block, fromPos, isMoving);
+        // When a neighbor changes, schedule a tick to convert it
+        if (!level.isClientSide()) {
+            level.scheduleTick(pos, this, 1);
+        }
+    }
+
+    @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.tick(state, level, pos, random);
 

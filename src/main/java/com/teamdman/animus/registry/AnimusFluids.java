@@ -49,6 +49,12 @@ public class AnimusFluids {
                     public net.minecraft.resources.ResourceLocation getFlowingTexture() {
                         return Constants.Resource.fluidAntimatterFlowing;
                     }
+
+                    @Override
+                    public int getTintColor() {
+                        // White/light gray color for antimatter
+                        return 0xFFEEEEEE;
+                    }
                 });
             }
         }
@@ -84,6 +90,12 @@ public class AnimusFluids {
                     @Override
                     public net.minecraft.resources.ResourceLocation getFlowingTexture() {
                         return Constants.Resource.fluidDirtFlowing;
+                    }
+
+                    @Override
+                    public int getTintColor() {
+                        // Brown color for dirt
+                        return 0xFF8B6F47;
                     }
                 });
             }
