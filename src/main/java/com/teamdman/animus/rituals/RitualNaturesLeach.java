@@ -1,12 +1,10 @@
 package com.teamdman.animus.rituals;
 
-import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.util.AnimusUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,7 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.common.tile.TileAltar;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
@@ -25,7 +22,6 @@ import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -53,17 +49,13 @@ public class RitualNaturesLeach extends Ritual {
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
     }
 
-    public static boolean isBlacklisted(ResourceLocation resourceLocation) {
-        return resourceLocation != null && isBlacklisted(resourceLocation.toString());
-    }
-
-    public static boolean isBlacklisted(String registryName) {
-        for (String entry : AnimusConfig.sigils.leachBlacklist.get()) {
-            if (Objects.equals(entry, registryName)) {
-                return true;
-            }
-        }
-        return false;
+    /**
+     * Check if a block is blacklisted from being consumed by Nature's Leach
+     * @param block The block to check
+     * @return true if the block is in the disallow_leach tag
+     */
+    public static boolean isBlacklisted(Block block) {
+        return block.defaultBlockState().is(Constants.Tags.DISALLOW_LEACH);
     }
 
     public void performRitual(IMasterRitualStone ritualStone) {
@@ -168,9 +160,8 @@ public class RitualNaturesLeach extends Ritual {
             return false;
         }
 
-        // Check if block is blacklisted
-        ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(block);
-        if (isBlacklisted(registryName)) {
+        // Check if block is blacklisted using the tag
+        if (isBlacklisted(block)) {
             return false;
         }
 

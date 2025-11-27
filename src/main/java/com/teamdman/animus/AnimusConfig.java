@@ -87,7 +87,6 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue builderRange;
         public final ForgeConfigSpec.IntValue leachRange;
         public final ForgeConfigSpec.IntValue transpositionMovesUnbreakables;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> leachBlacklist;
 
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -116,14 +115,6 @@ public class AnimusConfig {
                     "2: Always allow moving unbreakable blocks"
                 )
                 .defineInRange("transpositionMovesUnbreakables", 1, 0, 2);
-
-            leachBlacklist = builder
-                .comment("Block IDs that Sigil of Nature's Leach cannot consume")
-                .defineList(
-                    "leachBlacklist",
-                    Arrays.asList("ic2:te", "minecraft:grass"),
-                    obj -> obj instanceof String
-                );
 
             builder.pop();
         }
