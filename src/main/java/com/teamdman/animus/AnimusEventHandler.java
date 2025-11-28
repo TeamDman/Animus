@@ -1,9 +1,11 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.items.ItemFragmentHealing;
+import com.teamdman.animus.items.sigils.ItemSigilStorm;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
@@ -191,6 +193,23 @@ public class AnimusEventHandler {
                 // Schedule tick so it starts spreading
                 level.scheduleTick(pos, AnimusBlocks.BLOCK_FLUID_ANTILIFE.get(), 1);
             }
+        }
+    }
+
+    /**
+     * Process pending fish spawns from Sigil of Storm
+     * This runs every server tick and checks if any pending spawns are ready
+     */
+    @SubscribeEvent
+    public static void onLevelTick(TickEvent.LevelTickEvent event) {
+        // Only run on server side, at end of tick
+        if (event.side.isClient() || event.phase != TickEvent.Phase.END) {
+            return;
+        }
+
+        // Only process server levels
+        if (event.level instanceof ServerLevel serverLevel) {
+            ItemSigilStorm.tickPendingSpawns(serverLevel);
         }
     }
 }

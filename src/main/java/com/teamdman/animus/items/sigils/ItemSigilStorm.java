@@ -23,15 +23,57 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * Sigil of the Storm - summons lightning
  * When targeting water, spawns fish
  * When raining, deals area damage to nearby entities
  */
 public class ItemSigilStorm extends AnimusSigilBase {
+    // Track pending fish spawns - list of (level, pos, playerUUID, tickToSpawn)
+    private static final List<PendingFishSpawn> pendingSpawns = new ArrayList<>();
+
+    private static class PendingFishSpawn {
+        final ServerLevel level;
+        final BlockPos pos;
+        final UUID playerUUID;
+        final long spawnTick;
+
+        PendingFishSpawn(ServerLevel level, BlockPos pos, UUID playerUUID, long spawnTick) {
+            this.level = level;
+            this.pos = pos;
+            this.playerUUID = playerUUID;
+            this.spawnTick = spawnTick;
+        }
+    }
 
     public ItemSigilStorm() {
         super(Constants.Sigils.STORM, 500);
+    }
+
+    /**
+     * Process pending fish spawns - should be called from a tick event
+     */
+    public static void tickPendingSpawns(ServerLevel level) {
+        if (pendingSpawns.isEmpty()) {
+            return;
+        }
+
+        long currentTick = level.getServer().getTickCount();
+        Iterator<PendingFishSpawn> iterator = pendingSpawns.iterator();
+
+        while (iterator.hasNext()) {
+            PendingFishSpawn spawn = iterator.next();
+            if (spawn.level == level && currentTick >= spawn.spawnTick) {
+                Player player = level.getPlayerByUUID(spawn.playerUUID);
+                spawnFishingLootStatic(spawn.level, spawn.pos, player);
+                iterator.remove();
+            }
+        }
     }
 
     @Override
@@ -90,13 +132,8 @@ public class ItemSigilStorm extends AnimusSigilBase {
                 if (level.getFluidState(pos).is(Fluids.WATER) || level.getBlockState(pos).is(Blocks.WATER)) {
                     // Schedule fishing loot to spawn 20 ticks (1 second) after lightning to avoid burning
                     BlockPos spawnPos = pos.above(); // Spawn above the water
-                    level.scheduleTick(pos, Blocks.WATER, 20, net.minecraft.world.ticks.TickPriority.NORMAL);
-
-                    // Use a scheduled task to spawn loot after delay
-                    serverLevel.getServer().tell(new net.minecraft.server.TickTask(
-                        serverLevel.getServer().getTickCount() + 20,
-                        () -> spawnFishingLoot(serverLevel, spawnPos, player)
-                    ));
+                    long spawnTick = serverLevel.getServer().getTickCount() + 20;
+                    pendingSpawns.add(new PendingFishSpawn(serverLevel, spawnPos, player.getUUID(), spawnTick));
                 }
 
                 // Area damage during rain
@@ -121,7 +158,7 @@ public class ItemSigilStorm extends AnimusSigilBase {
      * Spawns fishing loot at the target position
      * Uses the vanilla fishing loot table
      */
-    private void spawnFishingLoot(ServerLevel level, BlockPos pos, Player player) {
+    private static void spawnFishingLootStatic(ServerLevel level, BlockPos pos, Player player) {
         // Get the fishing loot table
         ResourceLocation fishingLootTable = ResourceLocation.fromNamespaceAndPath("minecraft", "gameplay/fishing");
         LootTable lootTable = level.getServer().getLootData().getLootTable(fishingLootTable);

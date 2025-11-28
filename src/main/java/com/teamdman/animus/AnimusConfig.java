@@ -86,7 +86,6 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue antiLifeRange;
         public final ForgeConfigSpec.IntValue builderRange;
         public final ForgeConfigSpec.IntValue leachRange;
-        public final ForgeConfigSpec.IntValue transpositionMovesUnbreakables;
 
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -106,15 +105,6 @@ public class AnimusConfig {
             leachRange = builder
                 .comment("Range of Sigil of Nature's Leach for consuming blocks in the world (in blocks)")
                 .defineInRange("leachRange", 8, 1, 64);
-
-            transpositionMovesUnbreakables = builder
-                .comment(
-                    "Determines if Sigil of Transposition can move unbreakable blocks",
-                    "0: Never move unbreakable blocks",
-                    "1: Allow moving, but prevent setting source to unbreakable",
-                    "2: Always allow moving unbreakable blocks"
-                )
-                .defineInRange("transpositionMovesUnbreakables", 1, 0, 2);
 
             builder.pop();
         }
