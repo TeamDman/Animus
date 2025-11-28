@@ -33,8 +33,9 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Blood Core block - has a tile entity for special functionality
  * Shows different texture when active (spreading enabled)
+ * Can be bonemealed to trigger sapling spreading if active
  */
-public class BlockBloodCore extends Block implements EntityBlock {
+public class BlockBloodCore extends Block implements EntityBlock, BonemealableBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public BlockBloodCore() {
@@ -117,5 +118,56 @@ public class BlockBloodCore extends Block implements EntityBlock {
         BlockEntityTicker<? super E> ticker
     ) {
         return expectedType == givenType ? (BlockEntityTicker<A>) ticker : null;
+    }
+
+    // BonemealableBlock implementation
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+        // Can only bonemeal if active
+        return state.getValue(ACTIVE);
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+        // Always succeed if active
+        return state.getValue(ACTIVE);
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        // Only work if active
+        if (!state.getValue(ACTIVE)) {
+            return;
+        }
+
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof BlockEntityBloodCore bloodCore) {
+            // Trigger tree spreading
+            bloodCore.trySpreadBloodTree(level);
+
+            // Play enchantment table particles
+            for (int i = 0; i < 15; i++) {
+                double d0 = pos.getX() + random.nextDouble();
+                double d1 = pos.getY() + random.nextDouble() + 0.5;
+                double d2 = pos.getZ() + random.nextDouble();
+                level.sendParticles(
+                    ParticleTypes.ENCHANT,
+                    d0, d1, d2,
+                    1,
+                    0.0, 0.1, 0.0,
+                    0.5
+                );
+            }
+
+            // Play magic sound
+            level.playSound(
+                null,
+                pos,
+                SoundEvents.ENCHANTMENT_TABLE_USE,
+                SoundSource.BLOCKS,
+                1.0F,
+                1.0F + random.nextFloat() * 0.4F
+            );
+        }
     }
 }

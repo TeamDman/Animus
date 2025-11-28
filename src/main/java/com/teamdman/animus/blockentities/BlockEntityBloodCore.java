@@ -115,7 +115,7 @@ public class BlockEntityBloodCore extends BlockEntity {
         }
     }
 
-    private void trySpreadBloodTree(ServerLevel level) {
+    public void trySpreadBloodTree(ServerLevel level) {
         RandomSource random = level.getRandom();
 
         // Search radius from config

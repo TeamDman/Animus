@@ -26,17 +26,17 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * Ritual of Peace - Spawns peaceful entities
+ * Ritual of Peaceful Beckoning - Spawns peaceful entities
  * Activation Cost: 5000 LP
  * Refresh Cost: Configured (default varies)
  * Refresh Time: 400 ticks
  */
-@RitualRegister(Constants.Rituals.PEACE)
-public class RitualPeace extends Ritual {
+@RitualRegister(Constants.Rituals.PEACEFUL_BECKONING)
+public class RitualPeacefulBeckoning extends Ritual {
     private List<EntityType<?>> targets;
 
-    public RitualPeace() {
-        super(Constants.Rituals.PEACE, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PEACE);
+    public RitualPeacefulBeckoning() {
+        super(Constants.Rituals.PEACEFUL_BECKONING, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PEACEFUL_BECKONING);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class RitualPeace extends Ritual {
 
     private boolean rebuildList(IMasterRitualStone mrs) {
         try {
-            System.out.println("Rebuilding Ritual of Peace entity list. [" + mrs.getMasterBlockPos().toString() + "]");
+            System.out.println("Rebuilding Ritual of Peaceful Beckoning entity list. [" + mrs.getMasterBlockPos().toString() + "]");
 
             targets = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class RitualPeace extends Ritual {
             return !targets.isEmpty();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Peace ritual creation failed.");
+            System.out.println("Peaceful Beckoning ritual creation failed.");
             return false;
         }
     }
@@ -132,7 +132,7 @@ public class RitualPeace extends Ritual {
 
         // Consume LP
         SoulTicket ticket = new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_PEACE),
+            Component.translatable(Constants.Localizations.Text.TICKET_PEACEFUL_BECKONING),
             getRefreshCost()
         );
         network.syphon(ticket, false);
@@ -140,7 +140,7 @@ public class RitualPeace extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return AnimusConfig.rituals.peaceCost.get();
+        return AnimusConfig.rituals.peacefulBeckoningCost.get();
     }
 
     @Override
@@ -166,6 +166,6 @@ public class RitualPeace extends Ritual {
 
     @Override
     public Ritual getNewCopy() {
-        return new RitualPeace();
+        return new RitualPeacefulBeckoning();
     }
 }
