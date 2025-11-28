@@ -1,0 +1,23 @@
+{
+  "name": "Blood Apple",
+  "icon": "animus:blood_apple",
+  "category": "animus:items",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_apple",
+      "text": "An apple infused with Life Essence. Consuming it provides sustenance and blood - either to your soul network or to a nearby Blood Altar."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)When Eaten:$()$(br)$(li)Restores 3 hunger$(li)75% chance of Nausea for 2 seconds$(li)Provides LP (configurable)$(br2)$(bold)Blood Altar Nearby:$()$(br)If a Blood Altar is found within 11x21x11 blocks, the apple provides $(bold)double LP$() directly to the altar!$(br2)$(bold)No Altar:$()$(br)LP goes to your Soul Network."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage Tips",
+      "text": "Perfect for:$(li)Quick LP generation near your altar$(li)Emergency soul network restoration$(li)Passive LP generation from farms$(br2)$(italic)An apple a day keeps the Blood Mage at play.$()\"
+    }
+  ]
+}

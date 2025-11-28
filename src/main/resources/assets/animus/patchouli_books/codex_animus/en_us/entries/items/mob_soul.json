@@ -1,0 +1,23 @@
+{
+  "name": "Mob Soul",
+  "icon": "animus:mob_soul",
+  "category": "animus:items",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:mob_soul",
+      "text": "A vessel containing the essence of a captured entity. Right-click on a block to release the stored creature back into the world."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Capturing:$()$(br)Mob Souls are typically created by killing entities with specific Blood Magic tools or rituals.$(br2)$(bold)Releasing:$()$(br)Right-click on any block face to spawn the captured entity adjacent to that face.$(br2)The entity's full data is preserved, including:$(li)Health and status effects$(li)Equipment$(li)Custom names$(li)AI state"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Applications",
+      "text": "Perfect for:$(li)Relocating villagers$(li)Mob farm automation$(li)Boss preservation$(li)Creating mob displays$(li)Transport without leads$(br2)$(italic)Gotta catch 'em all!$()\"
+    }
+  ]
+}

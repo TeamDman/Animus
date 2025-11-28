@@ -1,0 +1,23 @@
+{
+  "name": "Sigil of Consumption",
+  "icon": "animus:sigil_consumption",
+  "category": "animus:sigils",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_consumption",
+      "text": "Corrupt the world itself. This dire sigil converts blocks into $(blood)AntiLife$() - a corrupting substance that spreads and destroys. Use with extreme caution."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)LP Cost:$() 25 LP per block (configurable)$(br2)$(bold)Range:$() 8 blocks (configurable)$(br2)Right-click to convert nearby blocks to AntiLife. The corruption will spread outward, consuming all it touches.$(br2)$(bold)Warning:$() AntiLife cannot be reversed. Plan carefully."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Protected Blocks",
+      "text": "Blocks tagged $(#)animus:disallow_antilife$() cannot be converted:$(li)Barrier, Bedrock$(li)Command blocks$(li)Structure blocks$(li)End portals$(li)AntiLife itself$(br2)See $(l:animus:blocks/antilife)AntiLife$() for full details on this corruption."
+    }
+  ]
+}

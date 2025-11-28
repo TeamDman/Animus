@@ -1,0 +1,22 @@
+{
+  "name": "Ritual of Luna",
+  "icon": "minecraft:glowstone",
+  "category": "animus:rituals",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Harvest the light. The counterpart to the Ritual of Sol, this ritual collects all light-emitting blocks within its range and stores them in a chest above the ritual stone."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs & Details",
+      "text": "$(bold)Activation:$() 1000 LP$(br)$(bold)Refresh:$() 1 LP per block harvested$(br)$(bold)Refresh Time:$() 5 ticks$(br2)$(bold)Effect Range:$() 65x65x65 blocks (configurable)$(br)$(bold)Chest:$() 1 block above ritual$(br2)Harvests any block that emits light. If no chest is present, drops items at the Master Ritual Stone."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Applications",
+      "text": "Perfect for:$(li)Cleaning up light sources$(li)Harvesting glowstone$(li)Collecting torches$(li)Reclaiming blood lights$(li)Paired automation with Ritual of Sol$(br2)$(italic)The eternal cycle of light and darkness.$()\"
+    }
+  ]
+}

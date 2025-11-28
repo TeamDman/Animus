@@ -77,7 +77,7 @@
   "ritual.animus.ritual_natures_leach": "Ritual of Nature's Leach",
   "ritual.animus.ritual_eldritch_will": "Ritual of Eldritch Will",
   "ritual.animus.ritual_luna": "Ritual of Luna",
-  "ritual.animus.ritual_peace": "Ritual of Peace",
+  "ritual.animus.ritual_peaceful_beckoning": "Ritual of Peaceful Beckoning",
   "ritual.animus.ritual_regression": "Ritual of Regression",
   "ritual.animus.ritual_sol": "Ritual of Sol",
   "ritual.animus.ritual_steadfast_heart": "Ritual of the Steadfast Heart",
@@ -86,7 +86,7 @@
   "text.component.animus.ticket.transposition": "Transposition",
   "text.component.animus.ticket.storm": "Storm",
   "text.component.animus.ticket.antilife": "AntiLife",
-  "text.component.animus.ticket.peace": "Peace",
+  "text.component.animus.ticket.peaceful_beckoning": "Peaceful Beckoning",
   "text.component.animus.ticket.entropy": "Entropy",
   "text.component.animus.ticket.luna": "Luna",
   "text.component.animus.ticket.builder": "Builder",
@@ -103,5 +103,7 @@
   "animus.subtitle.ghostly": "Ghostly sound",
   "animus.subtitle.vengefulspiritambient": "Vengeful spirit whispers",
   "jei.animus.antilife.info": "Created when lightning strikes Life Essence fluid from Blood Magic. Spreads to adjacent blocks, converting them into AntiLife. When touching Life Essence, spreads as fluid instead.",
-  "jei.animus.antilife_block.info": "Created by the Sigil of Consumption or when AntiLife fluid touches solid blocks. Spreads to matching adjacent blocks up to the configured range."
+  "jei.animus.antilife_block.info": "Created by the Sigil of Consumption or when AntiLife fluid touches solid blocks. Spreads to matching adjacent blocks up to the configured range.",
+  "guide.animus.name": "Codex Animus",
+  "guide.animus.landing_text": "A comprehensive guide detailing the Animus of the Sanguine Arts"
 }

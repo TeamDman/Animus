@@ -1,0 +1,22 @@
+{
+  "name": "Ritual of Steadfast Heart",
+  "icon": "minecraft:golden_apple",
+  "category": "animus:rituals",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Fortify your allies. The Ritual of the Steadfast Heart grants increasingly powerful Absorption effects to all nearby players, providing extra health that regenerates over time."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs & Details",
+      "text": "$(bold)Activation:$() 20000 LP$(br)$(bold)Refresh:$() 100 LP per player$(br)$(bold)Refresh Time:$() 600 ticks (30 seconds)$(br2)$(bold)Effect Range:$() 32x32x32 blocks (configurable)$(br2)Each time the ritual runs, it extends and strengthens the absorption effect on nearby players."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effect Scaling",
+      "text": "$(bold)Absorption Scaling:$()$(br)The ritual stacks duration and amplifier over time:$(li)Duration increases each cycle$(li)Max duration: 30000 ticks$(li)Max amplifier: 4 (10 absorption hearts)$(br2)$(bold)Will Generation:$() Generates $(will)Steadfast Will$() (max 100).$(br2)$(italic)Stand firm in the face of adversity.$()\"
+    }
+  ]
+}

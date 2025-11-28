@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "bloodmagic:blankslate"
+    },
+    {
+      "item": "minecraft:writable_book"
+    }
+  ],
+  "result": {
+    "item": "patchouli:guide_book",
+    "nbt": "{\"patchouli:book\":\"animus:codex_animus\"}"
+  }
+}

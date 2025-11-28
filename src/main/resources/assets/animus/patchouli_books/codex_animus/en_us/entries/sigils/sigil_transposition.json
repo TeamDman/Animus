@@ -1,0 +1,27 @@
+{
+  "name": "Sigil of Transposition",
+  "icon": "animus:sigil_transposition",
+  "category": "animus:sigils",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_transposition",
+      "text": "Move blocks and their tile entities through space itself. The Sigil of Transposition allows you to relocate blocks without breaking them, preserving their contents and state."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)LP Cost:$() 5000 per transposition$(br2)$(bold)Step 1:$() Right-click a block to select it as the source. The sigil will activate.$(br2)$(bold)Step 2:$() Right-click on another block's face to move the selected block adjacent to it.$(br2)$(bold)Clear:$() Right-click air to clear selection."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Restrictions",
+      "text": "$(bold)Protection:$() Respects chunk protection (FTB Chunks, etc.)$(br2)$(bold)Relocation Tag:$() Cannot move blocks tagged $(#)forge:relocation_not_supported$()$(br2)$(bold)Destination:$() Target location must be air$(br2)The sigil will chunk-load the source area during transposition to ensure safety."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Applications",
+      "text": "Perfect for:$(li)Moving complex machinery$(li)Relocating filled chests$(li)Rearranging your base$(li)Moving spawners$(li)Transporting tile entities$(br2)$(italic)Beware: With great power comes great responsibility. Always verify you have permission before moving blocks.$()"}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Ritual of Sol",
+  "icon": "minecraft:torch",
+  "category": "animus:rituals",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Banish the darkness. The Ritual of Sol automatically places light sources in dark areas, preventing mob spawns and illuminating your surroundings. Place light-emitting blocks in a chest above the ritual."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs & Details",
+      "text": "$(bold)Activation:$() 1000 LP$(br)$(bold)Refresh:$() 1 LP per block placed$(br)$(bold)Refresh Time:$() 5 ticks$(br2)$(bold)Effect Range:$() 65x65x65 blocks (configurable)$(br)$(bold)Chest:$() 1 block above ritual$(br2)Places blocks from the chest in dark spots (light level < 8) that have solid ground below."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Blood Light Synergy",
+      "text": "$(bold)Special Feature:$()$(br)If you place Blood Magic's $(item)Sigil of Blood Light$() in the chest, the ritual will place Blood Lights $(bold)without consuming the sigil$()!$(br2)This allows for infinite blood light placement using only LP.$(br2)$(italic)Let there be light!$()\"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Fragment of Healing",
+  "icon": "animus:fragment_healing",
+  "category": "animus:items",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:fragment_healing",
+      "text": "A mysterious fragment that binds to your soul. Once picked up, it cannot be dropped or removed - it becomes a permanent part of you, continuously healing your wounds."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Healing",
+      "text": "$(bold)Base Effect:$()$(br)Heals 1 health every 200 ticks (10 seconds).$(br2)$(bold)Stacking:$()$(br)Each additional fragment reduces the healing interval by 5 ticks (0.25 seconds).$(br2)$(bold)Minimum:$() Healing cannot occur faster than once per second (20 ticks), even with many fragments."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "WARNING",
+      "text": "$(bold)$(4)PERMANENT BINDING$(bold)$()$(br2)Once a Fragment of Healing enters your inventory, it $(bold)cannot$():$(li)Be dropped$(li)Be stored in chests$(li)Be placed in shulker boxes$(li)Be removed (except on death)$(br2)$(italic)Choose wisely before picking up.$()\"
+    }
+  ]
+}

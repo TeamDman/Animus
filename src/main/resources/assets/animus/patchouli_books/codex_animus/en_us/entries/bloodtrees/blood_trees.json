@@ -1,0 +1,28 @@
+{
+  "name": "Blood Trees",
+  "icon": "animus:blood_sapling",
+  "category": "animus:bloodtrees",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_sapling",
+      "text": "Trees infused with blood magic. Blood Saplings grow into unique trees topped with a Blood Core that can spread to create entire blood forests."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Growing Blood Trees",
+      "text": "$(bold)Blood Sapling:$()$(br)Plant and wait for it to grow (or use bonemeal). Grows into a tree 4-6 blocks tall.$(br2)$(bold)Structure:$()$(li)Blood Wood trunk$(li)Blood Leaves canopy$(li)Blood Core at the top$(br2)All parts can be harvested and used for building."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Blood Wood Core",
+      "text": "$(bold)Active Core:$()$(br)The heart of the blood tree. When active (right-click to toggle), the core will automatically spread blood trees in the area!$(br2)$(bold)Spreading:$()$(li)Searches for grass/dirt nearby$(li)Places Blood Saplings$(li)Instantly grows them into trees$(li)Creates a blood forest over time$(br2)$(bold)Bonemeal:$() You can bonemeal active cores to trigger spreading!"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Blood Wood Blocks",
+      "text": "$(bold)Available Blocks:$()$(li)Blood Wood (log)$(li)Stripped Blood Wood$(li)Blood Wood Planks$(li)Blood Leaves$(li)Blood Sapling$(li)Blood Core$(br2)All wood blocks can be stripped with an axe and crafted into planks for building.$(br2)$(italic)Let the blood forest grow.$()\"
+    }
+  ]
+}

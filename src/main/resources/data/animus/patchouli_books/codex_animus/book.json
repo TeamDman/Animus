@@ -1,0 +1,14 @@
+{
+  "name": "guide.animus.name",
+  "landing_text": "guide.animus.landing_text",
+  "book_texture": "patchouli:textures/gui/book_red.png",
+  "model": "patchouli:book_red",
+  "creative_tab": "bloodmagic:bloodmagic",
+  "show_progress": false,
+  "use_resource_pack": true,
+  "macros": {
+    "$(animus)": "$(#8B0000)",
+    "$(blood)": "$(#CC0000)",
+    "$(will)": "$(#9B30FF)"
+  }
+}

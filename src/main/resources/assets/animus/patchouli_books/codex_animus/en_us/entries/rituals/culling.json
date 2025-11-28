@@ -1,0 +1,27 @@
+{
+  "name": "Ritual of Culling",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:rituals",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A powerful ritual of death that destroys all living things in its domain. The Ritual of Culling silently kills entities within its range, adding their life force to your Blood Altar."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs & Details",
+      "text": "$(bold)Activation:$() 50000 LP$(br)$(bold)Refresh:$() 75 LP per entity$(br)$(bold)Refresh Time:$() 25 ticks$(br2)$(bold)Effect Range:$() 21x21x21 blocks (configurable)$(br)$(bold)Altar Range:$() Searches 11x21x11 for a Blood Altar$(br2)Each kill provides 200 LP to the altar. Works on all non-boss entities."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Boss Killing",
+      "text": "$(bold)Boss Entities:$()$(br)Can kill boss entities with sufficient $(will)Destructive Will$()!$(br2)$(li)Requires 99+ Destructive Will$(li)Extra LP cost (configurable)$(li)Makes bosses vulnerable$(br2)$(bold)Protection:$() Entities tagged $(#)animus:disallow_culling$() cannot be killed."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Will & TNT",
+      "text": "$(bold)Demon Will:$() Generates $(will)Destructive Will$() from kills (3% chance per cycle, max 100 will).$(br2)$(bold)TNT Destruction:$() If configured, this ritual can also destroy Primed TNT entities, making it useful for defense.$(br2)$(italic)With great power comes great responsibility.$()\"
+    }
+  ]
+}

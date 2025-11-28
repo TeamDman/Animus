@@ -1,0 +1,23 @@
+{
+  "name": "AntiLife",
+  "icon": "animus:antilife",
+  "category": "animus:blocks",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:antilife",
+      "text": "A corrupting substance that spreads like a plague, consuming all blocks of a specific type. Created using the $(l:animus:sigils/sigil_consumption)Sigil of Consumption$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Spreading Mechanics",
+      "text": "$(bold)Conversion:$()$(br)AntiLife spreads to adjacent blocks of the same type as the original converted block.$(br2)$(bold)LP Cost:$()$(br)Each spread consumes LP from the player who created it (configurable).$(br2)$(bold)Range:$()$(br)Spreads up to 8 blocks from the origin (configurable with the sigil)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Decay System",
+      "text": "$(bold)Breaking AntiLife:$()$(br)When any AntiLife block is broken, it triggers a decay chain reaction.$(br2)$(li)All adjacent AntiLife blocks start decaying$(li)Decay spreads to other AntiLife$(li)Decayed blocks are removed$(br2)This prevents infinite expansion and allows cleanup.$(br2)$(bold)Protected Blocks:$() Cannot convert blocks tagged $(#)animus:disallow_antilife$()."
+    }
+  ]
+}
