@@ -3,6 +3,7 @@ package com.teamdman.animus.datagen;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
+import com.teamdman.animus.registry.AnimusRecipeSerializers;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -70,6 +71,10 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .requires(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get())
             .unlockedBy("has_stripped_blood_wood", has(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get()))
             .save(consumer, ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "blood_wood_planks_from_stripped"));
+
+        // Key of Binding unbinding recipe (shapeless special recipe)
+        SpecialRecipeBuilder.special(AnimusRecipeSerializers.KEY_UNBINDING.get())
+            .save(consumer, ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "key_binding_unbind").toString());
     }
 
     private net.minecraft.world.level.ItemLike itemFromMod(String modid, String name) {
