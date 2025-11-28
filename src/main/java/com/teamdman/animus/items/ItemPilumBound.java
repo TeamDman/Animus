@@ -248,7 +248,7 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
             }
         }
 
-        // Call parent to apply normal attack damage
+        // Call parent to apply normal attack damage to the main target
         super.hurtEnemy(stack, target, attacker);
 
         Level level = target.level();
@@ -261,18 +261,16 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
         double y = target.getY();
         double z = target.getZ();
 
-        // Try to sacrifice entities first
-        if (checkAndKill(x, y, z, level, attacker, false)) {
-            return false;
-        }
-
-        // If sacrifice failed, do normal AOE damage
+        // Apply AOE damage to nearby entities
+        // If a Blood Altar is nearby, all enemies are sacrificed to it (instant kill)
+        // If no altar is nearby, normal AOE damage is dealt
         checkAndDamage(x, y, z, level, attacker);
+
         return false;
     }
 
     /**
-     * Damages all entities in range
+     * Damages all entities in range, sacrificing them to nearby altars if possible
      */
     private boolean checkAndDamage(double x, double y, double z, Level level, LivingEntity attacker) {
         int range = 5;
@@ -292,6 +290,45 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
                 continue;
             }
 
+            // Try to sacrifice this entity to a nearby altar (regardless of health)
+            // Skip players, non-sacrificeable entities, and entities with the disallow_sacrifice tag
+            if (target.canChangeDimensions() && !(target instanceof Player)) {
+                // Check if entity is tagged as too powerful to sacrifice
+                if (target.getType().is(Constants.Tags.DISALLOW_SACRIFICE)) {
+                    // Show message to player that this enemy is too powerful
+                    if (attacker instanceof Player playerAttacker) {
+                        playerAttacker.displayClientMessage(
+                            Component.translatable(Constants.Localizations.Text.SACRIFICE_TOO_POWERFUL),
+                            true
+                        );
+                    }
+                    // Fall through to normal damage
+                } else {
+                    // Calculate life essence value
+                    int lifeEssence = getEntitySacrificeValue(target);
+
+                    // Try to find and fill altar
+                    if (lifeEssence > 0 && findAndFillAltar(level, attacker, lifeEssence, false)) {
+                        // Sacrifice successful - kill the entity outright and play effect
+                        level.playSound(
+                            null,
+                            target.getX(),
+                            target.getY(),
+                            target.getZ(),
+                            SoundEvents.FIRE_EXTINGUISH,
+                            SoundSource.BLOCKS,
+                            0.5F,
+                            2.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.8F
+                        );
+                        target.setHealth(-1);
+                        target.die(level.damageSources().genericKill());
+                        hit = true;
+                        continue; // Skip normal damage for this entity
+                    }
+                }
+            }
+
+            // Normal damage if sacrifice didn't happen (no altar nearby)
             boolean result = target.hurt(level.damageSources().genericKill(), damage);
             if (result) {
                 hit = true;
@@ -301,61 +338,6 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
         return hit;
     }
 
-    /**
-     * Kills low-health entities and fills nearby Blood Altars with their life essence
-     */
-    private boolean checkAndKill(double x, double y, double z, Level level, LivingEntity attacker, boolean efficient) {
-        int range = 5;
-        boolean killed = false;
-
-        AABB region = new AABB(x - range, y - range, z - range, x + range, y + range, z + range);
-        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, region);
-
-        if (entities.isEmpty()) {
-            return false;
-        }
-
-        for (LivingEntity target : entities) {
-            if (target == null || attacker == null || attacker instanceof FakePlayer) {
-                continue;
-            }
-
-            // Only sacrifice entities that are almost dead, non-boss, and not players
-            if (target.isDeadOrDying() || target.getHealth() >= 0.5F || !target.canChangeDimensions() || target instanceof Player) {
-                continue;
-            }
-
-            // Calculate life essence using entity-type based values
-            // This mimics Blood Magic's sacrifice value system
-            int lifeEssence = getEntitySacrificeValue(target);
-
-            if (lifeEssence <= 0) {
-                continue;
-            }
-
-            // Try to find and fill altar using Blood Magic's helper
-            if (findAndFillAltar(level, attacker, lifeEssence, efficient)) {
-                // Play sound effect
-                level.playSound(
-                    null,
-                    target.getX(),
-                    target.getY(),
-                    target.getZ(),
-                    SoundEvents.FIRE_EXTINGUISH,
-                    SoundSource.BLOCKS,
-                    0.5F,
-                    2.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.8F
-                );
-
-                // Kill the entity
-                target.setHealth(-1);
-                target.die(level.damageSources().genericKill());
-                killed = true;
-            }
-        }
-
-        return killed;
-    }
 
     /**
      * Calculates entity sacrifice value based on entity type

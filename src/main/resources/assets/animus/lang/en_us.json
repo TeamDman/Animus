@@ -31,6 +31,7 @@
   "text.component.animus.transposition.set": "Position set",
   "text.component.animus.transposition.unmovable": "Block cannot be moved",
   "text.component.animus.chains.capture_failed": "This entity is too powerful to capture!",
+  "text.component.animus.sacrifice.too_powerful": "This enemy is too powerful to be sacrificed!",
   "text.component.animus.healing.cannot_drop": "Fragment of Healing cannot be dropped!",
   "text.component.animus.healing.warning": "Warning: This item cannot be moved or dropped once obtained!",
   "tooltip.animus.diviner.first": "Right-click altar to divine structure",

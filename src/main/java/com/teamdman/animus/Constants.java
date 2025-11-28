@@ -25,6 +25,7 @@ public class Constants {
             public static final String CHAINS_CAPTURE_FAILED = "text.component.animus.chains.capture_failed";
             public static final String HEALING_CANNOT_DROP = "text.component.animus.healing.cannot_drop";
             public static final String HEALING_WARNING = "text.component.animus.healing.warning";
+            public static final String SACRIFICE_TOO_POWERFUL = "text.component.animus.sacrifice.too_powerful";
             public static final String TICKET_SOL = "text.component.animus.ticket.sol";
             public static final String TICKET_TRANSPOSITION = "text.component.animus.ticket.transposition";
             public static final String TICKET_STORM = "text.component.animus.ticket.storm";
@@ -114,6 +115,12 @@ public class Constants {
             net.minecraft.tags.TagKey.create(
                 net.minecraft.core.registries.Registries.ENTITY_TYPE,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_culling")
+            );
+
+        public static final net.minecraft.tags.TagKey<net.minecraft.world.entity.EntityType<?>> DISALLOW_SACRIFICE =
+            net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.ENTITY_TYPE,
+                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_sacrifice")
             );
 
         public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_LEACH =
