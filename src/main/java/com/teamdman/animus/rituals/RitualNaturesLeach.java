@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * Activation Cost: 3000 LP
  * Refresh Cost: 10 LP
  * Refresh Time: Configurable (default 80 ticks, varies with demon will)
- * Range: Configurable (default 10 blocks)
+ * Range: Configurable (default 32 blocks)
  * LP per Block: Configurable (default 50 LP)
  */
 @RitualRegister(Constants.Rituals.LEACH)
@@ -46,7 +46,7 @@ public class RitualNaturesLeach extends Ritual {
     public RitualNaturesLeach() {
         super(Constants.Rituals.LEACH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEACH);
 
-        // Use config value for range (default 10 blocks)
+        // Use config value for range (default 32 blocks)
         int range = AnimusConfig.rituals.naturesLeachRange.get();
         int rangeSize = range * 2 + 4; // Convert to full size
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));

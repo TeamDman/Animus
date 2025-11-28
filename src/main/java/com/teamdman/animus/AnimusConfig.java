@@ -96,7 +96,7 @@ public class AnimusConfig {
 
             naturesLeachRange = builder
                 .comment("Range in blocks for Ritual of Nature's Leach to consume plants")
-                .defineInRange("naturesLeachRange", 10, 1, 64);
+                .defineInRange("naturesLeachRange", 32, 1, 64);
 
             naturesLeachBaseSpeed = builder
                 .comment("Base refresh time in ticks for Ritual of Nature's Leach (before demon will modifier)")
