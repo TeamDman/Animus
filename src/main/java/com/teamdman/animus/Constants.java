@@ -26,6 +26,8 @@ public class Constants {
             public static final String HEALING_CANNOT_DROP = "text.component.animus.healing.cannot_drop";
             public static final String HEALING_WARNING = "text.component.animus.healing.warning";
             public static final String SACRIFICE_TOO_POWERFUL = "text.component.animus.sacrifice.too_powerful";
+            public static final String ACTIVATION_CRYSTAL_UNBOUND = "text.component.animus.activation_crystal.unbound";
+            public static final String ACTIVATION_CRYSTAL_SHATTERED = "text.component.animus.activation_crystal.shattered";
             public static final String TICKET_SOL = "text.component.animus.ticket.sol";
             public static final String TICKET_TRANSPOSITION = "text.component.animus.ticket.transposition";
             public static final String TICKET_STORM = "text.component.animus.ticket.storm";
@@ -85,6 +87,9 @@ public class Constants {
             public static final String BLOOD_CORE_FLAVOUR = "tooltip.animus.blood_core.flavour";
             public static final String BLOOD_CORE_INFO = "tooltip.animus.blood_core.info";
             public static final String BLOOD_CORE_MULTIBLOCK = "tooltip.animus.blood_core.multiblock";
+            public static final String ACTIVATION_CRYSTAL_FLAVOUR = "tooltip.animus.activation_crystal.flavour";
+            public static final String ACTIVATION_CRYSTAL_INFO = "tooltip.animus.activation_crystal.info";
+            public static final String ACTIVATION_CRYSTAL_WARNING = "tooltip.animus.activation_crystal.warning";
         }
     }
 

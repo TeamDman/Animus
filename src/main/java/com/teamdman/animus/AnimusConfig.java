@@ -52,6 +52,9 @@ public class AnimusConfig {
         public final ForgeConfigSpec.BooleanValue cullingKillsTnT;
         public final ForgeConfigSpec.BooleanValue cullingDebug;
         public final ForgeConfigSpec.IntValue peacefulBeckoningCost;
+        public final ForgeConfigSpec.IntValue steadfastHeartRange;
+        public final ForgeConfigSpec.IntValue steadfastHeartRefreshTime;
+        public final ForgeConfigSpec.IntValue steadfastHeartMaxAmplifier;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -75,6 +78,18 @@ public class AnimusConfig {
             peacefulBeckoningCost = builder
                 .comment("LP cost per mob spawned by Ritual of Peaceful Beckoning")
                 .defineInRange("peacefulBeckoningCost", 1000, 1, 100000);
+
+            steadfastHeartRange = builder
+                .comment("Range in blocks for Ritual of Steadfast Heart absorption effect")
+                .defineInRange("steadfastHeartRange", 128, 1, 512);
+
+            steadfastHeartRefreshTime = builder
+                .comment("Refresh time in ticks for Ritual of Steadfast Heart (20 ticks = 1 second)")
+                .defineInRange("steadfastHeartRefreshTime", 60, 1, 6000);
+
+            steadfastHeartMaxAmplifier = builder
+                .comment("Maximum absorption amplifier for Ritual of Steadfast Heart (0 = 1 heart, 4 = 5 hearts)")
+                .defineInRange("steadfastHeartMaxAmplifier", 4, 0, 10);
 
             builder.pop();
         }

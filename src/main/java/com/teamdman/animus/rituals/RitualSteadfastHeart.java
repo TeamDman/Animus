@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +30,8 @@ import java.util.function.Consumer;
  * Also generates Steadfast demon will
  * Activation Cost: 20000 LP
  * Refresh Cost: 100 LP per player
- * Refresh Time: 600 ticks (30 seconds)
+ * Refresh Time: Configurable (default 60 ticks = 3 seconds)
+ * Range: Configurable (default 128 blocks)
  */
 @RitualRegister(Constants.Rituals.STEADFAST)
 public class RitualSteadfastHeart extends Ritual {
@@ -40,8 +42,11 @@ public class RitualSteadfastHeart extends Ritual {
     public RitualSteadfastHeart() {
         super(Constants.Rituals.STEADFAST, 0, 20000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.STEADFAST);
 
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-16, -16, -16), 32));
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
+        // Use config value for range (default 128 blocks)
+        int range = AnimusConfig.rituals.steadfastHeartRange.get();
+        int halfRange = range / 2;
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-halfRange, -halfRange, -halfRange), range));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, range, range);
     }
 
     @Override
@@ -101,7 +106,8 @@ public class RitualSteadfastHeart extends Ritual {
 
             // Calculate new duration and amplifier
             int newDuration = Math.min(((currentDuration + 800) * 2), 30000);
-            int amplifier = Math.min((5 * (1 + (newDuration + 60)) / 36000), 4);
+            int maxAmplifier = AnimusConfig.rituals.steadfastHeartMaxAmplifier.get();
+            int amplifier = Math.min((5 * (1 + (newDuration + 60)) / 36000), maxAmplifier);
 
             // Apply new absorption effect
             entity.addEffect(new MobEffectInstance(
@@ -135,7 +141,7 @@ public class RitualSteadfastHeart extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 600;
+        return AnimusConfig.rituals.steadfastHeartRefreshTime.get();
     }
 
     @Override
