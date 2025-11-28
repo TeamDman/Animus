@@ -86,6 +86,8 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue antiLifeRange;
         public final ForgeConfigSpec.IntValue builderRange;
         public final ForgeConfigSpec.IntValue leachRange;
+        public final ForgeConfigSpec.IntValue stormFishLootMin;
+        public final ForgeConfigSpec.IntValue stormFishLootMax;
 
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -105,6 +107,20 @@ public class AnimusConfig {
             leachRange = builder
                 .comment("Range of Sigil of Nature's Leach for consuming blocks in the world (in blocks)")
                 .defineInRange("leachRange", 8, 1, 64);
+
+            stormFishLootMin = builder
+                .comment(
+                    "Minimum number of fishing loot rolls when Sigil of Storm targets water",
+                    "Set both min and max to 0 to disable fish spawning"
+                )
+                .defineInRange("stormFishLootMin", 2, 0, 64);
+
+            stormFishLootMax = builder
+                .comment(
+                    "Maximum number of fishing loot rolls when Sigil of Storm targets water",
+                    "Set both min and max to 0 to disable fish spawning"
+                )
+                .defineInRange("stormFishLootMax", 5, 0, 64);
 
             builder.pop();
         }

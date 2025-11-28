@@ -1,5 +1,6 @@
 package com.teamdman.animus.items.sigils;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -130,10 +131,24 @@ public class ItemSigilStorm extends AnimusSigilBase {
             if (level instanceof ServerLevel serverLevel) {
                 // Check if the target block is water
                 if (level.getFluidState(pos).is(Fluids.WATER) || level.getBlockState(pos).is(Blocks.WATER)) {
-                    // Schedule fishing loot to spawn 20 ticks (1 second) after lightning to avoid burning
-                    BlockPos spawnPos = pos.above(); // Spawn above the water
-                    long spawnTick = serverLevel.getServer().getTickCount() + 20;
-                    pendingSpawns.add(new PendingFishSpawn(serverLevel, spawnPos, player.getUUID(), spawnTick));
+                    int minLoot = AnimusConfig.sigils.stormFishLootMin.get();
+                    int maxLoot = AnimusConfig.sigils.stormFishLootMax.get();
+
+                    // Only spawn fish if not disabled (both set to 0)
+                    if (minLoot > 0 || maxLoot > 0) {
+                        // Ensure min doesn't exceed max
+                        int actualMin = Math.min(minLoot, maxLoot);
+                        int actualMax = Math.max(minLoot, maxLoot);
+
+                        // Schedule fishing loot to spawn 20 ticks (1 second) after lightning to avoid burning
+                        int spawnCount = actualMin + level.random.nextInt(Math.max(1, actualMax - actualMin + 1));
+                        BlockPos spawnPos = pos.above(); // Spawn above the water
+                        long spawnTick = serverLevel.getServer().getTickCount() + 20;
+
+                        for (int i = 0; i < spawnCount; i++) {
+                            pendingSpawns.add(new PendingFishSpawn(serverLevel, spawnPos, player.getUUID(), spawnTick));
+                        }
+                    }
                 }
 
                 // Area damage during rain
