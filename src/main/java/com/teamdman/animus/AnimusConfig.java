@@ -51,6 +51,9 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue bossCost;
         public final ForgeConfigSpec.BooleanValue cullingKillsTnT;
         public final ForgeConfigSpec.BooleanValue cullingDebug;
+        public final ForgeConfigSpec.IntValue cullingRange;
+        public final ForgeConfigSpec.IntValue cullingVerticalRange;
+        public final ForgeConfigSpec.IntValue cullingLpPerKill;
         public final ForgeConfigSpec.IntValue peacefulBeckoningCost;
         public final ForgeConfigSpec.IntValue steadfastHeartRange;
         public final ForgeConfigSpec.IntValue steadfastHeartRefreshTime;
@@ -77,6 +80,18 @@ public class AnimusConfig {
             cullingDebug = builder
                 .comment("Enable debug logging for Ritual of Culling")
                 .define("CullingDebug", false);
+
+            cullingRange = builder
+                .comment("Horizontal range in blocks for Ritual of Culling effect area")
+                .defineInRange("cullingRange", 10, 1, 64);
+
+            cullingVerticalRange = builder
+                .comment("Vertical range in blocks for Ritual of Culling effect area (upward from 1 block above ritual stone)")
+                .defineInRange("cullingVerticalRange", 10, 1, 64);
+
+            cullingLpPerKill = builder
+                .comment("Amount of LP added to the Blood Altar per entity killed by Ritual of Culling")
+                .defineInRange("cullingLpPerKill", 200, 1, 10000);
 
             peacefulBeckoningCost = builder
                 .comment("LP cost per mob spawned by Ritual of Peaceful Beckoning")

@@ -33,14 +33,21 @@ import java.util.function.Consumer;
  * Refresh Cost: 10 LP
  * Refresh Time: Configurable (default 80 ticks, varies with demon will)
  * Range: Configurable (default 32 blocks)
+ * Altar Search Range: 32 blocks horizontally, ±10 blocks vertically (cached for performance)
  * LP per Block: Configurable (default 50 LP)
  */
 @RitualRegister(Constants.Rituals.LEACH)
 public class RitualNaturesLeach extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
+    public static final int ALTAR_RECHECK_INTERVAL = 100; // Recheck altar every 100 ticks (5 seconds)
     public final int maxWill = 100;
-    public BlockPos altarOffsetPos = BlockPos.ZERO;
+
+    // Altar caching for performance
+    public BlockPos cachedAltarPos = null;
+    public TileAltar cachedAltar = null;
+    public int ticksSinceAltarCheck = 0;
+
     public double will = 100;
 
     public RitualNaturesLeach() {
@@ -49,10 +56,12 @@ public class RitualNaturesLeach extends Ritual {
         // Use config value for range (default 32 blocks)
         int range = AnimusConfig.rituals.naturesLeachRange.get();
         int rangeSize = range * 2 + 4; // Convert to full size
-        addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
+
+        // Altar range: 32 blocks horizontally, 10 blocks down, 10 blocks up
+        addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -10, -32), 65, 21, 65));
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-range, -range, -range), rangeSize));
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, range + 10, range + 10, range + 10);
-        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
+        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 32, 32);
     }
 
     /**
@@ -96,12 +105,44 @@ public class RitualNaturesLeach extends Ritual {
             getRefreshCost()
         ), false);
 
-        // Find nearby altar
-        TileAltar tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
+        // Find nearby altar with caching for performance
+        TileAltar tileAltar = null;
+        ticksSinceAltarCheck++;
+
+        // Check if we have a valid cached altar
+        if (cachedAltar != null && cachedAltarPos != null && ticksSinceAltarCheck < ALTAR_RECHECK_INTERVAL) {
+            // Verify the cached altar is still valid
+            if (level.getBlockEntity(cachedAltarPos) instanceof TileAltar altar) {
+                tileAltar = altar;
+            } else {
+                // Cached altar is no longer valid, clear cache
+                cachedAltar = null;
+                cachedAltarPos = null;
+            }
+        }
+
+        // If we don't have a cached altar or it's time to recheck, search for one
+        if (tileAltar == null || ticksSinceAltarCheck >= ALTAR_RECHECK_INTERVAL) {
+            BlockPos hintPos = cachedAltarPos != null ? cachedAltarPos : BlockPos.ZERO;
+            tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, hintPos);
+
+            if (tileAltar != null) {
+                // Update cache
+                cachedAltar = tileAltar;
+                cachedAltarPos = tileAltar.getBlockPos();
+                ticksSinceAltarCheck = 0;
+            } else {
+                // No altar found, clear cache
+                cachedAltar = null;
+                cachedAltarPos = null;
+                ticksSinceAltarCheck = 0;
+                return;
+            }
+        }
+
         if (tileAltar == null) {
             return;
         }
-        altarOffsetPos = tileAltar.getBlockPos();
 
         // Scan for consumable plants
         AreaDescriptor eatRange = getBlockRange(EFFECT_RANGE);

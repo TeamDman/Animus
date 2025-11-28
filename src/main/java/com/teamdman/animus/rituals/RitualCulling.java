@@ -38,12 +38,13 @@ import java.util.function.Consumer;
  * Activation Cost: 50000 LP
  * Refresh Cost: 75 LP per entity
  * Refresh Time: 25 ticks
+ * Range: Configurable (default 10 blocks horizontal, 10 blocks vertical from 1 block above stone)
+ * LP per Kill: Configurable (default 200 LP)
  */
 @RitualRegister(Constants.Rituals.CULLING)
 public class RitualCulling extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
-    public static final int amount = 200;
 
     // Damage source is created per-level in 1.20.1, not static
 
@@ -59,11 +60,18 @@ public class RitualCulling extends Ritual {
     public RitualCulling() {
         super(Constants.Rituals.CULLING, 0, 50000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.CULLING);
 
+        // Use config values for range (default 10 horizontal, 10 vertical)
+        // Range starts from 1 block above the master ritual stone
+        int hRange = AnimusConfig.rituals.cullingRange.get();
+        int vRange = AnimusConfig.rituals.cullingVerticalRange.get();
+        int hSize = hRange * 2 + 1;  // Full horizontal size (e.g., 10*2+1 = 21)
+
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 21));
+        // Start from 1 block above the ritual stone and extend upward vRange blocks
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRange, 1, -hRange), hSize, vRange, hSize));
 
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 15, 15);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, vRange + 5, hRange + 5);
     }
 
     public double smallGauss(double d) {
@@ -207,7 +215,9 @@ public class RitualCulling extends Ritual {
 
                     if (result) {
                         entityCount++;
-                        tileAltar.sacrificialDaggerCall(amount, true);
+                        // Use config value for LP per kill (default 200)
+                        int lpPerKill = AnimusConfig.rituals.cullingLpPerKill.get();
+                        tileAltar.sacrificialDaggerCall(lpPerKill, true);
 
                         if (isBoss) {
                             // Boss kill - extra LP cost
