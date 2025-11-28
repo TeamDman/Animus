@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.util.AnimusUtil;
 import net.minecraft.core.BlockPos;
@@ -30,7 +31,9 @@ import java.util.function.Consumer;
  * Scans area for consumable plant matter and destroys it to fill the altar
  * Activation Cost: 3000 LP
  * Refresh Cost: 10 LP
- * Refresh Time: 80 ticks (varies with demon will)
+ * Refresh Time: Configurable (default 80 ticks, varies with demon will)
+ * Range: Configurable (default 10 blocks)
+ * LP per Block: Configurable (default 50 LP)
  */
 @RitualRegister(Constants.Rituals.LEACH)
 public class RitualNaturesLeach extends Ritual {
@@ -43,9 +46,12 @@ public class RitualNaturesLeach extends Ritual {
     public RitualNaturesLeach() {
         super(Constants.Rituals.LEACH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEACH);
 
+        // Use config value for range (default 10 blocks)
+        int range = AnimusConfig.rituals.naturesLeachRange.get();
+        int rangeSize = range * 2 + 4; // Convert to full size
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-10, -10, -10), 24));
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 20, 20, 20);
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-range, -range, -range), rangeSize));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, range + 10, range + 10, range + 10);
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
     }
 
@@ -137,8 +143,9 @@ public class RitualNaturesLeach extends Ritual {
             }
         }
 
-        // Add blood to altar
-        tileAltar.sacrificialDaggerCall(eaten * 50, true);
+        // Add blood to altar (use config value)
+        int lpPerBlock = AnimusConfig.rituals.naturesLeachLpPerBlock.get();
+        tileAltar.sacrificialDaggerCall(eaten * lpPerBlock, true);
 
         // Generate corrosive demon will based on blocks consumed
         // Each consumed block generates 0.5-1.5 corrosive will
@@ -212,7 +219,8 @@ public class RitualNaturesLeach extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return (int) Math.min(80, (100 * (100 / (Math.max(1, will) * 6))));
+        int baseSpeed = AnimusConfig.rituals.naturesLeachBaseSpeed.get();
+        return (int) Math.min(baseSpeed, (100 * (100 / (Math.max(1, will) * 6))));
     }
 
     @Override

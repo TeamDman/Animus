@@ -55,6 +55,9 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue steadfastHeartRange;
         public final ForgeConfigSpec.IntValue steadfastHeartRefreshTime;
         public final ForgeConfigSpec.IntValue steadfastHeartMaxAmplifier;
+        public final ForgeConfigSpec.IntValue naturesLeachRange;
+        public final ForgeConfigSpec.IntValue naturesLeachBaseSpeed;
+        public final ForgeConfigSpec.IntValue naturesLeachLpPerBlock;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -90,6 +93,18 @@ public class AnimusConfig {
             steadfastHeartMaxAmplifier = builder
                 .comment("Maximum absorption amplifier for Ritual of Steadfast Heart (0 = 1 heart, 4 = 5 hearts)")
                 .defineInRange("steadfastHeartMaxAmplifier", 4, 0, 10);
+
+            naturesLeachRange = builder
+                .comment("Range in blocks for Ritual of Nature's Leach to consume plants")
+                .defineInRange("naturesLeachRange", 10, 1, 64);
+
+            naturesLeachBaseSpeed = builder
+                .comment("Base refresh time in ticks for Ritual of Nature's Leach (before demon will modifier)")
+                .defineInRange("naturesLeachBaseSpeed", 80, 1, 6000);
+
+            naturesLeachLpPerBlock = builder
+                .comment("Amount of LP gained per block consumed by Ritual of Nature's Leach")
+                .defineInRange("naturesLeachLpPerBlock", 50, 1, 1000);
 
             builder.pop();
         }
