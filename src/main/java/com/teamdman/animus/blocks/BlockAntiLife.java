@@ -21,6 +21,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
@@ -60,6 +62,12 @@ public class BlockAntiLife extends BaseEntityBlock {
         // Don't convert blocks in the disallow_antilife tag
         if (state.is(Constants.Tags.DISALLOW_ANTILIFE)) {
             return InteractionResult.PASS;
+        }
+
+        // Fire break event to check if protected (e.g., FTB Chunks)
+        BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, blockPos, state, player);
+        if (MinecraftForge.EVENT_BUS.post(breakEvent)) {
+            return InteractionResult.PASS; // Protected, cannot convert
         }
 
         Block seeking = state.getBlock();
@@ -111,6 +119,13 @@ public class BlockAntiLife extends BaseEntityBlock {
                 // Only spread conversion if we have range remaining
                 // If not decaying, spread to matching blocks
                 if (!level.isEmptyBlock(neighborPos) && neighborState.getBlock() == antilife.getSeeking()) {
+                    // Fire break event to check if protected
+                    Player player = antilife.getPlayerUUID() != null ? level.getPlayerByUUID(antilife.getPlayerUUID()) : null;
+                    BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, neighborPos, neighborState, player);
+                    if (MinecraftForge.EVENT_BUS.post(breakEvent)) {
+                        continue; // Protected, skip this block
+                    }
+
                     // Set neighbor to antilife
                     level.setBlock(neighborPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState()
                         .setValue(DECAYING, false), 3);
@@ -126,16 +141,13 @@ public class BlockAntiLife extends BaseEntityBlock {
                     level.scheduleTick(neighborPos, this, random.nextInt(25));
 
                     // Consume LP from player
-                    if (antilife.getPlayerUUID() != null) {
-                        Player player = level.getPlayerByUUID(antilife.getPlayerUUID());
-                        if (player != null) {
-                            SoulNetwork network = NetworkHelper.getSoulNetwork(player);
-                            SoulTicket ticket = new SoulTicket(
-                                Component.translatable(Constants.Localizations.Text.TICKET_ANTILIFE),
-                                AnimusConfig.sigils.antiLifeConsumption.get()
-                            );
-                            network.syphonAndDamage(player, ticket);
-                        }
+                    if (player != null) {
+                        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+                        SoulTicket ticket = new SoulTicket(
+                            Component.translatable(Constants.Localizations.Text.TICKET_ANTILIFE),
+                            AnimusConfig.sigils.antiLifeConsumption.get()
+                        );
+                        network.syphonAndDamage(player, ticket);
                     }
 
                     level.playSound(null, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 0.01F, 0.75F);

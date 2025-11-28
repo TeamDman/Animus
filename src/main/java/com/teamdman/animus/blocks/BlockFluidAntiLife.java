@@ -12,6 +12,9 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * AntiLife fluid block - spreads and converts blocks to antilife
@@ -74,6 +77,12 @@ public class BlockFluidAntiLife extends LiquidBlock {
 
             // Check if it's life essence from Blood Magic
             if (offsetState.getBlock().getDescriptionId().contains("life_essence")) {
+                // Fire break event to check if protected
+                BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, offsetPos, offsetState, null);
+                if (MinecraftForge.EVENT_BUS.post(breakEvent)) {
+                    continue; // Protected, skip this block
+                }
+
                 // Convert to antilife fluid
                 level.setBlock(offsetPos, this.defaultBlockState(), 3);
                 converted = true;
@@ -81,6 +90,12 @@ public class BlockFluidAntiLife extends LiquidBlock {
                 // Convert ANY solid block to antilife blocks unless blacklisted
                 // Check if block is in the disallow_antilife tag
                 if (!offsetState.is(Constants.Tags.DISALLOW_ANTILIFE)) {
+                    // Fire break event to check if protected
+                    BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, offsetPos, offsetState, null);
+                    if (MinecraftForge.EVENT_BUS.post(breakEvent)) {
+                        continue; // Protected, skip this block
+                    }
+
                     level.setBlock(offsetPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState(), 3);
                     converted = true;
                 }
