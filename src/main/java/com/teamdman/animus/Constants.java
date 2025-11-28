@@ -29,7 +29,7 @@ public class Constants {
             public static final String TICKET_TRANSPOSITION = "text.component.animus.ticket.transposition";
             public static final String TICKET_STORM = "text.component.animus.ticket.storm";
             public static final String TICKET_ANTILIFE = "text.component.animus.ticket.antilife";
-            public static final String TICKET_PEACE = "text.component.animus.ticket.peace";
+            public static final String TICKET_PEACEFUL_BECKONING = "text.component.animus.ticket.peaceful_beckoning";
             public static final String TICKET_ENTROPY = "text.component.animus.ticket.entropy";
             public static final String TICKET_LUNA = "text.component.animus.ticket.luna";
             public static final String TICKET_BUILDER = "text.component.animus.ticket.builder";
@@ -178,7 +178,7 @@ public class Constants {
         public static final String LEACH = "ritual_natures_leach";
         public static final String ELDRITCH = "ritual_eldritch_will";
         public static final String LUNA = "ritual_luna";
-        public static final String PEACE = "ritual_peace";
+        public static final String PEACEFUL_BECKONING = "ritual_peaceful_beckoning";
         public static final String REGRESSION = "ritual_regression";
         public static final String SOL = "ritual_sol";
         public static final String STEADFAST = "ritual_steadfast_heart";

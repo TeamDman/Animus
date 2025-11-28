@@ -51,7 +51,7 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue bossCost;
         public final ForgeConfigSpec.BooleanValue cullingKillsTnT;
         public final ForgeConfigSpec.BooleanValue cullingDebug;
-        public final ForgeConfigSpec.IntValue peaceCost;
+        public final ForgeConfigSpec.IntValue peacefulBeckoningCost;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -72,9 +72,9 @@ public class AnimusConfig {
                 .comment("Enable debug logging for Ritual of Culling")
                 .define("CullingDebug", false);
 
-            peaceCost = builder
-                .comment("LP cost per mob spawned by Ritual of Peace")
-                .defineInRange("peaceCost", 1000, 1, 100000);
+            peacefulBeckoningCost = builder
+                .comment("LP cost per mob spawned by Ritual of Peaceful Beckoning")
+                .defineInRange("peacefulBeckoningCost", 1000, 1, 100000);
 
             builder.pop();
         }
