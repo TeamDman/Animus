@@ -1,0 +1,33 @@
+{
+  "name": "Sentient Pilum",
+  "icon": "animus:pilum_sentient",
+  "category": "animus:items",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:pilum_sentient",
+      "text": "A javelin empowered by $(will)Demon Will$(), similar to the Sentient Sword. This weapon scales in power based on the amount and type of will in the area. When thrown, it applies $(bold)AOE damage and effects$() to all nearby enemies, making it a devastating ranged weapon for will-empowered combatants."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "animus:pilum_sentient",
+      "text": "Created by combining a $(item)Bound Pilum$() with two $(item)Soul Snares$() (demon will containers from Blood Magic). The Sentient Pilum inherits the throwing capabilities of its predecessor while gaining the power to harness demon will."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Demon Will Scaling",
+      "text": "Like the Sentient Sword, the Sentient Pilum scales with $(will)Demon Will$() in 5 levels based on will amount:$(br2)$(bold)Level 0:$() 0-15 will$(br)$(bold)Level 1:$() 16-59 will$(br)$(bold)Level 2:$() 60-199 will$(br)$(bold)Level 3:$() 200-399 will$(br)$(bold)Level 4:$() 400-999 will$(br)$(bold)Level 5:$() 1000+ will$(br2)Higher levels grant increased damage, faster attack speed, and more powerful effects!"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Will Type Effects",
+      "text": "The Sentient Pilum adapts to the type of demon will:$(br2)$(will)Corrosive/Default:$()$(br)Applies Wither effect to targets$(br2)$(will)Destructive:$()$(br)Massive damage bonus (1.5 to 7.0)$(br2)$(will)Vengeful:$()$(br)Increased attack speed and movement$(br2)$(will)Steadfast:$()$(br)Grants Absorption to the wielder$(br2)$(italic)Each throw drains demon will from the area.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "AOE Mechanics",
+      "text": "When thrown, the Sentient Pilum unleashes its power:$(br2)$(bold)AOE Damage:$()$(br)All enemies within 5 blocks of impact take damage$(br2)$(bold)Will Effects:$()$(br)Demon will effects (Wither, Absorption, etc.) are applied to $(bold)all AOE targets$(), not just the direct hit!$(br2)$(bold)Will Drain:$()$(br)Throwing costs 2x the normal will drain$(br2)$(italic)A single throw can afflict an entire group of enemies with demon will effects.$()"
+    }
+  ]
+}

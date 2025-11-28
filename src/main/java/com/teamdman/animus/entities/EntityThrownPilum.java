@@ -1,7 +1,10 @@
 package com.teamdman.animus.entities;
 
 import com.teamdman.animus.items.ItemPilum;
+import com.teamdman.animus.items.ItemPilumSentient;
 import com.teamdman.animus.registry.AnimusEntityTypes;
+import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
+import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -33,6 +36,8 @@ public class EntityThrownPilum extends AbstractArrow {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(EntityThrownPilum.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<String> ID_VARIANT = SynchedEntityData.defineId(EntityThrownPilum.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Boolean> ID_ACTIVATED = SynchedEntityData.defineId(EntityThrownPilum.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<String> ID_WILL_TYPE = SynchedEntityData.defineId(EntityThrownPilum.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> ID_WILL_LEVEL = SynchedEntityData.defineId(EntityThrownPilum.class, EntityDataSerializers.INT);
     private ItemStack pilumItem = ItemStack.EMPTY;
     private boolean dealtDamage;
     public int clientSideReturnTridentTickCount;
@@ -74,6 +79,8 @@ public class EntityThrownPilum extends AbstractArrow {
         this.entityData.define(ID_FOIL, false);
         this.entityData.define(ID_VARIANT, "iron");
         this.entityData.define(ID_ACTIVATED, false);
+        this.entityData.define(ID_WILL_TYPE, "DEFAULT");
+        this.entityData.define(ID_WILL_LEVEL, 0);
     }
 
     @Override
@@ -131,6 +138,30 @@ public class EntityThrownPilum extends AbstractArrow {
 
     public String getVariant() {
         return this.entityData.get(ID_VARIANT);
+    }
+
+    public void setVariant(String variant) {
+        this.entityData.set(ID_VARIANT, variant);
+    }
+
+    public void setWillType(EnumDemonWillType type) {
+        this.entityData.set(ID_WILL_TYPE, type.toString());
+    }
+
+    public EnumDemonWillType getWillType() {
+        try {
+            return EnumDemonWillType.valueOf(this.entityData.get(ID_WILL_TYPE));
+        } catch (IllegalArgumentException e) {
+            return EnumDemonWillType.DEFAULT;
+        }
+    }
+
+    public void setWillLevel(int level) {
+        this.entityData.set(ID_WILL_LEVEL, level);
+    }
+
+    public int getWillLevel() {
+        return this.entityData.get(ID_WILL_LEVEL);
     }
 
     @Override
@@ -204,6 +235,10 @@ public class EntityThrownPilum extends AbstractArrow {
         Entity owner = this.getOwner();
         DamageSource damageSource = this.damageSources().trident(this, owner == null ? this : owner);
 
+        boolean isSentient = "sentient".equals(this.getVariant());
+        EnumDemonWillType willType = isSentient ? this.getWillType() : null;
+        int willLevel = isSentient ? this.getWillLevel() : 0;
+
         for (LivingEntity target : entities) {
             if (target == null || target.isDeadOrDying() || target == owner) {
                 continue;
@@ -216,6 +251,11 @@ public class EntityThrownPilum extends AbstractArrow {
             }
 
             target.hurt(damageSource, damage);
+
+            // Apply sentient effects to AOE targets
+            if (isSentient && willType != null && owner instanceof LivingEntity livingOwner) {
+                ItemPilumSentient.applyEffectToEntity(willType, willLevel, target, livingOwner);
+            }
         }
     }
 
@@ -250,6 +290,12 @@ public class EntityThrownPilum extends AbstractArrow {
         if (tag.contains("Activated", 1)) {
             this.entityData.set(ID_ACTIVATED, tag.getBoolean("Activated"));
         }
+        if (tag.contains("WillType", 8)) {
+            this.entityData.set(ID_WILL_TYPE, tag.getString("WillType"));
+        }
+        if (tag.contains("WillLevel", 3)) {
+            this.entityData.set(ID_WILL_LEVEL, tag.getInt("WillLevel"));
+        }
     }
 
     @Override
@@ -259,6 +305,8 @@ public class EntityThrownPilum extends AbstractArrow {
         tag.putBoolean("DealtDamage", this.dealtDamage);
         tag.putString("Variant", this.getVariant());
         tag.putBoolean("Activated", this.entityData.get(ID_ACTIVATED));
+        tag.putString("WillType", this.entityData.get(ID_WILL_TYPE));
+        tag.putInt("WillLevel", this.entityData.get(ID_WILL_LEVEL));
     }
 
     @Override

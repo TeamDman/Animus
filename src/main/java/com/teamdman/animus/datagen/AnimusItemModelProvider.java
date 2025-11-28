@@ -42,6 +42,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.PILUM_IRON, "item/itempilumiron");
         simpleItem(AnimusItems.PILUM_DIAMOND, "item/itempilumdiamond");
         toggleableSigil(AnimusItems.PILUM_BOUND, "itempilumbound"); // Toggleable between activated/deactivated
+        simpleItem(AnimusItems.PILUM_SENTIENT, "item/itempilumsentient");
 
         // Sigils - Simple (non-toggleable)
         simpleItem(AnimusItems.SIGIL_CHAINS, "item/itemsigilchains");

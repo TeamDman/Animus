@@ -121,6 +121,11 @@ public class Constants {
             public static final String PILUM_UNBOUND = "tooltip.animus.pilum_bound.unbound";
             public static final String PILUM_BIND = "tooltip.animus.pilum_bound.bind";
 
+            // Sentient Pilum Tooltips
+            public static final String PILUM_SENTIENT_FLAVOUR = "tooltip.animus.pilum_sentient.flavour";
+            public static final String PILUM_SENTIENT_INFO = "tooltip.animus.pilum_sentient.info";
+            public static final String PILUM_SENTIENT_AOE = "tooltip.animus.pilum_sentient.aoe";
+
             // Key of Binding Tooltips
             public static final String KEY_HOLD_OFFHAND = "tooltip.animus.key.hold_offhand";
             public static final String KEY_UNBOUND = "tooltip.animus.key.unbound";

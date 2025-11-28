@@ -100,6 +100,9 @@ public class AnimusItems {
     public static final RegistryObject<Item> PILUM_BOUND = ITEMS.register("pilum_bound",
         ItemPilumBound::new);
 
+    public static final RegistryObject<Item> PILUM_SENTIENT = ITEMS.register("pilum_sentient",
+        ItemPilumSentient::new);
+
     // Crafting Components
     public static final RegistryObject<Item> KEY_BINDING = ITEMS.register("key_binding",
         ItemKeyBinding::new);

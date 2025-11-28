@@ -40,6 +40,14 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
             .save(consumer);
 
+        // Sentient Pilum - crafted with Bound Pilum + Demon Will
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, AnimusItems.PILUM_SENTIENT.get())
+            .requires(AnimusItems.PILUM_BOUND.get())
+            .requires(itemFromMod("bloodmagic", "soulsnare"))
+            .requires(itemFromMod("bloodmagic", "soulsnare"))
+            .unlockedBy("has_bound_pilum", has(AnimusItems.PILUM_BOUND.get()))
+            .save(consumer);
+
         // Altar Diviner recipe
         // Note: This requires Blood Magic items which may not be available during datagen
         // We'll use item references directly
