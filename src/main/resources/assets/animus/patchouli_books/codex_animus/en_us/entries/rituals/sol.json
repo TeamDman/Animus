@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Blood Light Synergy",
-      "text": "$(bold)Special Feature:$()$(br)If you place Blood Magic's $(item)Sigil of Blood Light$() in the chest, the ritual will place Blood Lights $(bold)without consuming the sigil$()!$(br2)This allows for infinite blood light placement using only LP.$(br2)$(italic)Let there be light!$()\"
+      "text": "$(bold)Special Feature:$()$(br)If you place Blood Magic's $(item)Sigil of Blood Light$() in the chest, the ritual will place Blood Lights $(bold)without consuming the sigil$()!$(br2)This allows for infinite blood light placement using only LP.$(br2)$(italic)Let there be light!$()"
     }
   ]
 }

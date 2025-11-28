@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "WARNING",
-      "text": "$(bold)$(4)PERMANENT BINDING$(bold)$()$(br2)Once a Fragment of Healing enters your inventory, it $(bold)cannot$():$(li)Be dropped$(li)Be stored in chests$(li)Be placed in shulker boxes$(li)Be removed (except on death)$(br2)$(italic)Choose wisely before picking up.$()\"
+      "text": "$(bold)$(4)PERMANENT BINDING$(bold)$()$(br2)Once a Fragment of Healing enters your inventory, it $(bold)cannot$():$(li)Be dropped$(li)Be stored in chests$(li)Be placed in shulker boxes$(li)Be removed (except on death)$(br2)$(italic)Choose wisely before picking up.$()"
     }
   ]
 }

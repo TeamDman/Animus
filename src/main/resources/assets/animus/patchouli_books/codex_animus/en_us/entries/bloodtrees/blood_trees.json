@@ -22,7 +22,7 @@
     {
       "type": "patchouli:text",
       "title": "Blood Wood Blocks",
-      "text": "$(bold)Available Blocks:$()$(li)Blood Wood (log)$(li)Stripped Blood Wood$(li)Blood Wood Planks$(li)Blood Leaves$(li)Blood Sapling$(li)Blood Core$(br2)All wood blocks can be stripped with an axe and crafted into planks for building.$(br2)$(italic)Let the blood forest grow.$()\"
+      "text": "$(bold)Available Blocks:$()$(li)Blood Wood (log)$(li)Stripped Blood Wood$(li)Blood Wood Planks$(li)Blood Leaves$(li)Blood Sapling$(li)Blood Core$(br2)All wood blocks can be stripped with an axe and crafted into planks for building.$(br2)$(italic)Let the blood forest grow.$()"
     }
   ]
 }

@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Applications",
-      "text": "Living Terra can be used for:$(li)Decorative purposes$(li)Advanced rituals$(li)Crafting components$(li)Environmental effects$(br2)$(italic)The essence of life itself, contained.$()\"
+      "text": "Living Terra can be used for:$(li)Decorative purposes$(li)Advanced rituals$(li)Crafting components$(li)Environmental effects$(br2)$(italic)The essence of life itself, contained.$()"
     }
   ]
 }

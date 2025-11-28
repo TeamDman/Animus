@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Usage Tips",
-      "text": "Perfect for:$(li)Quick LP generation near your altar$(li)Emergency soul network restoration$(li)Passive LP generation from farms$(br2)$(italic)An apple a day keeps the Blood Mage at play.$()\"
+      "text": "Perfect for:$(li)Quick LP generation near your altar$(li)Emergency soul network restoration$(li)Passive LP generation from farms$(br2)$(italic)An apple a day keeps the Blood Mage at play.$()"
     }
   ]
 }

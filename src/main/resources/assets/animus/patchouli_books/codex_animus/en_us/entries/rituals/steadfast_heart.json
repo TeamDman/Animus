@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Effect Scaling",
-      "text": "$(bold)Absorption Scaling:$()$(br)The ritual stacks duration and amplifier over time:$(li)Duration increases each cycle$(li)Max duration: 30000 ticks$(li)Max amplifier: 4 (10 absorption hearts)$(br2)$(bold)Will Generation:$() Generates $(will)Steadfast Will$() (max 100).$(br2)$(italic)Stand firm in the face of adversity.$()\"
+      "text": "$(bold)Absorption Scaling:$()$(br)The ritual stacks duration and amplifier over time:$(li)Duration increases each cycle$(li)Max duration: 30000 ticks$(li)Max amplifier: 4 (10 absorption hearts)$(br2)$(bold)Will Generation:$() Generates $(will)Steadfast Will$() (max 100).$(br2)$(italic)Stand firm in the face of adversity.$()"
     }
   ]
 }

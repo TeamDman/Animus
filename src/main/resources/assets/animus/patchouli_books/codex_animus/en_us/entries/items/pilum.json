@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Combat",
-      "text": "$(bold)Usage:$()$(br)Hold right-click to charge, release to throw.$(br2)$(bold)Features:$()$(li)AOE damage on impact$(li)Supports Riptide enchantment$(li)Can be enchanted like tridents$(li)Returns to inventory in creative$(br2)$(italic)Precision through superior firepower.$()\"
+      "text": "$(bold)Usage:$()$(br)Hold right-click to charge, release to throw.$(br2)$(bold)Features:$()$(li)AOE damage on impact$(li)Supports Riptide enchantment$(li)Can be enchanted like tridents$(li)Returns to inventory in creative$(br2)$(italic)Precision through superior firepower.$()"
     }
   ]
 }

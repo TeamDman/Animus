@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Will & TNT",
-      "text": "$(bold)Demon Will:$() Generates $(will)Destructive Will$() from kills (3% chance per cycle, max 100 will).$(br2)$(bold)TNT Destruction:$() If configured, this ritual can also destroy Primed TNT entities, making it useful for defense.$(br2)$(italic)With great power comes great responsibility.$()\"
+      "text": "$(bold)Demon Will:$() Generates $(will)Destructive Will$() from kills (3% chance per cycle, max 100 will).$(br2)$(bold)TNT Destruction:$() If configured, this ritual can also destroy Primed TNT entities, making it useful for defense.$(br2)$(italic)With great power comes great responsibility.$()"
     }
   ]
 }

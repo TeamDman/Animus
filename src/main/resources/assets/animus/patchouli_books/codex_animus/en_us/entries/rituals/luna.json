@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Applications",
-      "text": "Perfect for:$(li)Cleaning up light sources$(li)Harvesting glowstone$(li)Collecting torches$(li)Reclaiming blood lights$(li)Paired automation with Ritual of Sol$(br2)$(italic)The eternal cycle of light and darkness.$()\"
+      "text": "Perfect for:$(li)Cleaning up light sources$(li)Harvesting glowstone$(li)Collecting torches$(li)Reclaiming blood lights$(li)Paired automation with Ritual of Sol$(br2)$(italic)The eternal cycle of light and darkness.$()"
     }
   ]
 }

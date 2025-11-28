@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Applications",
-      "text": "Perfect for:$(li)Trash disposal$(li)Converting excess mob drops$(li)Generating cobblestone from mob farms$(li)Clearing inventory of junk items$(br2)$(italic)All things return to dust... or in this case, cobblestone.$()\"
+      "text": "Perfect for:$(li)Trash disposal$(li)Converting excess mob drops$(li)Generating cobblestone from mob farms$(li)Clearing inventory of junk items$(br2)$(italic)All things return to dust... or in this case, cobblestone.$()"
     }
   ]
 }

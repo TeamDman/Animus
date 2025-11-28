@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Usage",
-      "text": "$(bold)Activation:$()$(br)1. Hold the item you want to repair$(br)2. Activate the ritual stone$(br)3. The item's RepairCost tag will be removed$(br2)$(bold)Applications:$()$(li)Reset anvil penalties$(li)Make items repairable again$(li)Prepare items for enchanting$(br2)$(italic)Turn back the clock on your tools.$()\"
+      "text": "$(bold)Activation:$()$(br)1. Hold the item you want to repair$(br)2. Activate the ritual stone$(br)3. The item's RepairCost tag will be removed$(br2)$(bold)Applications:$()$(li)Reset anvil penalties$(li)Make items repairable again$(li)Prepare items for enchanting$(br2)$(italic)Turn back the clock on your tools.$()"
     }
   ]
 }

@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Acquisition",
-      "text": "Keys of Binding can be obtained through:$(li)Crafting (check JEI)$(li)Ritual rewards$(li)Rare drops$(br2)$(italic)The key to greater power.$()\"
+      "text": "Keys of Binding can be obtained through:$(li)Crafting (check JEI)$(li)Ritual rewards$(li)Rare drops$(br2)$(italic)The key to greater power.$()"
     }
   ]
 }

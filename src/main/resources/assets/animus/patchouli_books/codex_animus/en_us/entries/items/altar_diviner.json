@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Features",
-      "text": "The Altar Diviner will:$(li)Show missing components in chat$(li)Highlight obstructed positions$(li)Create visual guides$(li)Assist with tier upgrades$(li)Speed up altar construction$(br2)Essential for building higher tier altars!$(br2)$(italic)Divine the perfect structure.$()\"
+      "text": "The Altar Diviner will:$(li)Show missing components in chat$(li)Highlight obstructed positions$(li)Create visual guides$(li)Assist with tier upgrades$(li)Speed up altar construction$(br2)Essential for building higher tier altars!$(br2)$(italic)Divine the perfect structure.$()"
     }
   ]
 }

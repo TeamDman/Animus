@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Mechanics",
-      "text": "$(bold)Regular Enchanted Items:$()$(br)Extracts all enchantments to separate enchanted books. The item is left unenchanted.$(br2)$(bold)Enchanted Books:$()$(br)Splits multi-enchant books and creates $(bold)two copies$() of each enchantment at reduced level (level - 1, minimum 1).$(br2)$(italic)Unmake and remake at will.$()\"
+      "text": "$(bold)Regular Enchanted Items:$()$(br)Extracts all enchantments to separate enchanted books. The item is left unenchanted.$(br2)$(bold)Enchanted Books:$()$(br)Splits multi-enchant books and creates $(bold)two copies$() of each enchantment at reduced level (level - 1, minimum 1).$(br2)$(italic)Unmake and remake at will.$()"
     }
   ]
 }

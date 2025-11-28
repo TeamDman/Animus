@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Applications",
-      "text": "Perfect for:$(li)Relocating villagers$(li)Mob farm automation$(li)Boss preservation$(li)Creating mob displays$(li)Transport without leads$(br2)$(italic)Gotta catch 'em all!$()\"
+      "text": "Perfect for:$(li)Relocating villagers$(li)Mob farm automation$(li)Boss preservation$(li)Creating mob displays$(li)Transport without leads$(br2)$(italic)Gotta catch 'em all!$()"
     }
   ]
 }

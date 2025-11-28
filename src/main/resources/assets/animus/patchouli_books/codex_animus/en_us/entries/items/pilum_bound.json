@@ -22,7 +22,7 @@
     {
       "type": "patchouli:text",
       "title": "Advantages",
-      "text": "$(bold)Bound Weapon:$()$(li)Consumes LP instead of durability$(li)Never breaks$(li)AOE on all attacks$(li)Soul-bound to you$(br2)Perfect for combat against groups of enemies!$(br2)$(italic)Bound to your soul, unbreakable in battle.$()\"
+      "text": "$(bold)Bound Weapon:$()$(li)Consumes LP instead of durability$(li)Never breaks$(li)AOE on all attacks$(li)Soul-bound to you$(br2)Perfect for combat against groups of enemies!$(br2)$(italic)Bound to your soul, unbreakable in battle.$()"
     }
   ]
 }
