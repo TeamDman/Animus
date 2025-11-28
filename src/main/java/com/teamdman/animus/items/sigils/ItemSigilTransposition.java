@@ -3,8 +3,11 @@ package com.teamdman.animus.items.sigils;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.Tags;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -41,6 +44,10 @@ import java.util.List;
  */
 public class ItemSigilTransposition extends ItemSigilToggleableBase {
     private static final String POS_KEY = "transposition_pos";
+    private static final TagKey<Block> RELOCATION_NOT_SUPPORTED = TagKey.create(
+        Registries.BLOCK,
+        ResourceLocation.fromNamespaceAndPath("forge", "relocation_not_supported")
+    );
 
     public ItemSigilTransposition() {
         super(Constants.Sigils.TRANSPOSITION, 5000);
@@ -109,7 +116,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
         if (!getActivated(stack)) {
             // First click - select block to move
             // Check if block is tagged as non-relocatable
-            if (clickedState.is(Tags.Blocks.RELOCATION_NOT_SUPPORTED)) {
+            if (clickedState.is(RELOCATION_NOT_SUPPORTED)) {
                 player.displayClientMessage(
                     Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE),
                     true
@@ -146,7 +153,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             BlockState oldState = level.getBlockState(oldPos);
 
             // Check if block is tagged as non-relocatable
-            if (oldState.is(Tags.Blocks.RELOCATION_NOT_SUPPORTED)) {
+            if (oldState.is(RELOCATION_NOT_SUPPORTED)) {
                 tag.putLong(POS_KEY, 0);
                 level.playSound(null, newPos, SoundEvents.SHIELD_BLOCK, SoundSource.BLOCKS, 1.0F, 1.0F);
                 setActivatedState(stack, false);
