@@ -11,12 +11,12 @@
     {
       "type": "patchouli:text",
       "title": "Costs & Details",
-      "text": "$(bold)Activation:$() 20000 LP$(br)$(bold)Refresh:$() 100 LP per player$(br)$(bold)Refresh Time:$() 600 ticks (30 seconds)$(br2)$(bold)Effect Range:$() 32x32x32 blocks (configurable)$(br2)Each time the ritual runs, it extends and strengthens the absorption effect on nearby players."
+      "text": "$(bold)Activation:$() 20000 LP$(br)$(bold)Refresh:$() 100 LP per player$(br)$(bold)Refresh Time:$() 60 ticks (3 seconds) - configurable$(br2)$(bold)Effect Range:$() 128 blocks radius - configurable$(br2)Each time the ritual runs, it extends and strengthens the absorption effect on nearby players."
     },
     {
       "type": "patchouli:text",
       "title": "Effect Scaling",
-      "text": "$(bold)Absorption Scaling:$()$(br)The ritual stacks duration and amplifier over time:$(li)Duration increases each cycle$(li)Max duration: 30000 ticks$(li)Max amplifier: 4 (10 absorption hearts)$(br2)$(bold)Will Generation:$() Generates $(will)Steadfast Will$() (max 100).$(br2)$(italic)Stand firm in the face of adversity.$()"
+      "text": "$(bold)Absorption Scaling:$()$(br)The ritual stacks duration and amplifier over time:$(li)Duration increases each cycle$(li)Max duration: 30000 ticks$(li)Max amplifier: 4 (10 absorption hearts) - configurable$(br2)$(bold)Will Generation:$() Generates $(will)Steadfast Will$() (max 100).$(br2)$(italic)Stand firm in the face of adversity.$()"
     }
   ]
 }

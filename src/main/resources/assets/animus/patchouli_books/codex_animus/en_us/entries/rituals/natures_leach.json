@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Costs & Details",
-      "text": "$(bold)Activation:$() 3000 LP$(br)$(bold)Refresh:$() 10 LP$(br)$(bold)Refresh Time:$() 80 ticks, faster with less $(will)Corrosive Will$()$(br2)$(bold)Effect Range:$() 20x20x20 blocks (configurable)$(br)$(bold)Altar Range:$() Searches 11x21x11 for a Blood Altar$(br2)Consumes 1-3 plants per cycle, generating 50 LP per plant consumed."
+      "text": "$(bold)Activation:$() 3000 LP$(br)$(bold)Refresh:$() 10 LP$(br)$(bold)Refresh Time:$() 80 ticks (configurable), faster with less $(will)Corrosive Will$()$(br2)$(bold)Effect Range:$() 10 blocks radius - configurable$(br)$(bold)Altar Range:$() Searches 11x21x11 for a Blood Altar$(br2)Consumes 1-3 plants per cycle, generating 50 LP (configurable) per plant consumed."
     },
     {
       "type": "patchouli:text",

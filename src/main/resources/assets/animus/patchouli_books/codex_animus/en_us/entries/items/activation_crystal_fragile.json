@@ -1,0 +1,21 @@
+{
+  "name": "Fragile Activation Crystal",
+  "icon": "animus:activation_crystal_fragile",
+  "category": "animus:items",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(item)Fragile Activation Crystal$() is a one-time use ritual activator. While less powerful than a standard activation crystal, it provides a cheaper alternative for occasional ritual use.$(br2)Like a weak activation crystal, it must be bound to a player before it can activate rituals."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "animus:altar/activation_crystal_fragile",
+      "text": "Created in a $(thing)Tier 2$() Blood Altar by imbuing a $(item)Clay Ball$() with 5000 LP."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Binding:$()$(br)Right-click while holding the crystal to bind it to yourself.$(br2)$(bold)Activation:$()$(br)Right-click on a Master Ritual Stone with the bound crystal to activate the ritual.$(br2)$(bold)Warning:$()$(br)The crystal will $(c)shatter$() and be consumed after successfully activating a ritual!"
+    }
+  ]
+}
