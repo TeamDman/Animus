@@ -134,7 +134,8 @@ public class ItemPilum extends TridentItem {
         // Allow sharpness and other damage enchantments
         if (enchantment == Enchantments.SHARPNESS ||
             enchantment == Enchantments.SMITE ||
-            enchantment == Enchantments.BANE_OF_ARTHROPODS) {
+            enchantment == Enchantments.BANE_OF_ARTHROPODS ||
+            enchantment == Enchantments.MOB_LOOTING) {
             return true;
         }
         // Allow all enchantments that TridentItem allows
