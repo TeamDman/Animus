@@ -1,0 +1,23 @@
+{
+  "name": "Altar Diviner",
+  "icon": "animus:altar_diviner",
+  "category": "animus:items",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:altar_diviner",
+      "text": "A mystical tool for Blood Altar construction. The Altar Diviner helps you build Blood Magic altars by showing missing components and assisting with placement."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Divine Structure:$()$(br)Right-click a Blood Altar to scan its structure and identify missing or obstructed components.$(br2)$(bold)Place Phantom Blocks:$()$(br)Sneak + right-click to place phantom blocks showing where components should go.$(br2)$(bold)Quick Build:$()$(br)Right-click with required components in your inventory to automatically place them in the correct positions."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Features",
+      "text": "The Altar Diviner will:$(li)Show missing components in chat$(li)Highlight obstructed positions$(li)Create visual guides$(li)Assist with tier upgrades$(li)Speed up altar construction$(br2)Essential for building higher tier altars!$(br2)$(italic)Divine the perfect structure.$()\"
+    }
+  ]
+}

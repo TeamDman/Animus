@@ -1,0 +1,23 @@
+{
+  "name": "Key of Binding",
+  "icon": "animus:key_binding",
+  "category": "animus:items",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:key_binding",
+      "text": "A crafting component imbued with binding magic. The Key of Binding is used in various advanced recipes, particularly for creating bound tools and weapons."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Crafting Component:$()$(br)The Key of Binding is primarily used as a crafting ingredient for:$(li)Bound weapons$(li)Advanced sigils$(li)Magical tools$(li)Ritual components$(br2)Check JEI for specific recipes using the Key of Binding."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Acquisition",
+      "text": "Keys of Binding can be obtained through:$(li)Crafting (check JEI)$(li)Ritual rewards$(li)Rare drops$(br2)$(italic)The key to greater power.$()\"
+    }
+  ]
+}

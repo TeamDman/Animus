@@ -1,0 +1,23 @@
+{
+  "name": "Sigil of the Phantom Chain",
+  "icon": "animus:sigil_chains",
+  "category": "animus:sigils",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_chains",
+      "text": "Capture the essence of living creatures. The Sigil of the Phantom Chain allows you to bind entities into $(l:animus:items/mob_soul)Mob Soul$() items, preserving their form and state."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)LP Cost:$() Varies by entity$(br2)$(bold)Capture:$() Right-click on an entity to attempt capture. The entity will be stored in a $(l:animus:items/mob_soul)Mob Soul$() item, preserving:$(li)Health and effects$(li)Equipment$(li)Custom names$(li)AI state$(br2)$(bold)Boss Protection:$() Boss entities and very powerful mobs cannot be captured."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Applications",
+      "text": "Perfect for:$(li)Relocating villagers$(li)Preserving rare mobs$(li)Creating mob displays$(li)Mob farm setup$(li)Safe transport$(br2)Release the captured entity by right-clicking the $(l:animus:items/mob_soul)Mob Soul$() on a block.$(br2)$(italic)Bind the living to your will.$()\"
+    }
+  ]
+}

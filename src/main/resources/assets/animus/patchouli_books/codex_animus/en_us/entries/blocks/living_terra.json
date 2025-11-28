@@ -1,0 +1,23 @@
+{
+  "name": "Living Terra",
+  "icon": "animus:living_terra_bucket",
+  "category": "animus:blocks",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:living_terra_bucket",
+      "text": "A mystical fluid infused with life essence. Living Terra is a rare liquid created through special processes, radiating with vital energy."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Properties",
+      "text": "Living Terra exhibits unique properties:$(br2)$(li)Flows like water$(li)Glows with inner light$(li)Can be collected in buckets$(li)Used in advanced blood magic$(br2)This fluid represents the positive aspect of life force, contrasting sharply with the corruption of $(l:animus:blocks/antilife_fluid)AntiLife$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Applications",
+      "text": "Living Terra can be used for:$(li)Decorative purposes$(li)Advanced rituals$(li)Crafting components$(li)Environmental effects$(br2)$(italic)The essence of life itself, contained.$()\"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "AntiLife Fluid",
+  "icon": "animus:antilife_bucket",
+  "category": "animus:blocks",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:antilife_bucket",
+      "text": "A corrupting liquid that spreads destruction. AntiLife fluid is created when lightning strikes Life Essence from Blood Magic, transforming it into a dark, consuming force."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Creation",
+      "text": "$(bold)How to Create:$()$(br)Place Life Essence fluid from Blood Magic and strike it with lightning (use a $(item)Lightning Rod$() or the $(l:animus:sigils/sigil_storm)Sigil of the Storm$()).$(br2)The Life Essence will instantly transform into AntiLife fluid, which:$(li)Spreads like water$(li)Consumes blocks it touches$(li)Cannot be reversed$(li)Can be collected in buckets"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Behavior",
+      "text": "$(bold)Spreading:$()$(br)When AntiLife fluid touches blocks, it converts them to $(l:animus:blocks/antilife)AntiLife blocks$(), which continue to spread the corruption.$(br2)$(bold)Life Essence Interaction:$()$(br)When AntiLife fluid touches Life Essence fluid, it spreads as fluid instead of converting to blocks, rapidly corrupting large volumes.$(br2)$(bold)Warning:$() Handle with extreme care!"
+    }
+  ]
+}

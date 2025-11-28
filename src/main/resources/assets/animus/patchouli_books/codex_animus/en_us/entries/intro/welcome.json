@@ -1,6 +1,6 @@
 {
   "name": "Welcome to Animus",
-  "icon": "bloodmagic:weak_blood_orb",
+  "icon": "animus:sigil_transposition",
   "category": "animus:intro",
   "sortnum": 0,
   "pages": [

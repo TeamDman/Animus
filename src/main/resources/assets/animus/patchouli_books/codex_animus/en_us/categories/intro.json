@@ -1,6 +1,6 @@
 {
   "name": "Introduction",
   "description": "Welcome to the Codex Animus. Learn the basics of this dark extension to Blood Magic.",
-  "icon": "bloodmagic:weak_blood_orb",
+  "icon": "animus:sigil_transposition",
   "sortnum": 0
 }
