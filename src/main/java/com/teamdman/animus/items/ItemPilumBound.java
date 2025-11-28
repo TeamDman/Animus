@@ -1,9 +1,14 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.entities.EntityThrownPilum;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
@@ -12,21 +17,33 @@ import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.FakePlayer;
+import wayoftime.bloodmagic.common.item.IBindable;
+import wayoftime.bloodmagic.core.data.Binding;
+import wayoftime.bloodmagic.core.data.SoulNetwork;
+import wayoftime.bloodmagic.core.data.SoulTicket;
+import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.List;
 
 /**
- * Bound Pilum of Feasting - A Roman javelin that sacrifices low-health entities to fill nearby Blood Altars
- * Kills entities below 0.5 health and adds their life essence to nearby altars
- * If no altars are found or entities can't be killed, does AOE damage instead
+ * Bound Pilum - A soul-bound javelin that can be toggled between active/deactivated modes
+ *
+ * Deactivated Mode: Behaves like a diamond pilum but unbreakable
+ * Active Mode: Has AOE attacks, sacrifices entities to altars, costs 50LP per attack/throw
+ *
+ * Shift+Right-Click: Bind (if unbound) or toggle active/deactivated (if bound)
  */
-public class ItemPilumBound extends ItemPilum {
+public class ItemPilumBound extends ItemPilum implements IBindable {
+    private static final int LP_COST = 50;
+    private static final String NBT_ACTIVATED = "activated";
 
     public ItemPilumBound() {
         super(Tiers.DIAMOND);
@@ -52,15 +69,154 @@ public class ItemPilumBound extends ItemPilum {
         return false; // Never damaged
     }
 
+    /**
+     * Check if this pilum is activated
+     */
+    public boolean isActivated(ItemStack stack) {
+        return stack.getOrCreateTag().getBoolean(NBT_ACTIVATED);
+    }
+
+    /**
+     * Set activation state
+     */
+    public void setActivated(ItemStack stack, boolean activated) {
+        stack.getOrCreateTag().putBoolean(NBT_ACTIVATED, activated);
+    }
+
+    /**
+     * Consume LP from the bound player's soul network
+     * @return true if LP was successfully consumed, false if insufficient LP
+     */
+    private boolean consumeLP(Player player, ItemStack stack) {
+        if (player.getAbilities().instabuild) {
+            return true; // Creative mode players don't need LP
+        }
+
+        Binding binding = getBinding(stack);
+        if (binding == null) {
+            return false; // Not bound, can't consume LP
+        }
+
+        // Get the soul network and consume LP
+        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        SoulTicket ticket = new SoulTicket(
+            Component.literal("Bound Pilum"),
+            LP_COST
+        );
+
+        var result = network.syphonAndDamage(player, ticket);
+        return result.isSuccess();
+    }
+
     @Override
-    public net.minecraft.world.InteractionResultHolder<ItemStack> use(net.minecraft.world.level.Level level, net.minecraft.world.entity.player.Player player, net.minecraft.world.InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+
+        // Shift+right-click handling
+        if (player.isShiftKeyDown()) {
+            if (!level.isClientSide) {
+                Binding binding = getBinding(stack);
+
+                if (binding == null) {
+                    // Not bound - bind it now
+                    onBind(player, stack);
+                    player.displayClientMessage(
+                        Component.literal("Bound Pilum bound to you")
+                            .withStyle(ChatFormatting.AQUA),
+                        true
+                    );
+                } else {
+                    // Already bound - toggle activation
+                    boolean wasActivated = isActivated(stack);
+                    setActivated(stack, !wasActivated);
+
+                    if (!wasActivated) {
+                        player.displayClientMessage(
+                            Component.literal("Bound Pilum activated - 50LP per attack")
+                                .withStyle(ChatFormatting.GREEN),
+                            true
+                        );
+                    } else {
+                        player.displayClientMessage(
+                            Component.literal("Bound Pilum deactivated")
+                                .withStyle(ChatFormatting.GRAY),
+                            true
+                        );
+                    }
+                }
+            }
+            return InteractionResultHolder.success(stack);
+        }
+
+        // Normal right-click - throw the pilum
         // Bound pilum is unbreakable, so skip durability check
-        if (net.minecraft.world.item.enchantment.EnchantmentHelper.getRiptide(stack) > 0 && !player.isInWaterOrRain()) {
-            return net.minecraft.world.InteractionResultHolder.fail(stack);
+        if (EnchantmentHelper.getRiptide(stack) > 0 && !player.isInWaterOrRain()) {
+            return InteractionResultHolder.fail(stack);
         } else {
             player.startUsingItem(hand);
-            return net.minecraft.world.InteractionResultHolder.consume(stack);
+            return InteractionResultHolder.consume(stack);
+        }
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+        if (entity instanceof Player player) {
+            int useDuration = this.getUseDuration(stack) - timeLeft;
+            if (useDuration >= 10) {
+                int riptide = EnchantmentHelper.getRiptide(stack);
+
+                // If activated, check for LP cost
+                if (isActivated(stack) && !consumeLP(player, stack)) {
+                    if (!level.isClientSide) {
+                        player.displayClientMessage(
+                            Component.literal("Not enough LP to throw!")
+                                .withStyle(ChatFormatting.RED),
+                            true
+                        );
+                    }
+                    return;
+                }
+
+                if (riptide <= 0 || player.isInWaterOrRain()) {
+                    if (!level.isClientSide) {
+                        if (riptide == 0) {
+                            // Spawn our custom pilum entity
+                            EntityThrownPilum thrownPilum = new EntityThrownPilum(level, player, stack);
+                            thrownPilum.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
+                            if (player.getAbilities().instabuild) {
+                                thrownPilum.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                            }
+
+                            level.addFreshEntity(thrownPilum);
+                            level.playSound(null, thrownPilum, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            if (!player.getAbilities().instabuild) {
+                                player.getInventory().removeItem(stack);
+                            }
+                        }
+                    }
+
+                    player.awardStat(Stats.ITEM_USED.get(this));
+                    if (riptide > 0) {
+                        float yaw = player.getYRot();
+                        float pitch = player.getXRot();
+                        float xSpeed = -net.minecraft.util.Mth.sin(yaw * ((float)Math.PI / 180F)) * net.minecraft.util.Mth.cos(pitch * ((float)Math.PI / 180F));
+                        float ySpeed = -net.minecraft.util.Mth.sin(pitch * ((float)Math.PI / 180F));
+                        float zSpeed = net.minecraft.util.Mth.cos(yaw * ((float)Math.PI / 180F)) * net.minecraft.util.Mth.cos(pitch * ((float)Math.PI / 180F));
+                        float length = net.minecraft.util.Mth.sqrt(xSpeed * xSpeed + ySpeed * ySpeed + zSpeed * zSpeed);
+                        float multiplier = 3.0F * ((1.0F + (float)riptide) / 4.0F);
+                        xSpeed = xSpeed * (multiplier / length);
+                        ySpeed = ySpeed * (multiplier / length);
+                        zSpeed = zSpeed * (multiplier / length);
+                        player.push((double)xSpeed, (double)ySpeed, (double)zSpeed);
+                        player.startAutoSpinAttack(20);
+                        if (player.onGround()) {
+                            player.move(net.minecraft.world.entity.MoverType.SELF, new net.minecraft.world.phys.Vec3(0.0, 1.2, 0.0));
+                        }
+
+                        level.playSound(null, player, SoundEvents.TRIDENT_RIPTIDE_1, SoundSource.PLAYERS, 1.0F, 1.0F);
+                    }
+                }
+            }
         }
     }
 
@@ -75,6 +231,23 @@ public class ItemPilumBound extends ItemPilum {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        // If deactivated, just do normal single-target damage
+        if (!isActivated(stack)) {
+            return super.hurtEnemy(stack, target, attacker);
+        }
+
+        // If activated, check for LP cost
+        if (attacker instanceof Player player) {
+            if (!consumeLP(player, stack)) {
+                player.displayClientMessage(
+                    Component.literal("Not enough LP to attack!")
+                        .withStyle(ChatFormatting.RED),
+                    true
+                );
+                return false;
+            }
+        }
+
         // Call parent to apply normal attack damage
         super.hurtEnemy(stack, target, attacker);
 
@@ -259,9 +432,37 @@ public class ItemPilumBound extends ItemPilum {
 
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_FIRST));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_SECOND));
-        super.appendHoverText(stack, level, tooltip, flag);
+        Binding binding = getBinding(stack);
+        boolean activated = isActivated(stack);
+
+        if (binding != null) {
+            tooltip.add(Component.literal("Bound to: " + binding.getOwnerName())
+                .withStyle(ChatFormatting.AQUA));
+
+            if (activated) {
+                tooltip.add(Component.literal("Status: Activated")
+                    .withStyle(ChatFormatting.GREEN));
+                tooltip.add(Component.literal("Costs 50LP per attack/throw")
+                    .withStyle(ChatFormatting.GOLD));
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_FIRST));
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_SECOND));
+            } else {
+                tooltip.add(Component.literal("Status: Deactivated")
+                    .withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.literal("Behaves like Diamond Pilum")
+                    .withStyle(ChatFormatting.GRAY));
+            }
+
+            tooltip.add(Component.literal("Shift+Right-Click to toggle")
+                .withStyle(ChatFormatting.YELLOW));
+        } else {
+            tooltip.add(Component.literal("Unbound")
+                .withStyle(ChatFormatting.DARK_GRAY));
+            tooltip.add(Component.literal("Shift+Right-Click to bind")
+                .withStyle(ChatFormatting.YELLOW));
+        }
+
+        // Don't call super.appendHoverText to avoid duplicate tooltips
     }
 
     @Override

@@ -40,7 +40,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         // Pilums (Roman Javelins)
         simpleItem(AnimusItems.PILUM_IRON, "item/itempilumiron");
         simpleItem(AnimusItems.PILUM_DIAMOND, "item/itempilumdiamond");
-        simpleItem(AnimusItems.PILUM_BOUND, "item/itempilumbound");
+        toggleableSigil(AnimusItems.PILUM_BOUND, "itempilumbound"); // Toggleable between activated/deactivated
 
         // Sigils - Simple (non-toggleable)
         simpleItem(AnimusItems.SIGIL_CHAINS, "item/itemsigilchains");

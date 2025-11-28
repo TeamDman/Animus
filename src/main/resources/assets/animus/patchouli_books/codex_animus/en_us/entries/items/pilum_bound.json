@@ -7,22 +7,22 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:pilum_bound",
-      "text": "A soul-bound javelin of exceptional power. The Bound Pilum is a superior version of the standard $(l:animus:items/pilum)Pilum$() that deals AOE damage even with melee attacks!"
+      "text": "A soul-bound javelin with two modes. Must be bound to a player using $(bold)Shift+Right-Click$(). When $(bold)activated$(), it costs 50LP per attack/throw but gains AOE attacks and sacrifices enemies to nearby altars. When $(bold)deactivated$(), it behaves like an unbreakable Diamond Pilum."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "animus:array/pilum_bound",
-      "text": "Created using an Alchemy Array. Right-click $(item)Arcane Ash$() on the ground to create the array, then right-click a $(item)Binding Reagent$() into it, followed by a $(item)Diamond Pilum$(). The weapon will be bound to your spirit."
+      "text": "Created using an Alchemy Array. Right-click $(item)Arcane Ash$() on the ground to create the array, then right-click a $(item)Binding Reagent$() into it, followed by a $(item)Diamond Pilum$(). The weapon starts $(bold)unbound and deactivated$()."
     },
     {
       "type": "patchouli:text",
-      "title": "Abilities",
-      "text": "$(bold)Melee AOE:$()$(br)Unlike regular Pilums, the Bound Pilum deals area damage with $(bold)both$() melee and ranged attacks!$(br2)$(bold)Thrown Attack:$()$(br)Hold right-click to charge, release to throw. Deals AOE damage where it lands.$(br2)$(bold)Melee Attack:$()$(br)Left-click to strike enemies in an area around your target."
+      "title": "Binding & Activation",
+      "text": "$(bold)Step 1 - Bind:$()$(br)Shift+Right-Click an unbound Bound Pilum to bind it to yourself.$(br2)$(bold)Step 2 - Activate:$()$(br)Shift+Right-Click again to toggle between deactivated and activated modes.$(br2)$(bold)Deactivated Mode:$()$(br)Functions as an unbreakable Diamond Pilum. No LP cost, no special abilities.$(br2)$(bold)Activated Mode:$()$(br)Costs 50LP per attack or throw. Gains AOE and sacrifice abilities!"
     },
     {
       "type": "patchouli:text",
-      "title": "Advantages",
-      "text": "$(bold)Bound Weapon:$()$(li)Consumes LP instead of durability$(li)Never breaks$(li)AOE on all attacks$(li)Soul-bound to you$(br2)Perfect for combat against groups of enemies!$(br2)$(italic)Bound to your soul, unbreakable in battle.$()"
+      "title": "Activated Abilities",
+      "text": "When $(bold)activated$(), the Bound Pilum gains special powers:$(br2)$(bold)AOE Attacks:$()$(br)Both melee and thrown attacks deal damage in a 5-block radius.$(br2)$(bold)Altar Sacrifice:$()$(br)When near a Blood Altar, enemies hit by the AOE that are almost dead (below 0.5 health) will be $(bold)sacrificed to the altar$(), filling it with their life essence!$(br2)$(italic)Turn every battle into a blood ritual.$()"
     }
   ]
 }

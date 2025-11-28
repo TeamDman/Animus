@@ -46,6 +46,12 @@ public class AnimusClientSetup {
             registerToggleableSigilProperty(AnimusItems.SIGIL_BUILDER.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_LEACH.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_TRANSPOSITION.get());
+
+            // Register item property for Bound Pilum activation state
+            registerBoundPilumProperty(AnimusItems.PILUM_BOUND.get());
+
+            // Register item property for Key of Binding bound state
+            registerKeyBindingProperty(AnimusItems.KEY_BINDING.get());
         });
     }
 
@@ -71,6 +77,22 @@ public class AnimusClientSetup {
             (stack, level, entity, seed) -> {
                 if (item instanceof ItemSigilToggleableBase toggleable) {
                     return toggleable.getActivated(stack) ? 1.0F : 0.0F;
+                }
+                return 0.0F;
+            }
+        );
+    }
+
+    /**
+     * Registers the "activated" item property for Bound Pilum
+     * This allows models to switch between activated/deactivated textures
+     */
+    private static void registerBoundPilumProperty(net.minecraft.world.item.Item item) {
+        ItemProperties.register(item,
+            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "activated"),
+            (stack, level, entity, seed) -> {
+                if (item instanceof com.teamdman.animus.items.ItemPilumBound pilum) {
+                    return pilum.isActivated(stack) ? 1.0F : 0.0F;
                 }
                 return 0.0F;
             }
