@@ -258,7 +258,7 @@ public class AnimusEventHandler {
         // Prevent Key of Binding from binding another Key of Binding
         if (mainHandStack.getItem() == AnimusItems.KEY_BINDING.get()) {
             player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal("A Key of Binding cannot bind another Key of Binding!")
+                net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.KEY_CANNOT_BIND_KEY)
                     .withStyle(net.minecraft.ChatFormatting.RED),
                 true
             );
@@ -317,7 +317,7 @@ public class AnimusEventHandler {
 
                 // Notify player
                 player.displayClientMessage(
-                    net.minecraft.network.chat.Component.literal("Item bound to " + keyBinding.getOwnerName() + " via Key of Binding")
+                    net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.KEY_ITEM_BOUND, keyBinding.getOwnerName())
                         .withStyle(net.minecraft.ChatFormatting.AQUA),
                     true
                 );

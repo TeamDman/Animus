@@ -92,7 +92,7 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.getOwnerName())
                 .withStyle(ChatFormatting.AQUA));
         } else {
-            tooltip.add(Component.literal("Unbound - Right-click to bind")
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.UNBOUND_BIND)
                 .withStyle(ChatFormatting.GRAY));
         }
 

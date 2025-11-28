@@ -1,5 +1,6 @@
 package com.teamdman.animus.items.sigils;
 
+import com.teamdman.animus.Constants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -75,12 +76,12 @@ public abstract class AnimusSigilBase extends ItemSigilBase {
                 }
             }
 
-            tooltip.add(Component.literal("Bound to: ")
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BOUND_TO)
                 .withStyle(ChatFormatting.GRAY)
                 .append(Component.literal(ownerName)
                     .withStyle(ChatFormatting.AQUA)));
         } else {
-            tooltip.add(Component.literal("Not bound")
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.NOT_BOUND)
                 .withStyle(ChatFormatting.DARK_GRAY));
         }
     }

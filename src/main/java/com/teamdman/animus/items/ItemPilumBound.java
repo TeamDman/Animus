@@ -100,7 +100,7 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
         // Get the soul network and consume LP
         SoulNetwork network = NetworkHelper.getSoulNetwork(player);
         SoulTicket ticket = new SoulTicket(
-            Component.literal("Bound Pilum"),
+            Component.translatable(Constants.Localizations.Text.PILUM_BOUND_SUCCESS),
             LP_COST
         );
 
@@ -121,7 +121,7 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
                     // Not bound - bind it now
                     onBind(player, stack);
                     player.displayClientMessage(
-                        Component.literal("Bound Pilum bound to you")
+                        Component.translatable(Constants.Localizations.Text.PILUM_BOUND_SUCCESS)
                             .withStyle(ChatFormatting.AQUA),
                         true
                     );
@@ -132,13 +132,13 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
 
                     if (!wasActivated) {
                         player.displayClientMessage(
-                            Component.literal("Bound Pilum activated - 50LP per attack")
+                            Component.translatable(Constants.Localizations.Text.PILUM_ACTIVATED)
                                 .withStyle(ChatFormatting.GREEN),
                             true
                         );
                     } else {
                         player.displayClientMessage(
-                            Component.literal("Bound Pilum deactivated")
+                            Component.translatable(Constants.Localizations.Text.PILUM_DEACTIVATED)
                                 .withStyle(ChatFormatting.GRAY),
                             true
                         );
@@ -169,7 +169,7 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
                 if (isActivated(stack) && !consumeLP(player, stack)) {
                     if (!level.isClientSide) {
                         player.displayClientMessage(
-                            Component.literal("Not enough LP to throw!")
+                            Component.translatable(Constants.Localizations.Text.PILUM_NO_LP_THROW)
                                 .withStyle(ChatFormatting.RED),
                             true
                         );
@@ -240,7 +240,7 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
         if (attacker instanceof Player player) {
             if (!consumeLP(player, stack)) {
                 player.displayClientMessage(
-                    Component.literal("Not enough LP to attack!")
+                    Component.translatable(Constants.Localizations.Text.PILUM_NO_LP_ATTACK)
                         .withStyle(ChatFormatting.RED),
                     true
                 );
@@ -418,29 +418,29 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
         boolean activated = isActivated(stack);
 
         if (binding != null) {
-            tooltip.add(Component.literal("Bound to: " + binding.getOwnerName())
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_BOUND_TO, binding.getOwnerName())
                 .withStyle(ChatFormatting.AQUA));
 
             if (activated) {
-                tooltip.add(Component.literal("Status: Activated")
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_STATUS_ACTIVATED)
                     .withStyle(ChatFormatting.GREEN));
-                tooltip.add(Component.literal("Costs 50LP per attack/throw")
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_COST)
                     .withStyle(ChatFormatting.GOLD));
                 tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_FIRST));
                 tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_SECOND));
             } else {
-                tooltip.add(Component.literal("Status: Deactivated")
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_STATUS_DEACTIVATED)
                     .withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.literal("Behaves like Diamond Pilum")
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_BEHAVES_DIAMOND)
                     .withStyle(ChatFormatting.GRAY));
             }
 
-            tooltip.add(Component.literal("Shift+Right-Click to toggle")
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_TOGGLE)
                 .withStyle(ChatFormatting.YELLOW));
         } else {
-            tooltip.add(Component.literal("Unbound")
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_UNBOUND)
                 .withStyle(ChatFormatting.DARK_GRAY));
-            tooltip.add(Component.literal("Shift+Right-Click to bind")
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.PILUM_BIND)
                 .withStyle(ChatFormatting.YELLOW));
         }
 

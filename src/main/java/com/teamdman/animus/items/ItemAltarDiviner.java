@@ -62,16 +62,16 @@ public class ItemAltarDiviner extends Item {
 
         // Display information to player
         player.displayClientMessage(
-            Component.literal("§6=== Blood Altar Info ==="), false
+            Component.translatable(Constants.Localizations.Text.DIVINER_ALTAR_INFO), false
         );
         player.displayClientMessage(
-            Component.literal("§4Blood: §f" + currentBlood + " / " + capacity + " LP"), false
+            Component.translatable(Constants.Localizations.Text.DIVINER_BLOOD_INFO, currentBlood, capacity), false
         );
 
         // Show tier information
         int tierLevel = altar.getTier();
         player.displayClientMessage(
-            Component.literal("§cTier: §f" + tierLevel), false
+            Component.translatable(Constants.Localizations.Text.DIVINER_TIER_INFO, tierLevel), false
         );
 
         // Play sound

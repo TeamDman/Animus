@@ -1,5 +1,6 @@
 package com.teamdman.animus.blocks;
 
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
 import com.teamdman.animus.registry.AnimusBlockEntities;
 import com.teamdman.animus.registry.AnimusSounds;
@@ -79,13 +80,13 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
                         SoundSource.BLOCKS, 1.0f, 1.0f);
 
                     player.displayClientMessage(
-                        Component.literal("Blood Core: Spreading enabled")
+                        Component.translatable(Constants.Localizations.Text.BLOOD_CORE_SPREADING_ENABLED)
                             .withStyle(ChatFormatting.DARK_RED),
                         true
                     );
                 } else {
                     player.displayClientMessage(
-                        Component.literal("Blood Core: Spreading disabled")
+                        Component.translatable(Constants.Localizations.Text.BLOOD_CORE_SPREADING_DISABLED)
                             .withStyle(ChatFormatting.GRAY),
                         true
                     );

@@ -44,6 +44,26 @@ public class Constants {
             public static final String TICKET_APPLE = "text.component.animus.ticket.apple";
             public static final String TICKET_CHAINS = "text.component.animus.ticket.chains";
             public static final String TICKET_STEADFAST = "text.component.animus.ticket.steadfast";
+
+            // Key of Binding
+            public static final String KEY_CANNOT_BIND_KEY = "text.component.animus.key.cannot_bind_key";
+            public static final String KEY_ITEM_BOUND = "text.component.animus.key.item_bound";
+
+            // Blood Core
+            public static final String BLOOD_CORE_SPREADING_ENABLED = "text.component.animus.blood_core.spreading_enabled";
+            public static final String BLOOD_CORE_SPREADING_DISABLED = "text.component.animus.blood_core.spreading_disabled";
+
+            // Bound Pilum
+            public static final String PILUM_BOUND_SUCCESS = "text.component.animus.pilum.bound_success";
+            public static final String PILUM_ACTIVATED = "text.component.animus.pilum.activated";
+            public static final String PILUM_DEACTIVATED = "text.component.animus.pilum.deactivated";
+            public static final String PILUM_NO_LP_THROW = "text.component.animus.pilum.no_lp_throw";
+            public static final String PILUM_NO_LP_ATTACK = "text.component.animus.pilum.no_lp_attack";
+
+            // Altar Diviner
+            public static final String DIVINER_ALTAR_INFO = "text.component.animus.diviner.altar_info";
+            public static final String DIVINER_BLOOD_INFO = "text.component.animus.diviner.blood_info";
+            public static final String DIVINER_TIER_INFO = "text.component.animus.diviner.tier_info";
         }
 
         public static class Tooltips {
@@ -90,6 +110,25 @@ public class Constants {
             public static final String ACTIVATION_CRYSTAL_FLAVOUR = "tooltip.animus.activation_crystal.flavour";
             public static final String ACTIVATION_CRYSTAL_INFO = "tooltip.animus.activation_crystal.info";
             public static final String ACTIVATION_CRYSTAL_WARNING = "tooltip.animus.activation_crystal.warning";
+
+            // Bound Pilum Tooltips
+            public static final String PILUM_BOUND_TO = "tooltip.animus.pilum_bound.bound_to";
+            public static final String PILUM_STATUS_ACTIVATED = "tooltip.animus.pilum_bound.status_activated";
+            public static final String PILUM_COST = "tooltip.animus.pilum_bound.cost";
+            public static final String PILUM_STATUS_DEACTIVATED = "tooltip.animus.pilum_bound.status_deactivated";
+            public static final String PILUM_BEHAVES_DIAMOND = "tooltip.animus.pilum_bound.behaves_diamond";
+            public static final String PILUM_TOGGLE = "tooltip.animus.pilum_bound.toggle";
+            public static final String PILUM_UNBOUND = "tooltip.animus.pilum_bound.unbound";
+            public static final String PILUM_BIND = "tooltip.animus.pilum_bound.bind";
+
+            // Key of Binding Tooltips
+            public static final String KEY_HOLD_OFFHAND = "tooltip.animus.key.hold_offhand";
+            public static final String KEY_UNBOUND = "tooltip.animus.key.unbound";
+
+            // Generic Binding Tooltips
+            public static final String BOUND_TO = "tooltip.animus.bound_to";
+            public static final String NOT_BOUND = "tooltip.animus.not_bound";
+            public static final String UNBOUND_BIND = "tooltip.animus.unbound_bind";
         }
     }
 

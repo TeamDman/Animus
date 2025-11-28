@@ -31,10 +31,10 @@ public class ItemKeyBinding extends Item implements IBindable {
         Binding binding = getBinding(stack);
         if (binding != null) {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.getOwnerName()));
-            tooltip.add(Component.literal("Hold in offhand to bind items to " + binding.getOwnerName())
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.KEY_HOLD_OFFHAND, binding.getOwnerName())
                 .withStyle(net.minecraft.ChatFormatting.AQUA));
         } else {
-            tooltip.add(Component.literal("Unbound - Right-click to bind")
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.KEY_UNBOUND)
                 .withStyle(net.minecraft.ChatFormatting.GRAY));
         }
 
