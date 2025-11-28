@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "baseinput": {
+    "item": "minecraft:gold_ingot"
+  },
+  "addedinput": {
+    "item": "bloodmagic:reagentbinding"
+  },
+  "output": {
+    "item": "animus:key_binding"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/bindingsigil.png"
+}
