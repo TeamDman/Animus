@@ -104,6 +104,9 @@ public class AnimusItems {
     public static final RegistryObject<Item> KEY_BINDING = ITEMS.register("key_binding",
         ItemKeyBinding::new);
 
+    public static final RegistryObject<Item> ACTIVATION_CRYSTAL_FRAGILE = ITEMS.register("activation_crystal_fragile",
+        ItemActivationCrystalFragile::new);
+
     // Utilities
     public static final RegistryObject<Item> ALTAR_DIVINER = ITEMS.register("altar_diviner",
         ItemAltarDiviner::new);

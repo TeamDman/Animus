@@ -35,6 +35,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.ALTAR_DIVINER, "item/itemaltardiviner");
         simpleItem(AnimusItems.FRAGMENT_HEALING, "item/itemfragmenthealing");
         boundItem(AnimusItems.KEY_BINDING, "itemkeybinding"); // Toggleable between unbound/bound
+        simpleItem(AnimusItems.ACTIVATION_CRYSTAL_FRAGILE, "item/itemactivationcrystalfragile");
         simpleItem(AnimusItems.MOBSOUL, "item/itemmobsoul");
 
         // Pilums (Roman Javelins)
