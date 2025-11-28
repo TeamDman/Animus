@@ -2,17 +2,22 @@ package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.animal.Cod;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -83,18 +88,15 @@ public class ItemSigilStorm extends AnimusSigilBase {
             if (level instanceof ServerLevel serverLevel) {
                 // Check if the target block is water
                 if (level.getFluidState(pos).is(Fluids.WATER) || level.getBlockState(pos).is(Blocks.WATER)) {
-                    // Spawn 1-3 fish
-                    int fishCount = 1 + level.random.nextInt(3);
-                    for (int i = 0; i < fishCount; i++) {
-                        Cod fish = EntityType.COD.create(level);
-                        if (fish != null) {
-                            // Spawn fish near the target position
-                            double offsetX = (level.random.nextDouble() - 0.5) * 2.0;
-                            double offsetZ = (level.random.nextDouble() - 0.5) * 2.0;
-                            fish.moveTo(pos.getX() + 0.5 + offsetX, pos.getY() + 1, pos.getZ() + 0.5 + offsetZ);
-                            serverLevel.addFreshEntity(fish);
-                        }
-                    }
+                    // Schedule fishing loot to spawn 20 ticks (1 second) after lightning to avoid burning
+                    BlockPos spawnPos = pos.above(); // Spawn above the water
+                    level.scheduleTick(pos, Blocks.WATER, 20, net.minecraft.world.ticks.TickPriority.NORMAL);
+
+                    // Use a scheduled task to spawn loot after delay
+                    serverLevel.getServer().tell(new net.minecraft.server.TickTask(
+                        serverLevel.getServer().getTickCount() + 20,
+                        () -> spawnFishingLoot(serverLevel, spawnPos, player)
+                    ));
                 }
 
                 // Area damage during rain
@@ -113,6 +115,50 @@ public class ItemSigilStorm extends AnimusSigilBase {
         }
 
         return InteractionResultHolder.fail(stack);
+    }
+
+    /**
+     * Spawns fishing loot at the target position
+     * Uses the vanilla fishing loot table
+     */
+    private void spawnFishingLoot(ServerLevel level, BlockPos pos, Player player) {
+        // Get the fishing loot table
+        ResourceLocation fishingLootTable = ResourceLocation.fromNamespaceAndPath("minecraft", "gameplay/fishing");
+        LootTable lootTable = level.getServer().getLootData().getLootTable(fishingLootTable);
+
+        // Build loot context
+        LootParams.Builder paramsBuilder = new LootParams.Builder(level)
+            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+            .withParameter(LootContextParams.TOOL, ItemStack.EMPTY);
+
+        if (player != null) {
+            paramsBuilder.withParameter(LootContextParams.THIS_ENTITY, player);
+        }
+
+        LootParams params = paramsBuilder.create(LootContextParamSets.FISHING);
+
+        // Generate loot
+        java.util.List<ItemStack> loot = lootTable.getRandomItems(params);
+
+        // Spawn loot as item entities
+        for (ItemStack item : loot) {
+            if (!item.isEmpty()) {
+                ItemEntity itemEntity = new ItemEntity(
+                    level,
+                    pos.getX() + 0.5,
+                    pos.getY() + 0.5,
+                    pos.getZ() + 0.5,
+                    item
+                );
+                // Add some random motion
+                itemEntity.setDeltaMovement(
+                    (level.random.nextDouble() - 0.5) * 0.2,
+                    0.2,
+                    (level.random.nextDouble() - 0.5) * 0.2
+                );
+                level.addFreshEntity(itemEntity);
+            }
+        }
     }
 
     @Override

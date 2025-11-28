@@ -19,6 +19,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.FakePlayer;
+import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
+import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.AreaDescriptor;
 
 import java.util.List;
@@ -176,6 +178,20 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
                 0.4F,
                 1.0F
             );
+
+            // Generate corrosive demon will when consuming blocks from the world
+            // Each block consumed generates 0.3-0.8 corrosive will
+            if (!level.isClientSide) {
+                double willToAdd = 0.3 + level.random.nextDouble() * 0.5; // 0.3-0.8
+                WorldDemonWillHandler.fillWillToMaximum(
+                    level,
+                    player.blockPosition(),
+                    EnumDemonWillType.CORROSIVE,
+                    willToAdd,
+                    100.0, // max will
+                    true
+                );
+            }
 
             return true;
         }

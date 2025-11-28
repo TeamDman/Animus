@@ -140,11 +140,15 @@ public class RitualNaturesLeach extends Ritual {
         // Add blood to altar
         tileAltar.sacrificialDaggerCall(eaten * 50, true);
 
-        // Generate corrosive demon will
-        int drainAmount = 1 + random.nextInt(5);
-        double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-        if (filled > 0) {
-            WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
+        // Generate corrosive demon will based on blocks consumed
+        // Each consumed block generates 0.5-1.5 corrosive will
+        if (eaten > 0) {
+            double willPerBlock = 0.5 + random.nextDouble(); // 0.5-1.5 per block
+            double totalWillToAdd = eaten * willPerBlock;
+            double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, totalWillToAdd, maxWill, false);
+            if (filled > 0) {
+                WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
+            }
         }
     }
 
