@@ -31,6 +31,7 @@ public class Animus {
         AnimusSounds.SOUNDS.register(modEventBus);
         AnimusCreativeTabs.CREATIVE_TABS.register(modEventBus);
         AnimusTreeDecoratorTypes.TREE_DECORATOR_TYPES.register(modEventBus);
+        AnimusRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
 
         // Register event listeners
         modEventBus.addListener(this::commonSetup);

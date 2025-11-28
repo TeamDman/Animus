@@ -34,7 +34,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.BLOOD_APPLE, "item/itembloodapple");
         simpleItem(AnimusItems.ALTAR_DIVINER, "item/itemaltardiviner");
         simpleItem(AnimusItems.FRAGMENT_HEALING, "item/itemfragmenthealing");
-        simpleItem(AnimusItems.KEY_BINDING, "item/itemkeybinding");
+        boundItem(AnimusItems.KEY_BINDING, "itemkeybinding"); // Toggleable between unbound/bound
         simpleItem(AnimusItems.MOBSOUL, "item/itemmobsoul");
 
         // Pilums (Roman Javelins)
@@ -74,6 +74,25 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         // Activated variant model
         withExistingParent(name + "_activated", mcLoc("item/generated"))
             .texture("layer0", modLoc("item/" + baseTextureName + "_activated"));
+    }
+
+    /**
+     * Creates a bound item model with unbound/bound texture variants
+     */
+    private void boundItem(RegistryObject<Item> item, String baseTextureName) {
+        String name = item.getId().getPath();
+
+        // Main model (unbound state)
+        withExistingParent(name, mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + baseTextureName))
+            .override()
+                .predicate(modLoc("bound"), 1.0F)
+                .model(getBuilder(name + "_active"))
+            .end();
+
+        // Bound variant model
+        withExistingParent(name + "_active", mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + baseTextureName + "_active"));
     }
 
     private void blockItem(RegistryObject<Block> block) {

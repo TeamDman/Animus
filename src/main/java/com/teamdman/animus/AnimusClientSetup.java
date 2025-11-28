@@ -98,4 +98,20 @@ public class AnimusClientSetup {
             }
         );
     }
+
+    /**
+     * Registers the "bound" item property for Key of Binding
+     * This allows models to switch between bound/unbound textures
+     */
+    private static void registerKeyBindingProperty(net.minecraft.world.item.Item item) {
+        ItemProperties.register(item,
+            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "bound"),
+            (stack, level, entity, seed) -> {
+                if (item instanceof wayoftime.bloodmagic.common.item.IBindable bindable) {
+                    return bindable.getBinding(stack) != null ? 1.0F : 0.0F;
+                }
+                return 0.0F;
+            }
+        );
+    }
 }
