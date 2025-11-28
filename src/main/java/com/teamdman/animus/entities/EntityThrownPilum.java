@@ -32,6 +32,7 @@ public class EntityThrownPilum extends AbstractArrow {
     private static final EntityDataAccessor<Byte> ID_LOYALTY = SynchedEntityData.defineId(EntityThrownPilum.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(EntityThrownPilum.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<String> ID_VARIANT = SynchedEntityData.defineId(EntityThrownPilum.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Boolean> ID_ACTIVATED = SynchedEntityData.defineId(EntityThrownPilum.class, EntityDataSerializers.BOOLEAN);
     private ItemStack pilumItem = ItemStack.EMPTY;
     private boolean dealtDamage;
     public int clientSideReturnTridentTickCount;
@@ -46,8 +47,9 @@ public class EntityThrownPilum extends AbstractArrow {
         this.entityData.set(ID_LOYALTY, (byte)EnchantmentHelper.getLoyalty(stack));
         this.entityData.set(ID_FOIL, stack.hasFoil());
 
-        // Determine variant from item registry name
+        // Determine variant from item registry name and check activation state
         String variant = "iron"; // default
+        boolean activated = false;
         net.minecraft.resources.ResourceLocation itemId = net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(stack.getItem());
         if (itemId != null) {
             String path = itemId.getPath();
@@ -55,9 +57,14 @@ public class EntityThrownPilum extends AbstractArrow {
                 variant = "diamond";
             } else if (path.contains("bound")) {
                 variant = "bound";
+                // Check activation state from NBT
+                if (stack.getItem() instanceof com.teamdman.animus.items.ItemPilumBound boundPilum) {
+                    activated = boundPilum.isActivated(stack);
+                }
             }
         }
         this.entityData.set(ID_VARIANT, variant);
+        this.entityData.set(ID_ACTIVATED, activated);
     }
 
     @Override
@@ -66,6 +73,7 @@ public class EntityThrownPilum extends AbstractArrow {
         this.entityData.define(ID_LOYALTY, (byte)0);
         this.entityData.define(ID_FOIL, false);
         this.entityData.define(ID_VARIANT, "iron");
+        this.entityData.define(ID_ACTIVATED, false);
     }
 
     @Override
@@ -129,8 +137,10 @@ public class EntityThrownPilum extends AbstractArrow {
     protected void onHit(net.minecraft.world.phys.HitResult result) {
         super.onHit(result);
 
-        // Bound pilum creates lightning at any impact point
-        if ("bound".equals(this.getVariant()) && !this.level().isClientSide) {
+        // Bound pilum creates lightning at any impact point (only when activated)
+        boolean isBound = "bound".equals(this.getVariant());
+        boolean isActivated = this.entityData.get(ID_ACTIVATED);
+        if (isBound && isActivated && !this.level().isClientSide) {
             Entity owner = this.getOwner();
             net.minecraft.world.entity.LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(this.level());
             if (lightning != null) {
@@ -169,9 +179,10 @@ public class EntityThrownPilum extends AbstractArrow {
         }
 
         // AOE damage on impact
-        // Bound pilum deals more AOE damage (lightning is handled in onHit)
+        // Activated bound pilum deals more AOE damage (lightning is handled in onHit)
         boolean isBound = "bound".equals(this.getVariant());
-        float aoeDamage = isBound ? damage * 1.0F : damage * 0.75F;
+        boolean isActivated = this.entityData.get(ID_ACTIVATED);
+        float aoeDamage = (isBound && isActivated) ? damage * 1.0F : damage * 0.75F;
         dealAOEDamage(entity.getX(), entity.getY(), entity.getZ(), aoeDamage);
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
@@ -236,6 +247,9 @@ public class EntityThrownPilum extends AbstractArrow {
         if (tag.contains("Variant", 8)) {
             this.entityData.set(ID_VARIANT, tag.getString("Variant"));
         }
+        if (tag.contains("Activated", 1)) {
+            this.entityData.set(ID_ACTIVATED, tag.getBoolean("Activated"));
+        }
     }
 
     @Override
@@ -244,6 +258,7 @@ public class EntityThrownPilum extends AbstractArrow {
         tag.put("Pilum", this.pilumItem.save(new CompoundTag()));
         tag.putBoolean("DealtDamage", this.dealtDamage);
         tag.putString("Variant", this.getVariant());
+        tag.putBoolean("Activated", this.entityData.get(ID_ACTIVATED));
     }
 
     @Override
