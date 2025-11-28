@@ -17,7 +17,9 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
@@ -125,5 +127,17 @@ public class ItemPilum extends TridentItem {
      */
     public Tier getTier() {
         return tier;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        // Allow sharpness and other damage enchantments
+        if (enchantment == Enchantments.SHARPNESS ||
+            enchantment == Enchantments.SMITE ||
+            enchantment == Enchantments.BANE_OF_ARTHROPODS) {
+            return true;
+        }
+        // Allow all enchantments that TridentItem allows
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 }
