@@ -12,7 +12,12 @@
     {
       "type": "patchouli:text",
       "title": "Altar Usage",
-      "text": "$(bold)Divine Structure:$()$(br)Right-click a Blood Altar to scan its structure and identify missing or obstructed components.$(br2)$(bold)Place Phantom Blocks:$()$(br)Sneak + right-click to place phantom blocks showing where components should go.$(br2)$(bold)Quick Build:$()$(br)Right-click with required components in your inventory to automatically place them in the correct positions."
+      "text": "$(bold)Check Altar:$()$(br)Right-click a Blood Altar to display:$(li)Current blood level$(li)Total capacity$(li)Current tier$(br2)$(bold)Show Ghost Blocks:$()$(br)Ghost blocks appear showing where to place runes and crystals for the next tier upgrade.$(br2)$(italic)Ghost blocks display for 10 seconds with a fade-out effect.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Auto-Placement",
+      "text": "$(bold)Shift+Right-Click Altar:$()$(br)Automatically places upgrade blocks from your inventory!$(br2)$(bold)Creative Mode:$()$(br)Auto-places all blocks without consuming them.$(br2)$(bold)Survival Mode:$()$(br)Places blocks you have, highlights what's missing.$(br2)$(italic)Ghost blocks update to show remaining positions after placement.$()"
     },
     {
       "type": "patchouli:text",
@@ -21,8 +26,8 @@
     },
     {
       "type": "patchouli:text",
-      "title": "Features",
-      "text": "The Altar Diviner will:$(li)Show missing altar components$(li)Highlight obstructed positions$(li)Create visual guides$(li)Assist with tier upgrades$(li)Display ritual information$(li)Safely dismantle rituals$(br2)Essential for managing Blood Magic structures!$(br2)$(italic)Divine the perfect structure.$()"
+      "title": "Features Summary",
+      "text": "The Sanguine Diviner provides:$(li)Ghost block visualization$(li)Auto-placement assistance$(li)Altar tier information$(li)Blood level monitoring$(li)Ritual information display$(li)Safe ritual dismantling$(br2)Essential for managing Blood Magic!$(br2)$(italic)Divine your path to power.$()"
     }
   ]
 }

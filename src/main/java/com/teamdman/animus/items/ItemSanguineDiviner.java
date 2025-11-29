@@ -25,6 +25,7 @@ import wayoftime.bloodmagic.common.tile.TileAltar;
 import wayoftime.bloodmagic.ritual.IMasterRitualStone;
 import wayoftime.bloodmagic.ritual.Ritual;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -165,6 +166,117 @@ public class ItemSanguineDiviner extends Item {
             // Trigger tier recalculation
             altar.checkTier();
 
+            int tierLevel = altar.getTier();
+
+            // Shift+Right-click to auto-place upgrade blocks
+            if (player.isShiftKeyDown() && tierLevel < 6) {
+                Map<BlockPos, ResourceLocation> requiredBlocks = AltarUpgradeHelper.getUpgradeBlocks(altar, pos);
+                if (requiredBlocks.isEmpty()) {
+                    player.displayClientMessage(
+                        Component.literal("No upgrade blocks needed!")
+                            .withStyle(ChatFormatting.YELLOW),
+                        true
+                    );
+                    return InteractionResult.SUCCESS;
+                }
+
+                int placed = 0;
+                int missing = 0;
+                Map<BlockPos, ResourceLocation> remainingBlocks = new HashMap<>();
+
+                for (Map.Entry<BlockPos, ResourceLocation> entry : requiredBlocks.entrySet()) {
+                    BlockPos targetPos = entry.getKey();
+                    ResourceLocation blockId = entry.getValue();
+
+                    // Check if position is already occupied
+                    if (!level.getBlockState(targetPos).isAir()) {
+                        continue; // Skip already filled positions
+                    }
+
+                    // Get the block
+                    net.minecraft.world.level.block.Block block = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getValue(blockId);
+                    if (block == null) {
+                        continue;
+                    }
+
+                    boolean canPlace = false;
+
+                    // Creative mode: just place without consuming
+                    if (player.isCreative()) {
+                        canPlace = true;
+                    } else {
+                        // Survival mode: check inventory and consume item
+                        net.minecraft.world.item.Item blockItem = block.asItem();
+                        if (blockItem != null && player.getInventory().contains(new ItemStack(blockItem))) {
+                            // Remove one item from inventory
+                            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                                ItemStack slotStack = player.getInventory().getItem(i);
+                                if (!slotStack.isEmpty() && slotStack.is(blockItem)) {
+                                    slotStack.shrink(1);
+                                    canPlace = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (canPlace) {
+                        level.setBlock(targetPos, block.defaultBlockState(), 3);
+                        placed++;
+                    } else {
+                        remainingBlocks.put(targetPos, blockId);
+                        missing++;
+                    }
+                }
+
+                // Re-check tier after placement
+                altar.checkTier();
+
+                // Provide feedback
+                if (placed > 0) {
+                    player.displayClientMessage(
+                        Component.literal("Placed " + placed + " block" + (placed != 1 ? "s" : "") + " for Tier " + (tierLevel + 1))
+                            .withStyle(ChatFormatting.GREEN),
+                        true
+                    );
+
+                    // Play placement sound
+                    level.playSound(
+                        null,
+                        pos,
+                        SoundEvents.STONE_PLACE,
+                        SoundSource.BLOCKS,
+                        1.0F,
+                        1.0F
+                    );
+                }
+
+                if (missing > 0 && !player.isCreative()) {
+                    player.displayClientMessage(
+                        Component.literal("Missing " + missing + " block" + (missing != 1 ? "s" : "") + " in inventory")
+                            .withStyle(ChatFormatting.YELLOW),
+                        true
+                    );
+
+                    // Send updated ghost blocks for remaining positions
+                    if (player instanceof ServerPlayer serverPlayer && !remainingBlocks.isEmpty()) {
+                        AltarGhostBlocksPacket packet = new AltarGhostBlocksPacket(remainingBlocks, 200);
+                        AnimusNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), packet);
+                    }
+                }
+
+                if (placed == 0 && !player.isCreative()) {
+                    player.displayClientMessage(
+                        Component.literal("No required blocks found in inventory!")
+                            .withStyle(ChatFormatting.RED),
+                        true
+                    );
+                }
+
+                return InteractionResult.SUCCESS;
+            }
+
+            // Normal right-click: Show information and ghost blocks
             // Get altar information
             int currentBlood = altar.getCurrentBlood();
             int capacity = altar.getCapacity();
@@ -178,7 +290,6 @@ public class ItemSanguineDiviner extends Item {
             );
 
             // Show tier information
-            int tierLevel = altar.getTier();
             player.displayClientMessage(
                 Component.translatable(Constants.Localizations.Text.DIVINER_TIER_INFO, tierLevel), false
             );
@@ -193,6 +304,11 @@ public class ItemSanguineDiviner extends Item {
                     player.displayClientMessage(
                         Component.literal("Showing upgrade requirements for Tier " + (tierLevel + 1))
                             .withStyle(ChatFormatting.AQUA),
+                        true
+                    );
+                    player.displayClientMessage(
+                        Component.literal("Shift+Right-click to auto-place")
+                            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC),
                         true
                     );
                 }
@@ -225,6 +341,8 @@ public class ItemSanguineDiviner extends Item {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.DIVINER_FIRST));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.DIVINER_SECOND));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.DIVINER_THIRD));
+        tooltip.add(Component.literal("Right-click altar to show upgrade ghost blocks").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.literal("Shift+Right-click altar to auto-place upgrade").withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.literal("Right-click ritual to show info").withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.literal("Shift+Right-click ritual to dismantle").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, level, tooltip, flag);
