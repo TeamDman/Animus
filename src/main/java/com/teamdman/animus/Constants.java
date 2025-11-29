@@ -49,6 +49,7 @@ public class Constants {
             public static final String TICKET_REMEDIUM = "text.component.animus.ticket.remedium";
             public static final String TICKET_REPARARE = "text.component.animus.ticket.reparare";
             public static final String TICKET_SERENITY = "text.component.animus.ticket.serenity";
+            public static final String TICKET_NOLITE_IGNEM = "text.component.animus.ticket.nolite_ignem";
 
             // Remedium Sigil
             public static final String REMEDIUM_ACTIVATED = "text.component.animus.remedium.activated";
@@ -277,6 +278,7 @@ public class Constants {
         public static final String REGRESSION = "ritual_regression";
         public static final String REPARARE = "ritual_reparare";
         public static final String SERENITY = "ritual_serenity";
+        public static final String NOLITE_IGNEM = "ritual_nolite_ignem";
         public static final String SOL = "ritual_sol";
         public static final String STEADFAST = "ritual_steadfast_heart";
         public static final String UNMAKING = "ritual_unmaking";

@@ -68,6 +68,8 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue persistenceLPPerTick;
         public final ForgeConfigSpec.IntValue serenityRadius;
         public final ForgeConfigSpec.IntValue serenityLPPerTick;
+        public final ForgeConfigSpec.IntValue noliteIgnemRadius;
+        public final ForgeConfigSpec.IntValue noliteIgnemLPPerFire;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -155,6 +157,14 @@ public class AnimusConfig {
             serenityLPPerTick = builder
                 .comment("LP cost per tick for Ritual of Serenity (checked every second / 20 ticks)")
                 .defineInRange("serenityLPPerTick", 50, 1, 10000);
+
+            noliteIgnemRadius = builder
+                .comment("Radius in blocks for Ritual of Nolite Ignem fire extinguishing")
+                .defineInRange("noliteIgnemRadius", 64, 1, 256);
+
+            noliteIgnemLPPerFire = builder
+                .comment("LP cost per fire block extinguished by Ritual of Nolite Ignem")
+                .defineInRange("noliteIgnemLPPerFire", 10, 1, 1000);
 
             builder.pop();
         }
