@@ -61,6 +61,9 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue naturesLeachRange;
         public final ForgeConfigSpec.IntValue naturesLeachBaseSpeed;
         public final ForgeConfigSpec.IntValue naturesLeachLpPerBlock;
+        public final ForgeConfigSpec.IntValue reparareRitualRepairAmount;
+        public final ForgeConfigSpec.IntValue reparareRitualInterval;
+        public final ForgeConfigSpec.IntValue reparareRitualLPPerDamage;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -120,6 +123,18 @@ public class AnimusConfig {
             naturesLeachLpPerBlock = builder
                 .comment("Amount of LP gained per block consumed by Ritual of Nature's Leach")
                 .defineInRange("naturesLeachLpPerBlock", 50, 1, 1000);
+
+            reparareRitualRepairAmount = builder
+                .comment("Maximum damage to repair per item with Ritual of Reparare each interval")
+                .defineInRange("reparareRitualRepairAmount", 1, 1, 100);
+
+            reparareRitualInterval = builder
+                .comment("Ticks between repair attempts for Ritual of Reparare (20 ticks = 1 second)")
+                .defineInRange("reparareRitualInterval", 100, 20, 6000);
+
+            reparareRitualLPPerDamage = builder
+                .comment("LP cost per damage point repaired by Ritual of Reparare")
+                .defineInRange("reparareRitualLPPerDamage", 50, 1, 1000);
 
             builder.pop();
         }

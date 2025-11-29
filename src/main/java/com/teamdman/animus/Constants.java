@@ -272,6 +272,7 @@ public class Constants {
         public static final String LUNA = "ritual_luna";
         public static final String PEACEFUL_BECKONING = "ritual_peaceful_beckoning";
         public static final String REGRESSION = "ritual_regression";
+        public static final String REPARARE = "ritual_reparare";
         public static final String SOL = "ritual_sol";
         public static final String STEADFAST = "ritual_steadfast_heart";
         public static final String UNMAKING = "ritual_unmaking";
