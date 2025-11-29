@@ -41,21 +41,6 @@ public class AltarUpgradeHelper {
 
             if (blockId != null) {
                 ghostBlocks.put(componentPos, blockId);
-
-                // If this is a glowstone block above the altar level, add support pillars
-                // Blood Magic accepts any solid block (NOTAIR component type) for pillars
-                if (component.getComponent() == ComponentType.GLOWSTONE && component.getOffset().getY() > 0) {
-                    // Use stone bricks as a common, easily obtainable pillar block
-                    // (Any solid block works - stone bricks, cobblestone, etc.)
-                    ResourceLocation pillarBlock = ResourceLocation.fromNamespaceAndPath("minecraft", "stone_bricks");
-                    BlockPos offset = component.getOffset();
-
-                    // Add blocks from altar level up to (but not including) the glowstone
-                    for (int y = 1; y < offset.getY(); y++) {
-                        BlockPos pillarPos = altarPos.offset(offset.getX(), y, offset.getZ());
-                        ghostBlocks.put(pillarPos, pillarBlock);
-                    }
-                }
             }
         }
 
@@ -69,10 +54,10 @@ public class AltarUpgradeHelper {
         return switch (type) {
             case BLOODRUNE -> ResourceLocation.fromNamespaceAndPath("bloodmagic", "blankrune");
             case BLOODSTONE -> ResourceLocation.fromNamespaceAndPath("bloodmagic", "largebloodstonebrick");
-            case CRYSTAL -> ResourceLocation.fromNamespaceAndPath("bloodmagic", "largebloodstonebrick");
+            case CRYSTAL -> ResourceLocation.fromNamespaceAndPath("animus", "crystallized_demon_will_block"); // Our custom block
             case GLOWSTONE -> ResourceLocation.fromNamespaceAndPath("minecraft", "glowstone");
-            case BEACON -> ResourceLocation.fromNamespaceAndPath("minecraft", "beacon");
-            case NOTAIR -> null; // Don't show "not air" as a specific block
+            case BEACON -> ResourceLocation.fromNamespaceAndPath("bloodmagic", "dungeon_metal");
+            case NOTAIR -> ResourceLocation.fromNamespaceAndPath("minecraft", "stone_bricks"); // Any solid block works
         };
     }
 }

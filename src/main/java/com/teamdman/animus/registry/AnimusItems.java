@@ -60,6 +60,18 @@ public class AnimusItems {
     public static final RegistryObject<Item> BLOCK_BLOOD_LEAVES = registerBlockItem("blood_leaves", AnimusBlocks.BLOCK_BLOOD_LEAVES);
     public static final RegistryObject<Item> BLOCK_ANTILIFE = registerBlockItem("antilife", AnimusBlocks.BLOCK_ANTILIFE);
 
+    // Crystallized Demon Will Block - with tooltip
+    public static final RegistryObject<Item> BLOCK_CRYSTALLIZED_DEMON_WILL = ITEMS.register("crystallized_demon_will_block",
+        () -> new BlockItem(AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.CRYSTALLIZED_DEMON_WILL_FLAVOUR));
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.CRYSTALLIZED_DEMON_WILL_INFO));
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.CRYSTALLIZED_DEMON_WILL_ALTAR));
+                super.appendHoverText(stack, level, tooltip, flag);
+            }
+        });
+
     // Regular Items
     public static final RegistryObject<Item> BLOOD_APPLE = ITEMS.register("blood_apple",
         ItemBloodApple::new);

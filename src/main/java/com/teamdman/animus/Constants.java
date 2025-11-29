@@ -134,6 +134,11 @@ public class Constants {
             public static final String BOUND_TO = "tooltip.animus.bound_to";
             public static final String NOT_BOUND = "tooltip.animus.not_bound";
             public static final String UNBOUND_BIND = "tooltip.animus.unbound_bind";
+
+            // Crystallized Demon Will Block Tooltips
+            public static final String CRYSTALLIZED_DEMON_WILL_FLAVOUR = "tooltip.animus.crystallized_demon_will.flavour";
+            public static final String CRYSTALLIZED_DEMON_WILL_INFO = "tooltip.animus.crystallized_demon_will.info";
+            public static final String CRYSTALLIZED_DEMON_WILL_ALTAR = "tooltip.animus.crystallized_demon_will.altar";
         }
     }
 

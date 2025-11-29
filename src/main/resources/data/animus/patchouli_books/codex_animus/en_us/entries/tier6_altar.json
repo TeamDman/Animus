@@ -1,0 +1,36 @@
+{
+  "name": "guide.animus.entry.tier6_altar",
+  "category": "animus:altar",
+  "icon": "animus:crystallized_demon_will_block",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(animus)Tier 6 Blood Altar$() represents the pinnacle of sanguine architecture. Unlike previous tiers, it requires a unique material that bridges the gap between blood magic and demon will.$(br2)The $(will)Crystallized Demon Will Block$() serves as the altar's capstone, replacing the traditional inversion pillar caps used in earlier designs."
+    },
+    {
+      "type": "spotlight",
+      "item": "animus:crystallized_demon_will_block",
+      "text": "$(will)Crystallized Demon Will Blocks$() are registered as valid CRYSTAL components for Blood Magic altars. They must be placed at specific positions in the tier 6 structure.$(br2)These blocks harness the power of demon will in its most concentrated form, providing the necessary resonance for tier 6 altar operations."
+    },
+    {
+      "type": "text",
+      "title": "Building the Structure",
+      "text": "Use the $(blood)Sanguine Diviner$() to visualize the tier 6 altar structure:$(br)$(li)Right-click the altar to see ghost blocks$(li)Shift+right-click to enable auto-placement$(li)The diviner will show where Crystallized Demon Will Blocks are needed$(br2)The tier 6 altar requires these blocks at the upper corners of the structure."
+    },
+    {
+      "type": "text",
+      "title": "Crafting the Blocks",
+      "text": "$(will)Crystallized Demon Will Blocks$() are crafted using the $(blood)Alchemy Table$() with powerful reagents:$(br)$(li)Large Bloodstone Brick$(li)Archmage Blood Orb$(li)Nether Star$(li)Sculk$(li)Filled Greater Tartaric Gem$(br2)The recipe requires 50,000 LP and a tier 4+ altar."
+    },
+    {
+      "type": "bloodmagic:alchemytable",
+      "recipe": "animus:alchemytable/crystallized_demon_will_block",
+      "text": "The fusion of blood magic's most potent materials with demon will creates a stable crystalline structure capable of channeling immense power."
+    },
+    {
+      "type": "text",
+      "title": "Tier 6 Benefits",
+      "text": "Once completed, the tier 6 altar provides:$(br)$(li)Maximum LP capacity$(li)Fastest crafting speed$(li)Access to the most powerful blood magic rituals$(li)Enhanced efficiency for all altar operations$(br2)The fusion of blood magic and demon will creates unprecedented power."
+    }
+  ]
+}

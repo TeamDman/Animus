@@ -67,6 +67,17 @@ public class Animus {
                 LOGGER.error("Failed to register strippable blocks", e);
             }
 
+            // Register our Crystallized Demon Will block with Blood Magic's component system
+            try {
+                wayoftime.bloodmagic.impl.BloodMagicAPI.INSTANCE.registerAltarComponent(
+                    AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get().defaultBlockState(),
+                    wayoftime.bloodmagic.altar.ComponentType.CRYSTAL.getKey()
+                );
+                LOGGER.info("Registered Crystallized Demon Will Block as valid CRYSTAL component for Blood Magic altars");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Crystallized Demon Will Block with Blood Magic", e);
+            }
+
             // Register rituals here
             // Register other things that need to happen during setup
         });

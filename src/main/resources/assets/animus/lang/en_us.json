@@ -7,6 +7,7 @@
   "block.animus.blood_core": "Blood Core",
   "block.animus.blood_leaves": "Blood Leaves",
   "block.animus.antilife": "AntiLife",
+  "block.animus.crystallized_demon_will_block": "Crystallized Demon Will Block",
   "item.animus.sanguine_diviner": "Sanguine Diviner",
   "item.animus.blood_apple": "Blood Apple",
   "item.animus.fragment_healing": "Fragment of Healing",
@@ -140,6 +141,13 @@
   "animus.subtitle.vengefulspiritambient": "Vengeful spirit whispers",
   "jei.animus.antilife.info": "Created when lightning strikes Life Essence fluid from Blood Magic. Spreads to adjacent blocks, converting them into AntiLife. When touching Life Essence, spreads as fluid instead.",
   "jei.animus.antilife_block.info": "Created by the Sigil of Consumption or when AntiLife fluid touches solid blocks. Spreads to matching adjacent blocks up to the configured range.",
+  "jei.animus.crystallized_demon_will_block.info": "Crafted in the Alchemy Table using powerful reagents. Required component for Tier 6 Blood Altars. Acts as a valid CRYSTAL component in altar structures.",
   "guide.animus.name": "Codex Animus",
-  "guide.animus.landing_text": "A comprehensive guide detailing the Animus of the Sanguine Arts"
+  "guide.animus.landing_text": "A comprehensive guide detailing the Animus of the Sanguine Arts",
+  "guide.animus.category.altar": "Blood Altar",
+  "guide.animus.entry.tier6_altar": "Tier 6 Altar",
+  "guide.animus.entry.crystallized_demon_will": "Crystallized Demon Will",
+  "tooltip.animus.crystallized_demon_will.flavour": "Demon will crystallized into solid form",
+  "tooltip.animus.crystallized_demon_will.info": "Required component for Tier 6 Blood Altars",
+  "tooltip.animus.crystallized_demon_will.altar": "Acts as a valid CRYSTAL component"
 }

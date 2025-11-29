@@ -32,6 +32,9 @@ public class AnimusBlocks {
     public static final RegistryObject<Block> BLOCK_ANTILIFE = BLOCKS.register("antilife",
         BlockAntiLife::new);
 
+    public static final RegistryObject<Block> BLOCK_CRYSTALLIZED_DEMON_WILL = BLOCKS.register("crystallized_demon_will_block",
+        BlockCrystallizedDemonWill::new);
+
     // Fluid blocks
     public static final RegistryObject<Block> BLOCK_FLUID_ANTILIFE = BLOCKS.register("antilife_fluid",
         BlockFluidAntiLife::new);
