@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "animus:item/sigil_remedium"
+    "layer0": "animus:item/sigil_reparare_active"
   }
 }

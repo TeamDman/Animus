@@ -48,6 +48,11 @@ public class AnimusClientSetup {
             registerToggleableSigilProperty(AnimusItems.SIGIL_LEACH.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_TRANSPOSITION.get());
 
+            // Register item properties for active-state sigils (Remedium, Reparare, Heavenly Wrath)
+            registerActiveSigilProperty(AnimusItems.SIGIL_REMEDIUM.get());
+            registerActiveSigilProperty(AnimusItems.SIGIL_REPARARE.get());
+            registerActiveSigilProperty(AnimusItems.SIGIL_HEAVENLY_WRATH.get());
+
             // Register item property for Bound Pilum activation state
             registerBoundPilumProperty(AnimusItems.PILUM_BOUND.get());
 
@@ -110,6 +115,22 @@ public class AnimusClientSetup {
             (stack, level, entity, seed) -> {
                 if (item instanceof wayoftime.bloodmagic.common.item.IBindable bindable) {
                     return bindable.getBinding(stack) != null ? 1.0F : 0.0F;
+                }
+                return 0.0F;
+            }
+        );
+    }
+
+    /**
+     * Registers the "active" item property for sigils with active/inactive states
+     * This allows models to switch textures based on the "Active" NBT tag
+     */
+    private static void registerActiveSigilProperty(net.minecraft.world.item.Item item) {
+        ItemProperties.register(item,
+            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "active"),
+            (stack, level, entity, seed) -> {
+                if (stack.hasTag() && stack.getTag().getBoolean("Active")) {
+                    return 1.0F;
                 }
                 return 0.0F;
             }

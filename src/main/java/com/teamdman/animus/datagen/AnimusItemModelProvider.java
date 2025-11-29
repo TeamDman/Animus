@@ -54,6 +54,11 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         toggleableSigil(AnimusItems.SIGIL_LEACH, "itemsigilleach");
         toggleableSigil(AnimusItems.SIGIL_TRANSPOSITION, "sigil_transposition");
 
+        // Active state Sigils - with active/inactive states
+        activeSigil(AnimusItems.SIGIL_REMEDIUM, "sigil_remedium");
+        activeSigil(AnimusItems.SIGIL_REPARARE, "sigil_reparare");
+        activeSigil(AnimusItems.SIGIL_HEAVENLY_WRATH, "sigil_heavenly_wrath");
+
         // Fluid Buckets - use custom bucket textures (like Blood Magic's lifebucket.png)
         simpleItem(AnimusItems.ANTILIFE_BUCKET, "item/antilife_bucket");
         simpleItem(AnimusItems.LIVING_TERRA_BUCKET, "item/living_terra_bucket");
@@ -76,6 +81,26 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         // Activated variant model
         withExistingParent(name + "_activated", mcLoc("item/generated"))
             .texture("layer0", modLoc("item/" + baseTextureName + "_activated"));
+    }
+
+    /**
+     * Creates an active sigil model with active/inactive texture variants
+     * Uses the "active" predicate (for sigils that use the Active NBT tag)
+     */
+    private void activeSigil(RegistryObject<Item> item, String baseTextureName) {
+        String name = item.getId().getPath();
+
+        // Main model (inactive state)
+        withExistingParent(name, mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + baseTextureName))
+            .override()
+                .predicate(modLoc("active"), 1.0F)
+                .model(getBuilder(name + "_active"))
+            .end();
+
+        // Active variant model
+        withExistingParent(name + "_active", mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + baseTextureName + "_active"));
     }
 
     /**
