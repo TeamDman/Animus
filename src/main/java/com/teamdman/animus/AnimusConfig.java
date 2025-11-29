@@ -86,7 +86,7 @@ public class AnimusConfig {
                 .defineInRange("cullingRange", 10, 1, 64);
 
             cullingVerticalRange = builder
-                .comment("Vertical range in blocks for Ritual of Culling effect area (upward from 1 block above ritual stone)")
+                .comment("Vertical range in blocks for Ritual of Culling effect area (extends both above AND below the ritual stone)")
                 .defineInRange("cullingVerticalRange", 10, 1, 64);
 
             cullingLpPerKill = builder

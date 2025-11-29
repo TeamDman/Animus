@@ -38,7 +38,7 @@ import java.util.function.Consumer;
  * Activation Cost: 50000 LP
  * Refresh Cost: 75 LP per entity
  * Refresh Time: 25 ticks
- * Range: Configurable (default 10 blocks horizontal, 10 blocks vertical from 1 block above stone)
+ * Range: Configurable (default 10 blocks horizontal, 10 blocks vertical above AND below stone)
  * LP per Kill: Configurable (default 200 LP)
  */
 @RitualRegister(Constants.Rituals.CULLING)
@@ -61,14 +61,15 @@ public class RitualCulling extends Ritual {
         super(Constants.Rituals.CULLING, 0, 50000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.CULLING);
 
         // Use config values for range (default 10 horizontal, 10 vertical)
-        // Range starts from 1 block above the master ritual stone
+        // Range is symmetric - extends vRange blocks both above and below the master ritual stone
         int hRange = AnimusConfig.rituals.cullingRange.get();
         int vRange = AnimusConfig.rituals.cullingVerticalRange.get();
         int hSize = hRange * 2 + 1;  // Full horizontal size (e.g., 10*2+1 = 21)
+        int vSize = vRange * 2 + 1;  // Full vertical size (e.g., 10*2+1 = 21, covers -10 to +10)
 
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
-        // Start from 1 block above the ritual stone and extend upward vRange blocks
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRange, 1, -hRange), hSize, vRange, hSize));
+        // Symmetric range: extends vRange blocks above and below the ritual stone
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRange, -vRange, -hRange), hSize, vSize, hSize));
 
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, vRange + 5, hRange + 5);
