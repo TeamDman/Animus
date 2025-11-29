@@ -6,6 +6,7 @@ import com.teamdman.animus.items.sigils.ItemSigilHeavenlyWrath;
 import com.teamdman.animus.items.sigils.ItemSigilRemedium;
 import com.teamdman.animus.items.sigils.ItemSigilReparare;
 import com.teamdman.animus.items.sigils.ItemSigilStorm;
+import com.teamdman.animus.items.sigils.ItemSigilTemporalDominance;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.rituals.RitualSerenity;
@@ -285,6 +286,7 @@ public class AnimusEventHandler {
         if (event.level instanceof ServerLevel serverLevel) {
             ItemSigilStorm.tickPendingSpawns(serverLevel);
             ItemSigilHeavenlyWrath.tickPendingFalls(serverLevel);
+            ItemSigilTemporalDominance.tickAcceleratedBlocks(serverLevel);
         }
     }
 

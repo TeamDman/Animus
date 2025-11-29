@@ -53,6 +53,7 @@ public class Constants {
             public static final String TICKET_RELENTLESS_TIDES = "text.component.animus.ticket.relentless_tides";
             public static final String TICKET_SIPHON = "text.component.animus.ticket.siphon";
             public static final String TICKET_FREE_SOUL = "text.component.animus.ticket.free_soul";
+            public static final String TICKET_TEMPORAL_DOMINANCE = "text.component.animus.ticket.temporal_dominance";
 
             // Free Soul Sigil
             public static final String FREE_SOUL_ALREADY_SPECTATOR = "text.component.animus.free_soul.already_spectator";
@@ -92,6 +93,13 @@ public class Constants {
             public static final String DIVINER_ALTAR_INFO = "text.component.animus.diviner.altar_info";
             public static final String DIVINER_BLOOD_INFO = "text.component.animus.diviner.blood_info";
             public static final String DIVINER_TIER_INFO = "text.component.animus.diviner.tier_info";
+
+            // Temporal Dominance Sigil
+            public static final String TEMPORAL_NO_TILE = "text.component.animus.temporal.no_tile";
+            public static final String TEMPORAL_DISALLOWED = "text.component.animus.temporal.disallowed";
+            public static final String TEMPORAL_GAG_ACTIVE = "text.component.animus.temporal.gag_active";
+            public static final String TEMPORAL_NO_LP = "text.component.animus.temporal.no_lp";
+            public static final String TEMPORAL_ACTIVATED = "text.component.animus.temporal.activated";
         }
 
         public static class Tooltips {
@@ -188,6 +196,12 @@ public class Constants {
             public static final String SIGIL_FREE_SOUL_DEATH = "tooltip.animus.sigil.free_soul.death";
             public static final String SIGIL_FREE_SOUL_COOLDOWN = "tooltip.animus.sigil.free_soul.cooldown";
             public static final String SIGIL_FREE_SOUL_COOLDOWN_REMAINING = "tooltip.animus.sigil.free_soul.cooldown_remaining";
+
+            // Temporal Dominance Sigil Tooltips
+            public static final String TEMPORAL_DOMINANCE_1 = "tooltip.animus.sigil.temporal_dominance.1";
+            public static final String TEMPORAL_DOMINANCE_2 = "tooltip.animus.sigil.temporal_dominance.2";
+            public static final String TEMPORAL_DOMINANCE_3 = "tooltip.animus.sigil.temporal_dominance.3";
+            public static final String TEMPORAL_DOMINANCE_4 = "tooltip.animus.sigil.temporal_dominance.4";
         }
     }
 
@@ -243,6 +257,7 @@ public class Constants {
                 net.minecraft.core.registries.Registries.ITEM,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_repair")
             );
+public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_ACCELERATION =            net.minecraft.tags.TagKey.create(                net.minecraft.core.registries.Registries.BLOCK,                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_acceleration")            );
     }
 
     public static class Resource {
@@ -322,6 +337,7 @@ public class Constants {
         public static final String REPARARE = "reparare";
         public static final String TRANSPOSITION = "transposition";
         public static final String FREE_SOUL = "free_soul";
+        public static final String TEMPORAL_DOMINANCE = "temporal_dominance";
     }
 
     public static ResourceLocation rl(String path) {
