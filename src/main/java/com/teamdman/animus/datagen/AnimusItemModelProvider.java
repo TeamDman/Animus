@@ -32,7 +32,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
 
         // Simple items with textures
         simpleItem(AnimusItems.BLOOD_APPLE, "item/itembloodapple");
-        simpleItem(AnimusItems.ALTAR_DIVINER, "item/itemaltardiviner");
+        simpleItem(AnimusItems.SANGUINE_DIVINER, "item/itemsanguinediviner");
         simpleItem(AnimusItems.FRAGMENT_HEALING, "item/itemfragmenthealing");
         boundItem(AnimusItems.KEY_BINDING, "itemkeybinding"); // Toggleable between unbound/bound
         simpleItem(AnimusItems.ACTIVATION_CRYSTAL_FRAGILE, "item/itemactivationcrystalfragile");

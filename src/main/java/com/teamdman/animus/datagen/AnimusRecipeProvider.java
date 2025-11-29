@@ -48,10 +48,10 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .unlockedBy("has_bound_pilum", has(AnimusItems.PILUM_BOUND.get()))
             .save(consumer);
 
-        // Altar Diviner recipe
+        // Sanguine Diviner recipe
         // Note: This requires Blood Magic items which may not be available during datagen
         // We'll use item references directly
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AnimusItems.ALTAR_DIVINER.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AnimusItems.SANGUINE_DIVINER.get())
             .pattern("aaa")
             .pattern("aba")
             .pattern("aaa")

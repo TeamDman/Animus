@@ -60,7 +60,7 @@ public class Constants {
             public static final String PILUM_NO_LP_THROW = "text.component.animus.pilum.no_lp_throw";
             public static final String PILUM_NO_LP_ATTACK = "text.component.animus.pilum.no_lp_attack";
 
-            // Altar Diviner
+            // Sanguine Diviner
             public static final String DIVINER_ALTAR_INFO = "text.component.animus.diviner.altar_info";
             public static final String DIVINER_BLOOD_INFO = "text.component.animus.diviner.blood_info";
             public static final String DIVINER_TIER_INFO = "text.component.animus.diviner.tier_info";

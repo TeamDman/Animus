@@ -111,8 +111,8 @@ public class AnimusItems {
         ItemActivationCrystalFragile::new);
 
     // Utilities
-    public static final RegistryObject<Item> ALTAR_DIVINER = ITEMS.register("altar_diviner",
-        ItemAltarDiviner::new);
+    public static final RegistryObject<Item> SANGUINE_DIVINER = ITEMS.register("sanguine_diviner",
+        ItemSanguineDiviner::new);
 
     // Fluid Buckets
     public static final RegistryObject<Item> ANTILIFE_BUCKET = ITEMS.register("antilife_bucket",

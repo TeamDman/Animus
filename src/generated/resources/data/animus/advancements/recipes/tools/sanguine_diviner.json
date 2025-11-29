@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "animus:altar_diviner"
+        "recipe": "animus:sanguine_diviner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "animus:altar_diviner"
+      "animus:sanguine_diviner"
     ]
   },
   "sends_telemetry_event": false
