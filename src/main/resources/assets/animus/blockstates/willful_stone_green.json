@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "animus:block/willful_stone'"${color}"'"
+      "model": "animus:block/willful_stone_green"
     }
   }
 }

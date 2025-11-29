@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "animus:block/willful_stone'"${color}"'"
+    "all": "animus:block/willful_stone_light_blue"
   }
 }
