@@ -70,6 +70,10 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue serenityLPPerTick;
         public final ForgeConfigSpec.IntValue noliteIgnemRadius;
         public final ForgeConfigSpec.IntValue noliteIgnemLPPerFire;
+        public final ForgeConfigSpec.IntValue relentlessTidesRange;
+        public final ForgeConfigSpec.IntValue relentlessTidesLPPerPlacement;
+        public final ForgeConfigSpec.IntValue siphonRange;
+        public final ForgeConfigSpec.IntValue siphonLPPerExtraction;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -165,6 +169,22 @@ public class AnimusConfig {
             noliteIgnemLPPerFire = builder
                 .comment("LP cost per fire block extinguished by Ritual of Nolite Ignem")
                 .defineInRange("noliteIgnemLPPerFire", 10, 1, 1000);
+
+            relentlessTidesRange = builder
+                .comment("Range in blocks for Ritual of Relentless Tides fluid placement")
+                .defineInRange("relentlessTidesRange", 16, 1, 64);
+
+            relentlessTidesLPPerPlacement = builder
+                .comment("LP cost per fluid block placed by Ritual of Relentless Tides")
+                .defineInRange("relentlessTidesLPPerPlacement", 50, 1, 1000);
+
+            siphonRange = builder
+                .comment("Range in blocks for Ritual of Siphon fluid extraction")
+                .defineInRange("siphonRange", 16, 1, 64);
+
+            siphonLPPerExtraction = builder
+                .comment("LP cost per fluid block extracted by Ritual of Siphon")
+                .defineInRange("siphonLPPerExtraction", 50, 1, 1000);
 
             builder.pop();
         }

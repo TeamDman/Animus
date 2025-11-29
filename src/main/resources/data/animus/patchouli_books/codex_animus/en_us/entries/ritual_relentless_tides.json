@@ -1,0 +1,42 @@
+{
+  "name": "guide.animus.entry.ritual_relentless_tides",
+  "category": "animus:rituals",
+  "icon": "bloodmagic:masterritualstone",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Relentless Tides (Floodgate) is a powerful fluid manipulation ritual that extracts fluids from a tank placed directly above the Master Ritual Stone and places them in the world below. This ritual is ideal for automated fluid placement, terraforming, or creating large bodies of water or lava."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How It Works",
+      "text": "The ritual requires a fluid tank (any block with fluid storage capability) placed directly above the Master Ritual Stone. Every 0.5 seconds, the ritual attempts to:$(br)1. Extract 1 bucket (1000mB) of fluid from the tank$(br)2. Find a valid placement spot below the ritual stone$(br)3. Place the fluid as a source block$(br)4. Consume LP for the operation"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Placement Algorithm",
+      "text": "The ritual uses an optimized perimeter-based search to find valid placement positions:$(br)- Searches in expanding square rings below the MRS$(br)- Starts at the center and expands outward$(br)- Resumes where it left off on subsequent ticks$(br)- Prefers empty air or replaceable blocks$(br)- Requires a solid block below to prevent infinite falling$(br)- Can replace flowing fluids with source blocks"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "No Valid Position",
+      "text": "If the ritual cannot find a valid spot to place fluid (area is full or no tank):$(br)- Smoke particles will emit from the MRS as a warning$(br)- No fluid is extracted from the tank$(br)- No LP is consumed$(br2)This prevents wasting fluids and LP when the placement area is saturated or when setup is incomplete."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Configuration",
+      "text": "The Ritual of Relentless Tides can be configured via the server config:$(br)- Placement Range: Radius in blocks (default: 16, range: 1-64)$(br)- LP Per Placement: LP cost per fluid placed (default: 50, range: 1-1000)$(br2)Activation Cost: 5000 LP$(br2)Refresh Time: 0.5 seconds (10 ticks)"
+    },
+    {
+      "type": "patchouli:ritual",
+      "title": "Ritual Structure",
+      "ritual": "animus:ritual_relentless_tides",
+      "text": "The Ritual of Relentless Tides uses a water-themed pattern with 8 Water runes (representing fluid control and manipulation) and 4 Air runes (representing flow and movement). The pattern creates three concentric rings of power."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage Tips",
+      "text": "This ritual is excellent for:$(br)- Automated ocean/lake creation$(br)- Lava placement for mob farms$(br)- Controlled flooding for mining$(br)- Terraforming large areas$(br2)Works with any fluid tank: Blood Magic tanks, Tinkers' tanks, or modded fluid storage. At default settings, costs 50 LP per bucket placed, making it economical for large-scale operations.$(br2)Tip: Place the tank perpendicular to the MRS for easy access and refilling!"
+    }
+  ]
+}

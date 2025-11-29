@@ -1,0 +1,42 @@
+{
+  "name": "guide.animus.entry.ritual_siphon",
+  "category": "animus:rituals",
+  "icon": "bloodmagic:masterritualstone",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Siphon (Fluid Pump) is a powerful fluid extraction ritual that automatically pumps fluid source blocks from below the Master Ritual Stone and places them into a tank above. This ritual is the inverse of Relentless Tides, perfect for draining lakes, oceans, or lava pools."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How It Works",
+      "text": "The ritual requires a fluid tank (any block with fluid storage capability) placed directly above the Master Ritual Stone. Every 0.5 seconds, the ritual attempts to:$(br)1. Find a fluid source block below the ritual stone$(br)2. Extract the fluid from the world$(br)3. Fill the tank with 1 bucket (1000mB) of fluid$(br)4. Consume LP for the operation"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Search Algorithm",
+      "text": "The ritual uses an optimized perimeter-based search to find fluid sources:$(br)- Searches in expanding square rings below the MRS$(br)- Also searches vertically downward in each column$(br)- Resumes where it left off on subsequent ticks$(br)- Only extracts source blocks, not flowing fluids$(br)- Processes up to 64 positions per tick for performance$(br2)This ensures efficient fluid extraction without lag."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "No Fluid or Tank Full",
+      "text": "If the ritual cannot extract fluid (no fluid, tank full, or conflicting fluid type):$(br)- Smoke particles will emit from the MRS as a warning$(br)- No fluid is removed from the world$(br)- No LP is consumed$(br2)The smoke indicates:$(br)• No tank present above the MRS$(br)• Tank is full$(br)• Tank doesn't accept this fluid type$(br)• No fluid sources found in range"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Configuration",
+      "text": "The Ritual of Siphon can be configured via the server config:$(br)- Extraction Range: Radius in blocks (default: 16, range: 1-64)$(br)- LP Per Extraction: LP cost per fluid extracted (default: 50, range: 1-1000)$(br2)Activation Cost: 5000 LP$(br2)Refresh Time: 0.5 seconds (10 ticks)$(br2)Note: Range applies both horizontally and vertically below the MRS."
+    },
+    {
+      "type": "patchouli:ritual",
+      "title": "Ritual Structure",
+      "ritual": "animus:ritual_siphon",
+      "text": "The Ritual of Siphon uses the same pattern as Relentless Tides with 8 Water runes (representing fluid control) and 4 Air runes (representing suction and upward flow). The pattern creates three concentric rings of power."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage Tips",
+      "text": "This ritual is excellent for:$(br)- Draining large bodies of water or lava$(br)- Clearing flooded areas$(br)- Automated resource collection$(br)- Ocean/lake removal for building$(br2)Works with any fluid tank: Blood Magic tanks, Tinkers' tanks, or modded fluid storage. At default settings, costs 50 LP per bucket extracted.$(br2)Pro tip: Pair with Relentless Tides to move fluids from one location to another! Place Siphon to drain, Relentless Tides to fill."
+    }
+  ]
+}
