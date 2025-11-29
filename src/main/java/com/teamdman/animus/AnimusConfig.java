@@ -228,9 +228,14 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue leafRegrowthSpeed;
         public final ForgeConfigSpec.IntValue treeSpreadRadius;
         public final ForgeConfigSpec.IntValue treeSpreadInterval;
+        public final ForgeConfigSpec.BooleanValue debug;
 
         public BloodCore(ForgeConfigSpec.Builder builder) {
             builder.push("bloodCore");
+
+            debug = builder
+                .comment("Enable debug logging for Blood Core tree spreading")
+                .define("debug", false);
 
             leafRegrowthSpeed = builder
                 .comment(

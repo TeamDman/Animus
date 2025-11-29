@@ -52,8 +52,10 @@ public class BlockEntityBloodCore extends BlockEntity {
             double willMultiplier = 1.0 + Math.min(corrosiveWill / 100.0, 1.0);
             delayCounter = (int)(baseTimer * willMultiplier);
 
-            Animus.LOGGER.debug("Blood Core at {} timer expired. Spreading: {}, Next interval: {} ticks",
-                worldPosition, spreading, delayCounter);
+            if (AnimusConfig.bloodCore.debug.get()) {
+                Animus.LOGGER.debug("Blood Core at {} timer expired. Spreading: {}, Next interval: {} ticks",
+                    worldPosition, spreading, delayCounter);
+            }
 
             // Attempt to spread blood trees
             if (spreading) {
@@ -122,7 +124,9 @@ public class BlockEntityBloodCore extends BlockEntity {
         int searchRadius = AnimusConfig.bloodCore.treeSpreadRadius.get();
         int maxAttempts = 10;
 
-        Animus.LOGGER.debug("Blood Core at {} attempting to spread trees (radius: {})", worldPosition, searchRadius);
+        if (AnimusConfig.bloodCore.debug.get()) {
+            Animus.LOGGER.debug("Blood Core at {} attempting to spread trees (radius: {})", worldPosition, searchRadius);
+        }
 
         for (int attempt = 0; attempt < maxAttempts; attempt++) {
             // Pick a random position in range
@@ -153,8 +157,10 @@ public class BlockEntityBloodCore extends BlockEntity {
                 aboveState = level.getBlockState(saplingPos); // This is the grass we'll replace
             }
 
-            Animus.LOGGER.debug("Attempt {}: target={}, ground={}, above={}",
-                attempt, targetPos, groundState.getBlock(), aboveState.getBlock());
+            if (AnimusConfig.bloodCore.debug.get()) {
+                Animus.LOGGER.debug("Attempt {}: target={}, ground={}, above={}",
+                    attempt, targetPos, groundState.getBlock(), aboveState.getBlock());
+            }
 
             // Must be on grass/dirt and have air/grass above (can replace grass)
             if ((groundState.is(Blocks.GRASS_BLOCK) || groundState.is(Blocks.DIRT)) &&
@@ -167,13 +173,17 @@ public class BlockEntityBloodCore extends BlockEntity {
                     BlockState checkState = level.getBlockState(saplingPos.above(y));
                     if (!checkState.isAir() && !checkState.is(Blocks.GRASS) && !checkState.is(Blocks.TALL_GRASS)) {
                         hasSpace = false;
-                        Animus.LOGGER.debug("  No space at y={}, block={}", y, checkState.getBlock());
+                        if (AnimusConfig.bloodCore.debug.get()) {
+                            Animus.LOGGER.debug("  No space at y={}, block={}", y, checkState.getBlock());
+                        }
                         break;
                     }
                 }
 
                 if (hasSpace) {
-                    Animus.LOGGER.info("Blood Core at {} spawning blood tree at {}", worldPosition, saplingPos);
+                    if (AnimusConfig.bloodCore.debug.get()) {
+                        Animus.LOGGER.info("Blood Core at {} spawning blood tree at {}", worldPosition, saplingPos);
+                    }
 
                     // Place and immediately grow a blood sapling
                     level.setBlock(saplingPos, AnimusBlocks.BLOCK_BLOOD_SAPLING.get().defaultBlockState(), 3);
@@ -182,9 +192,13 @@ public class BlockEntityBloodCore extends BlockEntity {
                     BlockState saplingState = level.getBlockState(saplingPos);
                     if (saplingState.getBlock() instanceof net.minecraft.world.level.block.SaplingBlock saplingBlock) {
                         saplingBlock.advanceTree(level, saplingPos, saplingState, random);
-                        Animus.LOGGER.debug("  Tree grown successfully");
+                        if (AnimusConfig.bloodCore.debug.get()) {
+                            Animus.LOGGER.debug("  Tree grown successfully");
+                        }
                     } else {
-                        Animus.LOGGER.warn("  Failed to grow tree - block is not a sapling: {}", saplingState.getBlock());
+                        if (AnimusConfig.bloodCore.debug.get()) {
+                            Animus.LOGGER.warn("  Failed to grow tree - block is not a sapling: {}", saplingState.getBlock());
+                        }
                     }
 
                     // Consume some corrosive will for the growth

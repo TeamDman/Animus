@@ -150,6 +150,8 @@ public class RitualCulling extends Ritual {
 
         if (AnimusConfig.rituals.cullingDebug.get()) {
             System.out.println("Animus: [Ritual of Culling Debug]: Starting Ritual perform for MRS at " + ritualStone.getMasterBlockPos());
+            System.out.println("Animus: [Ritual of Culling Debug]: Range AABB: " + range);
+            System.out.println("Animus: [Ritual of Culling Debug]: Found " + list.size() + " entities in range");
         }
 
         // Kill primed TNT if configured
@@ -177,20 +179,47 @@ public class RitualCulling extends Ritual {
             }
 
             for (LivingEntity livingEntity : list) {
+                if (AnimusConfig.rituals.cullingDebug.get()) {
+                    System.out.println("Animus: [Ritual of Culling Debug]: Processing entity: " + livingEntity.getName().getString() +
+                        " at " + livingEntity.blockPosition() + " (Type: " + livingEntity.getType() + ")");
+                    System.out.println("Animus: [Ritual of Culling Debug]:   Health: " + livingEntity.getHealth() + "/" + livingEntity.getMaxHealth());
+                }
+
                 // Skip players with more than 4 health
                 if (livingEntity instanceof Player && livingEntity.getHealth() > 4) {
+                    if (AnimusConfig.rituals.cullingDebug.get()) {
+                        System.out.println("Animus: [Ritual of Culling Debug]:   SKIPPED - Player with health > 4");
+                    }
                     continue;
                 }
 
                 // Check for potion effects (cursed earth spawned mobs have effects)
                 Collection<MobEffectInstance> effects = livingEntity.getActiveEffects();
 
+                if (AnimusConfig.rituals.cullingDebug.get()) {
+                    System.out.println("Animus: [Ritual of Culling Debug]:   Active effects: " + effects.size());
+                    if (!effects.isEmpty()) {
+                        for (MobEffectInstance effect : effects) {
+                            System.out.println("Animus: [Ritual of Culling Debug]:     - " + effect.getEffect().getDescriptionId());
+                        }
+                    }
+                    System.out.println("Animus: [Ritual of Culling Debug]:   canKillBuffedMobs config: " + AnimusConfig.general.canKillBuffedMobs.get());
+                }
+
                 if (effects.isEmpty() || AnimusConfig.general.canKillBuffedMobs.get()) {
                     BlockPos at = livingEntity.blockPosition();
                     boolean isBoss = !livingEntity.canChangeDimensions();
 
+                    if (AnimusConfig.rituals.cullingDebug.get()) {
+                        System.out.println("Animus: [Ritual of Culling Debug]:   Is boss: " + isBoss);
+                        System.out.println("Animus: [Ritual of Culling Debug]:   Is invulnerable: " + livingEntity.isInvulnerable());
+                    }
+
                     // Check if entity is in the disallow_culling tag
                     if (livingEntity.getType().is(Constants.Tags.DISALLOW_CULLING)) {
+                        if (AnimusConfig.rituals.cullingDebug.get()) {
+                            System.out.println("Animus: [Ritual of Culling Debug]:   SKIPPED - Entity in disallow_culling tag");
+                        }
                         continue;
                     }
 
@@ -198,7 +227,7 @@ public class RitualCulling extends Ritual {
                     livingEntity.setSilent(true);
 
                     if (AnimusConfig.rituals.cullingDebug.get()) {
-                        System.out.println("Animus: [Ritual of Culling Debug]: MRS at " + ritualStone.getMasterBlockPos() + " Found entity, killing");
+                        System.out.println("Animus: [Ritual of Culling Debug]:   ATTEMPTING TO KILL entity");
                     }
 
                     float damage = Float.MAX_VALUE;
@@ -207,11 +236,35 @@ public class RitualCulling extends Ritual {
                     if (AnimusConfig.rituals.killBoss.get() && isBoss && currentAmount > 99
                         && (currentEssence >= AnimusConfig.rituals.bossCost.get() + (getRefreshCost() * list.size()))) {
 
+                        if (AnimusConfig.rituals.cullingDebug.get()) {
+                            System.out.println("Animus: [Ritual of Culling Debug]:   Boss kill conditions met - making vulnerable");
+                            System.out.println("Animus: [Ritual of Culling Debug]:     Current demon will: " + currentAmount);
+                            System.out.println("Animus: [Ritual of Culling Debug]:     Boss cost: " + AnimusConfig.rituals.bossCost.get());
+                        }
+
                         // Make boss vulnerable so it can be killed
                         livingEntity.setInvulnerable(false);
+                    } else if (isBoss) {
+                        if (AnimusConfig.rituals.cullingDebug.get()) {
+                            System.out.println("Animus: [Ritual of Culling Debug]:   Boss kill conditions NOT met:");
+                            System.out.println("Animus: [Ritual of Culling Debug]:     killBoss config: " + AnimusConfig.rituals.killBoss.get());
+                            System.out.println("Animus: [Ritual of Culling Debug]:     Current demon will: " + currentAmount + " (need > 99)");
+                            System.out.println("Animus: [Ritual of Culling Debug]:     Current essence: " + currentEssence);
+                            System.out.println("Animus: [Ritual of Culling Debug]:     Required essence: " + (AnimusConfig.rituals.bossCost.get() + (getRefreshCost() * list.size())));
+                        }
+                    }
+
+                    if (AnimusConfig.rituals.cullingDebug.get()) {
+                        System.out.println("Animus: [Ritual of Culling Debug]:   Applying damage: " + damage);
                     }
 
                     result = livingEntity.hurt(level.damageSources().genericKill(), damage);
+
+                    if (AnimusConfig.rituals.cullingDebug.get()) {
+                        System.out.println("Animus: [Ritual of Culling Debug]:   Damage result: " + result);
+                        System.out.println("Animus: [Ritual of Culling Debug]:   Entity alive after damage: " + livingEntity.isAlive());
+                        System.out.println("Animus: [Ritual of Culling Debug]:   Entity removed: " + livingEntity.isRemoved());
+                    }
 
                     if (result) {
                         entityCount++;
@@ -251,7 +304,15 @@ public class RitualCulling extends Ritual {
 
                         level.playSound(null, at, SoundEvents.SOUL_ESCAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
+                } else {
+                    if (AnimusConfig.rituals.cullingDebug.get()) {
+                        System.out.println("Animus: [Ritual of Culling Debug]:   SKIPPED - Entity has potion effects and canKillBuffedMobs is false");
+                    }
                 }
+            }
+
+            if (AnimusConfig.rituals.cullingDebug.get()) {
+                System.out.println("Animus: [Ritual of Culling Debug]: Finished culling loop - killed " + entityCount + " entities");
             }
 
             // Consume LP for kills
