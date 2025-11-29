@@ -27,5 +27,13 @@ public class AnimusNetwork {
             AltarGhostBlocksPacket::decode,
             AltarGhostBlocksPacket::handle
         );
+
+        CHANNEL.registerMessage(
+            packetId++,
+            SigilRadiusPacket.class,
+            SigilRadiusPacket::encode,
+            SigilRadiusPacket::decode,
+            SigilRadiusPacket::handle
+        );
     }
 }

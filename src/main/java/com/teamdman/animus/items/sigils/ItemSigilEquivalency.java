@@ -1,5 +1,6 @@
 package com.teamdman.animus.items.sigils;
 
+import com.mojang.logging.LogUtils;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.ChatFormatting;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
 import wayoftime.bloodmagic.common.item.IBindable;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
@@ -48,6 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * - Right-click block: Replace all matching blocks in radius with random selection
  */
 public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final String NBT_SELECTED_BLOCKS = "SelectedBlocks";
     private static final String NBT_RADIUS = "Radius";
     private static final int MAX_SELECTED_BLOCKS = 20;
@@ -61,25 +64,56 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         super(Constants.Sigils.EQUIVALENCY, 0); // LP cost per block
     }
 
-    public boolean onScroll(Player player, ItemStack stack, double scrollDelta) {
+    public boolean onScroll(Player player, ItemStack stack, double scrollDelta, InteractionHand hand) {
         if (!player.isShiftKeyDown()) {
             return false;
         }
 
+        String side = player.level().isClientSide ? "CLIENT" : "SERVER";
+
         // Adjust radius
         int currentRadius = getRadius(stack);
+        LOGGER.info("[Sigil of Equivalency] [{}] onScroll: Current radius before change: {}", side, currentRadius);
+
         int newRadius = currentRadius + (scrollDelta > 0 ? 1 : -1);
         newRadius = Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, newRadius));
 
         if (newRadius != currentRadius) {
             setRadius(stack, newRadius);
+            int areaDimension = (newRadius * 2) + 1;
+            LOGGER.info("[Sigil of Equivalency] [{}] onScroll: Changed radius from {} to {} ({}x{} area)", side, currentRadius, newRadius, areaDimension, areaDimension);
+
+            // Verify it was actually saved
+            int verifyRadius = getRadius(stack);
+            if (verifyRadius != newRadius) {
+                LOGGER.error("[Sigil of Equivalency] [{}] onScroll: MISMATCH! Set radius to {} but read back {}", side, newRadius, verifyRadius);
+            } else {
+                LOGGER.info("[Sigil of Equivalency] [{}] onScroll: Verified radius is now {}", side, verifyRadius);
+            }
+
             if (player.level().isClientSide) {
+                // Send packet to server to sync radius
+                com.teamdman.animus.network.AnimusNetwork.CHANNEL.sendToServer(
+                    new com.teamdman.animus.network.SigilRadiusPacket(hand, newRadius)
+                );
+                LOGGER.info("[Sigil of Equivalency] [CLIENT] Sent radius sync packet to server: hand={}, radius={}", hand, newRadius);
+
                 player.displayClientMessage(
-                    Component.literal("Radius: " + newRadius)
+                    Component.literal("Radius: " + newRadius + " (" + areaDimension + "×" + areaDimension + " area)")
                         .withStyle(ChatFormatting.GOLD),
                     true
                 );
             }
+            // DEBUG: Also show on server side
+            if (!player.level().isClientSide) {
+                player.displayClientMessage(
+                    Component.literal("DEBUG: [SERVER] Radius set to " + newRadius + " in NBT")
+                        .withStyle(ChatFormatting.YELLOW),
+                    false
+                );
+            }
+        } else {
+            LOGGER.info("[Sigil of Equivalency] [{}] onScroll: Radius unchanged at {}", side, currentRadius);
         }
 
         return true;
@@ -115,6 +149,10 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         if (player == null) {
             return InteractionResult.PASS;
         }
+
+        String side = level.isClientSide ? "CLIENT" : "SERVER";
+        int currentRadius = getRadius(stack);
+        LOGGER.info("[Sigil of Equivalency] [{}] useOn: Player right-clicked at {}, current radius in NBT: {}", side, pos, currentRadius);
 
         BlockState targetState = level.getBlockState(pos);
         if (targetState.isAir()) {
@@ -203,6 +241,19 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             }
         }
 
+        // DEBUG: Show available blocks
+        StringBuilder availableBlockNames = new StringBuilder();
+        for (Block block : availableBlocks) {
+            if (availableBlockNames.length() > 0) availableBlockNames.append(", ");
+            availableBlockNames.append(block.getName().getString());
+        }
+        LOGGER.info("[Sigil of Equivalency] DEBUG: Available blocks: [{}]", availableBlockNames);
+        player.displayClientMessage(
+            Component.literal("DEBUG: Available blocks: [" + availableBlockNames + "]")
+                .withStyle(ChatFormatting.YELLOW),
+            false
+        );
+
         if (availableBlocks.isEmpty()) {
             player.displayClientMessage(
                 Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_BLOCKS)
@@ -220,7 +271,24 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
         // Find all matching blocks in radius
         int radius = getRadius(stack);
+
+        // DEBUG: Show radius being used
+        LOGGER.info("[Sigil of Equivalency] DEBUG: Using radius {} on face {}", radius, clickedFace);
+        player.displayClientMessage(
+            Component.literal("DEBUG: Using radius " + radius + " on face " + clickedFace)
+                .withStyle(ChatFormatting.YELLOW),
+            false
+        );
+
         List<BlockPos> matchingBlocks = findMatchingBlocksInRadius(level, centerPos, targetState.getBlock(), radius, clickedFace);
+
+        // DEBUG: Show blocks found
+        LOGGER.info("[Sigil of Equivalency] DEBUG: Found {} matching {}", matchingBlocks.size(), targetState.getBlock().getName().getString());
+        player.displayClientMessage(
+            Component.literal("DEBUG: Found " + matchingBlocks.size() + " matching " + targetState.getBlock().getName().getString())
+                .withStyle(ChatFormatting.YELLOW),
+            false
+        );
 
         if (matchingBlocks.isEmpty()) {
             player.displayClientMessage(
@@ -231,9 +299,54 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             return InteractionResult.FAIL;
         }
 
-        // Calculate total LP cost
+        // Filter out blocks that would be replaced with the same type
+        List<BlockPos> blocksToReplace = new ArrayList<>();
+        for (BlockPos pos : matchingBlocks) {
+            // Check if any available block is different from current
+            boolean canReplace = false;
+            for (Block availableBlock : availableBlocks) {
+                if (availableBlock != targetState.getBlock()) {
+                    canReplace = true;
+                    break;
+                }
+            }
+            if (canReplace) {
+                blocksToReplace.add(pos);
+            }
+        }
+
+        // DEBUG: Show filtered count
+        if (blocksToReplace.size() != matchingBlocks.size()) {
+            int skipped = matchingBlocks.size() - blocksToReplace.size();
+            LOGGER.info("[Sigil of Equivalency] DEBUG: Skipped {} blocks (would replace with same type)", skipped);
+            player.displayClientMessage(
+                Component.literal("DEBUG: Skipped " + skipped +
+                    " blocks (would replace with same type)")
+                    .withStyle(ChatFormatting.YELLOW),
+                false
+            );
+        }
+
+        if (blocksToReplace.isEmpty()) {
+            player.displayClientMessage(
+                Component.literal("All matching blocks would be replaced with the same type!")
+                    .withStyle(ChatFormatting.RED),
+                true
+            );
+            return InteractionResult.FAIL;
+        }
+
+        // Calculate total LP cost based on blocks that will actually be replaced
         int lpPerBlock = AnimusConfig.sigils.sigilEquivalencyLPCost.get();
-        int totalLP = matchingBlocks.size() * lpPerBlock;
+        int totalLP = blocksToReplace.size() * lpPerBlock;
+
+        // DEBUG: Show LP calculation
+        LOGGER.info("[Sigil of Equivalency] DEBUG: LP cost = {} blocks × {} LP = {} LP", blocksToReplace.size(), lpPerBlock, totalLP);
+        player.displayClientMessage(
+            Component.literal("DEBUG: LP cost = " + blocksToReplace.size() + " blocks × " + lpPerBlock + " LP = " + totalLP + " LP")
+                .withStyle(ChatFormatting.YELLOW),
+            false
+        );
 
         if (network.getCurrentEssence() < totalLP) {
             player.displayClientMessage(
@@ -255,7 +368,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         ReplacementOperation operation = new ReplacementOperation(
             level,
             player.getUUID(),
-            matchingBlocks,
+            blocksToReplace,
             availableBlocks,
             targetState.getBlock(),
             centerPos
@@ -269,7 +382,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         player.displayClientMessage(
             Component.translatable(
                 Constants.Localizations.Text.EQUIVALENCY_STARTED,
-                matchingBlocks.size()
+                blocksToReplace.size()
             ).withStyle(ChatFormatting.GOLD),
             true
         );
@@ -282,12 +395,14 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
      * Only finds blocks on the same plane as the clicked face
      */
     private List<BlockPos> findMatchingBlocksInRadius(ServerLevel level, BlockPos center, Block targetBlock, int radius, net.minecraft.core.Direction clickedFace) {
+        LOGGER.info("[Sigil of Equivalency] findMatchingBlocksInRadius: center={}, block={}, radius={}, face={}", center, targetBlock.getName().getString(), radius, clickedFace);
         List<BlockPos> matches = new ArrayList<>();
         Set<BlockPos> visited = new java.util.HashSet<>();
         Queue<BlockPos> queue = new java.util.LinkedList<>();
 
         // Maximum blocks for a plane (square area)
         int maxBlocks = (radius * 2 + 1) * (radius * 2 + 1);
+        LOGGER.info("[Sigil of Equivalency] Max blocks for radius {}: {} ({}x{} area)", radius, maxBlocks, (radius * 2 + 1), (radius * 2 + 1));
 
         // Start flood-fill from center
         queue.add(center);
@@ -349,6 +464,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             }
         }
 
+        LOGGER.info("[Sigil of Equivalency] findMatchingBlocksInRadius: Found {} matching blocks", matches.size());
         return matches;
     }
 
@@ -506,18 +622,37 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         if (tag == null || !tag.contains(NBT_RADIUS)) {
             // Default to config value
             radius = AnimusConfig.sigils.sigilEquivalencyRadius.get();
+            LOGGER.info("[Sigil of Equivalency] getRadius: No NBT tag, using config default: {}", radius);
         } else {
             radius = tag.getInt(NBT_RADIUS);
+            LOGGER.info("[Sigil of Equivalency] getRadius: Read from NBT: {} (tag contains {} keys)", radius, tag.getAllKeys().size());
         }
         // Always clamp to valid range to prevent bugs
-        return Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
+        int clamped = Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
+        if (clamped != radius) {
+            LOGGER.warn("[Sigil of Equivalency] getRadius: Clamped {} to {} (min={}, max={})", radius, clamped, MIN_RADIUS, MAX_RADIUS);
+        }
+        return clamped;
     }
 
     private void setRadius(ItemStack stack, int radius) {
         CompoundTag tag = stack.getOrCreateTag();
         // Clamp before saving
+        int originalRadius = radius;
         radius = Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
+        if (radius != originalRadius) {
+            LOGGER.warn("[Sigil of Equivalency] setRadius: Clamped {} to {} before saving", originalRadius, radius);
+        }
+        LOGGER.info("[Sigil of Equivalency] setRadius: Saving radius {} to NBT (tag has {} keys before write)", radius, tag.getAllKeys().size());
         tag.putInt(NBT_RADIUS, radius);
+        LOGGER.info("[Sigil of Equivalency] setRadius: NBT now has {} keys after write", tag.getAllKeys().size());
+    }
+
+    /**
+     * Public method for the network packet handler to update radius on server side
+     */
+    public void setRadiusFromPacket(ItemStack stack, int radius) {
+        setRadius(stack, radius);
     }
 
     /**
@@ -572,10 +707,10 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                 return;
             }
 
-            // Select random replacement block
+            // Select random replacement block (filtered list only contains different blocks)
             Block replacementBlock = replacementBlocks.get(random.nextInt(replacementBlocks.size()));
 
-            // Skip if replacement block is the same as current block (no point wasting LP/items)
+            // Safety check: Skip if somehow the same (shouldn't happen due to pre-filtering)
             if (currentState.getBlock() == replacementBlock) {
                 return;
             }
