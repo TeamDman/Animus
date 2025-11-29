@@ -45,6 +45,12 @@ public class Constants {
             public static final String TICKET_CHAINS = "text.component.animus.ticket.chains";
             public static final String TICKET_STEADFAST = "text.component.animus.ticket.steadfast";
             public static final String TICKET_HEAVENLY_WRATH = "text.component.animus.ticket.heavenly_wrath";
+            public static final String TICKET_REMEDIUM = "text.component.animus.ticket.remedium";
+
+            // Remedium Sigil
+            public static final String REMEDIUM_ACTIVATED = "text.component.animus.remedium.activated";
+            public static final String REMEDIUM_DEACTIVATED = "text.component.animus.remedium.deactivated";
+            public static final String REMEDIUM_NO_LP = "text.component.animus.remedium.no_lp";
 
             // Key of Binding
             public static final String KEY_CANNOT_BIND_KEY = "text.component.animus.key.cannot_bind_key";
@@ -95,6 +101,11 @@ public class Constants {
             public static final String SIGIL_STORM_INFO = "tooltip.animus.sigil.storm.info";
             public static final String SIGIL_HEAVENLY_WRATH_FLAVOUR = "tooltip.animus.sigil.heavenly_wrath.flavour";
             public static final String SIGIL_HEAVENLY_WRATH_INFO = "tooltip.animus.sigil.heavenly_wrath.info";
+            public static final String SIGIL_REMEDIUM_FLAVOUR = "tooltip.animus.sigil.remedium.flavour";
+            public static final String SIGIL_REMEDIUM_INFO = "tooltip.animus.sigil.remedium.info";
+            public static final String SIGIL_REMEDIUM_COST = "tooltip.animus.sigil.remedium.cost";
+            public static final String SIGIL_REMEDIUM_ACTIVE = "tooltip.animus.sigil.remedium.active";
+            public static final String SIGIL_REMEDIUM_INACTIVE = "tooltip.animus.sigil.remedium.inactive";
             public static final String SIGIL_TRANSPOSITION_FLAVOUR = "tooltip.animus.sigil.transposition.flavour";
             public static final String SIGIL_TRANSPOSITION_INFO = "tooltip.animus.sigil.transposition.info";
             public static final String SIGIL_TRANSPOSITION_STORED = "tooltip.animus.sigil.transposition.stored";
@@ -260,6 +271,7 @@ public class Constants {
         public static final String LEACH = "leach";
         public static final String STORM = "storm";
         public static final String HEAVENLY_WRATH = "heavenly_wrath";
+        public static final String REMEDIUM = "remedium";
         public static final String TRANSPOSITION = "transposition";
     }
 
