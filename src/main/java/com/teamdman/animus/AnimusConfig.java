@@ -276,8 +276,8 @@ public class AnimusConfig {
                 .defineInRange("freeSoulCooldown", 60, 1, 600);
 
             sigilEquivalencyRadius = builder
-                .comment("Maximum radius in blocks for Sigil of Equivalency block replacement")
-                .defineInRange("sigilEquivalencyRadius", 8, 1, 32);
+                .comment("Default radius in blocks for Sigil of Equivalency block replacement (min: 1, max: 32)")
+                .defineInRange("sigilEquivalencyRadius", 1, 1, 32);
 
             sigilEquivalencyLPCost = builder
                 .comment("LP cost per block replaced by Sigil of Equivalency")

@@ -45,10 +45,16 @@ public class SigilEquivalencyRenderer {
             return;
         }
 
-        // Check if player is holding the sigil
+        // Check if player is holding the sigil and get the stack
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offHand = player.getOffhandItem();
-        if (!mainHand.is(AnimusItems.SIGIL_EQUIVALENCY.get()) && !offHand.is(AnimusItems.SIGIL_EQUIVALENCY.get())) {
+        ItemStack sigilStack = null;
+
+        if (mainHand.is(AnimusItems.SIGIL_EQUIVALENCY.get())) {
+            sigilStack = mainHand;
+        } else if (offHand.is(AnimusItems.SIGIL_EQUIVALENCY.get())) {
+            sigilStack = offHand;
+        } else {
             return;
         }
 
@@ -67,9 +73,10 @@ public class SigilEquivalencyRenderer {
             return;
         }
 
-        // Find all matching blocks in radius
-        int radius = AnimusConfig.sigils.sigilEquivalencyRadius.get();
-        List<BlockPos> matchingBlocks = findMatchingBlocksInRadius(level, targetPos, targetState.getBlock(), radius);
+        // Get radius from the item
+        int radius = getRadius(sigilStack);
+        net.minecraft.core.Direction clickedFace = blockHit.getDirection();
+        List<BlockPos> matchingBlocks = findMatchingBlocksInRadius(level, targetPos, targetState.getBlock(), radius, clickedFace);
 
         if (matchingBlocks.isEmpty()) {
             return;
@@ -97,38 +104,51 @@ public class SigilEquivalencyRenderer {
         poseStack.popPose();
     }
 
-    private static List<BlockPos> findMatchingBlocksInRadius(Level level, BlockPos center, Block targetBlock, int radius) {
+    private static List<BlockPos> findMatchingBlocksInRadius(Level level, BlockPos center, Block targetBlock, int radius, net.minecraft.core.Direction clickedFace) {
         List<BlockPos> matches = new ArrayList<>();
         java.util.Set<BlockPos> visited = new java.util.HashSet<>();
         java.util.Queue<BlockPos> queue = new java.util.LinkedList<>();
 
-        // Maximum blocks to prevent performance issues (cube volume for radius)
-        int maxBlocks = (radius * 2 + 1) * (radius * 2 + 1) * (radius * 2 + 1);
+        // Maximum blocks for a plane (square area)
+        int maxBlocks = (radius * 2 + 1) * (radius * 2 + 1);
 
         // Start flood-fill from center
         queue.add(center);
         visited.add(center);
 
-        // Neighbor offsets (6 cardinal directions - only blocks that share a face)
-        BlockPos[] neighbors = new BlockPos[] {
-            new BlockPos(1, 0, 0),   // East
-            new BlockPos(-1, 0, 0),  // West
-            new BlockPos(0, 1, 0),   // Up
-            new BlockPos(0, -1, 0),  // Down
-            new BlockPos(0, 0, 1),   // South
-            new BlockPos(0, 0, -1)   // North
-        };
+        // Determine which neighbors to use based on clicked face
+        BlockPos[] neighbors;
+        if (clickedFace == net.minecraft.core.Direction.UP || clickedFace == net.minecraft.core.Direction.DOWN) {
+            // Horizontal plane - only check cardinal directions on XZ plane
+            neighbors = new BlockPos[] {
+                new BlockPos(1, 0, 0),   // East
+                new BlockPos(-1, 0, 0),  // West
+                new BlockPos(0, 0, 1),   // South
+                new BlockPos(0, 0, -1)   // North
+            };
+        } else if (clickedFace == net.minecraft.core.Direction.NORTH || clickedFace == net.minecraft.core.Direction.SOUTH) {
+            // North/South vertical plane - check on XY plane
+            neighbors = new BlockPos[] {
+                new BlockPos(1, 0, 0),   // East
+                new BlockPos(-1, 0, 0),  // West
+                new BlockPos(0, 1, 0),   // Up
+                new BlockPos(0, -1, 0)   // Down
+            };
+        } else {
+            // East/West vertical plane - check on ZY plane
+            neighbors = new BlockPos[] {
+                new BlockPos(0, 0, 1),   // South
+                new BlockPos(0, 0, -1),  // North
+                new BlockPos(0, 1, 0),   // Up
+                new BlockPos(0, -1, 0)   // Down
+            };
+        }
 
         while (!queue.isEmpty() && matches.size() < maxBlocks) {
             BlockPos current = queue.poll();
 
-            // Check if within radius from center using Chebyshev distance (cube radius)
-            int dx = Math.abs(current.getX() - center.getX());
-            int dy = Math.abs(current.getY() - center.getY());
-            int dz = Math.abs(current.getZ() - center.getZ());
-            int chebyshevDist = Math.max(Math.max(dx, dy), dz);
-
-            if (chebyshevDist > radius) {
+            // Check if on the same plane and within radius
+            if (!isOnSamePlaneAndInRadius(current, center, radius, clickedFace)) {
                 continue;
             }
 
@@ -141,14 +161,8 @@ public class SigilEquivalencyRenderer {
                 for (BlockPos offset : neighbors) {
                     BlockPos neighbor = current.offset(offset.getX(), offset.getY(), offset.getZ());
 
-                    // Check neighbor is within radius
-                    int ndx = Math.abs(neighbor.getX() - center.getX());
-                    int ndy = Math.abs(neighbor.getY() - center.getY());
-                    int ndz = Math.abs(neighbor.getZ() - center.getZ());
-                    int neighborDist = Math.max(Math.max(ndx, ndy), ndz);
-
-                    // Only process if not visited and within radius
-                    if (!visited.contains(neighbor) && neighborDist <= radius) {
+                    // Only process if not visited and on same plane within radius
+                    if (!visited.contains(neighbor) && isOnSamePlaneAndInRadius(neighbor, center, radius, clickedFace)) {
                         visited.add(neighbor);
                         queue.add(neighbor);
                     }
@@ -157,6 +171,33 @@ public class SigilEquivalencyRenderer {
         }
 
         return matches;
+    }
+
+    private static boolean isOnSamePlaneAndInRadius(BlockPos pos, BlockPos center, int radius, net.minecraft.core.Direction clickedFace) {
+        int dx = Math.abs(pos.getX() - center.getX());
+        int dy = Math.abs(pos.getY() - center.getY());
+        int dz = Math.abs(pos.getZ() - center.getZ());
+
+        // Check plane constraint and 2D distance
+        if (clickedFace == net.minecraft.core.Direction.UP || clickedFace == net.minecraft.core.Direction.DOWN) {
+            // Horizontal plane - must be same Y, check X and Z distance
+            return pos.getY() == center.getY() && Math.max(dx, dz) <= radius;
+        } else if (clickedFace == net.minecraft.core.Direction.NORTH || clickedFace == net.minecraft.core.Direction.SOUTH) {
+            // North/South plane - must be same Z, check X and Y distance
+            return pos.getZ() == center.getZ() && Math.max(dx, dy) <= radius;
+        } else {
+            // East/West plane - must be same X, check Y and Z distance
+            return pos.getX() == center.getX() && Math.max(dy, dz) <= radius;
+        }
+    }
+
+    private static int getRadius(ItemStack stack) {
+        net.minecraft.nbt.CompoundTag tag = stack.getTag();
+        if (tag == null || !tag.contains("Radius")) {
+            // Default to config value
+            return AnimusConfig.sigils.sigilEquivalencyRadius.get();
+        }
+        return tag.getInt("Radius");
     }
 
     private static void renderPreviewBlock(PoseStack poseStack, MultiBufferSource bufferSource) {

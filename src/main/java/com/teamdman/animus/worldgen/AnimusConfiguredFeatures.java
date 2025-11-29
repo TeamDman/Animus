@@ -37,6 +37,7 @@ public class AnimusConfiguredFeatures {
          .decorators(java.util.List.of(BloodCoreDecorator.INSTANCE));  // Add blood core decorator
     }
 
+    @SuppressWarnings("removal")
     private static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE,
             new ResourceLocation(Constants.Mod.MODID, name));
