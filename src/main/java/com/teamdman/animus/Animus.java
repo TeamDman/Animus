@@ -1,5 +1,6 @@
 package com.teamdman.animus;
 
+import com.teamdman.animus.network.AnimusNetwork;
 import com.teamdman.animus.registry.*;
 import com.teamdman.animus.worldgen.AnimusTreeDecoratorTypes;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -41,6 +42,10 @@ public class Animus {
 
     private void commonSetup(final net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) {
         LOGGER.info("Animus common setup");
+
+        // Register network packets
+        AnimusNetwork.register();
+
         event.enqueueWork(() -> {
             // Register strippable blocks (axe interaction) using reflection
             try {
