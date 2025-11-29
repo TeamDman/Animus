@@ -1,11 +1,13 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.network.chat.Component;
@@ -15,6 +17,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -30,6 +33,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.BlockEvent;
+import wayoftime.bloodmagic.common.block.BlockTeleposer;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
@@ -37,13 +41,23 @@ import wayoftime.bloodmagic.util.helper.NetworkHelper;
 import java.util.List;
 
 /**
- * Sigil of Transposition - moves blocks with their tile entities
- * Right-click a block to select it, then right-click a location to move it
- * Right-click air to clear selection
- * Respects forge:relocation_not_supported tag and protection mods like FTB Chunks
+ * Sigil of Transposition - moves blocks with their tile entities and teleports entities
+ *
+ * Block Transposition Mode:
+ * - Right-click a block to select it, then right-click a location to move it
+ * - Right-click air to clear selection
+ * - Respects forge:relocation_not_supported tag and protection mods like FTB Chunks
+ *
+ * Entity Teleportation Mode:
+ * - Shift+Right-click a Teleposer to bind its location
+ * - Attack an entity to teleport it to the bound Teleposer (1 block above)
+ * - Can only teleport players if they are sneaking
+ * - Consumes LP for each teleportation
  */
 public class ItemSigilTransposition extends ItemSigilToggleableBase {
     private static final String POS_KEY = "transposition_pos";
+    private static final String TELEPOSER_KEY = "teleposer_pos";
+    private static final int TELEPORT_COST = 2000; // LP cost to teleport an entity
     private static final TagKey<Block> RELOCATION_NOT_SUPPORTED = TagKey.create(
         Registries.BLOCK,
         ResourceLocation.fromNamespaceAndPath("forge", "relocation_not_supported")
@@ -112,6 +126,18 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
         CompoundTag tag = stack.getOrCreateTag();
         BlockState clickedState = level.getBlockState(clickedPos);
+
+        // Shift+Right-click on Teleposer to bind teleportation location
+        if (player.isShiftKeyDown() && clickedState.getBlock() instanceof BlockTeleposer) {
+            tag.putLong(TELEPOSER_KEY, clickedPos.asLong());
+            player.displayClientMessage(
+                Component.literal("Teleposer bound! Attack entities to teleport them here.")
+                    .withStyle(ChatFormatting.GOLD),
+                true
+            );
+            level.playSound(null, clickedPos, SoundEvents.PORTAL_TRAVEL, SoundSource.BLOCKS, 0.5F, 2.0F);
+            return InteractionResult.SUCCESS;
+        }
 
         if (!getActivated(stack)) {
             // First click - select block to move
@@ -256,6 +282,92 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_STORED));
         }
 
+        if (tag != null && tag.getLong(TELEPOSER_KEY) != 0) {
+            BlockPos teleposerPos = BlockPos.of(tag.getLong(TELEPOSER_KEY));
+            tooltip.add(Component.literal("Teleposer: " + teleposerPos.getX() + ", " + teleposerPos.getY() + ", " + teleposerPos.getZ())
+                .withStyle(ChatFormatting.AQUA));
+        }
+
         super.appendHoverText(stack, level, tooltip, flag);
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (attacker.level().isClientSide || !(attacker instanceof Player player)) {
+            return super.hurtEnemy(stack, target, attacker);
+        }
+
+        if (isUnusable(stack)) {
+            return super.hurtEnemy(stack, target, attacker);
+        }
+
+        CompoundTag tag = stack.getTag();
+        if (tag == null || tag.getLong(TELEPOSER_KEY) == 0) {
+            player.displayClientMessage(
+                Component.literal("No Teleposer bound! Shift+Right-click a Teleposer to bind it.")
+                    .withStyle(ChatFormatting.RED),
+                true
+            );
+            return super.hurtEnemy(stack, target, attacker);
+        }
+
+        // Check if target is a player and not sneaking
+        if (target instanceof Player targetPlayer && !targetPlayer.isShiftKeyDown()) {
+            player.displayClientMessage(
+                Component.literal("Cannot teleport players unless they are sneaking!")
+                    .withStyle(ChatFormatting.RED),
+                true
+            );
+            return super.hurtEnemy(stack, target, attacker);
+        }
+
+        // Get teleposer position
+        BlockPos teleposerPos = BlockPos.of(tag.getLong(TELEPOSER_KEY));
+        BlockPos targetPos = teleposerPos.above(); // 1 block above teleposer
+
+        // Verify teleposer still exists
+        if (!(player.level().getBlockState(teleposerPos).getBlock() instanceof BlockTeleposer)) {
+            player.displayClientMessage(
+                Component.literal("Bound Teleposer no longer exists!")
+                    .withStyle(ChatFormatting.RED),
+                true
+            );
+            tag.putLong(TELEPOSER_KEY, 0);
+            return super.hurtEnemy(stack, target, attacker);
+        }
+
+        // Consume LP
+        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        SoulTicket ticket = new SoulTicket(
+            Component.literal("Entity Teleportation"),
+            TELEPORT_COST
+        );
+
+        var result = network.syphonAndDamage(player, ticket);
+        if (!result.isSuccess()) {
+            player.displayClientMessage(
+                Component.literal("Not enough LP to teleport! Need " + TELEPORT_COST + " LP")
+                    .withStyle(ChatFormatting.RED),
+                true
+            );
+            return super.hurtEnemy(stack, target, attacker);
+        }
+
+        // Teleport the entity
+        target.teleportTo(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
+        target.fallDistance = 0.0F;
+
+        // Effects
+        player.level().playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
+        player.level().playSound(null, targetPos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
+
+        String targetName = target instanceof Player ? target.getName().getString() : target.getType().getDescription().getString();
+        player.displayClientMessage(
+            Component.literal("Teleported " + targetName + " to Teleposer!")
+                .withStyle(ChatFormatting.GREEN),
+            true
+        );
+
+        return super.hurtEnemy(stack, target, attacker);
     }
 }
