@@ -34,7 +34,8 @@ import java.util.function.Consumer;
  * Activation Cost: 5000 LP
  * Refresh Cost: Configurable (default: 50 LP per placement)
  * Refresh Time: 10 ticks (0.5 seconds)
- * Range: Configurable (default: 16 blocks)
+ * Horizontal Radius: Configurable (default: 32 blocks)
+ * Vertical Depth: Configurable (default: 128 blocks)
  */
 @RitualRegister(Constants.Rituals.RELENTLESS_TIDES)
 public class RitualRelentlessTides extends Ritual {
@@ -91,8 +92,9 @@ public class RitualRelentlessTides extends Ritual {
         }
 
         // Find a valid placement position below the ritual stone
-        int range = AnimusConfig.rituals.relentlessTidesRange.get();
-        BlockPos placementPos = findValidPlacementPosition(serverLevel, masterPos, range);
+        int horizontalRadius = AnimusConfig.rituals.relentlessTidesRange.get();
+        int verticalDepth = AnimusConfig.rituals.relentlessTidesDepth.get();
+        BlockPos placementPos = findValidPlacementPosition(serverLevel, masterPos, horizontalRadius, verticalDepth);
 
         if (placementPos == null) {
             // No valid placement found, emit smoke
@@ -134,8 +136,9 @@ public class RitualRelentlessTides extends Ritual {
     /**
      * Find a valid position to place fluid using an optimized perimeter-based search
      * Searches in expanding square rings starting from below the ritual stone
+     * Also searches vertically downward in each column
      */
-    private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, int range) {
+    private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
         // Start position is below the master ritual stone
@@ -147,21 +150,23 @@ public class RitualRelentlessTides extends Ritual {
         int checksThisTick = 0;
 
         // Search in expanding square rings
-        for (int ring = startRing; ring <= range && checksThisTick < maxChecksPerTick; ring++) {
+        for (int ring = startRing; ring <= horizontalRadius && checksThisTick < maxChecksPerTick; ring++) {
             state.currentRing = ring;
 
             if (ring == 0) {
-                // Check the center position
-                BlockPos checkPos = startPos;
-                if (isValidPlacementSpot(level, checkPos)) {
-                    resetSearchState(masterPos);
-                    return checkPos;
+                // Check the center column (vertically downward)
+                for (int y = 0; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
+                    BlockPos checkPos = startPos.below(y);
+                    checksThisTick++;
+                    if (isValidPlacementSpot(level, checkPos)) {
+                        resetSearchState(masterPos);
+                        return checkPos;
+                    }
                 }
-                checksThisTick++;
                 continue;
             }
 
-            // Check the perimeter of the current ring
+            // Check the perimeter of the current ring (with vertical depth)
             // This creates a square pattern expanding outward
             for (int x = -ring; x <= ring && checksThisTick < maxChecksPerTick; x++) {
                 for (int z = -ring; z <= ring && checksThisTick < maxChecksPerTick; z++) {
@@ -170,19 +175,22 @@ public class RitualRelentlessTides extends Ritual {
                         continue;
                     }
 
-                    BlockPos checkPos = startPos.offset(x, 0, z);
-                    checksThisTick++;
+                    // For each perimeter position, check vertically downward
+                    for (int y = 0; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
+                        BlockPos checkPos = startPos.offset(x, -y, z);
+                        checksThisTick++;
 
-                    if (isValidPlacementSpot(level, checkPos)) {
-                        resetSearchState(masterPos);
-                        return checkPos;
+                        if (isValidPlacementSpot(level, checkPos)) {
+                            resetSearchState(masterPos);
+                            return checkPos;
+                        }
                     }
                 }
             }
         }
 
         // If we've searched the entire range, reset to start over next tick
-        if (state.currentRing > range) {
+        if (state.currentRing > horizontalRadius) {
             resetSearchState(masterPos);
         }
 

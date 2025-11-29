@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "title": "Search Algorithm",
-      "text": "The ritual uses an optimized perimeter-based search to find fluid sources:$(br)- Searches in expanding square rings below the MRS$(br)- Also searches vertically downward in each column$(br)- Resumes where it left off on subsequent ticks$(br)- Only extracts source blocks, not flowing fluids$(br)- Processes up to 64 positions per tick for performance$(br2)This ensures efficient fluid extraction without lag."
+      "text": "The ritual uses an optimized perimeter-based search to find fluid sources:$(br)- Searches in expanding square rings below the MRS$(br)- Also searches vertically downward in each column$(br)- Depth and radius are separately configurable$(br)- Resumes where it left off on subsequent ticks$(br)- Only extracts source blocks, not flowing fluids$(br)- Processes up to 64 positions per tick for performance$(br2)This ensures efficient fluid extraction without lag."
     },
     {
       "type": "patchouli:text",
@@ -25,7 +25,7 @@
     {
       "type": "patchouli:text",
       "title": "Configuration",
-      "text": "The Ritual of Siphon can be configured via the server config:$(br)- Extraction Range: Radius in blocks (default: 16, range: 1-64)$(br)- LP Per Extraction: LP cost per fluid extracted (default: 50, range: 1-1000)$(br2)Activation Cost: 5000 LP$(br2)Refresh Time: 0.5 seconds (10 ticks)$(br2)Note: Range applies both horizontally and vertically below the MRS."
+      "text": "The Ritual of Siphon can be configured via the server config:$(br)- Horizontal Radius: Search radius in blocks (default: 32, range: 1-64)$(br)- Vertical Depth: Maximum depth to search (default: 128, range: 1-256)$(br)- LP Per Extraction: LP cost per fluid extracted (default: 50, range: 1-1000)$(br2)Activation Cost: 5000 LP$(br2)Refresh Time: 0.5 seconds (10 ticks)"
     },
     {
       "type": "patchouli:ritual",

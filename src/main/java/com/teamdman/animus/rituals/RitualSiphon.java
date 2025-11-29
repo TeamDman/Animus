@@ -33,7 +33,8 @@ import java.util.function.Consumer;
  * Activation Cost: 5000 LP
  * Refresh Cost: Configurable (default: 50 LP per extraction)
  * Refresh Time: 10 ticks (0.5 seconds)
- * Range: Configurable (default: 16 blocks)
+ * Horizontal Radius: Configurable (default: 32 blocks)
+ * Vertical Depth: Configurable (default: 128 blocks)
  */
 @RitualRegister(Constants.Rituals.SIPHON)
 public class RitualSiphon extends Ritual {
@@ -83,8 +84,9 @@ public class RitualSiphon extends Ritual {
         }
 
         // Find a fluid source to extract below the ritual stone
-        int range = AnimusConfig.rituals.siphonRange.get();
-        BlockPos fluidPos = findFluidSource(serverLevel, masterPos, range);
+        int horizontalRadius = AnimusConfig.rituals.siphonRange.get();
+        int verticalDepth = AnimusConfig.rituals.siphonDepth.get();
+        BlockPos fluidPos = findFluidSource(serverLevel, masterPos, horizontalRadius, verticalDepth);
 
         if (fluidPos == null) {
             // No fluid found, emit smoke
@@ -139,8 +141,9 @@ public class RitualSiphon extends Ritual {
     /**
      * Find a fluid source block using an optimized perimeter-based search
      * Searches in expanding square rings starting from below the ritual stone
+     * Also searches vertically downward in each column
      */
-    private BlockPos findFluidSource(ServerLevel level, BlockPos masterPos, int range) {
+    private BlockPos findFluidSource(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
         // Start position is below the master ritual stone
@@ -152,21 +155,23 @@ public class RitualSiphon extends Ritual {
         int checksThisTick = 0;
 
         // Search in expanding square rings
-        for (int ring = startRing; ring <= range && checksThisTick < maxChecksPerTick; ring++) {
+        for (int ring = startRing; ring <= horizontalRadius && checksThisTick < maxChecksPerTick; ring++) {
             state.currentRing = ring;
 
             if (ring == 0) {
-                // Check the center position
-                BlockPos checkPos = startPos;
-                if (isFluidSource(level, checkPos)) {
-                    resetSearchState(masterPos);
-                    return checkPos;
+                // Check the center column (vertically downward)
+                for (int y = 0; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
+                    BlockPos checkPos = startPos.below(y);
+                    checksThisTick++;
+                    if (isFluidSource(level, checkPos)) {
+                        resetSearchState(masterPos);
+                        return checkPos;
+                    }
                 }
-                checksThisTick++;
                 continue;
             }
 
-            // Check the perimeter of the current ring
+            // Check the perimeter of the current ring (with vertical depth)
             // This creates a square pattern expanding outward
             for (int x = -ring; x <= ring && checksThisTick < maxChecksPerTick; x++) {
                 for (int z = -ring; z <= ring && checksThisTick < maxChecksPerTick; z++) {
@@ -175,22 +180,14 @@ public class RitualSiphon extends Ritual {
                         continue;
                     }
 
-                    // Also check vertically down from this position
-                    for (int y = 0; y >= -range && checksThisTick < maxChecksPerTick; y--) {
-                        BlockPos checkPos = startPos.offset(x, y, z);
+                    // For each perimeter position, check vertically downward
+                    for (int y = 0; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
+                        BlockPos checkPos = startPos.offset(x, -y, z);
                         checksThisTick++;
 
                         if (isFluidSource(level, checkPos)) {
                             resetSearchState(masterPos);
                             return checkPos;
-                        }
-
-                        // If we hit a non-fluid block, stop going down in this column
-                        if (!level.getBlockState(checkPos).getFluidState().isEmpty()) {
-                            continue;
-                        }
-                        if (!level.getBlockState(checkPos).isAir()) {
-                            break;
                         }
                     }
                 }
@@ -198,7 +195,7 @@ public class RitualSiphon extends Ritual {
         }
 
         // If we've searched the entire range, reset to start over next tick
-        if (state.currentRing > range) {
+        if (state.currentRing > horizontalRadius) {
             resetSearchState(masterPos);
         }
 

@@ -71,8 +71,10 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue noliteIgnemRadius;
         public final ForgeConfigSpec.IntValue noliteIgnemLPPerFire;
         public final ForgeConfigSpec.IntValue relentlessTidesRange;
+        public final ForgeConfigSpec.IntValue relentlessTidesDepth;
         public final ForgeConfigSpec.IntValue relentlessTidesLPPerPlacement;
         public final ForgeConfigSpec.IntValue siphonRange;
+        public final ForgeConfigSpec.IntValue siphonDepth;
         public final ForgeConfigSpec.IntValue siphonLPPerExtraction;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
@@ -171,16 +173,24 @@ public class AnimusConfig {
                 .defineInRange("noliteIgnemLPPerFire", 10, 1, 1000);
 
             relentlessTidesRange = builder
-                .comment("Range in blocks for Ritual of Relentless Tides fluid placement")
-                .defineInRange("relentlessTidesRange", 16, 1, 64);
+                .comment("Horizontal radius in blocks for Ritual of Relentless Tides fluid placement")
+                .defineInRange("relentlessTidesRange", 32, 1, 64);
+
+            relentlessTidesDepth = builder
+                .comment("Maximum vertical depth in blocks for Ritual of Relentless Tides fluid placement")
+                .defineInRange("relentlessTidesDepth", 128, 1, 256);
 
             relentlessTidesLPPerPlacement = builder
                 .comment("LP cost per fluid block placed by Ritual of Relentless Tides")
                 .defineInRange("relentlessTidesLPPerPlacement", 50, 1, 1000);
 
             siphonRange = builder
-                .comment("Range in blocks for Ritual of Siphon fluid extraction")
-                .defineInRange("siphonRange", 16, 1, 64);
+                .comment("Horizontal radius in blocks for Ritual of Siphon fluid extraction")
+                .defineInRange("siphonRange", 32, 1, 64);
+
+            siphonDepth = builder
+                .comment("Maximum vertical depth in blocks for Ritual of Siphon fluid extraction")
+                .defineInRange("siphonDepth", 128, 1, 256);
 
             siphonLPPerExtraction = builder
                 .comment("LP cost per fluid block extracted by Ritual of Siphon")
