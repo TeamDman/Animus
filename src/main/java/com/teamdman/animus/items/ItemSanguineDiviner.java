@@ -42,7 +42,7 @@ import java.util.Map;
 public class ItemSanguineDiviner extends Item {
 
     public ItemSanguineDiviner() {
-        super(new Item.Properties());
+        super(new Item.Properties().stacksTo(1));
     }
 
     @Override
