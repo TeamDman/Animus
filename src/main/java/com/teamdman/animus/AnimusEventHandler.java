@@ -1,6 +1,7 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.items.ItemFragmentHealing;
+import com.teamdman.animus.items.sigils.ItemSigilHeavenlyWrath;
 import com.teamdman.animus.items.sigils.ItemSigilStorm;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
@@ -202,8 +203,8 @@ public class AnimusEventHandler {
     }
 
     /**
-     * Process pending fish spawns from Sigil of Storm
-     * This runs every server tick and checks if any pending spawns are ready
+     * Process pending fish spawns from Sigil of Storm and fall effects from Sigil of Heavenly Wrath
+     * This runs every server tick and checks if any pending spawns/effects are ready
      */
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent event) {
@@ -215,6 +216,7 @@ public class AnimusEventHandler {
         // Only process server levels
         if (event.level instanceof ServerLevel serverLevel) {
             ItemSigilStorm.tickPendingSpawns(serverLevel);
+            ItemSigilHeavenlyWrath.tickPendingFalls(serverLevel);
         }
     }
 

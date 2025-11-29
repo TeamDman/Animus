@@ -1,0 +1,21 @@
+{
+  "name": "guide.animus.entry.sigil_heavenly_wrath",
+  "category": "animus:sigils",
+  "icon": "animus:sigil_heavenly_wrath",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Sigil of Heavenly Wrath channels the power of blood magic to smite enemies from above. When activated, all hostile entities within a 16-block radius are forcibly levitated into the air before being dropped to suffer crushing fall damage."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_heavenly_wrath",
+      "text": "Right-click to activate the sigil. All enemies within 16 blocks (except the user) will be lifted into the air for 2 seconds before plummeting back down.$(br2)LP Cost: 1000 LP"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Advanced Mechanics",
+      "text": "Flying entities or those already high in the air receive enhanced downward velocity based on their height from the ground. For every 5 blocks of height, an additional -0.5 velocity is applied, making the sigil particularly effective against flying foes.$(br2)The base downward velocity is -1.5, with a maximum additional velocity of -3.0."
+    }
+  ]
+}

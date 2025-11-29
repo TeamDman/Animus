@@ -44,6 +44,7 @@ public class Constants {
             public static final String TICKET_APPLE = "text.component.animus.ticket.apple";
             public static final String TICKET_CHAINS = "text.component.animus.ticket.chains";
             public static final String TICKET_STEADFAST = "text.component.animus.ticket.steadfast";
+            public static final String TICKET_HEAVENLY_WRATH = "text.component.animus.ticket.heavenly_wrath";
 
             // Key of Binding
             public static final String KEY_CANNOT_BIND_KEY = "text.component.animus.key.cannot_bind_key";
@@ -92,6 +93,8 @@ public class Constants {
             public static final String SIGIL_LEACH_INFO = "tooltip.animus.sigil.leach.info";
             public static final String SIGIL_STORM_FLAVOUR = "tooltip.animus.sigil.storm.flavour";
             public static final String SIGIL_STORM_INFO = "tooltip.animus.sigil.storm.info";
+            public static final String SIGIL_HEAVENLY_WRATH_FLAVOUR = "tooltip.animus.sigil.heavenly_wrath.flavour";
+            public static final String SIGIL_HEAVENLY_WRATH_INFO = "tooltip.animus.sigil.heavenly_wrath.info";
             public static final String SIGIL_TRANSPOSITION_FLAVOUR = "tooltip.animus.sigil.transposition.flavour";
             public static final String SIGIL_TRANSPOSITION_INFO = "tooltip.animus.sigil.transposition.info";
             public static final String SIGIL_TRANSPOSITION_STORED = "tooltip.animus.sigil.transposition.stored";
@@ -256,6 +259,7 @@ public class Constants {
         public static final String CONSUMPTION = "consumption";
         public static final String LEACH = "leach";
         public static final String STORM = "storm";
+        public static final String HEAVENLY_WRATH = "heavenly_wrath";
         public static final String TRANSPOSITION = "transposition";
     }
 

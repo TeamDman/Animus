@@ -117,6 +117,9 @@ public class AnimusItems {
     public static final RegistryObject<Item> SIGIL_STORM = ITEMS.register("sigil_storm",
         ItemSigilStorm::new);
 
+    public static final RegistryObject<Item> SIGIL_HEAVENLY_WRATH = ITEMS.register("sigil_heavenly_wrath",
+        ItemSigilHeavenlyWrath::new);
+
     public static final RegistryObject<Item> SIGIL_TRANSPOSITION = ITEMS.register("sigil_transposition",
         ItemSigilTransposition::new);
 
