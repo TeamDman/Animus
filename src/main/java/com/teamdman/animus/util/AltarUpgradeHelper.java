@@ -37,14 +37,25 @@ public class AltarUpgradeHelper {
         // Get all components for the next tier from Blood Magic's data
         for (AltarComponent component : nextTier.getAltarComponents()) {
             BlockPos componentPos = altarPos.offset(component.getOffset());
-
-            // Skip if this position already has a block (not air)
-            // This will be checked when rendering, so we add all components
-
             ResourceLocation blockId = getBlockForComponentType(component.getComponent());
 
             if (blockId != null) {
                 ghostBlocks.put(componentPos, blockId);
+
+                // If this is a glowstone block above the altar level, add support pillars
+                // Blood Magic accepts any solid block (NOTAIR component type) for pillars
+                if (component.getComponent() == ComponentType.GLOWSTONE && component.getOffset().getY() > 0) {
+                    // Use stone bricks as a common, easily obtainable pillar block
+                    // (Any solid block works - stone bricks, cobblestone, etc.)
+                    ResourceLocation pillarBlock = ResourceLocation.fromNamespaceAndPath("minecraft", "stone_bricks");
+                    BlockPos offset = component.getOffset();
+
+                    // Add blocks from altar level up to (but not including) the glowstone
+                    for (int y = 1; y < offset.getY(); y++) {
+                        BlockPos pillarPos = altarPos.offset(offset.getX(), y, offset.getZ());
+                        ghostBlocks.put(pillarPos, pillarBlock);
+                    }
+                }
             }
         }
 
