@@ -1,0 +1,31 @@
+{
+  "name": "Willful Stone",
+  "icon": "animus:willful_stone",
+  "category": "animus:altar",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Willful Stone$() is a powerful protective block infused with demon will and bound to its placer. Once placed, it becomes nearly indestructible - as hard as bedrock itself - and only the original placer can break it.$(br2)This makes it ideal for protecting valuable structures, ritual sites, and other important locations from griefing or accidental destruction."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Ownership",
+      "text": "When you place a Willful Stone, it binds to your UUID. Only you can break it - other players will find it completely indestructible.$(br2)$(4)Creative players$() can bypass this protection.$(br2)$(o)Note: Key of Bringing functionality will allow trusted players to break your Willful Stones when that item is implemented.$)"
+    },
+    {
+      "type": "patchouli:soulforge_recipe",
+      "recipe": "bloodmagic:soulforge/willful_stone",
+      "text": "Willful Stone is crafted in the $(l)Soul Forge$() using stone, netherite scrap, obsidian, and a blank slate. This produces 32 blocks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Colors",
+      "text": "Willful Stone can be dyed into any of the 16 Minecraft dye colors!$(br2)Simply place a dye in the center of a crafting grid and surround it with 8 Willful Stones of $(4)any color$(). This produces 8 blocks of the new color.$(br2)You can also dye them back to the original grey color using $(l)grey dye$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "animus:willful_stone_cyan_dyeing",
+      "text": "Example: Creating Cyan Willful Stone by surrounding cyan dye with any color Willful Stones."
+    }
+  ]
+}

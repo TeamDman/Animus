@@ -1,0 +1,21 @@
+{
+  "type": "bloodmagic:soulforge",
+  "input0": {
+    "tag": "forge:stone"
+  },
+  "input1": {
+    "item": "minecraft:netherite_scrap"
+  },
+  "input2": {
+    "item": "minecraft:obsidian"
+  },
+  "input3": {
+    "item": "bloodmagic:blankslate"
+  },
+  "output": {
+    "item": "animus:willful_stone",
+    "count": 32
+  },
+  "minimumDrain": 200.0,
+  "drain": 50.0
+}

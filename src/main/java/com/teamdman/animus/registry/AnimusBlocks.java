@@ -35,6 +35,40 @@ public class AnimusBlocks {
     public static final RegistryObject<Block> BLOCK_CRYSTALLIZED_DEMON_WILL = BLOCKS.register("crystallized_demon_will_block",
         BlockCrystallizedDemonWill::new);
 
+    // Willful Stone blocks (all 16 colors)
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE = BLOCKS.register("willful_stone",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_WHITE = BLOCKS.register("willful_stone_white",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_ORANGE = BLOCKS.register("willful_stone_orange",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_MAGENTA = BLOCKS.register("willful_stone_magenta",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_LIGHT_BLUE = BLOCKS.register("willful_stone_light_blue",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_YELLOW = BLOCKS.register("willful_stone_yellow",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_LIME = BLOCKS.register("willful_stone_lime",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_PINK = BLOCKS.register("willful_stone_pink",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_LIGHT_GRAY = BLOCKS.register("willful_stone_light_gray",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_CYAN = BLOCKS.register("willful_stone_cyan",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_PURPLE = BLOCKS.register("willful_stone_purple",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_BLUE = BLOCKS.register("willful_stone_blue",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_BROWN = BLOCKS.register("willful_stone_brown",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_GREEN = BLOCKS.register("willful_stone_green",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_RED = BLOCKS.register("willful_stone_red",
+        BlockWillfulStone::new);
+    public static final RegistryObject<Block> BLOCK_WILLFUL_STONE_BLACK = BLOCKS.register("willful_stone_black",
+        BlockWillfulStone::new);
+
     // Fluid blocks
     public static final RegistryObject<Block> BLOCK_FLUID_ANTILIFE = BLOCKS.register("antilife_fluid",
         BlockFluidAntiLife::new);

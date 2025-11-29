@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SDS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "tag": "animus:willful_stones"
+    },
+    "D": {
+      "item": "minecraft:red_dye"
+    }
+  },
+  "result": {
+    "item": "animus:willful_stone_red",
+    "count": 8
+  }
+}
