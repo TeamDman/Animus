@@ -1,0 +1,26 @@
+{
+  "name": "guide.animus.entry.sigil_reparare",
+  "category": "animus:sigils",
+  "icon": "animus:sigil_reparare",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Sigil of Reparare channels blood magic to restore damaged items over time. When activated, this sigil automatically repairs all damageable items in your inventory and equipped slots, preserving your valuable gear without the need for anvils or crafting materials."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_reparare",
+      "text": "Right-click to toggle the sigil on or off. When active, it repairs up to 10 damage per item every 5 seconds.$(br2)LP Cost: 50 LP per damage point repaired$(br2)These values are configurable in the server config file."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Blacklist Tag",
+      "text": "The sigil respects the animus:disallow_repair item tag. Items in this tag will not be repaired by the sigil.$(br2)The sigil will automatically deactivate if you run out of LP, preventing unexpected LP drainage."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Configuration",
+      "text": "The Sigil of Reparare can be configured via the server config:$(br)- Repair Amount: Max damage repaired per item per interval (default: 10)$(br)- Repair Interval: Ticks between repairs (default: 100 / 5 seconds)$(br)- LP Cost: LP per damage point repaired (default: 50)"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ package com.teamdman.animus;
 import com.teamdman.animus.items.ItemFragmentHealing;
 import com.teamdman.animus.items.sigils.ItemSigilHeavenlyWrath;
 import com.teamdman.animus.items.sigils.ItemSigilRemedium;
+import com.teamdman.animus.items.sigils.ItemSigilReparare;
 import com.teamdman.animus.items.sigils.ItemSigilStorm;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
@@ -91,6 +92,7 @@ public class AnimusEventHandler {
         // Process Remedium Sigil active effects
         if (player.level() instanceof ServerLevel serverLevel) {
             ItemSigilRemedium.tickActiveSigils(player, serverLevel);
+            ItemSigilReparare.tickActiveSigils(player, serverLevel);
         }
     }
 
@@ -101,6 +103,7 @@ public class AnimusEventHandler {
     public static void onPlayerLogout(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent event) {
         healingCooldowns.remove(event.getEntity().getUUID());
         ItemSigilRemedium.onPlayerLogout(event.getEntity().getUUID());
+        ItemSigilReparare.onPlayerLogout(event.getEntity().getUUID());
     }
 
     /**

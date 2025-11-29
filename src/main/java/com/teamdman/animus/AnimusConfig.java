@@ -133,6 +133,9 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue leachRange;
         public final ForgeConfigSpec.IntValue stormFishLootMin;
         public final ForgeConfigSpec.IntValue stormFishLootMax;
+        public final ForgeConfigSpec.IntValue reparareRepairAmount;
+        public final ForgeConfigSpec.IntValue reparareInterval;
+        public final ForgeConfigSpec.IntValue reparareLPPerDamage;
 
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -166,6 +169,18 @@ public class AnimusConfig {
                     "Set both min and max to 0 to disable fish spawning"
                 )
                 .defineInRange("stormFishLootMax", 5, 0, 64);
+
+            reparareRepairAmount = builder
+                .comment("Maximum damage to repair per item with Sigil of Reparare each interval")
+                .defineInRange("reparareRepairAmount", 10, 1, 100);
+
+            reparareInterval = builder
+                .comment("Ticks between repair attempts for Sigil of Reparare (20 ticks = 1 second)")
+                .defineInRange("reparareInterval", 100, 20, 6000);
+
+            reparareLPPerDamage = builder
+                .comment("LP cost per damage point repaired by Sigil of Reparare")
+                .defineInRange("reparareLPPerDamage", 50, 1, 1000);
 
             builder.pop();
         }

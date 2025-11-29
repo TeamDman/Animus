@@ -123,6 +123,9 @@ public class AnimusItems {
     public static final RegistryObject<Item> SIGIL_REMEDIUM = ITEMS.register("sigil_remedium",
         ItemSigilRemedium::new);
 
+    public static final RegistryObject<Item> SIGIL_REPARARE = ITEMS.register("sigil_reparare",
+        ItemSigilReparare::new);
+
     public static final RegistryObject<Item> SIGIL_TRANSPOSITION = ITEMS.register("sigil_transposition",
         ItemSigilTransposition::new);
 

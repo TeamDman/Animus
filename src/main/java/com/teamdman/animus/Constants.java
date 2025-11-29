@@ -46,11 +46,17 @@ public class Constants {
             public static final String TICKET_STEADFAST = "text.component.animus.ticket.steadfast";
             public static final String TICKET_HEAVENLY_WRATH = "text.component.animus.ticket.heavenly_wrath";
             public static final String TICKET_REMEDIUM = "text.component.animus.ticket.remedium";
+            public static final String TICKET_REPARARE = "text.component.animus.ticket.reparare";
 
             // Remedium Sigil
             public static final String REMEDIUM_ACTIVATED = "text.component.animus.remedium.activated";
             public static final String REMEDIUM_DEACTIVATED = "text.component.animus.remedium.deactivated";
             public static final String REMEDIUM_NO_LP = "text.component.animus.remedium.no_lp";
+
+            // Reparare Sigil
+            public static final String REPARARE_ACTIVATED = "text.component.animus.reparare.activated";
+            public static final String REPARARE_DEACTIVATED = "text.component.animus.reparare.deactivated";
+            public static final String REPARARE_NO_LP = "text.component.animus.reparare.no_lp";
 
             // Key of Binding
             public static final String KEY_CANNOT_BIND_KEY = "text.component.animus.key.cannot_bind_key";
@@ -106,6 +112,11 @@ public class Constants {
             public static final String SIGIL_REMEDIUM_COST = "tooltip.animus.sigil.remedium.cost";
             public static final String SIGIL_REMEDIUM_ACTIVE = "tooltip.animus.sigil.remedium.active";
             public static final String SIGIL_REMEDIUM_INACTIVE = "tooltip.animus.sigil.remedium.inactive";
+            public static final String SIGIL_REPARARE_FLAVOUR = "tooltip.animus.sigil.reparare.flavour";
+            public static final String SIGIL_REPARARE_INFO = "tooltip.animus.sigil.reparare.info";
+            public static final String SIGIL_REPARARE_COST = "tooltip.animus.sigil.reparare.cost";
+            public static final String SIGIL_REPARARE_ACTIVE = "tooltip.animus.sigil.reparare.active";
+            public static final String SIGIL_REPARARE_INACTIVE = "tooltip.animus.sigil.reparare.inactive";
             public static final String SIGIL_TRANSPOSITION_FLAVOUR = "tooltip.animus.sigil.transposition.flavour";
             public static final String SIGIL_TRANSPOSITION_INFO = "tooltip.animus.sigil.transposition.info";
             public static final String SIGIL_TRANSPOSITION_STORED = "tooltip.animus.sigil.transposition.stored";
@@ -202,6 +213,12 @@ public class Constants {
                 net.minecraft.core.registries.Registries.BLOCK,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_antilife")
             );
+
+        public static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> DISALLOW_REPAIR =
+            net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.ITEM,
+                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_repair")
+            );
     }
 
     public static class Resource {
@@ -272,6 +289,7 @@ public class Constants {
         public static final String STORM = "storm";
         public static final String HEAVENLY_WRATH = "heavenly_wrath";
         public static final String REMEDIUM = "remedium";
+        public static final String REPARARE = "reparare";
         public static final String TRANSPOSITION = "transposition";
     }
 
