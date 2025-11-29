@@ -226,6 +226,7 @@
   "tooltip.animus.key.unbound": "Unbound - Right-click to bind",
   "tooltip.animus.key.curio": "Equip in curio slot or hold in offhand to bind items",
   "curios.identifier.key": "Key Slot",
+  "curios.identifier.bindingkey": "Binding Key Slot",
   "tooltip.animus.bound_to": "Bound to: ",
   "tooltip.animus.not_bound": "Not bound",
   "tooltip.animus.unbound_bind": "Unbound - Right-click to bind",
