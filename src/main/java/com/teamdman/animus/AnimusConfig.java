@@ -201,6 +201,9 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue reparareRepairAmount;
         public final ForgeConfigSpec.IntValue reparareInterval;
         public final ForgeConfigSpec.IntValue reparareLPPerDamage;
+        public final ForgeConfigSpec.IntValue freeSoulLPCost;
+        public final ForgeConfigSpec.IntValue freeSoulDuration;
+        public final ForgeConfigSpec.IntValue freeSoulCooldown;
 
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -246,6 +249,18 @@ public class AnimusConfig {
             reparareLPPerDamage = builder
                 .comment("LP cost per damage point repaired by Sigil of Reparare")
                 .defineInRange("reparareLPPerDamage", 50, 1, 1000);
+
+            freeSoulLPCost = builder
+                .comment("LP cost per use of Sigil of the Free Soul")
+                .defineInRange("freeSoulLPCost", 5000, 1, 10000);
+
+            freeSoulDuration = builder
+                .comment("Duration in seconds for spectator mode when using Sigil of the Free Soul")
+                .defineInRange("freeSoulDuration", 10, 1, 600);
+
+            freeSoulCooldown = builder
+                .comment("Cooldown in seconds before Sigil of the Free Soul can prevent death again")
+                .defineInRange("freeSoulCooldown", 60, 1, 600);
 
             builder.pop();
         }

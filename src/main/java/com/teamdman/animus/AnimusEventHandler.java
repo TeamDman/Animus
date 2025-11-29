@@ -1,6 +1,7 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.items.ItemFragmentHealing;
+import com.teamdman.animus.items.sigils.ItemSigilFreeSoul;
 import com.teamdman.animus.items.sigils.ItemSigilHeavenlyWrath;
 import com.teamdman.animus.items.sigils.ItemSigilRemedium;
 import com.teamdman.animus.items.sigils.ItemSigilReparare;
@@ -95,6 +96,11 @@ public class AnimusEventHandler {
         if (player.level() instanceof ServerLevel serverLevel) {
             ItemSigilRemedium.tickActiveSigils(player, serverLevel);
             ItemSigilReparare.tickActiveSigils(player, serverLevel);
+
+            // Process Free Soul spectator mode timer
+            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                ItemSigilFreeSoul.tickActiveSpectators(serverPlayer, serverLevel);
+            }
         }
     }
 
@@ -106,6 +112,29 @@ public class AnimusEventHandler {
         healingCooldowns.remove(event.getEntity().getUUID());
         ItemSigilRemedium.onPlayerLogout(event.getEntity().getUUID());
         ItemSigilReparare.onPlayerLogout(event.getEntity().getUUID());
+
+        // Clean up Free Soul spectator mode when player logs out
+        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+            ItemSigilFreeSoul.onPlayerLogout(serverPlayer);
+        }
+    }
+
+    /**
+     * Free Soul Sigil death prevention
+     * Works like a Totem of Undying - prevents death and activates spectator mode
+     */
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onLivingDeath(net.minecraftforge.event.entity.living.LivingDeathEvent event) {
+        // Only handle players on server side
+        if (!(event.getEntity() instanceof Player player) || player.level().isClientSide()) {
+            return;
+        }
+
+        // Try to prevent death with Free Soul sigil
+        if (ItemSigilFreeSoul.tryPreventDeath(player, event.getSource())) {
+            // Death was prevented by the sigil
+            event.setCanceled(true);
+        }
     }
 
     /**

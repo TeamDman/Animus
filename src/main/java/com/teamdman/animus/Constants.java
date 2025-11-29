@@ -52,6 +52,16 @@ public class Constants {
             public static final String TICKET_NOLITE_IGNEM = "text.component.animus.ticket.nolite_ignem";
             public static final String TICKET_RELENTLESS_TIDES = "text.component.animus.ticket.relentless_tides";
             public static final String TICKET_SIPHON = "text.component.animus.ticket.siphon";
+            public static final String TICKET_FREE_SOUL = "text.component.animus.ticket.free_soul";
+
+            // Free Soul Sigil
+            public static final String FREE_SOUL_ALREADY_SPECTATOR = "text.component.animus.free_soul.already_spectator";
+            public static final String FREE_SOUL_NO_LP = "text.component.animus.free_soul.no_lp";
+            public static final String FREE_SOUL_ACTIVATED = "text.component.animus.free_soul.activated";
+            public static final String FREE_SOUL_SAVED = "text.component.animus.free_soul.saved";
+            public static final String FREE_SOUL_ON_COOLDOWN = "text.component.animus.free_soul.on_cooldown";
+            public static final String FREE_SOUL_RETURNING = "text.component.animus.free_soul.returning";
+            public static final String FREE_SOUL_EXPIRED = "text.component.animus.free_soul.expired";
 
             // Remedium Sigil
             public static final String REMEDIUM_ACTIVATED = "text.component.animus.remedium.activated";
@@ -169,6 +179,15 @@ public class Constants {
             public static final String CRYSTALLIZED_DEMON_WILL_FLAVOUR = "tooltip.animus.crystallized_demon_will.flavour";
             public static final String CRYSTALLIZED_DEMON_WILL_INFO = "tooltip.animus.crystallized_demon_will.info";
             public static final String CRYSTALLIZED_DEMON_WILL_ALTAR = "tooltip.animus.crystallized_demon_will.altar";
+
+            // Free Soul Sigil Tooltips
+            public static final String SIGIL_FREE_SOUL_FLAVOUR = "tooltip.animus.sigil.free_soul.flavour";
+            public static final String SIGIL_FREE_SOUL_INFO = "tooltip.animus.sigil.free_soul.info";
+            public static final String SIGIL_FREE_SOUL_COST = "tooltip.animus.sigil.free_soul.cost";
+            public static final String SIGIL_FREE_SOUL_DURATION = "tooltip.animus.sigil.free_soul.duration";
+            public static final String SIGIL_FREE_SOUL_DEATH = "tooltip.animus.sigil.free_soul.death";
+            public static final String SIGIL_FREE_SOUL_COOLDOWN = "tooltip.animus.sigil.free_soul.cooldown";
+            public static final String SIGIL_FREE_SOUL_COOLDOWN_REMAINING = "tooltip.animus.sigil.free_soul.cooldown_remaining";
         }
     }
 
@@ -302,6 +321,7 @@ public class Constants {
         public static final String REMEDIUM = "remedium";
         public static final String REPARARE = "reparare";
         public static final String TRANSPOSITION = "transposition";
+        public static final String FREE_SOUL = "free_soul";
     }
 
     public static ResourceLocation rl(String path) {

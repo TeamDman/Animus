@@ -48,6 +48,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.SIGIL_CHAINS, "item/itemsigilchains");
         simpleItem(AnimusItems.SIGIL_CONSUMPTION, "item/itemsigilconsumption");
         simpleItem(AnimusItems.SIGIL_STORM, "item/itemsigilstorm");
+        simpleItem(AnimusItems.SIGIL_FREE_SOUL, "item/sigil_free_soul");
 
         // Toggleable Sigils - with activation states
         toggleableSigil(AnimusItems.SIGIL_BUILDER, "sigil_builder");

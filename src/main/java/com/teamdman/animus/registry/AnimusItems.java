@@ -129,6 +129,9 @@ public class AnimusItems {
     public static final RegistryObject<Item> SIGIL_TRANSPOSITION = ITEMS.register("sigil_transposition",
         ItemSigilTransposition::new);
 
+    public static final RegistryObject<Item> SIGIL_FREE_SOUL = ITEMS.register("sigil_free_soul",
+        ItemSigilFreeSoul::new);
+
     // Tools & Weapons
     public static final RegistryObject<Item> PILUM_IRON = ITEMS.register("pilum_iron",
         () -> new ItemPilum(Tiers.IRON));
