@@ -162,11 +162,17 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             return InteractionResult.FAIL;
         }
 
-        // Filter selected blocks that are in inventory
+        // Filter selected blocks that are in inventory (skip check for creative mode)
         List<Block> availableBlocks = new ArrayList<>();
-        for (Block block : selectedBlocks) {
-            if (hasBlockInInventory(player, block)) {
-                availableBlocks.add(block);
+        if (player.isCreative()) {
+            // In creative mode, all selected blocks are available
+            availableBlocks.addAll(selectedBlocks);
+        } else {
+            // In survival/adventure, only use blocks from inventory
+            for (Block block : selectedBlocks) {
+                if (hasBlockInInventory(player, block)) {
+                    availableBlocks.add(block);
+                }
             }
         }
 
@@ -248,6 +254,9 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         Set<BlockPos> visited = new java.util.HashSet<>();
         Queue<BlockPos> queue = new java.util.LinkedList<>();
 
+        // Maximum blocks to prevent performance issues (cube volume for radius)
+        int maxBlocks = (radius * 2 + 1) * (radius * 2 + 1) * (radius * 2 + 1);
+
         // Start flood-fill from center
         queue.add(center);
         visited.add(center);
@@ -262,11 +271,16 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             new BlockPos(0, 0, -1)   // North
         };
 
-        while (!queue.isEmpty()) {
+        while (!queue.isEmpty() && matches.size() < maxBlocks) {
             BlockPos current = queue.poll();
 
-            // Check if within radius from center
-            if (current.distManhattan(center) > radius) {
+            // Check if within radius from center using Chebyshev distance (cube radius)
+            int dx = Math.abs(current.getX() - center.getX());
+            int dy = Math.abs(current.getY() - center.getY());
+            int dz = Math.abs(current.getZ() - center.getZ());
+            int chebyshevDist = Math.max(Math.max(dx, dy), dz);
+
+            if (chebyshevDist > radius) {
                 continue;
             }
 
@@ -279,8 +293,14 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                 for (BlockPos offset : neighbors) {
                     BlockPos neighbor = current.offset(offset.getX(), offset.getY(), offset.getZ());
 
+                    // Check neighbor is within radius
+                    int ndx = Math.abs(neighbor.getX() - center.getX());
+                    int ndy = Math.abs(neighbor.getY() - center.getY());
+                    int ndz = Math.abs(neighbor.getZ() - center.getZ());
+                    int neighborDist = Math.max(Math.max(ndx, ndy), ndz);
+
                     // Only process if not visited and within radius
-                    if (!visited.contains(neighbor) && neighbor.distManhattan(center) <= radius) {
+                    if (!visited.contains(neighbor) && neighborDist <= radius) {
                         visited.add(neighbor);
                         queue.add(neighbor);
                     }
@@ -470,19 +490,23 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
             List<ItemStack> drops = currentState.getDrops(lootBuilder);
 
-            // Give drops to player
-            for (ItemStack drop : drops) {
-                if (!player.getInventory().add(drop)) {
-                    player.drop(drop, false);
+            // Give drops to player (skip in creative mode)
+            if (!player.isCreative()) {
+                for (ItemStack drop : drops) {
+                    if (!player.getInventory().add(drop)) {
+                        player.drop(drop, false);
+                    }
                 }
             }
 
             // Select random replacement block
             Block replacementBlock = replacementBlocks.get(random.nextInt(replacementBlocks.size()));
 
-            // Consume block from inventory
-            if (!consumeBlockFromInventory(player, replacementBlock)) {
-                return; // No blocks left, skip
+            // Consume block from inventory (skip in creative mode)
+            if (!player.isCreative()) {
+                if (!consumeBlockFromInventory(player, replacementBlock)) {
+                    return; // No blocks left, skip
+                }
             }
 
             // Place new block

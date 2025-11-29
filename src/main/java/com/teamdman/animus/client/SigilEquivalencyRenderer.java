@@ -102,6 +102,9 @@ public class SigilEquivalencyRenderer {
         java.util.Set<BlockPos> visited = new java.util.HashSet<>();
         java.util.Queue<BlockPos> queue = new java.util.LinkedList<>();
 
+        // Maximum blocks to prevent performance issues (cube volume for radius)
+        int maxBlocks = (radius * 2 + 1) * (radius * 2 + 1) * (radius * 2 + 1);
+
         // Start flood-fill from center
         queue.add(center);
         visited.add(center);
@@ -116,11 +119,16 @@ public class SigilEquivalencyRenderer {
             new BlockPos(0, 0, -1)   // North
         };
 
-        while (!queue.isEmpty()) {
+        while (!queue.isEmpty() && matches.size() < maxBlocks) {
             BlockPos current = queue.poll();
 
-            // Check if within radius from center
-            if (current.distManhattan(center) > radius) {
+            // Check if within radius from center using Chebyshev distance (cube radius)
+            int dx = Math.abs(current.getX() - center.getX());
+            int dy = Math.abs(current.getY() - center.getY());
+            int dz = Math.abs(current.getZ() - center.getZ());
+            int chebyshevDist = Math.max(Math.max(dx, dy), dz);
+
+            if (chebyshevDist > radius) {
                 continue;
             }
 
@@ -133,8 +141,14 @@ public class SigilEquivalencyRenderer {
                 for (BlockPos offset : neighbors) {
                     BlockPos neighbor = current.offset(offset.getX(), offset.getY(), offset.getZ());
 
+                    // Check neighbor is within radius
+                    int ndx = Math.abs(neighbor.getX() - center.getX());
+                    int ndy = Math.abs(neighbor.getY() - center.getY());
+                    int ndz = Math.abs(neighbor.getZ() - center.getZ());
+                    int neighborDist = Math.max(Math.max(ndx, ndy), ndz);
+
                     // Only process if not visited and within radius
-                    if (!visited.contains(neighbor) && neighbor.distManhattan(center) <= radius) {
+                    if (!visited.contains(neighbor) && neighborDist <= radius) {
                         visited.add(neighbor);
                         queue.add(neighbor);
                     }
