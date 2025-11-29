@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "animus:willful_stone_green"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "animus:blocks/willful_stone_green"
+}

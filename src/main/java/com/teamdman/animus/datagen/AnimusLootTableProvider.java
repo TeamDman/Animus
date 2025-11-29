@@ -58,6 +58,29 @@ public class AnimusLootTableProvider extends LootTableProvider {
                 )
             );
 
+            // AntiLife block - has noLootTable flag, skip it
+
+            // Crystallized Demon Will Block - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get());
+
+            // Willful Stone blocks - all drop themselves
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_ORANGE.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_MAGENTA.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_LIGHT_BLUE.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_YELLOW.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_LIME.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_PINK.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_LIGHT_GRAY.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_CYAN.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_PURPLE.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_BLUE.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_BROWN.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_GREEN.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get());
+            this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get());
+
             // Blood Leaves - complex drops like oak leaves
             LootItemCondition.Builder noShearsSilk = net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition.invert(
                 net.minecraft.world.level.storage.loot.predicates.MatchTool.toolMatches(
@@ -101,8 +124,11 @@ public class AnimusLootTableProvider extends LootTableProvider {
 
         @Override
         protected Iterable<Block> getKnownBlocks() {
-            // Return all registered blocks from AnimusBlocks
+            // Return all registered blocks from AnimusBlocks, excluding fluid blocks and blocks with noLootTable
             return AnimusBlocks.BLOCKS.getEntries().stream()
+                .filter(entry -> entry != AnimusBlocks.BLOCK_FLUID_ANTILIFE
+                    && entry != AnimusBlocks.BLOCK_FLUID_LIVING_TERRA
+                    && entry != AnimusBlocks.BLOCK_ANTILIFE) // BLOCK_ANTILIFE has noLootTable flag
                 .map(RegistryObject::get)
                 .collect(Collectors.toList());
         }
