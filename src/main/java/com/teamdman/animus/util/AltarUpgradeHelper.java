@@ -36,12 +36,11 @@ public class AltarUpgradeHelper {
 
         // Get all components for the next tier from Blood Magic's data
         for (AltarComponent component : nextTier.getAltarComponents()) {
-            // Only show blocks that are marked as upgrade slots
-            if (!component.isUpgradeSlot()) {
-                continue;
-            }
-
             BlockPos componentPos = altarPos.offset(component.getOffset());
+
+            // Skip if this position already has a block (not air)
+            // This will be checked when rendering, so we add all components
+
             ResourceLocation blockId = getBlockForComponentType(component.getComponent());
 
             if (blockId != null) {
