@@ -27,7 +27,6 @@ public class AltarUpgradeHelper {
 
         int currentTier = altar.getTier();
         if (currentTier >= 6) {
-            // Already max tier
             return ghostBlocks;
         }
 

@@ -46,6 +46,17 @@ public class Animus {
         // Register network packets
         AnimusNetwork.register();
 
+        // Register Crystallized Demon Will block as a valid CRYSTAL component for tier 6 altars
+        try {
+            wayoftime.bloodmagic.impl.BloodMagicAPI.INSTANCE.registerAltarComponent(
+                AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get().defaultBlockState(),
+                wayoftime.bloodmagic.altar.ComponentType.CRYSTAL.name()
+            );
+            LOGGER.info("Registered Crystallized Demon Will Block as CRYSTAL component for Blood Magic altars");
+        } catch (Exception e) {
+            LOGGER.error("Failed to register Crystallized Demon Will Block with Blood Magic", e);
+        }
+
         event.enqueueWork(() -> {
             // Register strippable blocks (axe interaction) using reflection
             try {
@@ -65,17 +76,6 @@ public class Animus {
                 LOGGER.info("Registered blood wood as strippable");
             } catch (Exception e) {
                 LOGGER.error("Failed to register strippable blocks", e);
-            }
-
-            // Register our Crystallized Demon Will block with Blood Magic's component system
-            try {
-                wayoftime.bloodmagic.impl.BloodMagicAPI.INSTANCE.registerAltarComponent(
-                    AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get().defaultBlockState(),
-                    wayoftime.bloodmagic.altar.ComponentType.CRYSTAL.getKey()
-                );
-                LOGGER.info("Registered Crystallized Demon Will Block as valid CRYSTAL component for Blood Magic altars");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register Crystallized Demon Will Block with Blood Magic", e);
             }
 
             // Register rituals here
