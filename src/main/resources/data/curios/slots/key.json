@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "size": 1,
+  "operation": "ADD",
+  "icon": "animus:slot/bindingkey_curio_slot",
+  "add_cosmetic": false,
+  "use_native_gui": true,
+  "render_toggle": false,
+  "drop_rule": "ALWAYS_KEEP",
+  "order": 100
+}
