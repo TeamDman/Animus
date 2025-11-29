@@ -64,6 +64,10 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue reparareRitualRepairAmount;
         public final ForgeConfigSpec.IntValue reparareRitualInterval;
         public final ForgeConfigSpec.IntValue reparareRitualLPPerDamage;
+        public final ForgeConfigSpec.IntValue persistenceChunkRadius;
+        public final ForgeConfigSpec.IntValue persistenceLPPerTick;
+        public final ForgeConfigSpec.IntValue serenityRadius;
+        public final ForgeConfigSpec.IntValue serenityLPPerTick;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -135,6 +139,22 @@ public class AnimusConfig {
             reparareRitualLPPerDamage = builder
                 .comment("LP cost per damage point repaired by Ritual of Reparare")
                 .defineInRange("reparareRitualLPPerDamage", 50, 1, 1000);
+
+            persistenceChunkRadius = builder
+                .comment("Chunk radius for Ritual of Persistence chunk loading (in chunks, not blocks)")
+                .defineInRange("persistenceChunkRadius", 3, 1, 16);
+
+            persistenceLPPerTick = builder
+                .comment("LP cost per tick for Ritual of Persistence (checked every second / 20 ticks)")
+                .defineInRange("persistenceLPPerTick", 100, 1, 10000);
+
+            serenityRadius = builder
+                .comment("Radius in blocks for Ritual of Serenity spawn prevention")
+                .defineInRange("serenityRadius", 48, 1, 256);
+
+            serenityLPPerTick = builder
+                .comment("LP cost per tick for Ritual of Serenity (checked every second / 20 ticks)")
+                .defineInRange("serenityLPPerTick", 50, 1, 10000);
 
             builder.pop();
         }

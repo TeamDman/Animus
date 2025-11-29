@@ -7,6 +7,7 @@ import com.teamdman.animus.items.sigils.ItemSigilReparare;
 import com.teamdman.animus.items.sigils.ItemSigilStorm;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
+import com.teamdman.animus.rituals.RitualSerenity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -209,6 +211,33 @@ public class AnimusEventHandler {
                 // Schedule tick so it starts spreading
                 level.scheduleTick(pos, AnimusBlocks.BLOCK_FLUID_ANTILIFE.get(), 1);
             }
+        }
+    }
+
+    /**
+     * Prevent mob spawning in Ritual of Serenity zones
+     * This event fires before a mob finalizes spawning, allowing us to cancel it
+     * Note: Spawner spawns are allowed to proceed
+     */
+    @SubscribeEvent
+    public static void onMobSpawnCheck(MobSpawnEvent.FinalizeSpawn event) {
+        // Only run on server side
+        if (event.getLevel().isClientSide()) {
+            return;
+        }
+
+        // Allow spawner spawns to proceed
+        if (event.getSpawnType() == net.minecraft.world.entity.MobSpawnType.SPAWNER) {
+            return;
+        }
+
+        // Check if the spawn position is within a Serenity zone
+        Level level = (Level) event.getLevel();
+        BlockPos spawnPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
+
+        if (RitualSerenity.isInSerenityZone(level, spawnPos)) {
+            // Cancel the spawn (but not spawner spawns)
+            event.setSpawnCancelled(true);
         }
     }
 

@@ -1,0 +1,37 @@
+{
+  "name": "guide.animus.entry.ritual_persistence",
+  "category": "animus:rituals",
+  "icon": "bloodmagic:masterritualstone",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Persistence keeps chunks loaded in a configurable radius around the master ritual stone. This ensures that your machines, farms, and other contraptions continue to operate even when you're far away."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How It Works",
+      "text": "When active, the ritual maintains chunk loading in a 3-chunk radius (configurable) around the ritual stone.$(br2)The ritual consumes LP continuously:$(br)- 100 LP per tick (default)$(br)- Checked every second (20 ticks)$(br)- Total: 2000 LP per second at default settings"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Deactivation",
+      "text": "The ritual will automatically stop and unload all chunks if:$(br)- Insufficient LP in the network$(br)- The ritual is manually stopped$(br)- A redstone signal is applied to the master ritual stone$(br2)All chunks are immediately unloaded when the ritual stops, ensuring no orphaned chunk tickets remain."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Configuration",
+      "text": "The Ritual of Persistence can be configured via the server config:$(br)- Chunk Radius: Radius in chunks (default: 3, range: 1-16)$(br)- LP Per Tick: LP cost per tick (default: 100, range: 1-10000)$(br2)Activation Cost: 50000 LP$(br2)Note: Chunk radius is measured in chunks, not blocks. A 3-chunk radius covers a 7x7 chunk area."
+    },
+    {
+      "type": "patchouli:ritual",
+      "title": "Ritual Structure",
+      "ritual": "animus:ritual_persistence",
+      "text": "The Ritual of Persistence requires 4 Dusk runes (placed at the cardinal directions), 4 Earth runes (for stability), and 4 Air runes (for extended range). The dusk runes symbolize the eternal nature of the ritual."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Performance Note",
+      "text": "Be mindful of the LP cost when using this ritual. At default settings, it consumes 2000 LP per second, which is 120,000 LP per minute.$(br2)Consider using a high-tier Blood Altar and efficient LP generation to sustain this ritual for extended periods.$(br2)The ritual is ideal for permanent bases where continuous operation is essential."
+    }
+  ]
+}

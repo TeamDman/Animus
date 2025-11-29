@@ -28,6 +28,7 @@ public class Constants {
             public static final String SACRIFICE_TOO_POWERFUL = "text.component.animus.sacrifice.too_powerful";
             public static final String ACTIVATION_CRYSTAL_UNBOUND = "text.component.animus.activation_crystal.unbound";
             public static final String ACTIVATION_CRYSTAL_SHATTERED = "text.component.animus.activation_crystal.shattered";
+            public static final String TICKET_PERSISTENCE = "text.component.animus.ticket.persistence";
             public static final String TICKET_SOL = "text.component.animus.ticket.sol";
             public static final String TICKET_TRANSPOSITION = "text.component.animus.ticket.transposition";
             public static final String TICKET_STORM = "text.component.animus.ticket.storm";
@@ -47,6 +48,7 @@ public class Constants {
             public static final String TICKET_HEAVENLY_WRATH = "text.component.animus.ticket.heavenly_wrath";
             public static final String TICKET_REMEDIUM = "text.component.animus.ticket.remedium";
             public static final String TICKET_REPARARE = "text.component.animus.ticket.reparare";
+            public static final String TICKET_SERENITY = "text.component.animus.ticket.serenity";
 
             // Remedium Sigil
             public static final String REMEDIUM_ACTIVATED = "text.component.animus.remedium.activated";
@@ -264,6 +266,7 @@ public class Constants {
             throw new UnsupportedOperationException("Utility class");
         }
 
+        public static final String PERSISTENCE = "ritual_persistence";
         public static final String CULLING = "ritual_culling";
         public static final String ENTROPY = "ritual_entropy";
         public static final String HUNGER = "ritual_hunger";
@@ -273,6 +276,7 @@ public class Constants {
         public static final String PEACEFUL_BECKONING = "ritual_peaceful_beckoning";
         public static final String REGRESSION = "ritual_regression";
         public static final String REPARARE = "ritual_reparare";
+        public static final String SERENITY = "ritual_serenity";
         public static final String SOL = "ritual_sol";
         public static final String STEADFAST = "ritual_steadfast_heart";
         public static final String UNMAKING = "ritual_unmaking";

@@ -1,0 +1,37 @@
+{
+  "name": "guide.animus.entry.ritual_serenity",
+  "category": "animus:rituals",
+  "icon": "bloodmagic:masterritualstone",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Serenity creates a peaceful zone where hostile mobs cannot naturally spawn. This ritual prevents natural mob spawning within a configurable radius around the master ritual stone, providing a safe haven for your base or work area.$(br2)Note: Mob spawners are not affected and will continue to function normally."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How It Works",
+      "text": "When active, the ritual prevents hostile mob spawning in a 48-block radius (configurable) around the ritual stone.$(br2)The ritual consumes LP continuously:$(br)- 50 LP per tick (default)$(br)- Checked every second (20 ticks)$(br)- Total: 1000 LP per second at default settings"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Deactivation",
+      "text": "The ritual will automatically stop if:$(br)- Insufficient LP in the network$(br)- The ritual is manually stopped$(br)- A redstone signal is applied to the master ritual stone$(br2)When the ritual stops, mob spawning will resume normally in the area. The effect is immediate and does not persist after deactivation."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Configuration",
+      "text": "The Ritual of Serenity can be configured via the server config:$(br)- Spawn Prevention Radius: Radius in blocks (default: 48, range: 1-256)$(br)- LP Per Tick: LP cost per tick (default: 50, range: 1-10000)$(br2)Activation Cost: 10000 LP$(br2)Note: The radius is measured in blocks from the master ritual stone."
+    },
+    {
+      "type": "patchouli:ritual",
+      "title": "Ritual Structure",
+      "ritual": "animus:ritual_serenity",
+      "text": "The Ritual of Serenity uses a peaceful pattern with 4 Water runes (representing calm), 4 Air runes (representing tranquility), and 4 Earth runes (for grounding). This creates a balanced and harmonious structure."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Performance Note",
+      "text": "At default settings, this ritual consumes 1000 LP per second (60,000 LP per minute). This is more economical than the Aeternum Vivere ritual, making it suitable for long-term use.$(br2)The ritual is ideal for protecting your base from hostile mob spawns while you work on other projects. Combine it with other defensive measures for complete protection."
+    }
+  ]
+}
