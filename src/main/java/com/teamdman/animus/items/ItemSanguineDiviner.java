@@ -1,9 +1,14 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.network.AltarGhostBlocksPacket;
+import com.teamdman.animus.network.AnimusNetwork;
+import com.teamdman.animus.util.AltarUpgradeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -14,12 +19,14 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.network.PacketDistributor;
 import wayoftime.bloodmagic.altar.AltarTier;
 import wayoftime.bloodmagic.common.tile.TileAltar;
 import wayoftime.bloodmagic.ritual.IMasterRitualStone;
 import wayoftime.bloodmagic.ritual.Ritual;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sanguine Diviner - Displays information about Blood Magic altars and rituals
@@ -175,6 +182,27 @@ public class ItemSanguineDiviner extends Item {
             player.displayClientMessage(
                 Component.translatable(Constants.Localizations.Text.DIVINER_TIER_INFO, tierLevel), false
             );
+
+            // Send ghost blocks for next tier upgrade (if not max tier)
+            if (tierLevel < 6 && player instanceof ServerPlayer serverPlayer) {
+                Map<BlockPos, ResourceLocation> ghostBlocks = AltarUpgradeHelper.getUpgradeBlocks(altar, pos);
+                if (!ghostBlocks.isEmpty()) {
+                    AltarGhostBlocksPacket packet = new AltarGhostBlocksPacket(ghostBlocks, 200); // 10 seconds (200 ticks)
+                    AnimusNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), packet);
+
+                    player.displayClientMessage(
+                        Component.literal("Showing upgrade requirements for Tier " + (tierLevel + 1))
+                            .withStyle(ChatFormatting.AQUA),
+                        true
+                    );
+                }
+            } else if (tierLevel >= 6) {
+                player.displayClientMessage(
+                    Component.literal("Altar is already at maximum tier!")
+                        .withStyle(ChatFormatting.GOLD),
+                    true
+                );
+            }
 
             // Play sound
             level.playSound(
