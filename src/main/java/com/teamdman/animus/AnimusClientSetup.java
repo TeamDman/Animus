@@ -26,6 +26,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 @Mod.EventBusSubscriber(modid = Constants.Mod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class AnimusClientSetup {
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {

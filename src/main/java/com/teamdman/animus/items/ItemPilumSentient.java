@@ -27,6 +27,7 @@ import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.world.entity.EquipmentSlot;
 
@@ -228,7 +229,7 @@ public class ItemPilumSentient extends ItemPilum implements IDemonWillWeapon {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        Multimap<Attribute, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+        Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create(super.getAttributeModifiers(slot, stack));
 
         if (slot == EquipmentSlot.MAINHAND) {
             Player player = null; // We'll try to get this from context if possible
