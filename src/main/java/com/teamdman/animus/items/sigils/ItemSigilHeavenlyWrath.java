@@ -23,7 +23,8 @@ import java.util.UUID;
  * <p>
  * Features:
  * - Levitates all enemies in 16 block radius (not the user)
- * - After 2 seconds, removes levitation and applies downward velocity
+ * - Applies upward velocity boost for 100% faster levitation
+ * - After 3 seconds, removes levitation and applies downward velocity
  * - Flying entities get stronger downward velocity based on height from ground
  * <p>
  * Tick handler hooked up in AnimusEventHandler.onLevelTick()
@@ -109,7 +110,7 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
             List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, area);
 
             long currentTick = serverLevel.getServer().getTickCount();
-            long fallTick = currentTick + 40; // 2 seconds (40 ticks)
+            long fallTick = currentTick + 60; // 3 seconds (60 ticks)
 
             for (LivingEntity entity : entities) {
                 // Skip the player who used the sigil
@@ -117,8 +118,13 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
                     continue;
                 }
 
-                // Apply levitation effect for 2 seconds
-                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 40, 1, false, true));
+                // Apply levitation effect for 3 seconds
+                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 60, 1, false, true));
+
+                // Apply upward velocity boost for 100% faster levitation
+                Vec3 currentVelocity = entity.getDeltaMovement();
+                entity.setDeltaMovement(currentVelocity.x, currentVelocity.y + 0.8, currentVelocity.z);
+                entity.hurtMarked = true; // Sync to client
 
                 // Calculate height from ground for stronger fall effect on flying entities
                 double heightFromGround = calculateHeightFromGround(entity);

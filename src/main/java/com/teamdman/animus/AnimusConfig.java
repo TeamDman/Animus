@@ -277,11 +277,11 @@ public class AnimusConfig {
 
             sigilEquivalencyRadius = builder
                 .comment("Maximum radius in blocks for Sigil of Equivalency block replacement")
-                .defineInRange("sigilEquivalencyRadius", 32, 1, 64);
+                .defineInRange("sigilEquivalencyRadius", 8, 1, 32);
 
             sigilEquivalencyLPCost = builder
                 .comment("LP cost per block replaced by Sigil of Equivalency")
-                .defineInRange("sigilEquivalencyLPCost", 100, 1, 10000);
+                .defineInRange("sigilEquivalencyLPCost", 1, 1, 10000);
 
             sigilEquivalencyBlocksPerTick = builder
                 .comment("Number of blocks to replace per tick with Sigil of Equivalency (lower = less lag)")

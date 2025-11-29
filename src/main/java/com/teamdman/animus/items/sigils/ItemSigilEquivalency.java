@@ -85,13 +85,18 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         Player player = context.getPlayer();
         ItemStack stack = context.getItemInHand();
 
-        if (level.isClientSide || player == null) {
+        if (player == null) {
             return InteractionResult.PASS;
         }
 
         BlockState targetState = level.getBlockState(pos);
         if (targetState.isAir()) {
             return InteractionResult.FAIL;
+        }
+
+        // On client side, consume the interaction to prevent use() from being called
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
         }
 
         // Shift-right-click to add block to selection
@@ -127,17 +132,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             return InteractionResult.FAIL;
         }
 
-        // Check if player has the block in inventory
-        if (!hasBlockInInventory(player, targetBlock)) {
-            player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_BLOCKS)
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
-            return InteractionResult.FAIL;
-        }
-
-        // Add to selection
+        // Add to selection (no inventory check - that happens during replacement)
         selectedBlocks.add(targetBlock);
         setSelectedBlocks(stack, selectedBlocks);
 
@@ -245,28 +240,49 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
     }
 
     /**
-     * Find all blocks matching the target in a radius using spiral pattern
+     * Find all connected blocks matching the target using flood-fill (BFS)
+     * Only finds blocks on the same surface/plane that are touching
      */
     private List<BlockPos> findMatchingBlocksInRadius(ServerLevel level, BlockPos center, Block targetBlock, int radius) {
         List<BlockPos> matches = new ArrayList<>();
+        Set<BlockPos> visited = new java.util.HashSet<>();
+        Queue<BlockPos> queue = new java.util.LinkedList<>();
 
-        // Spiral pattern search
-        for (int r = 0; r <= radius; r++) {
-            // Search perimeter at radius r
-            for (int dx = -r; dx <= r; dx++) {
-                for (int dy = -r; dy <= r; dy++) {
-                    for (int dz = -r; dz <= r; dz++) {
-                        // Only process blocks on the perimeter
-                        if (Math.abs(dx) != r && Math.abs(dy) != r && Math.abs(dz) != r) {
-                            continue;
-                        }
+        // Start flood-fill from center
+        queue.add(center);
+        visited.add(center);
 
-                        BlockPos checkPos = center.offset(dx, dy, dz);
-                        BlockState state = level.getBlockState(checkPos);
+        // Neighbor offsets (6 cardinal directions - only blocks that share a face)
+        BlockPos[] neighbors = new BlockPos[] {
+            new BlockPos(1, 0, 0),   // East
+            new BlockPos(-1, 0, 0),  // West
+            new BlockPos(0, 1, 0),   // Up
+            new BlockPos(0, -1, 0),  // Down
+            new BlockPos(0, 0, 1),   // South
+            new BlockPos(0, 0, -1)   // North
+        };
 
-                        if (state.getBlock() == targetBlock) {
-                            matches.add(checkPos.immutable());
-                        }
+        while (!queue.isEmpty()) {
+            BlockPos current = queue.poll();
+
+            // Check if within radius from center
+            if (current.distManhattan(center) > radius) {
+                continue;
+            }
+
+            // Check if this block matches
+            BlockState state = level.getBlockState(current);
+            if (state.getBlock() == targetBlock) {
+                matches.add(current.immutable());
+
+                // Add neighbors to queue
+                for (BlockPos offset : neighbors) {
+                    BlockPos neighbor = current.offset(offset.getX(), offset.getY(), offset.getZ());
+
+                    // Only process if not visited and within radius
+                    if (!visited.contains(neighbor) && neighbor.distManhattan(center) <= radius) {
+                        visited.add(neighbor);
+                        queue.add(neighbor);
                     }
                 }
             }
@@ -375,6 +391,18 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         if (!selected.isEmpty()) {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.EQUIVALENCY_SELECTED, selected.size(), MAX_SELECTED_BLOCKS)
                 .withStyle(ChatFormatting.GOLD));
+
+            // If shift is held, show all selected blocks
+            if (net.minecraft.client.gui.screens.Screen.hasShiftDown()) {
+                for (Block block : selected) {
+                    tooltip.add(Component.literal("  • ")
+                        .append(block.getName())
+                        .withStyle(ChatFormatting.GRAY));
+                }
+            } else {
+                tooltip.add(Component.literal("  [Hold Shift for details]")
+                    .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            }
         }
 
         super.appendHoverText(stack, level, tooltip, flag);

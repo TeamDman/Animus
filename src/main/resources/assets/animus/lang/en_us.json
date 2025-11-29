@@ -224,6 +224,7 @@
   "tooltip.animus.pilum_bound.bind": "Shift+Right-Click to bind",
   "tooltip.animus.key.hold_offhand": "Hold in offhand to bind items to %s",
   "tooltip.animus.key.unbound": "Unbound - Right-click to bind",
+  "tooltip.animus.key.curio": "Equip in curio slot or hold in offhand to bind items",
   "tooltip.animus.bound_to": "Bound to: ",
   "tooltip.animus.not_bound": "Not bound",
   "tooltip.animus.unbound_bind": "Unbound - Right-click to bind",

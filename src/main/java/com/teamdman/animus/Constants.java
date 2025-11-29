@@ -187,6 +187,7 @@ public class Constants {
             // Key of Binding Tooltips
             public static final String KEY_HOLD_OFFHAND = "tooltip.animus.key.hold_offhand";
             public static final String KEY_UNBOUND = "tooltip.animus.key.unbound";
+            public static final String KEY_CURIO = "tooltip.animus.key.curio";
 
             // Generic Binding Tooltips
             public static final String BOUND_TO = "tooltip.animus.bound_to";

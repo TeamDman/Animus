@@ -32,7 +32,7 @@ import java.util.*;
  * - Cannot trigger death prevention again for configurable cooldown (default: 60 seconds)
  * - Must be bound to use
  * - Teleports player back to original position 10 ticks before spectator mode ends (prevents wall exploits)
- * - Heals player 10 health (5 hearts) when returning to previous game mode
+ * - Heals player 10 health (5 hearts) ONLY when death prevention is triggered (not on manual use)
  * <p>
  * Death prevention hooked up in AnimusEventHandler.onLivingDeath()
  * Spectator mode timer hooked up in AnimusEventHandler.onPlayerTick()
@@ -46,12 +46,14 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
         final long exitTick;
         final GameType previousGameMode;
         final Vec3 originalPosition;
+        final boolean fromDeath;
         boolean hasTeleportedBack = false;
 
-        SpectatorState(long exitTick, GameType previousGameMode, Vec3 originalPosition) {
+        SpectatorState(long exitTick, GameType previousGameMode, Vec3 originalPosition, boolean fromDeath) {
             this.exitTick = exitTick;
             this.previousGameMode = previousGameMode;
             this.originalPosition = originalPosition;
+            this.fromDeath = fromDeath;
         }
     }
 
@@ -215,8 +217,8 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
         int durationSeconds = AnimusConfig.sigils.freeSoulDuration.get();
         long exitTick = level.getServer().getTickCount() + (durationSeconds * 20); // Convert seconds to ticks
 
-        // Store spectator state (including original position)
-        activeSpectators.put(player.getUUID(), new SpectatorState(exitTick, previousGameMode, originalPosition));
+        // Store spectator state (including original position and whether from death)
+        activeSpectators.put(player.getUUID(), new SpectatorState(exitTick, previousGameMode, originalPosition, fromDeath));
 
         // Set to spectator mode
         player.setGameMode(GameType.SPECTATOR);
@@ -266,9 +268,11 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             // Restore previous game mode
             player.setGameMode(state.previousGameMode);
 
-            // Heal the player 10 health (5 hearts) when returning
-            float newHealth = Math.min(player.getHealth() + 10.0F, player.getMaxHealth());
-            player.setHealth(newHealth);
+            // Only heal if this was triggered by death prevention
+            if (state.fromDeath) {
+                float newHealth = Math.min(player.getHealth() + 10.0F, player.getMaxHealth());
+                player.setHealth(newHealth);
+            }
 
             activeSpectators.remove(playerId);
 
