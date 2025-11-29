@@ -4,6 +4,7 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.*;
 import com.teamdman.animus.items.sigils.*;
 import com.teamdman.animus.items.sigils.ItemSigilTemporalDominance;
+import com.teamdman.animus.items.sigils.ItemSigilEquivalency;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
@@ -135,6 +136,8 @@ public class AnimusItems {
 
     public static final RegistryObject<Item> SIGIL_TEMPORAL_DOMINANCE = ITEMS.register("sigil_temporal_dominance",
         ItemSigilTemporalDominance::new);
+    public static final RegistryObject<Item> SIGIL_EQUIVALENCY = ITEMS.register("sigil_equivalency",
+        ItemSigilEquivalency::new);
 
     // Tools & Weapons
     public static final RegistryObject<Item> PILUM_IRON = ITEMS.register("pilum_iron",

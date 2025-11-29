@@ -54,6 +54,16 @@ public class Constants {
             public static final String TICKET_SIPHON = "text.component.animus.ticket.siphon";
             public static final String TICKET_FREE_SOUL = "text.component.animus.ticket.free_soul";
             public static final String TICKET_TEMPORAL_DOMINANCE = "text.component.animus.ticket.temporal_dominance";
+            public static final String TICKET_EQUIVALENCY = "text.component.animus.ticket.equivalency";
+            public static final String EQUIVALENCY_CLEARED = "text.component.animus.equivalency.cleared";
+            public static final String EQUIVALENCY_ALREADY_SELECTED = "text.component.animus.equivalency.already_selected";
+            public static final String EQUIVALENCY_MAX_SELECTED = "text.component.animus.equivalency.max_selected";
+            public static final String EQUIVALENCY_NO_BLOCKS = "text.component.animus.equivalency.no_blocks";
+            public static final String EQUIVALENCY_ADDED = "text.component.animus.equivalency.added";
+            public static final String EQUIVALENCY_NO_SELECTION = "text.component.animus.equivalency.no_selection";
+            public static final String EQUIVALENCY_NO_MATCHES = "text.component.animus.equivalency.no_matches";
+            public static final String EQUIVALENCY_NO_LP = "text.component.animus.equivalency.no_lp";
+            public static final String EQUIVALENCY_STARTED = "text.component.animus.equivalency.started";
 
             // Free Soul Sigil
             public static final String FREE_SOUL_ALREADY_SPECTATOR = "text.component.animus.free_soul.already_spectator";
@@ -202,6 +212,9 @@ public class Constants {
             public static final String TEMPORAL_DOMINANCE_2 = "tooltip.animus.sigil.temporal_dominance.2";
             public static final String TEMPORAL_DOMINANCE_3 = "tooltip.animus.sigil.temporal_dominance.3";
             public static final String TEMPORAL_DOMINANCE_4 = "tooltip.animus.sigil.temporal_dominance.4";
+            public static final String EQUIVALENCY_1 = "tooltip.animus.sigil.equivalency.1";
+            public static final String EQUIVALENCY_2 = "tooltip.animus.sigil.equivalency.2";
+            public static final String EQUIVALENCY_SELECTED = "tooltip.animus.sigil.equivalency.selected";
         }
     }
 
@@ -338,6 +351,7 @@ public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Bl
         public static final String TRANSPOSITION = "transposition";
         public static final String FREE_SOUL = "free_soul";
         public static final String TEMPORAL_DOMINANCE = "temporal_dominance";
+        public static final String EQUIVALENCY = "equivalency";
     }
 
     public static ResourceLocation rl(String path) {

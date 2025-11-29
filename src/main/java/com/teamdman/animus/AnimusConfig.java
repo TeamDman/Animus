@@ -214,6 +214,9 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue freeSoulLPCost;
         public final ForgeConfigSpec.IntValue freeSoulDuration;
         public final ForgeConfigSpec.IntValue freeSoulCooldown;
+        public final ForgeConfigSpec.IntValue sigilEquivalencyRadius;
+        public final ForgeConfigSpec.IntValue sigilEquivalencyLPCost;
+        public final ForgeConfigSpec.IntValue sigilEquivalencyBlocksPerTick;
 
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -272,6 +275,17 @@ public class AnimusConfig {
                 .comment("Cooldown in seconds before Sigil of the Free Soul can prevent death again")
                 .defineInRange("freeSoulCooldown", 60, 1, 600);
 
+            sigilEquivalencyRadius = builder
+                .comment("Maximum radius in blocks for Sigil of Equivalency block replacement")
+                .defineInRange("sigilEquivalencyRadius", 32, 1, 64);
+
+            sigilEquivalencyLPCost = builder
+                .comment("LP cost per block replaced by Sigil of Equivalency")
+                .defineInRange("sigilEquivalencyLPCost", 100, 1, 10000);
+
+            sigilEquivalencyBlocksPerTick = builder
+                .comment("Number of blocks to replace per tick with Sigil of Equivalency (lower = less lag)")
+                .defineInRange("sigilEquivalencyBlocksPerTick", 5, 1, 100);
             builder.pop();
         }
     }
