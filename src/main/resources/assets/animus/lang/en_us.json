@@ -50,6 +50,7 @@
   "item.animus.sigil_free_soul": "Sigil of the Free Soul",
   "item.animus.sigil_temporal_dominance": "Sigil of Temporal Dominance",
   "item.animus.sigil_equivalency": "Sigil of Equivalency",
+  "item.animus.sigil_boundless_nature": "Sigil of Boundless Nature",
   "item.animus.antilife_bucket": "AntiLife Bucket",
   "item.animus.living_terra_bucket": "Living Terra Bucket",
   "fluid.animus.antilife": "AntiLife",
@@ -127,6 +128,14 @@
   "tooltip.animus.sigil.equivalency.1": "Sneak + right-click blocks to select up to 20 types",
   "tooltip.animus.sigil.equivalency.2": "Right-click to replace all matching blocks in radius",
   "tooltip.animus.sigil.equivalency.selected": "Selected: %s/%s blocks",
+  "tooltip.animus.sigil.boundless_nature.flavour": "Channels Life Essence into mana",
+  "tooltip.animus.sigil.boundless_nature.info": "LP-powered mana tablet for Botania tools",
+  "tooltip.animus.sigil.boundless_nature.toggle": "Shift-right-click to toggle active/inactive",
+  "tooltip.animus.sigil.active": "Status: Active",
+  "tooltip.animus.sigil.inactive": "Status: Inactive",
+  "tooltip.animus.mana_stored": "Mana: %s / %s",
+  "tooltip.animus.conversion_rate": "Conversion: %s LP → %s mana per second",
+  "tooltip.animus.requires_botania": "Requires Botania",
   "tooltip.animus.blood_apple.flavour": "An apple infused with blood magic",
   "tooltip.animus.blood_apple.info": "Restores 4 hunger and 9.6 saturation",
   "tooltip.animus.blood_apple.lp": "Grants 200 LP when consumed",
@@ -225,6 +234,7 @@
   "text.component.animus.equivalency.no_lp": "Not enough LP. Need %s LP",
   "text.component.animus.equivalency.started": "Replacing %s blocks...",
   "text.component.animus.ticket.equivalency": "Sigil of Equivalency",
+  "text.component.animus.ticket.boundless_nature": "Boundless Nature",
   "text.component.animus.temporal.no_lp": "Not enough LP! Requires %s LP",
   "text.component.animus.temporal.activated": "Temporal acceleration set to %sx speed for %s seconds",
   "tooltip.animus.pilum_bound.bound_to": "Bound to: %s",
@@ -337,5 +347,6 @@
   "guide.animus.entry.runic_sentient_scythe": "Runic Sentient Scythe",
   "guide.animus.entry.hand_of_death": "Hand of Death",
   "guide.animus.entry.ritual_source_vitaeum": "Ritual of Source Vitaeum",
-  "guide.animus.entry.arcane_rune": "Arcane Rune"
+  "guide.animus.entry.arcane_rune": "Arcane Rune",
+  "guide.animus.entry.sigil_boundless_nature": "Sigil of Boundless Nature"
 }

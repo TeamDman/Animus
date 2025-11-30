@@ -162,6 +162,9 @@ public class AnimusItems {
     public static final RegistryObject<Item> SIGIL_EQUIVALENCY = ITEMS.register("sigil_equivalency",
         ItemSigilEquivalency::new);
 
+    public static final RegistryObject<Item> SIGIL_BOUNDLESS_NATURE = ITEMS.register("sigil_boundless_nature",
+        ItemSigilBoundlessNature::new);
+
     // Tools & Weapons
     public static final RegistryObject<Item> PILUM_IRON = ITEMS.register("pilum_iron",
         () -> new ItemPilum(Tiers.IRON));

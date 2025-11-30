@@ -355,6 +355,7 @@ public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Bl
         public static final String FREE_SOUL = "free_soul";
         public static final String TEMPORAL_DOMINANCE = "temporal_dominance";
         public static final String EQUIVALENCY = "equivalency";
+        public static final String BOUNDLESS_NATURE = "boundless_nature";
     }
 
     public static ResourceLocation rl(String path) {

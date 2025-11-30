@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "animus:item/sigil_boundless_nature_active",
+      "predicate": {
+        "animus:active": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "animus:item/sigil_boundless_nature"
+  }
+}
