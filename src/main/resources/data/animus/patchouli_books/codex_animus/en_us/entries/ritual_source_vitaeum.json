@@ -9,8 +9,13 @@
     },
     {
       "type": "patchouli:text",
+      "title": "Setup",
+      "text": "$(animus)Required:$()$(br)• Place a Source Jar $(blood)directly above$() the Master Ritual Stone (at y+1)$(br)• Blood Altar within 8 blocks of the ritual$(br2)The ritual will only draw from the jar positioned above it, giving you precise control over which jar supplies the conversion."
+    },
+    {
+      "type": "patchouli:text",
       "title": "How It Works",
-      "text": "The ritual searches for a Blood Altar within 8 blocks and Source Jars in a 5×5×5 area around the ritual stone.$(br2)Every 2 seconds (affected by altar speed runes), it drains Source from nearby jars and adds LP to the altar based on the conversion rate."
+      "text": "Every 2 seconds (affected by altar speed runes), the ritual drains Source from the jar above it and adds LP to the altar based on the conversion rate.$(br2)Link the Source Jar to other source providers using Ars Nouveau's Dominion Wand to keep it filled automatically."
     },
     {
       "type": "patchouli:text",

@@ -21,8 +21,9 @@ import java.util.function.Consumer;
  * allowing hybrid players to convert excess Source into LP at a configurable exchange rate.
  *
  * Features:
+ * - Requires a Source Jar directly above the Master Ritual Stone (at y+1)
  * - Searches for Blood Altars within configurable radius (default 8 blocks)
- * - Drains Source from Ars Nouveau Source Jars
+ * - Drains Source from the jar above the ritual
  * - Base conversion: 10 Source to 1 LP (configurable)
  * - Penalty system: Each nearby Master Ritual Stone doubles the conversion cost
  * - Respects altar speed runes, transfer limits, and dislocation runes
@@ -222,43 +223,31 @@ public class RitualSourceVitaeum extends Ritual {
         }
 
         /**
-         * Drain Source from nearby Source Jars
+         * Drain Source from the Source Jar directly above the Master Ritual Stone
          * @return Total amount of Source drained
          */
         public int drainSourceFromNearbyJars(ServerLevel level, BlockPos center, int maxDrain) {
-            int totalDrained = 0;
-            int remaining = maxDrain;
+            // Check the position directly above the Master Ritual Stone (y+1)
+            BlockPos jarPos = center.above();
+            BlockEntity be = level.getBlockEntity(jarPos);
 
-            // Search in a 5x5x5 area around the ritual
-            for (BlockPos pos : BlockPos.betweenClosed(
-                center.offset(-2, -2, -2),
-                center.offset(2, 2, 2)
-            )) {
-                if (remaining <= 0) {
-                    break;
-                }
+            if (be != null && sourceJarClass.isInstance(be)) {
+                try {
+                    // Get current Source amount
+                    int currentSource = (int) getSourceMethod.invoke(be);
 
-                BlockEntity be = level.getBlockEntity(pos);
-                if (be != null && sourceJarClass.isInstance(be)) {
-                    try {
-                        // Get current Source amount
-                        int currentSource = (int) getSourceMethod.invoke(be);
-
-                        if (currentSource > 0) {
-                            // Drain as much as possible from this jar
-                            int toDrain = Math.min(remaining, currentSource);
-                            removeSourceMethod.invoke(be, toDrain);
-
-                            totalDrained += toDrain;
-                            remaining -= toDrain;
-                        }
-                    } catch (Exception e) {
-                        // Silent failure - jar cannot be drained
+                    if (currentSource > 0) {
+                        // Drain as much as possible from this jar
+                        int toDrain = Math.min(maxDrain, currentSource);
+                        removeSourceMethod.invoke(be, toDrain);
+                        return toDrain;
                     }
+                } catch (Exception e) {
+                    // Silent failure - jar cannot be drained
                 }
             }
 
-            return totalDrained;
+            return 0;
         }
     }
 }
