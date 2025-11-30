@@ -45,17 +45,48 @@ public class AnimusJEIPlugin implements IModPlugin {
             Component.translatable("jei.animus.antilife_block.info")
         );
 
-        // Add info for Imperfect Ritual Stone - shows available rituals
+        // Add info for Imperfect Ritual Stone - general info
         registration.addIngredientInfo(
             Arrays.asList(
                 new ItemStack(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get())
             ),
             VanillaTypes.ITEM_STACK,
-            Component.translatable("jei.animus.imperfect_ritual_stone.info"),
-            Component.translatable("jei.animus.imperfect_ritual_stone.regression"),
-            Component.translatable("jei.animus.imperfect_ritual_stone.hunger"),
-            Component.translatable("jei.animus.imperfect_ritual_stone.enhancement"),
-            Component.translatable("jei.animus.imperfect_ritual_stone.reduction"),
+            Component.translatable("jei.animus.imperfect_ritual_stone.info")
+        );
+
+        // Ritual of Regression - Bookshelf trigger
+        registration.addIngredientInfo(
+            Arrays.asList(new ItemStack(Items.BOOKSHELF)),
+            VanillaTypes.ITEM_STACK,
+            Component.translatable("jei.animus.imperfect_ritual_stone.regression")
+        );
+
+        // Ritual of Hunger - Bone Block trigger
+        registration.addIngredientInfo(
+            Arrays.asList(new ItemStack(Items.BONE_BLOCK)),
+            VanillaTypes.ITEM_STACK,
+            Component.translatable("jei.animus.imperfect_ritual_stone.hunger")
+        );
+
+        // Ritual of Enhancement - Amethyst Block trigger
+        registration.addIngredientInfo(
+            Arrays.asList(new ItemStack(Items.AMETHYST_BLOCK)),
+            VanillaTypes.ITEM_STACK,
+            Component.translatable("jei.animus.imperfect_ritual_stone.enhancement")
+        );
+
+        // Ritual of Reduction - Bookshelf trigger (NOTE: Conflicts with Regression!)
+        // This will append to the bookshelf info
+        registration.addIngredientInfo(
+            Arrays.asList(new ItemStack(Items.BOOKSHELF)),
+            VanillaTypes.ITEM_STACK,
+            Component.translatable("jei.animus.imperfect_ritual_stone.reduction")
+        );
+
+        // Ritual of Boundless Skies - Ancient Debris trigger
+        registration.addIngredientInfo(
+            Arrays.asList(new ItemStack(Items.ANCIENT_DEBRIS)),
+            VanillaTypes.ITEM_STACK,
             Component.translatable("jei.animus.imperfect_ritual_stone.boundless_skies")
         );
     }

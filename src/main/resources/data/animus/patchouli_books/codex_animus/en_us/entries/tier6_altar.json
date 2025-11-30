@@ -15,7 +15,7 @@
     {
       "type": "text",
       "title": "Building the Structure",
-      "text": "Use the $(blood)Sanguine Diviner$() to visualize the tier 6 altar structure:$(br)$(li)Right-click the altar to see ghost blocks$(li)Shift+right-click to enable auto-placement$(li)The diviner will show where Crystallized Demon Will Blocks are needed$(br2)The tier 6 altar requires these blocks at the upper corners of the structure."
+      "text": "Use the $(blood)Sanguine Diviner$() to visualize the tier 6 altar structure:$(br)$(li)Right-click the altar to see ghost blocks$(li)Sneak + right-click to enable auto-placement$(li)The diviner will show where Crystallized Demon Will Blocks are needed$(br2)The tier 6 altar requires these blocks at the upper corners of the structure."
     },
     {
       "type": "text",

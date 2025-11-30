@@ -37,7 +37,7 @@ import java.util.Map;
  * - Shows current blood level, capacity, and tier
  * - Triggers tier recalculation
  * - Right-click ritual to show ritual information
- * - Shift+Right-click ritual to dismantle it
+ * - Sneak + Right-click ritual to dismantle it
  */
 public class ItemSanguineDiviner extends Item {
 
@@ -65,14 +65,14 @@ public class ItemSanguineDiviner extends Item {
             Ritual ritual = ritualStone.getCurrentRitual();
             boolean isActive = ritualStone.isActive();
 
-            // Shift+Right-click to dismantle ritual
+            // Sneak + Right-click to dismantle ritual
             if (player.isShiftKeyDown()) {
                 if (ritual != null) {
                     // Stop the ritual
                     ritualStone.stopRitual(Ritual.BreakType.DEACTIVATE);
 
                     player.displayClientMessage(
-                        Component.literal("Ritual dismantled!")
+                        Component.translatable("text.component.animus.diviner.ritual_dismantled")
                             .withStyle(ChatFormatting.GOLD),
                         true
                     );
@@ -88,7 +88,7 @@ public class ItemSanguineDiviner extends Item {
                     );
                 } else {
                     player.displayClientMessage(
-                        Component.literal("No ritual to dismantle")
+                        Component.translatable("text.component.animus.diviner.no_ritual_to_dismantle")
                             .withStyle(ChatFormatting.RED),
                         true
                     );
@@ -99,20 +99,20 @@ public class ItemSanguineDiviner extends Item {
             // Normal click - show ritual information
             if (ritual == null) {
                 player.displayClientMessage(
-                    Component.literal("No ritual set")
+                    Component.translatable("text.component.animus.diviner.no_ritual_set")
                         .withStyle(ChatFormatting.GRAY),
                     false
                 );
             } else {
                 String ritualName = ritual.getTranslationKey();
                 player.displayClientMessage(
-                    Component.literal("Ritual: ").withStyle(ChatFormatting.AQUA)
+                    Component.translatable("text.component.animus.diviner.ritual_label").withStyle(ChatFormatting.AQUA)
                         .append(Component.translatable(ritualName).withStyle(ChatFormatting.WHITE)),
                     false
                 );
                 player.displayClientMessage(
-                    Component.literal("Status: ").withStyle(ChatFormatting.AQUA)
-                        .append(Component.literal(isActive ? "Active" : "Inactive")
+                    Component.translatable("text.component.animus.diviner.status_label").withStyle(ChatFormatting.AQUA)
+                        .append(Component.translatable(isActive ? "text.component.animus.diviner.status_active" : "text.component.animus.diviner.status_inactive")
                             .withStyle(isActive ? ChatFormatting.GREEN : ChatFormatting.RED)),
                     false
                 );
@@ -130,7 +130,7 @@ public class ItemSanguineDiviner extends Item {
                     }
 
                     player.displayClientMessage(
-                        Component.literal("Owner: ").withStyle(ChatFormatting.AQUA)
+                        Component.translatable("text.component.animus.diviner.owner_label").withStyle(ChatFormatting.AQUA)
                             .append(Component.literal(ownerName)
                                 .withStyle(ChatFormatting.YELLOW)),
                         false
@@ -138,7 +138,7 @@ public class ItemSanguineDiviner extends Item {
                 }
 
                 player.displayClientMessage(
-                    Component.literal("Shift+Right-click to dismantle")
+                    Component.translatable("text.component.animus.diviner.sneak_to_dismantle")
                         .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC),
                     false
                 );
@@ -168,12 +168,12 @@ public class ItemSanguineDiviner extends Item {
 
             int tierLevel = altar.getTier();
 
-            // Shift+Right-click to auto-place upgrade blocks
+            // Sneak + Right-click to auto-place upgrade blocks
             if (player.isShiftKeyDown() && tierLevel < 6) {
                 Map<BlockPos, ResourceLocation> requiredBlocks = AltarUpgradeHelper.getUpgradeBlocks(altar, pos);
                 if (requiredBlocks.isEmpty()) {
                     player.displayClientMessage(
-                        Component.literal("No upgrade blocks needed!")
+                        Component.translatable("text.component.animus.diviner.no_upgrade_needed")
                             .withStyle(ChatFormatting.YELLOW),
                         true
                     );
@@ -235,7 +235,7 @@ public class ItemSanguineDiviner extends Item {
                 // Provide feedback
                 if (placed > 0) {
                     player.displayClientMessage(
-                        Component.literal("Placed " + placed + " block" + (placed != 1 ? "s" : "") + " for Tier " + (tierLevel + 1))
+                        Component.translatable("text.component.animus.diviner.placed_blocks", placed, (placed != 1 ? "s" : ""), (tierLevel + 1))
                             .withStyle(ChatFormatting.GREEN),
                         true
                     );
@@ -253,7 +253,7 @@ public class ItemSanguineDiviner extends Item {
 
                 if (missing > 0 && !player.isCreative()) {
                     player.displayClientMessage(
-                        Component.literal("Missing " + missing + " block" + (missing != 1 ? "s" : "") + " in inventory")
+                        Component.translatable("text.component.animus.diviner.missing_blocks", missing, (missing != 1 ? "s" : ""))
                             .withStyle(ChatFormatting.YELLOW),
                         true
                     );
@@ -267,7 +267,7 @@ public class ItemSanguineDiviner extends Item {
 
                 if (placed == 0 && !player.isCreative()) {
                     player.displayClientMessage(
-                        Component.literal("No required blocks found in inventory!")
+                        Component.translatable("text.component.animus.diviner.no_blocks_found")
                             .withStyle(ChatFormatting.RED),
                         true
                     );
@@ -302,19 +302,19 @@ public class ItemSanguineDiviner extends Item {
                     AnimusNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), packet);
 
                     player.displayClientMessage(
-                        Component.literal("Showing upgrade requirements for Tier " + (tierLevel + 1))
+                        Component.translatable("text.component.animus.diviner.showing_upgrade", (tierLevel + 1))
                             .withStyle(ChatFormatting.AQUA),
                         true
                     );
                     player.displayClientMessage(
-                        Component.literal("Shift+Right-click to auto-place")
+                        Component.translatable("text.component.animus.diviner.sneak_to_autoplace")
                             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC),
                         true
                     );
                 }
             } else if (tierLevel >= 6) {
                 player.displayClientMessage(
-                    Component.literal("Altar is already at maximum tier!")
+                    Component.translatable("text.component.animus.diviner.max_tier")
                         .withStyle(ChatFormatting.GOLD),
                     true
                 );
@@ -341,10 +341,10 @@ public class ItemSanguineDiviner extends Item {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.DIVINER_FIRST));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.DIVINER_SECOND));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.DIVINER_THIRD));
-        tooltip.add(Component.literal("Right-click altar to show upgrade ghost blocks").withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.literal("Shift+Right-click altar to auto-place upgrade").withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.literal("Right-click ritual to show info").withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.literal("Shift+Right-click ritual to dismantle").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.animus.diviner.altar_ghost").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.animus.diviner.altar_autoplace").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.animus.diviner.ritual_info").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.animus.diviner.ritual_dismantle").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 }

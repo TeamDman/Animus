@@ -10,12 +10,12 @@
     {
       "type": "spotlight",
       "item": "animus:sanguine_diviner",
-      "text": "The Sanguine Diviner has three primary functions:$(br)$(li)$(blood)Divine Structure:$() Right-click an altar to see which blocks are missing$(li)$(blood)Ghost Blocks:$() Shift+right-click to place phantom blocks showing the required structure$(li)$(blood)Auto-Build:$() While ghost blocks are visible, right-click with the required blocks to place them automatically"
+      "text": "The Sanguine Diviner has three primary functions:$(br)$(li)$(blood)Divine Structure:$() Right-click an altar to see which blocks are missing$(li)$(blood)Ghost Blocks:$() Sneak + right-click to place phantom blocks showing the required structure$(li)$(blood)Auto-Build:$() While ghost blocks are visible, right-click with the required blocks to place them automatically"
     },
     {
       "type": "text",
       "title": "How to Use",
-      "text": "$(bold)Divining an Altar:$()$(br)Right-click your Blood Altar with the Sanguine Diviner. It will display:$(br)$(li)Current tier$(li)Blood capacity$(li)Missing components in chat$(br2)$(bold)Viewing Ghost Blocks:$()$(br)Shift+right-click the altar to see wireframe ghost blocks showing where each component needs to be placed for the next tier upgrade."
+      "text": "$(bold)Divining an Altar:$()$(br)Right-click your Blood Altar with the Sanguine Diviner. It will display:$(br)$(li)Current tier$(li)Blood capacity$(li)Missing components in chat$(br2)$(bold)Viewing Ghost Blocks:$()$(br)Sneak + right-click the altar to see wireframe ghost blocks showing where each component needs to be placed for the next tier upgrade."
     },
     {
       "type": "text",

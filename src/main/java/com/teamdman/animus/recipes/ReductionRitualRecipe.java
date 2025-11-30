@@ -34,9 +34,9 @@ public class ReductionRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
-        // Check if player is holding an item in offhand
-        ItemStack offhandItem = player.getOffhandItem();
-        if (offhandItem.isEmpty()) {
+        // Check if player is holding an item in mainhand
+        ItemStack mainhandItem = player.getMainHandItem();
+        if (mainhandItem.isEmpty()) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.reduction.no_item"),
                 true
@@ -45,7 +45,7 @@ public class ReductionRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Get enchantments
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(offhandItem);
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(mainhandItem);
         if (enchantments.isEmpty()) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.reduction.no_enchantments"),
@@ -61,10 +61,10 @@ public class ReductionRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Apply downgraded enchantments
-        EnchantmentHelper.setEnchantments(enchantments, offhandItem);
+        EnchantmentHelper.setEnchantments(enchantments, mainhandItem);
 
         // Remove enhanced marker if present
-        CompoundTag tag = offhandItem.getOrCreateTag();
+        CompoundTag tag = mainhandItem.getOrCreateTag();
         if (tag.contains("AnimusEnhanced")) {
             tag.remove("AnimusEnhanced");
         }

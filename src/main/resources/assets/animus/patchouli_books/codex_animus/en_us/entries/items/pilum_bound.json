@@ -7,7 +7,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:pilum_bound",
-      "text": "A soul-bound javelin with two modes. Must be bound to a player using $(bold)Shift+Right-Click$(). When $(bold)activated$(), it costs 50LP per attack/throw but gains AOE attacks and sacrifices enemies to nearby altars. When $(bold)deactivated$(), it behaves like an unbreakable Diamond Pilum."
+      "text": "A soul-bound javelin with two modes. Must be bound to a player using $(bold)Sneak + Right-Click$(). When $(bold)activated$(), it costs 50LP per attack/throw but gains AOE attacks and sacrifices enemies to nearby altars. When $(bold)deactivated$(), it behaves like an unbreakable Diamond Pilum."
     },
     {
       "type": "patchouli:crafting",
@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Binding & Activation",
-      "text": "$(bold)Step 1 - Bind:$()$(br)Shift+Right-Click an unbound Bound Pilum to bind it to yourself.$(br2)$(bold)Step 2 - Activate:$()$(br)Shift+Right-Click again to toggle between deactivated and activated modes.$(br2)$(bold)Deactivated Mode:$()$(br)Functions as an unbreakable Diamond Pilum. No LP cost, no special abilities.$(br2)$(bold)Activated Mode:$()$(br)Costs 50LP per attack or throw. Gains AOE and sacrifice abilities!"
+      "text": "$(bold)Step 1 - Bind:$()$(br)Sneak + Right-Click an unbound Bound Pilum to bind it to yourself.$(br2)$(bold)Step 2 - Activate:$()$(br)Sneak + Right-Click again to toggle between deactivated and activated modes.$(br2)$(bold)Deactivated Mode:$()$(br)Functions as an unbreakable Diamond Pilum. No LP cost, no special abilities.$(br2)$(bold)Activated Mode:$()$(br)Costs 50LP per attack or throw. Gains AOE and sacrifice abilities!"
     },
     {
       "type": "patchouli:text",

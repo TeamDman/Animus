@@ -43,8 +43,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Sigil of Equivalency
  * Equal-trade style sigil that swaps blocks in a radius using LP
  *
- * - Shift-right-click block: Add to selection list (up to 20)
- * - Shift-right-click air: Clear selection
+ * - Sneak + right-click block: Add to selection list (up to 20)
+ * - Sneak + right-click air: Clear selection
  * - Right-click block: Replace all matching blocks in radius with random selection
  */
 public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
@@ -82,7 +82,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                 );
 
                 player.displayClientMessage(
-                    Component.literal("Radius: " + newRadius + " (" + areaDimension + "×" + areaDimension + " area)")
+                    Component.translatable("text.component.animus.equivalency.radius_changed", newRadius, areaDimension)
                         .withStyle(ChatFormatting.GOLD),
                     true
                 );
@@ -96,7 +96,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // Shift-right-click air to clear selection
+        // Sneak + right-click air to clear selection
         if (player.isShiftKeyDown()) {
             if (!level.isClientSide) {
                 clearSelectedBlocks(stack);
@@ -133,7 +133,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             return InteractionResult.SUCCESS;
         }
 
-        // Shift-right-click to add block to selection
+        // Sneak + right-click to add block to selection
         if (player.isShiftKeyDown()) {
             return handleBlockSelection(level, player, stack, targetState);
         }
@@ -256,7 +256,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
         if (blocksToReplace.isEmpty()) {
             player.displayClientMessage(
-                Component.literal("All matching blocks would be replaced with the same type!")
+                Component.translatable("text.component.animus.equivalency.same_block_warning")
                     .withStyle(ChatFormatting.RED),
                 true
             );
@@ -504,9 +504,9 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         // Show current radius with area dimensions for clarity
         int radius = getRadius(stack);
         int areaDimension = (radius * 2) + 1; // e.g., radius 1 = 3x3, radius 2 = 5x5
-        tooltip.add(Component.literal("Radius: " + radius + " (" + areaDimension + "x" + areaDimension + " area)")
+        tooltip.add(Component.translatable("tooltip.animus.equivalency.radius_info", radius, areaDimension)
             .withStyle(ChatFormatting.AQUA));
-        tooltip.add(Component.literal("Shift+Scroll to adjust (1-" + MAX_RADIUS + ")")
+        tooltip.add(Component.translatable("tooltip.animus.equivalency.scroll_adjust", MAX_RADIUS)
             .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
 
         // Show selected blocks
@@ -523,7 +523,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                         .withStyle(ChatFormatting.GRAY));
                 }
             } else {
-                tooltip.add(Component.literal("  [Hold Shift for details]")
+                tooltip.add(Component.translatable("tooltip.animus.equivalency.hold_sneak")
                     .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             }
         }

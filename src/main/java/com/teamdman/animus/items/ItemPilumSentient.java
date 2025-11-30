@@ -73,7 +73,7 @@ public class ItemPilumSentient extends ItemPilum implements IDemonWillWeapon {
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
         EnumDemonWillType type = getCurrentType(stack);
-        tooltip.add(Component.literal("Will Type: " + type.toString())
+        tooltip.add(Component.translatable("tooltip.animus.pilum_sentient.will_type", type.toString())
             .withStyle(ChatFormatting.AQUA));
 
         if (level != null && level.isClientSide) {
@@ -81,10 +81,10 @@ public class ItemPilumSentient extends ItemPilum implements IDemonWillWeapon {
             if (player != null) {
                 double soulsRemaining = WorldDemonWillHandler.getCurrentWill(level, player.blockPosition(), type);
                 int willLevel = getLevel(stack, soulsRemaining);
-                tooltip.add(Component.literal("Level: " + willLevel + " (" + (int)soulsRemaining + " will)")
+                tooltip.add(Component.translatable("tooltip.animus.pilum_sentient.level", willLevel, (int)soulsRemaining)
                     .withStyle(ChatFormatting.GOLD));
-                tooltip.add(Component.literal("+").append(String.format("%.1f", getDamageAdded(type, willLevel)))
-                    .append(" Attack Damage").withStyle(ChatFormatting.RED));
+                tooltip.add(Component.translatable("tooltip.animus.pilum_sentient.damage_bonus", String.format("%.1f", getDamageAdded(type, willLevel)))
+                    .withStyle(ChatFormatting.RED));
             }
         }
 

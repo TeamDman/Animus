@@ -24,7 +24,7 @@ import java.util.Map;
  * Imperfect Ritual of Enhancement
  * Trigger: Amethyst Block on top of Imperfect Ritual Stone
  * Cost: 5000 LP
- * Effect: Enhances all enchantments on offhand item by 1 level (one-time only)
+ * Effect: Enhances all enchantments on mainhand item by 1 level (one-time only)
  */
 public class EnhancementRitualRecipe extends ImperfectRitualRecipe {
 
@@ -34,9 +34,9 @@ public class EnhancementRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
-        // Check if player is holding an item in offhand
-        ItemStack offhandItem = player.getOffhandItem();
-        if (offhandItem.isEmpty()) {
+        // Check if player is holding an item in mainhand
+        ItemStack mainhandItem = player.getMainHandItem();
+        if (mainhandItem.isEmpty()) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.enhancement.no_item"),
                 true
@@ -45,7 +45,7 @@ public class EnhancementRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Check if item has already been enhanced
-        CompoundTag tag = offhandItem.getOrCreateTag();
+        CompoundTag tag = mainhandItem.getOrCreateTag();
         if (tag.getBoolean("AnimusEnhanced")) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.enhancement.already_enhanced"),
@@ -55,7 +55,7 @@ public class EnhancementRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Get enchantments
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(offhandItem);
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(mainhandItem);
         if (enchantments.isEmpty()) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.enhancement.no_enchantments"),
@@ -70,7 +70,7 @@ public class EnhancementRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Apply enhanced enchantments
-        EnchantmentHelper.setEnchantments(enchantments, offhandItem);
+        EnchantmentHelper.setEnchantments(enchantments, mainhandItem);
 
         // Mark as enhanced
         tag.putBoolean("AnimusEnhanced", true);

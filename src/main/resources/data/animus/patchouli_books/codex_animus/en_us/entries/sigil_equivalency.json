@@ -10,12 +10,12 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:sigil_equivalency",
-      "text": "The sigil operates on a selection-based system:$(br)• Shift-right-click blocks to add them to your selection (up to 20 types)$(br)• Shift-right-click air to clear your selection$(br)• Right-click a block to replace all matching blocks in radius with randomly chosen selections"
+      "text": "The sigil operates on a selection-based system:$(br)• Sneak + right-click blocks to add them to your selection (up to 20 types)$(br)• Sneak + right-click air to clear your selection$(br)• Right-click a block to replace all matching blocks in radius with randomly chosen selections"
     },
     {
       "type": "patchouli:text",
       "title": "Selection System",
-      "text": "To use the sigil effectively:$(br2)1. Ensure you have the replacement blocks in your inventory$(br)2. Shift-right-click up to 20 different block types to select them$(br)3. The sigil remembers your selection$(br)4. Right-click any block to replace all instances of that block type in the radius$(br2)The sigil will only use blocks from your selection that are currently in your inventory."
+      "text": "To use the sigil effectively:$(br2)1. Ensure you have the replacement blocks in your inventory$(br)2. Sneak + right-click up to 20 different block types to select them$(br)3. The sigil remembers your selection$(br)4. Right-click any block to replace all instances of that block type in the radius$(br2)The sigil will only use blocks from your selection that are currently in your inventory."
     },
     {
       "type": "patchouli:text",

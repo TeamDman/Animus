@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Entity Teleportation",
-      "text": "$(bold)LP Cost:$() 2000 per teleportation$(br2)$(bold)Bind:$() Shift+Right-click a $(l:bloodmagic:utility/teleposer)Teleposer$() to bind its location.$(br2)$(bold)Teleport:$() Attack an entity to teleport it 1 block above the bound Teleposer.$(br2)$(bold)Player Restriction:$() Can only teleport players if they are sneaking.$(br2)$(italic)The Teleposer must still exist at the bound location for teleportation to work.$()"
+      "text": "$(bold)LP Cost:$() 2000 per teleportation$(br2)$(bold)Bind:$() Sneak + right-click a $(l:bloodmagic:utility/teleposer)Teleposer$() to bind its location.$(br2)$(bold)Teleport:$() Attack an entity to teleport it 1 block above the bound Teleposer.$(br2)$(bold)Player Restriction:$() Can only teleport players if they are sneaking.$(br2)$(italic)The Teleposer must still exist at the bound location for teleportation to work.$()"
     },
     {
       "type": "patchouli:text",

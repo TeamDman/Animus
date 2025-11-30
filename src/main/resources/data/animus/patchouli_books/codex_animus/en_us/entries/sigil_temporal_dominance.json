@@ -10,7 +10,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:sigil_temporal_dominance",
-      "text": "Shift-right-click on a block entity to activate temporal acceleration. Each activation increases the speed level and refreshes the 30-second timer.$(br2)The sigil progressively accelerates time, with each level doubling the tick rate."
+      "text": "Sneak + right-click on a block entity to activate temporal acceleration. Each activation increases the speed level and refreshes the 30-second timer.$(br2)The sigil progressively accelerates time, with each level doubling the tick rate."
     },
     {
       "type": "patchouli:text",

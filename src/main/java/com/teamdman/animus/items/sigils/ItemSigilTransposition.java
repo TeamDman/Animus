@@ -49,7 +49,7 @@ import java.util.List;
  * - Respects forge:relocation_not_supported tag and protection mods like FTB Chunks
  *
  * Entity Teleportation Mode:
- * - Shift+Right-click a Teleposer to bind its location
+ * - Sneak + Right-click a Teleposer to bind its location
  * - Attack an entity to teleport it to the bound Teleposer (1 block above)
  * - Can only teleport players if they are sneaking
  * - Consumes LP for each teleportation
@@ -127,11 +127,11 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
         CompoundTag tag = stack.getOrCreateTag();
         BlockState clickedState = level.getBlockState(clickedPos);
 
-        // Shift+Right-click on Teleposer to bind teleportation location
+        // Sneak + Right-click on Teleposer to bind teleportation location
         if (player.isShiftKeyDown() && clickedState.getBlock() instanceof BlockTeleposer) {
             tag.putLong(TELEPOSER_KEY, clickedPos.asLong());
             player.displayClientMessage(
-                Component.literal("Teleposer bound! Attack entities to teleport them here.")
+                Component.translatable("text.component.animus.transposition.teleposer_bound")
                     .withStyle(ChatFormatting.GOLD),
                 true
             );
@@ -284,7 +284,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
         if (tag != null && tag.getLong(TELEPOSER_KEY) != 0) {
             BlockPos teleposerPos = BlockPos.of(tag.getLong(TELEPOSER_KEY));
-            tooltip.add(Component.literal("Teleposer: " + teleposerPos.getX() + ", " + teleposerPos.getY() + ", " + teleposerPos.getZ())
+            tooltip.add(Component.translatable("tooltip.animus.transposition.teleposer_location", teleposerPos.getX(), teleposerPos.getY(), teleposerPos.getZ())
                 .withStyle(ChatFormatting.AQUA));
         }
 
@@ -304,7 +304,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
         CompoundTag tag = stack.getTag();
         if (tag == null || tag.getLong(TELEPOSER_KEY) == 0) {
             player.displayClientMessage(
-                Component.literal("No Teleposer bound! Shift+Right-click a Teleposer to bind it.")
+                Component.translatable("text.component.animus.transposition.no_teleposer")
                     .withStyle(ChatFormatting.RED),
                 true
             );
@@ -314,7 +314,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
         // Check if target is a player and not sneaking
         if (target instanceof Player targetPlayer && !targetPlayer.isShiftKeyDown()) {
             player.displayClientMessage(
-                Component.literal("Cannot teleport players unless they are sneaking!")
+                Component.translatable("text.component.animus.transposition.player_must_sneak")
                     .withStyle(ChatFormatting.RED),
                 true
             );
@@ -328,7 +328,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
         // Verify teleposer still exists
         if (!(player.level().getBlockState(teleposerPos).getBlock() instanceof BlockTeleposer)) {
             player.displayClientMessage(
-                Component.literal("Bound Teleposer no longer exists!")
+                Component.translatable("text.component.animus.transposition.teleposer_missing")
                     .withStyle(ChatFormatting.RED),
                 true
             );
@@ -346,7 +346,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
         var result = network.syphonAndDamage(player, ticket);
         if (!result.isSuccess()) {
             player.displayClientMessage(
-                Component.literal("Not enough LP to teleport! Need " + TELEPORT_COST + " LP")
+                Component.translatable("text.component.animus.transposition.not_enough_lp", TELEPORT_COST)
                     .withStyle(ChatFormatting.RED),
                 true
             );
@@ -363,7 +363,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
         String targetName = target instanceof Player ? target.getName().getString() : target.getType().getDescription().getString();
         player.displayClientMessage(
-            Component.literal("Teleported " + targetName + " to Teleposer!")
+            Component.translatable("text.component.animus.transposition.teleported", targetName)
                 .withStyle(ChatFormatting.GREEN),
             true
         );

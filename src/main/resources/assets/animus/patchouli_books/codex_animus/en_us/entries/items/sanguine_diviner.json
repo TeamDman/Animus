@@ -17,12 +17,12 @@
     {
       "type": "patchouli:text",
       "title": "Auto-Placement",
-      "text": "$(bold)Shift+Right-Click Altar:$()$(br)Automatically places upgrade blocks from your inventory!$(br2)$(bold)Creative Mode:$()$(br)Auto-places all blocks without consuming them.$(br2)$(bold)Survival Mode:$()$(br)Places blocks you have, highlights what's missing.$(br2)$(italic)Ghost blocks update to show remaining positions after placement.$()"
+      "text": "$(bold)Sneak + Right-Click Altar:$()$(br)Automatically places upgrade blocks from your inventory!$(br2)$(bold)Creative Mode:$()$(br)Auto-places all blocks without consuming them.$(br2)$(bold)Survival Mode:$()$(br)Places blocks you have, highlights what's missing.$(br2)$(italic)Ghost blocks update to show remaining positions after placement.$()"
     },
     {
       "type": "patchouli:text",
       "title": "Ritual Management",
-      "text": "$(bold)View Ritual Info:$()$(br)Right-click a Master Ritual Stone to display:$(li)Ritual name$(li)Active/Inactive status$(li)Ritual owner$(br2)$(bold)Dismantle Ritual:$()$(br)Shift + right-click a Master Ritual Stone to safely dismantle the ritual without destroying the structure.$(br2)$(italic)A quick way to reset rituals!$()"
+      "text": "$(bold)View Ritual Info:$()$(br)Right-click a Master Ritual Stone to display:$(li)Ritual name$(li)Active/Inactive status$(li)Ritual owner$(br2)$(bold)Dismantle Ritual:$()$(br)Sneak + right-click a Master Ritual Stone to safely dismantle the ritual without destroying the structure.$(br2)$(italic)A quick way to reset rituals!$()"
     },
     {
       "type": "patchouli:text",

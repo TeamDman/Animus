@@ -39,7 +39,7 @@ import java.util.List;
  * Deactivated Mode: Behaves like a diamond pilum but unbreakable
  * Active Mode: Has AOE attacks, sacrifices entities to altars, costs 50LP per attack/throw
  *
- * Shift+Right-Click: Bind (if unbound) or toggle active/deactivated (if bound)
+ * Sneak + Right-Click: Bind (if unbound) or toggle active/deactivated (if bound)
  */
 public class ItemPilumBound extends ItemPilum implements IBindable {
     private static final int LP_COST = 50;
@@ -112,7 +112,7 @@ public class ItemPilumBound extends ItemPilum implements IBindable {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // Shift+right-click handling
+        // Sneak + right-click handling
         if (player.isShiftKeyDown()) {
             if (!level.isClientSide) {
                 Binding binding = getBinding(stack);

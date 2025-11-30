@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "More Rituals",
-      "text": "$(bold)Ritual of Enhancement$()$(br)Block: Amethyst Block$(br)Cost: 5000 LP$(br)Effect: +1 level to all enchantments on offhand item$(br2)$(bold)Ritual of Reduction$()$(br)Block: Bookshelf$(br)Cost: 1000 LP$(br)Effect: -1 level to all enchantments, removes enhancement$(br2)$(bold)Ritual of Boundless Skies$()$(br)Block: Ancient Debris$(br)Cost: 10000 LP$(br)Effect: 10 minutes of creative flight"
+      "text": "$(bold)Ritual of Enhancement$()$(br)Block: Amethyst Block$(br)Cost: 5000 LP$(br)Effect: +1 level to all enchantments on mainhand item$(br2)$(bold)Ritual of Reduction$()$(br)Block: Bookshelf$(br)Cost: 1000 LP$(br)Effect: -1 level to all enchantments, removes enhancement$(br2)$(bold)Ritual of Boundless Skies$()$(br)Block: Ancient Debris$(br)Cost: 10000 LP$(br)Effect: 10 minutes of creative flight"
     },
     {
       "type": "patchouli:crafting",
