@@ -76,6 +76,10 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue siphonRange;
         public final ForgeConfigSpec.IntValue siphonDepth;
         public final ForgeConfigSpec.IntValue siphonLPPerExtraction;
+        public final ForgeConfigSpec.IntValue sourceVitaeumAltarRange;
+        public final ForgeConfigSpec.IntValue sourceVitaeumBaseConversion;
+        public final ForgeConfigSpec.IntValue sourceVitaeumPenaltyRadius;
+        public final ForgeConfigSpec.IntValue sourceVitaeumSourcePerCycle;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -195,6 +199,22 @@ public class AnimusConfig {
             siphonLPPerExtraction = builder
                 .comment("LP cost per fluid block extracted by Ritual of Siphon")
                 .defineInRange("siphonLPPerExtraction", 50, 1, 1000);
+
+            sourceVitaeumAltarRange = builder
+                .comment("Radius in blocks to search for Blood Altars for Ritual of Source Vitaeum")
+                .defineInRange("sourceVitaeumAltarRange", 8, 1, 32);
+
+            sourceVitaeumBaseConversion = builder
+                .comment("Base conversion rate for Ritual of Source Vitaeum (X Source to 1 LP)")
+                .defineInRange("sourceVitaeumBaseConversion", 10, 1, 1000);
+
+            sourceVitaeumPenaltyRadius = builder
+                .comment("Radius in blocks to check for other Master Ritual Stones (each doubles the conversion cost)")
+                .defineInRange("sourceVitaeumPenaltyRadius", 10, 1, 32);
+
+            sourceVitaeumSourcePerCycle = builder
+                .comment("Amount of Source to attempt to convert per cycle")
+                .defineInRange("sourceVitaeumSourcePerCycle", 100, 10, 10000);
 
             builder.pop();
         }

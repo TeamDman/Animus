@@ -146,6 +146,7 @@
   "ritual.animus.ritual_nolite_ignem": "Ritual of Nolite Ignem",
   "ritual.animus.ritual_relentless_tides": "Ritual of Relentless Tides",
   "ritual.animus.ritual_siphon": "Ritual of Siphon",
+  "ritual.animus.ritual_source_vitaeum": "Ritual of Source Vitaeum",
   "ritual.animus.ritual_culling": "Ritual of Culling",
   "ritual.animus.ritual_entropy": "Ritual of Entropy",
   "ritual.animus.ritual_hunger": "Ritual of Hunger",
@@ -163,6 +164,7 @@
   "text.component.animus.ticket.nolite_ignem": "Nolite Ignem",
   "text.component.animus.ticket.relentless_tides": "Relentless Tides",
   "text.component.animus.ticket.siphon": "Siphon",
+  "text.component.animus.ticket.source_vitaeum": "Source Vitaeum",
   "text.component.animus.ticket.sol": "Sol Ritual",
   "text.component.animus.ticket.transposition": "Transposition",
   "text.component.animus.ticket.storm": "Storm",
@@ -324,5 +326,9 @@
   "text.component.animus.equivalency.same_block_warning": "All matching blocks would be replaced with the same type!",
   "tooltip.animus.equivalency.radius_info": "Radius: %s (%sx%s area)",
   "tooltip.animus.equivalency.scroll_adjust": "Sneak + Scroll to adjust (1-%s)",
-  "tooltip.animus.equivalency.hold_sneak": "  [Hold Sneak for details]"
+  "tooltip.animus.equivalency.hold_sneak": "  [Hold Sneak for details]",
+  "guide.animus.category.compatibility": "Modded Compatibility",
+  "guide.animus.entry.runic_sentient_scythe": "Runic Sentient Scythe",
+  "guide.animus.entry.hand_of_death": "Hand of Death",
+  "guide.animus.entry.ritual_source_vitaeum": "Ritual of Source Vitaeum"
 }

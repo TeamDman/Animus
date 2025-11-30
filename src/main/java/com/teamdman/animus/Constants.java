@@ -52,6 +52,7 @@ public class Constants {
             public static final String TICKET_NOLITE_IGNEM = "text.component.animus.ticket.nolite_ignem";
             public static final String TICKET_RELENTLESS_TIDES = "text.component.animus.ticket.relentless_tides";
             public static final String TICKET_SIPHON = "text.component.animus.ticket.siphon";
+            public static final String TICKET_SOURCE_VITAEUM = "text.component.animus.ticket.source_vitaeum";
             public static final String TICKET_FREE_SOUL = "text.component.animus.ticket.free_soul";
             public static final String TICKET_TEMPORAL_DOMINANCE = "text.component.animus.ticket.temporal_dominance";
             public static final String TICKET_EQUIVALENCY = "text.component.animus.ticket.equivalency";
@@ -332,6 +333,7 @@ public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Bl
         public static final String RELENTLESS_TIDES = "ritual_relentless_tides";
         public static final String SIPHON = "ritual_siphon";
         public static final String SOL = "ritual_sol";
+        public static final String SOURCE_VITAEUM = "ritual_source_vitaeum";
         public static final String STEADFAST = "ritual_steadfast_heart";
         public static final String UNMAKING = "ritual_unmaking";
     }
