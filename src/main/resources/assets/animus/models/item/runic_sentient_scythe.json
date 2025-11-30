@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "animus:item/runic_sentient_scythe"
+  }
+}

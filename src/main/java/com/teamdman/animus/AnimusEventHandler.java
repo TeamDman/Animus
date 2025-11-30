@@ -262,6 +262,11 @@ public class AnimusEventHandler {
             return;
         }
 
+        // Only process actual Level instances (not WorldGenRegion during chunk generation)
+        if (!(event.getLevel() instanceof Level)) {
+            return;
+        }
+
         // Check if the spawn position is within a Serenity zone
         Level level = (Level) event.getLevel();
         BlockPos spawnPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());

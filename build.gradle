@@ -85,6 +85,14 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        // Modrinth Maven (for Malum and Lodestone)
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
     mavenLocal()
 }
 
@@ -106,6 +114,12 @@ dependencies {
     // Patchouli - for documentation books
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+
+    // Malum and Lodestone - optional soft dependencies for cross-mod compatibility
+    // Using runtimeOnly so they load in dev environment for testing, but aren't required dependencies
+    // Runtime detection via ModList.get().isLoaded("malum") handles graceful degradation
+    runtimeOnly fg.deobf("curse.maven:lodestone-616457:6213794")
+    runtimeOnly fg.deobf("curse.maven:malum-484064:6646111")
 }
 
 tasks.named('processResources', ProcessResources).configure {

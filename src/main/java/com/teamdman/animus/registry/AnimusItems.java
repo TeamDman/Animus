@@ -162,6 +162,12 @@ public class AnimusItems {
     public static final RegistryObject<Item> PILUM_SENTIENT = ITEMS.register("pilum_sentient",
         ItemPilumSentient::new);
 
+    public static final RegistryObject<Item> RUNIC_SENTIENT_SCYTHE = ITEMS.register("runic_sentient_scythe",
+        ItemRunicSentientScythe::new);
+
+    public static final RegistryObject<Item> HAND_OF_DEATH = ITEMS.register("hand_of_death",
+        ItemHandOfDeath::new);
+
     // Crafting Components
     public static final RegistryObject<Item> KEY_BINDING = ITEMS.register("key_binding",
         ItemKeyBinding::new);
