@@ -121,9 +121,14 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:lodestone-616457:6213794")
     runtimeOnly fg.deobf("curse.maven:malum-484064:6646111")
 
-    // Ars Nouveau - optional soft dependency for source-to-LP conversion
+    // Ars Nouveau - optional soft dependency for source-to-LP conversion and arcane runes
+    // compileOnly allows implementing ISourceTile interface
     // Runtime detection via ModList.get().isLoaded("ars_nouveau") handles graceful degradation
+    compileOnly fg.deobf("curse.maven:ars-nouveau-401955:6688854")
     runtimeOnly fg.deobf("curse.maven:ars-nouveau-401955:6688854")
+
+    // The One Probe - for debugging in dev environment only (not required in production)
+    runtimeOnly fg.deobf("curse.maven:the-one-probe-245211:6106996")
 }
 
 tasks.named('processResources', ProcessResources).configure {
