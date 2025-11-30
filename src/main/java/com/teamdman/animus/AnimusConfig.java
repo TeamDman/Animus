@@ -398,12 +398,39 @@ public class AnimusConfig {
         }
     }
 
+    // Ars Nouveau Compatibility Configuration
+    public static class ArsNouveau {
+        public final ForgeConfigSpec.IntValue arcaneRuneDrainAmount;
+        public final ForgeConfigSpec.IntValue arcaneRuneDrainInterval;
+
+        public ArsNouveau(ForgeConfigSpec.Builder builder) {
+            builder.push("arsNouveau");
+
+            arcaneRuneDrainAmount = builder
+                .comment(
+                    "Amount of Source consumed by Arcane Rune per drain cycle",
+                    "Default: 20 Source per cycle"
+                )
+                .defineInRange("arcaneRuneDrainAmount", 20, 1, 10000);
+
+            arcaneRuneDrainInterval = builder
+                .comment(
+                    "Interval in ticks between Arcane Rune source drain cycles",
+                    "Default: 200 ticks (10 seconds)"
+                )
+                .defineInRange("arcaneRuneDrainInterval", 200, 20, 6000);
+
+            builder.pop();
+        }
+    }
+
     // Config instances
     public static General general;
     public static Rituals rituals;
     public static Sigils sigils;
     public static HurtCooldown hurtCooldown;
     public static BloodCore bloodCore;
+    public static ArsNouveau arsNouveau;
 
     static {
         BUILDER.comment("Animus Configuration").push("animus");
@@ -413,6 +440,7 @@ public class AnimusConfig {
         sigils = new Sigils(BUILDER);
         hurtCooldown = new HurtCooldown(BUILDER);
         bloodCore = new BloodCore(BUILDER);
+        arsNouveau = new ArsNouveau(BUILDER);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

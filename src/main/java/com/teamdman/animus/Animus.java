@@ -58,6 +58,17 @@ public class Animus {
             LOGGER.error("Failed to register Crystallized Demon Will Block with Blood Magic", e);
         }
 
+        // Register Arcane Rune as a valid BLOODRUNE component for altars
+        try {
+            wayoftime.bloodmagic.impl.BloodMagicAPI.INSTANCE.registerAltarComponent(
+                AnimusBlocks.BLOCK_ARCANE_RUNE.get().defaultBlockState(),
+                wayoftime.bloodmagic.altar.ComponentType.BLOODRUNE.name()
+            );
+            LOGGER.info("Registered Arcane Rune as BLOODRUNE component for Blood Magic altars");
+        } catch (Exception e) {
+            LOGGER.error("Failed to register Arcane Rune with Blood Magic", e);
+        }
+
         event.enqueueWork(() -> {
             // Register strippable blocks (axe interaction) using reflection
             try {
