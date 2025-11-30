@@ -36,4 +36,8 @@ public class AnimusRecipeSerializers {
     public static final RegistryObject<RecipeSerializer<BoundlessSkiesRitualRecipe>> BOUNDLESS_SKIES_RITUAL =
         RECIPE_SERIALIZERS.register("boundless_skies_ritual",
             BoundlessSkiesRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<ClearSkiesRitualRecipe>> CLEAR_SKIES_RITUAL =
+        RECIPE_SERIALIZERS.register("clear_skies_ritual",
+            ClearSkiesRitualRecipe.Serializer::new);
 }

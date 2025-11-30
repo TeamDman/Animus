@@ -22,14 +22,14 @@ import java.util.Map;
 
 /**
  * Imperfect Ritual of Reduction
- * Trigger: Bookshelf on top of Imperfect Ritual Stone
+ * Trigger: Quartz Block on top of Imperfect Ritual Stone
  * Cost: 1000 LP
  * Effect: Removes enhancement record and downgrades all enchantments by 1 level (min level 1)
  */
 public class ReductionRitualRecipe extends ImperfectRitualRecipe {
 
     public ReductionRitualRecipe(ResourceLocation id) {
-        super(id, "reduction", Blocks.BOOKSHELF.defaultBlockState(), 1000);
+        super(id, "reduction", Blocks.QUARTZ_BLOCK.defaultBlockState(), 1000);
     }
 
     @Override

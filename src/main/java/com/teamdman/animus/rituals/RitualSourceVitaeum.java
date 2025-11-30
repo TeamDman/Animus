@@ -121,10 +121,6 @@ public class RitualSourceVitaeum extends Ritual {
             return;
         }
 
-        // Respect altar's dislocation rune bonus (increases transfer rate)
-        int additionRate = altar.getAdditionRate();
-        lpToAdd = Math.min(lpToAdd, additionRate);
-
         // Don't overflow the altar
         lpToAdd = Math.min(lpToAdd, availableSpace);
 
@@ -132,8 +128,9 @@ public class RitualSourceVitaeum extends Ritual {
             return;
         }
 
-        // Add LP to altar
-        altar.setCurrentBlood(currentBlood + lpToAdd);
+        // Add LP to altar using the standard method
+        // The second parameter (true) makes it respect altar speed and dislocation runes
+        altar.sacrificialDaggerCall(lpToAdd, true);
     }
 
     /**

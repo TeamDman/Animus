@@ -297,6 +297,7 @@
   "ritual.animus.reduction.no_item": "You must be holding an item in your mainhand to perform this ritual!",
   "ritual.animus.reduction.not_enhanced": "This item has no enhancements to reduce!",
   "ritual.animus.reduction.success": "Item enhancements reduced!",
+  "ritual.animus.clear_skies.success": "The skies clear at your command!",
   "tooltip.animus.pilum_sentient.will_type": "Will Type: %s",
   "tooltip.animus.pilum_sentient.level": "Level: %s (%s will)",
   "tooltip.animus.pilum_sentient.damage_bonus": "+%s Attack Damage",

@@ -66,6 +66,9 @@ public class AnimusLootTableProvider extends LootTableProvider {
             // Imperfect Ritual Stone - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get());
 
+            // Arcane Rune - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_ARCANE_RUNE.get());
+
             // Willful Stone blocks - all drop themselves
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE.get());
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get());

@@ -219,13 +219,21 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
             return true;
         }
 
-        // Allow Malum's haunted enchant if Malum is loaded
+        // Allow looting enchantment
+        if (enchantment == net.minecraft.world.item.enchantment.Enchantments.MOB_LOOTING) {
+            return true;
+        }
+
+        // Allow Malum enchantments if Malum is loaded
         if (MALUM_LOADED) {
             try {
-                // Check if this is the haunted enchant
+                // Check if this is a Malum enchantment (haunted, rebounding, etc.)
                 String enchantId = enchantment.getDescriptionId();
-                if (enchantId != null && enchantId.contains("malum") && enchantId.contains("haunted")) {
-                    return true;
+                if (enchantId != null && enchantId.contains("malum")) {
+                    // Allow haunted and rebounding enchantments
+                    if (enchantId.contains("haunted") || enchantId.contains("rebounding")) {
+                        return true;
+                    }
                 }
             } catch (Exception e) {
                 // Silent failure
