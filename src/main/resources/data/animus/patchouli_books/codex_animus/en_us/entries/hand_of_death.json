@@ -1,0 +1,31 @@
+{
+  "name": "guide.animus.entry.hand_of_death",
+  "category": "animus:compatibility",
+  "icon": "animus:hand_of_death",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Hand of Death is the ultimate sentient weapon, forged from demon-infused steel through dark rituals. This legendary scythe combines all the power of the Runic Sentient Scythe with devastating additional effects that make it a true instrument of death."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:hand_of_death",
+      "text": "$(animus)Ultimate Power$()$(br)+14 base damage over the Runic Scythe, plus all demon will bonuses and enhanced attack speed.$(br2)Requires Demon Forged Steel to craft - a material only obtainable through advanced Blood Magic rituals."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Lifesteal",
+      "text": "$(blood)Vampiric Essence$()$(br2)Every strike with the Hand of Death drains the life force from your victim, healing you for 20% of the damage dealt (minimum 1 health).$(br2)Heart particles will appear around you as the weapon absorbs life energy, making you nearly unstoppable in extended combat."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Execute",
+      "text": "$(animus)Death's Judgment$()$(br2)When an enemy falls below 15% of their maximum health, the Hand of Death's true power awakens. The next strike will instantly execute the target, dealing damage equal to their maximum health.$(br2)A spiral of soul particles and an ominous sound herald the reaping of another soul, as enemies are claimed by death itself."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Combined Power",
+      "text": "The Hand of Death retains all features from the Runic Sentient Scythe:$(br2)• 30% faster attack speed$(br)• Full demon will damage scaling$(br)• Malum spirit harvesting (when installed)$(br2)Combined with lifesteal and execute mechanics, this makes it one of the most powerful weapons achievable through blood magic mastery."
+    }
+  ]
+}
