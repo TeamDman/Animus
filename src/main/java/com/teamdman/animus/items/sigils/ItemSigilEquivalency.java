@@ -504,7 +504,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         // Show current radius with area dimensions for clarity
         int radius = getRadius(stack);
         int areaDimension = (radius * 2) + 1; // e.g., radius 1 = 3x3, radius 2 = 5x5
-        tooltip.add(Component.translatable("tooltip.animus.equivalency.radius_info", radius, areaDimension)
+        tooltip.add(Component.translatable("tooltip.animus.equivalency.radius_info", radius, areaDimension, areaDimension)
             .withStyle(ChatFormatting.AQUA));
         tooltip.add(Component.translatable("tooltip.animus.equivalency.scroll_adjust", MAX_RADIUS)
             .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
