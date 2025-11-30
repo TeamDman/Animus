@@ -438,6 +438,7 @@ public class AnimusConfig {
     public static class Botania {
         public final ForgeConfigSpec.IntValue LPtoManaConversionRate;
         public final ForgeConfigSpec.IntValue willToManaConversionRate;
+        public final ForgeConfigSpec.IntValue unleashedNatureManaDrain;
 
         public Botania(ForgeConfigSpec.Builder builder) {
             builder.push("botania");
@@ -457,6 +458,14 @@ public class AnimusConfig {
                     "Default: 250 mana per 1 demon will consumed"
                 )
                 .defineInRange("willToManaConversionRate", 250, 1, 1000);
+
+            unleashedNatureManaDrain = builder
+                .comment(
+                    "Mana consumption rate for Rune of Unleashed Nature",
+                    "Mana consumed per second to maintain acceleration bonus",
+                    "Default: 10 mana per second"
+                )
+                .defineInRange("unleashedNatureManaDrain", 10, 1, 1000);
 
             builder.pop();
         }

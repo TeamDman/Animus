@@ -26,6 +26,7 @@
   "block.animus.willful_stone_red": "Red Willful Stone",
   "block.animus.willful_stone_black": "Black Willful Stone",
   "block.animus.arcane_rune": "Arcane Rune",
+  "block.animus.rune_unleashed_nature": "Rune of Unleashed Nature",
   "block.animus.diabolical_fungi": "Diabolical Fungi",
   "item.animus.sanguine_diviner": "Sanguine Diviner",
   "item.animus.blood_apple": "Blood Apple",
@@ -290,6 +291,11 @@
   "tooltip.animus.arcane_rune.flavour": "An altar rune powered by Ars Nouveau Source",
   "tooltip.animus.arcane_rune.info": "Drains 1000 Source from nearby jars every 10 seconds",
   "tooltip.animus.arcane_rune.powered": "Powered: Speed +15%, Dislocation bonus",
+  "tooltip.animus.rune_unleashed_nature.flavour": "A hybrid Blood Magic altar rune powered by Botania mana",
+  "tooltip.animus.rune_unleashed_nature.info": "Drains 10 mana/second from internal buffer (5000 mana capacity)",
+  "tooltip.animus.rune_unleashed_nature.capacity": "Always active: Capacity bonus (increases LP storage)",
+  "tooltip.animus.rune_unleashed_nature.orb": "Always active: Half Rune of the Orb bonus (LP efficiency)",
+  "tooltip.animus.rune_unleashed_nature.acceleration": "When charged: Acceleration bonus (faster altar processing)",
   "tooltip.animus.arcane_rune.unpowered": "Unpowered: Speed -50%",
   "tooltip.animus.diabolical_fungi.flavour": "Devil's Tooth Mushroom - Feeds on demon will",
   "tooltip.animus.diabolical_fungi.info": "Consumes demon will from the chunk to generate mana",
@@ -356,6 +362,7 @@
   "guide.animus.entry.hand_of_death": "Hand of Death",
   "guide.animus.entry.ritual_source_vitaeum": "Ritual of Source Vitaeum",
   "guide.animus.entry.arcane_rune": "Arcane Rune",
+  "guide.animus.entry.rune_unleashed_nature": "Rune of Unleashed Nature",
   "guide.animus.entry.sigil_boundless_nature": "Sigil of Boundless Nature",
   "guide.animus.entry.diabolical_fungi": "Diabolical Fungi"
 }

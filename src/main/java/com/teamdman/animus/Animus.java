@@ -69,6 +69,17 @@ public class Animus {
             LOGGER.error("Failed to register Arcane Rune with Blood Magic", e);
         }
 
+        // Register Rune of Unleashed Nature as a valid BLOODRUNE component for altars
+        try {
+            wayoftime.bloodmagic.impl.BloodMagicAPI.INSTANCE.registerAltarComponent(
+                AnimusBlocks.BLOCK_RUNE_UNLEASHED_NATURE.get().defaultBlockState(),
+                wayoftime.bloodmagic.altar.ComponentType.BLOODRUNE.name()
+            );
+            LOGGER.info("Registered Rune of Unleashed Nature as BLOODRUNE component for Blood Magic altars");
+        } catch (Exception e) {
+            LOGGER.error("Failed to register Rune of Unleashed Nature with Blood Magic", e);
+        }
+
         event.enqueueWork(() -> {
             // Register strippable blocks (axe interaction) using reflection
             try {
