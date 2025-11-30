@@ -213,21 +213,11 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        // Call parent for basic sentient scythe tooltips
+        // Call parent for basic sentient scythe tooltips (includes demon will damage)
         super.appendHoverText(stack, level, tooltip, flag);
 
-        // Show demon will damage bonus
-        double soulsRemaining = 0;
-        if (stack.getTag() != null && stack.getTag().contains("cachedSouls")) {
-            soulsRemaining = stack.getTag().getDouble("cachedSouls");
-        }
-        int willLevel = getLevel(stack, soulsRemaining);
-        double willDamage = getDamageAdded(getCurrentType(stack), willLevel);
-        double totalDamage = willDamage + BONUS_DAMAGE;
-
-        tooltip.add(Component.literal(String.format("Demon Will Damage: +%.1f", willDamage))
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
-        tooltip.add(Component.literal(String.format("Total Bonus Damage: +%.1f", totalDamage))
+        // Show Hand of Death bonus damage (not total, parent already shows will damage)
+        tooltip.add(Component.literal(String.format("Hand of Death Bonus: +%.1f", BONUS_DAMAGE))
             .withStyle(ChatFormatting.RED));
 
         // Add Hand of Death specific tooltips

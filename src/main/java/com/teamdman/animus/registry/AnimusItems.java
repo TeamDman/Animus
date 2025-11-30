@@ -84,6 +84,19 @@ public class AnimusItems {
             }
         });
 
+    // Arcane Rune - with tooltip
+    public static final RegistryObject<Item> BLOCK_ARCANE_RUNE = ITEMS.register("arcane_rune",
+        () -> new BlockItem(AnimusBlocks.BLOCK_ARCANE_RUNE.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+                tooltip.add(Component.translatable("tooltip.animus.arcane_rune.flavour"));
+                tooltip.add(Component.translatable("tooltip.animus.arcane_rune.info"));
+                tooltip.add(Component.translatable("tooltip.animus.arcane_rune.powered"));
+                tooltip.add(Component.translatable("tooltip.animus.arcane_rune.unpowered"));
+                super.appendHoverText(stack, level, tooltip, flag);
+            }
+        });
+
     // Willful Stone blocks (all 16 colors)
     public static final RegistryObject<Item> BLOCK_WILLFUL_STONE = registerBlockItem("willful_stone", AnimusBlocks.BLOCK_WILLFUL_STONE);
     public static final RegistryObject<Item> BLOCK_WILLFUL_STONE_WHITE = registerBlockItem("willful_stone_white", AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE);

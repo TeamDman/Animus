@@ -1,0 +1,36 @@
+{
+  "name": "guide.animus.entry.arcane_rune",
+  "category": "animus:compatibility",
+  "icon": "animus:arcane_rune",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Arcane Rune is a revolutionary altar component that bridges Ars Nouveau's Source magic with Blood Magic's altar system. Unlike traditional runes that provide static bonuses, the Arcane Rune's power fluctuates based on the availability of Source energy."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:arcane_rune",
+      "text": "$(animus)Source-Powered Rune$()$(br2)Place this rune in your Blood Altar structure just like any other rune. It will automatically search for Ars Nouveau Source Jars within a 6-block radius and consume Source to power itself."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Power States",
+      "text": "The Arcane Rune has two distinct states based on Source availability:$(br2)$(blood)Powered State$() (1000 Source consumed every 10 seconds):$(br)• Acts as a Speed Rune but 15% faster$(br)• Provides Dislocation Rune bonus$(br2)$(will)Unpowered State$() (No Source available):$(br)• Acts as a Speed Rune but half as fast$(br)• No Dislocation bonus"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Performance",
+      "text": "The Arcane Rune is optimized for performance:$(br2)• Caches Source Jar locations for efficiency$(br)• Only searches for jars once per cycle$(br)• Minimal impact on server tick rate$(br2)Multiple Arcane Runes can work together, each drawing from the same Source Jar network."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Strategic Use",
+      "text": "The Arcane Rune excels in hybrid builds:$(br2)• Provides superior altar speed when Source is plentiful$(br)• Acts as a backup speed rune when Source runs out$(br)• The dislocation bonus increases LP transfer rate$(br2)Consider the Source consumption rate (1000 per 10 seconds = 100 Source/second per rune) when planning your Source generation."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Requirements",
+      "text": "To use the Arcane Rune:$(br)• $(animus)Ars Nouveau must be installed$()$(br)• Place Source Jars within 6 blocks of the rune$(br)• Ensure jars are kept filled for continuous power$(br2)The rune emits a subtle glow (light level 7) when placed, making it easy to identify in your altar structure."
+    }
+  ]
+}

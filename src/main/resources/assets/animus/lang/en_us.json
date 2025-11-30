@@ -25,6 +25,7 @@
   "block.animus.willful_stone_green": "Green Willful Stone",
   "block.animus.willful_stone_red": "Red Willful Stone",
   "block.animus.willful_stone_black": "Black Willful Stone",
+  "block.animus.arcane_rune": "Arcane Rune",
   "item.animus.sanguine_diviner": "Sanguine Diviner",
   "item.animus.blood_apple": "Blood Apple",
   "item.animus.fragment_healing": "Fragment of Healing",
@@ -271,6 +272,10 @@
   "tooltip.animus.crystallized_demon_will.flavour": "Demon will crystallized into solid form",
   "tooltip.animus.crystallized_demon_will.info": "Required component for Tier 6 Blood Altars",
   "tooltip.animus.crystallized_demon_will.altar": "Acts as a valid CRYSTAL component",
+  "tooltip.animus.arcane_rune.flavour": "An altar rune powered by Ars Nouveau Source",
+  "tooltip.animus.arcane_rune.info": "Drains 1000 Source from nearby jars every 10 seconds",
+  "tooltip.animus.arcane_rune.powered": "Powered: Speed +15%, Dislocation bonus",
+  "tooltip.animus.arcane_rune.unpowered": "Unpowered: Speed -50%",
   "tooltip.animus.imperfect_ritual_stone.info": "Place a block on top and right-click to activate a ritual",
   "ritual.animus.imperfect_stone.no_ritual": "No ritual found for block: %s",
   "ritual.animus.imperfect_stone.not_enough_lp": "Not enough LP! Need: %s",
@@ -330,5 +335,6 @@
   "guide.animus.category.compatibility": "Modded Compatibility",
   "guide.animus.entry.runic_sentient_scythe": "Runic Sentient Scythe",
   "guide.animus.entry.hand_of_death": "Hand of Death",
-  "guide.animus.entry.ritual_source_vitaeum": "Ritual of Source Vitaeum"
+  "guide.animus.entry.ritual_source_vitaeum": "Ritual of Source Vitaeum",
+  "guide.animus.entry.arcane_rune": "Arcane Rune"
 }

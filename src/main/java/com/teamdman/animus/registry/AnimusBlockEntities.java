@@ -2,6 +2,7 @@ package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.blockentities.BlockEntityAntiLife;
+import com.teamdman.animus.blockentities.BlockEntityArcaneRune;
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
 import com.teamdman.animus.blockentities.BlockEntityWillfulStone;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,6 +27,14 @@ public class AnimusBlockEntities {
         () -> BlockEntityType.Builder.of(
             BlockEntityAntiLife::new,
             AnimusBlocks.BLOCK_ANTILIFE.get()
+        ).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<BlockEntityArcaneRune>> ARCANE_RUNE = BLOCK_ENTITIES.register(
+        "arcane_rune",
+        () -> BlockEntityType.Builder.of(
+            BlockEntityArcaneRune::new,
+            AnimusBlocks.BLOCK_ARCANE_RUNE.get()
         ).build(null)
     );
 
