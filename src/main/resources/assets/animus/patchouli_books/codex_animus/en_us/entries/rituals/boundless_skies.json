@@ -1,0 +1,17 @@
+{
+  "name": "Imperfect Ritual of Boundless Skies",
+  "icon": "minecraft:ancient_debris",
+  "category": "animus:rituals",
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "An imperfect ritual that grants temporary creative flight. This costly ritual provides 10 minutes of unrestricted flight through the heavens.$(br2)$(bold)Setup:$()$(br)Place Ancient Debris on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 10000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect - it activates once and completes immediately. The stone can be reused."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)Activation:$()$(br)Right-click the Imperfect Ritual Stone to:$(li)Gain the Flight effect for 10 minutes$(li)Lightning strikes the ritual stone$(li)The stone remains for reuse$(br2)$(bold)Flight Details:$()$(li)Creative-style flight$(li)600 second duration$(li)Can be reapplied before expiration$(br2)$(bold)Warning:$() The high LP cost makes this a premium ritual!$(br2)$(italic)Touch the boundless skies.$()"
+    }
+  ]
+}

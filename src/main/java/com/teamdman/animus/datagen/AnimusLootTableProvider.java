@@ -63,6 +63,9 @@ public class AnimusLootTableProvider extends LootTableProvider {
             // Crystallized Demon Will Block - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get());
 
+            // Imperfect Ritual Stone - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get());
+
             // Willful Stone blocks - all drop themselves
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE.get());
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get());

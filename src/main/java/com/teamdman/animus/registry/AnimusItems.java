@@ -74,6 +74,16 @@ public class AnimusItems {
             }
         });
 
+    // Imperfect Ritual Stone - with tooltip
+    public static final RegistryObject<Item> BLOCK_IMPERFECT_RITUAL_STONE = ITEMS.register("imperfect_ritual_stone",
+        () -> new BlockItem(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+                tooltip.add(Component.translatable("tooltip.animus.imperfect_ritual_stone.info"));
+                super.appendHoverText(stack, level, tooltip, flag);
+            }
+        });
+
     // Willful Stone blocks (all 16 colors)
     public static final RegistryObject<Item> BLOCK_WILLFUL_STONE = registerBlockItem("willful_stone", AnimusBlocks.BLOCK_WILLFUL_STONE);
     public static final RegistryObject<Item> BLOCK_WILLFUL_STONE_WHITE = registerBlockItem("willful_stone_white", AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE);

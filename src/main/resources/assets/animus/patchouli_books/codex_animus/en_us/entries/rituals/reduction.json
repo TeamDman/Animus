@@ -1,0 +1,17 @@
+{
+  "name": "Imperfect Ritual of Reduction",
+  "icon": "minecraft:bookshelf",
+  "category": "animus:rituals",
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "An imperfect ritual that reduces enchantment levels and removes the enhancement mark from items. This ritual downgrades all enchantments by one level.$(br2)$(bold)Setup:$()$(br)Place a Bookshelf on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 1000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect - it activates once and completes immediately. The stone can be reused."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Activation:$()$(br)1. Hold the item in your offhand$(br)2. Right-click the Imperfect Ritual Stone$(br)3. All enchantments lose 1 level$(br)4. Enhancement mark is removed$(br)5. The stone remains for reuse$(br2)$(bold)Applications:$()$(li)Reverse Enhancement ritual$(li)Downgrade enchantments$(li)Enchantments won't go below level 1$(br2)$(italic)Balance the scales of power.$()"
+    }
+  ]
+}

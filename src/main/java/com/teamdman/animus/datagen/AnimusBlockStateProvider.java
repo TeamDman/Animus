@@ -56,6 +56,9 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
 
         // Blood Core - special case with active state
         bloodCoreBlock(AnimusBlocks.BLOCK_BLOOD_CORE.get());
+
+        // Imperfect Ritual Stone - skip datagen, will be created manually
+        // (uses Blood Magic textures which aren't available during datagen)
     }
 
     private void bloodCoreBlock(Block block) {

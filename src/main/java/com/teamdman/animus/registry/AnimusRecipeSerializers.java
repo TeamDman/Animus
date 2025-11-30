@@ -1,7 +1,7 @@
 package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.recipes.KeyUnbindingRecipe;
+import com.teamdman.animus.recipes.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
@@ -15,4 +15,25 @@ public class AnimusRecipeSerializers {
     public static final RegistryObject<RecipeSerializer<KeyUnbindingRecipe>> KEY_UNBINDING =
         RECIPE_SERIALIZERS.register("key_unbinding",
             () -> new SimpleCraftingRecipeSerializer<>(KeyUnbindingRecipe::new));
+
+    // Imperfect ritual serializers
+    public static final RegistryObject<RecipeSerializer<RegressionRitualRecipe>> REGRESSION_RITUAL =
+        RECIPE_SERIALIZERS.register("regression_ritual",
+            RegressionRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<HungerRitualRecipe>> HUNGER_RITUAL =
+        RECIPE_SERIALIZERS.register("hunger_ritual",
+            HungerRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<EnhancementRitualRecipe>> ENHANCEMENT_RITUAL =
+        RECIPE_SERIALIZERS.register("enhancement_ritual",
+            EnhancementRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<ReductionRitualRecipe>> REDUCTION_RITUAL =
+        RECIPE_SERIALIZERS.register("reduction_ritual",
+            ReductionRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<BoundlessSkiesRitualRecipe>> BOUNDLESS_SKIES_RITUAL =
+        RECIPE_SERIALIZERS.register("boundless_skies_ritual",
+            BoundlessSkiesRitualRecipe.Serializer::new);
 }

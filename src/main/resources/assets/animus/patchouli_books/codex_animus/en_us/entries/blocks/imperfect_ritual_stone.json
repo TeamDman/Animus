@@ -1,0 +1,27 @@
+{
+  "name": "Imperfect Ritual Stone",
+  "icon": "animus:imperfect_ritual_stone",
+  "category": "animus:blocks",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Imperfect Ritual Stone is a reusable ritual activation block. Unlike the Master Ritual Stone from Blood Magic, these rituals have no persistent effect or upkeep cost.$(br2)Place a specific block on top of the stone and right-click to activate the corresponding ritual.$(br2)Each ritual activation consumes LP from your soul network, but the stone remains for future use."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Available Rituals",
+      "text": "$(bold)Ritual of Regression$()$(br)Block: Bookshelf$(br)Cost: 3000 LP$(br)Effect: Removes repair cost from held item$(br2)$(bold)Ritual of Hunger$()$(br)Block: Bone Block$(br)Cost: 500 LP$(br)Effect: Makes you very hungry$(br2)Check the Rituals category for detailed information about each ritual."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "More Rituals",
+      "text": "$(bold)Ritual of Enhancement$()$(br)Block: Amethyst Block$(br)Cost: 5000 LP$(br)Effect: +1 level to all enchantments on offhand item$(br2)$(bold)Ritual of Reduction$()$(br)Block: Bookshelf$(br)Cost: 1000 LP$(br)Effect: -1 level to all enchantments, removes enhancement$(br2)$(bold)Ritual of Boundless Skies$()$(br)Block: Ancient Debris$(br)Cost: 10000 LP$(br)Effect: 10 minutes of creative flight"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "animus:imperfect_ritual_stone",
+      "title": "Crafting"
+    }
+  ]
+}

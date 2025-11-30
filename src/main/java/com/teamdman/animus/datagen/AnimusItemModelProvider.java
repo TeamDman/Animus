@@ -25,6 +25,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS);
         blockItem(AnimusBlocks.BLOCK_BLOOD_CORE);
         blockItem(AnimusBlocks.BLOCK_BLOOD_LEAVES);
+        // Imperfect Ritual Stone - skip datagen, will be created manually
 
         // Blood Sapling - special case, uses generated item model
         withExistingParent("blood_sapling", mcLoc("item/generated"))

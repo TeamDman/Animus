@@ -44,5 +44,19 @@ public class AnimusJEIPlugin implements IModPlugin {
             VanillaTypes.ITEM_STACK,
             Component.translatable("jei.animus.antilife_block.info")
         );
+
+        // Add info for Imperfect Ritual Stone - shows available rituals
+        registration.addIngredientInfo(
+            Arrays.asList(
+                new ItemStack(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get())
+            ),
+            VanillaTypes.ITEM_STACK,
+            Component.translatable("jei.animus.imperfect_ritual_stone.info"),
+            Component.translatable("jei.animus.imperfect_ritual_stone.regression"),
+            Component.translatable("jei.animus.imperfect_ritual_stone.hunger"),
+            Component.translatable("jei.animus.imperfect_ritual_stone.enhancement"),
+            Component.translatable("jei.animus.imperfect_ritual_stone.reduction"),
+            Component.translatable("jei.animus.imperfect_ritual_stone.boundless_skies")
+        );
     }
 }

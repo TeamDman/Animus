@@ -35,6 +35,9 @@ public class AnimusBlocks {
     public static final RegistryObject<Block> BLOCK_CRYSTALLIZED_DEMON_WILL = BLOCKS.register("crystallized_demon_will_block",
         BlockCrystallizedDemonWill::new);
 
+    public static final RegistryObject<Block> BLOCK_IMPERFECT_RITUAL_STONE = BLOCKS.register("imperfect_ritual_stone",
+        BlockImperfectRitualStone::new);
+
     // Willful Stone blocks (all 16 colors)
     public static final RegistryObject<Block> BLOCK_WILLFUL_STONE = BLOCKS.register("willful_stone",
         BlockWillfulStone::new);
