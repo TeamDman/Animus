@@ -127,6 +127,12 @@ dependencies {
     compileOnly fg.deobf("curse.maven:ars-nouveau-401955:6688854")
     runtimeOnly fg.deobf("curse.maven:ars-nouveau-401955:6688854")
 
+    // Botania - optional soft dependency for mana-to-LP conversion
+    // compileOnly allows implementing ManaReceiver/ManaPool interfaces
+    // Runtime detection via ModList.get().isLoaded("botania") handles graceful degradation
+    compileOnly fg.deobf("curse.maven:botania-225643:6870713")
+    runtimeOnly fg.deobf("curse.maven:botania-225643:6870713")
+
     // The One Probe - for debugging in dev environment only (not required in production)
     runtimeOnly fg.deobf("curse.maven:the-one-probe-245211:6106996")
 }
