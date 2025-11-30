@@ -80,6 +80,8 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue sourceVitaeumBaseConversion;
         public final ForgeConfigSpec.IntValue sourceVitaeumPenaltyRadius;
         public final ForgeConfigSpec.IntValue sourceVitaeumSourcePerCycle;
+        public final ForgeConfigSpec.IntValue floralSupremacyRadius;
+        public final ForgeConfigSpec.IntValue floralSupremacyLPPerFlower;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -215,6 +217,14 @@ public class AnimusConfig {
             sourceVitaeumSourcePerCycle = builder
                 .comment("Amount of Source to attempt to convert per cycle")
                 .defineInRange("sourceVitaeumSourcePerCycle", 100, 10, 10000);
+
+            floralSupremacyRadius = builder
+                .comment("Radius in blocks for Ritual of Floral Supremacy effect area")
+                .defineInRange("floralSupremacyRadius", 8, 1, 32);
+
+            floralSupremacyLPPerFlower = builder
+                .comment("LP cost per flower supercharged by Ritual of Floral Supremacy")
+                .defineInRange("floralSupremacyLPPerFlower", 50, 1, 1000);
 
             builder.pop();
         }

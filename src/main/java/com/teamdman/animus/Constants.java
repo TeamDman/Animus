@@ -56,6 +56,7 @@ public class Constants {
             public static final String TICKET_FREE_SOUL = "text.component.animus.ticket.free_soul";
             public static final String TICKET_TEMPORAL_DOMINANCE = "text.component.animus.ticket.temporal_dominance";
             public static final String TICKET_EQUIVALENCY = "text.component.animus.ticket.equivalency";
+            public static final String TICKET_FLORAL_SUPREMACY = "text.component.animus.ticket.floral_supremacy";
             public static final String EQUIVALENCY_CLEARED = "text.component.animus.equivalency.cleared";
             public static final String EQUIVALENCY_ALREADY_SELECTED = "text.component.animus.equivalency.already_selected";
             public static final String EQUIVALENCY_MAX_SELECTED = "text.component.animus.equivalency.max_selected";
@@ -321,6 +322,7 @@ public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Bl
         public static final String PERSISTENCE = "ritual_persistence";
         public static final String CULLING = "ritual_culling";
         public static final String ENTROPY = "ritual_entropy";
+        public static final String FLORAL_SUPREMACY = "ritual_floral_supremacy";
         public static final String HUNGER = "ritual_hunger";
         public static final String LEACH = "ritual_natures_leach";
         public static final String ELDRITCH = "ritual_eldritch_will";

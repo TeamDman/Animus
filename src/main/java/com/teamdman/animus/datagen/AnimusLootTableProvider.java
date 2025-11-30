@@ -69,6 +69,9 @@ public class AnimusLootTableProvider extends LootTableProvider {
             // Arcane Rune - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_ARCANE_RUNE.get());
 
+            // Diabolical Fungi - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get());
+
             // Willful Stone blocks - all drop themselves
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE.get());
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get());
