@@ -10,12 +10,12 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:diabolical_fungi",
-      "text": "Place this flower near areas with high demon will concentration. It will automatically consume will from the chunk and convert it to mana.$(br2)$(blood)Consumes:$() Up to 100 demon will per cycle$(br)$(animus)Produces:$() 50 mana per 1 will (configurable)$(br)$(animus)Stores:$() Up to 5000 mana internally"
+      "text": "Place this flower near areas with high demon will concentration. It will automatically consume will from the chunk and convert it to mana.$(br2)$(blood)Consumes:$() Up to 100 demon will per cycle$(br)$(animus)Produces:$() 250 mana per 1 will (configurable)$(br)$(animus)Stores:$() Up to 5000 mana internally"
     },
     {
       "type": "patchouli:text",
       "title": "How It Works",
-      "text": "Every 2 seconds, the Diabolical Fungi attempts to consume demon will from its chunk. It will drain up to 100 will total per cycle, taking from any available will types.$(br2)The more varied the types of will present, the more efficient the conversion becomes - each additional will type beyond the first grants a 10% mana bonus."
+      "text": "Every 2 seconds, the Diabolical Fungi attempts to consume demon will from its chunk. It will drain up to 100 will total per cycle, consuming proportionally from all available will types based on their relative abundance.$(br2)The more varied the types of will present, the more efficient the conversion becomes - each additional will type beyond the first grants a 10% mana bonus."
     },
     {
       "type": "patchouli:text",
@@ -30,12 +30,12 @@
     {
       "type": "patchouli:text",
       "title": "Practical Usage",
-      "text": "The Diabolical Fungi works best in areas where demons have been recently slain or where Tartaric Gems are actively releasing will. Pair it with Blood Magic's demon will systems and Botania's mana distribution network for a self-sustaining hybrid setup.$(br2)The fungi emits a faint dark glow, making it easy to identify active specimens in the gloom."
+      "text": "The Diabolical Fungi works best in areas where demons have been recently slain or where Tartaric Gems are actively releasing will. Pair it with Blood Magic's demon will systems and Botania's mana distribution network for a self-sustaining hybrid setup.$(br2)When consuming will, the fungi produces a distinctive slurping sound and releases ghostly soul fire flames that rise upward - making it easy to identify active specimens."
     },
     {
       "type": "patchouli:text",
       "title": "Configuration",
-      "text": "Conversion rate is configurable:$(br2)$(will)willToManaConversionRate:$() Controls mana produced per will consumed (default: 50 mana per will)$(br2)$(will)Requires:$() Both Blood Magic and Botania must be installed for this flower to function."
+      "text": "Conversion rate is configurable:$(br2)$(will)willToManaConversionRate:$() Controls mana produced per will consumed (default: 250 mana per will)$(br2)$(will)Requires:$() Both Blood Magic and Botania must be installed for this flower to function."
     }
   ]
 }

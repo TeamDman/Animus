@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * - Level 3: 8x speed, 4000 LP, 30 seconds
  * - Level 4: 16x speed, 8000 LP, 30 seconds
  * - Level 5: 32x speed, 16000 LP, 30 seconds
- * - Level 5+: 32x speed, 1000 LP to refresh timer
+ * - Level 5+: 32x speed, 15000 LP to refresh timer
  *
  * When timer expires, all calculations reset
  */
@@ -48,7 +48,7 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
     // Duration in ticks (30 seconds = 600 ticks)
     private static final int DURATION_TICKS = 600;
     // Refresh cost when at max level
-    private static final int REFRESH_COST = 1000;
+    private static final int REFRESH_COST = 15000;
 
     // Track acceleration state for each block entity
     private static final Map<BlockPos, AccelerationState> acceleratedBlocks = new ConcurrentHashMap<>();

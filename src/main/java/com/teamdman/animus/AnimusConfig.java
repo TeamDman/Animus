@@ -454,9 +454,9 @@ public class AnimusConfig {
                 .comment(
                     "Demon Will to Mana conversion rate",
                     "Used by Diabolical Fungi and other will-to-mana generating flowers",
-                    "Default: 50 mana per 1 demon will consumed"
+                    "Default: 250 mana per 1 demon will consumed"
                 )
-                .defineInRange("willToManaConversionRate", 50, 1, 1000);
+                .defineInRange("willToManaConversionRate", 250, 1, 1000);
 
             builder.pop();
         }

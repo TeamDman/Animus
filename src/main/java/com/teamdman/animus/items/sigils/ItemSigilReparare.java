@@ -31,7 +31,7 @@ public class ItemSigilReparare extends AnimusSigilBase {
     private static final Map<UUID, ActiveSigil> activeSigils = new HashMap<>();
 
     private static class ActiveSigil {
-        final ItemStack stack;
+        ItemStack stack; // Not final so we can update the reference
         long lastRepairTick;
 
         ActiveSigil(ItemStack stack, long lastRepairTick) {
@@ -117,21 +117,25 @@ public class ItemSigilReparare extends AnimusSigilBase {
             return;
         }
 
-        // Verify the player still has the active sigil
+        // Verify the player still has the active sigil and update the reference
         boolean hasActiveSigil = false;
+        ItemStack currentActiveSigil = null;
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof ItemSigilReparare && isActive(stack)) {
                 hasActiveSigil = true;
-                activeSigil.stack.getOrCreateTag().putBoolean("Active", true); // Ensure sync
+                currentActiveSigil = stack;
                 break;
             }
         }
 
-        if (!hasActiveSigil) {
+        if (!hasActiveSigil || currentActiveSigil == null) {
             // Player no longer has active sigil
             activeSigils.remove(playerId);
             return;
         }
+
+        // Update the stored reference to the current ItemStack
+        activeSigil.stack = currentActiveSigil;
 
         // Check if it's time to repair
         long currentTick = level.getServer().getTickCount();

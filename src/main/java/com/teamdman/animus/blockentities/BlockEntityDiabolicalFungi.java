@@ -23,7 +23,7 @@ import java.util.Set;
  *
  * Features:
  * - Consumes up to 100 demon will every 2 seconds (40 ticks)
- * - Conversion rate: 1 will = 50 mana (configurable)
+ * - Conversion rate: 1 will = 250 mana (configurable)
  * - Bonus: More varied will types consumed = more mana produced
  * - If placed on Botania Overgrowth Soil, doubles the conversion rate
  *
@@ -144,11 +144,11 @@ public class BlockEntityDiabolicalFungi extends GeneratingFlowerBlockEntity {
             return;
         }
 
-        // Play sound at 60% volume
+        // Play sound at 20% volume
         level.playSound(null, worldPosition,
             com.teamdman.animus.registry.AnimusSounds.FUNGAL_SLURP.get(),
             net.minecraft.sounds.SoundSource.BLOCKS,
-            0.6f, // volume
+            0.2f, // volume
             1.0f  // pitch
         );
 
