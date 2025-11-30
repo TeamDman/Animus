@@ -26,6 +26,7 @@
   "block.animus.willful_stone_red": "Red Willful Stone",
   "block.animus.willful_stone_black": "Black Willful Stone",
   "block.animus.arcane_rune": "Arcane Rune",
+  "block.animus.diabolical_fungi": "Diabolical Fungi",
   "item.animus.sanguine_diviner": "Sanguine Diviner",
   "item.animus.blood_apple": "Blood Apple",
   "item.animus.fragment_healing": "Fragment of Healing",
@@ -286,6 +287,9 @@
   "tooltip.animus.arcane_rune.info": "Drains 1000 Source from nearby jars every 10 seconds",
   "tooltip.animus.arcane_rune.powered": "Powered: Speed +15%, Dislocation bonus",
   "tooltip.animus.arcane_rune.unpowered": "Unpowered: Speed -50%",
+  "tooltip.animus.diabolical_fungi.flavour": "Devil's Tooth Mushroom - Feeds on demon will",
+  "tooltip.animus.diabolical_fungi.info": "Consumes demon will from the chunk to generate mana",
+  "tooltip.animus.diabolical_fungi.conversion": "1 will = 50 mana (configurable), bonus for variety",
   "tooltip.animus.imperfect_ritual_stone.info": "Place a block on top and right-click to activate a ritual",
   "ritual.animus.imperfect_stone.no_ritual": "No ritual found for block: %s",
   "ritual.animus.imperfect_stone.not_enough_lp": "Not enough LP! Need: %s",
@@ -348,5 +352,6 @@
   "guide.animus.entry.hand_of_death": "Hand of Death",
   "guide.animus.entry.ritual_source_vitaeum": "Ritual of Source Vitaeum",
   "guide.animus.entry.arcane_rune": "Arcane Rune",
-  "guide.animus.entry.sigil_boundless_nature": "Sigil of Boundless Nature"
+  "guide.animus.entry.sigil_boundless_nature": "Sigil of Boundless Nature",
+  "guide.animus.entry.diabolical_fungi": "Diabolical Fungi"
 }

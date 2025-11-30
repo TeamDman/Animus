@@ -62,6 +62,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         activeSigil(AnimusItems.SIGIL_REMEDIUM, "sigil_remedium");
         activeSigil(AnimusItems.SIGIL_REPARARE, "sigil_reparare");
         activeSigil(AnimusItems.SIGIL_HEAVENLY_WRATH, "sigil_heavenly_wrath");
+        activeSigil(AnimusItems.SIGIL_BOUNDLESS_NATURE, "sigil_boundless_nature");
 
         // Fluid Buckets - use custom bucket textures (like Blood Magic's lifebucket.png)
         simpleItem(AnimusItems.ANTILIFE_BUCKET, "item/antilife_bucket");

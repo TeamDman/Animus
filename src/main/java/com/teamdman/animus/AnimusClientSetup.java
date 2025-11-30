@@ -34,6 +34,9 @@ public class AnimusClientSetup {
             // Sapling uses cutout for transparency
             ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_SAPLING.get(), RenderType.cutout());
 
+            // Diabolical Fungi uses cutout for transparency (like other flowers/saplings)
+            ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get(), RenderType.cutout());
+
             // Leaves use cutout_mipped for transparency (fancy graphics support)
             ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_LEAVES.get(), RenderType.cutoutMipped());
 
@@ -48,10 +51,11 @@ public class AnimusClientSetup {
             registerToggleableSigilProperty(AnimusItems.SIGIL_LEACH.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_TRANSPOSITION.get());
 
-            // Register item properties for active-state sigils (Remedium, Reparare, Heavenly Wrath)
+            // Register item properties for active-state sigils (Remedium, Reparare, Heavenly Wrath, Boundless Nature)
             registerActiveSigilProperty(AnimusItems.SIGIL_REMEDIUM.get());
             registerActiveSigilProperty(AnimusItems.SIGIL_REPARARE.get());
             registerActiveSigilProperty(AnimusItems.SIGIL_HEAVENLY_WRATH.get());
+            registerActiveSigilProperty(AnimusItems.SIGIL_BOUNDLESS_NATURE.get());
 
             // Register item property for Bound Pilum activation state
             registerBoundPilumProperty(AnimusItems.PILUM_BOUND.get());

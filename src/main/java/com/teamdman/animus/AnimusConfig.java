@@ -424,6 +424,34 @@ public class AnimusConfig {
         }
     }
 
+    // Botania Integration Configuration
+    public static class Botania {
+        public final ForgeConfigSpec.IntValue LPtoManaConversionRate;
+        public final ForgeConfigSpec.IntValue willToManaConversionRate;
+
+        public Botania(ForgeConfigSpec.Builder builder) {
+            builder.push("botania");
+
+            LPtoManaConversionRate = builder
+                .comment(
+                    "LP to Mana conversion rate",
+                    "Used by Sigil of Boundless Nature and other LP-to-mana items",
+                    "Default: 2 mana per 1 LP consumed"
+                )
+                .defineInRange("LPtoManaConversionRate", 2, 1, 100);
+
+            willToManaConversionRate = builder
+                .comment(
+                    "Demon Will to Mana conversion rate",
+                    "Used by Diabolical Fungi and other will-to-mana generating flowers",
+                    "Default: 50 mana per 1 demon will consumed"
+                )
+                .defineInRange("willToManaConversionRate", 50, 1, 1000);
+
+            builder.pop();
+        }
+    }
+
     // Config instances
     public static General general;
     public static Rituals rituals;
@@ -431,6 +459,7 @@ public class AnimusConfig {
     public static HurtCooldown hurtCooldown;
     public static BloodCore bloodCore;
     public static ArsNouveau arsNouveau;
+    public static Botania botania;
 
     static {
         BUILDER.comment("Animus Configuration").push("animus");
@@ -441,6 +470,7 @@ public class AnimusConfig {
         hurtCooldown = new HurtCooldown(BUILDER);
         bloodCore = new BloodCore(BUILDER);
         arsNouveau = new ArsNouveau(BUILDER);
+        botania = new Botania(BUILDER);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

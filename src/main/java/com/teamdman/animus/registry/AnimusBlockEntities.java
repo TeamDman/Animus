@@ -4,6 +4,7 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.blockentities.BlockEntityAntiLife;
 import com.teamdman.animus.blockentities.BlockEntityArcaneRune;
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
+import com.teamdman.animus.blockentities.BlockEntityDiabolicalFungi;
 import com.teamdman.animus.blockentities.BlockEntityWillfulStone;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -58,6 +59,14 @@ public class AnimusBlockEntities {
             AnimusBlocks.BLOCK_WILLFUL_STONE_GREEN.get(),
             AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get(),
             AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get()
+        ).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<BlockEntityDiabolicalFungi>> DIABOLICAL_FUNGI = BLOCK_ENTITIES.register(
+        "diabolical_fungi",
+        () -> BlockEntityType.Builder.of(
+            BlockEntityDiabolicalFungi::new,
+            AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get()
         ).build(null)
     );
 }

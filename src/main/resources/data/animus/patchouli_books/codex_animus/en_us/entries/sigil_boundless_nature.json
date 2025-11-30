@@ -1,0 +1,36 @@
+{
+  "name": "guide.animus.entry.sigil_boundless_nature",
+  "category": "animus:compatibility",
+  "icon": "animus:sigil_boundless_nature",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Sigil of Boundless Nature bridges the gap between Blood Magic and Botania, transforming Life Essence into mana. This sigil functions as a mana tablet for Botania tools, but instead of drawing from mana pools, it converts LP directly into mana."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_boundless_nature",
+      "text": "Shift-right-click to toggle the sigil on or off. When active, it will automatically convert LP into mana once per second.$(br2)$(blood)LP Cost:$() 1 LP per second$(br)$(animus)Mana Storage:$() 2500 mana"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How It Works",
+      "text": "While active, the sigil consumes 1 LP every second (20 ticks) and converts it into mana based on the configured conversion rate (default: 2 mana per LP).$(br2)The sigil will only consume LP when there's room in its mana buffer. Once full at 2500 mana, it stops consuming LP until mana is used."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mana Usage",
+      "text": "The Sigil of Boundless Nature implements Botania's ManaItem interface, making it compatible with all mana-using tools and equipment.$(br2)Keep the sigil in your inventory alongside Botania tools like the Mana Blaster, Mana Mirror, or any mana-powered equipment. They will draw mana from the sigil just like they would from a Mana Tablet."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "LP vs Mana Pools",
+      "text": "Unlike regular Mana Tablets, this sigil $(blood)cannot$() receive mana from mana pools or spreaders - it's exclusively LP-powered. However, it $(animus)can$() provide mana to both mana pools and other items/tools.$(br2)This makes it perfect for hybrid practitioners who want to bridge LP and mana systems, whether filling pools or powering tools."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Configuration",
+      "text": "The conversion rate is configurable in the Animus config file:$(br2)$(will)LPtoManaConversionRate:$() Controls how much mana is gained per LP consumed (default: 2 mana per LP)$(br2)$(will)Requires:$() Botania must be installed for this sigil to function."
+    }
+  ]
+}

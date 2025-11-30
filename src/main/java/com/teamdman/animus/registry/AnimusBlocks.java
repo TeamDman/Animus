@@ -41,6 +41,9 @@ public class AnimusBlocks {
     public static final RegistryObject<Block> BLOCK_ARCANE_RUNE = BLOCKS.register("arcane_rune",
         BlockArcaneRune::new);
 
+    public static final RegistryObject<Block> BLOCK_DIABOLICAL_FUNGI = BLOCKS.register("diabolical_fungi",
+        BlockDiabolicalFungi::new);
+
     // Willful Stone blocks (all 16 colors)
     public static final RegistryObject<Block> BLOCK_WILLFUL_STONE = BLOCKS.register("willful_stone",
         BlockWillfulStone::new);

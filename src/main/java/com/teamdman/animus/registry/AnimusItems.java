@@ -97,6 +97,18 @@ public class AnimusItems {
             }
         });
 
+    // Diabolical Fungi - with tooltip
+    public static final RegistryObject<Item> BLOCK_DIABOLICAL_FUNGI = ITEMS.register("diabolical_fungi",
+        () -> new BlockItem(AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+                tooltip.add(Component.translatable("tooltip.animus.diabolical_fungi.flavour"));
+                tooltip.add(Component.translatable("tooltip.animus.diabolical_fungi.info"));
+                tooltip.add(Component.translatable("tooltip.animus.diabolical_fungi.conversion"));
+                super.appendHoverText(stack, level, tooltip, flag);
+            }
+        });
+
     // Willful Stone blocks (all 16 colors)
     public static final RegistryObject<Item> BLOCK_WILLFUL_STONE = registerBlockItem("willful_stone", AnimusBlocks.BLOCK_WILLFUL_STONE);
     public static final RegistryObject<Item> BLOCK_WILLFUL_STONE_WHITE = registerBlockItem("willful_stone_white", AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE);
