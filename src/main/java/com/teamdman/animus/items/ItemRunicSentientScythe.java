@@ -60,29 +60,14 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
         Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create(super.getAttributeModifiers(slot, stack));
 
         if (slot == EquipmentSlot.MAINHAND) {
-            // Get the base attack speed from the parent
-            // The parent already applies demon will bonuses, we just need to increase the speed
-
-            // Remove the old attack speed modifier and add our enhanced one
+            // Remove the parent's attack speed modifier
             multimap.removeAll(Attributes.ATTACK_SPEED);
 
-            // Get current demon will type and level to calculate proper attack speed
-            EnumDemonWillType type = getCurrentType(stack);
-            double soulsRemaining = 0;
-            int level = 0;
-
-            // Try to get actual will levels (this will be 0 in creative/tooltip context)
-            if (stack.getTag() != null && stack.getTag().contains("demonWillType")) {
-                level = getLevel(stack, soulsRemaining);
-            }
-
-            double baseAttackSpeed = getAttackSpeed(type, level);
-            double enhancedAttackSpeed = baseAttackSpeed * ATTACK_SPEED_MULTIPLIER;
-
+            // Set attack speed to 1.2 (modifier = 1.2 - 4.0 base = -2.8)
             multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(
                 BASE_ATTACK_SPEED_UUID,
                 "Weapon modifier",
-                enhancedAttackSpeed,
+                -2.8,
                 AttributeModifier.Operation.ADDITION
             ));
         }

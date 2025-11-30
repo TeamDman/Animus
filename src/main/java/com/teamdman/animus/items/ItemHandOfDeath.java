@@ -213,6 +213,10 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        // Add title tooltip first
+        tooltip.add(Component.translatable("tooltip.animus.hand_of_death.ultimate")
+            .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
+
         // Call parent for basic sentient scythe tooltips (includes demon will damage)
         super.appendHoverText(stack, level, tooltip, flag);
 
@@ -221,8 +225,6 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             .withStyle(ChatFormatting.RED));
 
         // Add Hand of Death specific tooltips
-        tooltip.add(Component.translatable("tooltip.animus.hand_of_death.ultimate")
-            .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD));
         tooltip.add(Component.translatable("tooltip.animus.hand_of_death.lifesteal")
             .withStyle(ChatFormatting.GREEN));
         tooltip.add(Component.translatable("tooltip.animus.hand_of_death.execute")
