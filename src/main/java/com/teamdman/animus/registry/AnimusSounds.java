@@ -19,5 +19,9 @@ public class AnimusSounds {
     public static final RegistryObject<SoundEvent> AWAKEN_CORE = SOUNDS.register("awaken_core",
         () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "awaken_core")));
 
+    // Diabolical Fungi consuming demon will
+    public static final RegistryObject<SoundEvent> FUNGAL_SLURP = SOUNDS.register("fungal_slurp",
+        () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "fungal_slurp")));
+
     // Additional sounds can be registered here
 }

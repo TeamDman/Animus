@@ -11,7 +11,9 @@ import vazkii.botania.api.block_entity.RadiusDescriptor;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
 import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -54,32 +56,60 @@ public class BlockEntityDiabolicalFungi extends GeneratingFlowerBlockEntity {
 
     /**
      * Attempts to consume demon will from the chunk and convert it to mana
+     * Consumes proportionally from all available will types
      */
     private void consumeWillAndGenerateMana() {
         if (!ModList.get().isLoaded("bloodmagic")) {
             return;
         }
 
-        Set<EnumDemonWillType> typesConsumed = new HashSet<>();
-        int totalWillConsumed = 0;
         int conversionRate = AnimusConfig.botania.willToManaConversionRate.get();
 
-        // Try to consume each will type
+        // First pass: Calculate available will for each type and total
+        Map<EnumDemonWillType, Double> availableWill = new HashMap<>();
+        double totalAvailableWill = 0;
+
         for (EnumDemonWillType willType : EnumDemonWillType.values()) {
-            double availableWill = WorldDemonWillHandler.getCurrentWill(level, worldPosition, willType);
+            double available = WorldDemonWillHandler.getCurrentWill(level, worldPosition, willType);
+            if (available > 0) {
+                availableWill.put(willType, available);
+                totalAvailableWill += available;
+            }
+        }
 
-            if (availableWill > 0) {
-                // Calculate how much will we can consume of this type
-                int remainingCapacity = MAX_WILL_PER_CYCLE - totalWillConsumed;
-                if (remainingCapacity <= 0) {
-                    break;
-                }
+        // No will available
+        if (totalAvailableWill == 0) {
+            return;
+        }
 
-                int willToConsume = (int) Math.min(availableWill, remainingCapacity);
+        // Determine how much total will we want to consume (up to MAX_WILL_PER_CYCLE)
+        int targetWillConsumption = (int) Math.min(MAX_WILL_PER_CYCLE, totalAvailableWill);
 
+        // Second pass: Consume proportionally from each type
+        Set<EnumDemonWillType> typesConsumed = new HashSet<>();
+        int totalWillConsumed = 0;
+
+        for (Map.Entry<EnumDemonWillType, Double> entry : availableWill.entrySet()) {
+            EnumDemonWillType willType = entry.getKey();
+            double available = entry.getValue();
+
+            // Calculate proportion of this type relative to total
+            double proportion = available / totalAvailableWill;
+
+            // Calculate how much of this type to consume based on proportion
+            int willToConsume = (int) Math.ceil(targetWillConsumption * proportion);
+
+            // Make sure we don't consume more than available
+            willToConsume = (int) Math.min(willToConsume, available);
+
+            // Make sure we don't exceed our target
+            if (totalWillConsumed + willToConsume > targetWillConsumption) {
+                willToConsume = targetWillConsumption - totalWillConsumed;
+            }
+
+            if (willToConsume > 0) {
                 // Drain the will from the chunk
                 WorldDemonWillHandler.drainWill(level, worldPosition, willType, willToConsume, true);
-
                 totalWillConsumed += willToConsume;
                 typesConsumed.add(willType);
             }
@@ -100,6 +130,50 @@ public class BlockEntityDiabolicalFungi extends GeneratingFlowerBlockEntity {
             }
 
             addMana(manaWithBonus);
+
+            // Play sound and spawn particles
+            playConsumptionEffects();
+        }
+    }
+
+    /**
+     * Plays sound and particle effects when consuming demon will
+     */
+    private void playConsumptionEffects() {
+        if (level == null || level.isClientSide) {
+            return;
+        }
+
+        // Play sound at 60% volume
+        level.playSound(null, worldPosition,
+            com.teamdman.animus.registry.AnimusSounds.FUNGAL_SLURP.get(),
+            net.minecraft.sounds.SoundSource.BLOCKS,
+            0.6f, // volume
+            1.0f  // pitch
+        );
+
+        // Spawn 2-3 soul fire flame particles
+        net.minecraft.server.level.ServerLevel serverLevel = (net.minecraft.server.level.ServerLevel) level;
+        int particleCount = 2 + level.random.nextInt(2); // 2-3 particles
+
+        for (int i = 0; i < particleCount; i++) {
+            // Randomize position slightly around the block center
+            double x = worldPosition.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.5;
+            double y = worldPosition.getY() + 0.5;
+            double z = worldPosition.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 0.5;
+
+            // Upward velocity for rising particles
+            double velocityX = (level.random.nextDouble() - 0.5) * 0.05;
+            double velocityY = 0.05 + level.random.nextDouble() * 0.05; // Rise upward
+            double velocityZ = (level.random.nextDouble() - 0.5) * 0.05;
+
+            serverLevel.sendParticles(
+                net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME,
+                x, y, z,
+                1, // count
+                velocityX, velocityY, velocityZ,
+                0.01 // speed
+            );
         }
     }
 

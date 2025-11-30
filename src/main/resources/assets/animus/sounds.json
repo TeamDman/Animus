@@ -22,5 +22,11 @@
     "sounds": [
       "animus:vengefulspiritambient"
     ]
+  },
+  "fungal_slurp": {
+    "subtitle": "animus.subtitle.fungal_slurp",
+    "sounds": [
+      "animus:fungal_slurp"
+    ]
   }
 }

@@ -260,6 +260,7 @@
   "animus.subtitle.naturesleach": "Nature's Leach drains",
   "animus.subtitle.ghostly": "Ghostly sound",
   "animus.subtitle.vengefulspiritambient": "Vengeful spirit whispers",
+  "animus.subtitle.fungal_slurp": "Fungi slurps demon will",
   "jei.animus.antilife.info": "Created when lightning strikes Life Essence fluid from Blood Magic. Spreads to adjacent blocks, converting them into AntiLife. When touching Life Essence, spreads as fluid instead.",
   "guide.animus.entry.sigil_equivalency": "Sigil of Equivalency",
   "jei.animus.antilife_block.info": "Created by the Sigil of Consumption or when AntiLife fluid touches solid blocks. Spreads to matching adjacent blocks up to the configured range.",
