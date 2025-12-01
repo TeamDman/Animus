@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "bloodmagic:altar"
+    },
+    "title": {
+      "translate": "advancement.animus.tier6_ascension.title"
+    },
+    "description": {
+      "translate": "advancement.animus.tier6_ascension.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animus:crystallized_power",
+  "criteria": {
+    "placed_altar": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "bloodmagic:altar"
+      }
+    }
+  },
+  "rewards": {
+    "experience": 100
+  }
+}

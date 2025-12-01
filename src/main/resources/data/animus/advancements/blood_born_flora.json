@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "animus:blood_sapling"
+    },
+    "title": {
+      "translate": "advancement.animus.blood_born_flora.title"
+    },
+    "description": {
+      "translate": "advancement.animus.blood_born_flora.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animus:root",
+  "criteria": {
+    "has_blood_sapling": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:blood_sapling"]
+          }
+        ]
+      }
+    }
+  }
+}

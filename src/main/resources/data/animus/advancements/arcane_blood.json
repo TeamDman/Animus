@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "animus:blood_infused_spellbook"
+    },
+    "title": {
+      "translate": "advancement.animus.arcane_blood.title"
+    },
+    "description": {
+      "translate": "advancement.animus.arcane_blood.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animus:root",
+  "criteria": {
+    "has_spellbook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:blood_infused_spellbook"]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 50
+  }
+}

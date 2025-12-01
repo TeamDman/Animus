@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "animus:crystallized_demon_will_block"
+    },
+    "title": {
+      "translate": "advancement.animus.crystallized_power.title"
+    },
+    "description": {
+      "translate": "advancement.animus.crystallized_power.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animus:willful_ascension",
+  "criteria": {
+    "has_crystallized_will": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:crystallized_demon_will_block"]
+          }
+        ]
+      }
+    }
+  }
+}

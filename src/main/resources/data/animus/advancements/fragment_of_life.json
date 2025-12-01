@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "animus:fragment_healing"
+    },
+    "title": {
+      "translate": "advancement.animus.fragment_of_life.title"
+    },
+    "description": {
+      "translate": "advancement.animus.fragment_of_life.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animus:root",
+  "criteria": {
+    "has_fragment": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:fragment_healing"]
+          }
+        ]
+      }
+    }
+  }
+}

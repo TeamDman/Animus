@@ -1,0 +1,77 @@
+{
+  "display": {
+    "icon": {
+      "item": "animus:sanguine_scroll_demon"
+    },
+    "title": {
+      "translate": "advancement.animus.sanguine_scroll.title"
+    },
+    "description": {
+      "translate": "advancement.animus.sanguine_scroll.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animus:root",
+  "criteria": {
+    "has_scroll_blank": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:sanguine_scroll_blank"]
+          }
+        ]
+      }
+    },
+    "has_scroll_reinforced": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:sanguine_scroll_reinforced"]
+          }
+        ]
+      }
+    },
+    "has_scroll_imbued": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:sanguine_scroll_imbued"]
+          }
+        ]
+      }
+    },
+    "has_scroll_demon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:sanguine_scroll_demon"]
+          }
+        ]
+      }
+    },
+    "has_scroll_ethereal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:sanguine_scroll_ethereal"]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["has_scroll_blank"],
+    ["has_scroll_reinforced"],
+    ["has_scroll_imbued"],
+    ["has_scroll_demon"],
+    ["has_scroll_ethereal"]
+  ]
+}

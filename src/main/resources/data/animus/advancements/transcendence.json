@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "animus:blood_orb_transcendent"
+    },
+    "title": {
+      "translate": "advancement.animus.transcendence.title"
+    },
+    "description": {
+      "translate": "advancement.animus.transcendence.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animus:tier6_ascension",
+  "criteria": {
+    "has_transcendent_orb": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:blood_orb_transcendent"]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 200
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "item": "animus:hand_of_death"
+    },
+    "title": {
+      "translate": "advancement.animus.death_incarnate.title"
+    },
+    "description": {
+      "translate": "advancement.animus.death_incarnate.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animus:living_weapon",
+  "criteria": {
+    "has_hand_of_death": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:hand_of_death"]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 100
+  }
+}

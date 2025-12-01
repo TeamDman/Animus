@@ -1,0 +1,55 @@
+{
+  "display": {
+    "icon": {
+      "item": "animus:spear_sentient"
+    },
+    "title": {
+      "translate": "advancement.animus.living_weapon.title"
+    },
+    "description": {
+      "translate": "advancement.animus.living_weapon.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animus:root",
+  "criteria": {
+    "has_sentient_spear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:spear_sentient"]
+          }
+        ]
+      }
+    },
+    "has_sentient_shield": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:sentient_shield"]
+          }
+        ]
+      }
+    },
+    "has_runic_scythe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animus:runic_sentient_scythe"]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["has_sentient_spear"],
+    ["has_sentient_shield"],
+    ["has_runic_scythe"]
+  ]
+}
