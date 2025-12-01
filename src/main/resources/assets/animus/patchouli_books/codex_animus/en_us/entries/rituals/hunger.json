@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "An imperfect ritual that induces extreme hunger in the user. This ritual drastically reduces your food level, leaving you ravenous.$(br2)$(bold)Setup:$()$(br)Place a Bone Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 500 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect - it activates once and completes immediately. The stone can be reused."
+      "text": "An imperfect ritual that induces extreme hunger in the user. This ritual drastically reduces your food level, leaving you ravenous.$(br2)$(bold)Setup:$()$(br)Place a Bone Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 500 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect; it activates once and completes immediately. The stone can be reused."
     },
     {
       "type": "patchouli:text",

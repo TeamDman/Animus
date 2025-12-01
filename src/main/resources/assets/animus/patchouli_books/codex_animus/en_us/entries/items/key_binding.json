@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "How It Works",
-      "text": "$(bold)Step 1 - Bind the Key:$()$(br)Right-click the Key to bind it to yourself, like any Blood Magic bound item.$(br2)$(bold)Step 2 - Transfer:$()$(br)Give the bound Key to another player.$(br2)$(bold)Step 3 - Effect:$()$(br)When that player $(bold)holds the Key in their offhand$() and binds Blood Magic items, those items will be bound to $(bold)you$() (the Key's owner) instead of them!"
+      "text": "$(bold)Step 1; Bind the Key:$()$(br)Right-click the Key to bind it to yourself, like any Blood Magic bound item.$(br2)$(bold)Step 2; Transfer:$()$(br)Give the bound Key to another player.$(br2)$(bold)Step 3; Effect:$()$(br)When that player $(bold)holds the Key in their offhand$() and binds Blood Magic items, those items will be bound to $(bold)you$() (the Key's owner) instead of them!"
     },
     {
       "type": "patchouli:text",

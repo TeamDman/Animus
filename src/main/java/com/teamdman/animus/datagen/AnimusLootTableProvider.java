@@ -69,6 +69,9 @@ public class AnimusLootTableProvider extends LootTableProvider {
             // Arcane Rune - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_ARCANE_RUNE.get());
 
+            // Rune of Unleashed Nature - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_RUNE_UNLEASHED_NATURE.get());
+
             // Diabolical Fungi - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get());
 

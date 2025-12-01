@@ -7,7 +7,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:fragment_healing",
-      "text": "A mysterious fragment that binds to your soul. Once picked up, it cannot be dropped or removed - it becomes a permanent part of you, continuously healing your wounds."
+      "text": "A mysterious fragment that binds to your soul. Once picked up, it cannot be dropped or removed; it becomes a permanent part of you, continuously healing your wounds."
     },
     {
       "type": "patchouli:text",

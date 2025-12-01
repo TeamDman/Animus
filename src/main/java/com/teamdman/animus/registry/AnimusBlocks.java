@@ -41,6 +41,9 @@ public class AnimusBlocks {
     public static final RegistryObject<Block> BLOCK_ARCANE_RUNE = BLOCKS.register("arcane_rune",
         BlockArcaneRune::new);
 
+    public static final RegistryObject<Block> BLOCK_RUNE_UNLEASHED_NATURE = BLOCKS.register("rune_unleashed_nature",
+        BlockRuneUnleashedNature::new);
+
     public static final RegistryObject<Block> BLOCK_DIABOLICAL_FUNGI = BLOCKS.register("diabolical_fungi",
         BlockDiabolicalFungi::new);
 

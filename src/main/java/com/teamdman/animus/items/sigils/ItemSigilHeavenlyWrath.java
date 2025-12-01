@@ -1,9 +1,12 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -166,11 +169,17 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
 
     /**
      * Apply the fall effect to an entity
-     * Removes levitation and applies downward velocity
+     * Removes levitation, applies downward velocity, and applies heavy_heart to prevent flight
      */
     private static void applyFallEffect(LivingEntity entity, double heightFromGround) {
         // Remove levitation
         entity.removeEffect(MobEffects.LEVITATION);
+
+        // Apply Blood Magic's heavy_heart effect to prevent flight for 2 seconds at amplifier 4
+        MobEffect heavyHeart = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.fromNamespaceAndPath("bloodmagic", "heavy_heart"));
+        if (heavyHeart != null) {
+            entity.addEffect(new MobEffectInstance(heavyHeart, 40, 4, false, true)); // 40 ticks = 2 seconds, amplifier 4
+        }
 
         // Base downward velocity
         double downwardVelocity = -1.5;

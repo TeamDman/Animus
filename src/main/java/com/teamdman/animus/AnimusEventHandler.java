@@ -403,4 +403,89 @@ public class AnimusEventHandler {
             }
         }
     }
+
+    /**
+     * Sentient Shield blocking effects
+     * When a player blocks an attack with a sentient shield, apply effects based on will type
+     */
+    @SubscribeEvent
+    public static void onLivingAttack(net.minecraftforge.event.entity.living.LivingAttackEvent event) {
+        // Only handle players on server side
+        if (!(event.getEntity() instanceof Player player) || player.level().isClientSide()) {
+            return;
+        }
+
+        // Check if player is blocking and has a sentient shield
+        if (!player.isBlocking()) {
+            return;
+        }
+
+        ItemStack shield = com.teamdman.animus.items.ItemSentientShield.getSentientShield(player);
+        if (shield.isEmpty() || !(shield.getItem() instanceof com.teamdman.animus.items.ItemSentientShield sentientShield)) {
+            return;
+        }
+
+        // Get the attacker
+        Entity attacker = event.getSource().getEntity();
+        if (!(attacker instanceof net.minecraft.world.entity.LivingEntity livingAttacker)) {
+            return;
+        }
+
+        // Get the will type and amount
+        wayoftime.bloodmagic.api.compat.EnumDemonWillType willType = sentientShield.getCurrentType(shield);
+        double willAmount = wayoftime.bloodmagic.demonaura.WorldDemonWillHandler.getCurrentWill(
+            player.level(), player.blockPosition(), willType
+        );
+
+        // Need at least some will to trigger effects
+        if (willAmount < 10.0) {
+            return;
+        }
+
+        // Apply effects based on will type (all last 5 seconds = 100 ticks)
+        int effectDuration = 100;
+
+        switch (willType) {
+            case DEFAULT: // Raw will - Strength 2 to player
+                player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.DAMAGE_BOOST,
+                    effectDuration,
+                    1 // Level 2 (0-indexed)
+                ));
+                break;
+
+            case STEADFAST: // Resistance 2 to player
+                player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE,
+                    effectDuration,
+                    1 // Level 2
+                ));
+                break;
+
+            case CORROSIVE: // Poison to attacker
+                livingAttacker.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.POISON,
+                    effectDuration,
+                    1 // Level 2
+                ));
+                break;
+
+            case VENGEFUL: // 30% damage reflection + weakness to attacker
+                // Calculate reflected damage (30% of attack damage)
+                float reflectedDamage = event.getAmount() * 0.3f;
+                livingAttacker.hurt(player.damageSources().thorns(player), reflectedDamage);
+
+                // Apply weakness
+                livingAttacker.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.WEAKNESS,
+                    effectDuration,
+                    0 // Level 1
+                ));
+                break;
+        }
+    }
+
+    // Note: Sentient Shield will gain bonus is not implemented yet
+    // Blood Magic doesn't expose a will gain event that we can hook into
+    // This feature will need to be implemented through a different mechanism
 }

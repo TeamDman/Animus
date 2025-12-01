@@ -1,0 +1,33 @@
+{
+  "name": "Bound Spear",
+  "icon": "animus:spear_bound",
+  "category": "animus:items",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:spear_bound",
+      "text": "A soul-bound javelin with two modes. Must be bound to a player using $(bold)Sneak + Right-Click$(). When $(bold)activated$(), it costs 50LP per attack/throw but gains AOE attacks and sacrifices enemies to nearby altars. When $(bold)deactivated$(), it behaves like an unbreakable Diamond Spear."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "animus:array/spear_bound",
+      "text": "Created using an Alchemy Array. Right-click $(item)Arcane Ash$() on the ground to create the array, then right-click a $(item)Binding Reagent$() into it, followed by a $(item)Diamond Spear$(). The weapon starts $(bold)unbound and deactivated$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Binding & Activation",
+      "text": "$(bold)Step 1; Bind:$()$(br)Sneak + Right-Click an unbound Bound Spear to bind it to yourself.$(br2)$(bold)Step 2; Activate:$()$(br)Sneak + Right-Click again to toggle between deactivated and activated modes.$(br2)$(bold)Deactivated Mode:$()$(br)Functions as an unbreakable Diamond Spear. No LP cost, no special abilities.$(br2)$(bold)Activated Mode:$()$(br)Costs 50LP per attack or throw. Gains AOE and sacrifice abilities!"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Activated Abilities",
+      "text": "When $(bold)activated$(), the Bound Spear gains special powers:$(br2)$(bold)AOE Attacks:$()$(br)Both melee and thrown attacks deal damage in a 5-block radius.$(br2)$(bold)Altar Sacrifice:$()$(br)When near a Blood Altar, enemies hit by the AOE that are almost dead (below 0.5 health) will be $(bold)sacrificed to the altar$(), filling it with their life essence!$(br2)$(italic)Turn every battle into a blood ritual.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Special Properties",
+      "text": "$(bold)Built-in Loyalty:$()$(br)The Bound Spear automatically returns to you when thrown, like a trident with max-level Loyalty. Cannot be enchanted with Loyalty since it's already built-in.$(br2)$(bold)Shield Blocking:$()$(br)While holding a shield in your other hand, you can Sneak + Right-Click to block with the shield instead of toggling the pilum's activation. This allows you to defend while wielding the pilum!$(br2)$(italic)Balance offense and defense.$()"
+    }
+  ]
+}

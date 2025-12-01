@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "combat",
+  "ingredients": [
+    {
+      "item": "minecraft:shield"
+    },
+    {
+      "item": "bloodmagic:soulsnare"
+    },
+    {
+      "item": "bloodmagic:soulsnare"
+    }
+  ],
+  "result": {
+    "item": "animus:sentient_shield"
+  }
+}

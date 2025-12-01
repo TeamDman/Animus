@@ -7,7 +7,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:sigil_consumption",
-      "text": "Corrupt the world itself. This dire sigil converts blocks into $(blood)AntiLife$() - a corrupting substance that spreads and destroys. Use with extreme caution."
+      "text": "Corrupt the world itself. This dire sigil converts blocks into $(blood)AntiLife$(); a corrupting substance that spreads and destroys. Use with extreme caution."
     },
     {
       "type": "patchouli:text",

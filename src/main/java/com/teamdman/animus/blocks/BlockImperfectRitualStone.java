@@ -86,12 +86,13 @@ public class BlockImperfectRitualStone extends Block {
         boolean success = ritualRecipe.onActivate(serverLevel, pos, abovePos, serverPlayer);
 
         if (success) {
-            // Summon lightning strike at ritual stone position
-            net.minecraft.world.entity.EntityType.LIGHTNING_BOLT.spawn(
-                serverLevel,
-                pos,
-                net.minecraft.world.entity.MobSpawnType.TRIGGERED
-            );
+            // Summon visual-only lightning strike at ritual stone position (no fire, no thunder)
+            net.minecraft.world.entity.LightningBolt lightning = net.minecraft.world.entity.EntityType.LIGHTNING_BOLT.create(serverLevel);
+            if (lightning != null) {
+                lightning.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                lightning.setVisualOnly(true); // Visual only - no fire, no thunder
+                serverLevel.addFreshEntity(lightning);
+            }
 
             player.displayClientMessage(
                 Component.translatable("ritual.animus.imperfect_stone.activated"),

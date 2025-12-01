@@ -25,7 +25,7 @@
     {
       "type": "patchouli:text",
       "title": "LP vs Mana Pools",
-      "text": "Unlike regular Mana Tablets, this sigil $(blood)cannot$() receive mana from mana pools or spreaders - it's exclusively LP-powered. However, it $(animus)can$() provide mana to both mana pools and other items/tools.$(br2)This makes it perfect for hybrid practitioners who want to bridge LP and mana systems, whether filling pools or powering tools."
+      "text": "Unlike regular Mana Tablets, this sigil $(blood)cannot$() receive mana from mana pools or spreaders; it's exclusively LP-powered. However, it $(animus)can$() provide mana to both mana pools and other items/tools.$(br2)This makes it perfect for hybrid practitioners who want to bridge LP and mana systems, whether filling pools or powering tools."
     },
     {
       "type": "patchouli:text",

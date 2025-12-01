@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "title": "How It Works",
-      "text": "Every 2 seconds, the Diabolical Fungi attempts to consume demon will from its chunk. It will drain up to 100 will total per cycle, consuming proportionally from all available will types based on their relative abundance.$(br2)The more varied the types of will present, the more efficient the conversion becomes - each additional will type beyond the first grants a 10% mana bonus."
+      "text": "Every 2 seconds, the Diabolical Fungi attempts to consume demon will from its chunk. It will drain up to 100 will total per cycle, consuming proportionally from all available will types based on their relative abundance.$(br2)The more varied the types of will present, the more efficient the conversion becomes; each additional will type beyond the first grants a 10% mana bonus."
     },
     {
       "type": "patchouli:text",
@@ -30,7 +30,7 @@
     {
       "type": "patchouli:text",
       "title": "Practical Usage",
-      "text": "The Diabolical Fungi works best in areas where demons have been recently slain or where Tartaric Gems are actively releasing will. Pair it with Blood Magic's demon will systems and Botania's mana distribution network for a self-sustaining hybrid setup.$(br2)When consuming will, the fungi produces a distinctive slurping sound and releases ghostly soul fire flames that rise upward - making it easy to identify active specimens."
+      "text": "The Diabolical Fungi works best in areas where demons have been recently slain or where Tartaric Gems are actively releasing will. Pair it with Blood Magic's demon will systems and Botania's mana distribution network for a self-sustaining hybrid setup.$(br2)When consuming will, the fungi produces a distinctive slurping sound and releases ghostly soul fire flames that rise upward; making it easy to identify active specimens."
     },
     {
       "type": "patchouli:text",

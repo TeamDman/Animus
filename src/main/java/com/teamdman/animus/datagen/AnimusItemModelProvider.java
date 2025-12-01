@@ -39,11 +39,12 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.ACTIVATION_CRYSTAL_FRAGILE, "item/itemactivationcrystalfragile");
         simpleItem(AnimusItems.MOBSOUL, "item/itemmobsoul");
 
-        // Pilums (Roman Javelins)
-        simpleItem(AnimusItems.PILUM_IRON, "item/itempilumiron");
-        simpleItem(AnimusItems.PILUM_DIAMOND, "item/itempilumdiamond");
-        toggleableSigil(AnimusItems.PILUM_BOUND, "itempilumbound"); // Toggleable between activated/deactivated
-        simpleItem(AnimusItems.PILUM_SENTIENT, "item/itempilumsentient");
+        // Spears (Roman Javelins) - use custom Blockbench models, no datagen needed
+        // Custom 3D models are in src/main/resources/assets/animus/models/item/spear_*.json
+        // simpleItem(AnimusItems.SPEAR_IRON, "item/itemspeariron");
+        // simpleItem(AnimusItems.SPEAR_DIAMOND, "item/itemspeardiamond");
+        // toggleableSigil(AnimusItems.SPEAR_BOUND, "itemspearbound"); // Toggleable between activated/deactivated
+        // simpleItem(AnimusItems.SPEAR_SENTIENT, "item/itemspearsentient");
 
         // Sigils - Simple (non-toggleable)
         simpleItem(AnimusItems.SIGIL_CHAINS, "item/itemsigilchains");

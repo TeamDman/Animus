@@ -3,11 +3,25 @@ package com.teamdman.animus.blockentities;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import vazkii.botania.api.mana.ManaReceiver;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.api.BotaniaForgeCapabilities;
+import vazkii.botania.api.mana.ManaBlockType;
+import vazkii.botania.api.mana.ManaNetworkAction;
+import vazkii.botania.api.mana.ManaPool;
+import vazkii.botania.api.mana.spark.ManaSpark;
+import vazkii.botania.api.mana.spark.SparkAttachable;
+
+import java.util.Optional;
 
 /**
  * Rune of Unleashed Nature - A hybrid Blood Magic altar rune powered by Botania mana
@@ -23,7 +37,7 @@ import vazkii.botania.api.mana.ManaReceiver;
  * This rune bridges Blood Magic and Botania, offering powerful bonuses when both
  * magical systems work in harmony.
  */
-public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaReceiver {
+public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaPool, SparkAttachable {
     private static final int MAX_MANA = 5000;
     private static final int MANA_PER_SECOND = 10; // 10 mana per second (configurable)
     private static final int TICKS_PER_SECOND = 20;
@@ -37,6 +51,16 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaR
     // Active state (has enough mana)
     private boolean isActive = false;
 
+    // Spark attachment
+    private ManaSpark attachedSpark = null;
+
+    // Mana network registration tracking
+    private boolean registeredWithManaNetwork = false;
+
+    // Forge Capabilities
+    private final LazyOptional<ManaPool> manaReceiverCap = LazyOptional.of(() -> this);
+    private final LazyOptional<SparkAttachable> sparkAttachableCap = LazyOptional.of(() -> this);
+
     public BlockEntityRuneUnleashedNature(BlockPos pos, BlockState state) {
         super(AnimusBlockEntities.RUNE_UNLEASHED_NATURE.get(), pos, state);
     }
@@ -49,6 +73,13 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaR
         // Verify the block entity is still valid
         if (level.getBlockEntity(worldPosition) != this) {
             return;
+        }
+
+        // Register with mana network on first tick
+        if (!registeredWithManaNetwork) {
+            BotaniaAPI.instance().getManaNetworkInstance()
+                .fireManaNetworkEvent(this, ManaBlockType.POOL, ManaNetworkAction.ADD);
+            registeredWithManaNetwork = true;
         }
 
         tickCounter++;
@@ -137,6 +168,86 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaR
     @Override
     public boolean canReceiveManaFromBursts() {
         return true;
+    }
+
+    @Override
+    public boolean isOutputtingPower() {
+        return false; // This rune only receives mana, doesn't output
+    }
+
+    @Override
+    public int getMaxMana() {
+        return MAX_MANA;
+    }
+
+    @Override
+    public Optional<net.minecraft.world.item.DyeColor> getColor() {
+        return Optional.empty(); // No color customization for this rune
+    }
+
+    @Override
+    public void setColor(Optional<net.minecraft.world.item.DyeColor> color) {
+        // No-op - this rune doesn't support color customization
+    }
+
+    // ===========================================
+    // Botania Spark Attachable Implementation
+    // ===========================================
+
+    @Override
+    public boolean canAttachSpark(ItemStack stack) {
+        return true; // Allow sparks to be attached
+    }
+
+    @Override
+    public void attachSpark(ManaSpark spark) {
+        attachedSpark = spark;
+    }
+
+    @Override
+    public int getAvailableSpaceForMana() {
+        return Math.max(0, MAX_MANA - mana);
+    }
+
+    @Override
+    public ManaSpark getAttachedSpark() {
+        return attachedSpark;
+    }
+
+    @Override
+    public boolean areIncomingTranfersDone() {
+        return false; // Allow continuous mana transfer from spark network
+    }
+
+    // ===========================================
+    // Forge Capabilities
+    // ===========================================
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == BotaniaForgeCapabilities.MANA_RECEIVER) {
+            return manaReceiverCap.cast();
+        }
+        if (cap == BotaniaForgeCapabilities.SPARK_ATTACHABLE) {
+            return sparkAttachableCap.cast();
+        }
+        return super.getCapability(cap, side);
+    }
+
+    // ===========================================
+    // Lifecycle Methods
+    // ===========================================
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        manaReceiverCap.invalidate();
+        sparkAttachableCap.invalidate();
+        if (registeredWithManaNetwork) {
+            BotaniaAPI.instance().getManaNetworkInstance()
+                .fireManaNetworkEvent(this, ManaBlockType.POOL, ManaNetworkAction.REMOVE);
+        }
     }
 
     // ===========================================

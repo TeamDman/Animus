@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Welcome, practitioner of the sanguine arts.$(br2)The $(animus)Codex Animus$() contains knowledge of blood magic's darker applications - the manipulation of life, death, and the corruption of nature itself.$(br2)Within these pages, you will find rituals to summon and destroy, sigils to command the elements, and the secrets of creating life from blood."
+      "text": "Welcome, practitioner of the sanguine arts.$(br2)The $(animus)Codex Animus$() contains knowledge of blood magic's darker applications; the manipulation of life, death, and the corruption of nature itself.$(br2)Within these pages, you will find rituals to summon and destroy, sigils to command the elements, and the secrets of creating life from blood."
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Organization",
-      "text": "This codex is organized into chapters:$(li)$(l:animus:sigils)Sigils$() - Portable tools$(li)$(l:animus:rituals)Rituals$() - Ceremonial magic$(li)$(l:animus:items)Items & Tools$()$(li)$(l:animus:blocks)Corruption & Fluids$()$(li)$(l:animus:bloodtrees)Blood Trees$() - Living wood$(br2)Use the index or search function to find specific topics."
+      "text": "This codex is organized into chapters:$(li)$(l:animus:sigils)Sigils$(); Portable tools$(li)$(l:animus:rituals)Rituals$(); Ceremonial magic$(li)$(l:animus:items)Items & Tools$()$(li)$(l:animus:blocks)Corruption & Fluids$()$(li)$(l:animus:bloodtrees)Blood Trees$(); Living wood$(br2)Use the index or search function to find specific topics."
     }
   ]
 }

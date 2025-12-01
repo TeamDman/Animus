@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "baseinput": {
+    "item": "animus:spear_diamond"
+  },
+  "addedinput": {
+    "item": "bloodmagic:reagentbinding"
+  },
+  "output": {
+    "item": "animus:spear_bound"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/bindingsigil.png"
+}

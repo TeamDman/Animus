@@ -1,8 +1,8 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.client.models.AnimusModelLayers;
-import com.teamdman.animus.client.models.PilumModel;
-import com.teamdman.animus.client.renderers.ThrownPilumRenderer;
+import com.teamdman.animus.client.models.SpearModel;
+import com.teamdman.animus.client.renderers.ThrownSpearRenderer;
 import com.teamdman.animus.items.sigils.ItemSigilToggleableBase;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusEntityTypes;
@@ -57,8 +57,8 @@ public class AnimusClientSetup {
             registerActiveSigilProperty(AnimusItems.SIGIL_HEAVENLY_WRATH.get());
             registerActiveSigilProperty(AnimusItems.SIGIL_BOUNDLESS_NATURE.get());
 
-            // Register item property for Bound Pilum activation state
-            registerBoundPilumProperty(AnimusItems.PILUM_BOUND.get());
+            // Register item property for Bound Spear activation state
+            registerBoundSpearProperty(AnimusItems.SPEAR_BOUND.get());
 
             // Register item property for Key of Binding bound state
             registerKeyBindingProperty(AnimusItems.KEY_BINDING.get());
@@ -67,14 +67,14 @@ public class AnimusClientSetup {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        // Register custom renderer for thrown pilum
-        event.registerEntityRenderer(AnimusEntityTypes.THROWN_PILUM.get(), ThrownPilumRenderer::new);
+        // Register custom renderer for thrown spear
+        event.registerEntityRenderer(AnimusEntityTypes.THROWN_PILUM.get(), ThrownSpearRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        // Register custom model layer for pilum
-        event.registerLayerDefinition(AnimusModelLayers.PILUM, PilumModel::createBodyLayer);
+        // Register custom model layer for spear
+        event.registerLayerDefinition(AnimusModelLayers.PILUM, SpearModel::createBodyLayer);
     }
 
     /**
@@ -94,15 +94,15 @@ public class AnimusClientSetup {
     }
 
     /**
-     * Registers the "activated" item property for Bound Pilum
+     * Registers the "activated" item property for Bound Spear
      * This allows models to switch between activated/deactivated textures
      */
-    private static void registerBoundPilumProperty(net.minecraft.world.item.Item item) {
+    private static void registerBoundSpearProperty(net.minecraft.world.item.Item item) {
         ItemProperties.register(item,
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "activated"),
             (stack, level, entity, seed) -> {
-                if (item instanceof com.teamdman.animus.items.ItemPilumBound pilum) {
-                    return pilum.isActivated(stack) ? 1.0F : 0.0F;
+                if (item instanceof com.teamdman.animus.items.ItemSpearBound spear) {
+                    return spear.isActivated(stack) ? 1.0F : 0.0F;
                 }
                 return 0.0F;
             }

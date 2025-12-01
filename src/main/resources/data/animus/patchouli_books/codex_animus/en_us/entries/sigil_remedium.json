@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "title": "Usage Notes",
-      "text": "The sigil must be in your inventory to function. It will automatically deactivate if you run out of LP.$(br2)Unlike drinking milk, the Remedium sigil is selective - it only removes harmful effects while preserving beneficial ones such as regeneration, strength, and other positive buffs."
+      "text": "The sigil must be in your inventory to function. It will automatically deactivate if you run out of LP.$(br2)Unlike drinking milk, the Remedium sigil is selective; it only removes harmful effects while preserving beneficial ones such as regeneration, strength, and other positive buffs."
     }
   ]
 }

@@ -94,12 +94,12 @@ public class Constants {
             public static final String BLOOD_CORE_SPREADING_ENABLED = "text.component.animus.blood_core.spreading_enabled";
             public static final String BLOOD_CORE_SPREADING_DISABLED = "text.component.animus.blood_core.spreading_disabled";
 
-            // Bound Pilum
-            public static final String PILUM_BOUND_SUCCESS = "text.component.animus.pilum.bound_success";
-            public static final String PILUM_ACTIVATED = "text.component.animus.pilum.activated";
-            public static final String PILUM_DEACTIVATED = "text.component.animus.pilum.deactivated";
-            public static final String PILUM_NO_LP_THROW = "text.component.animus.pilum.no_lp_throw";
-            public static final String PILUM_NO_LP_ATTACK = "text.component.animus.pilum.no_lp_attack";
+            // Bound Spear
+            public static final String SPEAR_BOUND_SUCCESS = "text.component.animus.spear.bound_success";
+            public static final String SPEAR_ACTIVATED = "text.component.animus.spear.activated";
+            public static final String SPEAR_DEACTIVATED = "text.component.animus.spear.deactivated";
+            public static final String SPEAR_NO_LP_THROW = "text.component.animus.spear.no_lp_throw";
+            public static final String SPEAR_NO_LP_ATTACK = "text.component.animus.spear.no_lp_attack";
 
             // Sanguine Diviner
             public static final String DIVINER_ALTAR_INFO = "text.component.animus.diviner.altar_info";
@@ -126,8 +126,8 @@ public class Constants {
             public static final String HEALING_INFO = "tooltip.animus.healing.info";
             public static final String HEALING_RATE = "tooltip.animus.healing.rate";
             public static final String HEALING_PERMANENT = "tooltip.animus.healing.permanent";
-            public static final String PILUM_FIRST = "tooltip.animus.pilum_bound.first";
-            public static final String PILUM_SECOND = "tooltip.animus.pilum_bound.second";
+            public static final String SPEAR_FIRST = "tooltip.animus.spear_bound.first";
+            public static final String SPEAR_SECOND = "tooltip.animus.spear_bound.second";
             public static final String KEY = "tooltip.animus.key";
             public static final String OWNER = "tooltip.animus.currentOwner";
             public static final String SIGIL_BUILDER_FLAVOUR = "tooltip.animus.sigil.builder.flavour";
@@ -160,10 +160,10 @@ public class Constants {
             public static final String BLOOD_APPLE_LP = "tooltip.animus.blood_apple.lp";
             public static final String BLOOD_SAPLING_FLAVOUR = "tooltip.animus.blood_sapling.flavour";
             public static final String BLOOD_SAPLING_INFO = "tooltip.animus.blood_sapling.info";
-            public static final String PILUM_IRON_FLAVOUR = "tooltip.animus.pilum_iron.flavour";
-            public static final String PILUM_IRON_INFO = "tooltip.animus.pilum_iron.info";
-            public static final String PILUM_DIAMOND_FLAVOUR = "tooltip.animus.pilum_diamond.flavour";
-            public static final String PILUM_DIAMOND_INFO = "tooltip.animus.pilum_diamond.info";
+            public static final String SPEAR_IRON_FLAVOUR = "tooltip.animus.spear_iron.flavour";
+            public static final String SPEAR_IRON_INFO = "tooltip.animus.spear_iron.info";
+            public static final String SPEAR_DIAMOND_FLAVOUR = "tooltip.animus.spear_diamond.flavour";
+            public static final String SPEAR_DIAMOND_INFO = "tooltip.animus.spear_diamond.info";
             public static final String BLOOD_CORE_FLAVOUR = "tooltip.animus.blood_core.flavour";
             public static final String BLOOD_CORE_INFO = "tooltip.animus.blood_core.info";
             public static final String BLOOD_CORE_MULTIBLOCK = "tooltip.animus.blood_core.multiblock";
@@ -171,20 +171,29 @@ public class Constants {
             public static final String ACTIVATION_CRYSTAL_INFO = "tooltip.animus.activation_crystal.info";
             public static final String ACTIVATION_CRYSTAL_WARNING = "tooltip.animus.activation_crystal.warning";
 
-            // Bound Pilum Tooltips
-            public static final String PILUM_BOUND_TO = "tooltip.animus.pilum_bound.bound_to";
-            public static final String PILUM_STATUS_ACTIVATED = "tooltip.animus.pilum_bound.status_activated";
-            public static final String PILUM_COST = "tooltip.animus.pilum_bound.cost";
-            public static final String PILUM_STATUS_DEACTIVATED = "tooltip.animus.pilum_bound.status_deactivated";
-            public static final String PILUM_BEHAVES_DIAMOND = "tooltip.animus.pilum_bound.behaves_diamond";
-            public static final String PILUM_TOGGLE = "tooltip.animus.pilum_bound.toggle";
-            public static final String PILUM_UNBOUND = "tooltip.animus.pilum_bound.unbound";
-            public static final String PILUM_BIND = "tooltip.animus.pilum_bound.bind";
+            // Bound Spear Tooltips
+            public static final String SPEAR_BOUND_TO = "tooltip.animus.spear_bound.bound_to";
+            public static final String SPEAR_STATUS_ACTIVATED = "tooltip.animus.spear_bound.status_activated";
+            public static final String SPEAR_COST = "tooltip.animus.spear_bound.cost";
+            public static final String SPEAR_STATUS_DEACTIVATED = "tooltip.animus.spear_bound.status_deactivated";
+            public static final String SPEAR_BEHAVES_DIAMOND = "tooltip.animus.spear_bound.behaves_diamond";
+            public static final String SPEAR_TOGGLE = "tooltip.animus.spear_bound.toggle";
+            public static final String SPEAR_UNBOUND = "tooltip.animus.spear_bound.unbound";
+            public static final String SPEAR_BIND = "tooltip.animus.spear_bound.bind";
 
-            // Sentient Pilum Tooltips
-            public static final String PILUM_SENTIENT_FLAVOUR = "tooltip.animus.pilum_sentient.flavour";
-            public static final String PILUM_SENTIENT_INFO = "tooltip.animus.pilum_sentient.info";
-            public static final String PILUM_SENTIENT_AOE = "tooltip.animus.pilum_sentient.aoe";
+            // Sentient Spear Tooltips
+            public static final String SPEAR_SENTIENT_FLAVOUR = "tooltip.animus.spear_sentient.flavour";
+            public static final String SPEAR_SENTIENT_INFO = "tooltip.animus.spear_sentient.info";
+            public static final String SPEAR_SENTIENT_AOE = "tooltip.animus.spear_sentient.aoe";
+
+            // Sentient Shield Tooltips
+            public static final String SENTIENT_SHIELD_FLAVOUR = "tooltip.animus.sentient_shield.flavour";
+            public static final String SENTIENT_SHIELD_EFFECTS = "tooltip.animus.sentient_shield.effects";
+            public static final String SENTIENT_SHIELD_RAW = "tooltip.animus.sentient_shield.raw";
+            public static final String SENTIENT_SHIELD_STEADFAST = "tooltip.animus.sentient_shield.steadfast";
+            public static final String SENTIENT_SHIELD_CORROSIVE = "tooltip.animus.sentient_shield.corrosive";
+            public static final String SENTIENT_SHIELD_VENGEFUL = "tooltip.animus.sentient_shield.vengeful";
+            public static final String SENTIENT_SHIELD_WILL_BONUS = "tooltip.animus.sentient_shield.will_bonus";
 
             // Key of Binding Tooltips
             public static final String KEY_HOLD_OFFHAND = "tooltip.animus.key.hold_offhand";

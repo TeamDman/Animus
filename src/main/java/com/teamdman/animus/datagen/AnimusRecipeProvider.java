@@ -21,8 +21,8 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        // Pilum recipes (Roman javelins)
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AnimusItems.PILUM_IRON.get())
+        // Spear recipes (Roman javelins)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AnimusItems.SPEAR_IRON.get())
             .pattern(" a ")
             .pattern("a a")
             .pattern("  b")
@@ -31,7 +31,7 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
             .save(consumer);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AnimusItems.PILUM_DIAMOND.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AnimusItems.SPEAR_DIAMOND.get())
             .pattern(" a ")
             .pattern("a a")
             .pattern("  b")
@@ -40,12 +40,12 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
             .save(consumer);
 
-        // Sentient Pilum - crafted with Bound Pilum + Demon Will
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, AnimusItems.PILUM_SENTIENT.get())
-            .requires(AnimusItems.PILUM_BOUND.get())
+        // Sentient Spear - crafted with Bound Spear + Demon Will
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, AnimusItems.SPEAR_SENTIENT.get())
+            .requires(AnimusItems.SPEAR_BOUND.get())
             .requires(itemFromMod("bloodmagic", "soulsnare"))
             .requires(itemFromMod("bloodmagic", "soulsnare"))
-            .unlockedBy("has_bound_pilum", has(AnimusItems.PILUM_BOUND.get()))
+            .unlockedBy("has_bound_spear", has(AnimusItems.SPEAR_BOUND.get()))
             .save(consumer);
 
         // Sanguine Diviner recipe

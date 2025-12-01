@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "An imperfect ritual that clears the weather and stops rain or thunderstorms. This ritual brings clear skies for approximately 5 minutes.$(br2)$(bold)Setup:$()$(br)Place a Lapis Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 1000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect - it activates once and completes immediately. The stone can be reused."
+      "text": "An imperfect ritual that clears the weather and stops rain or thunderstorms. This ritual brings clear skies for approximately 5 minutes.$(br2)$(bold)Setup:$()$(br)Place a Lapis Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 1000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect; it activates once and completes immediately. The stone can be reused."
     },
     {
       "type": "patchouli:text",

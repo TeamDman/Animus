@@ -97,6 +97,20 @@ public class AnimusItems {
             }
         });
 
+    // Rune of Unleashed Nature - with tooltip
+    public static final RegistryObject<Item> BLOCK_RUNE_UNLEASHED_NATURE = ITEMS.register("rune_unleashed_nature",
+        () -> new BlockItem(AnimusBlocks.BLOCK_RUNE_UNLEASHED_NATURE.get(), new Item.Properties()) {
+            @Override
+            public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.flavour"));
+                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.info"));
+                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.capacity"));
+                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.orb"));
+                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.acceleration"));
+                super.appendHoverText(stack, level, tooltip, flag);
+            }
+        });
+
     // Diabolical Fungi - with tooltip
     public static final RegistryObject<Item> BLOCK_DIABOLICAL_FUNGI = ITEMS.register("diabolical_fungi",
         () -> new BlockItem(AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get(), new Item.Properties()) {
@@ -178,17 +192,20 @@ public class AnimusItems {
         ItemSigilBoundlessNature::new);
 
     // Tools & Weapons
-    public static final RegistryObject<Item> PILUM_IRON = ITEMS.register("pilum_iron",
-        () -> new ItemPilum(Tiers.IRON));
+    public static final RegistryObject<Item> SPEAR_IRON = ITEMS.register("spear_iron",
+        () -> new ItemSpear(Tiers.IRON));
 
-    public static final RegistryObject<Item> PILUM_DIAMOND = ITEMS.register("pilum_diamond",
-        () -> new ItemPilum(Tiers.DIAMOND));
+    public static final RegistryObject<Item> SPEAR_DIAMOND = ITEMS.register("spear_diamond",
+        () -> new ItemSpear(Tiers.DIAMOND));
 
-    public static final RegistryObject<Item> PILUM_BOUND = ITEMS.register("pilum_bound",
-        ItemPilumBound::new);
+    public static final RegistryObject<Item> SPEAR_BOUND = ITEMS.register("spear_bound",
+        ItemSpearBound::new);
 
-    public static final RegistryObject<Item> PILUM_SENTIENT = ITEMS.register("pilum_sentient",
-        ItemPilumSentient::new);
+    public static final RegistryObject<Item> SPEAR_SENTIENT = ITEMS.register("spear_sentient",
+        ItemSpearSentient::new);
+
+    public static final RegistryObject<Item> SENTIENT_SHIELD = ITEMS.register("sentient_shield",
+        ItemSentientShield::new);
 
     public static final RegistryObject<Item> RUNIC_SENTIENT_SCYTHE = ITEMS.register("runic_sentient_scythe",
         ItemRunicSentientScythe::new);

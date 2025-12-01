@@ -1,0 +1,23 @@
+{
+  "name": "Spear",
+  "icon": "animus:spear_iron",
+  "category": "animus:items",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:spear_iron",
+      "text": "A Roman-inspired javelin. These throwable spears deal AOE damage where they land, making them excellent for crowd control."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Variants",
+      "text": "$(bold)Iron Spear:$()$(br)Basic throwable javelin with AOE damage on impact.$(br2)$(bold)Diamond Spear:$()$(br)Stronger variant with higher durability.$(br2)$(bold)Bound Spear:$()$(br)A bound weapon that also deals AOE damage on $(bold)melee attacks$() in addition to throwing!"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Combat",
+      "text": "$(bold)Usage:$()$(br)Hold right-click to charge, release to throw.$(br2)$(bold)Features:$()$(li)AOE damage on impact$(li)Supports Riptide enchantment$(li)Can be enchanted like tridents$(li)Returns to inventory in creative$(br2)$(italic)Precision through superior firepower.$()"
+    }
+  ]
+}

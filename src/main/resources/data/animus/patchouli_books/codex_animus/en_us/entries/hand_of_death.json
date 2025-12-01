@@ -10,7 +10,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:hand_of_death",
-      "text": "$(animus)Ultimate Power$()$(br)+14 base damage over the Runic Scythe, plus all demon will bonuses and enhanced attack speed.$(br2)Requires Demon Forged Steel to craft - a material only obtainable through advanced Blood Magic rituals."
+      "text": "$(animus)Ultimate Power$()$(br)+14 base damage over the Runic Scythe, plus all demon will bonuses and enhanced attack speed.$(br2)Requires Demon Forged Steel to craft; a material only obtainable through advanced Blood Magic rituals."
     },
     {
       "type": "patchouli:text",

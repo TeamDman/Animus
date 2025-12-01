@@ -12,7 +12,7 @@
     {
       "type": "patchouli:text",
       "title": "Usage",
-      "text": "$(bold)LP Cost:$() Minimal per block placed$(br2)$(bold)Effect:$() Hold the sigil while building to place blocks much faster than normal.$(br2)The sigil works passively - simply have it in your inventory or hotbar while placing blocks to benefit from accelerated building speed.$(br2)Perfect for large construction projects, terraforming, and creative building."
+      "text": "$(bold)LP Cost:$() Minimal per block placed$(br2)$(bold)Effect:$() Hold the sigil while building to place blocks much faster than normal.$(br2)The sigil works passively; simply have it in your inventory or hotbar while placing blocks to benefit from accelerated building speed.$(br2)Perfect for large construction projects, terraforming, and creative building."
     }
   ]
 }

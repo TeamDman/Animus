@@ -5,6 +5,7 @@ import com.teamdman.animus.blockentities.BlockEntityAntiLife;
 import com.teamdman.animus.blockentities.BlockEntityArcaneRune;
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
 import com.teamdman.animus.blockentities.BlockEntityDiabolicalFungi;
+import com.teamdman.animus.blockentities.BlockEntityRuneUnleashedNature;
 import com.teamdman.animus.blockentities.BlockEntityWillfulStone;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,6 +37,14 @@ public class AnimusBlockEntities {
         () -> BlockEntityType.Builder.of(
             BlockEntityArcaneRune::new,
             AnimusBlocks.BLOCK_ARCANE_RUNE.get()
+        ).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<BlockEntityRuneUnleashedNature>> RUNE_UNLEASHED_NATURE = BLOCK_ENTITIES.register(
+        "rune_unleashed_nature",
+        () -> BlockEntityType.Builder.of(
+            BlockEntityRuneUnleashedNature::new,
+            AnimusBlocks.BLOCK_RUNE_UNLEASHED_NATURE.get()
         ).build(null)
     );
 

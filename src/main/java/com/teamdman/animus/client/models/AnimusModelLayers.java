@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class AnimusModelLayers {
     public static final ModelLayerLocation PILUM = new ModelLayerLocation(
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "pilum"),
+        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear"),
         "main"
     );
 }

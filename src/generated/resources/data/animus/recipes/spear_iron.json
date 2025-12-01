@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "a": {
+      "tag": "forge:ingots/iron"
+    },
+    "b": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    " a ",
+    "a a",
+    "  b"
+  ],
+  "result": {
+    "item": "animus:spear_iron"
+  },
+  "show_notification": true
+}

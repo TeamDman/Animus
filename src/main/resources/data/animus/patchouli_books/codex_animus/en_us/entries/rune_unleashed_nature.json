@@ -15,12 +15,12 @@
     {
       "type": "patchouli:text",
       "title": "How It Works",
-      "text": "The Rune of Unleashed Nature provides two tiers of bonuses:$(br2)$(blood)Tier 1 - Passive Bonuses:$()$(br)Always active, even without mana. Provides capacity boost and half the effectiveness of a Rune of the Orb for improved LP drain efficiency.$(br2)$(animus)Tier 2 - Active Bonuses:$()$(br)When the rune has at least 10 mana, it additionally acts as an Acceleration Rune, significantly speeding up altar processing."
+      "text": "The Rune of Unleashed Nature provides two tiers of bonuses:$(br2)$(blood)Tier 1; Passive Bonuses:$()$(br)Always active, even without mana. Provides capacity boost and half the effectiveness of a Rune of the Orb for improved LP drain efficiency.$(br2)$(animus)Tier 2; Active Bonuses:$()$(br)When the rune has at least 10 mana, it additionally acts as an Acceleration Rune, significantly speeding up altar processing."
     },
     {
       "type": "patchouli:text",
       "title": "Mana Consumption",
-      "text": "The rune consumes mana at a steady rate:$(br2)$(will)Consumption Rate:$() 10 mana per second (configurable)$(br)$(animus)Internal Buffer:$() 5000 mana capacity$(br)$(blood)Duration:$() ~8 minutes per full buffer$(br2)Connect a Botania mana pool via spark to keep the rune continuously charged. The passive bonuses (capacity and half-orb) remain active even when depleted - only the acceleration bonus deactivates."
+      "text": "The rune consumes mana at a steady rate:$(br2)$(will)Consumption Rate:$() 10 mana per second (configurable)$(br)$(animus)Internal Buffer:$() 5000 mana capacity$(br)$(blood)Duration:$() ~8 minutes per full buffer$(br2)Connect a Botania mana pool via spark to keep the rune continuously charged. The passive bonuses (capacity and half-orb) remain active even when depleted; only the acceleration bonus deactivates."
     },
     {
       "type": "patchouli:text",

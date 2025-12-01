@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "An imperfect ritual that grants temporary creative flight. This costly ritual provides 10 minutes of unrestricted flight through the heavens.$(br2)$(bold)Setup:$()$(br)Place Ancient Debris on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 10000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect - it activates once and completes immediately. The stone can be reused."
+      "text": "An imperfect ritual that grants temporary creative flight. This costly ritual provides 10 minutes of unrestricted flight through the heavens.$(br2)$(bold)Setup:$()$(br)Place Ancient Debris on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 10000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect; it activates once and completes immediately. The stone can be reused."
     },
     {
       "type": "patchouli:text",

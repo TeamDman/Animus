@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "An imperfect ritual that reduces enchantment levels and removes the enhancement mark from items. This ritual downgrades all enchantments by one level.$(br2)$(bold)Setup:$()$(br)Place a Quartz Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 1000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect - it activates once and completes immediately. The stone can be reused."
+      "text": "An imperfect ritual that reduces enchantment levels and removes the enhancement mark from items. This ritual downgrades all enchantments by one level.$(br2)$(bold)Setup:$()$(br)Place a Quartz Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 1000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect; it activates once and completes immediately. The stone can be reused."
     },
     {
       "type": "patchouli:text",

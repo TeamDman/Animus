@@ -1,7 +1,7 @@
 package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.entities.EntityThrownPilum;
+import com.teamdman.animus.entities.EntityThrownSpear;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -12,12 +12,12 @@ public class AnimusEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
         DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Constants.Mod.MODID);
 
-    public static final RegistryObject<EntityType<EntityThrownPilum>> THROWN_PILUM = ENTITY_TYPES.register(
-        "thrown_pilum",
-        () -> EntityType.Builder.<EntityThrownPilum>of(EntityThrownPilum::new, MobCategory.MISC)
+    public static final RegistryObject<EntityType<EntityThrownSpear>> THROWN_PILUM = ENTITY_TYPES.register(
+        "thrown_spear",
+        () -> EntityType.Builder.<EntityThrownSpear>of(EntityThrownSpear::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(4)
             .updateInterval(20)
-            .build("thrown_pilum")
+            .build("thrown_spear")
     );
 }

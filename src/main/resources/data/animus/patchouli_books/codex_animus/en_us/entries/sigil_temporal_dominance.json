@@ -30,7 +30,7 @@
     {
       "type": "patchouli:text",
       "title": "Usage Tips",
-      "text": "The sigil works on any block entity with a tick function - furnaces, machines, plants, rituals, and more.$(br2)Strategic use involves:$(br)• Building up to max level for best efficiency$(br)• Refreshing just before expiration$(br)• Positioning multiple accelerated blocks nearby$(br2)At max level with regular refreshes, you achieve 32x speed for 15,000 LP per 30 seconds - a powerful acceleration tool!"
+      "text": "The sigil works on any block entity with a tick function; furnaces, machines, plants, rituals, and more.$(br2)Strategic use involves:$(br)• Building up to max level for best efficiency$(br)• Refreshing just before expiration$(br)• Positioning multiple accelerated blocks nearby$(br2)At max level with regular refreshes, you achieve 32x speed for 15,000 LP per 30 seconds; a powerful acceleration tool!"
     }
   ]
 }

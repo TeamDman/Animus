@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Costs & Details",
-      "text": "$(bold)Activation:$() 50000 LP$(br)$(bold)Refresh:$() 75 LP per entity$(br)$(bold)Refresh Time:$() 25 ticks$(br2)$(bold)Effect Range:$() 21x21x10 blocks - configurable$(br)$(#)Horizontal:$() 10 blocks radius$(br)$(#)Vertical:$() 10 blocks upward from 1 block above ritual stone$(br)$(bold)Altar Range:$() Searches 11x21x11 for a Blood Altar$(br2)Each kill provides 200 LP (configurable) to the altar. Works on all non-boss entities."
+      "text": "$(bold)Activation:$() 50000 LP$(br)$(bold)Refresh:$() 75 LP per entity$(br)$(bold)Refresh Time:$() 25 ticks$(br2)$(bold)Effect Range:$() 21x21x10 blocks; configurable$(br)$(#)Horizontal:$() 10 blocks radius$(br)$(#)Vertical:$() 10 blocks upward from 1 block above ritual stone$(br)$(bold)Altar Range:$() Searches 11x21x11 for a Blood Altar$(br2)Each kill provides 200 LP (configurable) to the altar. Works on all non-boss entities."
     },
     {
       "type": "patchouli:text",

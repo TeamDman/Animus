@@ -20,7 +20,7 @@
     {
       "type": "patchouli:text",
       "title": "Synergy",
-      "text": "This ritual works exceptionally well with:$(br)• $(animus)Diabolical Fungi$() - Generate mana from demon will$(br)• $(animus)Endoflames$() - Increased fuel consumption rate$(br)• $(animus)Rosa Arcana$() - More frequent XP draining$(br)• $(animus)Any generating flower$() - Doubled production$(br2)The mana spreader acceleration ensures your increased mana production doesn't bottleneck at the transfer stage."
+      "text": "This ritual works exceptionally well with:$(br)• $(animus)Diabolical Fungi$(); Generate mana from demon will$(br)• $(animus)Endoflames$(); Increased fuel consumption rate$(br)• $(animus)Rosa Arcana$(); More frequent XP draining$(br)• $(animus)Any generating flower$(); Doubled production$(br2)The mana spreader acceleration ensures your increased mana production doesn't bottleneck at the transfer stage."
     },
     {
       "type": "patchouli:text",
