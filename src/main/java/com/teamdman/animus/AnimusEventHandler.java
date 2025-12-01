@@ -62,6 +62,18 @@ public class AnimusEventHandler {
         Player player = event.player;
         UUID playerId = player.getUUID();
 
+        // Process Remedium Sigil and Reparare Sigil active effects FIRST
+        // This needs to run every tick, regardless of healing fragments
+        if (player.level() instanceof ServerLevel serverLevel) {
+            ItemSigilRemedium.tickActiveSigils(player, serverLevel);
+            ItemSigilReparare.tickActiveSigils(player, serverLevel);
+
+            // Process Free Soul spectator mode timer
+            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                ItemSigilFreeSoul.tickActiveSpectators(serverPlayer, serverLevel);
+            }
+        }
+
         // Count healing fragments in inventory (each stack is a separate fragment since stackSize=1)
         int fragmentCount = 0;
         for (ItemStack stack : player.getInventory().items) {
@@ -92,17 +104,6 @@ public class AnimusEventHandler {
         } else {
             // Decrement cooldown
             healingCooldowns.put(playerId, currentCooldown - 1);
-        }
-
-        // Process Remedium Sigil active effects
-        if (player.level() instanceof ServerLevel serverLevel) {
-            ItemSigilRemedium.tickActiveSigils(player, serverLevel);
-            ItemSigilReparare.tickActiveSigils(player, serverLevel);
-
-            // Process Free Soul spectator mode timer
-            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                ItemSigilFreeSoul.tickActiveSpectators(serverPlayer, serverLevel);
-            }
         }
     }
 

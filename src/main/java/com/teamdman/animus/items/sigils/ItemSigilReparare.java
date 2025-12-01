@@ -58,6 +58,11 @@ public class ItemSigilReparare extends AnimusSigilBase {
         // Check binding
         var binding = getBinding(stack);
         if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.literal("Sigil is not bound to you!")
+                    .withStyle(net.minecraft.ChatFormatting.RED),
+                true
+            );
             return InteractionResultHolder.fail(stack);
         }
 
@@ -243,19 +248,11 @@ public class ItemSigilReparare extends AnimusSigilBase {
         }
 
         // Apply repairs
-        int itemsRepaired = 0;
         for (Map.Entry<ItemStack, Integer> entry : repairPlan.entrySet()) {
             ItemStack stack = entry.getKey();
             int repairAmount = entry.getValue();
             stack.setDamageValue(stack.getDamageValue() - repairAmount);
-            itemsRepaired++;
         }
-
-
-        player.displayClientMessage(
-           Component.literal("Repaired " + itemsRepaired + " items for " + lpCost + " LP"),
-           true
-        );
     }
 
     /**
