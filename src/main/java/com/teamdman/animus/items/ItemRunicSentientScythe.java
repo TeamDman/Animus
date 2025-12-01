@@ -2,6 +2,8 @@ package com.teamdman.animus.items;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.teamdman.animus.compat.CompatHandler;
+import com.teamdman.animus.compat.malum.SpiritHarvestHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.ModList;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
 import wayoftime.bloodmagic.common.item.ItemSentientScythe;
 import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
@@ -34,22 +35,6 @@ import java.util.List;
 public class ItemRunicSentientScythe extends ItemSentientScythe {
     // Attack speed multiplier (30% faster than base sentient scythe)
     private static final double ATTACK_SPEED_MULTIPLIER = 1.3;
-
-    // Malum integration flag
-    private static final boolean MALUM_LOADED = ModList.get().isLoaded("malum");
-
-    // Malum integration helper (loaded via reflection if available)
-    private static MalumIntegration malumIntegration;
-
-    static {
-        if (MALUM_LOADED) {
-            try {
-                malumIntegration = new MalumIntegration();
-            } catch (Exception e) {
-                System.err.println("Failed to initialize Malum integration: " + e.getMessage());
-            }
-        }
-    }
 
     public ItemRunicSentientScythe() {
         super();
@@ -93,8 +78,8 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
         boolean result = super.hurtEnemy(stack, target, attacker);
 
         // Trigger Malum soul harvesting if available
-        if (MALUM_LOADED && malumIntegration != null && attacker instanceof Player player) {
-            malumIntegration.onEntityKilled(player, target, stack);
+        if (CompatHandler.isMalumLoaded() && attacker instanceof Player player) {
+            SpiritHarvestHelper.harvestSpirits(target, player, stack);
         }
 
         return result;
@@ -120,7 +105,7 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
         tooltip.add(Component.translatable("tooltip.animus.runic_sentient_scythe.attack_speed")
             .withStyle(ChatFormatting.GREEN));
 
-        if (MALUM_LOADED) {
+        if (CompatHandler.isMalumLoaded()) {
             tooltip.add(Component.translatable("tooltip.animus.runic_sentient_scythe.malum")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         }
@@ -144,33 +129,6 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
             }
         }
         return soulBracket.length;
-    }
-
-    /**
-     * Malum integration helper class
-     * Loaded via reflection only when Malum is present
-     */
-    private static class MalumIntegration {
-        // We'll use reflection to trigger Malum's soul harvesting
-        // This prevents hard dependencies on Malum classes
-
-        public void onEntityKilled(Player player, LivingEntity target, ItemStack weapon) {
-            try {
-                // Call Malum's spirit harvest handler to spawn souls
-                // This uses the public static method: SpiritHarvestHandler.spawnSpirits(target, attacker, weapon)
-                Class<?> spiritHarvestHandler = Class.forName("com.sammy.malum.core.handlers.SpiritHarvestHandler");
-                java.lang.reflect.Method spawnSpirits = spiritHarvestHandler.getMethod(
-                    "spawnSpirits",
-                    net.minecraft.world.entity.LivingEntity.class,
-                    net.minecraft.world.entity.LivingEntity.class,
-                    net.minecraft.world.item.ItemStack.class
-                );
-                spawnSpirits.invoke(null, target, player, weapon);
-            } catch (Exception e) {
-                // Silent failure - Malum integration is optional
-                System.err.println("Failed to trigger Malum soul harvest: " + e.getMessage());
-            }
-        }
     }
 
     // Helper methods from parent class for calculating will-based stats
@@ -210,18 +168,10 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
         }
 
         // Allow Malum enchantments if Malum is loaded
-        if (MALUM_LOADED) {
-            try {
-                // Check if this is a Malum enchantment (haunted, rebounding, etc.)
-                String enchantId = enchantment.getDescriptionId();
-                if (enchantId != null && enchantId.contains("malum")) {
-                    // Allow haunted and rebounding enchantments
-                    if (enchantId.contains("haunted") || enchantId.contains("rebounding")) {
-                        return true;
-                    }
-                }
-            } catch (Exception e) {
-                // Silent failure
+        if (CompatHandler.isMalumLoaded()) {
+            String enchantId = enchantment.getDescriptionId();
+            if (SpiritHarvestHelper.isMalumEnchantment(enchantId)) {
+                return true;
             }
         }
 

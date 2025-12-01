@@ -2,12 +2,13 @@ package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.compat.CompatHandler;
+import com.teamdman.animus.compat.arsnouveau.SourceJarHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.fml.ModList;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.common.tile.TileAltar;
@@ -35,21 +36,6 @@ import java.util.function.Consumer;
  */
 @RitualRegister(Constants.Rituals.SOURCE_VITAEUM)
 public class RitualSourceVitaeum extends Ritual {
-    // Ars Nouveau integration flag
-    private static final boolean ARS_LOADED = ModList.get().isLoaded("ars_nouveau");
-
-    // Ars Nouveau integration helper (loaded via reflection if available)
-    private static ArsIntegration arsIntegration;
-
-    static {
-        if (ARS_LOADED) {
-            try {
-                arsIntegration = new ArsIntegration();
-            } catch (Exception e) {
-                System.err.println("Failed to initialize Ars Nouveau integration for Source Vitaeum: " + e.getMessage());
-            }
-        }
-    }
 
     public RitualSourceVitaeum() {
         super(
@@ -70,7 +56,7 @@ public class RitualSourceVitaeum extends Ritual {
         }
 
         // Check if Ars Nouveau is loaded
-        if (!ARS_LOADED || arsIntegration == null) {
+        if (!CompatHandler.isArsNouveauLoaded()) {
             // Ritual is inactive without Ars Nouveau
             return;
         }
@@ -97,7 +83,7 @@ public class RitualSourceVitaeum extends Ritual {
         int sourcePerCycle = AnimusConfig.rituals.sourceVitaeumSourcePerCycle.get();
 
         // Find Source Jars and drain them
-        int sourceDrained = arsIntegration.drainSourceFromNearbyJars(serverLevel, masterPos, sourcePerCycle);
+        int sourceDrained = SourceJarHelper.drainSourceFromJarAbove(serverLevel, masterPos, sourcePerCycle);
 
         if (sourceDrained <= 0) {
             // No Source available to convert
@@ -203,51 +189,4 @@ public class RitualSourceVitaeum extends Ritual {
         return new RitualSourceVitaeum();
     }
 
-    /**
-     * Ars Nouveau integration helper class
-     * Loaded via reflection only when Ars Nouveau is present
-     */
-    private static class ArsIntegration {
-        // Cache reflected classes and methods
-        private Class<?> sourceJarClass;
-        private java.lang.reflect.Method getSourceMethod;
-        private java.lang.reflect.Method removeSourceMethod;
-
-        public ArsIntegration() throws Exception {
-            // Load Ars Nouveau classes via reflection
-            sourceJarClass = Class.forName("com.hollingsworth.arsnouveau.common.block.tile.SourceJarTile");
-
-            // Get methods for Source manipulation
-            getSourceMethod = sourceJarClass.getMethod("getSource");
-            removeSourceMethod = sourceJarClass.getMethod("removeSource", int.class);
-        }
-
-        /**
-         * Drain Source from the Source Jar directly above the Master Ritual Stone
-         * @return Total amount of Source drained
-         */
-        public int drainSourceFromNearbyJars(ServerLevel level, BlockPos center, int maxDrain) {
-            // Check the position directly above the Master Ritual Stone (y+1)
-            BlockPos jarPos = center.above();
-            BlockEntity be = level.getBlockEntity(jarPos);
-
-            if (be != null && sourceJarClass.isInstance(be)) {
-                try {
-                    // Get current Source amount
-                    int currentSource = (int) getSourceMethod.invoke(be);
-
-                    if (currentSource > 0) {
-                        // Drain as much as possible from this jar
-                        int toDrain = Math.min(maxDrain, currentSource);
-                        removeSourceMethod.invoke(be, toDrain);
-                        return toDrain;
-                    }
-                } catch (Exception e) {
-                    // Silent failure - jar cannot be drained
-                }
-            }
-
-            return 0;
-        }
-    }
 }

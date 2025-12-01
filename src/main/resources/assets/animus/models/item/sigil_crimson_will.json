@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "animus:item/sigil_crimson_will"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "animus:active": 1
+      },
+      "model": "animus:item/sigil_crimson_will_active"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "name": "guide.animus.entry.sanguine_scrolls",
+  "category": "animus:compatibility",
+  "icon": "animus:sanguine_scroll_imbued",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Sanguine Scrolls are reusable spell scrolls that consume Life Essence instead of being destroyed. Unlike regular scrolls, these blood-infused parchments can cast spells dozens or hundreds of times, limited only by their durability."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sanguine_scroll_imbued",
+      "text": "$(blood)Reusable Spell Scroll$()$(br2)Sanguine Scrolls store a single spell and can be used repeatedly. Each cast consumes LP from your Soul Network and damages the scroll slightly. The scroll's durability determines how many times it can be used."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Creating Scrolls",
+      "text": "To create a Sanguine Scroll:$(br2)1. Obtain an $(item)Iron's Spells Scroll$() containing the spell you want$(br)2. Place a $(blood)Blood Magic Slate$() in your offhand$(br)3. Right-click a $(blood)Blood Altar$() with the scroll$(br)4. The altar will consume LP and both items$(br)5. Receive a Sanguine Scroll with the spell bound$(br2)$(italic)The slate tier determines scroll durability.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Slate Tiers",
+      "text": "Different slate types produce scrolls with varying durability:$(br2)• $(blood)Blank Slate:$() 50 uses$(br)• $(blood)Reinforced Slate:$() 100 uses$(br)• $(blood)Imbued Slate:$() 200 uses$(br)• $(blood)Demon Slate:$() 400 uses$(br)• $(blood)Ethereal Slate:$() 600 uses$(br2)Higher-tier scrolls can cast more spells before breaking. Choose based on how frequently you'll use the spell."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "LP Costs",
+      "text": "Sanguine Scrolls consume more LP than normal spell casting:$(br2)$(bold)Base Cost:$() Mana cost × LP rate × 1.5$(br)$(italic)(Default: 150 LP per mana point)$()$(br2)$(bold)Creation Cost:$() Based on spell rarity and level$(br)• Common: 5,000 LP × level$(br)• Uncommon: 10,000 LP × level$(br)• Rare: 25,000 LP × level$(br)• Epic: 50,000 LP × level$(br)• Legendary: 100,000 LP × level"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Strategic Uses",
+      "text": "Sanguine Scrolls excel for:$(br2)• $(blood)Emergency spells$() - Quick access without spellbooks$(br)• $(blood)Powerful spells$() - Cast legendary spells anytime$(br)• $(blood)LP-heavy builds$() - Convert excess LP to magic$(br)• $(blood)Backup casting$() - When out of mana$(br2)The 50% LP premium is worth it for convenience and reliability. Store multiple scrolls for different situations."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tips & Tricks",
+      "text": "$(bold)Durability Management:$()$(br)• Check uses remaining in tooltip$(br)• Higher-tier slates for frequently-used spells$(br)• Keep spares of important spells$(br2)$(bold)Synergies:$()$(br)• Combine with $(l:animus:compatibility/sigil_crimson_will)Sigil of Crimson Will$() for massive damage$(br)• Use $(l:animus:compatibility/blood_infused_spellbook)Blood-Infused Spellbook$() to reduce LP costs$(br2)$(italic)Sanguine Scrolls work from any inventory slot.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Requirements",
+      "text": "To use Sanguine Scrolls:$(br)• $(blood)Iron's Spellbooks must be installed$()$(br)• Active $(l:bloodmagic:altar/binding)Soul Network$()$(br)• Blood Altar for creation$(br)• Slates from Blood Magic$(br)• Iron's Spells scrolls to convert$(br2)Sanguine Scrolls respect spell cooldowns and cannot bypass casting restrictions."
+    }
+  ]
+}

@@ -349,6 +349,7 @@ public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Bl
         public static final String SOURCE_VITAEUM = "ritual_source_vitaeum";
         public static final String STEADFAST = "ritual_steadfast_heart";
         public static final String UNMAKING = "ritual_unmaking";
+        public static final String ARCANE_MASTERY = "ritual_arcane_mastery";
     }
 
     public static class Sigils {

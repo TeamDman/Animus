@@ -1,0 +1,36 @@
+{
+  "name": "guide.animus.entry.blood_infused_spellbook",
+  "category": "animus:compatibility",
+  "icon": "animus:blood_infused_spellbook",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Blood-Infused Spellbook channels Life Essence to enhance spellcasting capabilities. This hybrid tome consumes LP to boost spell power and mana regeneration, bridging Iron's Spells magic with Blood Magic's sacrificial arts."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_infused_spellbook",
+      "text": "$(blood)Blood-Powered Spellbook$()$(br2)Passively consume LP from your Blood Network to fuel your magical studies. The Blood-Infused Spellbook provides powerful bonuses when held in your inventory while you cast spells."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Creating the Book",
+      "text": "To create a Blood-Infused Spellbook:$(br2)1. Obtain an Iron's Spells $(item)Spellbook$()$(br)2. Ensure your Blood Altar has:$(br)• $(blood)Tier 4 or higher$()$(br)• Blood Orb of Weak tier or higher$(br)• $(blood)20,000 LP$() stored$(br2)3. Right-click the altar with the spellbook in hand$(br2)The spellbook will be consumed and transformed into a Blood-Infused Spellbook."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Bonuses",
+      "text": "While in your inventory, the Blood-Infused Spellbook provides:$(br2)• $(blood)+10% Spell Power$()$(br)• $(blood)+25% Mana Regeneration$()$(br)• $(blood)+5% Cooldown Reduction$()$(br2)$(italic)LP Cost:$() 10 LP per second$(br2)These bonuses are automatically applied as long as you have enough LP in your Soul Network."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Active Benefits",
+      "text": "The Blood-Infused Spellbook also:$(br2)• $(blood)Reduces mana cost$() of all spells by 10%$(br)• Allows you to $(blood)overdraw mana$() by consuming extra LP$(br)• Each point of missing mana costs $(blood)100 LP$()$(br2)$(bold)Example:$() If a spell costs 50 mana and you only have 30, the book will consume $(blood)2,000 LP$() (20 × 100) to cast the spell.$(br2)This ensures you never run out of mana mid-combat."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Requirements",
+      "text": "To use the Blood-Infused Spellbook:$(br)• $(blood)Iron's Spellbooks must be installed$()$(br)• Active $(l:bloodmagic:altar/binding)Soul Network$()$(br)• Sufficient LP for passive drain and spell casting$(br2)The book works in any inventory slot and does not need to be held in hand to function."
+    }
+  ]
+}

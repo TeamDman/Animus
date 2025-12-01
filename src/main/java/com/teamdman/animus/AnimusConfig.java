@@ -412,6 +412,8 @@ public class AnimusConfig {
     public static class ArsNouveau {
         public final ForgeConfigSpec.IntValue arcaneRuneDrainAmount;
         public final ForgeConfigSpec.IntValue arcaneRuneDrainInterval;
+        public final ForgeConfigSpec.BooleanValue enableLivingArmorXP;
+        public final ForgeConfigSpec.IntValue livingArmorBaseXP;
 
         public ArsNouveau(ForgeConfigSpec.Builder builder) {
             builder.push("arsNouveau");
@@ -430,6 +432,25 @@ public class AnimusConfig {
                 )
                 .defineInRange("arcaneRuneDrainInterval", 200, 20, 6000);
 
+            // Living Armor Integration
+            builder.comment("Living Armor Integration").push("livingArmor");
+
+            enableLivingArmorXP = builder
+                .comment(
+                    "Enable Living Armor XP gain from Ars Nouveau spell casting",
+                    "Default: true"
+                )
+                .define("enabled", true);
+
+            livingArmorBaseXP = builder
+                .comment(
+                    "Base XP granted to Living Armor per glyph cast",
+                    "Actual XP = base × number of glyphs in spell",
+                    "Default: 5"
+                )
+                .defineInRange("baseXP", 5, 1, 1000);
+
+            builder.pop();
             builder.pop();
         }
     }
@@ -473,14 +494,39 @@ public class AnimusConfig {
 
     // Irons Spells n Spellbooks Integration Configuration
     public static class IronsSpells {
+        // Phase 1: LP Casting
         public final ForgeConfigSpec.BooleanValue enableLPCasting;
         public final ForgeConfigSpec.IntValue lpPerMana;
         public final ForgeConfigSpec.BooleanValue requireBloodOrb;
         public final ForgeConfigSpec.BooleanValue allowHybridCasting;
         public final ForgeConfigSpec.BooleanValue showLPCostInTooltip;
 
+        // Phase 2: Items
+        public final ForgeConfigSpec.BooleanValue enableBloodInfusedSpellbook;
+        public final ForgeConfigSpec.IntValue bloodSpellbookTier1LP;
+        public final ForgeConfigSpec.IntValue bloodSpellbookTier2LP;
+        public final ForgeConfigSpec.IntValue bloodSpellbookTier3LP;
+        public final ForgeConfigSpec.IntValue bloodSpellbookTier4LP;
+        public final ForgeConfigSpec.IntValue bloodSpellbookTier5LP;
+        public final ForgeConfigSpec.IntValue bloodSpellbookTier6LP;
+
+        public final ForgeConfigSpec.BooleanValue enableSigilCrimsonWill;
+        public final ForgeConfigSpec.IntValue crimsonWillLPPerMana;
+
+        public final ForgeConfigSpec.BooleanValue enableSanguineScrolls;
+        public final ForgeConfigSpec.DoubleValue sanguineScrollLPMultiplier;
+        public final ForgeConfigSpec.DoubleValue sanguineScrollDurabilityMultiplier;
+        public final ForgeConfigSpec.BooleanValue sanguineScrollRequireBloodOrb;
+
+        // Phase 5: Living Armor Integration
+        public final ForgeConfigSpec.BooleanValue enableLivingArmorXP;
+        public final ForgeConfigSpec.IntValue livingArmorBaseXP;
+
         public IronsSpells(ForgeConfigSpec.Builder builder) {
             builder.push("ironsSpells");
+
+            // ===== Phase 1: LP Casting =====
+            builder.comment("Phase 1: LP-Powered Spell Casting").push("lpCasting");
 
             enableLPCasting = builder
                 .comment(
@@ -523,6 +569,121 @@ public class AnimusConfig {
                 )
                 .define("showLPCostInTooltip", true);
 
+            builder.pop();
+
+            // ===== Phase 2: Blood-Infused Spellbook =====
+            builder.comment("Phase 2: Blood-Infused Spellbook").push("bloodInfusedSpellbook");
+
+            enableBloodInfusedSpellbook = builder
+                .comment(
+                    "Enable Blood-Infused Spellbooks",
+                    "Default: true"
+                )
+                .define("enabled", true);
+
+            bloodSpellbookTier1LP = builder
+                .comment("LP cost to infuse spellbook to Tier 1 (Weak Blood Orb)")
+                .defineInRange("tier1LPCost", 5000, 100, 1000000);
+
+            bloodSpellbookTier2LP = builder
+                .comment("LP cost to infuse spellbook to Tier 2 (Apprentice Blood Orb)")
+                .defineInRange("tier2LPCost", 10000, 100, 1000000);
+
+            bloodSpellbookTier3LP = builder
+                .comment("LP cost to infuse spellbook to Tier 3 (Magician Blood Orb)")
+                .defineInRange("tier3LPCost", 25000, 100, 1000000);
+
+            bloodSpellbookTier4LP = builder
+                .comment("LP cost to infuse spellbook to Tier 4 (Master Blood Orb)")
+                .defineInRange("tier4LPCost", 50000, 100, 1000000);
+
+            bloodSpellbookTier5LP = builder
+                .comment("LP cost to infuse spellbook to Tier 5 (Archmage Blood Orb)")
+                .defineInRange("tier5LPCost", 100000, 100, 1000000);
+
+            bloodSpellbookTier6LP = builder
+                .comment("LP cost to infuse spellbook to Tier 6 (Transcendent Blood Orb)")
+                .defineInRange("tier6LPCost", 250000, 100, 1000000);
+
+            builder.pop();
+
+            // ===== Phase 2: Sigil of Crimson Will =====
+            builder.comment("Phase 2: Sigil of Crimson Will").push("sigilCrimsonWill");
+
+            enableSigilCrimsonWill = builder
+                .comment(
+                    "Enable Sigil of Crimson Will",
+                    "Default: true"
+                )
+                .define("enabled", true);
+
+            crimsonWillLPPerMana = builder
+                .comment(
+                    "LP cost per mana point when empowering spells with Crimson Will",
+                    "This is in addition to normal spell costs",
+                    "Default: 50 LP per mana (half of normal LP casting cost)"
+                )
+                .defineInRange("lpPerMana", 50, 1, 1000);
+
+            builder.pop();
+
+            // ===== Phase 2: Sanguine Scrolls =====
+            builder.comment("Phase 2: Sanguine Scrolls").push("sanguineScrolls");
+
+            enableSanguineScrolls = builder
+                .comment(
+                    "Enable Sanguine Scrolls",
+                    "Default: true"
+                )
+                .define("enabled", true);
+
+            sanguineScrollLPMultiplier = builder
+                .comment(
+                    "LP cost multiplier for Sanguine Scrolls",
+                    "Multiplied with spell mana cost and lpPerMana",
+                    "Example: 1.5 means spell costs mana × lpPerMana × 1.5 LP",
+                    "Default: 1.5 (50% more expensive than spellbook casting)"
+                )
+                .defineInRange("lpCostMultiplier", 1.5, 1.0, 5.0);
+
+            sanguineScrollDurabilityMultiplier = builder
+                .comment(
+                    "Durability multiplier for Sanguine Scrolls",
+                    "Base durabilities: Blank=50, Reinforced=100, Imbued=200, Demon=400, Ethereal=600",
+                    "Example: 2.0 doubles all durability values",
+                    "Default: 1.0"
+                )
+                .defineInRange("durabilityMultiplier", 1.0, 0.1, 10.0);
+
+            sanguineScrollRequireBloodOrb = builder
+                .comment(
+                    "Require Blood Orb in inventory to craft Sanguine Scrolls at altar",
+                    "Default: false"
+                )
+                .define("requireBloodOrbToCraft", false);
+
+            builder.pop();
+
+            // ===== Phase 5: Living Armor Integration =====
+            builder.comment("Phase 5: Living Armor Integration").push("livingArmor");
+
+            enableLivingArmorXP = builder
+                .comment(
+                    "Enable Living Armor XP gain from spell casting",
+                    "Default: true"
+                )
+                .define("enabled", true);
+
+            livingArmorBaseXP = builder
+                .comment(
+                    "Base XP granted to Living Armor per spell cast",
+                    "Actual XP = base × spell level × rarity multiplier",
+                    "Rarity multipliers: Common=1.0, Uncommon=1.5, Rare=2.0, Epic=3.0, Legendary=5.0",
+                    "Default: 10"
+                )
+                .defineInRange("baseXP", 10, 1, 1000);
+
+            builder.pop();
             builder.pop();
         }
     }

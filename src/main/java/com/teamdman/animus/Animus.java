@@ -37,6 +37,9 @@ public class Animus {
         AnimusRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         AnimusRecipeTypes.RECIPE_TYPES.register(modEventBus);
 
+        // Register compatibility module deferred registers
+        CompatHandler.registerDeferredRegisters(modEventBus);
+
         // Register event listeners
         modEventBus.addListener(this::commonSetup);
 

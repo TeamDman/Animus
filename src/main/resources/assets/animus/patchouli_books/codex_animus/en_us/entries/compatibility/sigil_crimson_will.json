@@ -1,0 +1,41 @@
+{
+  "name": "guide.animus.entry.sigil_crimson_will",
+  "category": "animus:compatibility",
+  "icon": "animus:sigil_crimson_will",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Sigil of Crimson Will empowers your spellcasting with both Life Essence and Demon Will. This toggleable sigil dramatically increases spell power and summon damage, scaling with the raw demon will stored in your Soul Network."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_crimson_will",
+      "text": "$(will)Demon Will Enhancement$()$(br2)Right-click to activate this sigil. While active, every spell you cast will consume LP and temporarily boost your spell power and summon damage through demonic empowerment."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Power Scaling",
+      "text": "The Sigil of Crimson Will provides:$(br2)$(bold)Base Bonus:$() $(blood)+30%$() spell power and summon damage$(br2)$(bold)Demon Will Scaling:$()$(br)• Scales up to $(will)+50% total$() at 4096 demon will$(br)• Uses demon will from your Soul Network$(br)• Works with $(will)0 will$() (base 30% only)$(br2)The bonus is applied only during spell casting and removed immediately after."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Cost Breakdown",
+      "text": "Each spell cast with the sigil active consumes:$(br2)$(blood)Life Essence:$()$(br)• Configurable per mana point (default: 50 LP)$(br)• Scales with spell level$(br)• Example: 10-level spell = 500 LP$(br2)$(will)Demon Will:$()$(br)• 5 will per cast (if available)$(br)• Consumes from Soul Network$(br)• Optional - sigil works without will"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Activation States",
+      "text": "The sigil has two states:$(br2)$(bold)Active:$() (glowing red icon)$(br)• Consumes resources per spell$(br)• Boosts spell power & summon damage$(br)• Shows dynamic power bonus in tooltip$(br2)$(bold)Inactive:$() (gray icon)$(br)• No resource consumption$(br)• No power boost$(br)• Right-click to toggle$(br2)The sigil must be $(l:bloodmagic:altar/binding)bound$() to your Soul Network to activate."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Strategic Use",
+      "text": "The Sigil of Crimson Will excels in:$(br2)• $(blood)Boss fights$() - massive damage boost$(br)• $(blood)Summoner builds$() - enhanced summons$(br)• $(will)High-will scenarios$() - 50% bonus$(br2)$(italic)Tip:$() Keep the sigil in your inventory (main hand, offhand, or any inventory slot). Deactivate between fights to conserve LP.$(br2)Combines excellently with the $(l:animus:compatibility/blood_infused_spellbook)Blood-Infused Spellbook$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Requirements",
+      "text": "To use the Sigil of Crimson Will:$(br)• $(blood)Iron's Spellbooks must be installed$()$(br)• Active $(l:bloodmagic:altar/binding)Soul Network$()$(br)• Sufficient LP for spell costs$(br)• Optional: Demon will in Soul Network for scaling$(br2)The sigil applies attribute modifiers during casting, ensuring compatibility with other spell power modifiers."
+    }
+  ]
+}

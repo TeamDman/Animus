@@ -1,7 +1,13 @@
 package com.teamdman.animus.compat;
 
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.Constants;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 /**
  * Compatibility module for Irons Spells n Spellbooks
@@ -22,12 +28,52 @@ public class IronsSpellsCompat implements ICompatModule {
 
     private static IronsSpellsCompat INSTANCE;
 
+    // DeferredRegister for Irons Spells compatibility items
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.Mod.MODID);
+
+    // Items
+    public static final RegistryObject<Item> BLOOD_INFUSED_SPELLBOOK = ITEMS.register("blood_infused_spellbook",
+        com.teamdman.animus.compat.ironsspells.ItemBloodInfusedSpellbook::new);
+
+    public static final RegistryObject<Item> SIGIL_CRIMSON_WILL = ITEMS.register("sigil_crimson_will",
+        com.teamdman.animus.compat.ironsspells.ItemSigilCrimsonWill::new);
+
+    // Sanguine Scrolls (one for each slate tier)
+    public static final RegistryObject<Item> SANGUINE_SCROLL_BLANK = ITEMS.register("sanguine_scroll_blank",
+        () -> new com.teamdman.animus.compat.ironsspells.ItemSanguineScroll(
+            com.teamdman.animus.compat.ironsspells.ItemSanguineScroll.SlateType.BLANK));
+
+    public static final RegistryObject<Item> SANGUINE_SCROLL_REINFORCED = ITEMS.register("sanguine_scroll_reinforced",
+        () -> new com.teamdman.animus.compat.ironsspells.ItemSanguineScroll(
+            com.teamdman.animus.compat.ironsspells.ItemSanguineScroll.SlateType.REINFORCED));
+
+    public static final RegistryObject<Item> SANGUINE_SCROLL_IMBUED = ITEMS.register("sanguine_scroll_imbued",
+        () -> new com.teamdman.animus.compat.ironsspells.ItemSanguineScroll(
+            com.teamdman.animus.compat.ironsspells.ItemSanguineScroll.SlateType.IMBUED));
+
+    public static final RegistryObject<Item> SANGUINE_SCROLL_DEMON = ITEMS.register("sanguine_scroll_demon",
+        () -> new com.teamdman.animus.compat.ironsspells.ItemSanguineScroll(
+            com.teamdman.animus.compat.ironsspells.ItemSanguineScroll.SlateType.DEMON));
+
+    public static final RegistryObject<Item> SANGUINE_SCROLL_ETHEREAL = ITEMS.register("sanguine_scroll_ethereal",
+        () -> new com.teamdman.animus.compat.ironsspells.ItemSanguineScroll(
+            com.teamdman.animus.compat.ironsspells.ItemSanguineScroll.SlateType.ETHEREAL));
+
     public IronsSpellsCompat() {
         INSTANCE = this;
     }
 
     public static IronsSpellsCompat getInstance() {
         return INSTANCE;
+    }
+
+    /**
+     * Register the DeferredRegister to the mod event bus
+     * This must be called early, during mod construction
+     */
+    public static void registerDeferred(IEventBus modEventBus) {
+        ITEMS.register(modEventBus);
+        Animus.LOGGER.info("Registered Irons Spells compatibility item registry");
     }
 
     @Override
@@ -55,8 +101,18 @@ public class IronsSpellsCompat implements ICompatModule {
         // Phase 1: LP to Mana conversion
         MinecraftForge.EVENT_BUS.register(com.teamdman.animus.compat.ironsspells.SpellCastingHandler.class);
 
-        // Phase 2: Living Armor integration (TODO)
-        // MinecraftForge.EVENT_BUS.addListener(this::onSpellCastForArmor);
+        // Phase 2: Altar infusion for Blood-Infused Spellbooks
+        MinecraftForge.EVENT_BUS.register(com.teamdman.animus.compat.ironsspells.AltarInfusionHandler.class);
+
+        // Phase 2: Sigil of Crimson Will spell empowerment
+        MinecraftForge.EVENT_BUS.register(com.teamdman.animus.compat.ironsspells.CrimsonWillSpellHandler.class);
+
+        // Phase 2: Sanguine Scrolls altar infusion
+        MinecraftForge.EVENT_BUS.register(com.teamdman.animus.compat.ironsspells.SanguineScrollAltarHandler.class);
+
+        // TODO: Re-enable Living Armor integration after API research
+        // MinecraftForge.EVENT_BUS.register(com.teamdman.animus.compat.ironsspells.LivingArmorSpellHandler.class);
+        // registerArcaneChannelingUpgrade();
 
         Animus.LOGGER.info("Registered Irons Spells event listeners");
     }

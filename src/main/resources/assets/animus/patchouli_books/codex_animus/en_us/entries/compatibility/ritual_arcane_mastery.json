@@ -1,0 +1,46 @@
+{
+  "name": "guide.animus.entry.ritual_arcane_mastery",
+  "category": "animus:compatibility",
+  "icon": "bloodmagic:masterritualstone",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Arcane Mastery bridges Blood Magic's ritual system with Iron's Spells learning mechanics. This powerful ritual can teach you new spells or upgrade existing ones by consuming scrolls placed in nearby chests."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "bloodmagic:masterritualstone",
+      "text": "$(blood)Spell Learning Ritual$()$(br2)Place spell scrolls in chests within 5 blocks of the Master Ritual Stone. The ritual will automatically process scrolls, teaching you new spells or upgrading ones you already know."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How It Works",
+      "text": "The ritual searches for $(item)Iron's Spells Scrolls$() in chests within a 5-block radius (horizontal and vertical).$(br2)$(bold)If you don't know the spell:$()$(br)• Consumes the scroll$(br)• Teaches you the spell at level 1$(br)• Costs LP based on spell rarity$(br2)$(bold)If you already know the spell:$()$(br)• Consumes the scroll$(br)• Upgrades spell level by +1$(br)• LP cost = Base cost × Current level"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "LP Costs",
+      "text": "LP costs scale with spell rarity:$(br2)• $(item)Common:$() 5,000 LP$(br)• $(item)Uncommon:$() 10,000 LP$(br)• $(item)Rare:$() 25,000 LP$(br)• $(item)Epic:$() 50,000 LP$(br)• $(item)Legendary:$() 100,000 LP$(br2)$(bold)Upgrade Cost Formula:$()$(br)Base cost × Current spell level$(br2)$(italic)Example: Upgrading a Rare spell from level 2 to 3 costs 25,000 × 2 = 50,000 LP$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Setup",
+      "text": "1. Build the ritual pattern (see next page)$(br)2. Activate with $(blood)10,000 LP$()$(br)3. Place chest(s) within 5 blocks$(br)4. Put spell scrolls in chest$(br)5. Wait for ritual to process$(br2)$(bold)Processing:$()$(br)• Checks every 2 seconds$(br)• Processes one scroll at a time$(br)• Emits smoke if no scrolls found$(br)• Enchantment particles on success"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Rune Pattern",
+      "text": "The Ritual of Arcane Mastery uses a knowledge-themed pattern:$(br2)$(bold)Inner Circle$() (2 blocks):$(br)• 4 Dusk Runes (cardinal directions)$(br2)$(bold)Middle Ring$() (2 blocks diagonal):$(br)• 4 Air Runes (diagonals)$(br2)$(bold)Outer Ring$() (3 blocks):$(br)• 4 Dusk Runes (cardinal)$(br)• 4 Air Runes (corners)$(br2)Total: 8 Dusk, 8 Air runes"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tips & Strategies",
+      "text": "$(bold)Efficient Learning:$()$(br)• Group common spells together$(br)• Keep high-value scrolls separate$(br)• Monitor LP levels$(br)• Use activation crystals to start/stop$(br2)$(bold)Bulk Processing:$()$(br)• Fill multiple chests with scrolls$(br)• Ritual processes continuously$(br)• Check back periodically$(br2)$(italic)The ritual respects spell max levels - you cannot upgrade beyond a spell's natural maximum.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Requirements",
+      "text": "To use this ritual:$(br)• $(blood)Iron's Spellbooks must be installed$()$(br)• Active $(l:bloodmagic:altar/binding)Soul Network$()$(br)• Sufficient LP for activation and learning$(br)• Iron's Spells scrolls$(br)• Chest(s) for scroll storage$(br2)$(bold)Activation:$()$(br)• 10,000 LP initial cost$(br)• $(item)Weak Activation Crystal$() to activate$(br)• No ongoing refresh cost"
+    }
+  ]
+}
