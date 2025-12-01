@@ -133,6 +133,12 @@ dependencies {
     compileOnly fg.deobf("curse.maven:botania-225643:6870713")
     runtimeOnly fg.deobf("curse.maven:botania-225643:6870713")
 
+    // Irons Spells n Spellbooks - optional soft dependency for spell/LP integration
+    // compileOnly allows using spell APIs and event system
+    // Runtime detection via ModList.get().isLoaded("irons_spellbooks") handles graceful degradation
+    compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:6970299")
+    runtimeOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:6970299")
+
     // The One Probe - for debugging in dev environment only (not required in production)
     runtimeOnly fg.deobf("curse.maven:the-one-probe-245211:6106996")
 }
