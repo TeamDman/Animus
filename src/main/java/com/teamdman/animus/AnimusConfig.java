@@ -471,6 +471,62 @@ public class AnimusConfig {
         }
     }
 
+    // Irons Spells n Spellbooks Integration Configuration
+    public static class IronsSpells {
+        public final ForgeConfigSpec.BooleanValue enableLPCasting;
+        public final ForgeConfigSpec.IntValue lpPerMana;
+        public final ForgeConfigSpec.BooleanValue requireBloodOrb;
+        public final ForgeConfigSpec.BooleanValue allowHybridCasting;
+        public final ForgeConfigSpec.BooleanValue showLPCostInTooltip;
+
+        public IronsSpells(ForgeConfigSpec.Builder builder) {
+            builder.push("ironsSpells");
+
+            enableLPCasting = builder
+                .comment(
+                    "Enable LP-powered spell casting",
+                    "When enabled, spells can consume Life Points instead of mana",
+                    "Default: true"
+                )
+                .define("enableLPCasting", true);
+
+            lpPerMana = builder
+                .comment(
+                    "LP cost per mana point when casting spells with LP",
+                    "Higher values make spell casting more expensive",
+                    "Example: 100 means a spell costing 50 mana requires 5,000 LP",
+                    "Default: 100 LP per mana"
+                )
+                .defineInRange("lpPerMana", 100, 1, 1000);
+
+            requireBloodOrb = builder
+                .comment(
+                    "Require a Blood Orb in inventory or curio slot to use LP for spell casting",
+                    "If false, any player with LP in their soul network can use it",
+                    "Default: true"
+                )
+                .define("requireBloodOrb", true);
+
+            allowHybridCasting = builder
+                .comment(
+                    "Allow spells to consume both mana and LP if player doesn't have enough of either",
+                    "Example: If a spell costs 100 mana and player has 60 mana + enough LP,",
+                    "it will consume 60 mana + LP equivalent of 40 mana",
+                    "Default: true"
+                )
+                .define("allowHybridCasting", true);
+
+            showLPCostInTooltip = builder
+                .comment(
+                    "Show LP cost equivalent in spell tooltips when hovering over spells",
+                    "Default: true"
+                )
+                .define("showLPCostInTooltip", true);
+
+            builder.pop();
+        }
+    }
+
     // Config instances
     public static General general;
     public static Rituals rituals;
@@ -479,6 +535,7 @@ public class AnimusConfig {
     public static BloodCore bloodCore;
     public static ArsNouveau arsNouveau;
     public static Botania botania;
+    public static IronsSpells ironsSpells;
 
     static {
         BUILDER.comment("Animus Configuration").push("animus");
@@ -490,6 +547,7 @@ public class AnimusConfig {
         bloodCore = new BloodCore(BUILDER);
         arsNouveau = new ArsNouveau(BUILDER);
         botania = new Botania(BUILDER);
+        ironsSpells = new IronsSpells(BUILDER);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

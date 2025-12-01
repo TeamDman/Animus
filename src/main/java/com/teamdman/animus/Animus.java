@@ -1,5 +1,6 @@
 package com.teamdman.animus;
 
+import com.teamdman.animus.compat.CompatHandler;
 import com.teamdman.animus.network.AnimusNetwork;
 import com.teamdman.animus.registry.*;
 import com.teamdman.animus.worldgen.AnimusTreeDecoratorTypes;
@@ -47,6 +48,9 @@ public class Animus {
 
         // Register network packets
         AnimusNetwork.register();
+
+        // Initialize compatibility modules for optional mod integrations
+        CompatHandler.init();
 
         // Register Crystallized Demon Will block as a valid CRYSTAL component for tier 6 altars
         try {
