@@ -5,13 +5,8 @@ import com.teamdman.animus.AnimusConfig;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import wayoftime.bloodmagic.common.item.armor.ItemLivingArmor;
-import wayoftime.bloodmagic.core.living.ILivingContainer;
-import wayoftime.bloodmagic.core.living.LivingStats;
-import wayoftime.bloodmagic.core.living.LivingUpgrade;
 import wayoftime.bloodmagic.core.living.LivingUtil;
 
 /**
@@ -20,7 +15,7 @@ import wayoftime.bloodmagic.core.living.LivingUtil;
  * Features:
  * - Grants Living Armor XP when spells are cast
  * - XP scales with spell level and rarity
- * - Supports Arcane Channeling upgrade tree (if registered)
+ * - XP is granted to the Arcane Channeling upgrade tree
  */
 public class LivingArmorSpellHandler {
 
@@ -30,6 +25,16 @@ public class LivingArmorSpellHandler {
     private static final double RARE_XP_MULT = 2.0;
     private static final double EPIC_XP_MULT = 3.0;
     private static final double LEGENDARY_XP_MULT = 5.0;
+
+    // Reference to the upgrade (will be set by IronsSpellsCompat during init)
+    private static UpgradeArcaneChanneling arcaneChannelingUpgrade;
+
+    /**
+     * Set the upgrade instance (called by compat module during initialization)
+     */
+    public static void setUpgrade(UpgradeArcaneChanneling upgrade) {
+        arcaneChannelingUpgrade = upgrade;
+    }
 
     /**
      * Grant Living Armor XP when player casts a spell
@@ -41,6 +46,11 @@ public class LivingArmorSpellHandler {
             return;
         }
 
+        if (arcaneChannelingUpgrade == null) {
+            // Upgrade not registered yet
+            return;
+        }
+
         if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
@@ -49,58 +59,24 @@ public class LivingArmorSpellHandler {
             return;
         }
 
-        // Check if player is wearing Living Armor
-        if (!isWearingLivingArmor(player)) {
+        // Check if player has full Living Armor set
+        if (!LivingUtil.hasFullSet(player)) {
             return;
         }
 
-        // Get spell info
-        AbstractSpell spell = event.getSpell();
+        // Get spell level
         int spellLevel = event.getSpellLevel();
 
         // Calculate XP to grant
+        // Note: Cannot get spell rarity from SpellOnCastEvent, so using base XP only
         int baseXP = AnimusConfig.ironsSpells.livingArmorBaseXP.get();
-        double rarityMult = getXPMultiplier(spell.getRarity());
-        int xpToGrant = (int)(baseXP * spellLevel * rarityMult);
+        double xpToGrant = baseXP * spellLevel;
 
-        // Grant XP to Living Armor
-        grantLivingArmorXP(player, xpToGrant);
+        // Grant XP to the Arcane Channeling upgrade using the proper API
+        LivingUtil.applyNewExperience(player, arcaneChannelingUpgrade, xpToGrant);
 
-        Animus.LOGGER.debug("Granted {} XP to Living Armor for casting {} (level {})",
-            xpToGrant, spell.getDisplayName(null).getString(), spellLevel);
-    }
-
-    /**
-     * Check if player is wearing any Living Armor pieces
-     */
-    private static boolean isWearingLivingArmor(Player player) {
-        return player.getArmorSlots().iterator().hasNext() &&
-               player.getInventory().armor.stream()
-                   .anyMatch(stack -> stack.getItem() instanceof ItemLivingArmor);
-    }
-
-    /**
-     * Grant XP to player's Living Armor
-     */
-    private static void grantLivingArmorXP(ServerPlayer player, int xp) {
-        // Get Living Armor container
-        ILivingContainer container = LivingUtil.getLivingContainer(player);
-        if (container == null) {
-            return;
-        }
-
-        // Get current stats
-        LivingStats stats = container.getLivingStats();
-        if (stats == null) {
-            return;
-        }
-
-        // Add XP
-        int currentXP = stats.getExperience();
-        stats.setExperience(currentXP + xp);
-
-        // Sync to client
-        LivingUtil.updateLivingContainer(player, container);
+        Animus.LOGGER.debug("Granted {} XP to Living Armor (Arcane Channeling) for casting spell (level {})",
+            xpToGrant, spellLevel);
     }
 
     /**

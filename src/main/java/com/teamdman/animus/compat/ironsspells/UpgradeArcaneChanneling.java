@@ -3,14 +3,17 @@ package com.teamdman.animus.compat.ironsspells;
 import com.teamdman.animus.Constants;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import wayoftime.bloodmagic.core.living.ILivingContainer;
+import wayoftime.bloodmagic.core.living.LivingStats;
 import wayoftime.bloodmagic.core.living.LivingUpgrade;
-import wayoftime.bloodmagic.core.living.LivingUtil;
 
 /**
  * Arcane Channeling - Living Armor upgrade tree for spellcasters
@@ -23,30 +26,39 @@ import wayoftime.bloodmagic.core.living.LivingUtil;
  */
 public class UpgradeArcaneChanneling extends LivingUpgrade {
 
-    public static final int[] COST = new int[]{5, 10, 15, 20, 25};
-    public static final String KEY = Constants.Mod.MODID + ".upgrade.arcane_channeling";
+    public static final ResourceLocation KEY = new ResourceLocation(
+        Constants.Mod.MODID,
+        "upgrade.arcane_channeling"
+    );
 
     public UpgradeArcaneChanneling() {
-        super(KEY, COST.length);
+        super(KEY, levels -> {
+            // Define XP thresholds for each level
+            levels.add(new Level(0, 5));    // Level 1: 5 upgrade points
+            levels.add(new Level(0, 10));   // Level 2: 10 points
+            levels.add(new Level(0, 15));   // Level 3: 15 points
+            levels.add(new Level(0, 20));   // Level 4: 20 points
+            levels.add(new Level(0, 25));   // Level 5: 25 points
+        });
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @Override
-    public int getMaxTier() {
-        return COST.length;
-    }
-
-    @Override
-    public int getCost(int currentLevel) {
-        if (currentLevel < 0 || currentLevel >= COST.length) {
-            return 0;
+    /**
+     * Get the upgrade level for this player
+     * Checks all armor pieces and returns the highest level found
+     */
+    private int getUpgradeLevel(Player player) {
+        int maxLevel = 0;
+        for (ItemStack armorPiece : player.getInventory().armor) {
+            if (armorPiece.getItem() instanceof ILivingContainer container) {
+                LivingStats stats = container.getLivingStats(armorPiece);
+                if (stats != null) {
+                    int level = stats.getLevel(KEY);
+                    maxLevel = Math.max(maxLevel, level);
+                }
+            }
         }
-        return COST[currentLevel];
-    }
-
-    @Override
-    public void onTick(Player player, int level) {
-        // Passive effects handled in event listeners
+        return maxLevel;
     }
 
     /**
@@ -55,12 +67,13 @@ public class UpgradeArcaneChanneling extends LivingUpgrade {
      */
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onSpellPreCast(SpellPreCastEvent event) {
-        if (!(event.getEntity() instanceof Player player)) {
+        if (!(event.getEntity() instanceof Player)) {
             return;
         }
+        Player player = (Player) event.getEntity();
 
         // Get upgrade level
-        int upgradeLevel = LivingUtil.getUpgradeLevel(player, KEY);
+        int upgradeLevel = getUpgradeLevel(player);
         if (upgradeLevel <= 0) {
             return;
         }

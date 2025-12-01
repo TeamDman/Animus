@@ -110,10 +110,30 @@ public class IronsSpellsCompat implements ICompatModule {
         // Phase 2: Sanguine Scrolls altar infusion
         MinecraftForge.EVENT_BUS.register(com.teamdman.animus.compat.ironsspells.SanguineScrollAltarHandler.class);
 
-        // TODO: Re-enable Living Armor integration after API research
-        // MinecraftForge.EVENT_BUS.register(com.teamdman.animus.compat.ironsspells.LivingArmorSpellHandler.class);
-        // registerArcaneChannelingUpgrade();
+        // Phase 5: Living Armor integration
+        MinecraftForge.EVENT_BUS.register(com.teamdman.animus.compat.ironsspells.LivingArmorSpellHandler.class);
+        registerArcaneChannelingUpgrade();
 
         Animus.LOGGER.info("Registered Irons Spells event listeners");
+    }
+
+    /**
+     * Register the Arcane Channeling Living Armor upgrade
+     */
+    private void registerArcaneChannelingUpgrade() {
+        try {
+            com.teamdman.animus.compat.ironsspells.UpgradeArcaneChanneling upgrade =
+                new com.teamdman.animus.compat.ironsspells.UpgradeArcaneChanneling();
+
+            // Register with Blood Magic's Living Armor system
+            wayoftime.bloodmagic.core.LivingArmorRegistrar.registerUpgrade(upgrade);
+
+            // Set the upgrade reference in the handler
+            com.teamdman.animus.compat.ironsspells.LivingArmorSpellHandler.setUpgrade(upgrade);
+
+            Animus.LOGGER.info("Registered Arcane Channeling Living Armor upgrade");
+        } catch (Exception e) {
+            Animus.LOGGER.error("Failed to register Arcane Channeling upgrade", e);
+        }
     }
 }

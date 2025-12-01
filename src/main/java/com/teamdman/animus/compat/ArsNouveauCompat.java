@@ -27,9 +27,11 @@ public class ArsNouveauCompat implements ICompatModule {
     public void init() {
         Animus.LOGGER.info("Initializing Ars Nouveau compatibility");
 
-        // TODO: Re-enable Living Armor integration after API research
-        // registerEventListeners();
-        // registerSourceAttunementUpgrade();
+        // Register event listeners for Living Armor integration
+        registerEventListeners();
+
+        // Register Source Attunement upgrade
+        registerSourceAttunementUpgrade();
 
         Animus.LOGGER.info("Ars Nouveau compatibility initialized successfully");
     }
@@ -37,5 +39,35 @@ public class ArsNouveauCompat implements ICompatModule {
     @Override
     public String getModId() {
         return "ars_nouveau";
+    }
+
+    /**
+     * Register Forge event listeners for Ars Nouveau integration
+     */
+    private void registerEventListeners() {
+        // Living Armor XP from spell casting
+        MinecraftForge.EVENT_BUS.register(com.teamdman.animus.compat.arsnouveau.LivingArmorGlyphHandler.class);
+
+        Animus.LOGGER.info("Registered Ars Nouveau event listeners");
+    }
+
+    /**
+     * Register the Source Attunement Living Armor upgrade
+     */
+    private void registerSourceAttunementUpgrade() {
+        try {
+            com.teamdman.animus.compat.arsnouveau.UpgradeSourceAttunement upgrade =
+                new com.teamdman.animus.compat.arsnouveau.UpgradeSourceAttunement();
+
+            // Register with Blood Magic's Living Armor system
+            wayoftime.bloodmagic.core.LivingArmorRegistrar.registerUpgrade(upgrade);
+
+            // Set the upgrade reference in the handler
+            com.teamdman.animus.compat.arsnouveau.LivingArmorGlyphHandler.setUpgrade(upgrade);
+
+            Animus.LOGGER.info("Registered Source Attunement Living Armor upgrade");
+        } catch (Exception e) {
+            Animus.LOGGER.error("Failed to register Source Attunement upgrade", e);
+        }
     }
 }
