@@ -118,13 +118,38 @@ public class ItemSigilReparare extends AnimusSigilBase {
         }
 
         // Verify the player still has the active sigil and update the reference
+        // Search all inventory slots including armor and offhand
         boolean hasActiveSigil = false;
         ItemStack currentActiveSigil = null;
+
+        // Check main inventory and hotbar
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof ItemSigilReparare && isActive(stack)) {
                 hasActiveSigil = true;
                 currentActiveSigil = stack;
                 break;
+            }
+        }
+
+        // Check armor slots if not found
+        if (!hasActiveSigil) {
+            for (ItemStack stack : player.getInventory().armor) {
+                if (stack.getItem() instanceof ItemSigilReparare && isActive(stack)) {
+                    hasActiveSigil = true;
+                    currentActiveSigil = stack;
+                    break;
+                }
+            }
+        }
+
+        // Check offhand if not found
+        if (!hasActiveSigil) {
+            for (ItemStack stack : player.getInventory().offhand) {
+                if (stack.getItem() instanceof ItemSigilReparare && isActive(stack)) {
+                    hasActiveSigil = true;
+                    currentActiveSigil = stack;
+                    break;
+                }
             }
         }
 
@@ -218,11 +243,19 @@ public class ItemSigilReparare extends AnimusSigilBase {
         }
 
         // Apply repairs
+        int itemsRepaired = 0;
         for (Map.Entry<ItemStack, Integer> entry : repairPlan.entrySet()) {
             ItemStack stack = entry.getKey();
             int repairAmount = entry.getValue();
             stack.setDamageValue(stack.getDamageValue() - repairAmount);
+            itemsRepaired++;
         }
+
+
+        player.displayClientMessage(
+           Component.literal("Repaired " + itemsRepaired + " items for " + lpCost + " LP"),
+           true
+        );
     }
 
     /**

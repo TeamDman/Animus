@@ -160,6 +160,8 @@ public class Constants {
             public static final String BLOOD_APPLE_LP = "tooltip.animus.blood_apple.lp";
             public static final String BLOOD_SAPLING_FLAVOUR = "tooltip.animus.blood_sapling.flavour";
             public static final String BLOOD_SAPLING_INFO = "tooltip.animus.blood_sapling.info";
+            public static final String BLOOD_ORB_TRANSCENDENT_FLAVOUR = "tooltip.animus.blood_orb_transcendent.flavour";
+            public static final String BLOOD_ORB_TRANSCENDENT_INFO = "tooltip.animus.blood_orb_transcendent.info";
             public static final String SPEAR_IRON_FLAVOUR = "tooltip.animus.spear_iron.flavour";
             public static final String SPEAR_IRON_INFO = "tooltip.animus.spear_iron.info";
             public static final String SPEAR_DIAMOND_FLAVOUR = "tooltip.animus.spear_diamond.flavour";

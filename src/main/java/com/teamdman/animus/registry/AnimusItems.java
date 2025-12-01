@@ -148,6 +148,10 @@ public class AnimusItems {
     public static final RegistryObject<Item> FRAGMENT_HEALING = ITEMS.register("fragment_healing",
         ItemFragmentHealing::new);
 
+    // Blood Orbs
+    public static final RegistryObject<Item> BLOOD_ORB_TRANSCENDENT = ITEMS.register("blood_orb_transcendent",
+        ItemBloodOrbTranscendent::new);
+
     // Mob Soul - used by Sigil of Chains
     public static final RegistryObject<Item> MOBSOUL = ITEMS.register("mob_soul",
         com.teamdman.animus.items.ItemMobSoul::new);

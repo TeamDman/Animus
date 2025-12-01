@@ -24,6 +24,7 @@ public class Animus {
         // Register all deferred registers
         AnimusBlocks.BLOCKS.register(modEventBus);
         AnimusItems.ITEMS.register(modEventBus);
+        AnimusBloodOrbs.BLOOD_ORBS.register(modEventBus);
         AnimusBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         AnimusEntityTypes.ENTITY_TYPES.register(modEventBus);
         AnimusFluids.FLUID_TYPES.register(modEventBus);
@@ -81,6 +82,18 @@ public class Animus {
         }
 
         event.enqueueWork(() -> {
+            // Register Transcendent Blood Orb to the OrbRegistry tierMap
+            // This allows it to be used as a valid recipe ingredient for any tier 1-6 blood orb recipes
+            try {
+                wayoftime.bloodmagic.core.registry.OrbRegistry.tierMap.put(
+                    AnimusBloodOrbs.BLOOD_ORB_TRANSCENDENT.get().getTier(),
+                    new net.minecraft.world.item.ItemStack(AnimusItems.BLOOD_ORB_TRANSCENDENT.get())
+                );
+                LOGGER.info("Registered Transcendent Blood Orb to OrbRegistry tierMap");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Transcendent Blood Orb to OrbRegistry", e);
+            }
+
             // Register strippable blocks (axe interaction) using reflection
             try {
                 java.lang.reflect.Field strippablesField = net.minecraft.world.item.AxeItem.class.getDeclaredField("STRIPPABLES");

@@ -33,6 +33,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
 
         // Simple items with textures
         simpleItem(AnimusItems.BLOOD_APPLE, "item/itembloodapple");
+        simpleItem(AnimusItems.BLOOD_ORB_TRANSCENDENT, "item/blood_orb_transcendent");
         simpleItem(AnimusItems.SANGUINE_DIVINER, "item/itemsanguinediviner");
         simpleItem(AnimusItems.FRAGMENT_HEALING, "item/itemfragmenthealing");
         boundItem(AnimusItems.KEY_BINDING, "itemkeybinding"); // Toggleable between unbound/bound
