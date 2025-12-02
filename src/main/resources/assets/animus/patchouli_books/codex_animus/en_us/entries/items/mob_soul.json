@@ -1,0 +1,18 @@
+{
+  "name": "guide.animus.entry.mob_soul",
+  "icon": "animus:mob_soul",
+  "category": "animus:items",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:mob_soul",
+      "text": "A container holding the essence of a captured creature. Created by the $(l:animus:sigils/sigil_chains)Sigil of the Phantom Chain$(), this item preserves an entity's complete state."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Release:$() Right-click on a block to spawn the captured entity$(br2)$(bold)Preserved Data:$()$(li)Entity type and health$(li)Equipment and inventory$(li)Custom names$(li)AI state and attributes$(br2)$(bold)Note:$() The Mob Soul is consumed when the entity is released.$(br2)$(italic)Souls bound to your will.$()"
+    }
+  ]
+}

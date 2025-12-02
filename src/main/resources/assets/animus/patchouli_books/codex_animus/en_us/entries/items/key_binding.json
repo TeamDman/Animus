@@ -1,0 +1,18 @@
+{
+  "name": "guide.animus.entry.key_binding",
+  "icon": "animus:key_binding",
+  "category": "animus:items",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:key_binding",
+      "text": "A mystical key that can be bound to a blood mage's soul. Used as a crafting component in various Animus recipes and can be equipped as a curio for passive effects."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Binding:$() Right-click while holding to bind to your soul network$(br2)$(bold)Curio Slot:$() Can be equipped in the \"key\" curio slot$(br2)$(bold)Crafting:$() Used in recipes requiring player binding$(br2)$(italic)The key to unlocking your potential.$()"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "guide.animus.entry.blood_apple",
+  "icon": "animus:blood_apple",
+  "category": "animus:items",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_apple",
+      "text": "A crimson fruit infused with blood magic. Consuming this apple provides Life Essence to your soul network, or to a nearby Blood Altar if one is within range."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Food Value:$() 3 hunger, low saturation$(br)$(bold)Effect:$() Brief confusion (75% chance)$(br2)$(bold)LP Generation:$()$(li)Near altar: 2x LP added to altar$(li)No altar: LP added to soul network$(br2)$(bold)Altar Search:$() 11x21x11 area centered on player$(br2)$(italic)A bittersweet taste of power.$()"
+    }
+  ]
+}

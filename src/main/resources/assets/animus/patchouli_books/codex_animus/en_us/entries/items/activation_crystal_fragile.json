@@ -1,0 +1,18 @@
+{
+  "name": "guide.animus.entry.activation_crystal_fragile",
+  "icon": "animus:activation_crystal_fragile",
+  "category": "animus:items",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:activation_crystal_fragile",
+      "text": "A delicate activation crystal that shatters after a single use. Perfect for one-time rituals or when you need a disposable activator."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Binding:$() Must be bound before use$(br2)$(bold)Activation:$() Right-click a Master Ritual Stone with a valid ritual pattern$(br2)$(bold)Warning:$() $(#f00)Shatters after successful activation!$()$(br2)Unlike standard activation crystals, this fragile variant is consumed upon use. Use wisely.$(br2)$(italic)Power at a price.$()"
+    }
+  ]
+}

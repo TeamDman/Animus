@@ -1,0 +1,28 @@
+{
+  "name": "guide.animus.entry.spears",
+  "icon": "animus:spear_bound",
+  "category": "animus:items",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:spear_iron",
+      "text": "Roman-style throwable javelins. Hold right-click to charge, then release to throw. When thrown, spears deal AOE damage where they land."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:spear_diamond",
+      "text": "A stronger variant crafted from diamond. Higher damage and durability than iron, but functions identically. Supports enchantments like Sharpness and Looting."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:spear_bound",
+      "text": "A soul-bound spear with two modes. $(bold)Deactivated:$() Behaves like a diamond spear. $(bold)Activated:$() Gains AOE melee attacks and sacrifices enemies to nearby Blood Altars."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Bound Spear Details",
+      "text": "$(bold)LP Cost:$() 50 LP per attack/throw$(br)$(bold)Toggle:$() Sneak + Right-click$(br2)$(bold)Activated Features:$()$(li)AOE melee damage (5 block radius)$(li)Enemies near altar are sacrificed$(li)Instant kill + LP to altar$(li)Unbreakable, fireproof$(br2)$(italic)The ultimate weapon of blood magic.$()"
+    }
+  ]
+}

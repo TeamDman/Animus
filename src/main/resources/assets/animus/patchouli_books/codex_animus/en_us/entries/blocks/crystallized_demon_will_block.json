@@ -1,0 +1,18 @@
+{
+  "name": "guide.animus.entry.crystallized_demon_will_block",
+  "icon": "animus:crystallized_demon_will_block",
+  "category": "animus:blocks",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:crystallized_demon_will_block",
+      "text": "Solidified demon will in crystalline form. This decorative pillar serves as a valid CRYSTAL component for Tier 6 Blood Altars."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Altar Component:$() Functions as a CRYSTAL block for altar construction$(br2)$(bold)Tier 6 Altar:$() Required for the highest tier Blood Altar$(br2)See the $(l:animus:tier6_altar)Tier 6 Altar$() entry for full construction details.$(br2)$(italic)Will made manifest.$()"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "guide.animus.entry.fragment_healing",
+  "icon": "animus:fragment_healing",
+  "category": "animus:items",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:fragment_healing",
+      "text": "A crystallized shard of restorative energy. Once acquired, this fragment binds permanently to your inventory and provides passive regeneration."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mechanics",
+      "text": "$(bold)Base Healing:$() 1 HP every 10 seconds$(br2)$(bold)Stacking:$() Each additional fragment reduces healing interval by 0.25 seconds$(br2)$(bold)Minimum Interval:$() 1 second (with many fragments)$(br2)$(bold)Warning:$() $(#f00)Cannot be dropped or moved!$()$(br)Fragments are permanently bound to your inventory. They can only be removed on death.$(br2)$(italic)A blessing... or a curse?$()"
+    }
+  ]
+}

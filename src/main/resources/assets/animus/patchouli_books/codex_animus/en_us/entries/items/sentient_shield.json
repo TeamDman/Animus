@@ -1,0 +1,23 @@
+{
+  "name": "guide.animus.entry.sentient_shield",
+  "icon": "animus:sentient_shield",
+  "category": "animus:items",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sentient_shield",
+      "text": "A demonic shield infused with will. Has 4x the durability of a normal shield (1344 vs 336) and grants special effects when blocking based on the type of demon will available."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Will Effects",
+      "text": "$(bold)Raw Will:$() Standard blocking$(br2)$(bold)Steadfast:$() Increased knockback resistance$(br2)$(bold)Corrosive:$() Attackers take damage$(br2)$(bold)Vengeful:$() Reflect damage back$(br2)The shield automatically detects your highest will type and adapts accordingly."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Will Bonus",
+      "text": "$(bold)Will Gain:$() +30% demon will gained while equipped$(br2)The Sentient Shield increases the amount of will you gain from all sources while it is in your main or offhand. Perfect for will farming!$(br2)$(italic)A shield that hungers for more.$()"
+    }
+  ]
+}
