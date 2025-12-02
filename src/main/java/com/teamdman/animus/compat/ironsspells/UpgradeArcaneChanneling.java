@@ -2,7 +2,6 @@ package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.Constants;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
-import io.redspace.ironsspellbooks.api.magic.MagicData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,11 +17,12 @@ import wayoftime.bloodmagic.core.living.LivingUpgrade;
 /**
  * Arcane Channeling - Living Armor upgrade tree for spellcasters
  *
- * Level 1: -5% mana cost
- * Level 2: -10% mana cost (total)
- * Level 3: -5% cooldown reduction
- * Level 4: Spells trigger armor effects
- * Level 5: Casting grants brief damage resistance
+ * Current implementation:
+ * Level 5: Casting grants brief damage resistance (Resistance I for 2 seconds)
+ *
+ * Planned features (require mixins to implement):
+ * Level 1-2: Mana cost reduction
+ * Level 3-4: Cooldown reduction and armor synergy
  */
 public class UpgradeArcaneChanneling extends LivingUpgrade {
 
@@ -78,33 +78,17 @@ public class UpgradeArcaneChanneling extends LivingUpgrade {
             return;
         }
 
-        // Calculate mana cost reduction
-        double reduction = 0.0;
-        if (upgradeLevel >= 1) {
-            reduction = 0.05; // 5% at level 1
-        }
-        if (upgradeLevel >= 2) {
-            reduction = 0.10; // 10% at level 2
-        }
+        // Levels 1-2: Mana cost reduction
+        // Note: Iron's Spellbooks doesn't expose mana cost modification in SpellPreCastEvent
+        // This would require either:
+        // - A mixin to modify spell mana costs
+        // - Refunding mana after the cast via SpellOnCastEvent
+        // For now, levels 1-2 provide passive benefits through the level 5 damage resistance
 
-        // Apply mana cost reduction (this is a bit tricky - we'll modify the spell level to reduce cost)
-        // Note: This is a simplified approach. A more complete implementation would modify the actual mana cost
-        // For now, we'll just note that this should reduce effective mana cost
-
-        // Level 3: Cooldown reduction (handled separately via cooldown modification)
-        if (upgradeLevel >= 3) {
-            // Reduce cooldowns by 5%
-            MagicData magicData = MagicData.getPlayerMagicData(player);
-            // Note: Cooldown reduction would require modifying the cooldown system
-            // This is left as a TODO for more complex implementation
-        }
-
-        // Level 4: Trigger armor effects on spell cast
-        if (upgradeLevel >= 4) {
-            // This would trigger Living Armor's defensive abilities
-            // Implementation depends on what "trigger armor effects" means
-            // Could apply temporary buffs or activate armor abilities
-        }
+        // Level 3-4: Cooldown reduction and armor synergy
+        // Note: Cooldown reduction would require modifying MagicData.getPlayerCooldowns()
+        // which is not easily accessible without mixins. These levels currently provide
+        // no additional benefit beyond level 5's damage resistance.
 
         // Level 5: Grant damage resistance when casting
         if (upgradeLevel >= 5) {
