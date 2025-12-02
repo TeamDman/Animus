@@ -153,53 +153,60 @@ public class RitualLuna extends Ritual {
     }
 
     /**
-     * Find a light-emitting block using center-outward search
-     * Starts from the master ritual stone and expands outward in square rings
+     * Find a light-emitting block using breadth-first search
+     * Starts from 1 block below the master ritual stone and expands outward in all directions
      */
     private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
-        int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
+        int maxChecksPerTick = 512; // Limit checks per tick to avoid lag
         int checksThisTick = 0;
         int horizontalRadius = AnimusConfig.rituals.lunaHorizontalRange.get();
         int configVerticalRange = AnimusConfig.rituals.lunaVerticalRange.get();
 
+        // Start position is 1 block below the ritual stone
+        BlockPos startPos = masterPos.below();
+
         // Calculate actual vertical radius
-        // -1 means search from ritual stone to world bottom
+        // -1 means search from starting position to world bottom
         int verticalRadius;
         if (configVerticalRange == -1) {
-            // Search from ritual stone down to world minimum build height
+            // Search from start position down to world minimum build height
             int minY = level.getMinBuildHeight();
-            verticalRadius = masterPos.getY() - minY;
+            verticalRadius = startPos.getY() - minY;
         } else {
             verticalRadius = configVerticalRange;
         }
 
-        // Search by expanding square rings from center outward
-        for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
-            // Iterate through all positions in this radius ring
-            for (int x = -radius; x <= radius && checksThisTick < maxChecksPerTick; x++) {
+        // Breadth-first search: expand outward in "shells" of increasing distance
+        // We use Manhattan distance for efficiency
+        for (int distance = state.currentDistance; distance <= horizontalRadius + verticalRadius && checksThisTick < maxChecksPerTick; distance++) {
+            // For each distance level, check all positions at that Manhattan distance from start
+            for (int x = -horizontalRadius; x <= horizontalRadius && checksThisTick < maxChecksPerTick; x++) {
                 // Skip if we're not resuming from this X position
-                if (radius == state.currentRadius && x < state.currentX) continue;
+                if (distance == state.currentDistance && x < state.currentX) continue;
 
-                for (int z = -radius; z <= radius && checksThisTick < maxChecksPerTick; z++) {
+                for (int z = -horizontalRadius; z <= horizontalRadius && checksThisTick < maxChecksPerTick; z++) {
                     // Skip if we're not resuming from this Z position
-                    if (radius == state.currentRadius && x == state.currentX && z < state.currentZ) continue;
+                    if (distance == state.currentDistance && x == state.currentX && z < state.currentZ) continue;
 
-                    // Only check positions on the perimeter of this radius ring
-                    // (except for radius 0, which is just the center point)
-                    if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) {
-                        continue;
-                    }
+                    for (int y = 0; y >= -verticalRadius && checksThisTick < maxChecksPerTick; y--) {
+                        // Skip if we're not resuming from this Y position
+                        if (distance == state.currentDistance && x == state.currentX && z == state.currentZ && y > state.currentY) continue;
 
-                    // Search vertically downward from this column (from ritual stone to bottom)
-                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
-                    for (int y = startY; y >= -verticalRadius && checksThisTick < maxChecksPerTick; y--) {
-                        BlockPos checkPos = masterPos.offset(x, y, z);
+                        // Calculate Manhattan distance from start position
+                        int manhattanDist = Math.abs(x) + Math.abs(z) + Math.abs(y);
+
+                        // Only check positions at this exact distance
+                        if (manhattanDist != distance) {
+                            continue;
+                        }
+
+                        BlockPos checkPos = startPos.offset(x, y, z);
                         checksThisTick++;
 
                         // Update search state to resume from here next tick
-                        state.currentRadius = radius;
+                        state.currentDistance = distance;
                         state.currentX = x;
                         state.currentZ = z;
                         state.currentY = y;
@@ -214,30 +221,26 @@ public class RitualLuna extends Ritual {
                             if (state.currentY < -verticalRadius) {
                                 state.currentY = 0;
                                 state.currentZ++;
-                                if (state.currentZ > radius) {
-                                    state.currentZ = -radius;
+                                if (state.currentZ > horizontalRadius) {
+                                    state.currentZ = -horizontalRadius;
                                     state.currentX++;
-                                    if (state.currentX > radius) {
-                                        state.currentX = -radius;
-                                        state.currentZ = -radius;
+                                    if (state.currentX > horizontalRadius) {
+                                        state.currentDistance++;
+                                        state.currentX = -horizontalRadius;
+                                        state.currentZ = -horizontalRadius;
                                         state.currentY = 0;
-                                        state.currentRadius++;
                                     }
                                 }
                             }
                             return checkPos;
                         }
                     }
-                    // Column complete, reset Y for next column
-                    state.currentY = 0;
                 }
-                // Row complete, reset Z for next row
-                state.currentZ = -radius;
             }
         }
 
         // If we've searched the entire range, reset to start over next tick
-        if (state.currentRadius > horizontalRadius) {
+        if (state.currentDistance > horizontalRadius + verticalRadius) {
             searchStates.remove(masterPos);
         }
 
@@ -246,14 +249,14 @@ public class RitualLuna extends Ritual {
 
     /**
      * Track the search state for each ritual to resume where it left off
-     * Searches from center outward in expanding square rings
-     * Searches downward from ritual stone (Y=0) to Y=-verticalRadius
+     * Uses breadth-first search based on Manhattan distance from starting position
+     * Starting position is 1 block below the ritual stone
      */
     private static class SearchState {
-        int currentRadius = 0; // Start from center (at master ritual stone)
-        int currentX = 0; // X position within current radius ring
-        int currentZ = 0; // Z position within current radius ring
-        int currentY = 0; // Vertical position (0 = ritual stone level, searches downward)
+        int currentDistance = 0; // Current Manhattan distance being searched
+        int currentX = -1; // X offset from start position (starts at -1 so first increment goes to 0)
+        int currentZ = -1; // Z offset from start position
+        int currentY = 0; // Y offset from start position (0 = start level, searches downward)
     }
 
     @Override
