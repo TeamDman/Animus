@@ -1,0 +1,21 @@
+{
+  "type": "bloodmagic:soulforge",
+  "input0": {
+    "item": "minecraft:milk_bucket"
+  },
+  "input1": {
+    "item": "minecraft:golden_apple"
+  },
+  "input2": {
+    "item": "minecraft:glistering_melon_slice"
+  },
+  "input3": {
+    "item": "minecraft:honey_bottle"
+  },
+  "output": {
+    "item": "animus:reagentremendium",
+    "count": 1
+  },
+  "minimumDrain": 128.0,
+  "drain": 64.0
+}

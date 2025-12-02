@@ -7,7 +7,7 @@
     {
       "type": "bloodmagic:soulforge",
       "recipe": "animus:soulforge/reagentleach",
-      "text": "Forged in the $(blood)Hellfire Forge$() using natural materials: a $(tag)Sapling$(), $(tag)Leaves$(), $(item)Short Grass$(), and $(item)Cooked Beef$(). Requires $(will)64 demon will minimum$() and consumes $(will)32 will$()."
+      "text": "Forged in the $(blood)Hellfire Forge$() using fungal and natural materials: $(item)Nether Wart$(), $(item)Crimson Fungus$(), a $(tag)Sapling$(), and $(item)Vine$(). These ingredients embody nature's parasitic essence."
     },
     {
       "type": "patchouli:spotlight",

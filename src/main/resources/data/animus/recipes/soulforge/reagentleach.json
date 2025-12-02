@@ -1,16 +1,16 @@
 {
   "type": "bloodmagic:soulforge",
   "input0": {
-    "tag": "minecraft:saplings"
+    "item": "minecraft:nether_wart"
   },
   "input1": {
-    "tag": "minecraft:leaves"
+    "item": "minecraft:crimson_fungus"
   },
   "input2": {
-    "item": "minecraft:short_grass"
+    "tag": "minecraft:saplings"
   },
   "input3": {
-    "item": "minecraft:cooked_beef"
+    "item": "minecraft:vine"
   },
   "output": {
     "item": "animus:reagentleach",

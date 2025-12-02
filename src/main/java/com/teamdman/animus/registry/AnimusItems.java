@@ -180,6 +180,27 @@ public class AnimusItems {
     public static final RegistryObject<Item> REAGENT_TRANSPOSITION = ITEMS.register("reagenttransposition",
         ItemReagent::new);
 
+    public static final RegistryObject<Item> REAGENT_BOUNDLESS_NATURE = ITEMS.register("reagentboundlessnature",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_EQUIVALENCY = ITEMS.register("reagentequivalency",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_FREE_SOUL = ITEMS.register("reagentfreesoul",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_HEAVENLY_WRATH = ITEMS.register("reagentheavelywrath",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_REMEDIUM = ITEMS.register("reagentremendium",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_REPARARE = ITEMS.register("reagentreparare",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_TEMPORAL_DOMINANCE = ITEMS.register("reagenttemporaldominance",
+        ItemReagent::new);
+
     // Sigils
     public static final RegistryObject<Item> SIGIL_BUILDER = ITEMS.register("sigil_builder",
         ItemSigilBuilder::new);

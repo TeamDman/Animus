@@ -1,13 +1,13 @@
 {
   "type": "bloodmagic:array",
   "baseinput": {
-    "item": "animus:reagentstorm"
+    "item": "animus:reagentequivalency"
   },
   "addedinput": {
-    "item": "bloodmagic:infusedslate"
+    "item": "bloodmagic:reinforcedslate"
   },
   "output": {
-    "item": "animus:sigil_storm"
+    "item": "animus:sigil_equivalency"
   },
   "texture": "bloodmagic:textures/models/alchemyarrays/bindingsigil.png"
 }

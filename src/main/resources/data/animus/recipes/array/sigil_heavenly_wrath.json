@@ -1,13 +1,13 @@
 {
   "type": "bloodmagic:array",
   "baseinput": {
-    "item": "animus:reagentstorm"
+    "item": "animus:reagentheavelywrath"
   },
   "addedinput": {
-    "item": "bloodmagic:infusedslate"
+    "item": "bloodmagic:demonslate"
   },
   "output": {
-    "item": "animus:sigil_storm"
+    "item": "animus:sigil_heavenly_wrath"
   },
   "texture": "bloodmagic:textures/models/alchemyarrays/bindingsigil.png"
 }

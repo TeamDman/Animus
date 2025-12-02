@@ -1,0 +1,23 @@
+{
+  "name": "Reagent: Remedium",
+  "icon": "animus:reagentremendium",
+  "category": "animus:items",
+  "sortnum": 30,
+  "pages": [
+    {
+      "type": "bloodmagic:soulforge",
+      "recipe": "animus:soulforge/reagentremendium",
+      "text": "Forged in the $(blood)Hellfire Forge$() using healing and purifying components. Milk, golden apples, and honey combine to create a powerful restorative essence."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:reagentremendium",
+      "text": "A reagent infused with restorative essence and healing power. This catalyst can be combined with an $(item)Imbued Slate$() in an Alchemy Array to create the $(l:animus:sigil_remedium)Sigil: Remedium$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Healing Through Blood",
+      "text": "Blood magic is not solely a path of destruction. This reagent embodies the healing properties of blood - its ability to mend wounds and cure ailments. The resulting sigil channels life force itself to restore and protect."
+    }
+  ]
+}

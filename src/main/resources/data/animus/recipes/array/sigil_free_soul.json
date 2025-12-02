@@ -1,13 +1,13 @@
 {
   "type": "bloodmagic:array",
   "baseinput": {
-    "item": "animus:reagentstorm"
+    "item": "animus:reagentfreesoul"
   },
   "addedinput": {
-    "item": "bloodmagic:infusedslate"
+    "item": "bloodmagic:demonslate"
   },
   "output": {
-    "item": "animus:sigil_storm"
+    "item": "animus:sigil_free_soul"
   },
   "texture": "bloodmagic:textures/models/alchemyarrays/bindingsigil.png"
 }

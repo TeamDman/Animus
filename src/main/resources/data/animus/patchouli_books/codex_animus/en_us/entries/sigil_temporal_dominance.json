@@ -4,6 +4,11 @@
   "icon": "animus:sigil_temporal_dominance",
   "pages": [
     {
+      "type": "bloodmagic:array",
+      "recipe": "animus:array/sigil_temporal_dominance",
+      "text": "Created using an $(blood)Alchemy Array$() by combining a $(l:animus:items/reagenttemporaldominance)Reagent: Temporal Dominance$() with a $(item)Demon Slate$(). The reagent must first be forged in the Hellfire Forge."
+    },
+    {
       "type": "patchouli:text",
       "text": "The Sigil of Temporal Dominance grants mastery over time itself, allowing you to accelerate the tick rate of block entities using LP. With each activation, the temporal field intensifies, compounding the acceleration up to incredible speeds."
     },

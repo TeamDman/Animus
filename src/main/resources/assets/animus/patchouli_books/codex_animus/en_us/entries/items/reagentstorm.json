@@ -12,7 +12,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:reagentstorm",
-      "text": "A reagent infused with the fury of storms and the power of lightning. This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_storm)Sigil of the Storm$()."
+      "text": "A reagent infused with the fury of storms and the power of lightning. This catalyst can be combined with an $(item)Imbued Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_storm)Sigil of the Storm$()."
     },
     {
       "type": "patchouli:text",

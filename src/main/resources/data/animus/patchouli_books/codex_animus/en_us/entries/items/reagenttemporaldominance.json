@@ -1,0 +1,26 @@
+{
+  "name": "guide.animus.entry.reagenttemporaldominance",
+  "category": "animus:items",
+  "icon": "animus:reagenttemporaldominance",
+  "pages": [
+    {
+      "type": "bloodmagic:soulforge",
+      "recipe": "animus:soulforge/reagenttemporaldominance",
+      "text": "Forged in the $(blood)Hellfire Forge$() using powerful components: $(item)Echo Shard$(), $(item)Clock$(), $(item)Netherite Ingot$(), and $(item)Chorus Fruit$(). These rare materials embody temporal manipulation - echoes of the past, time measurement, enduring strength, and teleportation. Requires $(will)1024 demon will minimum$() and consumes $(will)512 will$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The Reagent of Temporal Dominance is a powerful alchemical component forged from the essence of time itself. When combined with a Demon Slate in an Alchemy Array, it creates the $(l:animus:sigil_temporal_dominance)Sigil of Temporal Dominance$(), granting mastery over the flow of time for block entities."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:reagenttemporaldominance",
+      "text": "This reagent captures the raw power of temporal manipulation, distilled through the Hellfire Forge. Its creation requires materials touched by forces beyond normal time, reflecting its ability to accelerate the tick rate of machines and block entities."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Crafting",
+      "text": "Like all reagents, this component must first be forged in the $(blood)Hellfire Forge$() before it can be used in an Alchemy Array.$(br2)Once forged, combine it with a $(item)Demon Slate$() in an $(blood)Alchemy Array$() to create the Sigil of Temporal Dominance."
+    }
+  ]
+}

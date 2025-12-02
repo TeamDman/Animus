@@ -1,0 +1,23 @@
+{
+  "name": "Reagent: Heavenly Wrath",
+  "icon": "animus:reagentheavelywrath",
+  "category": "animus:items",
+  "sortnum": 29,
+  "pages": [
+    {
+      "type": "bloodmagic:soulforge",
+      "recipe": "animus:soulforge/reagentheavelywrath",
+      "text": "Forged in the $(blood)Hellfire Forge$() using components touched by flight and gravity. The anvil represents the crushing weight of divine judgment."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:reagentheavelywrath",
+      "text": "A reagent infused with divine fury and crushing judgment. This catalyst can be combined with a $(item)Demon Slate$() in an Alchemy Array to create the $(l:animus:sigil_heavenly_wrath)Sigil of Heavenly Wrath$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Divine Judgment",
+      "text": "The heavens themselves shall rain judgment upon your foes. This powerful reagent channels forces that lift enemies skyward before casting them down with crushing force.$(br2)$(italic)Note the use of Demon Slate - wielding divine wrath requires mastery of the darkest blood magic.$()"
+    }
+  ]
+}

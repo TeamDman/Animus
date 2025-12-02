@@ -1,0 +1,41 @@
+{
+  "name": "guide.animus.entry.sigil_free_soul",
+  "category": "animus:sigils",
+  "icon": "animus:sigil_free_soul",
+  "pages": [
+    {
+      "type": "bloodmagic:array",
+      "recipe": "animus:array/sigil_free_soul",
+      "text": "Created using an $(blood)Alchemy Array$() by combining a $(l:animus:items/reagentfreesoul)Reagent: Free Soul$() with a $(item)Infused Slate$(). The reagent must first be forged in the Hellfire Forge."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The Sigil of the Free Soul is a powerful defensive artifact that functions as an enhanced totem of undying, granting temporary spectator mode to escape danger. Unlike mundane totems, this sigil can be activated manually and reuses itself with a cooldown period, making it an invaluable tool for survival."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_free_soul",
+      "text": "The sigil has two modes of activation:$(br)$(br)$(blood)Manual Activation:$() Right-click to enter spectator mode for a configurable duration (default: 10 seconds). This allows scouting or escaping dangerous situations.$(br2)$(blood)Death Prevention:$() Automatically triggers when you would die, just like a totem of undying, but without being consumed!"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Death Prevention",
+      "text": "When you take fatal damage while carrying a bound Sigil of Free Soul:$(br)• Automatically activates if you have enough LP$(br)• Sets your health to 1 heart$(br)• Enters spectator mode for the configured duration$(br)• After spectator mode expires, heals you 10 health (5 hearts)$(br)• Sets a cooldown before it can prevent death again (default: 60 seconds)$(br2)The sigil must be bound to you and in your inventory to function."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Safety Features",
+      "text": "To prevent wall teleportation exploits, the sigil teleports you back to your original position 10 ticks (0.5 seconds) before spectator mode expires. This allows scouting the area while ensuring you return to a safe location.$(br2)You'll receive an action bar message warning you when the return teleport occurs, giving you time to prepare for re-entering your original game mode."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "LP Cost & Configuration",
+      "text": "$(blood)LP Cost:$() 5000 LP per activation (configurable)$(br)$(blood)Duration:$() 10 seconds in spectator mode (configurable)$(br)$(blood)Cooldown:$() 60 seconds before death prevention can trigger again (configurable)$(br2)The cooldown only applies to automatic death prevention, not manual activation. If the sigil is on cooldown, you'll see the remaining time in the tooltip."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage Tips",
+      "text": "$(blood)Manual Use:$() Great for scouting dangerous areas, checking redstone contraptions, or viewing builds from inside blocks without breaking them.$(br2)$(blood)Death Prevention:$() Keep it bound and in your inventory as insurance. The automatic trigger works even if you're surprised by damage.$(br2)$(blood)Healing:$() Remember that healing only occurs when death prevention is triggered, not during manual use!"
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 {
   "type": "bloodmagic:array",
   "baseinput": {
-    "item": "animus:reagentstorm"
+    "item": "animus:reagenttemporaldominance"
   },
   "addedinput": {
-    "item": "bloodmagic:infusedslate"
+    "item": "bloodmagic:demonslate"
   },
   "output": {
-    "item": "animus:sigil_storm"
+    "item": "animus:sigil_temporal_dominance"
   },
   "texture": "bloodmagic:textures/models/alchemyarrays/bindingsigil.png"
 }
