@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "title": "Placement Algorithm",
-      "text": "The ritual uses an optimized perimeter-based search to find valid placement positions:$(br)- Searches in expanding square rings below the MRS$(br)- Also searches vertically downward in each column$(br)- Starts at the center and expands outward$(br)- Resumes where it left off on subsequent ticks$(br)- Prefers empty air or replaceable blocks$(br)- Can replace flowing fluids with source blocks"
+      "text": "The ritual uses a center-outward search to find placement spots:$(br)- Starts directly below the Master Ritual Stone$(br)- Expands in square rings: 0, 1, 2... blocks away$(br)- Searches each column vertically (top to bottom)$(br)- Prioritizes placing near the center first$(br)- Can place in air, replaceable blocks, or flowing fluids$(br)- Won't replace existing source blocks of same fluid$(br)- Processes up to 64 positions per tick$(br)- Resumes where it left off between ticks"
     },
     {
       "type": "patchouli:text",
@@ -36,7 +36,7 @@
     {
       "type": "patchouli:text",
       "title": "Usage Tips",
-      "text": "This ritual is excellent for:$(br)- Automated ocean/lake creation$(br)- Lava placement for mob farms$(br)- Controlled flooding for mining$(br)- Terraforming large areas$(br2)Works with any fluid tank: Blood Magic tanks, Tinkers' tanks, or modded fluid storage. At default settings, costs 50 LP per bucket placed, making it economical for large-scale operations.$(br2)Tip: Place the tank perpendicular to the MRS for easy access and refilling!"
+      "text": "This ritual is excellent for:$(br)- Automated ocean/lake creation$(br)- Lava placement for mob farms$(br)- Controlled flooding for mining$(br)- Terraforming large areas$(br2)Works with any fluid tank: Blood Magic tanks, Tinkers' tanks, or modded fluid storage. At default settings, costs 50 LP per bucket placed.$(br2)The ritual doesn't care if there's solid ground below - it places fluids in mid-air and lets Minecraft's physics take over. Perfect for flooding from above!"
     }
   ]
 }
