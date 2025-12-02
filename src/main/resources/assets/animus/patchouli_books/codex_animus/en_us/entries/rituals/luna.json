@@ -10,8 +10,18 @@
     },
     {
       "type": "patchouli:text",
+      "title": "How It Works",
+      "text": "The ritual can use a chest (or any block with item storage) placed directly above the Master Ritual Stone. Every 5 ticks, the ritual attempts to:$(br)1. Find a light-emitting block (light level > 0)$(br)2. Harvest the block$(br)3. Store it in the chest (or drop at MRS if no chest)$(br)4. Consume LP for the operation"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Search Algorithm",
+      "text": "The ritual uses a center-outward search to find light sources:$(br)- Starts at the Master Ritual Stone$(br)- Expands in square rings: 0, 1, 2... blocks away$(br)- Searches each column vertically$(br)- Prioritizes nearby lights before distant ones$(br)- Processes up to 64 positions per tick$(br)- Resumes where it left off between ticks$(br2)This ensures efficient harvesting starting from the ritual center."
+    },
+    {
+      "type": "patchouli:text",
       "title": "Costs & Details",
-      "text": "$(bold)Activation:$() 1000 LP$(br)$(bold)Refresh:$() 1 LP per block harvested$(br)$(bold)Refresh Time:$() 5 ticks$(br2)$(bold)Effect Range:$() 65x65x65 blocks (configurable)$(br)$(bold)Chest:$() 1 block above ritual$(br2)Harvests any block that emits light. If no chest is present, drops items at the Master Ritual Stone."
+      "text": "$(bold)Activation:$() 1000 LP$(br)$(bold)Refresh:$() 1 LP per block harvested$(br)$(bold)Refresh Time:$() 5 ticks$(br2)$(bold)Effect Range:$() 65x65x65 blocks (configurable)$(br)$(bold)Chest:$() 1 block above ritual (optional)$(br2)Harvests any block that emits light. If no chest is present, drops items at the Master Ritual Stone."
     },
     {
       "type": "patchouli:text",

@@ -10,13 +10,23 @@
     },
     {
       "type": "patchouli:text",
-      "title": "Costs & Details",
-      "text": "$(bold)Activation:$() 1000 LP$(br)$(bold)Refresh:$() 1 LP per block placed$(br)$(bold)Refresh Time:$() 5 ticks$(br2)$(bold)Effect Range:$() 65x65x65 blocks (configurable)$(br)$(bold)Chest:$() 1 block above ritual$(br2)Places blocks from the chest in dark spots (light level < 8) that have solid ground below."
+      "title": "How It Works",
+      "text": "The ritual requires a chest (or any block with item storage) placed directly above the Master Ritual Stone. Every 5 ticks, the ritual attempts to:$(br)1. Find a valid block item from the chest$(br)2. Search for a dark spot (light level < 8) with solid ground below$(br)3. Place the block$(br)4. Consume LP for the operation"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Search Algorithm",
+      "text": "The ritual uses a center-outward search to find placement spots:$(br)- Starts at the Master Ritual Stone$(br)- Expands in square rings: 0, 1, 2... blocks away$(br)- Searches each column vertically$(br)- Prioritizes placing near the center first$(br)- Processes up to 64 positions per tick$(br)- Resumes where it left off between ticks$(br2)This ensures efficient placement starting from the ritual center."
     },
     {
       "type": "patchouli:text",
       "title": "Blood Light Synergy",
       "text": "$(bold)Special Feature:$()$(br)If you place Blood Magic's $(item)Sigil of Blood Light$() in the chest, the ritual will place Blood Lights $(bold)without consuming the sigil$()!$(br2)This allows for infinite blood light placement using only LP.$(br2)$(italic)Let there be light!$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs & Details",
+      "text": "$(bold)Activation:$() 1000 LP$(br)$(bold)Refresh:$() 1 LP per block placed$(br)$(bold)Refresh Time:$() 5 ticks$(br2)$(bold)Effect Range:$() 65x65x65 blocks (configurable)$(br)$(bold)Chest:$() 1 block above ritual$(br2)Requires dark spots (light level < 8) with solid ground below to place blocks."
     }
   ]
 }

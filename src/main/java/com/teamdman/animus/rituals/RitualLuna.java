@@ -17,11 +17,14 @@ import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
  * Ritual of Luna - Harvests light-emitting blocks
  * Scans the effect range for blocks with light level > 0, harvests them, and stores in chest above ritual
+ * Uses center-outward search algorithm to prioritize nearby positions
  * Activation Cost: 1000 LP
  * Refresh Cost: 1 LP
  * Refresh Time: 5 ticks
@@ -30,6 +33,9 @@ import java.util.function.Consumer;
 public class RitualLuna extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
+
+    // Track current search position for each ritual to resume searching where we left off
+    private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
 
     public RitualLuna() {
         super(Constants.Rituals.LUNA, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LUNA);
@@ -63,50 +69,30 @@ public class RitualLuna extends Ritual {
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 
-        // Scan for light-emitting blocks
-        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
-        for (BlockPos pos : effectRange.getContainedPositions(masterPos)) {
-            BlockState state = level.getBlockState(pos);
-            Block block = state.getBlock();
+        // Find a light-emitting block using center-outward search
+        BlockPos lightPos = findLightEmittingBlock(level, masterPos);
 
-            // Check if block emits light
-            if (state.getLightEmission() > 0) {
-                // Get the item stack for this block
-                ItemStack stack = block.getCloneItemStack(level, pos, state);
+        if (lightPos == null) {
+            return;
+        }
 
-                // If we got a valid stack
-                if (!stack.isEmpty()) {
-                    // Try to insert into chest
-                    if (chestTile != null) {
-                        IItemHandler handler = chestTile.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
-                        if (handler != null) {
-                            // Try to insert, if successful then remove block
-                            ItemStack remainder = ItemHandlerHelper.insertItem(handler, stack, true);
-                            if (remainder.isEmpty()) {
-                                ItemHandlerHelper.insertItem(handler, stack, false);
-                                level.removeBlock(pos, false);
+        BlockState state = level.getBlockState(lightPos);
+        Block block = state.getBlock();
 
-                                // Consume LP
-                                SoulTicket ticket = new SoulTicket(
-                                    Component.translatable(Constants.Localizations.Text.TICKET_LUNA),
-                                    getRefreshCost()
-                                );
-                                network.syphon(ticket, false);
+        // Get the item stack for this block
+        ItemStack stack = block.getCloneItemStack(level, lightPos, state);
 
-                                return; // Only harvest one block per tick
-                            }
-                        }
-                    } else {
-                        // No chest, drop at master ritual stone
-                        net.minecraft.world.entity.item.ItemEntity itemEntity = new net.minecraft.world.entity.item.ItemEntity(
-                            level,
-                            masterPos.getX() + 0.5,
-                            masterPos.getY() + 1,
-                            masterPos.getZ() + 0.5,
-                            stack
-                        );
-                        level.addFreshEntity(itemEntity);
-                        level.removeBlock(pos, false);
+        // If we got a valid stack
+        if (!stack.isEmpty()) {
+            // Try to insert into chest
+            if (chestTile != null) {
+                IItemHandler handler = chestTile.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
+                if (handler != null) {
+                    // Try to insert, if successful then remove block
+                    ItemStack remainder = ItemHandlerHelper.insertItem(handler, stack, true);
+                    if (remainder.isEmpty()) {
+                        ItemHandlerHelper.insertItem(handler, stack, false);
+                        level.removeBlock(lightPos, false);
 
                         // Consume LP
                         SoulTicket ticket = new SoulTicket(
@@ -114,10 +100,26 @@ public class RitualLuna extends Ritual {
                             getRefreshCost()
                         );
                         network.syphon(ticket, false);
-
-                        return;
                     }
                 }
+            } else {
+                // No chest, drop at master ritual stone
+                net.minecraft.world.entity.item.ItemEntity itemEntity = new net.minecraft.world.entity.item.ItemEntity(
+                    level,
+                    masterPos.getX() + 0.5,
+                    masterPos.getY() + 1,
+                    masterPos.getZ() + 0.5,
+                    stack
+                );
+                level.addFreshEntity(itemEntity);
+                level.removeBlock(lightPos, false);
+
+                // Consume LP
+                SoulTicket ticket = new SoulTicket(
+                    Component.translatable(Constants.Localizations.Text.TICKET_LUNA),
+                    getRefreshCost()
+                );
+                network.syphon(ticket, false);
             }
         }
     }
@@ -140,6 +142,100 @@ public class RitualLuna extends Ritual {
             addRune(components, 2, layer, -2, EnumRuneType.DUSK);
             addRune(components, -2, layer, -2, EnumRuneType.DUSK);
         }
+    }
+
+    /**
+     * Find a light-emitting block using center-outward search
+     * Starts from the master ritual stone and expands outward in square rings
+     */
+    private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos) {
+        SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
+
+        int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
+        int checksThisTick = 0;
+        int horizontalRadius = 32;
+        int verticalRadius = 32;
+
+        // Search by expanding square rings from center outward
+        for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
+            // Iterate through all positions in this radius ring
+            for (int x = -radius; x <= radius && checksThisTick < maxChecksPerTick; x++) {
+                // Skip if we're not resuming from this X position
+                if (radius == state.currentRadius && x < state.currentX) continue;
+
+                for (int z = -radius; z <= radius && checksThisTick < maxChecksPerTick; z++) {
+                    // Skip if we're not resuming from this Z position
+                    if (radius == state.currentRadius && x == state.currentX && z < state.currentZ) continue;
+
+                    // Only check positions on the perimeter of this radius ring
+                    // (except for radius 0, which is just the center point)
+                    if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) {
+                        continue;
+                    }
+
+                    // Search vertically around this column
+                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : -verticalRadius;
+                    for (int y = startY; y <= verticalRadius && checksThisTick < maxChecksPerTick; y++) {
+                        BlockPos checkPos = masterPos.offset(x, y, z);
+                        checksThisTick++;
+
+                        // Update search state to resume from here next tick
+                        state.currentRadius = radius;
+                        state.currentX = x;
+                        state.currentZ = z;
+                        state.currentY = y;
+
+                        // Check if this block emits light
+                        BlockState blockState = level.getBlockState(checkPos);
+                        if (blockState.getLightEmission() > 0) {
+                            // Advance to next position for next search
+                            state.currentY++;
+                            if (state.currentY > verticalRadius) {
+                                state.currentY = -verticalRadius;
+                                state.currentZ++;
+                                if (state.currentZ > radius) {
+                                    state.currentZ = -radius;
+                                    state.currentX++;
+                                    if (state.currentX > radius) {
+                                        state.currentX = -radius;
+                                        state.currentZ = -radius;
+                                        state.currentY = -verticalRadius;
+                                        state.currentRadius++;
+                                    }
+                                }
+                            }
+                            return checkPos;
+                        }
+                    }
+                    // Column complete, reset Y for next column
+                    state.currentY = -verticalRadius;
+                }
+                // Row complete, reset Z for next row
+                state.currentZ = -radius;
+            }
+            // Ring complete, move to next radius
+            state.currentX = -radius - 1;
+            state.currentZ = -radius - 1;
+            state.currentY = -verticalRadius;
+        }
+
+        // If we've searched the entire range, reset to start over next tick
+        if (state.currentRadius > horizontalRadius) {
+            searchStates.remove(masterPos);
+        }
+
+        return null;
+    }
+
+    /**
+     * Track the search state for each ritual to resume where it left off
+     * Searches from center outward in expanding square rings
+     */
+    private static class SearchState {
+        int currentRadius = 0; // Start from center (at master ritual stone)
+        int currentX = 0; // X position within current radius ring
+        int currentZ = 0; // Z position within current radius ring
+        int currentY = -32; // Vertical position (-32 to 32, starts at bottom)
     }
 
     @Override
