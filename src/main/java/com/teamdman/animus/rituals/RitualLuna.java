@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -11,6 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
@@ -31,6 +34,8 @@ import java.util.function.Consumer;
  */
 @RitualRegister(Constants.Rituals.LUNA)
 public class RitualLuna extends Ritual {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RitualLuna.class);
+
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
 
@@ -82,25 +87,24 @@ public class RitualLuna extends Ritual {
         // Get the item stack for this block
         ItemStack stack = block.getCloneItemStack(level, lightPos, state);
 
-        // If we got a valid stack
+        // Try to place item in chest if we have one
+        boolean shouldRemoveBlock = true;
         if (!stack.isEmpty()) {
             // Try to insert into chest
             if (chestTile != null) {
                 IItemHandler handler = chestTile.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
                 if (handler != null) {
-                    // Try to insert, if successful then remove block
+                    // Try to insert, if successful then we can proceed
                     ItemStack remainder = ItemHandlerHelper.insertItem(handler, stack, true);
                     if (remainder.isEmpty()) {
                         ItemHandlerHelper.insertItem(handler, stack, false);
-                        level.removeBlock(lightPos, false);
-
-                        // Consume LP
-                        SoulTicket ticket = new SoulTicket(
-                            Component.translatable(Constants.Localizations.Text.TICKET_LUNA),
-                            getRefreshCost()
-                        );
-                        network.syphon(ticket, false);
+                    } else {
+                        // Chest is full, don't remove block
+                        shouldRemoveBlock = false;
                     }
+                } else {
+                    // No handler, don't remove block
+                    shouldRemoveBlock = false;
                 }
             } else {
                 // No chest, drop at master ritual stone
@@ -112,15 +116,19 @@ public class RitualLuna extends Ritual {
                     stack
                 );
                 level.addFreshEntity(itemEntity);
-                level.removeBlock(lightPos, false);
-
-                // Consume LP
-                SoulTicket ticket = new SoulTicket(
-                    Component.translatable(Constants.Localizations.Text.TICKET_LUNA),
-                    getRefreshCost()
-                );
-                network.syphon(ticket, false);
             }
+        }
+
+        // Remove block and consume LP (even if no valid item dropped)
+        if (shouldRemoveBlock) {
+            level.removeBlock(lightPos, false);
+
+            // Consume LP
+            SoulTicket ticket = new SoulTicket(
+                Component.translatable(Constants.Localizations.Text.TICKET_LUNA),
+                getRefreshCost()
+            );
+            network.syphon(ticket, false);
         }
     }
 
@@ -153,8 +161,19 @@ public class RitualLuna extends Ritual {
 
         int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
         int checksThisTick = 0;
-        int horizontalRadius = 32;
-        int verticalRadius = 32;
+        int horizontalRadius = AnimusConfig.rituals.lunaHorizontalRange.get();
+        int configVerticalRange = AnimusConfig.rituals.lunaVerticalRange.get();
+
+        // Calculate actual vertical radius
+        // -1 means search from ritual stone to world bottom
+        int verticalRadius;
+        if (configVerticalRange == -1) {
+            // Search from ritual stone down to world minimum build height
+            int minY = level.getMinBuildHeight();
+            verticalRadius = masterPos.getY() - minY;
+        } else {
+            verticalRadius = configVerticalRange;
+        }
 
         // Search by expanding square rings from center outward
         for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
@@ -173,9 +192,9 @@ public class RitualLuna extends Ritual {
                         continue;
                     }
 
-                    // Search vertically around this column
-                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : -verticalRadius;
-                    for (int y = startY; y <= verticalRadius && checksThisTick < maxChecksPerTick; y++) {
+                    // Search vertically downward from this column (from ritual stone to bottom)
+                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
+                    for (int y = startY; y >= -verticalRadius && checksThisTick < maxChecksPerTick; y--) {
                         BlockPos checkPos = masterPos.offset(x, y, z);
                         checksThisTick++;
 
@@ -187,11 +206,13 @@ public class RitualLuna extends Ritual {
 
                         // Check if this block emits light
                         BlockState blockState = level.getBlockState(checkPos);
-                        if (blockState.getLightEmission() > 0) {
+                        int lightEmission = blockState.getLightEmission();
+
+                        if (lightEmission > 0) {
                             // Advance to next position for next search
-                            state.currentY++;
-                            if (state.currentY > verticalRadius) {
-                                state.currentY = -verticalRadius;
+                            state.currentY--;
+                            if (state.currentY < -verticalRadius) {
+                                state.currentY = 0;
                                 state.currentZ++;
                                 if (state.currentZ > radius) {
                                     state.currentZ = -radius;
@@ -199,7 +220,7 @@ public class RitualLuna extends Ritual {
                                     if (state.currentX > radius) {
                                         state.currentX = -radius;
                                         state.currentZ = -radius;
-                                        state.currentY = -verticalRadius;
+                                        state.currentY = 0;
                                         state.currentRadius++;
                                     }
                                 }
@@ -208,15 +229,11 @@ public class RitualLuna extends Ritual {
                         }
                     }
                     // Column complete, reset Y for next column
-                    state.currentY = -verticalRadius;
+                    state.currentY = 0;
                 }
                 // Row complete, reset Z for next row
                 state.currentZ = -radius;
             }
-            // Ring complete, move to next radius
-            state.currentX = -radius - 1;
-            state.currentZ = -radius - 1;
-            state.currentY = -verticalRadius;
         }
 
         // If we've searched the entire range, reset to start over next tick
@@ -230,12 +247,13 @@ public class RitualLuna extends Ritual {
     /**
      * Track the search state for each ritual to resume where it left off
      * Searches from center outward in expanding square rings
+     * Searches downward from ritual stone (Y=0) to Y=-verticalRadius
      */
     private static class SearchState {
         int currentRadius = 0; // Start from center (at master ritual stone)
         int currentX = 0; // X position within current radius ring
         int currentZ = 0; // Z position within current radius ring
-        int currentY = -32; // Vertical position (-32 to 32, starts at bottom)
+        int currentY = 0; // Vertical position (0 = ritual stone level, searches downward)
     }
 
     @Override
