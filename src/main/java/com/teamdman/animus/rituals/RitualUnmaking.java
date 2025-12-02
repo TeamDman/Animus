@@ -184,47 +184,16 @@ public class RitualUnmaking extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        addRune(components, -4, 0, -2, EnumRuneType.FIRE);
-        addRune(components, -4, 0, 0, EnumRuneType.FIRE);
-        addRune(components, -4, 0, 2, EnumRuneType.FIRE);
-        addRune(components, -3, 0, -3, EnumRuneType.DUSK);
-        addRune(components, -3, 0, -1, EnumRuneType.FIRE);
-        addRune(components, -3, 0, 1, EnumRuneType.FIRE);
-        addRune(components, -3, 0, 3, EnumRuneType.DUSK);
-        addRune(components, -2, 0, -4, EnumRuneType.AIR);
-        addRune(components, -2, 0, -2, EnumRuneType.DUSK);
-        addRune(components, -2, 0, 0, EnumRuneType.FIRE);
-        addRune(components, -2, 0, 2, EnumRuneType.DUSK);
-        addRune(components, -2, 0, 4, EnumRuneType.EARTH);
-        addRune(components, -1, 0, -3, EnumRuneType.AIR);
-        addRune(components, -1, 0, -1, EnumRuneType.DUSK);
-        addRune(components, -1, 0, 0, EnumRuneType.FIRE);
-        addRune(components, -1, 0, 1, EnumRuneType.DUSK);
-        addRune(components, -1, 0, 3, EnumRuneType.EARTH);
-        addRune(components, 0, 0, -4, EnumRuneType.AIR);
-        addRune(components, 0, 0, -2, EnumRuneType.AIR);
-        addRune(components, 0, 0, -1, EnumRuneType.AIR);
-        addRune(components, 0, 0, 1, EnumRuneType.EARTH);
-        addRune(components, 0, 0, 2, EnumRuneType.EARTH);
-        addRune(components, 0, 0, 4, EnumRuneType.EARTH);
-        addRune(components, 1, 0, -3, EnumRuneType.AIR);
-        addRune(components, 1, 0, -1, EnumRuneType.DUSK);
-        addRune(components, 1, 0, 0, EnumRuneType.WATER);
-        addRune(components, 1, 0, 1, EnumRuneType.DUSK);
-        addRune(components, 1, 0, 3, EnumRuneType.EARTH);
-        addRune(components, 2, 0, -4, EnumRuneType.AIR);
-        addRune(components, 2, 0, -2, EnumRuneType.DUSK);
-        addRune(components, 2, 0, 0, EnumRuneType.WATER);
-        addRune(components, 2, 0, 2, EnumRuneType.DUSK);
-        addRune(components, 2, 0, 4, EnumRuneType.EARTH);
-        addRune(components, 3, 0, -3, EnumRuneType.DUSK);
-        addRune(components, 3, 0, -1, EnumRuneType.WATER);
-        addRune(components, 3, 0, 1, EnumRuneType.WATER);
-        addRune(components, 3, 0, 3, EnumRuneType.DUSK);
-        addRune(components, 4, 0, -2, EnumRuneType.WATER);
-        addRune(components, 4, 0, 0, EnumRuneType.WATER);
-        addRune(components, 4, 0, 2, EnumRuneType.WATER);
+        addRune(components, -1, 0, 0, EnumRuneType.DUSK);
+        addRune(components, 0, 0, -1, EnumRuneType.DUSK);
+        addRune(components, 0, 0, 1, EnumRuneType.DUSK);
+        addRune(components, 1, 0, 0, EnumRuneType.DUSK);
+        addRune(components, -2, 1, -2, EnumRuneType.AIR);
+        addRune(components, -2, 1, 2, EnumRuneType.EARTH);
+        addRune(components, 2, 1, -2, EnumRuneType.WATER);
+        addRune(components, 2, 1, 2, EnumRuneType.FIRE);
     }
+
 
     @Override
     public Ritual getNewCopy() {
