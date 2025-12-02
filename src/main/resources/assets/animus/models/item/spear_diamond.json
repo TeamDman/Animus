@@ -194,9 +194,9 @@
 			"translation": [0, 6, 0]
 		},
 		"gui": {
-			"rotation": [0, 90, 30],
+			"rotation": [30, 180, 45],
 			"translation": [0, -1, 0],
-			"scale": [0.6375, 0.6375, 0.6375]
+          "scale": [0.75, 0.75, 0.75]
 		},
 		"head": {
 			"translation": [0, 15.25, 0]
