@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "animus:block/blood_wood_slab"
+    },
+    "type=double": {
+      "model": "animus:block/bloodwood_planks"
+    },
+    "type=top": {
+      "model": "animus:block/blood_wood_slab_top"
+    }
+  }
+}

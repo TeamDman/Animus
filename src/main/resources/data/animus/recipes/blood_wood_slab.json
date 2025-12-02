@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "animus:blood_wood_planks"
+    }
+  },
+  "result": {
+    "item": "animus:blood_wood_slab",
+    "count": 6
+  }
+}

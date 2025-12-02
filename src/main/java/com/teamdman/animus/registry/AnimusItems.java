@@ -35,6 +35,10 @@ public class AnimusItems {
     public static final RegistryObject<Item> BLOCK_BLOOD_WOOD = registerBlockItem("blood_wood", AnimusBlocks.BLOCK_BLOOD_WOOD);
     public static final RegistryObject<Item> BLOCK_BLOOD_WOOD_STRIPPED = registerBlockItem("blood_wood_stripped", AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED);
     public static final RegistryObject<Item> BLOCK_BLOOD_WOOD_PLANKS = registerBlockItem("blood_wood_planks", AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS);
+    public static final RegistryObject<Item> BLOCK_BLOOD_WOOD_STAIRS = registerBlockItem("blood_wood_stairs", AnimusBlocks.BLOCK_BLOOD_WOOD_STAIRS);
+    public static final RegistryObject<Item> BLOCK_BLOOD_WOOD_SLAB = registerBlockItem("blood_wood_slab", AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB);
+    public static final RegistryObject<Item> BLOCK_BLOOD_WOOD_FENCE = registerBlockItem("blood_wood_fence", AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE);
+    public static final RegistryObject<Item> BLOCK_BLOOD_WOOD_FENCE_GATE = registerBlockItem("blood_wood_fence_gate", AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE);
 
     // Blood Sapling - with tooltip
     public static final RegistryObject<Item> BLOCK_BLOOD_SAPLING = ITEMS.register("blood_sapling",

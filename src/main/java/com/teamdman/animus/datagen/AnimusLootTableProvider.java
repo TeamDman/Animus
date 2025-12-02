@@ -47,6 +47,19 @@ public class AnimusLootTableProvider extends LootTableProvider {
             // Blood Wood Planks - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS.get());
 
+            // Blood Wood Stairs - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_STAIRS.get());
+
+            // Blood Wood Slab - special slab loot table
+            this.add(AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB.get(),
+                block -> createSlabItemTable(AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB.get()));
+
+            // Blood Wood Fence - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE.get());
+
+            // Blood Wood Fence Gate - drops itself
+            this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE.get());
+
             // Blood Sapling - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_SAPLING.get());
 
