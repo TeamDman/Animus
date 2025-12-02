@@ -165,7 +165,9 @@ public class RitualRelentlessTides extends Ritual {
     }
 
     /**
-     * Find a valid position to place fluid and place it
+     * Find a valid position to place fluid using center-outward search
+     * Starts directly below the master ritual stone and expands outward in square rings
+     * Searches each column vertically before moving to the next position
      */
     private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth, Fluid fluidToPlace) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
@@ -173,49 +175,70 @@ public class RitualRelentlessTides extends Ritual {
         // Start position is below the master ritual stone
         BlockPos startPos = masterPos.below();
 
-        // Resume search from where we left off
-        int startX = state.currentX;
-        int startZ = state.currentZ;
-        int startY = state.currentY;
         int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
         int checksThisTick = 0;
 
-        // DFS: Search each column fully (vertically) before moving horizontally
-        for (int x = startX; x <= horizontalRadius && checksThisTick < maxChecksPerTick; x++) {
-            for (int z = (x == startX ? startZ : -horizontalRadius); z <= horizontalRadius && checksThisTick < maxChecksPerTick; z++) {
-                // Search vertically down this column
-                for (int y = (x == startX && z == startZ ? startY : 0); y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
-                    BlockPos checkPos = startPos.offset(x, -y, z);
-                    checksThisTick++;
+        // Search by expanding square rings from center outward
+        for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
+            // Iterate through all positions in this radius ring
+            for (int x = -radius; x <= radius && checksThisTick < maxChecksPerTick; x++) {
+                // Skip if we're not resuming from this X position
+                if (radius == state.currentRadius && x < state.currentX) continue;
 
-                    // Update search state to resume from here next tick
-                    state.currentX = x;
-                    state.currentZ = z;
-                    state.currentY = y;
+                for (int z = -radius; z <= radius && checksThisTick < maxChecksPerTick; z++) {
+                    // Skip if we're not resuming from this Z position
+                    if (radius == state.currentRadius && x == state.currentX && z < state.currentZ) continue;
 
-                    if (isValidPlacementSpot(level, checkPos, fluidToPlace, masterPos)) {
-                        // Advance to next position for next search
-                        state.currentY++;
-                        if (state.currentY >= verticalDepth) {
-                            state.currentY = 0;
-                            state.currentZ++;
-                            if (state.currentZ > horizontalRadius) {
-                                state.currentZ = -horizontalRadius;
-                                state.currentX++;
-                            }
-                        }
-                        return checkPos;
+                    // Only check positions on the perimeter of this radius ring
+                    // (except for radius 0, which is just the center point)
+                    if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) {
+                        continue;
                     }
+
+                    // Search vertically down this column
+                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
+                    for (int y = startY; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
+                        BlockPos checkPos = startPos.offset(x, -y, z);
+                        checksThisTick++;
+
+                        // Update search state to resume from here next tick
+                        state.currentRadius = radius;
+                        state.currentX = x;
+                        state.currentZ = z;
+                        state.currentY = y;
+
+                        if (isValidPlacementSpot(level, checkPos, fluidToPlace, masterPos)) {
+                            // Advance to next position for next search
+                            state.currentY++;
+                            if (state.currentY >= verticalDepth) {
+                                state.currentY = 0;
+                                state.currentZ++;
+                                if (state.currentZ > radius) {
+                                    state.currentZ = -radius;
+                                    state.currentX++;
+                                    if (state.currentX > radius) {
+                                        state.currentX = -radius;
+                                        state.currentZ = -radius;
+                                        state.currentRadius++;
+                                    }
+                                }
+                            }
+                            return checkPos;
+                        }
+                    }
+                    // Column complete, reset Y for next column
+                    state.currentY = 0;
                 }
-                // Column complete, move to next Z
-                state.currentY = 0;
+                // Row complete, reset Z for next row
+                state.currentZ = -radius;
             }
-            // Row complete, move to next X
-            state.currentZ = -horizontalRadius;
+            // Ring complete, move to next radius
+            state.currentX = -radius - 1;
+            state.currentZ = -radius - 1;
         }
 
         // If we've searched the entire range, reset to start over next tick
-        if (state.currentX > horizontalRadius) {
+        if (state.currentRadius > horizontalRadius) {
             resetSearchState(masterPos);
         }
 
@@ -225,7 +248,7 @@ public class RitualRelentlessTides extends Ritual {
 
     // Check if a position is valid for placing fluid
     private boolean isValidPlacementSpot(ServerLevel level, BlockPos pos, Fluid fluidToPlace, BlockPos masterPos) {
-        // Check cache first
+        // Check cache first - skip positions we've already filled
         Set<BlockPos> filledPositions = filledPositionsCache.get(masterPos);
         if (filledPositions != null && filledPositions.contains(pos)) {
             return false;
@@ -239,7 +262,10 @@ public class RitualRelentlessTides extends Ritual {
             return false;
         }
 
-        return false;
+        // Can place anywhere that's air, replaceable, or contains flowing fluid
+        // We don't care if there's air below - let Minecraft's fluid physics handle it
+        // Block replacement is handled by setBlockAndUpdate in performRitual
+        return state.isAir() || state.canBeReplaced() || (!fluidState.isEmpty() && !fluidState.isSource());
     }
 
     /**
@@ -314,10 +340,14 @@ public class RitualRelentlessTides extends Ritual {
         return new RitualRelentlessTides();
     }
 
-    // Track the search state for each ritual to resume where it left off
+    /**
+     * Track the search state for each ritual to resume where it left off
+     * Searches from center outward in expanding square rings
+     */
     private static class SearchState {
-        int currentY = 0;
-        int currentX = 0;
-        int currentZ = 0;
+        int currentRadius = 0; // Start from center (directly below ritual stone)
+        int currentX = 0; // X position within current radius ring
+        int currentZ = 0; // Z position within current radius ring
+        int currentY = 0; // Vertical position (0 = ritual stone level, increases downward)
     }
 }
