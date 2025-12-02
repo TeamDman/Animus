@@ -232,9 +232,6 @@ public class RitualRelentlessTides extends Ritual {
                 // Row complete, reset Z for next row
                 state.currentZ = -radius;
             }
-            // Ring complete, move to next radius
-            state.currentX = -radius - 1;
-            state.currentZ = -radius - 1;
         }
 
         // If we've searched the entire range, reset to start over next tick

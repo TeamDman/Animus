@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -202,8 +203,19 @@ public class RitualSol extends Ritual {
 
         int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
         int checksThisTick = 0;
-        int horizontalRadius = 32;
-        int verticalRadius = 32;
+        int horizontalRadius = AnimusConfig.rituals.solHorizontalRange.get();
+        int configVerticalRange = AnimusConfig.rituals.solVerticalRange.get();
+
+        // Calculate actual vertical radius
+        // -1 means search from ritual stone to world bottom
+        int verticalRadius;
+        if (configVerticalRange == -1) {
+            // Search from ritual stone down to world minimum build height
+            int minY = level.getMinBuildHeight();
+            verticalRadius = masterPos.getY() - minY;
+        } else {
+            verticalRadius = configVerticalRange;
+        }
 
         // Search by expanding square rings from center outward
         for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
@@ -222,9 +234,9 @@ public class RitualSol extends Ritual {
                         continue;
                     }
 
-                    // Search vertically around this column
-                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : -verticalRadius;
-                    for (int y = startY; y <= verticalRadius && checksThisTick < maxChecksPerTick; y++) {
+                    // Search vertically downward from this column (from ritual stone to bottom)
+                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
+                    for (int y = startY; y >= -verticalRadius && checksThisTick < maxChecksPerTick; y--) {
                         BlockPos checkPos = masterPos.offset(x, y, z);
                         checksThisTick++;
 
@@ -240,9 +252,9 @@ public class RitualSol extends Ritual {
                             level.getBlockState(checkPos.below()).isFaceSturdy(level, checkPos.below(), Direction.UP)) {
 
                             // Advance to next position for next search
-                            state.currentY++;
-                            if (state.currentY > verticalRadius) {
-                                state.currentY = -verticalRadius;
+                            state.currentY--;
+                            if (state.currentY < -verticalRadius) {
+                                state.currentY = 0;
                                 state.currentZ++;
                                 if (state.currentZ > radius) {
                                     state.currentZ = -radius;
@@ -250,7 +262,7 @@ public class RitualSol extends Ritual {
                                     if (state.currentX > radius) {
                                         state.currentX = -radius;
                                         state.currentZ = -radius;
-                                        state.currentY = -verticalRadius;
+                                        state.currentY = 0;
                                         state.currentRadius++;
                                     }
                                 }
@@ -259,15 +271,11 @@ public class RitualSol extends Ritual {
                         }
                     }
                     // Column complete, reset Y for next column
-                    state.currentY = -verticalRadius;
+                    state.currentY = 0;
                 }
                 // Row complete, reset Z for next row
                 state.currentZ = -radius;
             }
-            // Ring complete, move to next radius
-            state.currentX = -radius - 1;
-            state.currentZ = -radius - 1;
-            state.currentY = -verticalRadius;
         }
 
         // If we've searched the entire range, reset to start over next tick
@@ -281,12 +289,13 @@ public class RitualSol extends Ritual {
     /**
      * Track the search state for each ritual to resume where it left off
      * Searches from center outward in expanding square rings
+     * Searches downward from ritual stone (Y=0) to Y=-verticalRadius
      */
     private static class SearchState {
         int currentRadius = 0; // Start from center (at master ritual stone)
         int currentX = 0; // X position within current radius ring
         int currentZ = 0; // Z position within current radius ring
-        int currentY = -32; // Vertical position (-32 to 32, starts at bottom)
+        int currentY = 0; // Vertical position (0 = ritual stone level, searches downward)
     }
 
     @Override

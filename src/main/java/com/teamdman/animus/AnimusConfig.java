@@ -83,6 +83,10 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue sourceVitaeumSourcePerCycle;
         public final ForgeConfigSpec.IntValue floralSupremacyRadius;
         public final ForgeConfigSpec.IntValue floralSupremacyLPPerFlower;
+        public final ForgeConfigSpec.IntValue lunaHorizontalRange;
+        public final ForgeConfigSpec.IntValue lunaVerticalRange;
+        public final ForgeConfigSpec.IntValue solHorizontalRange;
+        public final ForgeConfigSpec.IntValue solVerticalRange;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -235,6 +239,32 @@ public class AnimusConfig {
             floralSupremacyLPPerFlower = builder
                 .comment("LP cost per flower supercharged by Ritual of Floral Supremacy")
                 .defineInRange("floralSupremacyLPPerFlower", 50, 1, 1000);
+
+            lunaHorizontalRange = builder
+                .comment("Horizontal radius in blocks for Ritual of Luna light harvesting")
+                .defineInRange("lunaHorizontalRange", 32, 1, 64);
+
+            lunaVerticalRange = builder
+                .comment(
+                    "Vertical depth below ritual stone for Ritual of Luna light harvesting",
+                    "Searches from ritual stone downward to this depth",
+                    "Set to -1 to search all blocks down to world bottom",
+                    "Default: 64"
+                )
+                .defineInRange("lunaVerticalRange", 64, -1, 256);
+
+            solHorizontalRange = builder
+                .comment("Horizontal radius in blocks for Ritual of Sol light placement")
+                .defineInRange("solHorizontalRange", 32, 1, 64);
+
+            solVerticalRange = builder
+                .comment(
+                    "Vertical depth below ritual stone for Ritual of Sol light placement",
+                    "Searches from ritual stone downward to this depth",
+                    "Set to -1 to search all blocks down to world bottom",
+                    "Default: 64"
+                )
+                .defineInRange("solVerticalRange", 64, -1, 256);
 
             builder.pop();
         }
