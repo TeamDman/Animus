@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import top.theillusivec4.curios.api.CuriosApi;
 import wayoftime.bloodmagic.common.item.ItemBloodOrb;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
@@ -239,8 +240,18 @@ public class SpellCastingHandler {
             }
         }
 
-        // TODO: Check curios slots when we implement curios support
-        // For now, just check normal inventory
+        // Check curios slots
+        var curiosOpt = CuriosApi.getCuriosInventory(player).resolve();
+        if (curiosOpt.isPresent()) {
+            var curios = curiosOpt.get();
+            var handler = curios.getEquippedCurios();
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack stack = handler.getStackInSlot(i);
+                if (stack.getItem() instanceof ItemBloodOrb) {
+                    return true;
+                }
+            }
+        }
 
         return false;
     }
