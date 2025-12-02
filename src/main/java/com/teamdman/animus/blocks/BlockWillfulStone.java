@@ -1,6 +1,8 @@
 package com.teamdman.animus.blocks;
 
 import com.teamdman.animus.blockentities.BlockEntityWillfulStone;
+import com.teamdman.animus.items.ItemKeyBinding;
+import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +17,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
+import wayoftime.bloodmagic.common.item.IBindable;
+import wayoftime.bloodmagic.core.data.Binding;
 
 import java.util.UUID;
 
@@ -23,7 +28,7 @@ import java.util.UUID;
  * <p>
  * Features:
  * - Only the placer or creative players can break it
- * - Players with a Key of Bringing bound to the owner can also break it
+ * - Players with a Key of Binding bound to the owner can also break it
  * - As strong and blast resistant as bedrock
  * - Available in 16 dye colors
  */
@@ -78,10 +83,8 @@ public class BlockWillfulStone extends Block implements EntityBlock {
                 return super.getDestroyProgress(state, player, level, pos);
             }
 
-            // Check if player has a Key of Bringing bound to the owner
-            // TODO: Implement Key of Bringing check when that item is created
-            // For now, check inventory and offhand for any item with tag "KeyOfBringing" and matching owner UUID
-            if (hasKeyOfBringing(player, owner)) {
+            // Check if player has a Key of Binding bound to the owner
+            if (hasKeyOfBinding(player, owner)) {
                 return super.getDestroyProgress(state, player, level, pos);
             }
 
@@ -94,20 +97,33 @@ public class BlockWillfulStone extends Block implements EntityBlock {
     }
 
     /**
-     * Checks if the player has a Key of Bringing bound to the specified owner
-     * TODO: Replace with actual Key of Bringing check when implemented
+     * Checks if the player has a Key of Binding bound to the specified owner
      */
-    private boolean hasKeyOfBringing(Player player, UUID owner) {
-        // Check main inventory and offhand
+    private boolean hasKeyOfBinding(Player player, UUID owner) {
+        // Check main inventory
         for (ItemStack stack : player.getInventory().items) {
-            if (isKeyOfBringingForOwner(stack, owner)) {
+            if (isKeyOfBindingForOwner(stack, owner)) {
                 return true;
             }
         }
 
+        // Check offhand
         for (ItemStack stack : player.getInventory().offhand) {
-            if (isKeyOfBringingForOwner(stack, owner)) {
+            if (isKeyOfBindingForOwner(stack, owner)) {
                 return true;
+            }
+        }
+
+        // Check curios slots
+        var curiosOpt = CuriosApi.getCuriosInventory(player).resolve();
+        if (curiosOpt.isPresent()) {
+            var curios = curiosOpt.get();
+            var handler = curios.getEquippedCurios();
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack stack = handler.getStackInSlot(i);
+                if (isKeyOfBindingForOwner(stack, owner)) {
+                    return true;
+                }
             }
         }
 
@@ -115,20 +131,23 @@ public class BlockWillfulStone extends Block implements EntityBlock {
     }
 
     /**
-     * Checks if an ItemStack is a Key of Bringing bound to the specified owner
-     * TODO: Replace with actual Key of Bringing logic when implemented
+     * Checks if an ItemStack is a Key of Binding bound to the specified owner
      */
-    private boolean isKeyOfBringingForOwner(ItemStack stack, UUID owner) {
+    private boolean isKeyOfBindingForOwner(ItemStack stack, UUID owner) {
         if (stack.isEmpty()) {
             return false;
         }
 
-        // For now, just check if item has NBT tag indicating it's a Key of Bringing with matching owner
-        // This will be replaced when the actual Key of Bringing item is implemented
-        if (stack.hasTag() && stack.getTag().contains("KeyOfBringing")) {
-            if (stack.getTag().contains("BoundPlayer")) {
-                UUID boundPlayer = stack.getTag().getUUID("BoundPlayer");
-                return boundPlayer.equals(owner);
+        // Check if it's a Key of Binding item
+        if (stack.getItem() != AnimusItems.KEY_BINDING.get()) {
+            return false;
+        }
+
+        // Check if bound to the owner using Blood Magic's binding system
+        if (stack.getItem() instanceof IBindable bindable) {
+            Binding binding = bindable.getBinding(stack);
+            if (binding != null) {
+                return binding.getOwnerId().equals(owner);
             }
         }
 
