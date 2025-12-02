@@ -1,5 +1,5 @@
 {
-  "name": "Welcome to Animus",
+  "name": "guide.animus.entry.welcome",
   "icon": "animus:sigil_transposition",
   "category": "animus:intro",
   "sortnum": 0,
