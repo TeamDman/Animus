@@ -5,8 +5,14 @@
   "sortnum": 0,
   "pages": [
     {
+      "type": "patchouli:image",
+      "images": ["animus:textures/misc/animus_logo_256.png"],
+      "border": true,
+      "text": "Welcome, practitioner of the sanguine arts."
+    },
+    {
       "type": "patchouli:text",
-      "text": "Welcome, practitioner of the sanguine arts.$(br2)The $(animus)Codex Animus$() contains knowledge of blood magic's darker applications; the manipulation of life, death, and the corruption of nature itself.$(br2)Within these pages, you will find rituals to summon and destroy, sigils to command the elements, and the secrets of creating life from blood."
+      "text": "The $(animus)Codex Animus$() contains knowledge of blood magic's darker applications; the manipulation of life, death, and the corruption of nature itself.$(br2)Within these pages, you will find rituals to summon and destroy, sigils to command the elements, and the secrets of creating life from blood."
     },
     {
       "type": "patchouli:text",
