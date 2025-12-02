@@ -1,0 +1,23 @@
+{
+  "name": "Reagent: Leach",
+  "icon": "animus:reagentleach",
+  "category": "animus:items",
+  "sortnum": 23,
+  "pages": [
+    {
+      "type": "bloodmagic:soulforge",
+      "recipe": "animus:soulforge/reagentleach",
+      "text": "Forged in the $(blood)Hellfire Forge$() using natural materials: a $(tag)Sapling$(), $(tag)Leaves$(), $(item)Short Grass$(), and $(item)Cooked Beef$(). Requires $(will)64 demon will minimum$() and consumes $(will)32 will$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:reagentleach",
+      "text": "A reagent infused with the essence of nature's consumption. This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_leach)Sigil of Nature's Leach$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Philosophy",
+      "text": "Nature provides, and the wise mage takes what is needed. This reagent embodies the cycle of consumption - plant matter sustaining the practitioner of blood magic.$(br2)The resulting sigil allows you to drain life from the natural world to restore your own vitality."
+    }
+  ]
+}

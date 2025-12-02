@@ -1,0 +1,21 @@
+{
+  "type": "bloodmagic:soulforge",
+  "input0": {
+    "tag": "minecraft:saplings"
+  },
+  "input1": {
+    "tag": "minecraft:leaves"
+  },
+  "input2": {
+    "item": "minecraft:short_grass"
+  },
+  "input3": {
+    "item": "minecraft:cooked_beef"
+  },
+  "output": {
+    "item": "animus:reagentleach",
+    "count": 1
+  },
+  "minimumDrain": 64.0,
+  "drain": 32.0
+}

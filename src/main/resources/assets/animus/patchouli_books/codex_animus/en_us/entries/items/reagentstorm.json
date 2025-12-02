@@ -1,0 +1,23 @@
+{
+  "name": "Reagent: Storm",
+  "icon": "animus:reagentstorm",
+  "category": "animus:items",
+  "sortnum": 24,
+  "pages": [
+    {
+      "type": "bloodmagic:soulforge",
+      "recipe": "animus:soulforge/reagentstorm",
+      "text": "Forged in the $(blood)Hellfire Forge$() using elemental materials: $(item)Sand$(), $(item)Water Bucket$(), $(item)Fishing Rod$(), and $(item)Ghast Tear$(). Requires $(will)64 demon will minimum$() and consumes $(will)32 will$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:reagentstorm",
+      "text": "A reagent infused with the fury of storms and the power of lightning. This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_storm)Sigil of the Storm$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Elemental Power",
+      "text": "The storm represents raw, untamed power - lightning that strikes from the heavens. The combination of water, tears, and fishing implements channels both the destructive and life-giving aspects of weather.$(br2)Wield the storm's fury wisely."
+    }
+  ]
+}

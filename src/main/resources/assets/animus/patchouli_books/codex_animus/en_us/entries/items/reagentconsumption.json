@@ -1,0 +1,23 @@
+{
+  "name": "Reagent: Consumption",
+  "icon": "animus:reagentconsumption",
+  "category": "animus:items",
+  "sortnum": 22,
+  "pages": [
+    {
+      "type": "bloodmagic:soulforge",
+      "recipe": "animus:soulforge/reagentconsumption",
+      "text": "Forged in the $(blood)Hellfire Forge$() using four $(item)Iron Pickaxes$() - tools of destruction and consumption. Requires $(will)128 demon will minimum$() and consumes $(will)64 will$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:reagentconsumption",
+      "text": "A reagent infused with the essence of consumption and corruption. This catalyst can be combined with an $(item)Imbued Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_consumption)Sigil of Consumption$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Warning",
+      "text": "This reagent channels dark forces of entropy and decay. The sigil it creates spreads $(blood)AntiLife$() corruption - use with extreme caution.$(br2)Once crafted, the Sigil of Consumption can irreversibly corrupt the world around you."
+    }
+  ]
+}

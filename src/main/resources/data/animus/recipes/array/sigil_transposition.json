@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "baseinput": {
+    "item": "animus:reagenttransposition"
+  },
+  "addedinput": {
+    "item": "bloodmagic:demonslate"
+  },
+  "output": {
+    "item": "animus:sigil_transposition"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/bindingsigil.png"
+}

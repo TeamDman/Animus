@@ -5,6 +5,7 @@ import com.teamdman.animus.items.*;
 import com.teamdman.animus.items.sigils.*;
 import com.teamdman.animus.items.sigils.ItemSigilTemporalDominance;
 import com.teamdman.animus.items.sigils.ItemSigilEquivalency;
+import com.teamdman.animus.items.ItemReagent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
@@ -159,6 +160,25 @@ public class AnimusItems {
     // Mob Soul - used by Sigil of Chains
     public static final RegistryObject<Item> MOBSOUL = ITEMS.register("mob_soul",
         com.teamdman.animus.items.ItemMobSoul::new);
+
+    // Reagents - used to craft sigils via Alchemy Arrays
+    public static final RegistryObject<Item> REAGENT_BUILDER = ITEMS.register("reagentbuilder",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_CHAINS = ITEMS.register("reagentchains",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_CONSUMPTION = ITEMS.register("reagentconsumption",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_LEACH = ITEMS.register("reagentleach",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_STORM = ITEMS.register("reagentstorm",
+        ItemReagent::new);
+
+    public static final RegistryObject<Item> REAGENT_TRANSPOSITION = ITEMS.register("reagenttransposition",
+        ItemReagent::new);
 
     // Sigils
     public static final RegistryObject<Item> SIGIL_BUILDER = ITEMS.register("sigil_builder",

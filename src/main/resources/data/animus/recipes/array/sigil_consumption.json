@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "baseinput": {
+    "item": "animus:reagentconsumption"
+  },
+  "addedinput": {
+    "item": "bloodmagic:infusedslate"
+  },
+  "output": {
+    "item": "animus:sigil_consumption"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/bindingsigil.png"
+}
