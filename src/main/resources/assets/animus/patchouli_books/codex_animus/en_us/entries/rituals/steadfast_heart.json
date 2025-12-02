@@ -6,12 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Fortify your allies. The Ritual of the Steadfast Heart grants increasingly powerful Absorption effects to all nearby players, providing extra health that regenerates over time."
+      "text": "Fortify your allies. The Ritual of the Steadfast Heart grants increasingly powerful Absorption effects to all nearby players, providing extra health that regenerates over time. Can also buff players remotely via bound blood orbs."
     },
     {
       "type": "patchouli:text",
       "title": "Costs & Details",
       "text": "$(bold)Activation:$() 20000 LP$(br)$(bold)Refresh:$() 100 LP per player$(br)$(bold)Refresh Time:$() 60 ticks (3 seconds); configurable$(br2)$(bold)Effect Range:$() 128 blocks radius; configurable$(br2)Each time the ritual runs, it extends and strengthens the absorption effect on nearby players."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Remote Buffing",
+      "text": "$(bold)Blood Orb Link:$()$(br)Place a chest directly above the Master Ritual Stone and fill it with $(blood)bound blood orbs$() of any tier.$(br2)The ritual will buff the bound player regardless of their location in the world, as long as they're online.$(br2)$(bold)Benefits:$()$(li)Buff allies anywhere in the world$(li)Each player is only buffed once per cycle$(li)Works with any tier blood orb$(li)LP cost applies per player buffed$(br2)$(italic)Perfect for protecting your team across dimensions!$()"
     },
     {
       "type": "patchouli:text",
