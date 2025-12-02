@@ -35,5 +35,13 @@ public class AnimusNetwork {
             SigilRadiusPacket::decode,
             SigilRadiusPacket::handle
         );
+
+        CHANNEL.registerMessage(
+            packetId++,
+            RitualCodePacket.class,
+            RitualCodePacket::encode,
+            RitualCodePacket::decode,
+            RitualCodePacket::handle
+        );
     }
 }

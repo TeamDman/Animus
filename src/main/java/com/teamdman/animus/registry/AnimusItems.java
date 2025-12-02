@@ -228,6 +228,9 @@ public class AnimusItems {
     public static final RegistryObject<Item> SANGUINE_DIVINER = ITEMS.register("sanguine_diviner",
         ItemSanguineDiviner::new);
 
+    public static final RegistryObject<Item> RITUAL_DESIGNER = ITEMS.register("ritual_designer",
+        ItemRitualDesigner::new);
+
     // Fluid Buckets
     public static final RegistryObject<Item> ANTILIFE_BUCKET = ITEMS.register("antilife_bucket",
         () -> new BucketItem(
