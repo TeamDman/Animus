@@ -19,7 +19,9 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.items.IItemHandler;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.common.item.BloodOrb;
+import wayoftime.bloodmagic.common.item.IBindable;
+import wayoftime.bloodmagic.common.item.ItemBloodOrb;
+import wayoftime.bloodmagic.core.data.Binding;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
@@ -128,12 +130,18 @@ public class RitualSteadfastHeart extends Ritual {
                 for (int slot = 0; slot < handler.getSlots(); slot++) {
                     ItemStack stack = handler.getStackInSlot(slot);
 
-                    if (stack.isEmpty() || !(stack.getItem() instanceof BloodOrb)) {
+                    if (stack.isEmpty() || !(stack.getItem() instanceof ItemBloodOrb)) {
                         continue;
                     }
 
                     // Get the player UUID bound to this orb
-                    UUID orbOwner = NetworkHelper.getUuidFromStack(stack);
+                    IBindable bindable = (IBindable) stack.getItem();
+                    Binding binding = bindable.getBinding(stack);
+                    if (binding == null) {
+                        continue;
+                    }
+
+                    UUID orbOwner = binding.getOwnerId();
                     if (orbOwner == null) {
                         continue;
                     }
