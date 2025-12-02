@@ -20,7 +20,7 @@
     {
       "type": "patchouli:text",
       "title": "Arcane Channeling",
-      "text": "The Arcane Channeling upgrade tree provides five levels of spell-focused enhancements:$(br2)$(blood)Level 1:$() -5% Mana Cost$(br)Spells consume less mana$(br2)$(blood)Level 2:$() -10% Mana Cost$(br)Further mana cost reduction$(br2)$(blood)Level 3:$() -5% Cooldown$(br)Cast spells more frequently$(br2)$(blood)Level 4:$() Spells Trigger Armor$(br)Casting activates armor effects$(br2)$(blood)Level 5:$() Casting Grants Resistance$(br)Gain Resistance I for 2 seconds"
+      "text": "The Arcane Channeling upgrade tree provides five levels of spell-focused enhancements:$(br2)$(blood)Level 1:$() -5% Mana Cost$(br)Spells consume less mana$(br2)$(blood)Level 2:$() -10% Mana Cost$(br)Further mana cost reduction$(br2)$(blood)Level 3:$() -5% Cooldown$(br)Cast spells more frequently$(br2)$(blood)Level 4:$() -10% Cooldown$(br)Even shorter spell cooldowns$(br2)$(blood)Level 5:$() Casting Grants Resistance$(br)Gain Resistance I for 2 seconds"
     },
     {
       "type": "patchouli:text",
@@ -34,13 +34,13 @@
     },
     {
       "type": "patchouli:text",
-      "title": "Level 4 & 5 Details",
-      "text": "$(bold)Level 4 - Spells Trigger Armor:$()$(br)When you cast a spell, your Living Armor's defensive abilities activate. This could include thorns damage, environmental resistances, or other armor effects depending on your armor's other upgrades.$(br2)$(bold)Level 5 - Casting Grants Resistance:$()$(br)Every time you cast a spell, you gain $(effect)Resistance I$() for 2 seconds. This brief defensive boost helps you survive while channeling powerful magic."
+      "title": "How It Works",
+      "text": "$(bold)Mana Cost Reduction (Levels 1-2):$()$(br)Reduces the mana cost of spells when cast. At level 2, you save 10% mana on every spell, stacking with other mana reduction effects.$(br2)$(bold)Cooldown Reduction (Levels 3-4):$()$(br)Applies Iron's Spellbooks' cooldown reduction attribute. At level 4, spells recharge 10% faster, letting you cast more often.$(br2)$(bold)Damage Resistance (Level 5):$()$(br)Every time you begin casting, gain $(effect)Resistance I$() for 2 seconds. This defensive boost helps you survive while channeling."
     },
     {
       "type": "patchouli:text",
       "title": "Tips & Strategy",
-      "text": "$(bold)Maximize XP Gain:$()$(br)• Cast higher-level spells$(br)• Seek rare/epic/legendary spells$(br)• Use the $(l:animus:compatibility/ritual_arcane_mastery)Ritual of Arcane Mastery$() to upgrade spells$(br2)$(bold)Build Paths:$()$(br)• Pure Mage: Max Arcane Channeling first$(br)• Hybrid: Balance with defensive upgrades$(br)• Combat Mage: Prioritize Resistance (Level 5)$(br2)$(italic)Remember: XP is only granted while wearing Living Armor!$()"
+      "text": "$(bold)Maximize XP Gain:$()$(br)• Cast higher-level spells$(br)• Seek rare/epic/legendary spells$(br)• Use the $(l:animus:compatibility/ritual_arcane_mastery)Ritual of Arcane Mastery$() to upgrade spells$(br2)$(bold)Build Paths:$()$(br)• Efficiency Focus: Levels 1-2 for mana savings$(br)• Rapid Caster: Levels 3-4 for cooldowns$(br)• Survivalist: Level 5 for combat defense$(br2)$(italic)Remember: XP is only granted while wearing Living Armor!$()"
     }
   ]
 }

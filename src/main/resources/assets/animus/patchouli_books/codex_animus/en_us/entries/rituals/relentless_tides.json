@@ -1,0 +1,22 @@
+{
+  "name": "guide.animus.entry.ritual_relentless_tides",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:rituals",
+  "sortnum": 25,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Relentless Tides is the inverse of Siphon - it extracts fluid from a tank above and places it into the world below. Create lakes, flood caves, or fill moats with any fluid."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Setup",
+      "text": "$(bold)Tank:$() Place any fluid container directly above the master ritual stone.$(br2)$(bold)Activation:$() 5,000 LP$(br)$(bold)Per Bucket:$() 50 LP (configurable)$(br)$(bold)Range:$() 32 blocks horizontal, 128 deep (configurable)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Behavior",
+      "text": "$(bold)Placement:$() Places fluid source blocks, letting Minecraft physics handle flow.$(br2)$(bold)Valid Spots:$() Only places in air, replaceable blocks, or flowing fluid of the same type.$(br2)$(bold)Search Pattern:$() Starts directly below, expands outward. Skips already-filled positions.$(br2)$(italic)The tides obey blood's will.$()"
+    }
+  ]
+}

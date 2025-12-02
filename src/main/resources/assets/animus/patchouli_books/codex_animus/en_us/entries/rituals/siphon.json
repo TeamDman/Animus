@@ -1,0 +1,22 @@
+{
+  "name": "guide.animus.entry.ritual_siphon",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:rituals",
+  "sortnum": 24,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Siphon extracts fluids from the world below and deposits them into a tank above. It searches from center outward, draining oceans, lava lakes, or any fluid source."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Setup",
+      "text": "$(bold)Tank:$() Place any fluid container directly above the master ritual stone.$(br2)$(bold)Activation:$() 5,000 LP$(br)$(bold)Per Bucket:$() 50 LP (configurable)$(br)$(bold)Range:$() 32 blocks horizontal, 128 deep (configurable)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Behavior",
+      "text": "$(bold)Search Pattern:$() Starts directly below the ritual, expands outward in rings.$(br2)$(bold)Replacement:$() Extracted fluid blocks are replaced with $(thing)Antilife Block$() by default (configurable).$(br2)$(bold)Indicators:$() Smoke particles appear when the tank is full or no fluid is found.$(br2)$(italic)The earth yields its lifeblood.$()"
+    }
+  ]
+}

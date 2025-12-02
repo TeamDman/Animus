@@ -1,0 +1,28 @@
+{
+  "name": "guide.animus.entry.sigil_free_soul",
+  "icon": "animus:sigil_free_soul",
+  "category": "animus:sigils",
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_free_soul",
+      "text": "A powerful protective sigil that grants temporary spectator mode and can prevent death. Functions like a reusable Totem of Undying powered by LP."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Manual Use",
+      "text": "$(bold)Activation:$() Right-click$(br)$(bold)LP Cost:$() 5,000 LP (configurable)$(br)$(bold)Duration:$() 10 seconds (configurable)$(br2)Grants temporary spectator mode, allowing you to scout areas or escape danger. You are teleported back to your original position before the effect ends."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Death Prevention",
+      "text": "$(bold)Automatic Trigger:$() When you would die with this sigil in your inventory, it automatically activates if you have enough LP.$(br2)$(bold)Healing:$() When triggered by death, you receive 5 hearts of healing after returning from spectator mode.$(br2)$(bold)Cooldown:$() 60 seconds (configurable) between death prevention triggers."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Anti-Exploit",
+      "text": "$(bold)Position Lock:$() You are teleported back to your original position 0.5 seconds before spectator mode ends, preventing wall-clipping exploits.$(br2)$(italic)The soul slips free of death's grasp... for a price.$()"
+    }
+  ]
+}

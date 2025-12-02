@@ -1,0 +1,23 @@
+{
+  "name": "guide.animus.entry.sigil_reparare",
+  "icon": "animus:sigil_reparare",
+  "category": "animus:sigils",
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_reparare",
+      "text": "A toggleable sigil that mends your equipment over time. While active, damaged items in your inventory slowly repair themselves at the cost of LP."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Toggle:$() Right-click to activate/deactivate$(br)$(bold)LP Cost:$() Configurable per durability point$(br)$(bold)Scope:$() All inventory slots, armor, and offhand$(br2)The sigil periodically scans for damaged items and repairs them. It will deactivate if you run out of LP."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Limitations",
+      "text": "$(bold)Blacklist:$() Items tagged with $(thing)animus:disallow_repair$() cannot be repaired by this sigil.$(br2)$(bold)Repair Rate:$() Configurable repair amount per interval.$(br2)$(italic)Blood mends what time breaks.$()"
+    }
+  ]
+}

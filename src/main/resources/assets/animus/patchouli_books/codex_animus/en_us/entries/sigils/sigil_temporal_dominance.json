@@ -1,0 +1,28 @@
+{
+  "name": "guide.animus.entry.sigil_temporal_dominance",
+  "icon": "animus:sigil_temporal_dominance",
+  "category": "animus:sigils",
+  "sortnum": 14,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_temporal_dominance",
+      "text": "A sigil that accelerates time for block entities. Furnaces smelt faster, crops grow quicker, and machines process at incredible speeds."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Activation:$() Sneak + Right-click on a block entity$(br)$(bold)Duration:$() 30 seconds per activation$(br2)Each activation increases the speed level. Repeatedly clicking the same block stacks the acceleration up to 32x speed."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Progression",
+      "text": "$(bold)Level 1:$() 2x speed - 1,000 LP$(br)$(bold)Level 2:$() 4x speed - 2,000 LP$(br)$(bold)Level 3:$() 8x speed - 4,000 LP$(br)$(bold)Level 4:$() 16x speed - 8,000 LP$(br)$(bold)Level 5:$() 32x speed - 16,000 LP$(br2)$(bold)Refresh:$() 15,000 LP to reset timer at max level"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Compatibility",
+      "text": "$(bold)Blacklist:$() Blocks tagged with $(thing)animus:disallow_acceleration$() cannot be accelerated.$(br2)$(bold)Mod Compat:$() Will not stack with GAG's Temporal Pouch, Time in a Bottle, or JustDireThings' Time Wand.$(br2)$(italic)Time bends to the will of blood.$()"
+    }
+  ]
+}

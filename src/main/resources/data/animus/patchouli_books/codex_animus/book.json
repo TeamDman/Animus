@@ -6,6 +6,7 @@
   "creative_tab": "bloodmagic:bloodmagic",
   "show_progress": false,
   "use_resource_pack": true,
+  "i18n": true,
   "macros": {
     "$(animus)": "$(#8B0000)",
     "$(blood)": "$(#CC0000)",

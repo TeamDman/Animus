@@ -12,17 +12,17 @@
     {
       "type": "patchouli:text",
       "title": "Growing Blood Trees",
-      "text": "$(bold)Blood Sapling:$()$(br)Plant and wait for it to grow (or use bonemeal). Grows into a tree 4-6 blocks tall.$(br2)$(bold)Structure:$()$(li)Blood Wood trunk$(li)Blood Leaves canopy$(li)Blood Core at the top$(br2)All parts can be harvested and used for building."
+      "text": "$(bold)Blood Sapling:$()$(br)Plant and wait for it to grow (or use bonemeal). Grows into a tree 4-6 blocks tall.$(br2)$(bold)Structure:$()$(li)Blood Wood trunk$(li)Blood Leaves canopy$(li)Blood Core at the top$(br2)Harvest the wood for building materials. See $(l:animus:bloodtrees/decorative_blocks)Decorative Blocks$() for crafting options."
     },
     {
       "type": "patchouli:text",
-      "title": "Blood Wood Core",
-      "text": "$(bold)Active Core:$()$(br)The heart of the blood tree. When active (right-click to toggle), the core will automatically spread blood trees in the area!$(br2)$(bold)Spreading:$()$(li)Searches for grass/dirt nearby$(li)Places Blood Saplings$(li)Instantly grows them into trees$(li)Creates a blood forest over time$(br2)$(bold)Bonemeal:$() You can bonemeal active cores to trigger spreading!"
+      "title": "Blood Core",
+      "text": "$(bold)Active Core:$()$(br)The heart of the blood tree. When active (right-click to toggle), the core will automatically spread blood trees in the area!$(br2)$(bold)Spreading:$()$(li)Searches for grass/dirt nearby$(li)Places Blood Saplings$(li)Instantly grows them into trees$(li)Creates a blood forest over time"
     },
     {
       "type": "patchouli:text",
-      "title": "Blood Wood Blocks",
-      "text": "$(bold)Available Blocks:$()$(li)Blood Wood (log)$(li)Stripped Blood Wood$(li)Blood Wood Planks$(li)Blood Leaves$(li)Blood Sapling$(li)Blood Core$(br2)All wood blocks can be stripped with an axe and crafted into planks for building.$(br2)$(italic)Let the blood forest grow.$()"
+      "title": "Tips",
+      "text": "$(bold)Bonemeal:$() You can bonemeal active cores to trigger immediate spreading!$(br2)$(bold)Leaves:$() Blood Leaves drop Blood Saplings when broken, just like normal trees.$(br2)$(bold)Automation:$() Combine with tree farms for automated blood wood production.$(br2)$(italic)Let the blood forest grow.$()"
     }
   ]
 }

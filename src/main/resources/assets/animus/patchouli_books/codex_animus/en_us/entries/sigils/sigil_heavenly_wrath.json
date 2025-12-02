@@ -1,0 +1,23 @@
+{
+  "name": "guide.animus.entry.sigil_heavenly_wrath",
+  "icon": "animus:sigil_heavenly_wrath",
+  "category": "animus:sigils",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_heavenly_wrath",
+      "text": "A devastating sigil that calls down heaven's judgment. Enemies are lifted skyward before being slammed back to earth with deadly force."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mechanics",
+      "text": "$(bold)Activation:$() Right-click$(br)$(bold)LP Cost:$() 1,000 LP$(br)$(bold)Range:$() 16 blocks$(br2)All enemies within range receive $(effect)Levitation II$() for 3 seconds with an additional upward velocity boost. After the effect ends, they are slammed downward."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Fall Damage",
+      "text": "$(bold)Heavy Heart:$() Targets receive Blood Magic's $(effect)Heavy Heart$() effect for 2 seconds, preventing flight.$(br2)$(bold)Velocity Scaling:$() Flying creatures or those already high up receive stronger downward velocity based on their height from ground.$(br2)$(italic)What goes up must come down... violently.$()"
+    }
+  ]
+}

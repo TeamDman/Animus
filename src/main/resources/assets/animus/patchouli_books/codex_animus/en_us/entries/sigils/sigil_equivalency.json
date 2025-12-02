@@ -1,0 +1,28 @@
+{
+  "name": "guide.animus.entry.sigil_equivalency",
+  "icon": "animus:sigil_equivalency",
+  "category": "animus:sigils",
+  "sortnum": 15,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_equivalency",
+      "text": "An equal-exchange sigil for rapid block replacement. Select blocks you want to use, then swap connected blocks of the same type within a configurable radius."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Selection Mode",
+      "text": "$(bold)Add Block:$() Sneak + Right-click a block$(br)$(bold)Clear Selection:$() Sneak + Right-click air$(br)$(bold)Max Selection:$() 20 different block types$(br2)Build your palette of replacement blocks. Only blocks you have in your inventory (survival) or selected (creative) will be used."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Replacement Mode",
+      "text": "$(bold)Replace:$() Right-click a block$(br)$(bold)Radius:$() Scroll while sneaking to adjust (1-32)$(br)$(bold)LP Cost:$() Per block replaced (configurable)$(br2)Flood-fills connected blocks of the same type on the clicked face's plane, replacing them with random blocks from your selection."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Features",
+      "text": "$(bold)Silk Touch:$() Replaced blocks drop as if mined with Silk Touch.$(br2)$(bold)Plane-Locked:$() Only replaces blocks on the same plane as the clicked face (floor, wall, or ceiling).$(br2)$(bold)Gradual:$() Replacements happen over time to reduce lag.$(br2)$(italic)Exchange is the foundation of all alchemy.$()"
+    }
+  ]
+}

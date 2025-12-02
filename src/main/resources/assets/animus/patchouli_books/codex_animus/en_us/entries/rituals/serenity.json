@@ -1,0 +1,22 @@
+{
+  "name": "guide.animus.entry.ritual_serenity",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:rituals",
+  "sortnum": 21,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Serenity creates a zone of peace where hostile creatures cannot spawn. Perfect for protecting your base without relying on torches or other lighting."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs",
+      "text": "$(bold)Activation:$() 10,000 LP$(br)$(bold)Upkeep:$() 50 LP per tick (configurable)$(br)$(bold)Range:$() 48 blocks (configurable)$(br2)Hostile mob spawning is completely prevented within the ritual's spherical range."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Notes",
+      "text": "$(bold)Existing Mobs:$() Does not remove mobs that are already present - only prevents new spawns.$(br2)$(bold)Stacking:$() Multiple rituals can overlap to cover larger areas.$(br2)$(italic)In blood there is peace.$()"
+    }
+  ]
+}

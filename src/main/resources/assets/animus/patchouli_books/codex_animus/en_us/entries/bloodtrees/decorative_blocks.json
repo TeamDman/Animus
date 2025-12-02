@@ -1,0 +1,54 @@
+{
+  "name": "guide.animus.entry.decorative_blocks",
+  "icon": "animus:blood_wood_planks",
+  "category": "animus:bloodtrees",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_wood",
+      "text": "Blood Wood harvested from Blood Trees can be processed into a variety of decorative building blocks. The crimson wood makes for striking architectural accents."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_wood_stripped",
+      "title": "Stripped Blood Wood",
+      "text": "Use an axe on Blood Wood logs to strip the bark, revealing a smoother texture. Works just like stripping vanilla logs."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_wood_planks",
+      "title": "Blood Wood Planks",
+      "text": "Craft Blood Wood logs into planks (4 planks per log). These planks serve as the base for all other decorative variants."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_wood_stairs",
+      "title": "Blood Wood Stairs",
+      "text": "Craft 6 planks in a stair pattern to create Blood Wood Stairs. Perfect for grand staircases in your blood magic sanctum."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_wood_slab",
+      "title": "Blood Wood Slab",
+      "text": "Craft 3 planks in a row to create Blood Wood Slabs. Use for flooring, shelves, or decorative trim."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_wood_fence",
+      "title": "Blood Wood Fence",
+      "text": "Craft planks and sticks in the standard fence pattern. Use to corral your sacrifices or decorate your ritual grounds."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:blood_wood_fence_gate",
+      "title": "Blood Wood Fence Gate",
+      "text": "Craft sticks and planks in the gate pattern. Allows passage through Blood Wood fences while keeping mobs contained."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Building Tips",
+      "text": "$(bold)Crafting Summary:$()$(li)Log → 4 Planks$(li)6 Planks → 4 Stairs$(li)3 Planks → 6 Slabs$(li)4 Planks + 2 Sticks → 3 Fences$(li)2 Planks + 4 Sticks → 1 Gate$(br2)All Blood Wood blocks work with standard wood recipes and can be used as fuel.$(br2)$(italic)Build your dark empire in crimson.$()"
+    }
+  ]
+}

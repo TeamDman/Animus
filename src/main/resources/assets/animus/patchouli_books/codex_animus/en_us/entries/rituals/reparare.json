@@ -1,0 +1,22 @@
+{
+  "name": "guide.animus.entry.ritual_reparare",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:rituals",
+  "sortnum": 22,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Reparare mends damaged items stored in an inventory above the ritual stone. Place a chest directly above the master ritual stone and items within will slowly repair."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mechanics",
+      "text": "$(bold)Activation:$() 5,000 LP$(br)$(bold)LP Cost:$() Per durability point repaired (configurable)$(br)$(bold)Repair Rate:$() 20% of max durability per cycle$(br)$(bold)Interval:$() Every 5 seconds (configurable)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Setup",
+      "text": "$(bold)Inventory:$() Place any container with item capability directly above the master ritual stone.$(br2)$(bold)Blacklist:$() Items tagged with $(thing)animus:disallow_repair$() will be skipped.$(br2)$(italic)What blood breaks, blood can mend.$()"
+    }
+  ]
+}

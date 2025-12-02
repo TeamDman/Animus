@@ -1,0 +1,22 @@
+{
+  "name": "guide.animus.entry.ritual_persistence",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:rituals",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Persistence forces the world to remain aware of its surroundings, keeping chunks loaded even when no players are nearby. Essential for automation and remote bases."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs",
+      "text": "$(bold)Activation:$() 50,000 LP$(br)$(bold)Upkeep:$() 100 LP per tick (configurable)$(br)$(bold)Range:$() 3 chunk radius (configurable)$(br2)The ritual maintains chunk loading in a square area around itself. Chunks unload immediately if LP runs out."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage Notes",
+      "text": "$(bold)Chunk Radius:$() A radius of 3 means a 7x7 chunk area (49 chunks total).$(br2)$(bold)Persistence:$() Chunks remain loaded even across server restarts as long as the ritual is active.$(br2)$(italic)The world remembers what blood demands.$()"
+    }
+  ]
+}

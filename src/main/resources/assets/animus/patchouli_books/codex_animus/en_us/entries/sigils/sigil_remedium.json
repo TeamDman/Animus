@@ -1,0 +1,23 @@
+{
+  "name": "guide.animus.entry.sigil_remedium",
+  "icon": "animus:sigil_remedium",
+  "category": "animus:sigils",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_remedium",
+      "text": "A toggleable sigil that continuously cleanses your body of harmful afflictions. While active, negative status effects are purged at a steady LP cost."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)Toggle:$() Right-click to activate/deactivate$(br)$(bold)LP Cost:$() 50 LP per effect removed$(br)$(bold)Interval:$() Once per second$(br2)While active, all negative (harmful) effects are automatically removed. The sigil will deactivate if you run out of LP."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Notes",
+      "text": "$(bold)Beneficial Effects:$() Only harmful effects are removed; beneficial effects like Regeneration or Strength remain.$(br2)$(bold)Efficiency:$() The cost scales with the number of effects - cleansing 3 effects costs 150 LP.$(br2)$(italic)Purity through sacrifice.$()"
+    }
+  ]
+}

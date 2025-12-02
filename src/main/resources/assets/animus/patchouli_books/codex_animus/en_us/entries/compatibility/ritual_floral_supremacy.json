@@ -1,0 +1,22 @@
+{
+  "name": "guide.animus.entry.ritual_floral_supremacy",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:compatibility",
+  "sortnum": 15,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Ritual of Floral Supremacy supercharges nearby Botania mana-generating flowers, doubling their production rate as if they were planted on enchanted soil. Requires $(thing)Botania$() to function."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs",
+      "text": "$(bold)Activation:$() 10,000 LP$(br)$(bold)Upkeep:$() 50 LP per flower (configurable)$(br)$(bold)Range:$() 8 blocks (configurable)$(br)$(bold)Interval:$() Every second"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)Generating Flowers:$() All mana-generating flowers in range tick twice per second, effectively doubling their output.$(br2)$(bold)Mana Spreaders:$() Spreaders in range are accelerated to 2x speed using temporal dominance.$(br2)$(italic)Nature's bloom feeds on sacrifice.$()"
+    }
+  ]
+}

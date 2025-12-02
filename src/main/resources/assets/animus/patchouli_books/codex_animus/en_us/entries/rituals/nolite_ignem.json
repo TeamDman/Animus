@@ -1,0 +1,22 @@
+{
+  "name": "guide.animus.entry.ritual_nolite_ignem",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:rituals",
+  "sortnum": 23,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "\"Nolite Ignem\" - Do Not Burn. This ritual continuously extinguishes all fires within its range, protecting your builds from accidental (or intentional) destruction by flame."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs",
+      "text": "$(bold)Activation:$() 5,000 LP$(br)$(bold)LP Cost:$() 10 LP per fire extinguished$(br)$(bold)Range:$() 64 blocks (configurable)$(br)$(bold)Interval:$() Every second"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Coverage",
+      "text": "$(bold)Fire Types:$() Extinguishes both regular fire and soul fire.$(br2)$(bold)Spherical Range:$() The ritual checks all blocks within a sphere, not a cube.$(br2)$(bold)Partial Payment:$() If LP runs low, the ritual will extinguish as many fires as it can afford.$(br2)$(italic)The flames bow to blood's command.$()"
+    }
+  ]
+}
