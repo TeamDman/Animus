@@ -1,0 +1,15 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 0.0,
+  "input0": {
+    "item": "animus:spear_diamond"
+  },
+  "input1": {
+    "item": "bloodmagic:soulgempetty"
+  },
+  "minimumDrain": 0.0,
+  "output": {
+    "item": "animus:spear_sentient",
+    "nbt": "{Damage:0}"
+  }
+}

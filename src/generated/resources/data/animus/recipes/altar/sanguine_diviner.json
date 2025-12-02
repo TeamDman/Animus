@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:altar",
+  "altarSyphon": 2500,
+  "consumptionRate": 5,
+  "drainRate": 1,
+  "input": {
+    "item": "bloodmagic:ritualdiviner"
+  },
+  "output": {
+    "item": "animus:sanguine_diviner"
+  },
+  "upgradeLevel": 1
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Ritual of Entropy",
+  "icon": "minecraft:cobblestone",
+  "category": "animus:rituals",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Reduce all matter to its most basic form. This simple ritual converts any items in a chest directly above it into cobblestone, perfect for clearing unwanted items or generating infinite cobblestone from renewable resources."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs & Details",
+      "text": "$(bold)Activation:$() 1000 LP$(br)$(bold)Refresh:$() 1 LP per item$(br)$(bold)Refresh Time:$() 1 tick$(br2)$(bold)Usage:$() Place a chest 1 block above the Master Ritual Stone. The ritual will convert items in the chest to cobblestone at a rate of 1 item per tick.$(br2)$(bold)Note:$() Cobblestone itself is not converted."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Applications",
+      "text": "Perfect for:$(li)Trash disposal$(li)Converting excess mob drops$(li)Generating cobblestone from mob farms$(li)Clearing inventory of junk items$(br2)$(italic)All things return to dust... or in this case, cobblestone.$()"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 128.0,
+  "input0": {
+    "item": "minecraft:soul_sand"
+  },
+  "input1": {
+    "item": "minecraft:soul_soil"
+  },
+  "input2": {
+    "item": "minecraft:phantom_membrane"
+  },
+  "input3": {
+    "item": "minecraft:totem_of_undying"
+  },
+  "minimumDrain": 256.0,
+  "output": {
+    "item": "animus:reagentfreesoul"
+  }
+}

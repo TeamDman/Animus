@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 64.0,
+  "input0": {
+    "item": "minecraft:sugar"
+  },
+  "input1": {
+    "item": "minecraft:crafting_table"
+  },
+  "input2": {
+    "item": "minecraft:dispenser"
+  },
+  "input3": {
+    "item": "minecraft:bricks"
+  },
+  "minimumDrain": 128.0,
+  "output": {
+    "item": "animus:reagentbuilder"
+  }
+}

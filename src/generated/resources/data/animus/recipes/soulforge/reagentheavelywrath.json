@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 128.0,
+  "input0": {
+    "item": "minecraft:feather"
+  },
+  "input1": {
+    "item": "minecraft:phantom_membrane"
+  },
+  "input2": {
+    "item": "minecraft:shulker_shell"
+  },
+  "input3": {
+    "item": "minecraft:anvil"
+  },
+  "minimumDrain": 256.0,
+  "output": {
+    "item": "animus:reagentheavelywrath"
+  }
+}

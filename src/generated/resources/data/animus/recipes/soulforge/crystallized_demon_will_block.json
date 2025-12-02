@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 1024.0,
+  "input0": {
+    "item": "minecraft:sculk"
+  },
+  "input1": {
+    "item": "bloodmagic:etherealslate"
+  },
+  "input2": {
+    "item": "bloodmagic:weakbloodshard"
+  },
+  "input3": {
+    "item": "minecraft:nether_star"
+  },
+  "minimumDrain": 2048.0,
+  "output": {
+    "item": "animus:crystallized_demon_will_block"
+  }
+}

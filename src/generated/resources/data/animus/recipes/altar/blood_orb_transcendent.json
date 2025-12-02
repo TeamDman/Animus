@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:altar",
+  "altarSyphon": 80000,
+  "consumptionRate": 10,
+  "drainRate": 10,
+  "input": {
+    "item": "animus:crystallized_demon_will_block"
+  },
+  "output": {
+    "item": "animus:blood_orb_transcendent"
+  },
+  "upgradeLevel": 6
+}

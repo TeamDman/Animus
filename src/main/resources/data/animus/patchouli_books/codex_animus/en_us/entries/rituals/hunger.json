@@ -1,0 +1,17 @@
+{
+  "name": "Imperfect Ritual of Hunger",
+  "icon": "minecraft:bone_block",
+  "category": "animus:rituals",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "An imperfect ritual that induces extreme hunger in the user. This ritual drastically reduces your food level, leaving you ravenous.$(br2)$(bold)Setup:$()$(br)Place a Bone Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 500 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect; it activates once and completes immediately. The stone can be reused."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)Activation:$()$(br)Right-click the Imperfect Ritual Stone to:$(li)Set your food level to 1$(li)Set saturation to 10$(li)Play an ominous sound$(li)The stone remains for reuse$(br2)$(bold)Use Cases:$()$(li)Prepare for food-based buffs$(li)Test hunger mechanics$(li)Strategic hunger management$(br2)$(bold)Warning:$() Be prepared with food before activating!$(br2)$(italic)The price of hunger.$()"
+    }
+  ]
+}

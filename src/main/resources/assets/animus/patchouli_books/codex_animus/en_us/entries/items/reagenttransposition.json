@@ -5,19 +5,14 @@
   "sortnum": 25,
   "pages": [
     {
-      "type": "bloodmagic:soulforge",
+      "type": "animus:crafting_soulforge",
+      "heading": "Reagent: Transposition",
       "recipe": "animus:soulforge/reagenttransposition",
-      "text": "Forged in the $(blood)Hellfire Forge$() using teleportation materials: $(item)End Stone$(), $(item)Ender Pearl$(), $(item)Obsidian$(), and $(item)Chest$(). Requires $(will)128 demon will minimum$() and consumes $(will)64 will$()."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "animus:reagenttransposition",
-      "text": "A reagent infused with the essence of teleportation and spatial manipulation. This catalyst can be combined with a $(item)Demon Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_transposition)Sigil of Transposition$()."
+      "text": "A reagent that bends space itself."
     },
     {
       "type": "patchouli:text",
-      "title": "Spatial Mastery",
-      "text": "The Endermen have long mastered the art of moving through space. This reagent channels that power, combining ender essence with storage (the chest) to enable the movement of blocks and entities.$(br2)$(italic)Note the use of Demon Slate - only the most advanced practitioners can wield such power safely.$()"
+      "text": "This catalyst can be combined with a $(item)Demon Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_transposition)Sigil of Transposition$()."
     }
   ]
 }

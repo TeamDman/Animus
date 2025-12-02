@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 64.0,
+  "input0": {
+    "item": "minecraft:iron_pickaxe"
+  },
+  "input1": {
+    "item": "minecraft:iron_pickaxe"
+  },
+  "input2": {
+    "item": "minecraft:iron_pickaxe"
+  },
+  "input3": {
+    "item": "minecraft:iron_pickaxe"
+  },
+  "minimumDrain": 128.0,
+  "output": {
+    "item": "animus:reagentconsumption"
+  }
+}

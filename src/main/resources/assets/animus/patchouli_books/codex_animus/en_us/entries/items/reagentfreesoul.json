@@ -2,22 +2,17 @@
   "name": "Reagent: Free Soul",
   "icon": "animus:reagentfreesoul",
   "category": "animus:items",
-  "sortnum": 28,
+  "sortnum": 12,
   "pages": [
     {
-      "type": "bloodmagic:soulforge",
+      "type": "animus:crafting_soulforge",
+      "heading": "Reagent: Free Soul",
       "recipe": "animus:soulforge/reagentfreesoul",
-      "text": "Forged in the $(blood)Hellfire Forge$() using soul-touched components and a totem of undying. This reagent captures the essence of liberation from mortal bonds."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "animus:reagentfreesoul",
-      "text": "A reagent infused with the essence of liberation and soul manipulation. This catalyst can be combined with a $(item)Demon Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_free_soul)Sigil of the Free Soul$()."
+      "text": "A reagent that liberates the soul."
     },
     {
       "type": "patchouli:text",
-      "title": "Soul Liberation",
-      "text": "Not all bindings are meant to be permanent. This reagent channels the power to release souls from their containers, freeing trapped essences to return to the cycle. A merciful power in the hands of practitioners who understand the sanctity of the soul."
+      "text": "This catalyst can be combined with an $(item)Infused Slate$() in an Alchemy Array to create the $(l:animus:sigil_free_soul)Sigil of the Free Soul$()."
     }
   ]
 }

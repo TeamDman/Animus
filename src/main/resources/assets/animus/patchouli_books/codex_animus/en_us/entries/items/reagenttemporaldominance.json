@@ -1,0 +1,18 @@
+{
+  "name": "Reagent: Temporal Dominance",
+  "icon": "animus:reagenttemporaldominance",
+  "category": "animus:items",
+  "sortnum": 16,
+  "pages": [
+    {
+      "type": "animus:crafting_soulforge",
+      "heading": "Reagent: Temporal Dominance",
+      "recipe": "animus:soulforge/reagenttemporaldominance",
+      "text": "A reagent that bends time itself."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "This catalyst can be combined with a $(item)Demon Slate$() in an Alchemy Array to create the $(l:animus:sigil_temporal_dominance)Sigil of Temporal Dominance$()."
+    }
+  ]
+}

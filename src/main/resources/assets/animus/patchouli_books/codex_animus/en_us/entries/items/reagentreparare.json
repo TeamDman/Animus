@@ -2,22 +2,17 @@
   "name": "Reagent: Reparare",
   "icon": "animus:reagentreparare",
   "category": "animus:items",
-  "sortnum": 31,
+  "sortnum": 15,
   "pages": [
     {
-      "type": "bloodmagic:soulforge",
+      "type": "animus:crafting_soulforge",
+      "heading": "Reagent: Reparare",
       "recipe": "animus:soulforge/reagentreparare",
-      "text": "Forged in the $(blood)Hellfire Forge$() using tools of repair and precious materials. Anvils, grindstones, and diamonds embody the concept of restoration."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "animus:reagentreparare",
-      "text": "A reagent infused with the essence of repair and restoration. This catalyst can be combined with an $(item)Imbued Slate$() in an Alchemy Array to create the $(l:animus:sigil_reparare)Sigil: Reparare$()."
+      "text": "A reagent with restorative essence."
     },
     {
       "type": "patchouli:text",
-      "title": "Mending Magic",
-      "text": "All things break and decay with time. This reagent channels blood magic's capacity to reverse entropy, restoring damaged items to their former glory. The resulting sigil can repair even the most worn tools and armor."
+      "text": "This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigil_reparare)Sigil of Reparare$()."
     }
   ]
 }

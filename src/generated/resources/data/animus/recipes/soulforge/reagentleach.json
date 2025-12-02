@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 32.0,
+  "input0": {
+    "item": "minecraft:nether_wart"
+  },
+  "input1": {
+    "item": "minecraft:crimson_fungus"
+  },
+  "input2": {
+    "tag": "minecraft:saplings"
+  },
+  "input3": {
+    "item": "minecraft:vine"
+  },
+  "minimumDrain": 64.0,
+  "output": {
+    "item": "animus:reagentleach"
+  }
+}

@@ -4,7 +4,7 @@
   "icon": "animus:sigil_heavenly_wrath",
   "pages": [
     {
-      "type": "bloodmagic:array",
+      "type": "animus:crafting_array",
       "recipe": "animus:array/sigil_heavenly_wrath",
       "text": "Created using an $(blood)Alchemy Array$() by combining a $(l:animus:items/reagentheavelywrath)Reagent: Heavenly Wrath$() with a $(item)Demon Slate$(). The reagent must first be forged in the Hellfire Forge."
     },

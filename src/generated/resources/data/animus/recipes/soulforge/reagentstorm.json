@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 32.0,
+  "input0": {
+    "item": "minecraft:sand"
+  },
+  "input1": {
+    "item": "minecraft:water_bucket"
+  },
+  "input2": {
+    "item": "minecraft:fishing_rod"
+  },
+  "input3": {
+    "item": "minecraft:ghast_tear"
+  },
+  "minimumDrain": 64.0,
+  "output": {
+    "item": "animus:reagentstorm"
+  }
+}

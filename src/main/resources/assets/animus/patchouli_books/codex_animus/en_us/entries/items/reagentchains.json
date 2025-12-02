@@ -5,19 +5,14 @@
   "sortnum": 21,
   "pages": [
     {
-      "type": "bloodmagic:soulforge",
+      "type": "animus:crafting_soulforge",
+      "heading": "Reagent: Chains",
       "recipe": "animus:soulforge/reagentchains",
-      "text": "Forged in the $(blood)Hellfire Forge$() using binding materials: $(item)Iron Bars$(), $(item)Ender Pearl$(), $(item)Glass Bottle$(), and $(item)End Stone$(). Requires $(will)128 demon will minimum$() and consumes $(will)64 will$()."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "animus:reagentchains",
-      "text": "A reagent infused with the essence of binding and entrapment. This catalyst can be combined with an $(item)Imbued Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_chains)Sigil of the Phantom Chain$()."
+      "text": "A reagent bound with spectral chains."
     },
     {
       "type": "patchouli:text",
-      "title": "Crafting Chain",
-      "text": "$(bold)Step 1:$() Forge this reagent in the Hellfire Forge$(br2)$(bold)Step 2:$() Create an Alchemy Array using Arcane Ash$(br2)$(bold)Step 3:$() Right-click the reagent onto the array$(br2)$(bold)Step 4:$() Right-click an Imbued Slate onto the array to complete the transformation"
+      "text": "This catalyst can be combined with an $(item)Imbued Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_chains)Sigil of the Phantom Chain$()."
     }
   ]
 }

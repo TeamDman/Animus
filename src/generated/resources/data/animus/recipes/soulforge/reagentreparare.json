@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 64.0,
+  "input0": {
+    "item": "minecraft:anvil"
+  },
+  "input1": {
+    "item": "minecraft:diamond"
+  },
+  "input2": {
+    "item": "minecraft:iron_ingot"
+  },
+  "input3": {
+    "item": "minecraft:grindstone"
+  },
+  "minimumDrain": 128.0,
+  "output": {
+    "item": "animus:reagentreparare"
+  }
+}

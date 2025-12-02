@@ -2,22 +2,17 @@
   "name": "Reagent: Equivalency",
   "icon": "animus:reagentequivalency",
   "category": "animus:items",
-  "sortnum": 27,
+  "sortnum": 11,
   "pages": [
     {
-      "type": "bloodmagic:soulforge",
+      "type": "animus:crafting_soulforge",
+      "heading": "Reagent: Equivalency",
       "recipe": "animus:soulforge/reagentequivalency",
-      "text": "Forged in the $(blood)Hellfire Forge$() using valuable materials: $(item)Purple Dye$(), $(item)Diamond$(), $(item)Emerald$(), and $(item)Block of Quartz$(). These precious materials embody the principle of equivalent exchange."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "animus:reagentequivalency",
-      "text": "A reagent infused with the principle of equivalent exchange. This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigil_equivalency)Sigil of Equivalency$()."
+      "text": "A reagent embodying equal exchange."
     },
     {
       "type": "patchouli:text",
-      "title": "Alchemy Principle",
-      "text": "The law of equivalent exchange states that to obtain something, something of equal value must be given. This reagent embodies that fundamental alchemical truth, allowing the transformation of materials while maintaining universal balance."
+      "text": "This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigil_equivalency)Sigil of Equivalency$()."
     }
   ]
 }

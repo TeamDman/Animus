@@ -2,22 +2,17 @@
   "name": "Reagent: Boundless Nature",
   "icon": "animus:reagentboundlessnature",
   "category": "animus:items",
-  "sortnum": 26,
+  "sortnum": 10,
   "pages": [
     {
-      "type": "bloodmagic:soulforge",
+      "type": "animus:crafting_soulforge",
+      "heading": "Reagent: Boundless Nature",
       "recipe": "animus:soulforge/reagentboundlessnature",
-      "text": "Forged in the $(blood)Hellfire Forge$() using nature-aligned components. This reagent captures the boundless essence of growth and life."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "animus:reagentboundlessnature",
-      "text": "A reagent infused with the boundless essence of nature and mana. This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigil_boundless_nature)Sigil of Boundless Nature$()."
+      "text": "A reagent infused with natural mana."
     },
     {
       "type": "patchouli:text",
-      "title": "Philosophy",
-      "text": "This reagent bridges two magical systems - Blood Magic's Life Essence and Botania's mana. When forged into a sigil, it creates a conduit that allows practitioners to seamlessly convert between these two fundamental forces of magic."
+      "text": "This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigil_boundless_nature)Sigil of Boundless Nature$()."
     }
   ]
 }

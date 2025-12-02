@@ -5,19 +5,14 @@
   "sortnum": 20,
   "pages": [
     {
-      "type": "bloodmagic:soulforge",
+      "type": "animus:crafting_soulforge",
+      "heading": "Reagent: Builder",
       "recipe": "animus:soulforge/reagentbuilder",
-      "text": "Forged in the $(blood)Hellfire Forge$() using construction-themed materials: $(item)Sugar$(), $(item)Crafting Table$(), $(item)Dispenser$(), and $(item)Bricks$(). Requires $(will)128 demon will minimum$() and consumes $(will)64 will$()."
-    },
-    {
-      "type": "patchouli:spotlight",
-      "item": "animus:reagentbuilder",
-      "text": "A reagent infused with the essence of construction and rapid building. This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_builder)Sigil of the Fast Builder$()."
+      "text": "A reagent infused with constructive energy."
     },
     {
       "type": "patchouli:text",
-      "title": "Crafting Chain",
-      "text": "$(bold)Step 1:$() Forge this reagent in the Hellfire Forge$(br2)$(bold)Step 2:$() Create an Alchemy Array using Arcane Ash$(br2)$(bold)Step 3:$() Right-click the reagent onto the array$(br2)$(bold)Step 4:$() Right-click a Reinforced Slate onto the array to complete the transformation"
+      "text": "This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_builder)Sigil of the Fast Builder$()."
     }
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:altar",
+  "altarSyphon": 2000,
+  "consumptionRate": 5,
+  "drainRate": 1,
+  "input": {
+    "item": "botania:endoflame"
+  },
+  "output": {
+    "item": "animus:diabolical_fungi"
+  },
+  "upgradeLevel": 2
+}

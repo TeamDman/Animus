@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 512.0,
+  "input0": {
+    "item": "minecraft:echo_shard"
+  },
+  "input1": {
+    "item": "minecraft:clock"
+  },
+  "input2": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "input3": {
+    "item": "minecraft:chorus_fruit"
+  },
+  "minimumDrain": 1024.0,
+  "output": {
+    "item": "animus:reagenttemporaldominance"
+  }
+}

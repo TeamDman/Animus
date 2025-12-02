@@ -17,7 +17,10 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import java.util.function.Consumer;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -150,5 +153,15 @@ public class ItemSpear extends TridentItem {
         }
         // Allow all enchantments that TridentItem allows
         return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return com.teamdman.animus.client.renderers.SpearItemRenderer.INSTANCE;
+            }
+        });
     }
 }

@@ -135,10 +135,7 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
         return isActive;
     }
 
-    // ===========================================
-    // Botania Mana Receiver Implementation
-    // ===========================================
-
+    // Botania Mana Receiver Implementation...
     @Override
     public Level getManaReceiverLevel() {
         return level;
@@ -187,13 +184,10 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
 
     @Override
     public void setColor(Optional<net.minecraft.world.item.DyeColor> color) {
-        // No-op - this rune doesn't support color customization
+        //nah fam we good
     }
 
-    // ===========================================
-    // Botania Spark Attachable Implementation
-    // ===========================================
-
+    // Botania Spark Attachable Implementation.. Why not? sparks are cool.
     @Override
     public boolean canAttachSpark(ItemStack stack) {
         return true; // Allow sparks to be attached
@@ -219,10 +213,6 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
         return false; // Allow continuous mana transfer from spark network
     }
 
-    // ===========================================
-    // Forge Capabilities
-    // ===========================================
-
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -235,10 +225,6 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
         return super.getCapability(cap, side);
     }
 
-    // ===========================================
-    // Lifecycle Methods
-    // ===========================================
-
     @Override
     public void setRemoved() {
         super.setRemoved();
@@ -249,10 +235,6 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
                 .fireManaNetworkEvent(this, ManaBlockType.POOL, ManaNetworkAction.REMOVE);
         }
     }
-
-    // ===========================================
-    // NBT Serialization
-    // ===========================================
 
     @Override
     public void load(CompoundTag tag) {

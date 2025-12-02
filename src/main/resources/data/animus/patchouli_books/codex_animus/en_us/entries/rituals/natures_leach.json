@@ -1,0 +1,22 @@
+{
+  "name": "Ritual of Nature's Leach",
+  "icon": "minecraft:oak_sapling",
+  "category": "animus:rituals",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Drain the life force from plants to fill your Blood Altar. This ritual scans for plant matter and consumes it, converting organic energy into Life Essence."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs & Details",
+      "text": "$(bold)Activation:$() 3000 LP$(br)$(bold)Refresh:$() 10 LP$(br)$(bold)Refresh Time:$() 80 ticks (configurable), faster with less $(will)Corrosive Will$()$(br2)$(bold)Effect Range:$() 32 blocks radius; configurable$(br)$(bold)Altar Range:$() Searches 32 blocks horizontally (±10 blocks vertically)$(br2)Consumes 1-3 plants per cycle, generating 50 LP (configurable) per plant consumed. Altar location is cached for performance."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Will Generation",
+      "text": "$(bold)Demon Will:$() This ritual generates $(will)Corrosive Will$() as it consumes plants.$(br2)$(li)0.5-1.5 will per plant$(li)Max 100 will in the area$(br2)$(bold)Speed:$() More corrosive will = slower operation. Clear will to speed up the ritual.$(br2)Perfect for automated LP generation from tree farms!"
+    }
+  ]
+}
