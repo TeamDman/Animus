@@ -42,7 +42,10 @@ public class RitualRelentlessTides extends Ritual {
     // Track current search position for each ritual to resume searching where we left off
     private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
 
-    // Amount of fluid to extract/place per operation (1 bucket = 1000mB)
+    // Cache of filled positions to skip redundant checks
+    private static final Map<BlockPos, Set<BlockPos>> filledPositionsCache = new HashMap<>();
+
+    // Amount of fluid to extract/place per operation
     private static final int BUCKET_AMOUNT = 1000;
 
     public RitualRelentlessTides() {
@@ -77,16 +80,30 @@ public class RitualRelentlessTides extends Ritual {
             return;
         }
 
-        // Get fluid handler capability
-        IFluidHandler fluidHandler = tankEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN).orElse(null);
-        if (fluidHandler == null) {
+        // Get fluid handler capability with error handling
+        IFluidHandler fluidHandler;
+        try {
+            fluidHandler = tankEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN).orElse(null);
+            if (fluidHandler == null) {
+                emitSmokeParticles(serverLevel, masterPos);
+                return;
+            }
+        } catch (Exception e) {
+            // Handle capability errors (in case the tank is removed)
             emitSmokeParticles(serverLevel, masterPos);
             return;
         }
 
-        // Try to extract a bucket's worth of fluid (simulate first)
-        FluidStack extractedFluid = fluidHandler.drain(BUCKET_AMOUNT, IFluidHandler.FluidAction.SIMULATE);
-        if (extractedFluid.isEmpty() || extractedFluid.getAmount() < BUCKET_AMOUNT) {
+        // Try to extract fluid by simulation first
+        FluidStack extractedFluid;
+        try {
+            extractedFluid = fluidHandler.drain(BUCKET_AMOUNT, IFluidHandler.FluidAction.SIMULATE);
+            if (extractedFluid.isEmpty() || extractedFluid.getAmount() < BUCKET_AMOUNT) {
+                emitSmokeParticles(serverLevel, masterPos);
+                return;
+            }
+        } catch (Exception e) {
+            // Handle any drain errors
             emitSmokeParticles(serverLevel, masterPos);
             return;
         }
@@ -94,7 +111,8 @@ public class RitualRelentlessTides extends Ritual {
         // Find a valid placement position below the ritual stone
         int horizontalRadius = AnimusConfig.rituals.relentlessTidesRange.get();
         int verticalDepth = AnimusConfig.rituals.relentlessTidesDepth.get();
-        BlockPos placementPos = findValidPlacementPosition(serverLevel, masterPos, horizontalRadius, verticalDepth);
+        Fluid fluidToPlace = extractedFluid.getFluid();
+        BlockPos placementPos = findValidPlacementPosition(serverLevel, masterPos, horizontalRadius, verticalDepth, fluidToPlace);
 
         if (placementPos == null) {
             // No valid placement found, emit smoke
@@ -111,8 +129,14 @@ public class RitualRelentlessTides extends Ritual {
         }
 
         // Actually extract the fluid
-        FluidStack actualExtracted = fluidHandler.drain(BUCKET_AMOUNT, IFluidHandler.FluidAction.EXECUTE);
-        if (actualExtracted.isEmpty() || actualExtracted.getAmount() < BUCKET_AMOUNT) {
+        FluidStack actualExtracted;
+        try {
+            actualExtracted = fluidHandler.drain(BUCKET_AMOUNT, IFluidHandler.FluidAction.EXECUTE);
+            if (actualExtracted.isEmpty() || actualExtracted.getAmount() < BUCKET_AMOUNT) {
+                return;
+            }
+        } catch (Exception e) {
+            // Handle extraction errors
             return;
         }
 
@@ -125,6 +149,13 @@ public class RitualRelentlessTides extends Ritual {
             BlockState fluidState = fluidBlock.defaultBlockState();
             level.setBlockAndUpdate(placementPos, fluidState);
 
+            // Add to cache to skip this position in future searches
+            Set<BlockPos> filledPositions = filledPositionsCache.computeIfAbsent(
+                masterPos.immutable(),
+                k -> new java.util.HashSet<>()
+            );
+            filledPositions.add(placementPos.immutable());
+
             // Consume LP
             network.syphon(new SoulTicket(
                 Component.translatable(Constants.Localizations.Text.TICKET_RELENTLESS_TIDES),
@@ -134,88 +165,78 @@ public class RitualRelentlessTides extends Ritual {
     }
 
     /**
-     * Find a valid position to place fluid using an optimized perimeter-based search
-     * Searches in expanding square rings starting from below the ritual stone
-     * Also searches vertically downward in each column
+     * Find a valid position to place fluid and place it
      */
-    private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth) {
+    private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth, Fluid fluidToPlace) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
         // Start position is below the master ritual stone
         BlockPos startPos = masterPos.below();
 
         // Resume search from where we left off
-        int startRing = state.currentRing;
+        int startX = state.currentX;
+        int startZ = state.currentZ;
+        int startY = state.currentY;
         int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
         int checksThisTick = 0;
 
-        // Search in expanding square rings
-        for (int ring = startRing; ring <= horizontalRadius && checksThisTick < maxChecksPerTick; ring++) {
-            state.currentRing = ring;
-
-            if (ring == 0) {
-                // Check the center column (vertically downward)
-                for (int y = 0; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
-                    BlockPos checkPos = startPos.below(y);
+        // DFS: Search each column fully (vertically) before moving horizontally
+        for (int x = startX; x <= horizontalRadius && checksThisTick < maxChecksPerTick; x++) {
+            for (int z = (x == startX ? startZ : -horizontalRadius); z <= horizontalRadius && checksThisTick < maxChecksPerTick; z++) {
+                // Search vertically down this column
+                for (int y = (x == startX && z == startZ ? startY : 0); y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
+                    BlockPos checkPos = startPos.offset(x, -y, z);
                     checksThisTick++;
-                    if (isValidPlacementSpot(level, checkPos)) {
-                        resetSearchState(masterPos);
+
+                    // Update search state to resume from here next tick
+                    state.currentX = x;
+                    state.currentZ = z;
+                    state.currentY = y;
+
+                    if (isValidPlacementSpot(level, checkPos, fluidToPlace, masterPos)) {
+                        // Advance to next position for next search
+                        state.currentY++;
+                        if (state.currentY >= verticalDepth) {
+                            state.currentY = 0;
+                            state.currentZ++;
+                            if (state.currentZ > horizontalRadius) {
+                                state.currentZ = -horizontalRadius;
+                                state.currentX++;
+                            }
+                        }
                         return checkPos;
                     }
                 }
-                continue;
+                // Column complete, move to next Z
+                state.currentY = 0;
             }
-
-            // Check the perimeter of the current ring (with vertical depth)
-            // This creates a square pattern expanding outward
-            for (int x = -ring; x <= ring && checksThisTick < maxChecksPerTick; x++) {
-                for (int z = -ring; z <= ring && checksThisTick < maxChecksPerTick; z++) {
-                    // Only check perimeter blocks (not interior)
-                    if (Math.abs(x) != ring && Math.abs(z) != ring) {
-                        continue;
-                    }
-
-                    // For each perimeter position, check vertically downward
-                    for (int y = 0; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
-                        BlockPos checkPos = startPos.offset(x, -y, z);
-                        checksThisTick++;
-
-                        if (isValidPlacementSpot(level, checkPos)) {
-                            resetSearchState(masterPos);
-                            return checkPos;
-                        }
-                    }
-                }
-            }
+            // Row complete, move to next X
+            state.currentZ = -horizontalRadius;
         }
 
         // If we've searched the entire range, reset to start over next tick
-        if (state.currentRing > horizontalRadius) {
+        if (state.currentX > horizontalRadius) {
             resetSearchState(masterPos);
         }
 
         return null;
     }
 
-    /**
-     * Check if a position is valid for placing fluid
-     * Valid positions are: air, replaceable blocks, or existing fluid of lower level
-     */
-    private boolean isValidPlacementSpot(ServerLevel level, BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
 
-        // Check if it's air or replaceable
-        if (state.isAir() || state.canBeReplaced()) {
-            // Also check that there's a solid block below to prevent infinite falling fluids
-            BlockState below = level.getBlockState(pos.below());
-            return !below.isAir() && below.getFluidState().isEmpty();
+    // Check if a position is valid for placing fluid
+    private boolean isValidPlacementSpot(ServerLevel level, BlockPos pos, Fluid fluidToPlace, BlockPos masterPos) {
+        // Check cache first
+        Set<BlockPos> filledPositions = filledPositionsCache.get(masterPos);
+        if (filledPositions != null && filledPositions.contains(pos)) {
+            return false;
         }
 
-        // Check if it's existing fluid that we can replace (flowing fluid)
+        BlockState state = level.getBlockState(pos);
         FluidState fluidState = state.getFluidState();
-        if (!fluidState.isEmpty()) {
-            // Only replace flowing fluids, not source blocks
-            return !fluidState.isSource();
+
+        // Don't place if it's already a source block of the same fluid type
+        if (!fluidState.isEmpty() && fluidState.isSource() && fluidState.getType() == fluidToPlace) {
+            return false;
         }
 
         return false;
@@ -249,10 +270,11 @@ public class RitualRelentlessTides extends Ritual {
     }
 
     /**
-     * Clean up search state when ritual stops
+     * Clean up search state and cache when ritual stops
      */
     public void onRitualStopped(Level level, BlockPos masterPos) {
         searchStates.remove(masterPos);
+        filledPositionsCache.remove(masterPos);
     }
 
     @Override
@@ -267,9 +289,6 @@ public class RitualRelentlessTides extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Create a water-themed pattern for fluid manipulation
-        // Water runes represent fluid control
-        // Air runes represent flow and movement
 
         // Inner circle with water runes (cardinal directions)
         addRune(components, 0, 0, -2, EnumRuneType.WATER);
@@ -295,10 +314,10 @@ public class RitualRelentlessTides extends Ritual {
         return new RitualRelentlessTides();
     }
 
-    /**
-     * Track the search state for each ritual to resume where it left off
-     */
+    // Track the search state for each ritual to resume where it left off
     private static class SearchState {
-        int currentRing = 0;
+        int currentY = 0;
+        int currentX = 0;
+        int currentZ = 0;
     }
 }
