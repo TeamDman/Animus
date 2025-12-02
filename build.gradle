@@ -173,6 +173,9 @@ dependencies {
 
     // The One Probe - for debugging in dev environment only (not required in production)
     runtimeOnly fg.deobf("curse.maven:the-one-probe-245211:6106996")
+
+    // Tank Null - dev utility mod for testing with working tanks
+    runtimeOnly fg.deobf("curse.maven:tank-null-361246:5664234")
 }
 
 tasks.named('processResources', ProcessResources).configure {

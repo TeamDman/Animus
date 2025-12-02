@@ -76,6 +76,7 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue siphonRange;
         public final ForgeConfigSpec.IntValue siphonDepth;
         public final ForgeConfigSpec.IntValue siphonLPPerExtraction;
+        public final ForgeConfigSpec.ConfigValue<String> siphonReplacementBlock;
         public final ForgeConfigSpec.IntValue sourceVitaeumAltarRange;
         public final ForgeConfigSpec.IntValue sourceVitaeumBaseConversion;
         public final ForgeConfigSpec.IntValue sourceVitaeumPenaltyRadius;
@@ -201,6 +202,15 @@ public class AnimusConfig {
             siphonLPPerExtraction = builder
                 .comment("LP cost per fluid block extracted by Ritual of Siphon")
                 .defineInRange("siphonLPPerExtraction", 50, 1, 1000);
+
+            siphonReplacementBlock = builder
+                .comment(
+                    "Block to place where fluid is extracted by Ritual of Siphon",
+                    "Use format: modid:blockname",
+                    "Examples: animus:block_antilife, minecraft:stone, minecraft:cobblestone",
+                    "Default: animus:block_antilife"
+                )
+                .define("siphonReplacementBlock", "animus:block_antilife");
 
             sourceVitaeumAltarRange = builder
                 .comment("Radius in blocks to search for Blood Altars for Ritual of Source Vitaeum")
