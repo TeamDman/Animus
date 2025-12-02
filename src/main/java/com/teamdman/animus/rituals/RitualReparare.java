@@ -143,18 +143,18 @@ public class RitualReparare extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Create a cross pattern with water runes
+        addRune(components, -1, 0, -1, EnumRuneType.EARTH);
+        addRune(components, -1, 0, 0, EnumRuneType.WATER);
+        addRune(components, -1, 0, 1, EnumRuneType.EARTH);
         addRune(components, 0, 0, -1, EnumRuneType.WATER);
         addRune(components, 0, 0, 1, EnumRuneType.WATER);
-        addRune(components, -1, 0, 0, EnumRuneType.WATER);
-        addRune(components, 1, 0, 0, EnumRuneType.WATER);
-
-        // Corner runes for stability
-        addRune(components, -1, 0, -1, EnumRuneType.EARTH);
-        addRune(components, -1, 0, 1, EnumRuneType.EARTH);
         addRune(components, 1, 0, -1, EnumRuneType.EARTH);
+        addRune(components, 1, 0, 0, EnumRuneType.WATER);
         addRune(components, 1, 0, 1, EnumRuneType.EARTH);
+        addRune(components, -1, 1, 1, EnumRuneType.AIR);
+        addRune(components, 1, 1, -1, EnumRuneType.AIR);
     }
+
 
     @Override
     public Ritual getNewCopy() {

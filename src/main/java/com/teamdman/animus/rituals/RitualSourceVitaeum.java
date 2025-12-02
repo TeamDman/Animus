@@ -168,21 +168,32 @@ public class RitualSourceVitaeum extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Small footprint ritual - 3x3 pattern with Dusk runes (representing transmutation)
-        // and Earth runes (representing grounding/stability)
-
-        // Inner cross with Dusk runes (transmutation)
-        addRune(components, 0, 0, -1, EnumRuneType.DUSK);
-        addRune(components, 0, 0, 1, EnumRuneType.DUSK);
-        addRune(components, -1, 0, 0, EnumRuneType.DUSK);
-        addRune(components, 1, 0, 0, EnumRuneType.DUSK);
-
-        // Corners with Earth runes (stability)
-        addRune(components, -1, 0, -1, EnumRuneType.EARTH);
-        addRune(components, -1, 0, 1, EnumRuneType.EARTH);
-        addRune(components, 1, 0, -1, EnumRuneType.EARTH);
-        addRune(components, 1, 0, 1, EnumRuneType.EARTH);
+        addRune(components, -2, 0, -1, EnumRuneType.AIR);
+        addRune(components, -2, 0, 1, EnumRuneType.AIR);
+        addRune(components, -1, 0, -2, EnumRuneType.AIR);
+        addRune(components, -1, 0, -1, EnumRuneType.AIR);
+        addRune(components, -1, 0, 0, EnumRuneType.WATER);
+        addRune(components, -1, 0, 1, EnumRuneType.AIR);
+        addRune(components, -1, 0, 2, EnumRuneType.AIR);
+        addRune(components, 0, 0, -1, EnumRuneType.FIRE);
+        addRune(components, 0, 0, 1, EnumRuneType.AIR);
+        addRune(components, 1, 0, -2, EnumRuneType.AIR);
+        addRune(components, 1, 0, -1, EnumRuneType.AIR);
+        addRune(components, 1, 0, 0, EnumRuneType.EARTH);
+        addRune(components, 1, 0, 1, EnumRuneType.AIR);
+        addRune(components, 1, 0, 2, EnumRuneType.AIR);
+        addRune(components, 2, 0, -1, EnumRuneType.AIR);
+        addRune(components, 2, 0, 1, EnumRuneType.AIR);
+        addRune(components, -2, 1, -1, EnumRuneType.WATER);
+        addRune(components, -2, 1, 1, EnumRuneType.WATER);
+        addRune(components, -1, 1, -2, EnumRuneType.FIRE);
+        addRune(components, -1, 1, 2, EnumRuneType.AIR);
+        addRune(components, 1, 1, -2, EnumRuneType.FIRE);
+        addRune(components, 1, 1, 2, EnumRuneType.AIR);
+        addRune(components, 2, 1, -1, EnumRuneType.EARTH);
+        addRune(components, 2, 1, 1, EnumRuneType.EARTH);
     }
+
 
     @Override
     public Ritual getNewCopy() {
