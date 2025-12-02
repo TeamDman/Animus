@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  * Activation Cost: 5000 LP
  * Refresh Cost: Configurable (default: 50 LP per damage point repaired)
  * Refresh Time: Configurable (default: 100 ticks / 5 seconds)
- * Repair Amount: Configurable (default: 1 damage per item per interval)
+ * Repair Amount: 20% of item's max durability per cycle
  */
 @RitualRegister(Constants.Rituals.REPARARE)
 public class RitualReparare extends Ritual {
@@ -67,7 +67,6 @@ public class RitualReparare extends Ritual {
         }
 
         // Get config values
-        int repairAmount = AnimusConfig.rituals.reparareRitualRepairAmount.get();
         int lpPerDamage = AnimusConfig.rituals.reparareRitualLPPerDamage.get();
 
         // Track total LP cost for this cycle
@@ -98,7 +97,9 @@ public class RitualReparare extends Ritual {
                 continue;
             }
 
-            // Calculate how much to repair
+            // Calculate how much to repair (20% of max durability)
+            int maxDurability = stack.getMaxDamage();
+            int repairAmount = (int) Math.ceil(maxDurability * 0.20);
             int currentDamage = stack.getDamageValue();
             int actualRepairAmount = Math.min(repairAmount, currentDamage);
 
@@ -143,17 +144,28 @@ public class RitualReparare extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
+        addRune(components, -2, -1, 0, EnumRuneType.WATER);
+        addRune(components, 0, -1, -2, EnumRuneType.WATER);
+        addRune(components, 0, -1, 2, EnumRuneType.WATER);
+        addRune(components, 2, -1, 0, EnumRuneType.WATER);
+        addRune(components, -2, 0, 0, EnumRuneType.WATER);
         addRune(components, -1, 0, -1, EnumRuneType.EARTH);
         addRune(components, -1, 0, 0, EnumRuneType.WATER);
-        addRune(components, -1, 0, 1, EnumRuneType.EARTH);
+        addRune(components, -1, 0, 1, EnumRuneType.FIRE);
+        addRune(components, 0, 0, -2, EnumRuneType.WATER);
         addRune(components, 0, 0, -1, EnumRuneType.WATER);
         addRune(components, 0, 0, 1, EnumRuneType.WATER);
-        addRune(components, 1, 0, -1, EnumRuneType.EARTH);
+        addRune(components, 0, 0, 2, EnumRuneType.WATER);
+        addRune(components, 1, 0, -1, EnumRuneType.AIR);
         addRune(components, 1, 0, 0, EnumRuneType.WATER);
         addRune(components, 1, 0, 1, EnumRuneType.EARTH);
-        addRune(components, -1, 1, 1, EnumRuneType.AIR);
-        addRune(components, 1, 1, -1, EnumRuneType.AIR);
+        addRune(components, 2, 0, 0, EnumRuneType.WATER);
+        addRune(components, -2, 2, 0, EnumRuneType.WATER);
+        addRune(components, 0, 2, -2, EnumRuneType.AIR);
+        addRune(components, 0, 2, 2, EnumRuneType.FIRE);
+        addRune(components, 2, 2, 0, EnumRuneType.EARTH);
     }
+
 
 
     @Override

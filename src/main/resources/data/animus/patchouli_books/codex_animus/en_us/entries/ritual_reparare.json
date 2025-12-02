@@ -10,7 +10,7 @@
     {
       "type": "patchouli:text",
       "title": "How It Works",
-      "text": "Place a chest or any inventory directly above the master ritual stone. The ritual will periodically scan the inventory and repair damaged items.$(br2)Default Settings:$(br)- Repairs 1 damage per item per cycle$(br)- Runs every 5 seconds (100 ticks)$(br)- Costs 50 LP per damage point repaired"
+      "text": "Place a chest or any inventory directly above the master ritual stone. The ritual will periodically scan the inventory and repair damaged items.$(br2)Repair Rate:$(br)- Repairs 20% of each item's maximum durability per cycle$(br)- Example: Diamond pickaxe (1561 durability) repairs 313 points/cycle$(br)- Runs every 5 seconds (100 ticks)$(br)- Costs 50 LP per damage point repaired"
     },
     {
       "type": "patchouli:text",
@@ -20,7 +20,7 @@
     {
       "type": "patchouli:text",
       "title": "Configuration",
-      "text": "The Ritual of Reparare can be configured via the server config:$(br)- Repair Amount: Max damage repaired per item per cycle (default: 1)$(br)- Repair Interval: Ticks between repairs (default: 100 / 5 seconds)$(br)- LP Cost: LP per damage point repaired (default: 50)$(br2)Activation Cost: 5000 LP"
+      "text": "The Ritual of Reparare can be configured via the server config:$(br)- Repair Interval: Ticks between repairs (default: 100 / 5 seconds)$(br)- LP Cost: LP per damage point repaired (default: 50)$(br2)Repair Amount: Fixed at 20% of max durability$(br2)Activation Cost: 5000 LP"
     },
     {
       "type": "patchouli:ritual",
