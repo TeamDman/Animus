@@ -137,10 +137,10 @@ public class RitualLuna extends Ritual {
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
         for (int layer = 0; layer < 3; layer++) {
-            addRune(components, 2, layer, 2, EnumRuneType.DUSK);
-            addRune(components, -2, layer, 2, EnumRuneType.DUSK);
-            addRune(components, 2, layer, -2, EnumRuneType.DUSK);
-            addRune(components, -2, layer, -2, EnumRuneType.DUSK);
+            addRune(components, 2, layer, 2, EnumRuneType.EARTH);
+            addRune(components, -2, layer, 2, EnumRuneType.EARTH);
+            addRune(components, 2, layer, -2, EnumRuneType.EARTH);
+            addRune(components, -2, layer, -2, EnumRuneType.EARTH);
         }
     }
 
