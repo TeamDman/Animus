@@ -1,28 +1,34 @@
 package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.Constants;
+import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import wayoftime.bloodmagic.core.living.ILivingContainer;
 import wayoftime.bloodmagic.core.living.LivingStats;
 import wayoftime.bloodmagic.core.living.LivingUpgrade;
 
+import java.util.UUID;
+
 /**
  * Arcane Channeling - Living Armor upgrade tree for spellcasters
  *
- * Current implementation:
+ * Level 1: 5% mana cost reduction
+ * Level 2: 10% mana cost reduction (total)
+ * Level 3: 5% cooldown reduction
+ * Level 4: 10% cooldown reduction (total)
  * Level 5: Casting grants brief damage resistance (Resistance I for 2 seconds)
- *
- * Planned features (require mixins to implement):
- * Level 1-2: Mana cost reduction
- * Level 3-4: Cooldown reduction and armor synergy
  */
 public class UpgradeArcaneChanneling extends LivingUpgrade {
 
@@ -30,6 +36,10 @@ public class UpgradeArcaneChanneling extends LivingUpgrade {
         Constants.Mod.MODID,
         "upgrade.arcane_channeling"
     );
+
+    // UUID for our cooldown reduction attribute modifier
+    private static final UUID COOLDOWN_MODIFIER_UUID = UUID.fromString("a8e7f5c3-9d4b-4e2a-b1c6-3f8d9e0a2b5c");
+    private static final String COOLDOWN_MODIFIER_NAME = "Arcane Channeling Cooldown Reduction";
 
     public UpgradeArcaneChanneling() {
         super(KEY, levels -> {
@@ -62,37 +72,70 @@ public class UpgradeArcaneChanneling extends LivingUpgrade {
     }
 
     /**
-     * Reduce mana cost based on upgrade level
-     * Levels 1-2: Progressive mana cost reduction
+     * Calculate mana cost reduction percentage based on upgrade level
+     * Level 1: 5%, Level 2: 10%
+     */
+    private double getManaCostReduction(int upgradeLevel) {
+        if (upgradeLevel >= 2) {
+            return 0.10; // 10% reduction
+        } else if (upgradeLevel >= 1) {
+            return 0.05; // 5% reduction
+        }
+        return 0.0;
+    }
+
+    /**
+     * Calculate cooldown reduction percentage based on upgrade level
+     * Level 3: 5%, Level 4: 10%
+     */
+    private double getCooldownReduction(int upgradeLevel) {
+        if (upgradeLevel >= 4) {
+            return 0.10; // 10% reduction
+        } else if (upgradeLevel >= 3) {
+            return 0.05; // 5% reduction
+        }
+        return 0.0;
+    }
+
+    /**
+     * Apply mana cost reduction when a spell is cast
+     * Uses SpellOnCastEvent which allows modification of mana cost
      */
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onSpellPreCast(SpellPreCastEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+    public void onSpellCast(SpellOnCastEvent event) {
+        Player player = event.getEntity();
+        if (player == null) {
             return;
         }
-        Player player = (Player) event.getEntity();
 
-        // Get upgrade level
         int upgradeLevel = getUpgradeLevel(player);
         if (upgradeLevel <= 0) {
             return;
         }
 
-        // Levels 1-2: Mana cost reduction
-        // Note: Iron's Spellbooks doesn't expose mana cost modification in SpellPreCastEvent
-        // This would require either:
-        // - A mixin to modify spell mana costs
-        // - Refunding mana after the cast via SpellOnCastEvent
-        // For now, levels 1-2 provide passive benefits through the level 5 damage resistance
+        // Levels 1-2: Reduce mana cost
+        double reduction = getManaCostReduction(upgradeLevel);
+        if (reduction > 0) {
+            int originalCost = event.getManaCost();
+            int reducedCost = (int) Math.max(1, originalCost * (1.0 - reduction));
+            event.setManaCost(reducedCost);
+        }
+    }
 
-        // Level 3-4: Cooldown reduction and armor synergy
-        // Note: Cooldown reduction would require modifying MagicData.getPlayerCooldowns()
-        // which is not easily accessible without mixins. These levels currently provide
-        // no additional benefit beyond level 5's damage resistance.
+    /**
+     * Grant damage resistance when starting to cast a spell (Level 5)
+     */
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public void onSpellPreCast(SpellPreCastEvent event) {
+        Player player = event.getEntity();
+        if (player == null) {
+            return;
+        }
+
+        int upgradeLevel = getUpgradeLevel(player);
 
         // Level 5: Grant damage resistance when casting
         if (upgradeLevel >= 5) {
-            // Grant brief damage resistance (2 seconds, Resistance I)
             player.addEffect(new MobEffectInstance(
                 MobEffects.DAMAGE_RESISTANCE,
                 40, // 2 seconds
@@ -101,6 +144,64 @@ public class UpgradeArcaneChanneling extends LivingUpgrade {
                 false,
                 true
             ));
+        }
+    }
+
+    /**
+     * Manage cooldown reduction attribute modifier based on upgrade level
+     * Runs every second to check and update the modifier as needed
+     */
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+
+        Player player = event.player;
+
+        // Only check every 20 ticks (1 second) to reduce overhead
+        if (player.tickCount % 20 != 0) {
+            return;
+        }
+
+        // Only run on server side
+        if (player.level().isClientSide()) {
+            return;
+        }
+
+        int upgradeLevel = getUpgradeLevel(player);
+        double targetReduction = getCooldownReduction(upgradeLevel);
+
+        // Get the cooldown reduction attribute
+        AttributeInstance cooldownAttribute = player.getAttribute(AttributeRegistry.COOLDOWN_REDUCTION.get());
+        if (cooldownAttribute == null) {
+            return;
+        }
+
+        // Check if we already have a modifier
+        AttributeModifier existingModifier = cooldownAttribute.getModifier(COOLDOWN_MODIFIER_UUID);
+
+        if (targetReduction <= 0) {
+            // Remove modifier if we shouldn't have one
+            if (existingModifier != null) {
+                cooldownAttribute.removeModifier(COOLDOWN_MODIFIER_UUID);
+            }
+        } else {
+            // Add or update modifier
+            // Iron's Spellbooks cooldown reduction is a percentage, where 0.05 = 5% reduction
+            if (existingModifier == null || Math.abs(existingModifier.getAmount() - targetReduction) > 0.001) {
+                // Remove old modifier if it exists with wrong value
+                if (existingModifier != null) {
+                    cooldownAttribute.removeModifier(COOLDOWN_MODIFIER_UUID);
+                }
+                // Add new modifier
+                cooldownAttribute.addPermanentModifier(new AttributeModifier(
+                    COOLDOWN_MODIFIER_UUID,
+                    COOLDOWN_MODIFIER_NAME,
+                    targetReduction,
+                    AttributeModifier.Operation.ADDITION
+                ));
+            }
         }
     }
 }
