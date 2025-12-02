@@ -40,25 +40,11 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
             .save(consumer);
 
-        // Sentient Spear - crafted with Bound Spear + Demon Will
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, AnimusItems.SPEAR_SENTIENT.get())
-            .requires(AnimusItems.SPEAR_BOUND.get())
-            .requires(itemFromMod("bloodmagic", "soulsnare"))
-            .requires(itemFromMod("bloodmagic", "soulsnare"))
-            .unlockedBy("has_bound_spear", has(AnimusItems.SPEAR_BOUND.get()))
-            .save(consumer);
+        // Sentient Spear - crafted in Soul Forge with Diamond Spear + Petty Tartaric Gem
+        // Recipe is in data/animus/recipes/soulforge/spear_sentient.json
 
-        // Sanguine Diviner recipe
-        // Note: This requires Blood Magic items which may not be available during datagen
-        // We'll use item references directly
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AnimusItems.SANGUINE_DIVINER.get())
-            .pattern("aaa")
-            .pattern("aba")
-            .pattern("aaa")
-            .define('a', itemFromMod("bloodmagic", "blood_rune"))
-            .define('b', itemFromMod("bloodmagic", "ritual_diviner"))
-            .unlockedBy("has_ritual_diviner", has(itemFromMod("bloodmagic", "ritual_diviner")))
-            .save(consumer);
+        // Sanguine Diviner - crafted in Tier 2 Blood Altar with Ritual Diviner
+        // Recipe is in data/animus/recipes/altar/sanguine_diviner.json
 
         // Blood Apple recipe - simple shapeless recipe
         ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, AnimusItems.BLOOD_APPLE.get())

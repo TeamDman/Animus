@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SBS",
+    "GRG",
+    "SBS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:stone"
+    },
+    "B": {
+      "item": "bloodmagic:blankslate"
+    },
+    "G": {
+      "item": "ars_nouveau:source_gem"
+    },
+    "R": {
+      "item": "bloodmagic:blankrune"
+    }
+  },
+  "result": {
+    "item": "animus:arcane_rune",
+    "count": 1
+  }
+}

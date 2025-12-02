@@ -10,9 +10,9 @@
       "text": "A javelin empowered by $(will)Demon Will$(), similar to the Sentient Sword. This weapon scales in power based on the amount and type of will in the area. When thrown, it applies $(bold)AOE damage and effects$() to all nearby enemies, making it a devastating ranged weapon for will-empowered combatants."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "animus:spear_sentient",
-      "text": "Created by combining a $(item)Bound Spear$() with two $(item)Soul Snares$() (demon will containers from Blood Magic). The Sentient Spear inherits the throwing capabilities of its predecessor while gaining the power to harness demon will."
+      "type": "bloodmagic:soulforge",
+      "recipe": "animus:soulforge/spear_sentient",
+      "text": "Forged in the $(blood)Hellfire Forge$() by combining a $(item)Diamond Spear$() with a $(item)Petty Tartaric Gem$(). The Sentient Spear gains the power to harness demon will while retaining its throwing capabilities."
     },
     {
       "type": "patchouli:text",

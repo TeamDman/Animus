@@ -20,11 +20,11 @@
     {
       "type": "text",
       "title": "Crafting the Blocks",
-      "text": "$(will)Crystallized Demon Will Blocks$() are crafted using the $(blood)Alchemy Table$() with powerful reagents:$(br)$(li)Large Bloodstone Brick$(li)Archmage Blood Orb$(li)Nether Star$(li)Sculk$(li)Filled Greater Tartaric Gem$(br2)The recipe requires 50,000 LP and a tier 4+ altar."
+      "text": "$(will)Crystallized Demon Will Blocks$() are forged using the $(blood)Hellfire Forge$() with powerful reagents:$(br)$(li)Sculk$(li)Ethereal Slate$(li)Weak Blood Shard$(li)Nether Star$(br2)The recipe requires a minimum of 2048 demon will and drains 1024 will per craft."
     },
     {
-      "type": "bloodmagic:alchemytable",
-      "recipe": "animus:alchemytable/crystallized_demon_will_block",
+      "type": "bloodmagic:soulforge",
+      "recipe": "animus:soulforge/crystallized_demon_will_block",
       "text": "The fusion of blood magic's most potent materials with demon will creates a stable crystalline structure capable of channeling immense power."
     },
     {

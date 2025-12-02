@@ -8,6 +8,11 @@
       "text": "The Runic Sentient Scythe represents a fusion of Blood Magic's demon will mastery and ancient runic crafting. This enhanced weapon builds upon the foundation of the Sentient Scythe, offering improved combat capabilities while maintaining full demon will integration."
     },
     {
+      "type": "bloodmagic:array",
+      "recipe": "animus:array/scythe_sentient_runed",
+      "text": "Created using an $(blood)Alchemy Array$() by combining a $(item)Sentient Scythe$() with a $(item)Soul Stained Steel Ingot$(). The scythe is infused with Malum's spirit magic, enhancing its combat capabilities."
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "animus:runic_sentient_scythe",
       "text": "$(animus)Enhanced Attack Speed$()$(br)Attacks 30% faster than the base Sentient Scythe, allowing for more rapid strikes and better combat flow.$(br2)$(will)Demon Will Scaling$()$(br)Damage increases based on total demon will in your tartaric gem, regardless of type."

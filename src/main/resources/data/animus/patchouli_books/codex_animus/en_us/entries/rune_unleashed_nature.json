@@ -8,6 +8,11 @@
       "text": "The Rune of Unleashed Nature is a hybrid altar rune that bridges the gap between Blood Magic and Botania, channeling raw mana energy to enhance the Blood Altar's capabilities. When powered by Botania's mana network, this rune provides exceptional bonuses that make it one of the most powerful altar enhancements available."
     },
     {
+      "type": "patchouli:crafting",
+      "recipe": "animus:rune_unleashed_nature",
+      "text": "Crafted using $(item)Blank Rune$() at the center, any $(item)Stone$() in corners, $(item)Imbued Slate$() at the bottom, and $(item)Manasteel Ingots$() in the remaining slots. This fuses Blood Magic and Botania into a powerful hybrid rune."
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "animus:rune_unleashed_nature",
       "text": "Place this rune as part of your Blood Altar structure. It can receive mana from Botania sparks and stores up to 5000 mana internally.$(br2)$(blood)Always Active:$()$(br)• Capacity bonus (increases LP storage)$(br)• Half Rune of the Orb bonus (LP efficiency)$(br2)$(animus)When Charged (>=10 mana):$()$(br)• Acceleration bonus (faster processing)"

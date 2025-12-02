@@ -8,6 +8,11 @@
       "text": "The Arcane Rune is a revolutionary altar component that bridges Ars Nouveau's Source magic with Blood Magic's altar system. Unlike traditional runes that provide static bonuses, the Arcane Rune's power fluctuates based on its internal Source supply."
     },
     {
+      "type": "patchouli:crafting",
+      "recipe": "animus:arcane_rune",
+      "text": "Crafted using $(item)Blank Rune$() at the center, any $(item)Stone$() in corners, $(item)Blank Slate$() top and bottom, and $(item)Source Gems$() on the sides. This combines Blood Magic and Ars Nouveau components into a hybrid rune."
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "animus:arcane_rune",
       "text": "$(animus)Source-Powered Rune$()$(br2)Place this rune in your Blood Altar structure just like any other rune. It stores up to 1000 Source internally and can receive Source via Ars Nouveau's dominion wand linking system."

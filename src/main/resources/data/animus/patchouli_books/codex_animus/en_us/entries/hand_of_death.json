@@ -8,6 +8,11 @@
       "text": "The Hand of Death is the ultimate sentient weapon, forged from demon-infused steel through dark rituals. This legendary scythe combines all the power of the Runic Sentient Scythe with devastating additional effects that make it a true instrument of death."
     },
     {
+      "type": "bloodmagic:soulforge",
+      "recipe": "animus:soulforge/hand_of_death",
+      "text": "Forged in the $(blood)Hellfire Forge$() using a $(item)Runed Sentient Scythe$(), $(item)Demon Slate$(), $(item)Dragon Breath$(), and a $(item)Rune of Culling$(). Requires $(will)2048 demon will minimum$() and consumes $(will)1024 will$()."
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "animus:hand_of_death",
       "text": "$(animus)Ultimate Power$()$(br)+14 base damage over the Runic Scythe, plus all demon will bonuses and enhanced attack speed.$(br2)Requires Demon Forged Steel to craft; a material only obtainable through advanced Blood Magic rituals."

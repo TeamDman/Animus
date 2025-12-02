@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SMS",
+    "MRM",
+    "SIS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:stone"
+    },
+    "M": {
+      "item": "botania:manasteel_ingot"
+    },
+    "R": {
+      "item": "bloodmagic:blankrune"
+    },
+    "I": {
+      "item": "bloodmagic:infusedslate"
+    }
+  },
+  "result": {
+    "item": "animus:rune_unleashed_nature",
+    "count": 1
+  }
+}

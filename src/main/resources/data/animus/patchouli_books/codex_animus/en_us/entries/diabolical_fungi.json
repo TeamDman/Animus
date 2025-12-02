@@ -8,6 +8,11 @@
       "text": "The Diabolical Fungi, also known as the Devil's Tooth Mushroom, is a dark mana-generating flower that feeds on demon will saturating the air. This otherworldly organism converts the raw energy of demon will into Botania's mana, bridging two powerful magical systems."
     },
     {
+      "type": "bloodmagic:altar",
+      "recipe": "animus:altar/diabolical_fungi",
+      "text": "Created in a $(blood)Tier 3 Blood Altar$() by corrupting a $(item)Botania Endoflame$() with $(blood)2000 LP$(). The flower transforms into a dark variant that feeds on demon will instead of combustibles."
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "animus:diabolical_fungi",
       "text": "Place this flower near areas with high demon will concentration. It will automatically consume will from the chunk and convert it to mana.$(br2)$(blood)Consumes:$() Up to 100 demon will per cycle$(br)$(animus)Produces:$() 250 mana per 1 will (configurable)$(br)$(animus)Stores:$() Up to 5000 mana internally"

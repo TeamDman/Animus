@@ -1,7 +1,7 @@
 {
   "type": "bloodmagic:array",
   "baseinput": {
-    "item": "minecraft:gold_ingot"
+    "item": "bloodmagic:simplekey"
   },
   "addedinput": {
     "item": "bloodmagic:reagentbinding"

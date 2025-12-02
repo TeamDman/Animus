@@ -5,6 +5,11 @@
   "sortnum": 4,
   "pages": [
     {
+      "type": "bloodmagic:altar",
+      "recipe": "animus:altar/sanguine_diviner",
+      "text": "Created in a $(blood)Tier 2 Blood Altar$() by infusing a $(item)Ritual Diviner$() with $(blood)2500 LP$(). The enhanced diviner gains the ability to visualize and auto-place altar upgrade blocks."
+    },
+    {
       "type": "patchouli:spotlight",
       "item": "animus:sanguine_diviner",
       "text": "A mystical tool for Blood Magic altars and rituals. The Sanguine Diviner helps you build Blood Magic altars and manage rituals by showing information and assisting with structure management."

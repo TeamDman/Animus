@@ -1,0 +1,21 @@
+{
+  "type": "bloodmagic:soulforge",
+  "input0": {
+    "item": "animus:scythe_sentient_runed"
+  },
+  "input1": {
+    "item": "bloodmagic:demonslate"
+  },
+  "input2": {
+    "item": "minecraft:dragon_breath"
+  },
+  "input3": {
+    "item": "malum:rune_of_culling"
+  },
+  "output": {
+    "item": "animus:hand_of_death",
+    "count": 1
+  },
+  "minimumDrain": 2048.0,
+  "drain": 1024.0
+}
