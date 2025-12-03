@@ -2,7 +2,7 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"9": "animus:item/itemspearbound_deactivated"
+		"9": "animus:item/itemspearbound_activated"
 	},
 	"elements": [
 		{
@@ -177,20 +177,20 @@
 	],
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [0, 180, 0],
+			"rotation": [0, 180, 180],
 			"translation": [-0.25, 4.25, 2]
 		},
 		"thirdperson_lefthand": {
-			"rotation": [0, 180, 0],
+			"rotation": [0, 180, 180],
 			"translation": [0.5, 4.25, 2]
 		},
 		"firstperson_righthand": {
-			"rotation": [0, 180, 0],
+			"rotation": [0, 180, 180],
 			"translation": [-0.25, 3.5, 1.75],
 			"scale": [0.75, 0.75, 0.75]
 		},
 		"firstperson_lefthand": {
-			"rotation": [0, 180, 0],
+			"rotation": [0, 180, 180],
 			"translation": [-0.25, 3.5, 1.75],
 			"scale": [0.75, 0.75, 0.75]
 		},
@@ -206,7 +206,7 @@
 			"translation": [0, 15.25, 0]
 		},
 		"fixed": {
-          "rotation": [0, 90, 0],
+			"rotation": [0, 90, 30],
 			"translation": [0, -1, 0],
 			"scale": [0.75, 0.75, 0.75]
 		},
@@ -215,19 +215,5 @@
 			"translation": [0, -1, 0],
 			"scale": [0.75, 0.75, 0.75]
 		}
-	},
-	"overrides": [
-		{
-			"predicate": {
-				"animus:activated": 1
-			},
-			"model": "animus:item/spear_bound_activated"
-		},
-		{
-			"predicate": {
-				"animus:throwing": 1
-			},
-			"model": "animus:item/spear_bound_throwing"
-		}
-	]
+	}
 }

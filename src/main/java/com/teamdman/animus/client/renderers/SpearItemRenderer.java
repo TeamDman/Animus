@@ -75,36 +75,68 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
                             MultiBufferSource buffer, int packedLight, int packedOverlay) {
         Minecraft mc = Minecraft.getInstance();
         ItemRenderer itemRenderer = mc.getItemRenderer();
-        
+
         // Get the baked model directly from the model manager
         ModelResourceLocation modelLocation = getModelLocation(stack);
         BakedModel model = mc.getModelManager().getModel(modelLocation);
-        
+
+        // Check if player is charging the spear throw
+        boolean isCharging = false;
+        if (mc.player != null && mc.player.isUsingItem()) {
+            ItemStack usingItem = mc.player.getUseItem();
+            if (usingItem.getItem() instanceof ItemSpear) {
+                isCharging = true;
+            }
+        }
+
+        poseStack.pushPose();
+
         // Apply display transforms
         model = model.applyTransform(displayContext, poseStack, false);
         poseStack.translate(-0.5, -0.5, -0.5);
-        
-        // Render the model directly
-        VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, 
-            Sheets.cutoutBlockSheet(), true, stack.hasFoil());
-        itemRenderer.renderModelLists(model, stack, packedLight, packedOverlay, poseStack, vertexConsumer);
+
+        // DEBUG: Apply scale to test - should make spear 2x larger
+        if (displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
+                        || displayContext == ItemDisplayContext.FIRST_PERSON_LEFT_HAND
+                        || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND
+                        || displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND) {
+            poseStack.scale(2.0f, 2.0f, 2.0f);
+        }
+
+        // Render using the standard item rendering path which properly uses the poseStack
+        RenderType renderType = Sheets.cutoutBlockSheet();
+        VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, renderType, true, stack.hasFoil());
+
+        // Render each quad from the model manually using the poseStack transform
+        for (net.minecraft.core.Direction direction : net.minecraft.core.Direction.values()) {
+            for (net.minecraft.client.renderer.block.model.BakedQuad quad : model.getQuads(null, direction, mc.level.random)) {
+                vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
+            }
+        }
+        // Also render non-directional quads
+        for (net.minecraft.client.renderer.block.model.BakedQuad quad : model.getQuads(null, null, mc.level.random)) {
+            vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
+        }
+
+        poseStack.popPose();
     }
 
     private ModelResourceLocation getModelLocation(ItemStack stack) {
+        // Load the _3d model variants which have the actual geometry (not builtin/entity)
         if (stack.getItem() instanceof ItemSpearSentient) {
-            return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_sentient"), "inventory");
+            return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_sentient_3d"), "inventory");
         } else if (stack.getItem() instanceof ItemSpearBound boundSpear) {
             if (boundSpear.isActivated(stack)) {
-                return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_bound_activated"), "inventory");
+                return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_bound_activated_3d"), "inventory");
             }
-            return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_bound"), "inventory");
+            return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_bound_3d"), "inventory");
         } else if (stack.getItem() instanceof ItemSpear spear) {
             if (spear.getTier() == Tiers.DIAMOND) {
-                return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_diamond"), "inventory");
+                return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_diamond_3d"), "inventory");
             }
-            return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_iron"), "inventory");
+            return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_iron_3d"), "inventory");
         }
-        return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_iron"), "inventory");
+        return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_iron_3d"), "inventory");
     }
 
     private ResourceLocation getGuiTexture(ItemStack stack) {

@@ -62,6 +62,12 @@ public class AnimusClientSetup {
 
             // Register item property for Key of Binding bound state
             registerKeyBindingProperty(AnimusItems.KEY_BINDING.get());
+
+            // Register "throwing" property for all spears (like trident)
+            registerSpearThrowingProperty(AnimusItems.SPEAR_IRON.get());
+            registerSpearThrowingProperty(AnimusItems.SPEAR_DIAMOND.get());
+            registerSpearThrowingProperty(AnimusItems.SPEAR_BOUND.get());
+            registerSpearThrowingProperty(AnimusItems.SPEAR_SENTIENT.get());
         });
     }
 
@@ -134,6 +140,22 @@ public class AnimusClientSetup {
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "active"),
             (stack, level, entity, seed) -> {
                 if (stack.hasTag() && stack.getTag().getBoolean("Active")) {
+                    return 1.0F;
+                }
+                return 0.0F;
+            }
+        );
+    }
+
+    /**
+     * Registers the "throwing" item property for spears (like vanilla trident)
+     * Returns 1.0 when the player is charging to throw the spear
+     */
+    private static void registerSpearThrowingProperty(net.minecraft.world.item.Item item) {
+        ItemProperties.register(item,
+            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "throwing"),
+            (stack, level, entity, seed) -> {
+                if (entity != null && entity.isUsingItem() && entity.getUseItem() == stack) {
                     return 1.0F;
                 }
                 return 0.0F;
