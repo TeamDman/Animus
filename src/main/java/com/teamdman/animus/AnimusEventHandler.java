@@ -295,6 +295,11 @@ public class AnimusEventHandler {
             ItemSigilHeavenlyWrath.tickPendingFalls(serverLevel);
             ItemSigilTemporalDominance.tickAcceleratedBlocks(serverLevel);
             ItemSigilEquivalency.tickReplacements(serverLevel);
+
+            // Sync accelerated blocks to clients every 10 ticks (0.5 seconds)
+            if (serverLevel.getGameTime() % 10 == 0) {
+                ItemSigilTemporalDominance.syncToClients(serverLevel);
+            }
         }
     }
 

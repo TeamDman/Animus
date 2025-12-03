@@ -2,6 +2,7 @@ package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.client.CrimsonWillSigilClientHelper;
 import com.teamdman.animus.items.sigils.AnimusSigilBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -104,9 +105,7 @@ public class ItemSigilCrimsonWill extends AnimusSigilBase {
 
         // Try to show current boost if player is available (client-side only)
         if (level != null && level.isClientSide()) {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                com.teamdman.animus.client.CrimsonWillSigilClientHelper.addCurrentBoostTooltip(tooltip);
-            });
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CrimsonWillSigilClientHelper.addCurrentBoostTooltip(tooltip));
         }
 
         tooltip.add(Component.literal(""));

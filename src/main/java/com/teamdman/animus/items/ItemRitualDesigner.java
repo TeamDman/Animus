@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.ritual.*;
 
 import java.util.*;
@@ -408,9 +410,7 @@ public class ItemRitualDesigner extends Item {
             String blockId = entry.getKey();
             String runeType = entry.getValue();
 
-            Block block = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getValue(
-                new net.minecraft.resources.ResourceLocation(blockId)
-            );
+            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
 
             if (block != null && block != Blocks.AIR) {
                 RUNE_TYPES.put(block, runeType);

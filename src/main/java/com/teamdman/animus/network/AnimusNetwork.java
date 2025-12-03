@@ -43,5 +43,13 @@ public class AnimusNetwork {
             RitualCodePacket::decode,
             RitualCodePacket::handle
         );
+
+        CHANNEL.registerMessage(
+            packetId++,
+            AcceleratedBlocksSyncPacket.class,
+            AcceleratedBlocksSyncPacket::encode,
+            AcceleratedBlocksSyncPacket::decode,
+            AcceleratedBlocksSyncPacket::handle
+        );
     }
 }

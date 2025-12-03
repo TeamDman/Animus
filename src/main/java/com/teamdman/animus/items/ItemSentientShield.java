@@ -1,6 +1,7 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.client.SentientShieldClientExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.fml.DistExecutor;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
 import wayoftime.bloodmagic.api.compat.IDemonWillWeapon;
@@ -169,10 +171,7 @@ public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
     }
 
     @Override
-    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> consumer) {
-        // Use DistExecutor to safely reference client-only extension class
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            consumer.accept(com.teamdman.animus.client.SentientShieldClientExtension.INSTANCE);
-        });
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> consumer.accept(SentientShieldClientExtension.INSTANCE));
     }
 }

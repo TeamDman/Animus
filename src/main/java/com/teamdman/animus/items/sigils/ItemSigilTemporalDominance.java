@@ -2,7 +2,9 @@ package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.items.sigils.AnimusSigilBase;
+import com.teamdman.animus.network.AcceleratedBlocksSyncPacket;
+import com.teamdman.animus.network.AcceleratedBlocksSyncPacket.AccelerationData;
+import com.teamdman.animus.network.AnimusNetwork;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.network.PacketDistributor;
 import wayoftime.bloodmagic.common.item.IBindable;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
@@ -361,6 +364,40 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
 
         public long getRemainingTicks(long currentTime) {
             return Math.max(0, expiryTime - currentTime);
+        }
+    }
+
+    /**
+     * Sync accelerated blocks to all players in the dimension
+     * Called periodically from event handler
+     */
+    public static void syncToClients(ServerLevel level) {
+        if (acceleratedBlocks.isEmpty()) {
+            // Send empty packet to clear client data
+            AcceleratedBlocksSyncPacket packet = new AcceleratedBlocksSyncPacket(new HashMap<>());
+            for (ServerPlayer player : level.players()) {
+                AnimusNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
+            }
+            return;
+        }
+
+        // Convert internal state to packet data, filtering by dimension
+        Map<BlockPos, AccelerationData> packetData = new HashMap<>();
+        for (Map.Entry<BlockPos, AccelerationState> entry : acceleratedBlocks.entrySet()) {
+            AccelerationState state = entry.getValue();
+            if (state.dimension.equals(level.dimension())) {
+                packetData.put(entry.getKey(), new AccelerationData(
+                    state.level,
+                    state.expiryTime,
+                    state.dimension
+                ));
+            }
+        }
+
+        // Send to all players in this dimension
+        AcceleratedBlocksSyncPacket packet = new AcceleratedBlocksSyncPacket(packetData);
+        for (ServerPlayer player : level.players()) {
+            AnimusNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.client.BuilderSigilClientHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -50,11 +51,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (getActivated(stack) && entity instanceof Player player && level.isClientSide()) {
-            // Remove right-click delay for fast building (client-side only)
-            // Use fully qualified class name inside lambda to prevent class loading on server
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                com.teamdman.animus.client.BuilderSigilClientHelper.resetRightClickDelay();
-            });
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> BuilderSigilClientHelper::resetRightClickDelay);
         }
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }

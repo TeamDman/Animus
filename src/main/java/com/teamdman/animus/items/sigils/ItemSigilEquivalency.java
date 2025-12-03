@@ -2,6 +2,7 @@ package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.client.InputClientHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +30,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.common.item.IBindable;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
@@ -518,10 +521,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             // If shift is held, show all selected blocks (check client-side only)
             boolean showDetails = false;
             if (level != null && level.isClientSide()) {
-                showDetails = net.minecraftforge.fml.DistExecutor.unsafeCallWhenOn(
-                    net.minecraftforge.api.distmarker.Dist.CLIENT,
-                    () -> () -> com.teamdman.animus.client.InputClientHelper.isShiftDown()
-                );
+                showDetails = DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> InputClientHelper::isShiftDown);
             }
             if (showDetails) {
                 for (Block block : selected) {

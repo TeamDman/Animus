@@ -1,5 +1,6 @@
 package com.teamdman.animus.network;
 
+import com.teamdman.animus.client.ClipboardClientHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -22,17 +23,11 @@ public class RitualCodePacket {
     }
 
     public static RitualCodePacket decode(FriendlyByteBuf buf) {
-        String code = buf.readUtf();
-        return new RitualCodePacket(code);
+        return new RitualCodePacket(buf.readUtf());
     }
 
     public static void handle(RitualCodePacket msg, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            // This runs on the client thread - use DistExecutor to safely access client classes
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                com.teamdman.animus.client.ClipboardClientHelper.setClipboard(msg.code);
-            });
-        });
+        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClipboardClientHelper.setClipboard(msg.code)));
         ctx.get().setPacketHandled(true);
     }
 }

@@ -1,9 +1,9 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.client.SigilClientHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -68,9 +68,7 @@ public abstract class AnimusSigilBase extends ItemSigilBase {
             // Try to get the owner's name from the client player cache (client-side only)
             AtomicReference<String> ownerNameRef = new AtomicReference<>("Unknown");
             if (level != null && level.isClientSide()) {
-                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    ownerNameRef.set(com.teamdman.animus.client.SigilClientHelper.getOwnerName(binding.getOwnerId()));
-                });
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ownerNameRef.set(SigilClientHelper.getOwnerName(binding.getOwnerId())));
             }
 
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BOUND_TO)

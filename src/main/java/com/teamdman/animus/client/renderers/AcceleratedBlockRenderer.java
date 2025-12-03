@@ -1,8 +1,8 @@
 package com.teamdman.animus.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import com.teamdman.animus.items.sigils.ItemSigilTemporalDominance;
+import com.teamdman.animus.client.AcceleratedBlocksClientData;
+import com.teamdman.animus.network.AcceleratedBlocksSyncPacket.AccelerationData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LightTexture;
@@ -41,9 +41,8 @@ public class AcceleratedBlockRenderer {
             return;
         }
 
-        // Get accelerated blocks from temporal dominance sigil
-        Map<BlockPos, ItemSigilTemporalDominance.AccelerationState> acceleratedBlocks =
-            ItemSigilTemporalDominance.getAcceleratedBlocks();
+        // Get accelerated blocks from client-side data (synced from server)
+        Map<BlockPos, AccelerationData> acceleratedBlocks = AcceleratedBlocksClientData.getAcceleratedBlocks();
 
         if (acceleratedBlocks.isEmpty()) {
             return;
@@ -56,9 +55,9 @@ public class AcceleratedBlockRenderer {
 
         poseStack.pushPose();
 
-        for (Map.Entry<BlockPos, ItemSigilTemporalDominance.AccelerationState> entry : acceleratedBlocks.entrySet()) {
+        for (Map.Entry<BlockPos, AccelerationData> entry : acceleratedBlocks.entrySet()) {
             BlockPos pos = entry.getKey();
-            ItemSigilTemporalDominance.AccelerationState state = entry.getValue();
+            AccelerationData state = entry.getValue();
 
             // Only render if in the same dimension
             if (!state.dimension.equals(level.dimension())) {

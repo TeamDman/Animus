@@ -1,10 +1,14 @@
 package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.client.AntiLifeFluidClientExtension;
+import com.teamdman.animus.client.LivingTerraFluidClientExtension;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -12,6 +16,8 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Consumer;
 
 public class AnimusFluids {
     public static final DeferredRegister<FluidType> FLUID_TYPES =
@@ -40,10 +46,8 @@ public class AnimusFluids {
             }
 
             @Override
-            public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer) {
-                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    consumer.accept(com.teamdman.animus.client.AntiLifeFluidClientExtension.INSTANCE);
-                });
+            public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> consumer.accept(AntiLifeFluidClientExtension.INSTANCE));
             }
         }
     );
@@ -68,10 +72,8 @@ public class AnimusFluids {
             }
 
             @Override
-            public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer) {
-                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    consumer.accept(com.teamdman.animus.client.LivingTerraFluidClientExtension.INSTANCE);
-                });
+            public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> consumer.accept(LivingTerraFluidClientExtension.INSTANCE));
             }
         }
     );
@@ -104,7 +106,7 @@ public class AnimusFluids {
         ANTILIFE_SOURCE,
         ANTILIFE_FLOWING
     )
-        .block(() -> (net.minecraft.world.level.block.LiquidBlock) AnimusBlocks.BLOCK_FLUID_ANTILIFE.get())
+        .block(() -> (LiquidBlock) AnimusBlocks.BLOCK_FLUID_ANTILIFE.get())
         .bucket(() -> AnimusItems.ANTILIFE_BUCKET.get());
 
     public static final ForgeFlowingFluid.Properties LIVING_TERRA_PROPERTIES = new ForgeFlowingFluid.Properties(
@@ -112,6 +114,6 @@ public class AnimusFluids {
         LIVING_TERRA_SOURCE,
         LIVING_TERRA_FLOWING
     )
-        .block(() -> (net.minecraft.world.level.block.LiquidBlock) AnimusBlocks.BLOCK_FLUID_LIVING_TERRA.get())
+        .block(() -> (LiquidBlock) AnimusBlocks.BLOCK_FLUID_LIVING_TERRA.get())
         .bucket(() -> AnimusItems.LIVING_TERRA_BUCKET.get());
 }
