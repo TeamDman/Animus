@@ -2,10 +2,7 @@ package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.blockentities.BlockEntityAntiLife;
-import com.teamdman.animus.blockentities.BlockEntityArcaneRune;
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
-import com.teamdman.animus.blockentities.BlockEntityDiabolicalFungi;
-import com.teamdman.animus.blockentities.BlockEntityRuneUnleashedNature;
 import com.teamdman.animus.blockentities.BlockEntityWillfulStone;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -32,22 +29,6 @@ public class AnimusBlockEntities {
         ).build(null)
     );
 
-    public static final RegistryObject<BlockEntityType<BlockEntityArcaneRune>> ARCANE_RUNE = BLOCK_ENTITIES.register(
-        "arcane_rune",
-        () -> BlockEntityType.Builder.of(
-            BlockEntityArcaneRune::new,
-            AnimusBlocks.BLOCK_ARCANE_RUNE.get()
-        ).build(null)
-    );
-
-    public static final RegistryObject<BlockEntityType<BlockEntityRuneUnleashedNature>> RUNE_UNLEASHED_NATURE = BLOCK_ENTITIES.register(
-        "rune_unleashed_nature",
-        () -> BlockEntityType.Builder.of(
-            BlockEntityRuneUnleashedNature::new,
-            AnimusBlocks.BLOCK_RUNE_UNLEASHED_NATURE.get()
-        ).build(null)
-    );
-
     public static final RegistryObject<BlockEntityType<BlockEntityWillfulStone>> WILLFUL_STONE = BLOCK_ENTITIES.register(
         "willful_stone",
         () -> BlockEntityType.Builder.of(
@@ -68,14 +49,6 @@ public class AnimusBlockEntities {
             AnimusBlocks.BLOCK_WILLFUL_STONE_GREEN.get(),
             AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get(),
             AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get()
-        ).build(null)
-    );
-
-    public static final RegistryObject<BlockEntityType<BlockEntityDiabolicalFungi>> DIABOLICAL_FUNGI = BLOCK_ENTITIES.register(
-        "diabolical_fungi",
-        () -> BlockEntityType.Builder.of(
-            BlockEntityDiabolicalFungi::new,
-            AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get()
         ).build(null)
     );
 }

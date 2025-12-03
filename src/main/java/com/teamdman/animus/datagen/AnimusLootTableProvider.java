@@ -79,14 +79,8 @@ public class AnimusLootTableProvider extends LootTableProvider {
             // Imperfect Ritual Stone - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get());
 
-            // Arcane Rune - drops itself
-            this.dropSelf(AnimusBlocks.BLOCK_ARCANE_RUNE.get());
-
-            // Rune of Unleashed Nature - drops itself
-            this.dropSelf(AnimusBlocks.BLOCK_RUNE_UNLEASHED_NATURE.get());
-
-            // Diabolical Fungi - drops itself
-            this.dropSelf(AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get());
+            // Note: Arcane Rune, Rune of Unleashed Nature, and Diabolical Fungi
+            // loot tables are generated separately in their compat modules
 
             // Willful Stone blocks - all drop themselves
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE.get());

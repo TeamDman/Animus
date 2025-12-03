@@ -91,9 +91,10 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
                 0, 5000, 5, 5)
             .build(consumer, loc("altar/blood_sapling"));
 
+        // Diabolical Fungi recipe - uses Botania compat item
         BloodAltarRecipeBuilder.altar(
                 Ingredient.of(itemFromMod("botania", "endoflame")),
-                new ItemStack(AnimusItems.BLOCK_DIABOLICAL_FUNGI.get()),
+                new ItemStack(itemFromMod("animus", "diabolical_fungi")),
                 2, 2000, 5, 1)
             .build(consumer, loc("altar/diabolical_fungi"));
 

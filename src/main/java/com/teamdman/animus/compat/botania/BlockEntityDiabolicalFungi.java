@@ -1,7 +1,7 @@
-package com.teamdman.animus.blockentities;
+package com.teamdman.animus.compat.botania;
 
 import com.teamdman.animus.AnimusConfig;
-import com.teamdman.animus.registry.AnimusBlockEntities;
+import com.teamdman.animus.compat.BotaniaCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,7 +36,7 @@ public class BlockEntityDiabolicalFungi extends GeneratingFlowerBlockEntity {
     private int tickCounter = 0;
 
     public BlockEntityDiabolicalFungi(BlockPos pos, BlockState state) {
-        super(AnimusBlockEntities.DIABOLICAL_FUNGI.get(), pos, state);
+        super(BotaniaCompat.DIABOLICAL_FUNGI_BE.get(), pos, state);
     }
 
     @Override

@@ -1,7 +1,7 @@
-package com.teamdman.animus.blockentities;
+package com.teamdman.animus.compat.botania;
 
 import com.teamdman.animus.AnimusConfig;
-import com.teamdman.animus.registry.AnimusBlockEntities;
+import com.teamdman.animus.compat.BotaniaCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -62,7 +62,7 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
     private final LazyOptional<SparkAttachable> sparkAttachableCap = LazyOptional.of(() -> this);
 
     public BlockEntityRuneUnleashedNature(BlockPos pos, BlockState state) {
-        super(AnimusBlockEntities.RUNE_UNLEASHED_NATURE.get(), pos, state);
+        super(BotaniaCompat.RUNE_UNLEASHED_NATURE_BE.get(), pos, state);
     }
 
     public void tick() {

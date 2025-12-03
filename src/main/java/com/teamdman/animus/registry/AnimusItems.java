@@ -89,45 +89,6 @@ public class AnimusItems {
             }
         });
 
-    // Arcane Rune - with tooltip
-    public static final RegistryObject<Item> BLOCK_ARCANE_RUNE = ITEMS.register("arcane_rune",
-        () -> new BlockItem(AnimusBlocks.BLOCK_ARCANE_RUNE.get(), new Item.Properties()) {
-            @Override
-            public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-                tooltip.add(Component.translatable("tooltip.animus.arcane_rune.flavour"));
-                tooltip.add(Component.translatable("tooltip.animus.arcane_rune.info"));
-                tooltip.add(Component.translatable("tooltip.animus.arcane_rune.powered"));
-                tooltip.add(Component.translatable("tooltip.animus.arcane_rune.unpowered"));
-                super.appendHoverText(stack, level, tooltip, flag);
-            }
-        });
-
-    // Rune of Unleashed Nature - with tooltip
-    public static final RegistryObject<Item> BLOCK_RUNE_UNLEASHED_NATURE = ITEMS.register("rune_unleashed_nature",
-        () -> new BlockItem(AnimusBlocks.BLOCK_RUNE_UNLEASHED_NATURE.get(), new Item.Properties()) {
-            @Override
-            public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.flavour"));
-                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.info"));
-                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.capacity"));
-                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.orb"));
-                tooltip.add(Component.translatable("tooltip.animus.rune_unleashed_nature.acceleration"));
-                super.appendHoverText(stack, level, tooltip, flag);
-            }
-        });
-
-    // Diabolical Fungi - with tooltip
-    public static final RegistryObject<Item> BLOCK_DIABOLICAL_FUNGI = ITEMS.register("diabolical_fungi",
-        () -> new BlockItem(AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get(), new Item.Properties()) {
-            @Override
-            public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-                tooltip.add(Component.translatable("tooltip.animus.diabolical_fungi.flavour"));
-                tooltip.add(Component.translatable("tooltip.animus.diabolical_fungi.info"));
-                tooltip.add(Component.translatable("tooltip.animus.diabolical_fungi.conversion"));
-                super.appendHoverText(stack, level, tooltip, flag);
-            }
-        });
-
     // Willful Stone blocks (all 16 colors)
     public static final RegistryObject<Item> BLOCK_WILLFUL_STONE = registerBlockItem("willful_stone", AnimusBlocks.BLOCK_WILLFUL_STONE);
     public static final RegistryObject<Item> BLOCK_WILLFUL_STONE_WHITE = registerBlockItem("willful_stone_white", AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE);

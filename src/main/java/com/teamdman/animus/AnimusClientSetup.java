@@ -35,7 +35,17 @@ public class AnimusClientSetup {
             ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_SAPLING.get(), RenderType.cutout());
 
             // Diabolical Fungi uses cutout for transparency (like other flowers/saplings)
-            ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_DIABOLICAL_FUNGI.get(), RenderType.cutout());
+            // Only set if Botania is loaded
+            if (net.minecraftforge.fml.ModList.get().isLoaded("botania")) {
+                try {
+                    ItemBlockRenderTypes.setRenderLayer(
+                        com.teamdman.animus.compat.BotaniaCompat.BLOCK_DIABOLICAL_FUNGI.get(),
+                        RenderType.cutout()
+                    );
+                } catch (Exception e) {
+                    // Botania compat not available
+                }
+            }
 
             // Leaves use cutout_mipped for transparency (fancy graphics support)
             ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_LEAVES.get(), RenderType.cutoutMipped());

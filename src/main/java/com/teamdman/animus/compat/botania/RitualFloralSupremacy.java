@@ -1,4 +1,4 @@
-package com.teamdman.animus.rituals;
+package com.teamdman.animus.compat.botania;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
@@ -35,8 +35,8 @@ import java.util.function.Consumer;
  * - 2x tick accelerates mana spreaders in the area
  *
  * Requires Botania to be installed
+ * Note: Do NOT add @RitualRegister here - registration is done in BotaniaCompat
  */
-@RitualRegister(Constants.Rituals.FLORAL_SUPREMACY)
 public class RitualFloralSupremacy extends Ritual {
 
     public RitualFloralSupremacy() {

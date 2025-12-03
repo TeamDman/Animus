@@ -1,7 +1,6 @@
-package com.teamdman.animus.blocks;
+package com.teamdman.animus.compat.botania;
 
-import com.teamdman.animus.blockentities.BlockEntityDiabolicalFungi;
-import com.teamdman.animus.registry.AnimusBlockEntities;
+import com.teamdman.animus.compat.BotaniaCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.EntityBlock;
@@ -48,7 +47,7 @@ public class BlockDiabolicalFungi extends FlowerBlock implements EntityBlock {
             return null;
         }
 
-        return type == AnimusBlockEntities.DIABOLICAL_FUNGI.get()
+        return type == BotaniaCompat.DIABOLICAL_FUNGI_BE.get()
             ? (lvl, pos, st, be) -> ((GeneratingFlowerBlockEntity) be).tickFlower()
             : null;
     }

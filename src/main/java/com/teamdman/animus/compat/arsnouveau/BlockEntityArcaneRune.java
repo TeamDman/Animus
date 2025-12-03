@@ -1,8 +1,7 @@
-package com.teamdman.animus.blockentities;
+package com.teamdman.animus.compat.arsnouveau;
 
 import com.hollingsworth.arsnouveau.api.source.AbstractSourceMachine;
 import com.teamdman.animus.AnimusConfig;
-import com.teamdman.animus.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,7 +30,7 @@ public class BlockEntityArcaneRune extends AbstractSourceMachine {
     private boolean hasSource = false;
 
     public BlockEntityArcaneRune(BlockPos pos, BlockState state) {
-        super(AnimusBlockEntities.ARCANE_RUNE.get(), pos, state);
+        super(com.teamdman.animus.compat.ArsNouveauCompat.ARCANE_RUNE_BE.get(), pos, state);
         setMaxSource(MAX_SOURCE);
     }
 
