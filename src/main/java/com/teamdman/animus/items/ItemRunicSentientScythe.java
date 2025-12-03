@@ -17,11 +17,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.common.item.ItemSentientScythe;
+import wayoftime.bloodmagic.common.item.soul.ItemSentientScythe;
 import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Runic Sentient Scythe - A cross-mod compatibility weapon combining Blood Magic and Malum
@@ -33,6 +34,10 @@ import java.util.List;
  * - Full demon will integration from Blood Magic
  */
 public class ItemRunicSentientScythe extends ItemSentientScythe {
+    // Vanilla item attribute UUIDs (same as Item.BASE_ATTACK_SPEED_UUID etc.)
+    protected static final UUID BASE_ATTACK_SPEED_UUID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
+    protected static final UUID BASE_ATTACK_DAMAGE_UUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
+
     // Attack speed multiplier (30% faster than base sentient scythe)
     private static final double ATTACK_SPEED_MULTIPLIER = 1.3;
 
