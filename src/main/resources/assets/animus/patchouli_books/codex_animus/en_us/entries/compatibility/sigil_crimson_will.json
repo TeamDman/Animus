@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.sigil_crimson_will",
   "category": "animus:compatibility",
   "icon": "animus:sigil_crimson_will",
+  "flag": "mod:irons_spellbooks",
   "pages": [
     {
       "type": "patchouli:text",

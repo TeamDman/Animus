@@ -4,7 +4,9 @@ import com.teamdman.animus.Animus;
 import com.teamdman.animus.Constants;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -81,6 +83,8 @@ public class IronsSpellsCompat implements ICompatModule {
         Animus.LOGGER.info("Registered Irons Spells compatibility item registry");
     }
 
+    private static boolean ritualRegistered = false;
+
     @Override
     public void init() {
         Animus.LOGGER.info("Initializing Irons Spells n Spellbooks compatibility");
@@ -88,13 +92,27 @@ public class IronsSpellsCompat implements ICompatModule {
         // Register event listeners for spell casting interception
         registerEventListeners();
 
-        // Register Ritual of Arcane Mastery
-        registerRitual();
+        // Register Ritual of Arcane Mastery during server start (after Blood Magic's Patchouli registration)
+        // This avoids the "multiblock already registered" conflict
+        MinecraftForge.EVENT_BUS.register(RitualRegistrationHandler.class);
 
         // Initialize items, blocks, and other registries will happen in their respective registry classes
         // This init() is just for event hooks and runtime setup
 
         Animus.LOGGER.info("Irons Spells n Spellbooks compatibility initialized successfully");
+    }
+
+    /**
+     * Handler class for delayed ritual registration
+     */
+    public static class RitualRegistrationHandler {
+        @SubscribeEvent
+        public static void onServerStarting(ServerStartingEvent event) {
+            if (!ritualRegistered) {
+                registerRitualDelayed();
+                ritualRegistered = true;
+            }
+        }
     }
 
     @Override
@@ -149,9 +167,12 @@ public class IronsSpellsCompat implements ICompatModule {
      * Register Ritual of Arcane Mastery using reflection
      * Blood Magic doesn't expose a public API for programmatic ritual registration,
      * so we need to access the private maps in RitualManager.
+     *
+     * This is called during ServerStartingEvent to ensure it runs AFTER Blood Magic's
+     * Patchouli multiblock registration (which happens during FMLLoadCompleteEvent).
      */
     @SuppressWarnings("unchecked")
-    private void registerRitual() {
+    private static void registerRitualDelayed() {
         try {
             Ritual ritual = new com.teamdman.animus.compat.ironsspells.RitualArcaneMastery();
             String ritualId = Constants.Rituals.ARCANE_MASTERY;

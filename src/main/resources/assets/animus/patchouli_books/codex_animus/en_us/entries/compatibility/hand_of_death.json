@@ -1,0 +1,37 @@
+{
+  "name": "guide.animus.entry.hand_of_death",
+  "category": "animus:compatibility",
+  "icon": "animus:hand_of_death",
+  "flag": "mod:malum",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Hand of Death is the ultimate evolution of the Runic Sentient Scythe. Forged with demon steel and infused with deathly power, this weapon executes weakened foes and heals its wielder through the lifeforce of the slain."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:hand_of_death",
+      "text": "$(will)Ultimate Soul Reaper$()$(br2)The pinnacle of demonic weaponry. Combines all features of the Runic Sentient Scythe with devastating lifesteal and execute mechanics."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Lifesteal",
+      "text": "Every strike with the Hand of Death heals you for $(blood)20%$() of the damage dealt:$(br2)• Minimum heal of 1 health$(br)• Works on all damage$(br)• Stacks with other healing$(br)• No cooldown$(br2)$(italic)Combined with the weapon's high damage, this provides substantial sustain in prolonged fights.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Execute",
+      "text": "When an enemy falls below $(blood)15%$() health, the Hand of Death can $(bold)instantly execute$() them:$(br2)• Triggers on your next hit$(br)• Bypasses remaining health$(br)• Shows execution message$(br)• Full soul/spirit drops$(br2)$(will)⚰ EXECUTED$()$(br2)This makes the weapon devastating against high-health targets and bosses."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Inherited Powers",
+      "text": "The Hand of Death retains all features from the $(l:animus:compatibility/runic_sentient_scythe)Runic Sentient Scythe$():$(br2)• $(will)+30% attack speed$()$(br)• Full demon will scaling$(br)• Malum spirit harvesting$(br)• All sentient weapon effects$(br2)$(bold)+14 bonus base damage$() over the Runic Sentient Scythe makes this one of the most powerful melee weapons available."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Crafting",
+      "text": "The Hand of Death requires advanced materials:$(br2)• $(item)Runic Sentient Scythe$()$(br)• $(item)Demon Forged Steel$()$(br)• $(blood)Significant Life Essence$()$(br2)This is an end-game weapon requiring mastery of both Blood Magic and Malum systems. See the recipe for exact crafting requirements."
+    }
+  ]
+}

@@ -37,3 +37,5 @@ DEMON_WILL_RESTORATION.md
 *.py
 
 src/generated/resources/.cache/*
+
+changelog/

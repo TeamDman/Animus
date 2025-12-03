@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.ritual_arcane_mastery",
   "category": "animus:compatibility",
   "icon": "bloodmagic:masterritualstone",
+  "flag": "mod:irons_spellbooks",
   "pages": [
     {
       "type": "patchouli:text",

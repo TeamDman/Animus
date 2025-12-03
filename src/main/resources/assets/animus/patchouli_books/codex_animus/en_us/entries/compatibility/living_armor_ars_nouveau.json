@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.living_armor_ars_nouveau",
   "category": "animus:compatibility",
   "icon": "bloodmagic:livinghelmet",
+  "flag": "mod:ars_nouveau",
   "pages": [
     {
       "type": "patchouli:text",

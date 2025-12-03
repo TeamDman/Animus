@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.arcane_rune",
   "category": "animus:compatibility",
   "icon": "animus:arcane_rune",
+  "flag": "mod:ars_nouveau",
   "pages": [
     {
       "type": "patchouli:text",

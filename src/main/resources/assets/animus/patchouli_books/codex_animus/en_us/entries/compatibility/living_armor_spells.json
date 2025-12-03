@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.living_armor_spells",
   "category": "animus:compatibility",
   "icon": "bloodmagic:livinghelmet",
+  "flag": "mod:irons_spellbooks",
   "pages": [
     {
       "type": "patchouli:text",
@@ -40,7 +41,7 @@
     {
       "type": "patchouli:text",
       "title": "Tips & Strategy",
-      "text": "$(bold)Maximize XP Gain:$()$(br)- Cast higher-level spells$(br)- Seek rare/epic/legendary spells$(br)- Use the $(l:compatibility/ritual_arcane_mastery)Ritual of Arcane Mastery$() to upgrade spells$(br2)$(bold)Build Paths:$()$(br)- Efficiency Focus: Levels 1-2$(br)- Rapid Caster: Levels 3-4$(br)- Survivalist: Level 5$(br2)$(italic)Remember: XP is only granted while wearing Living Armor!$()"
+      "text": "$(bold)Maximize XP Gain:$()$(br)- Cast higher-level spells$(br)- Seek rare/epic/legendary spells$(br)- Use the $(l:animus:compatibility/ritual_arcane_mastery)Ritual of Arcane Mastery$() to upgrade spells$(br2)$(bold)Build Paths:$()$(br)- Efficiency Focus: Levels 1-2$(br)- Rapid Caster: Levels 3-4$(br)- Survivalist: Level 5$(br2)$(italic)Remember: XP is only granted while wearing Living Armor!$()"
     }
   ]
 }

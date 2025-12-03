@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.ritual_floral_supremacy",
   "icon": "bloodmagic:masterritualstone",
   "category": "animus:compatibility",
+  "flag": "mod:botania",
   "sortnum": 15,
   "pages": [
     {

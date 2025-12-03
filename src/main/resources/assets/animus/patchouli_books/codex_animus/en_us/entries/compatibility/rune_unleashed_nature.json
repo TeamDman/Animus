@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.rune_unleashed_nature",
   "category": "animus:compatibility",
   "icon": "animus:rune_unleashed_nature",
+  "flag": "mod:botania",
   "pages": [
     {
       "type": "patchouli:text",

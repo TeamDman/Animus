@@ -10,7 +10,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -115,6 +118,8 @@ public class BotaniaCompat implements ICompatModule {
         Animus.LOGGER.info("Registered Botania compatibility registries");
     }
 
+    private static boolean ritualRegistered = false;
+
     @Override
     public void init() {
         Animus.LOGGER.info("Initializing Botania compatibility");
@@ -122,13 +127,27 @@ public class BotaniaCompat implements ICompatModule {
         // Register Rune of Unleashed Nature as a valid altar component
         registerAltarComponent();
 
-        // Register Ritual of Floral Supremacy
-        registerRitual();
+        // Register Ritual of Floral Supremacy during server start (after Blood Magic's Patchouli registration)
+        // This avoids the "multiblock already registered" conflict
+        MinecraftForge.EVENT_BUS.register(RitualRegistrationHandler.class);
 
         // Register render layer for Diabolical Fungi (client-side only)
         // This is handled in AnimusClientSetup conditionally
 
         Animus.LOGGER.info("Botania compatibility initialized successfully");
+    }
+
+    /**
+     * Handler class for delayed ritual registration
+     */
+    public static class RitualRegistrationHandler {
+        @SubscribeEvent
+        public static void onServerStarting(ServerStartingEvent event) {
+            if (!ritualRegistered) {
+                registerRitualDelayed();
+                ritualRegistered = true;
+            }
+        }
     }
 
     /**
@@ -150,9 +169,12 @@ public class BotaniaCompat implements ICompatModule {
      * Register Ritual of Floral Supremacy using reflection
      * Blood Magic doesn't expose a public API for programmatic ritual registration,
      * so we need to access the private maps in RitualManager.
+     *
+     * This is called during ServerStartingEvent to ensure it runs AFTER Blood Magic's
+     * Patchouli multiblock registration (which happens during FMLLoadCompleteEvent).
      */
     @SuppressWarnings("unchecked")
-    private void registerRitual() {
+    private static void registerRitualDelayed() {
         try {
             Ritual ritual = new com.teamdman.animus.compat.botania.RitualFloralSupremacy();
             String ritualId = Constants.Rituals.FLORAL_SUPREMACY;

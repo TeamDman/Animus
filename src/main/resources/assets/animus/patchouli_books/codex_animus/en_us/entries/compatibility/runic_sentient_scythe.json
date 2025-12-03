@@ -1,0 +1,32 @@
+{
+  "name": "guide.animus.entry.runic_sentient_scythe",
+  "category": "animus:compatibility",
+  "icon": "animus:runic_sentient_scythe",
+  "flag": "mod:malum",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Runic Sentient Scythe combines the demonic power of Blood Magic's Sentient Scythe with runic enhancements and Malum soul harvesting. This deadly weapon attacks 30% faster than its predecessor while reaping souls for the spirit altar."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:runic_sentient_scythe",
+      "text": "$(will)Demon Will Weapon$()$(br2)Like the Sentient Scythe, this weapon scales with demon will in the chunk. It inherits all demon will effects while adding Malum's spirit harvesting capabilities."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Enhanced Speed",
+      "text": "The runic modifications grant a $(bold)30% faster attack speed$() compared to the base Sentient Scythe. This allows for more rapid strikes and better demon will generation through combat.$(br2)$(italic)The faster attack speed synergizes well with Malum's soul harvesting, allowing you to reap more spirits per encounter.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Soul Harvesting",
+      "text": "When $(blood)Malum$() is installed, killing mobs with this scythe will harvest their spirits directly:$(br2)• Spirits drop as if using a Malum scythe$(br)• Works with all spirit types$(br)• No additional soul data required$(br)• Compatible with spirit pouches$(br2)This makes it an excellent tool for both Blood Magic demon will farming and Malum spirit collection."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Crafting",
+      "text": "The Runic Sentient Scythe is crafted at the $(blood)Alchemy Array$() using:$(br2)• $(item)Sentient Scythe$()$(br)• $(item)Malum Spirit Components$()$(br)• $(blood)Life Essence$()$(br2)See the recipe for exact requirements. The crafting process infuses Malum's spirit magic into the Blood Magic weapon."
+    }
+  ]
+}
