@@ -10,7 +10,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "animus:rune_unleashed_nature",
-      "text": "Crafted using a $(item)Blank Rune$() surrounded by Botania's $(item)Livingwood$() and $(item)Mana Diamonds$(). This creates a living altar rune that responds to mana flow."
+      "text": "Crafted using a $(item)Blank Rune$() surrounded by Botania's $(item)Livingwood$() and $(item)Manasteel$(). This creates a living altar rune that responds to mana flow."
     },
     {
       "type": "patchouli:spotlight",

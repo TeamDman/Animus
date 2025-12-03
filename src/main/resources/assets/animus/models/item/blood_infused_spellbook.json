@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "animus:item/blood_infused_spellbook"
-  }
+  "parent": "animus:item/spell_book_models/blood_infused_spellbook_model"
 }
