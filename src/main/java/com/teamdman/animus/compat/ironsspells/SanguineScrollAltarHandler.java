@@ -34,12 +34,12 @@ import wayoftime.bloodmagic.common.tile.TileAltar;
  */
 public class SanguineScrollAltarHandler {
 
-    // LP costs based on spell rarity
-    private static final int COMMON_LP = 5000;
-    private static final int UNCOMMON_LP = 10000;
-    private static final int RARE_LP = 25000;
-    private static final int EPIC_LP = 50000;
-    private static final int LEGENDARY_LP = 100000;
+    // LP costs based on spell rarity (scaled so max level 5 legendary = 80k LP)
+    private static final int COMMON_LP = 2000;
+    private static final int UNCOMMON_LP = 4000;
+    private static final int RARE_LP = 8000;
+    private static final int EPIC_LP = 12000;
+    private static final int LEGENDARY_LP = 16000;
 
     /**
      * Listen for right-click on Blood Altar

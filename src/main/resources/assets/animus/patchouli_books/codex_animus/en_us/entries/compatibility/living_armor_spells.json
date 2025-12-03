@@ -15,22 +15,22 @@
     {
       "type": "patchouli:text",
       "title": "XP from Spellcasting",
-      "text": "Every spell you cast grants XP to your Living Armor:$(br2)$(bold)Formula:$()$(br)Base XP (10) × Spell Level × Rarity Multiplier$(br2)$(bold)Rarity Multipliers:$()$(br)• Common: ×1.0$(br)• Uncommon: ×1.5$(br)• Rare: ×2.0$(br)• Epic: ×3.0$(br)• Legendary: ×5.0$(br2)$(italic)Example: A level 3 Rare spell grants 10 × 3 × 2.0 = 60 XP$()"
+      "text": "Every spell you cast grants XP to your Living Armor:$(br2)$(bold)Formula:$()$(br)Base XP (10) x Spell Level x Rarity Multiplier$(br2)$(bold)Rarity Multipliers:$()$(br)- Common: x1.0$(br)- Uncommon: x1.5$(br)- Rare: x2.0$(br)- Epic: x3.0$(br)- Legendary: x5.0"
     },
     {
       "type": "patchouli:text",
       "title": "Arcane Channeling",
-      "text": "The Arcane Channeling upgrade tree provides five levels of spell-focused enhancements:$(br2)$(blood)Level 1:$() -5% Mana Cost$(br)Spells consume less mana$(br2)$(blood)Level 2:$() -10% Mana Cost$(br)Further mana cost reduction$(br2)$(blood)Level 3:$() -5% Cooldown$(br)Cast spells more frequently$(br2)$(blood)Level 4:$() -10% Cooldown$(br)Even shorter spell cooldowns$(br2)$(blood)Level 5:$() Casting Grants Resistance$(br)Gain Resistance I for 2 seconds"
+      "text": "$(italic)Example: A level 3 Rare spell grants 10 x 3 x 2.0 = 60 XP$()$(br2)The Arcane Channeling upgrade tree provides five levels:$(br2)Level 1: -5% Mana Cost$(br)Level 2: -10% Mana Cost$(br)Level 3: -5% Cooldown$(br)Level 4: -10% Cooldown$(br)Level 5: Resistance on Cast"
     },
     {
       "type": "patchouli:text",
       "title": "Upgrade Costs",
-      "text": "Each level requires Living Armor points:$(br2)• $(blood)Level 1:$() 5 points$(br)• $(blood)Level 2:$() 10 points$(br)• $(blood)Level 3:$() 15 points$(br)• $(blood)Level 4:$() 20 points$(br)• $(blood)Level 5:$() 25 points$(br2)$(bold)Total:$() 75 points for all levels$(br2)These points are earned through Living Armor's normal progression system - wear the armor, gain XP from various sources including spellcasting."
+      "text": "Each level requires Living Armor points:$(br2)- $(blood)Level 1:$() 5 points$(br)- $(blood)Level 2:$() 10 points$(br)- $(blood)Level 3:$() 15 points$(br)- $(blood)Level 4:$() 20 points$(br)- $(blood)Level 5:$() 25 points$(br2)$(bold)Total:$() 75 points for all levels$(br2)Points are earned through Living Armor's normal progression - wear the armor and gain XP from spellcasting."
     },
     {
       "type": "patchouli:text",
       "title": "Synergies",
-      "text": "Arcane Channeling works exceptionally well with:$(br2)• $(l:animus:compatibility/blood_infused_spellbook)Blood-Infused Spellbook$()$(br)Stack mana cost reductions$(br2)• $(l:animus:compatibility/sigil_crimson_will)Sigil of Crimson Will$()$(br)Damage boost + mana efficiency$(br2)• $(l:animus:compatibility/sanguine_scrolls)Sanguine Scrolls$()$(br)Cast from scrolls while gaining XP$(br2)$(italic)The armor gains XP from any spell, including those cast with LP!$()"
+      "text": "Arcane Channeling works well with:$(br2)- $(l:compatibility/blood_infused_spellbook)Blood-Infused Spellbook$()$(br)Stack mana cost reductions$(br2)- $(l:compatibility/sigil_crimson_will)Sigil of Crimson Will$()$(br)Damage boost + mana efficiency$(br2)- $(l:compatibility/sanguine_scrolls)Sanguine Scrolls$()$(br)Cast from scrolls while gaining XP$(br2)$(italic)The armor gains XP from any spell, including those cast with LP!$()"
     },
     {
       "type": "patchouli:text",
@@ -40,7 +40,7 @@
     {
       "type": "patchouli:text",
       "title": "Tips & Strategy",
-      "text": "$(bold)Maximize XP Gain:$()$(br)• Cast higher-level spells$(br)• Seek rare/epic/legendary spells$(br)• Use the $(l:animus:compatibility/ritual_arcane_mastery)Ritual of Arcane Mastery$() to upgrade spells$(br2)$(bold)Build Paths:$()$(br)• Efficiency Focus: Levels 1-2 for mana savings$(br)• Rapid Caster: Levels 3-4 for cooldowns$(br)• Survivalist: Level 5 for combat defense$(br2)$(italic)Remember: XP is only granted while wearing Living Armor!$()"
+      "text": "$(bold)Maximize XP Gain:$()$(br)- Cast higher-level spells$(br)- Seek rare/epic/legendary spells$(br)- Use the $(l:compatibility/ritual_arcane_mastery)Ritual of Arcane Mastery$() to upgrade spells$(br2)$(bold)Build Paths:$()$(br)- Efficiency Focus: Levels 1-2$(br)- Rapid Caster: Levels 3-4$(br)- Survivalist: Level 5$(br2)$(italic)Remember: XP is only granted while wearing Living Armor!$()"
     }
   ]
 }

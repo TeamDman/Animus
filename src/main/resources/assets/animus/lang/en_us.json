@@ -503,5 +503,11 @@
   "advancement.animus.arcane_blood.title": "Arcane Blood",
   "advancement.animus.arcane_blood.description": "Merge magic and blood by creating a Blood-Infused Spellbook",
   "advancement.animus.sanguine_scroll.title": "Sanguine Scroll",
-  "advancement.animus.sanguine_scroll.description": "Craft a Sanguine Scroll to cast spells powered by Life Essence"
+  "advancement.animus.sanguine_scroll.description": "Craft a Sanguine Scroll to cast spells powered by Life Essence",
+  "jei.animus.sanguine_scroll.info": "Sanguine Scrolls are reusable spell scrolls powered by Life Essence instead of mana.\n\n§6Crafting:§r Right-click a Blood Altar while holding an Iron's Spellbooks scroll in your main hand and a Blood Magic slate in your offhand. The altar consumes LP based on spell rarity and level.\n\n§6Usage:§r Right-click to cast the stored spell, consuming LP from your Soul Network. Each use damages the scroll's durability.",
+  "jei.animus.sanguine_scroll.blank": "§6Blank Sanguine Scroll§r\nUses Blank Slate\n50 uses\n\n§cLP Cost:§r Base x Spell Level\nCommon: 2,000 | Uncommon: 4,000\nRare: 8,000 | Epic: 12,000\nLegendary: 16,000",
+  "jei.animus.sanguine_scroll.reinforced": "§6Reinforced Sanguine Scroll§r\nUses Reinforced Slate\n100 uses\n\n§cLP Cost:§r Base x Spell Level\nCommon: 2,000 | Uncommon: 4,000\nRare: 8,000 | Epic: 12,000\nLegendary: 16,000",
+  "jei.animus.sanguine_scroll.imbued": "§6Imbued Sanguine Scroll§r\nUses Imbued Slate\n200 uses\n\n§cLP Cost:§r Base x Spell Level\nCommon: 2,000 | Uncommon: 4,000\nRare: 8,000 | Epic: 12,000\nLegendary: 16,000",
+  "jei.animus.sanguine_scroll.demon": "§6Demon Sanguine Scroll§r\nUses Demonic Slate\n400 uses\n\n§cLP Cost:§r Base x Spell Level\nCommon: 2,000 | Uncommon: 4,000\nRare: 8,000 | Epic: 12,000\nLegendary: 16,000",
+  "jei.animus.sanguine_scroll.ethereal": "§6Ethereal Sanguine Scroll§r\nUses Ethereal Slate\n600 uses\n\n§cLP Cost:§r Base x Spell Level\nCommon: 2,000 | Uncommon: 4,000\nRare: 8,000 | Epic: 12,000\nLegendary: 16,000\n\n§dMax LP (Level 5 Legendary): 80,000§r"
 }
