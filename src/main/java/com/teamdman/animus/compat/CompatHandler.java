@@ -38,6 +38,24 @@ public class CompatHandler {
                 Animus.LOGGER.error("Failed to register Irons Spells DeferredRegister", e);
             }
         }
+
+        // Check for Ars Nouveau and register its block entities early
+        if (ModList.get().isLoaded("ars_nouveau")) {
+            try {
+                ArsNouveauCompat.registerDeferred(modEventBus);
+            } catch (Exception e) {
+                Animus.LOGGER.error("Failed to register Ars Nouveau DeferredRegister", e);
+            }
+        }
+
+        // Check for Botania and register its block entities early
+        if (ModList.get().isLoaded("botania")) {
+            try {
+                BotaniaCompat.registerDeferred(modEventBus);
+            } catch (Exception e) {
+                Animus.LOGGER.error("Failed to register Botania DeferredRegister", e);
+            }
+        }
     }
 
     /**

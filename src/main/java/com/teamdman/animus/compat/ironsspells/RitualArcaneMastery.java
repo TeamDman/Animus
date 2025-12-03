@@ -1,4 +1,4 @@
-package com.teamdman.animus.rituals;
+package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
@@ -42,8 +42,9 @@ import java.util.function.Consumer;
  * Activation Cost: 10,000 LP
  * Refresh Time: 40 ticks (2 seconds)
  * Range: 5 blocks horizontal/vertical
+ *
+ * Note: Do NOT add @RitualRegister here - registration is done in IronsSpellsCompat
  */
-@RitualRegister(Constants.Rituals.ARCANE_MASTERY)
 public class RitualArcaneMastery extends Ritual {
 
     private static final int SEARCH_RANGE = 5;
