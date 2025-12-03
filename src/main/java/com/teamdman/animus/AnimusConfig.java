@@ -173,7 +173,7 @@ public class AnimusConfig {
 
             serenityLPPerTick = builder
                 .comment("LP cost per tick for Ritual of Serenity (checked every second / 20 ticks)")
-                .defineInRange("serenityLPPerTick", 50, 1, 10000);
+                .defineInRange("serenityLPPerTick", 1, 1, 10000);
 
             noliteIgnemRadius = builder
                 .comment("Radius in blocks for Ritual of Nolite Ignem fire extinguishing")
