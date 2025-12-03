@@ -2,7 +2,6 @@
   <img src="https://raw.githubusercontent.com/TeamDman/Animus/1.20.1/src/main/resources/assets/animus/textures/misc/animus_512px.png" alt="Animus Logo" width="256"/>
 </p>
 
-<h1 align="center">Animus</h1>
 
 <p align="center">
   <a href="https://minecraft.curseforge.com/projects/animus"><img src="http://cf.way2muchnoise.eu/full_animus_downloads.svg" alt="CurseForge Downloads"/></a>
