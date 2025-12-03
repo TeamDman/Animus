@@ -82,7 +82,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                 );
 
                 player.displayClientMessage(
-                    Component.translatable("text.component.animus.equivalency.radius_changed", newRadius, areaDimension)
+                    Component.translatable("text.component.animus.equivalency.radius_changed", newRadius, areaDimension, areaDimension)
                         .withStyle(ChatFormatting.GOLD),
                     true
                 );
