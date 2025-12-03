@@ -1,0 +1,41 @@
+{
+  "name": "guide.animus.entry.rune_unleashed_nature",
+  "category": "animus:compatibility",
+  "icon": "animus:rune_unleashed_nature",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Rune of Unleashed Nature is a hybrid altar component that channels Botania's mana into Blood Magic's altar system. Unlike the Arcane Rune which requires Source, this rune draws from an internal mana buffer that can be refilled by any Botania mana-transferring mechanism."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "animus:rune_unleashed_nature",
+      "text": "Crafted using a $(item)Blank Rune$() surrounded by Botania's $(item)Livingwood$() and $(item)Mana Diamonds$(). This creates a living altar rune that responds to mana flow."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:rune_unleashed_nature",
+      "text": "$(animus)Mana-Powered Rune$()$(br2)Place this rune in your Blood Altar structure like any other rune. It stores mana internally and can be charged by pointing a Mana Spreader at it or placing it near a Mana Pool."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Bonuses",
+      "text": "The Rune of Unleashed Nature provides bonuses even when empty:$(br2)$(blood)Always Active:$()$(br)- Capacity Bonus: Increases the Blood Altar's LP storage capacity$(br)- Half Orb Bonus: Provides 50% of a Rune of the Orb's effect, increasing Soul Network storage$(br2)These passive bonuses make it valuable even without mana."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Charged Bonus",
+      "text": "When the rune has mana in its internal buffer:$(br2)$(will)Mana-Powered:$()$(br)- Acceleration Bonus: Speeds up altar crafting and LP generation$(br)- Consumes 10 mana per second while active$(br2)The acceleration effect stacks with other speed-enhancing runes, making high-tier crafting faster."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Charging Methods",
+      "text": "Supply mana to the rune using any Botania mechanism:$(br2)- Point a $(item)Mana Spreader$() at the rune$(br)- Place it adjacent to a $(item)Mana Pool$()$(br)- Use a $(item)Mana Tablet$() or other mana items$(br2)The rune accepts mana like any Botania block and stores it in an internal buffer for consumption."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Requirements",
+      "text": "To use the Rune of Unleashed Nature:$(br)- $(animus)Botania must be installed$()$(br)- Supply mana via spreaders or pools$(br)- Ensure steady mana generation$(br2)Consider the consumption rate (10 mana/second per rune) when planning your mana infrastructure for multiple runes."
+    }
+  ]
+}
