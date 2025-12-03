@@ -7,12 +7,22 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:key_binding",
-      "text": "A mystical key that can be bound to a blood mage's soul. Used as a crafting component in various Animus recipes and can be equipped as a curio for passive effects."
+      "text": "The Key of Binding is a mystical key bound to a blood mage's Soul Network. Its primary purpose is to share your LP with friends - give a bound key to an ally and they can bind their items to YOUR Soul Network, drawing from your LP reserves."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Sharing LP",
+      "text": "$(blood)Multiplayer Cooperation$()$(br2)1. Bind the key to yourself (right-click)$(br)2. Give the bound key to a friend$(br)3. Your friend holds it in their offhand$(br)4. Any items they bind will use YOUR Soul Network$(br2)This allows you to power your allies' sigils and bound tools without them needing their own LP infrastructure!"
     },
     {
       "type": "patchouli:text",
       "title": "Usage",
-      "text": "$(bold)Binding:$() Right-click while holding to bind to your soul network$(br2)$(bold)Curio Slot:$() Can be equipped in the \"key\" curio slot$(br2)$(bold)Crafting:$() Used in recipes requiring player binding$(br2)$(italic)The key to unlocking your potential.$()"
+      "text": "$(bold)Binding:$() Right-click while holding to bind to your Soul Network$(br2)$(bold)Offhand:$() Hold in offhand while binding items to use the key owner's network$(br2)$(bold)Curio Slot:$() Can be equipped in the \"key\" curio slot for the same effect$(br2)$(bold)Crafting:$() Used in recipes requiring player binding"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Strategic Uses",
+      "text": "$(animus)Team Strategies:$()$(br)- Designate one player as the LP generator$(br)- Share keys with combat-focused teammates$(br)- Power expensive rituals from a friend's network$(br)- Let new players use advanced sigils immediately$(br2)$(italic)The key to unlocking cooperation in the sanguine arts.$()"
     }
   ]
 }
