@@ -19,12 +19,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -34,8 +33,6 @@ import java.util.List;
  * Right-click on a block while sneaking to fill area
  */
 public class ItemSigilBuilder extends ItemSigilToggleableBase {
-    private static Field rightClickDelayField = null;
-    private static boolean reflectionAttempted = false;
 
     public ItemSigilBuilder() {
         super(Constants.Sigils.BUILDER, 100);
@@ -51,50 +48,13 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (getActivated(stack) && entity instanceof Player player) {
-            // Remove right-click delay for fast building using reflection
-            if (!reflectionAttempted) {
-                try {
-                    // Try to find the rightClickDelay field
-                    // The field name might be obfuscated, so we'll try common names
-                    Class<?> minecraftClass = net.minecraft.client.Minecraft.class;
-                    try {
-                        rightClickDelayField = minecraftClass.getDeclaredField("rightClickDelay");
-                    } catch (NoSuchFieldException e) {
-                        // Try obfuscated name patterns
-                        for (Field field : minecraftClass.getDeclaredFields()) {
-                            if (field.getType() == int.class) {
-                                // Found a potential candidate, test it
-                                rightClickDelayField = field;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (rightClickDelayField != null) {
-                        rightClickDelayField.setAccessible(true);
-                    }
-                } catch (Exception e) {
-                    // Reflection failed, disable future attempts
-                } finally {
-                    reflectionAttempted = true;
-                }
-            }
-
-            // Reset the right-click delay if we have access
-            if (rightClickDelayField != null) {
-                try {
-                    net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
-                    int currentDelay = rightClickDelayField.getInt(mc);
-                    if (currentDelay > 0) {
-                        rightClickDelayField.setInt(mc, 0);
-                    }
-                } catch (Exception e) {
-                    // Silently fail
-                }
-            }
+        if (getActivated(stack) && entity instanceof Player player && level.isClientSide()) {
+            // Remove right-click delay for fast building (client-side only)
+            // Use fully qualified class name inside lambda to prevent class loading on server
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                com.teamdman.animus.client.BuilderSigilClientHelper.resetRightClickDelay();
+            });
         }
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }

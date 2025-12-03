@@ -1,14 +1,13 @@
 package com.teamdman.animus.network;
 
-import com.teamdman.animus.client.AltarGhostBlockRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -47,8 +46,10 @@ public class AltarGhostBlocksPacket {
 
     public static void handle(AltarGhostBlocksPacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            // This runs on the client thread
-            AltarGhostBlockRenderer.setGhostBlocks(msg.ghostBlocks, msg.durationTicks);
+            // This runs on the client thread - use DistExecutor to safely access client classes
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                com.teamdman.animus.client.AltarGhostBlockRenderer.setGhostBlocks(msg.ghostBlocks, msg.durationTicks);
+            });
         });
         ctx.get().setPacketHandled(true);
     }

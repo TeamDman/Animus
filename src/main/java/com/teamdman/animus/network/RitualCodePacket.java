@@ -1,7 +1,8 @@
 package com.teamdman.animus.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -27,8 +28,10 @@ public class RitualCodePacket {
 
     public static void handle(RitualCodePacket msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            // This runs on the client thread
-            Minecraft.getInstance().keyboardHandler.setClipboard(msg.code);
+            // This runs on the client thread - use DistExecutor to safely access client classes
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                com.teamdman.animus.client.ClipboardClientHelper.setClipboard(msg.code);
+            });
         });
         ctx.get().setPacketHandled(true);
     }

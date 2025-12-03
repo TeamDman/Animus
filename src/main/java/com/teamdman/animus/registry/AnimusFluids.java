@@ -4,9 +4,11 @@ import com.teamdman.animus.Constants;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -39,22 +41,8 @@ public class AnimusFluids {
 
             @Override
             public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer) {
-                consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions() {
-                    @Override
-                    public net.minecraft.resources.ResourceLocation getStillTexture() {
-                        return Constants.Resource.fluidAntiLifeStill;
-                    }
-
-                    @Override
-                    public net.minecraft.resources.ResourceLocation getFlowingTexture() {
-                        return Constants.Resource.fluidAntiLifeFlowing;
-                    }
-
-                    @Override
-                    public int getTintColor() {
-                        // White/light gray color for antilife
-                        return 0xFFEEEEEE;
-                    }
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                    consumer.accept(com.teamdman.animus.client.AntiLifeFluidClientExtension.INSTANCE);
                 });
             }
         }
@@ -81,22 +69,8 @@ public class AnimusFluids {
 
             @Override
             public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions> consumer) {
-                consumer.accept(new net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions() {
-                    @Override
-                    public net.minecraft.resources.ResourceLocation getStillTexture() {
-                        return Constants.Resource.fluidLivingTerraStill;
-                    }
-
-                    @Override
-                    public net.minecraft.resources.ResourceLocation getFlowingTexture() {
-                        return Constants.Resource.fluidLivingTerraFlowing;
-                    }
-
-                    @Override
-                    public int getTintColor() {
-                        // Brown color for living terra
-                        return 0xFF8B6F47;
-                    }
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                    consumer.accept(com.teamdman.animus.client.LivingTerraFluidClientExtension.INSTANCE);
                 });
             }
         }

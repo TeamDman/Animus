@@ -2,18 +2,20 @@ package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.NotNull;
 import wayoftime.bloodmagic.common.item.sigil.ItemSigilBase;
 import wayoftime.bloodmagic.core.data.Binding;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for Animus sigils
@@ -63,22 +65,17 @@ public abstract class AnimusSigilBase extends ItemSigilBase {
         // Add binding owner information
         Binding binding = getBinding(stack);
         if (binding != null) {
-            // Try to get the owner's name from the client player cache
-            String ownerName = "Unknown";
+            // Try to get the owner's name from the client player cache (client-side only)
+            AtomicReference<String> ownerNameRef = new AtomicReference<>("Unknown");
             if (level != null && level.isClientSide()) {
-                var minecraft = Minecraft.getInstance();
-                var connection = minecraft.getConnection();
-                if (connection != null) {
-                    var playerInfo = connection.getPlayerInfo(binding.getOwnerId());
-                    if (playerInfo != null) {
-                        ownerName = playerInfo.getProfile().getName();
-                    }
-                }
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                    ownerNameRef.set(com.teamdman.animus.client.SigilClientHelper.getOwnerName(binding.getOwnerId()));
+                });
             }
 
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BOUND_TO)
                 .withStyle(ChatFormatting.GRAY)
-                .append(Component.literal(ownerName)
+                .append(Component.literal(ownerNameRef.get())
                     .withStyle(ChatFormatting.AQUA)));
         } else {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.NOT_BOUND)

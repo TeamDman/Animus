@@ -11,6 +11,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -100,23 +102,11 @@ public class ItemSigilCrimsonWill extends AnimusSigilBase {
         tooltip.add(Component.literal("  • Scales up to +50% (at 4096 demon will)")
             .withStyle(ChatFormatting.GRAY));
 
-        // Try to show current boost if player is available
-        if (level != null && net.minecraft.client.Minecraft.getInstance().player != null && level.isClientSide()) {
-            try {
-                var player = net.minecraft.client.Minecraft.getInstance().player;
-                double currentWill = wayoftime.bloodmagic.will.PlayerDemonWillHandler.getTotalDemonWill(
-                    wayoftime.bloodmagic.api.compat.EnumDemonWillType.DEFAULT,
-                    player
-                );
-                double willMultiplier = Math.min(currentWill / 4096.0, 1.0);
-                double willBonus = 0.20 * willMultiplier;
-                double totalBonus = 0.30 + willBonus;
-
-                tooltip.add(Component.literal(String.format("  • Current boost: +%.0f%%", totalBonus * 100))
-                    .withStyle(ChatFormatting.YELLOW));
-            } catch (Exception e) {
-                // Ignore - we're in a context where we can't get player data
-            }
+        // Try to show current boost if player is available (client-side only)
+        if (level != null && level.isClientSide()) {
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+                com.teamdman.animus.client.CrimsonWillSigilClientHelper.addCurrentBoostTooltip(tooltip);
+            });
         }
 
         tooltip.add(Component.literal(""));

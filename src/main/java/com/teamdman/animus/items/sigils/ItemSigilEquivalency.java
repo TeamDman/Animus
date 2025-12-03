@@ -515,8 +515,15 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.EQUIVALENCY_SELECTED, selected.size(), MAX_SELECTED_BLOCKS)
                 .withStyle(ChatFormatting.GOLD));
 
-            // If shift is held, show all selected blocks
-            if (net.minecraft.client.gui.screens.Screen.hasShiftDown()) {
+            // If shift is held, show all selected blocks (check client-side only)
+            boolean showDetails = false;
+            if (level != null && level.isClientSide()) {
+                showDetails = net.minecraftforge.fml.DistExecutor.unsafeCallWhenOn(
+                    net.minecraftforge.api.distmarker.Dist.CLIENT,
+                    () -> () -> com.teamdman.animus.client.InputClientHelper.isShiftDown()
+                );
+            }
+            if (showDetails) {
                 for (Block block : selected) {
                     tooltip.add(Component.literal("  • ")
                         .append(block.getName())
