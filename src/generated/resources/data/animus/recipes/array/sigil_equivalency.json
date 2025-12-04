@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "addedinput": {
+    "item": "bloodmagic:reinforcedslate"
+  },
+  "baseinput": {
+    "item": "animus:reagentequivalency"
+  },
+  "output": {
+    "item": "animus:sigil_equivalency"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/furnacearray.png"
+}

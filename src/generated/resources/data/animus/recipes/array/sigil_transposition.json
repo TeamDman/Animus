@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "addedinput": {
+    "item": "bloodmagic:demonslate"
+  },
+  "baseinput": {
+    "item": "animus:reagenttransposition"
+  },
+  "output": {
+    "item": "animus:sigil_transposition"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/teleportation.png"
+}

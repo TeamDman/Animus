@@ -7,7 +7,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:key_binding",
-      "text": "The Key of Binding is a mystical key bound to a blood mage's Soul Network. Its primary purpose is to share your LP with friends - give a bound key to an ally and they can bind their items to YOUR Soul Network, drawing from your LP reserves."
+      "text": "The Key of Binding is a mystical key bound to a blood mage's Soul Network. Its primary purpose is to share your LP with friends - give a bound key to an ally and they can bind their items to YOUR Soul Network, drawing from your LP reserves.$(br2)$(bold)Crafting:$() Place a $(item)Simple Key$() in a Tier 1 Blood Altar with 1,500 LP."
     },
     {
       "type": "patchouli:text",

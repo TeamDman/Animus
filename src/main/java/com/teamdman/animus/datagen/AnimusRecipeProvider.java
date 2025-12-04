@@ -21,6 +21,23 @@ import wayoftime.bloodmagic.common.data.recipe.builder.TartaricForgeRecipeBuilde
 import java.util.function.Consumer;
 
 public class AnimusRecipeProvider extends RecipeProvider implements IConditionBuilder {
+    // Common array textures
+    private static final String ARRAY_GROWTH = "bloodmagic:textures/models/alchemyarrays/growthsigil.png";
+    private static final String ARRAY_LAPUTA = "bloodmagic:textures/models/alchemyarrays/shardoflaputa.png";
+    private static final String ARRAY_BINDING = "bloodmagic:textures/models/alchemyarrays/bindingarray.png";
+    private static final String ARRAY_VOID = "bloodmagic:textures/models/alchemyarrays/voidsigil.png";
+    private static final String ARRAY_FURNACE = "bloodmagic:textures/models/alchemyarrays/furnacearray.png";
+    private static final String ARRAY_TELEPORT = "bloodmagic:textures/models/alchemyarrays/teleportationarray.png";
+    private static final String ARRAY_LIGHTNING = "bloodmagic:textures/models/alchemyarrays/bindinglightningarray.png";
+    private static final String ARRAY_MOBSACRIFICE = "bloodmagic:textures/models/alchemyarrays/mobsacrifice.png";
+    private static final String ARRAY_LIGHT = "bloodmagic:textures/models/alchemyarrays/lightsigil.png";
+    private static final String ARRAY_FASTMINER = "bloodmagic:textures/models/alchemyarrays/fastminersigil.png";
+    private static final String ARRAY_WATER = "bloodmagic:textures/models/alchemyarrays/watersigil.png";
+    private static final String ARRAY_MOON = "bloodmagic:textures/models/alchemyarrays/moonarray.png";
+    private static final String ARRAY_TELEPORTATION = "bloodmagic:textures/models/alchemyarrays/teleportation.png";
+    private static final String ARRAY_SPIKE = "bloodmagic:textures/models/alchemyarrays/spikearray.png";
+    private static final String ARRAY_AIR = "bloodmagic:textures/models/alchemyarrays/airsigil.png";
+
     public AnimusRecipeProvider(PackOutput output) {
         super(output);
     }
@@ -30,6 +47,7 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
         buildCraftingRecipes(consumer);
         buildAltarRecipes(consumer);
         buildSoulForgeRecipes(consumer);
+        buildArrayRecipes(consumer);
     }
 
     private void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
@@ -70,6 +88,77 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
 
         SpecialRecipeBuilder.special(AnimusRecipeSerializers.KEY_UNBINDING.get())
             .save(consumer, ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "key_binding_unbind").toString());
+
+        // Blood wood building blocks
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_FENCE.get(), 3)
+            .pattern("#S#")
+            .pattern("#S#")
+            .define('#', AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get())
+            .define('S', Items.STICK)
+            .unlockedBy("has_blood_wood_planks", has(AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get()))
+            .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_FENCE_GATE.get())
+            .pattern("S#S")
+            .pattern("S#S")
+            .define('#', AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get())
+            .define('S', Items.STICK)
+            .unlockedBy("has_blood_wood_planks", has(AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get()))
+            .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_SLAB.get(), 6)
+            .pattern("###")
+            .define('#', AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get())
+            .unlockedBy("has_blood_wood_planks", has(AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get()))
+            .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_STAIRS.get(), 4)
+            .pattern("#  ")
+            .pattern("## ")
+            .pattern("###")
+            .define('#', AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get())
+            .unlockedBy("has_blood_wood_planks", has(AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get()))
+            .save(consumer);
+
+        // Imperfect ritual stone
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AnimusItems.BLOCK_IMPERFECT_RITUAL_STONE.get())
+            .pattern("OSO")
+            .pattern("SBS")
+            .pattern("OSO")
+            .define('O', Items.OBSIDIAN)
+            .define('S', Tags.Items.STONE)
+            .define('B', itemFromMod("bloodmagic", "apprenticebloodorb"))
+            .unlockedBy("has_blood_orb", has(itemFromMod("bloodmagic", "apprenticebloodorb")))
+            .save(consumer);
+
+        // Willful stone dyeing recipes
+        willfulStoneDyeRecipe(consumer, Items.GRAY_DYE, AnimusItems.BLOCK_WILLFUL_STONE.get(), "willful_stone_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.WHITE_DYE, AnimusItems.BLOCK_WILLFUL_STONE_WHITE.get(), "willful_stone_white_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.ORANGE_DYE, AnimusItems.BLOCK_WILLFUL_STONE_ORANGE.get(), "willful_stone_orange_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.MAGENTA_DYE, AnimusItems.BLOCK_WILLFUL_STONE_MAGENTA.get(), "willful_stone_magenta_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.LIGHT_BLUE_DYE, AnimusItems.BLOCK_WILLFUL_STONE_LIGHT_BLUE.get(), "willful_stone_light_blue_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.YELLOW_DYE, AnimusItems.BLOCK_WILLFUL_STONE_YELLOW.get(), "willful_stone_yellow_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.LIME_DYE, AnimusItems.BLOCK_WILLFUL_STONE_LIME.get(), "willful_stone_lime_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.PINK_DYE, AnimusItems.BLOCK_WILLFUL_STONE_PINK.get(), "willful_stone_pink_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.LIGHT_GRAY_DYE, AnimusItems.BLOCK_WILLFUL_STONE_LIGHT_GRAY.get(), "willful_stone_light_gray_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.CYAN_DYE, AnimusItems.BLOCK_WILLFUL_STONE_CYAN.get(), "willful_stone_cyan_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.PURPLE_DYE, AnimusItems.BLOCK_WILLFUL_STONE_PURPLE.get(), "willful_stone_purple_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.BLUE_DYE, AnimusItems.BLOCK_WILLFUL_STONE_BLUE.get(), "willful_stone_blue_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.BROWN_DYE, AnimusItems.BLOCK_WILLFUL_STONE_BROWN.get(), "willful_stone_brown_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.GREEN_DYE, AnimusItems.BLOCK_WILLFUL_STONE_GREEN.get(), "willful_stone_green_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.RED_DYE, AnimusItems.BLOCK_WILLFUL_STONE_RED.get(), "willful_stone_red_dyeing");
+        willfulStoneDyeRecipe(consumer, Items.BLACK_DYE, AnimusItems.BLOCK_WILLFUL_STONE_BLACK.get(), "willful_stone_black_dyeing");
+    }
+
+    private void willfulStoneDyeRecipe(Consumer<FinishedRecipe> consumer, ItemLike dye, ItemLike result, String name) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 8)
+            .pattern("SSS")
+            .pattern("SDS")
+            .pattern("SSS")
+            .define('S', Constants.Tags.WILLFUL_STONES)
+            .define('D', dye)
+            .unlockedBy("has_willful_stone", has(Constants.Tags.WILLFUL_STONES))
+            .save(consumer, loc(name));
     }
 
     private void buildAltarRecipes(Consumer<FinishedRecipe> consumer) {
@@ -109,6 +198,12 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
                 new ItemStack(AnimusItems.SANGUINE_DIVINER.get()),
                 1, 2500, 5, 1)
             .build(consumer, loc("altar/sanguine_diviner"));
+
+        BloodAltarRecipeBuilder.altar(
+                Ingredient.of(itemFromMod("bloodmagic", "simplekey")),
+                new ItemStack(AnimusItems.KEY_BINDING.get()),
+                1, 1500, 5, 5)
+            .build(consumer, loc("altar/key_binding"));
     }
 
     private void buildSoulForgeRecipes(Consumer<FinishedRecipe> consumer) {
@@ -262,6 +357,117 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
                 Ingredient.of(Items.OBSIDIAN),
                 Ingredient.of(Items.CHEST))
             .build(consumer, loc("soulforge/reagenttransposition"));
+    }
+
+    private void buildArrayRecipes(Consumer<FinishedRecipe> consumer) {
+        // Sigils with reinforced slate (tier 2)
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_BOUNDLESS_NATURE.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "reinforcedslate")),
+                new ItemStack(AnimusItems.SIGIL_BOUNDLESS_NATURE.get()),
+                ARRAY_GROWTH)
+            .build(consumer, loc("array/sigil_boundless_nature"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_BUILDER.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "reinforcedslate")),
+                new ItemStack(AnimusItems.SIGIL_BUILDER.get()),
+                ARRAY_LAPUTA)
+            .build(consumer, loc("array/sigil_builder"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_EQUIVALENCY.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "reinforcedslate")),
+                new ItemStack(AnimusItems.SIGIL_EQUIVALENCY.get()),
+                ARRAY_FURNACE)
+            .build(consumer, loc("array/sigil_equivalency"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_LEACH.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "reinforcedslate")),
+                new ItemStack(AnimusItems.SIGIL_LEACH.get()),
+                ARRAY_MOBSACRIFICE)
+            .build(consumer, loc("array/sigil_leach"));
+
+        // Sigils with imbued slate (tier 3)
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_CHAINS.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "infusedslate")),
+                new ItemStack(AnimusItems.SIGIL_CHAINS.get()),
+                ARRAY_BINDING)
+            .build(consumer, loc("array/sigil_chains"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_CONSUMPTION.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "infusedslate")),
+                new ItemStack(AnimusItems.SIGIL_CONSUMPTION.get()),
+                ARRAY_VOID)
+            .build(consumer, loc("array/sigil_consumption"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_REMEDIUM.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "infusedslate")),
+                new ItemStack(AnimusItems.SIGIL_REMEDIUM.get()),
+                ARRAY_LIGHT)
+            .build(consumer, loc("array/sigil_remedium"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_REPARARE.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "infusedslate")),
+                new ItemStack(AnimusItems.SIGIL_REPARARE.get()),
+                ARRAY_FASTMINER)
+            .build(consumer, loc("array/sigil_reparare"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_STORM.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "infusedslate")),
+                new ItemStack(AnimusItems.SIGIL_STORM.get()),
+                ARRAY_WATER)
+            .build(consumer, loc("array/sigil_storm"));
+
+        // Sigils with demonic slate (tier 4)
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_FREE_SOUL.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "demonslate")),
+                new ItemStack(AnimusItems.SIGIL_FREE_SOUL.get()),
+                ARRAY_TELEPORT)
+            .build(consumer, loc("array/sigil_free_soul"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_HEAVENLY_WRATH.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "demonslate")),
+                new ItemStack(AnimusItems.SIGIL_HEAVENLY_WRATH.get()),
+                ARRAY_LIGHTNING)
+            .build(consumer, loc("array/sigil_heavenly_wrath"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_TEMPORAL_DOMINANCE.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "demonslate")),
+                new ItemStack(AnimusItems.SIGIL_TEMPORAL_DOMINANCE.get()),
+                ARRAY_MOON)
+            .build(consumer, loc("array/sigil_temporal_dominance"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_TRANSPOSITION.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "demonslate")),
+                new ItemStack(AnimusItems.SIGIL_TRANSPOSITION.get()),
+                ARRAY_TELEPORTATION)
+            .build(consumer, loc("array/sigil_transposition"));
+
+        // Other array recipes
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.SPEAR_DIAMOND.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "reagentbinding")),
+                new ItemStack(AnimusItems.SPEAR_BOUND.get()),
+                ARRAY_SPIKE)
+            .build(consumer, loc("array/spear_bound"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(itemFromMod("bloodmagic", "soulscythe")),
+                Ingredient.of(itemFromMod("malum", "soul_stained_steel_ingot")),
+                new ItemStack(AnimusItems.RUNIC_SENTIENT_SCYTHE.get()),
+                ARRAY_AIR)
+            .build(consumer, loc("array/runic_sentient_scythe"));
     }
 
     private ResourceLocation loc(String path) {

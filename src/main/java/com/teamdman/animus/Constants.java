@@ -284,7 +284,18 @@ public class Constants {
                 net.minecraft.core.registries.Registries.ITEM,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_repair")
             );
-public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_ACCELERATION =            net.minecraft.tags.TagKey.create(                net.minecraft.core.registries.Registries.BLOCK,                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_acceleration")            );
+
+        public static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> WILLFUL_STONES =
+            net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.ITEM,
+                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "willful_stones")
+            );
+
+        public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_ACCELERATION =
+            net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.BLOCK,
+                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_acceleration")
+            );
     }
 
     public static class Resource {

@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "animus:willful_stone_light_blue_dyeing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_willful_stone": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "animus:willful_stones"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_willful_stone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "animus:willful_stone_light_blue_dyeing"
+    ]
+  },
+  "sends_telemetry_event": false
+}

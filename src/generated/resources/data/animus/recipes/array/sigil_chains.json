@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "addedinput": {
+    "item": "bloodmagic:infusedslate"
+  },
+  "baseinput": {
+    "item": "animus:reagentchains"
+  },
+  "output": {
+    "item": "animus:sigil_chains"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/bindingarray.png"
+}

@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "addedinput": {
+    "item": "bloodmagic:infusedslate"
+  },
+  "baseinput": {
+    "item": "animus:reagentstorm"
+  },
+  "output": {
+    "item": "animus:sigil_storm"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/watersigil.png"
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "bloodmagic:apprenticebloodorb"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "S": {
+      "tag": "forge:stone"
+    }
+  },
+  "pattern": [
+    "OSO",
+    "SBS",
+    "OSO"
+  ],
+  "result": {
+    "item": "animus:imperfect_ritual_stone"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "addedinput": {
+    "item": "bloodmagic:reinforcedslate"
+  },
+  "baseinput": {
+    "item": "animus:reagentbuilder"
+  },
+  "output": {
+    "item": "animus:sigil_builder"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/shardoflaputa.png"
+}

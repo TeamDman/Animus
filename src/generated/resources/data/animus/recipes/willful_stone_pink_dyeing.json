@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "D": {
+      "item": "minecraft:pink_dye"
+    },
+    "S": {
+      "tag": "animus:willful_stones"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SDS",
+    "SSS"
+  ],
+  "result": {
+    "count": 8,
+    "item": "animus:willful_stone_pink"
+  },
+  "show_notification": true
+}

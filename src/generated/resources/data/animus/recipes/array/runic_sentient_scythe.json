@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "addedinput": {
+    "item": "malum:soul_stained_steel_ingot"
+  },
+  "baseinput": {
+    "item": "bloodmagic:soulscythe"
+  },
+  "output": {
+    "item": "animus:runic_sentient_scythe"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/airsigil.png"
+}

@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "addedinput": {
+    "item": "bloodmagic:reagentbinding"
+  },
+  "baseinput": {
+    "item": "animus:spear_diamond"
+  },
+  "output": {
+    "item": "animus:spear_bound"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/spikearray.png"
+}
