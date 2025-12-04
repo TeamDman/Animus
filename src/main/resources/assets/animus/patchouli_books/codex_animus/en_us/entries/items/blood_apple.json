@@ -13,6 +13,11 @@
       "type": "patchouli:text",
       "title": "Usage",
       "text": "$(bold)Food Value:$() 3 hunger, low saturation$(br)$(bold)Effect:$() Brief confusion (75% chance)$(br2)$(bold)LP Generation:$()$(li)Near altar: 2x LP added to altar$(li)No altar: LP added to soul network$(br2)$(bold)Altar Search:$() 11x21x11 area centered on player$(br2)$(italic)A bittersweet taste of power.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Key of Binding",
+      "text": "If you carry a bound $(l:items/key_binding)Key of Binding$(/l) in your inventory or Curios slot while eating a Blood Apple (with no altar nearby), the LP will be deposited into the $(bold)key owner's$() soul network instead of your own.$(br2)This allows players to farm LP for others - simply carry their bound key and eat apples to fill their network remotely."
     }
   ]
 }
