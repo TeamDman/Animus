@@ -28,5 +28,17 @@
     "sounds": [
       "animus:fungal_slurp"
     ]
+  },
+  "ninja_time": {
+    "subtitle": "animus.subtitle.ninja_time",
+    "sounds": [
+      "animus:ninja_time"
+    ]
+  },
+  "execute": {
+    "subtitle": "animus.subtitle.execute",
+    "sounds": [
+      "animus:execute"
+    ]
   }
 }

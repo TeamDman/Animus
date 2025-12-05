@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Usage",
-      "text": "$(bold)Activation:$()$(br)1. Hold the item in your mainhand$(br)2. Right-click the Imperfect Ritual Stone$(br)3. All enchantments gain +1 level$(br)4. Item is marked as enhanced$(br)5. The stone remains for future use$(br2)$(bold)Limitations:$()$(li)Items can only be enhanced once$(li)Cannot remove enhancement mark$(li)Use the Reduction ritual to reverse$(br2)$(italic)Push enchantments beyond their limits.$()"
+      "text": "$(bold)Activation:$()$(br)1. Hold the item in your mainhand$(br)2. Right-click the Imperfect Ritual Stone$(br)3. All enchantments gain +1 level$(br)4. Item is marked as enhanced$(br)5. The stone remains for future use$(br2)$(bold)Limitations:$()$(li)Items can only be enhanced once$(li)Cannot remove enhancement mark$(li)Enhanced items cannot be processed by the Ritual of Unmaking (configurable)$(br2)$(italic)Push enchantments beyond their limits.$()"
     }
   ]
 }

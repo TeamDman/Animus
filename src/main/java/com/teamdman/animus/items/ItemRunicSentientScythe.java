@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
 import wayoftime.bloodmagic.common.item.soul.ItemSentientScythe;
 import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import wayoftime.bloodmagic.potion.BloodMagicPotions;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -78,6 +79,10 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
                 stack.setTag(new net.minecraft.nbt.CompoundTag());
             }
             stack.getTag().putDouble("cachedSouls", totalWill);
+
+            // Apply Soul Snare effect (5 seconds, amplifier 1) for guaranteed will drops
+            target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                BloodMagicPotions.SOUL_SNARE.get(), 100, 1));
         }
 
         boolean result = super.hurtEnemy(stack, target, attacker);

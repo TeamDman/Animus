@@ -23,5 +23,11 @@ public class AnimusSounds {
     public static final RegistryObject<SoundEvent> FUNGAL_SLURP = SOUNDS.register("fungal_slurp",
         () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "fungal_slurp")));
 
-    // Additional sounds can be registered here
+    // Sigil of the Monk activation
+    public static final RegistryObject<SoundEvent> NINJA_TIME = SOUNDS.register("ninja_time",
+        () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "ninja_time")));
+
+    // Execute sound for kill effects
+    public static final RegistryObject<SoundEvent> EXECUTE = SOUNDS.register("execute",
+        () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "execute")));
 }

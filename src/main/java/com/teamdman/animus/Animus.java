@@ -36,6 +36,7 @@ public class Animus {
         AnimusTreeDecoratorTypes.TREE_DECORATOR_TYPES.register(modEventBus);
         AnimusRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         AnimusRecipeTypes.RECIPE_TYPES.register(modEventBus);
+        AnimusAttributes.ATTRIBUTES.register(modEventBus);
 
         // Register compatibility module deferred registers
         CompatHandler.registerDeferredRegisters(modEventBus);

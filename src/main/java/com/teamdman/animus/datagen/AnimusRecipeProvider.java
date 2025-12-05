@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
+import wayoftime.bloodmagic.common.data.recipe.builder.AlchemyTableRecipeBuilder;
 import wayoftime.bloodmagic.common.data.recipe.builder.BloodAltarRecipeBuilder;
 import wayoftime.bloodmagic.common.data.recipe.builder.TartaricForgeRecipeBuilder;
 
@@ -46,6 +47,7 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         buildCraftingRecipes(consumer);
         buildAltarRecipes(consumer);
+        buildAlchemyTableRecipes(consumer);
         buildSoulForgeRecipes(consumer);
         buildArrayRecipes(consumer);
     }
@@ -204,6 +206,22 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
                 new ItemStack(AnimusItems.KEY_BINDING.get()),
                 1, 1500, 5, 5)
             .build(consumer, loc("altar/key_binding"));
+    }
+
+    private void buildAlchemyTableRecipes(Consumer<FinishedRecipe> consumer) {
+        // Reagent of the Fist - crafted in Alchemy Table with zombie flesh + diamond pickaxe + iron tools
+        // Requires T2 blood orb (apprentice), 500 LP, 100 ticks
+        AlchemyTableRecipeBuilder.alchemyTable(
+                new ItemStack(AnimusItems.REAGENT_FIST.get()),
+                500, // LP cost
+                100, // ticks
+                2    // minimum tier (apprentice blood orb)
+            )
+            .addIngredient(Ingredient.of(Items.ROTTEN_FLESH))
+            .addIngredient(Ingredient.of(Items.DIAMOND_PICKAXE))
+            .addIngredient(Ingredient.of(Items.IRON_SHOVEL))
+            .addIngredient(Ingredient.of(Items.IRON_AXE))
+            .build(consumer, loc("alchemytable/reagentfist"));
     }
 
     private void buildSoulForgeRecipes(Consumer<FinishedRecipe> consumer) {
@@ -388,6 +406,13 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
                 new ItemStack(AnimusItems.SIGIL_LEACH.get()),
                 ARRAY_MOBSACRIFICE)
             .build(consumer, loc("array/sigil_leach"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(AnimusItems.REAGENT_FIST.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "reinforcedslate")),
+                new ItemStack(AnimusItems.SIGIL_MONK.get()),
+                ARRAY_FASTMINER) // Using fast miner texture for the monk sigil
+            .build(consumer, loc("array/sigil_monk"));
 
         // Sigils with imbued slate (tier 3)
         AlchemyArrayRecipeBuilder.array(

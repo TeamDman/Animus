@@ -1,0 +1,37 @@
+{
+  "name": "guide.animus.entry.ritual_endless_greed",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:rituals",
+  "sortnum": 22,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(thing)Ritual of Endless Greed$() is the perfect companion for any mob farm. It intercepts drops from slain creatures and transfers them directly into a container, keeping your farm clean and efficient."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Container Setup",
+      "text": "Place a $(thing)container$() (chest, barrel, hopper, etc.) $(bold)directly on top$() of the Master Ritual Stone - exactly one block above.$(br2)Any block with item handler capability will work, including modded storage.$(br2)$(bold)Tip:$() Connect to a larger storage system via hopper or pipe underneath."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Item Collection",
+      "text": "When a mob dies within range, its drops are $(bold)immediately$() transferred to the container instead of spawning in the world.$(br2)$(li)$(bold)Container present:$() Items inserted$(br)$(li)$(bold)Container full:$() Overflow destroyed$(br)$(li)$(bold)No container:$() All items destroyed$(br2)Items already on the ground are also collected periodically."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "XP Collection",
+      "text": "Experience orbs within range are automatically collected every second.$(br2)If a $(thing)Tome of Peritia$() is present in the container, all collected XP is stored in the first tome found.$(br2)If no tome exists, XP orbs are simply removed to prevent lag buildup."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Costs & Range",
+      "text": "$(bold)Activation:$() 5,000 LP$(br)$(bold)Upkeep:$() 5 LP per second$(br)$(bold)Per Item:$() 1 LP per item collected$(br2)$(bold)Range:$() 15 blocks horizontal$(br)$(bold)Height:$() 5 blocks above ritual$(br2)All values are configurable."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Runes Required",
+      "text": "This ritual uses a flat configuration with $(bold)no Dusk runes$():$(br2)$(li)4x $(thing)Earth Runes$() - inner cross$(br)$(li)4x $(thing)Fire Runes$() - diagonals$(br)$(li)4x $(thing)Water Runes$() - outer cardinal$(br)$(li)4x $(thing)Air Runes$() - outer corners$(br2)$(italic)Greed consumes all that falls within its grasp.$()"
+    }
+  ]
+}

@@ -87,6 +87,13 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue lunaVerticalRange;
         public final ForgeConfigSpec.IntValue solHorizontalRange;
         public final ForgeConfigSpec.IntValue solVerticalRange;
+        public final ForgeConfigSpec.BooleanValue unmakingDisallowEnhanced;
+        public final ForgeConfigSpec.BooleanValue cullingPlayerKillDrops;
+        public final ForgeConfigSpec.DoubleValue cullingWillConsumeChance;
+        public final ForgeConfigSpec.IntValue endlessGreedRange;
+        public final ForgeConfigSpec.IntValue endlessGreedVerticalRange;
+        public final ForgeConfigSpec.IntValue endlessGreedLPPerItem;
+        public final ForgeConfigSpec.IntValue endlessGreedRefreshCost;
 
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
@@ -266,6 +273,52 @@ public class AnimusConfig {
                 )
                 .defineInRange("solVerticalRange", 64, -1, 256);
 
+            unmakingDisallowEnhanced = builder
+                .comment(
+                    "Disallow items enhanced by the Imperfect Ritual of Enhancement from being processed by the Ritual of Unmaking",
+                    "When true, items with the AnimusEnhanced tag will be skipped",
+                    "Default: true"
+                )
+                .define("unmakingDisallowEnhanced", true);
+
+            cullingPlayerKillDrops = builder
+                .comment(
+                    "Enable player-like kills for Ritual of Culling when raw demon will is available",
+                    "When enabled and raw will is present, mobs are killed as if the ritual owner killed them",
+                    "This enables player-only drops like blaze rods from blazes",
+                    "Default: true"
+                )
+                .define("cullingPlayerKillDrops", true);
+
+            cullingWillConsumeChance = builder
+                .comment(
+                    "Chance (0.0 to 1.0) to consume 1 raw demon will when killing a mob with player-like kill",
+                    "Only applies when cullingPlayerKillDrops is enabled",
+                    "Default: 0.1 (10% chance)"
+                )
+                .defineInRange("cullingWillConsumeChance", 0.1, 0.0, 1.0);
+
+            // Ritual of Endless Greed
+            builder.comment("Ritual of Endless Greed - Collects mob drops into a container").push("endlessGreed");
+
+            endlessGreedRange = builder
+                .comment("Horizontal range in blocks for Ritual of Endless Greed effect area")
+                .defineInRange("range", 7, 1, 32);
+
+            endlessGreedVerticalRange = builder
+                .comment("Vertical range in blocks for Ritual of Endless Greed effect area")
+                .defineInRange("verticalRange", 5, 1, 32);
+
+            endlessGreedLPPerItem = builder
+                .comment("LP cost per item collected by Ritual of Endless Greed")
+                .defineInRange("lpPerItem", 1, 0, 100);
+
+            endlessGreedRefreshCost = builder
+                .comment("Base LP cost per refresh cycle (20 ticks) for Ritual of Endless Greed")
+                .defineInRange("refreshCost", 5, 0, 1000);
+
+            builder.pop();
+
             builder.pop();
         }
     }
@@ -287,6 +340,8 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue sigilEquivalencyRadius;
         public final ForgeConfigSpec.IntValue sigilEquivalencyLPCost;
         public final ForgeConfigSpec.IntValue sigilEquivalencyBlocksPerTick;
+        public final ForgeConfigSpec.DoubleValue monkUnarmedDamage;
+        public final ForgeConfigSpec.IntValue monkLPPerSecond;
 
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -356,6 +411,27 @@ public class AnimusConfig {
             sigilEquivalencyBlocksPerTick = builder
                 .comment("Number of blocks to replace per tick with Sigil of Equivalency (lower = less lag)")
                 .defineInRange("sigilEquivalencyBlocksPerTick", 5, 1, 100);
+
+            // Sigil of the Monk
+            builder.comment("Sigil of the Monk - unarmed combat enhancement").push("monk");
+
+            monkUnarmedDamage = builder
+                .comment(
+                    "Bonus unarmed damage when Sigil of the Monk is active",
+                    "This damage is added when attacking with empty hands",
+                    "Default: 10"
+                )
+                .defineInRange("unarmedDamage", 10.0, 0.0, 100.0);
+
+            monkLPPerSecond = builder
+                .comment(
+                    "LP cost per second while Sigil of the Monk is active",
+                    "Default: 100 (5 LP per tick × 20 ticks)",
+                    "Set to 0 to disable LP drain"
+                )
+                .defineInRange("lpPerSecond", 100, 0, 10000);
+
+            builder.pop();
             builder.pop();
         }
     }

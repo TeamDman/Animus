@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -85,6 +86,11 @@ public class RitualUnmaking extends Ritual {
         for (ItemEntity itemEntity : itemList) {
             ItemStack stack = itemEntity.getItem();
 
+            // Skip items enhanced by the Imperfect Ritual of Enhancement if config is enabled
+            if (AnimusConfig.rituals.unmakingDisallowEnhanced.get() && isEnhancedItem(stack)) {
+                continue;
+            }
+
             if (stack.is(Items.ENCHANTED_BOOK)) {
                 // Handle enchanted books - split enchantments
                 ListTag enchants = stack.getEnchantmentTags();
@@ -152,6 +158,16 @@ public class RitualUnmaking extends Ritual {
             getRefreshCost()
         );
         network.syphon(ticket, false);
+    }
+
+    /**
+     * Checks if an item has been enhanced by the Imperfect Ritual of Enhancement
+     */
+    private boolean isEnhancedItem(ItemStack stack) {
+        if (!stack.hasTag()) {
+            return false;
+        }
+        return stack.getTag().getBoolean("AnimusEnhanced");
     }
 
     /**

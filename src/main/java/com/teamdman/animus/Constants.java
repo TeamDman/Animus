@@ -112,6 +112,14 @@ public class Constants {
             public static final String TEMPORAL_GAG_ACTIVE = "text.component.animus.temporal.gag_active";
             public static final String TEMPORAL_NO_LP = "text.component.animus.temporal.no_lp";
             public static final String TEMPORAL_ACTIVATED = "text.component.animus.temporal.activated";
+
+            // Sigil of the Monk
+            public static final String TICKET_MONK = "text.component.animus.ticket.monk";
+            public static final String TICKET_MONK_EXECUTE = "text.component.animus.ticket.monk_execute";
+            public static final String MONK_NO_LP = "text.component.animus.monk.no_lp";
+
+            // Ritual of Endless Greed
+            public static final String TICKET_ENDLESS_GREED = "text.component.animus.ticket.endless_greed";
         }
 
         public static class Tooltips {
@@ -229,6 +237,19 @@ public class Constants {
             public static final String EQUIVALENCY_1 = "tooltip.animus.sigil.equivalency.1";
             public static final String EQUIVALENCY_2 = "tooltip.animus.sigil.equivalency.2";
             public static final String EQUIVALENCY_SELECTED = "tooltip.animus.sigil.equivalency.selected";
+
+            // Sigil of the Demon Monk Tooltips
+            public static final String SIGIL_MONK_FLAVOUR = "tooltip.animus.sigil.monk.flavour";
+            public static final String SIGIL_MONK_INFO = "tooltip.animus.sigil.monk.info";
+            public static final String SIGIL_MONK_DAMAGE = "tooltip.animus.sigil.monk.damage";
+            public static final String SIGIL_MONK_MINING = "tooltip.animus.sigil.monk.mining";
+            public static final String SIGIL_MONK_KILL_BONUS = "tooltip.animus.sigil.monk.kill_bonus";
+            public static final String SIGIL_MONK_SOUL_SNARE = "tooltip.animus.sigil.monk.soul_snare";
+            public static final String SIGIL_MONK_WILL_BONUS = "tooltip.animus.sigil.monk.will_bonus";
+            public static final String SIGIL_MONK_EXECUTE = "tooltip.animus.sigil.monk.execute";
+            public static final String SIGIL_MONK_COST = "tooltip.animus.sigil.monk.cost";
+            public static final String SIGIL_MONK_ACTIVE = "tooltip.animus.sigil.monk.active";
+            public static final String SIGIL_MONK_INACTIVE = "tooltip.animus.sigil.monk.inactive";
         }
     }
 
@@ -361,6 +382,7 @@ public class Constants {
         public static final String STEADFAST = "ritual_steadfast_heart";
         public static final String UNMAKING = "ritual_unmaking";
         public static final String ARCANE_MASTERY = "ritual_arcane_mastery";
+        public static final String ENDLESS_GREED = "ritual_endless_greed";
     }
 
     public static class Sigils {
@@ -381,6 +403,7 @@ public class Constants {
         public static final String TEMPORAL_DOMINANCE = "temporal_dominance";
         public static final String EQUIVALENCY = "equivalency";
         public static final String BOUNDLESS_NATURE = "boundless_nature";
+        public static final String MONK = "monk";
     }
 
     public static ResourceLocation rl(String path) {

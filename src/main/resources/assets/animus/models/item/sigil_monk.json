@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "animus:item/sigil_monk"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "animus:activated": 1.0
+      },
+      "model": "animus:item/sigil_monk_active"
+    }
+  ]
+}

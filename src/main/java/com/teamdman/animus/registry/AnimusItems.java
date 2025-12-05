@@ -3,8 +3,6 @@ package com.teamdman.animus.registry;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.*;
 import com.teamdman.animus.items.sigils.*;
-import com.teamdman.animus.items.sigils.ItemSigilTemporalDominance;
-import com.teamdman.animus.items.sigils.ItemSigilEquivalency;
 import com.teamdman.animus.items.ItemReagent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -162,6 +160,9 @@ public class AnimusItems {
     public static final RegistryObject<Item> REAGENT_TEMPORAL_DOMINANCE = ITEMS.register("reagenttemporaldominance",
         ItemReagent::new);
 
+    public static final RegistryObject<Item> REAGENT_FIST = ITEMS.register("reagentfist",
+        ItemReagent::new);
+
     // Sigils
     public static final RegistryObject<Item> SIGIL_BUILDER = ITEMS.register("sigil_builder",
         ItemSigilBuilder::new);
@@ -200,6 +201,9 @@ public class AnimusItems {
 
     public static final RegistryObject<Item> SIGIL_BOUNDLESS_NATURE = ITEMS.register("sigil_boundless_nature",
         ItemSigilBoundlessNature::new);
+
+    public static final RegistryObject<Item> SIGIL_MONK = ITEMS.register("sigil_monk",
+        ItemSigilMonk::new);
 
     // Tools & Weapons
     public static final RegistryObject<Item> SPEAR_IRON = ITEMS.register("spear_iron",

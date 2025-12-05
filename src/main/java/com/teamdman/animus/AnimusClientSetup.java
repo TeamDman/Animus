@@ -56,12 +56,14 @@ public class AnimusClientSetup {
             ItemBlockRenderTypes.setRenderLayer(AnimusFluids.LIVING_TERRA_SOURCE.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(AnimusFluids.LIVING_TERRA_FLOWING.get(), RenderType.translucent());
 
-            // Register item properties for toggleable sigils
+            // Register item properties for toggleable sigils (use "activated" NBT tag)
             registerToggleableSigilProperty(AnimusItems.SIGIL_BUILDER.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_LEACH.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_TRANSPOSITION.get());
+            registerToggleableSigilProperty(AnimusItems.SIGIL_MONK.get());
 
             // Register item properties for active-state sigils (Remedium, Reparare, Heavenly Wrath, Boundless Nature)
+            // These use "Active" NBT tag
             registerActiveSigilProperty(AnimusItems.SIGIL_REMEDIUM.get());
             registerActiveSigilProperty(AnimusItems.SIGIL_REPARARE.get());
             registerActiveSigilProperty(AnimusItems.SIGIL_HEAVENLY_WRATH.get());

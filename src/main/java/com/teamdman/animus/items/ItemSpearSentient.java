@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
 import wayoftime.bloodmagic.api.compat.IDemonWillWeapon;
 import wayoftime.bloodmagic.common.item.soul.ItemSoulGem;
+import wayoftime.bloodmagic.potion.BloodMagicPotions;
 import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
 
 import java.util.List;
@@ -173,6 +174,10 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
 
             // Apply sentient effects
             applyEffectToEntity(type, willLevel, target, attacker);
+
+            // Apply Soul Snare effect (5 seconds, amplifier 1) for guaranteed will drops
+            target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                BloodMagicPotions.SOUL_SNARE.get(), 100, 1));
 
             // Drain will from soul network
             if (soulsRemaining >= 16.0) {

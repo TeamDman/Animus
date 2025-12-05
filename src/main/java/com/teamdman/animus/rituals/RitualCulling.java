@@ -2,6 +2,7 @@ package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.util.AnimusFakePlayer;
 import com.teamdman.animus.util.AnimusUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,6 +18,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.item.PrimedTnt;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
@@ -130,9 +133,13 @@ public class RitualCulling extends Ritual {
             return;
         }
 
-        // Get current destructive demon will
+        // Get current destructive demon will (for boss killing)
         EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;
         double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+
+        // Check for raw demon will (for player-like kills)
+        double rawWillAmount = WorldDemonWillHandler.getCurrentWill(level, pos, EnumDemonWillType.DEFAULT);
+        boolean usePlayerKill = AnimusConfig.rituals.cullingPlayerKillDrops.get() && rawWillAmount >= 1.0;
 
         // Find nearby altar
         TileAltar tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
@@ -257,9 +264,64 @@ public class RitualCulling extends Ritual {
 
                     if (AnimusConfig.rituals.cullingDebug.get()) {
                         System.out.println("Animus: [Ritual of Culling Debug]:   Applying damage: " + damage);
+                        System.out.println("Animus: [Ritual of Culling Debug]:   Using player kill: " + usePlayerKill);
                     }
 
-                    result = livingEntity.hurt(level.damageSources().genericKill(), damage);
+                    // Use FakePlayer for player-like kills when raw will is available
+                    if (usePlayerKill && level instanceof ServerLevel serverLevel) {
+                        AnimusFakePlayer fakePlayer = AnimusFakePlayer.get(serverLevel, ritualStone.getOwner(), null);
+
+                        // Give the fake player a looting sword based on will types
+                        ItemStack lootingSword = AnimusFakePlayer.createLootingSword(serverLevel, pos);
+                        fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, lootingSword);
+
+                        // Position fake player near the entity
+                        fakePlayer.setPos(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
+
+                        // Set lastHurtByPlayer to enable player-only drops (like blaze rods)
+                        // This field is checked by loot tables to determine if player killed the mob
+                        // Using reflection since these fields are protected
+                        try {
+                            java.lang.reflect.Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("lastHurtByPlayer");
+                            lastHurtByPlayerField.setAccessible(true);
+                            lastHurtByPlayerField.set(livingEntity, fakePlayer);
+
+                            java.lang.reflect.Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("lastHurtByPlayerTime");
+                            lastHurtByPlayerTimeField.setAccessible(true);
+                            lastHurtByPlayerTimeField.setInt(livingEntity, 100);
+                        } catch (Exception e) {
+                            // Try obfuscated field names if reflection fails
+                            try {
+                                // f_20889_ is the obfuscated name for lastHurtByPlayer in 1.20.1
+                                java.lang.reflect.Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("f_20889_");
+                                lastHurtByPlayerField.setAccessible(true);
+                                lastHurtByPlayerField.set(livingEntity, fakePlayer);
+
+                                // f_20890_ is the obfuscated name for lastHurtByPlayerTime in 1.20.1
+                                java.lang.reflect.Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("f_20890_");
+                                lastHurtByPlayerTimeField.setAccessible(true);
+                                lastHurtByPlayerTimeField.setInt(livingEntity, 100);
+                            } catch (Exception e2) {
+                                if (AnimusConfig.rituals.cullingDebug.get()) {
+                                    System.out.println("Animus: [Ritual of Culling Debug]: Failed to set lastHurtByPlayer fields: " + e2.getMessage());
+                                }
+                            }
+                        }
+
+                        // Use player attack damage source for player-only drops
+                        DamageSource playerDamage = level.damageSources().playerAttack(fakePlayer);
+                        result = livingEntity.hurt(playerDamage, damage);
+
+                        // Chance to consume raw will
+                        if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
+                            WorldDemonWillHandler.drainWill(level, pos, EnumDemonWillType.DEFAULT, 1.0, true);
+                            if (AnimusConfig.rituals.cullingDebug.get()) {
+                                System.out.println("Animus: [Ritual of Culling Debug]:   Consumed 1 raw demon will");
+                            }
+                        }
+                    } else {
+                        result = livingEntity.hurt(level.damageSources().genericKill(), damage);
+                    }
 
                     if (AnimusConfig.rituals.cullingDebug.get()) {
                         System.out.println("Animus: [Ritual of Culling Debug]:   Damage result: " + result);

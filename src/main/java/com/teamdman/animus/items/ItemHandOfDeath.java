@@ -96,6 +96,7 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
         }
 
         // Call parent to apply normal sentient scythe damage and effects
+        // (parent applies Soul Snare effect - 5 seconds, amplifier 1)
         boolean result = super.hurtEnemy(stack, target, attacker);
 
         if (attacker.level().isClientSide || !(attacker instanceof Player player)) {

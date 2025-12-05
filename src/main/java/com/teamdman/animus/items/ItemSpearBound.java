@@ -175,15 +175,13 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             if (useDuration >= 10) {
                 int riptide = EnchantmentHelper.getRiptide(stack);
 
-                // If activated, check for LP cost
-                if (isActivated(stack) && !consumeLP(player, stack)) {
-                    if (!level.isClientSide) {
-                        player.displayClientMessage(
-                            Component.translatable(Constants.Localizations.Text.SPEAR_NO_LP_THROW)
-                                .withStyle(ChatFormatting.RED),
-                            true
-                        );
-                    }
+                // If activated, check for LP cost (server-side only)
+                if (isActivated(stack) && !level.isClientSide && !consumeLP(player, stack)) {
+                    player.displayClientMessage(
+                        Component.translatable(Constants.Localizations.Text.SPEAR_NO_LP_THROW)
+                            .withStyle(ChatFormatting.RED),
+                        true
+                    );
                     return;
                 }
 

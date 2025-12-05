@@ -1,0 +1,45 @@
+{
+  "name": "guide.animus.entry.sigil_monk",
+  "icon": "animus:sigil_monk",
+  "category": "animus:sigils",
+  "sortnum": 15,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_monk",
+      "text": "A curio sigil that channels demonic power into devastating unarmed combat. Master the way of the fist, empowered by demon will."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Basic Abilities",
+      "text": "$(bold)Activation:$() Right-click to toggle$(br2)While active, grants:$(br)$(li)$(thing)+10 Unarmed Damage$() with knockback$(br)$(li)$(thing)Netherite + Efficiency V mining$() with bare hands$(br)$(li)On kill: $(effect)Resistance II$() (5s) + $(effect)Regeneration$() (2s)$(br)$(li)Applies $(effect)Soul Snare II$() (2s) on hit$(br)$(li)$(thing)Fall damage immunity$() (25 LP per fall)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Projectile Catch",
+      "text": "With an $(thing)empty main hand$(), incoming projectiles can be caught instead of damaging you:$(br2)$(li)$(bold)Arrows$() - regular and spectral$(br)$(li)$(bold)Tridents$()$(br)$(li)$(bold)Firework Rockets$()$(br2)The caught projectile goes directly into your main hand. Costs $(red)50 LP$() per catch."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Demon Will Bonus",
+      "text": "The sigil grows stronger with demon will. Your unarmed attacks deal $(thing)bonus damage$() equal to a percentage of the target's maximum health:$(br2)$(li)$(bold)1 Will:$() +1% max HP damage$(br)$(li)$(bold)4096 Will:$() +15% max HP damage$(br2)Damage scales linearly between these values. All will types (Raw, Corrosive, etc.) are combined."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Execute",
+      "text": "If your attack would leave an enemy below the $(thing)execute threshold$() (same % as your bonus damage), you perform an $(bold)Execute$():$(br2)$(li)$(gold)Instant kill$() the target$(br)$(li)$(green)+200 LP$() added to soul network$(br)$(li)$(red)-5 Will$() consumed from inventory$(br2)Requires at least 5 will to trigger. A burst of soul particles marks the kill."
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Reagent: Fist",
+      "recipe": "animus:alchemytable/reagentfist",
+      "text": "First, craft the Reagent of the Fist in an Alchemy Table."
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Crafting",
+      "recipe": "animus:array/sigil_monk",
+      "text": "Combine with a Reinforced Slate in an Alchemy Array to create the sigil."
+    }
+  ]
+}
