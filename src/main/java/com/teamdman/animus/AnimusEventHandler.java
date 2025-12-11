@@ -646,7 +646,17 @@ public class AnimusEventHandler {
     }
 
     /**
-     * Sigil of the Demon Monk - Catch projectiles when hit with empty main hand
+     * Check if an item is a catchable projectile item (arrow, spectral arrow, trident, firework)
+     */
+    private static boolean isCatchableProjectileItem(ItemStack stack) {
+        return stack.is(net.minecraft.world.item.Items.ARROW) ||
+               stack.is(net.minecraft.world.item.Items.SPECTRAL_ARROW) ||
+               stack.is(net.minecraft.world.item.Items.TRIDENT) ||
+               stack.is(net.minecraft.world.item.Items.FIREWORK_ROCKET);
+    }
+
+    /**
+     * Sigil of the Demon Monk - Catch projectiles when hit with empty main hand or holding a catchable projectile
      * Cancels damage, gives the projectile item to the player, plays sound and particles
      */
     @SubscribeEvent(priority = EventPriority.HIGH)
@@ -661,8 +671,10 @@ public class AnimusEventHandler {
             return;
         }
 
-        // Check if player has empty main hand
-        if (!player.getMainHandItem().isEmpty()) {
+        // Check if player has empty main hand OR is holding a catchable projectile item
+        ItemStack mainHandItem = player.getMainHandItem();
+        boolean canCatch = mainHandItem.isEmpty() || isCatchableProjectileItem(mainHandItem);
+        if (!canCatch) {
             return;
         }
 
@@ -698,8 +710,20 @@ public class AnimusEventHandler {
             // Cancel the damage
             event.setCanceled(true);
 
-            // Put the item in the player's main hand
-            player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, caughtItem);
+            // Add caught item to player's inventory (or increment stack if holding same type)
+            if (mainHandItem.isEmpty()) {
+                // Empty hand - put item directly in main hand
+                player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, caughtItem);
+            } else if (mainHandItem.is(caughtItem.getItem()) && mainHandItem.getCount() < mainHandItem.getMaxStackSize()) {
+                // Holding same item type and stack isn't full - increment stack
+                mainHandItem.grow(1);
+            } else {
+                // Holding different projectile type or stack is full - add to inventory
+                if (!player.getInventory().add(caughtItem)) {
+                    // Inventory full - drop item at player's feet
+                    player.drop(caughtItem, false);
+                }
+            }
 
             // Remove the projectile entity
             projectile.discard();
