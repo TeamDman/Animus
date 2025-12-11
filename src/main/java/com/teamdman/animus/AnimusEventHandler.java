@@ -260,7 +260,7 @@ public class AnimusEventHandler {
     /**
      * Prevent mob spawning in Ritual of Serenity zones
      * This event fires before a mob finalizes spawning, allowing us to cancel it
-     * Note: Spawner spawns are allowed to proceed
+     * Note: Spawner spawns and conversions (e.g., villager -> zombie villager) are allowed to proceed
      */
     @SubscribeEvent
     public static void onMobSpawnCheck(MobSpawnEvent.FinalizeSpawn event) {
@@ -274,6 +274,13 @@ public class AnimusEventHandler {
             return;
         }
 
+        // Allow conversion spawns (e.g., villager -> zombie villager) to proceed
+        // These fire FinalizeSpawn "late" after the entity is already in the world,
+        // and calling setSpawnCancelled on them throws UnsupportedOperationException
+        if (event.getSpawnType() == net.minecraft.world.entity.MobSpawnType.CONVERSION) {
+            return;
+        }
+
         // Only process actual Level instances (not WorldGenRegion during chunk generation)
         if (!(event.getLevel() instanceof Level)) {
             return;
@@ -284,7 +291,7 @@ public class AnimusEventHandler {
         BlockPos spawnPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
 
         if (RitualSerenity.isInSerenityZone(level, spawnPos)) {
-            // Cancel the spawn (but not spawner spawns)
+            // Cancel the spawn (but not spawner spawns or conversions)
             event.setSpawnCancelled(true);
         }
     }
