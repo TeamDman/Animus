@@ -369,7 +369,7 @@
   "jei.animus.imperfect_ritual_stone.hunger": "§6Ritual of Hunger§r: Place a Bone Block on top. Costs 500 LP. Makes you very hungry.",
   "jei.animus.imperfect_ritual_stone.enhancement": "§6Ritual of Enhancement§r: Place an Amethyst Block on top. Costs 5000 LP. Enhances all enchantments on mainhand item by 1 level. Cannot enhance already enhanced items.",
   "jei.animus.imperfect_ritual_stone.reduction": "§6Ritual of Reduction§r: Place a Bookshelf on top. Costs 1000 LP. Removes enhanced mark and downgrades all enchantments by 1 level (minimum level 1).",
-  "jei.animus.imperfect_ritual_stone.boundless_skies": "§6Ritual of Boundless Skies§r: Place Ancient Debris on top. Costs 10000 LP. Grants 10 minutes of creative flight.",
+  "jei.animus.imperfect_ritual_stone.boundless_skies": "§6Ritual of Boundless Skies§r: Place Ancient Debris on top. Costs 10000 LP. Grants 15 minutes of creative flight.",
   "ritual.animus.enhancement.no_item": "You must be holding an item in your mainhand to perform this ritual!",
   "ritual.animus.enhancement.already_enhanced": "This item has already been enhanced!",
   "ritual.animus.enhancement.success": "Item enchantments enhanced!",
@@ -532,5 +532,70 @@
   "guide.animus.entry.sigil_monk": "Sigil of the Demon Monk",
   "ritual.animus.ritual_endless_greed": "Ritual of Endless Greed",
   "text.component.animus.ticket.endless_greed": "Endless Greed",
-  "guide.animus.entry.ritual_endless_greed": "Ritual of Endless Greed"
+  "guide.animus.entry.ritual_endless_greed": "Ritual of Endless Greed",
+  "ritual.animus.neptune_blessing.success": "Neptune's blessing washes over you...",
+  "guide.animus.entry.imperfect_ritual_neptune_blessing": "Imperfect Ritual of Neptune's Blessing",
+  "jei.animus.imperfect_ritual_stone.neptune_blessing": "§6Ritual of Neptune's Blessing§r: Place a Prismarine Block on top. Costs 2000 LP. Grants Water Breathing and Dolphin's Grace for 15 minutes.",
+  "ritual.animus.warden.success": "The Warden's protection envelops you...",
+  "guide.animus.entry.imperfect_ritual_warden": "Imperfect Ritual of the Warden",
+  "jei.animus.imperfect_ritual_stone.warden": "§6Ritual of the Warden§r: Place a Sculk Block on top. Costs 3000 LP. Grants Obsidian Cloak for 15 minutes.",
+  "ritual.animus.manasteel_soul.success": "Your soul merges with the essence of mana...",
+  "ritual.animus.manasteel_soul.requires_botania": "This ritual requires Botania to be installed!",
+  "ritual.animus.manasteel_soul.effect_not_found": "Could not find the Emptiness effect from Botania!",
+  "guide.animus.entry.imperfect_ritual_manasteel_soul": "Imperfect Ritual of the Manasteel Soul",
+  "jei.animus.imperfect_ritual_stone.manasteel_soul": "§6Ritual of the Manasteel Soul§r: Place a Manasteel Block on top. Costs 2500 LP. Grants Emptiness and Speed for 15 minutes. Requires Botania.",
+  "ritual.animus.soul_stained_blood.success": "Gaia's protection flows through your blood...",
+  "ritual.animus.soul_stained_blood.requires_malum": "This ritual requires Malum to be installed!",
+  "ritual.animus.soul_stained_blood.effect_not_found": "Could not find the Gaia's Bulwark effect from Malum!",
+  "guide.animus.entry.imperfect_ritual_soul_stained_blood": "Imperfect Ritual of Soul Stained Blood",
+  "jei.animus.imperfect_ritual_stone.soul_stained_blood": "§6Ritual of the Soul Stained Blood§r: Place a Block of Hallowed Gold on top. Costs 2000 LP. Grants Gaia's Bulwark for 15 minutes. Requires Malum.",
+  "ritual.animus.magi.success": "Arcane energy surges through your veins...",
+  "ritual.animus.magi.requires_ars": "This ritual requires Ars Nouveau to be installed!",
+  "ritual.animus.magi.effect_not_found": "Could not find the Mana Regen effect from Ars Nouveau!",
+  "guide.animus.entry.imperfect_ritual_magi": "Imperfect Ritual of the Magi",
+  "jei.animus.imperfect_ritual_stone.magi": "§6Ritual of the Magi§r: Place a Source Gem Block on top. Costs 2500 LP. Grants Mana Regen for 15 minutes. Requires Ars Nouveau.",
+  "ritual.animus.iron_heart.success": "The power of echoing strikes flows through you...",
+  "ritual.animus.iron_heart.requires_irons": "This ritual requires Iron's Spellbooks to be installed!",
+  "ritual.animus.iron_heart.effect_not_found": "Could not find the Echoing Strikes effect from Iron's Spellbooks!",
+  "guide.animus.entry.imperfect_ritual_iron_heart": "Imperfect Ritual of the Iron Heart",
+  "jei.animus.imperfect_ritual_stone.iron_heart": "§6Ritual of the Iron Heart§r: Place an Arcane Anvil on top. Costs 3500 LP. Grants Echoing Strikes III for 15 minutes. Requires Iron's Spellbooks.",
+
+  "jei.animus.category.imperfect_ritual": "Imperfect Rituals",
+  "jei.animus.imperfect_ritual.instruction": "Right-click Ritual Stone to activate",
+
+  "jei.animus.ritual.regression.name": "Ritual of Regression",
+  "jei.animus.ritual.regression.desc": "Removes repair cost from held item (anvil penalty reset).",
+
+  "jei.animus.ritual.hunger.name": "Ritual of Hunger",
+  "jei.animus.ritual.hunger.desc": "Makes you extremely hungry.",
+
+  "jei.animus.ritual.enhancement.name": "Ritual of Enhancement",
+  "jei.animus.ritual.enhancement.desc": "Enhances all enchantments on mainhand item by 1 level.",
+
+  "jei.animus.ritual.reduction.name": "Ritual of Reduction",
+  "jei.animus.ritual.reduction.desc": "Removes enhanced mark, downgrades enchantments by 1 level.",
+
+  "jei.animus.ritual.boundless_skies.name": "Ritual of Boundless Skies",
+  "jei.animus.ritual.boundless_skies.desc": "Grants 15 minutes of creative flight.",
+
+  "jei.animus.ritual.clear_skies.name": "Ritual of Clear Skies",
+  "jei.animus.ritual.clear_skies.desc": "Clears the weather, stopping rain and thunder.",
+
+  "jei.animus.ritual.neptune_blessing.name": "Ritual of Neptune's Blessing",
+  "jei.animus.ritual.neptune_blessing.desc": "Water Breathing and Dolphin's Grace for 15 minutes.",
+
+  "jei.animus.ritual.warden.name": "Ritual of the Warden",
+  "jei.animus.ritual.warden.desc": "Obsidian Cloak for 15 minutes.",
+
+  "jei.animus.ritual.manasteel_soul.name": "Ritual of the Manasteel Soul",
+  "jei.animus.ritual.manasteel_soul.desc": "Emptiness and Speed for 15 minutes.",
+
+  "jei.animus.ritual.soul_stained_blood.name": "Ritual of Soul Stained Blood",
+  "jei.animus.ritual.soul_stained_blood.desc": "Gaia's Bulwark for 15 minutes.",
+
+  "jei.animus.ritual.magi.name": "Ritual of the Magi",
+  "jei.animus.ritual.magi.desc": "Mana Regen for 15 minutes.",
+
+  "jei.animus.ritual.iron_heart.name": "Ritual of the Iron Heart",
+  "jei.animus.ritual.iron_heart.desc": "Echoing Strikes III for 15 minutes."
 }

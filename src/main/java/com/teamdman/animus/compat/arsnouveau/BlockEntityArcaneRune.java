@@ -69,11 +69,11 @@ public class BlockEntityArcaneRune extends AbstractSourceMachine {
 
     /**
      * Get the speed multiplier this rune provides
-     * 1.15 when source available (15% faster than speed rune)
-     * 0.5 when no source (half speed)
+     * 1.20 when source available (20% faster than speed rune)
+     * 0.675 when no source (67.5% speed)
      */
     public float getSpeedMultiplier() {
-        return hasSource ? 1.15f : 0.5f;
+        return hasSource ? 1.20f : 0.675f;
     }
 
     /**

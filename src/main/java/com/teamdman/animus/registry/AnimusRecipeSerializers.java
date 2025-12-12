@@ -40,4 +40,28 @@ public class AnimusRecipeSerializers {
     public static final RegistryObject<RecipeSerializer<ClearSkiesRitualRecipe>> CLEAR_SKIES_RITUAL =
         RECIPE_SERIALIZERS.register("clear_skies_ritual",
             ClearSkiesRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<NeptuneBlessingRitualRecipe>> NEPTUNE_BLESSING_RITUAL =
+        RECIPE_SERIALIZERS.register("neptune_blessing_ritual",
+            NeptuneBlessingRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<WardenRitualRecipe>> WARDEN_RITUAL =
+        RECIPE_SERIALIZERS.register("warden_ritual",
+            WardenRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<ManasteelSoulRitualRecipe>> MANASTEEL_SOUL_RITUAL =
+        RECIPE_SERIALIZERS.register("manasteel_soul_ritual",
+            ManasteelSoulRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<SoulStainedBloodRitualRecipe>> SOUL_STAINED_BLOOD_RITUAL =
+        RECIPE_SERIALIZERS.register("soul_stained_blood_ritual",
+            SoulStainedBloodRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<MagiRitualRecipe>> MAGI_RITUAL =
+        RECIPE_SERIALIZERS.register("magi_ritual",
+            MagiRitualRecipe.Serializer::new);
+
+    public static final RegistryObject<RecipeSerializer<IronHeartRitualRecipe>> IRON_HEART_RITUAL =
+        RECIPE_SERIALIZERS.register("iron_heart_ritual",
+            IronHeartRitualRecipe.Serializer::new);
 }

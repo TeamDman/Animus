@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Power States",
-      "text": "The Arcane Rune has two distinct states based on Source availability:$(br2)$(blood)Powered State$() (20 Source consumed every 10 seconds):$(br)• Acts as a Speed Rune but 15% faster$(br)• Provides Dislocation Rune bonus$(br2)$(will)Unpowered State$() (No Source available):$(br)• Acts as a Speed Rune but half as fast$(br)• No Dislocation bonus"
+      "text": "The Arcane Rune has two distinct states based on Source availability:$(br2)$(blood)Powered State$() (20 Source consumed every 10 seconds):$(br)• Acts as a Speed Rune but 20% faster$(br)• Provides Dislocation Rune bonus$(br2)$(will)Unpowered State$() (No Source available):$(br)• Acts as a Speed Rune at 67.5% effectiveness$(br)• No Dislocation bonus"
     },
     {
       "type": "patchouli:text",

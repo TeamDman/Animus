@@ -32,7 +32,7 @@ import java.util.UUID;
  */
 public class UpgradeArcaneChanneling extends LivingUpgrade {
 
-    public static final ResourceLocation KEY = new ResourceLocation(
+    public static final ResourceLocation KEY = ResourceLocation.fromNamespaceAndPath(
         Constants.Mod.MODID,
         "upgrade.arcane_channeling"
     );

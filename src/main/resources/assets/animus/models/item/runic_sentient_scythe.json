@@ -1,6 +1,51 @@
 {
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "animus:item/runic_sentient_scythe"
+  "loader": "forge:separate_transforms",
+  "base": {
+    "parent": "minecraft:item/handheld",
+    "textures": {
+      "layer0": "animus:item/runic_sentient_scythe_huge"
+    },
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [0, -90, 55],
+        "translation": [0, 5, 0.5],
+        "scale": [1.45, 1.45, 0.85]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [0, 90, -55],
+        "translation": [0, 5, 0.5],
+        "scale": [1.45, 1.45, 0.85]
+      },
+      "firstperson_righthand": {
+        "rotation": [0, -90, 25],
+        "translation": [1.13, 4.2, 1.13],
+        "scale": [1.1, 1.1, 0.68]
+      },
+      "firstperson_lefthand": {
+        "rotation": [0, 90, -25],
+        "translation": [1.13, 4.2, 1.13],
+        "scale": [1.1, 1.1, 0.68]
+      }
+    }
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "animus:item/runic_sentient_scythe"
+      }
+    },
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "animus:item/runic_sentient_scythe"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "animus:item/runic_sentient_scythe"
+      }
+    }
   }
 }

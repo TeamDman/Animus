@@ -62,9 +62,15 @@ Quick, single-use rituals activated by placing blocks on an Imperfect Ritual Sto
 
 - **Regression** (Bookshelf) - Remove repair costs from items
 - **Enhancement** (Amethyst) - Upgrade all enchantments by 1 level (One Time)
-- **Boundless Skies** (Ancient Debris) - 10 minutes of creative flight
+- **Boundless Skies** (Ancient Debris) - 15 minutes of creative flight
 - **Hunger** (Bone Block) - Drain your hunger instantly
-- **Clear Skies** - Stop rain and thunder
+- **Clear Skies** (Glowstone) - Stop rain and thunder
+- **Neptune's Blessing** (Prismarine) - Water Breathing & Dolphin's Grace for 15 minutes
+- **Warden** (Sculk) - Obsidian Cloak for 15 minutes
+- **Manasteel Soul** (Manasteel Block) - Emptiness & Speed for 15 minutes (Botania)
+- **Soul Stained Blood** (Hallowed Gold) - Gaia's Bulwark for 15 minutes (Malum)
+- **Magi** (Source Gem Block) - Mana Regen for 15 minutes (Ars Nouveau)
+- **Iron Heart** (Arcane Anvil) - Echoing Strikes III for 15 minutes (Iron's Spellbooks)
 
 ### Weapons & Tools
 

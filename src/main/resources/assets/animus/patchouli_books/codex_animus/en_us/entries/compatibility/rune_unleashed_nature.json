@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Passive Bonuses",
-      "text": "The Rune of Unleashed Nature provides bonuses even when empty:$(br2)$(blood)Always Active:$()$(br)- Capacity Bonus: Increases the Blood Altar's LP storage capacity$(br)- Half Orb Bonus: Provides 50% of a Rune of the Orb's effect, increasing Soul Network storage$(br2)These passive bonuses make it valuable even without mana."
+      "text": "The Rune of Unleashed Nature provides bonuses even when empty:$(br2)$(blood)Always Active:$()$(br)- Capacity Bonus: Provides 135% of a Capacity Rune's effect$(br)- Orb Bonus: Provides 67.5% of a Rune of the Orb's effect, increasing Soul Network storage$(br2)These passive bonuses make it valuable even without mana."
     },
     {
       "type": "patchouli:text",

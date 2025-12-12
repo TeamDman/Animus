@@ -1,0 +1,17 @@
+{
+  "name": "guide.animus.entry.imperfect_ritual_manasteel_soul",
+  "icon": "botania:manasteel_block",
+  "category": "animus:compatibility",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "An imperfect ritual that infuses your soul with the essence of Botania's mana, granting supernatural swiftness and the ability to phase through matter.$(br2)$(bold)Requires:$() Botania$(br2)$(bold)Setup:$()$(br)Place a Manasteel Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 2500 LP per use$(br2)$(bold)Duration:$() 15 minutes"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)Activation:$()$(br)Right-click the Imperfect Ritual Stone to receive:$(li)$(thing)Emptiness$() for 15 minutes$(li)$(thing)Speed$() for 15 minutes$(li)Both effects have no visible particles$(br2)$(bold)Emptiness:$()$(br)Botania's Emptiness effect allows you to phase through certain blocks and reduces aggro from mobs.$(br2)$(bold)Use Cases:$()$(li)Exploration and traversal$(li)Escaping dangerous situations$(li)Stealth gameplay$(br2)$(italic)One with the flow of mana.$()"
+    }
+  ]
+}

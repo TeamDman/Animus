@@ -26,7 +26,7 @@ import wayoftime.bloodmagic.core.living.LivingUpgrade;
  */
 public class UpgradeSourceAttunement extends LivingUpgrade {
 
-    public static final ResourceLocation KEY = new ResourceLocation(
+    public static final ResourceLocation KEY = ResourceLocation.fromNamespaceAndPath(
         Constants.Mod.MODID,
         "upgrade.source_attunement"
     );

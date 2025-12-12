@@ -410,7 +410,7 @@ public class ItemRitualDesigner extends Item {
             String blockId = entry.getKey();
             String runeType = entry.getValue();
 
-            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
+            Block block = ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(blockId));
 
             if (block != null && block != Blocks.AIR) {
                 RUNE_TYPES.put(block, runeType);

@@ -20,7 +20,7 @@ import com.teamdman.animus.registry.AnimusRecipeSerializers;
  * Imperfect Ritual of Boundless Skies
  * Trigger: Ancient Debris on top of Imperfect Ritual Stone
  * Cost: 10000 LP
- * Effect: Grants 10 minutes of Blood Magic flight effect
+ * Effect: Grants 15 minutes of Blood Magic flight effect
  */
 public class BoundlessSkiesRitualRecipe extends ImperfectRitualRecipe {
 
@@ -43,10 +43,10 @@ public class BoundlessSkiesRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        // Apply 10 minutes (12000 ticks) of flight
+        // Apply 15 minutes (18000 ticks) of flight
         player.addEffect(new MobEffectInstance(
             flightEffect,
-            12000, // 10 minutes
+            18000, // 15 minutes
             0,     // Level 0
             false, // Not ambient
             true,  // Show particles

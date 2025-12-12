@@ -1,0 +1,17 @@
+{
+  "name": "guide.animus.entry.imperfect_ritual_soul_stained_blood",
+  "icon": "malum:block_of_hallowed_gold",
+  "category": "animus:compatibility",
+  "sortnum": 21,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "An imperfect ritual that channels the protective essence of Malum's hallowed gold, granting the bearer Gaia's powerful defensive blessing.$(br2)$(bold)Requires:$() Malum$(br2)$(bold)Setup:$()$(br)Place a Block of Hallowed Gold on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 2000 LP per use$(br2)$(bold)Duration:$() 15 minutes"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)Activation:$()$(br)Right-click the Imperfect Ritual Stone to receive:$(li)$(thing)Gaia's Bulwark$() for 15 minutes$(li)Effect has no visible particles$(br2)$(bold)Gaia's Bulwark:$()$(br)Malum's Gaia's Bulwark effect provides significant damage reduction and protection against various damage sources.$(br2)$(bold)Use Cases:$()$(li)Defensive combat preparation$(li)Dangerous exploration$(li)Boss encounters$(br2)$(italic)Blood and spirit unite as one.$()"
+    }
+  ]
+}

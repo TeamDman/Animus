@@ -1,0 +1,17 @@
+{
+  "name": "guide.animus.entry.imperfect_ritual_warden",
+  "icon": "minecraft:sculk",
+  "category": "animus:rituals",
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "An imperfect ritual that channels the defensive power of the Warden, granting the user an impenetrable obsidian cloak.$(br2)$(bold)Setup:$()$(br)Place a Sculk Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 3000 LP per use$(br2)$(bold)Duration:$() 15 minutes$(br2)$(bold)Note:$() The ritual activates once and completes immediately. The stone can be reused."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)Activation:$()$(br)Right-click the Imperfect Ritual Stone to receive:$(li)$(thing)Obsidian Cloak$() for 15 minutes$(br2)$(bold)Obsidian Cloak:$()$(br)Dramatically reduces incoming damage, making you nearly invulnerable to most attacks.$(br2)$(bold)Use Cases:$()$(li)Boss fights$(li)Dangerous exploration$(li)PvP combat$(li)Mining in hazardous areas$(br2)$(italic)The darkness protects.$()"
+    }
+  ]
+}

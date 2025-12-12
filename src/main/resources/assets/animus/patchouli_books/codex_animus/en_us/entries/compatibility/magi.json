@@ -1,0 +1,17 @@
+{
+  "name": "guide.animus.entry.imperfect_ritual_magi",
+  "icon": "ars_nouveau:source_gem_block",
+  "category": "animus:compatibility",
+  "sortnum": 22,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "An imperfect ritual that taps into the arcane energies of Ars Nouveau's source gems, greatly enhancing your mana regeneration capabilities.$(br2)$(bold)Requires:$() Ars Nouveau$(br2)$(bold)Setup:$()$(br)Place a Source Gem Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 2500 LP per use$(br2)$(bold)Duration:$() 15 minutes"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)Activation:$()$(br)Right-click the Imperfect Ritual Stone to receive:$(li)$(thing)Mana Regen$() for 15 minutes$(li)Effect has no visible particles$(br2)$(bold)Mana Regen:$()$(br)Ars Nouveau's Mana Regen effect significantly increases your mana regeneration rate, allowing for more frequent spellcasting.$(br2)$(bold)Use Cases:$()$(li)Extended spellcasting sessions$(li)Mana-intensive rituals$(li)Combat preparation$(br2)$(italic)Blood fuels the arcane flow.$()"
+    }
+  ]
+}

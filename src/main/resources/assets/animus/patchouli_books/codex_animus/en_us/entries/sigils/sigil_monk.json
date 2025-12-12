@@ -16,8 +16,13 @@
     },
     {
       "type": "patchouli:text",
+      "title": "LP Costs",
+      "text": "The sigil consumes LP from your Soul Network for various actions:$(br2)$(li)$(red)5 LP$() per unarmed attack$(br)$(li)$(red)5 LP$() per block mined$(br)$(li)$(red)25 LP$() per fall damage negated$(br)$(li)$(red)50 LP$() per projectile caught$(br2)Ensure your Soul Network has sufficient LP before engaging in extended combat or mining sessions."
+    },
+    {
+      "type": "patchouli:text",
       "title": "Projectile Catch",
-      "text": "With an $(thing)empty main hand$(), incoming projectiles can be caught instead of damaging you:$(br2)$(li)$(bold)Arrows$() - regular and spectral$(br)$(li)$(bold)Tridents$()$(br)$(li)$(bold)Firework Rockets$()$(br2)The caught projectile goes directly into your main hand. Costs $(red)50 LP$() per catch."
+      "text": "Incoming projectiles can be caught instead of damaging you when your main hand is $(thing)empty$() or $(thing)holding a catchable projectile$():$(br2)$(li)$(bold)Arrows$() - regular and spectral$(br)$(li)$(bold)Tridents$()$(br)$(li)$(bold)Firework Rockets$()$(br2)Caught projectiles go to your main hand, or stack if holding the same type. Costs $(red)50 LP$() per catch."
     },
     {
       "type": "patchouli:text",

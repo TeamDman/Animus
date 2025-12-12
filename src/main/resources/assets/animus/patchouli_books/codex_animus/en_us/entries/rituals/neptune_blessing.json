@@ -1,0 +1,17 @@
+{
+  "name": "guide.animus.entry.imperfect_ritual_neptune_blessing",
+  "icon": "minecraft:prismarine",
+  "category": "animus:rituals",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "An imperfect ritual that grants the blessing of Neptune, allowing the user to breathe underwater and swim with the grace of dolphins.$(br2)$(bold)Setup:$()$(br)Place a Prismarine Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 2000 LP per use$(br2)$(bold)Duration:$() 15 minutes$(br2)$(bold)Note:$() The ritual activates once and completes immediately. The stone can be reused."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)Activation:$()$(br)Right-click the Imperfect Ritual Stone to receive:$(li)$(thing)Water Breathing$() for 15 minutes$(li)$(thing)Dolphin's Grace$() for 15 minutes$(li)Both effects have no visible particles$(br2)$(bold)Use Cases:$()$(li)Extended underwater exploration$(li)Ocean monument raiding$(li)Underwater building projects$(li)Searching for shipwrecks$(br2)$(italic)The sea welcomes you.$()"
+    }
+  ]
+}

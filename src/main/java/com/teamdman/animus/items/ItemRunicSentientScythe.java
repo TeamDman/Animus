@@ -87,8 +87,8 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
 
         boolean result = super.hurtEnemy(stack, target, attacker);
 
-        // Trigger Malum soul harvesting if available
-        if (CompatHandler.isMalumLoaded() && attacker instanceof Player player) {
+        // Trigger Malum soul harvesting if available (only when target is killed)
+        if (CompatHandler.isMalumLoaded() && attacker instanceof Player player && target.isDeadOrDying()) {
             SpiritHarvestHelper.harvestSpirits(target, player, stack);
         }
 

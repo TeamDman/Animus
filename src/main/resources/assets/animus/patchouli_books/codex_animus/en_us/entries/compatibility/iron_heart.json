@@ -1,0 +1,17 @@
+{
+  "name": "guide.animus.entry.imperfect_ritual_iron_heart",
+  "icon": "irons_spellbooks:arcane_anvil",
+  "category": "animus:compatibility",
+  "sortnum": 23,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "An imperfect ritual that channels the arcane power of Iron's Spellbooks through blood magic, granting devastating echoing strikes in combat.$(br2)$(bold)Requires:$() Iron's Spellbooks$(br2)$(bold)Setup:$()$(br)Place an Arcane Anvil on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 3500 LP per use$(br2)$(bold)Duration:$() 15 minutes"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Effects",
+      "text": "$(bold)Activation:$()$(br)Right-click the Imperfect Ritual Stone to receive:$(li)$(thing)Echoing Strikes III$() for 15 minutes$(li)Effect has no visible particles$(br2)$(bold)Echoing Strikes:$()$(br)Iron's Spellbooks' Echoing Strikes effect causes your melee attacks to echo, dealing additional damage to targets.$(br2)$(bold)Use Cases:$()$(li)Extended combat encounters$(li)Boss fights$(li)Melee-focused builds$(br2)$(italic)Blood and steel become one.$()"
+    }
+  ]
+}

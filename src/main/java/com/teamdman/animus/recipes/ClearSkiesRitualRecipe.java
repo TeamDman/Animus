@@ -16,14 +16,14 @@ import com.teamdman.animus.registry.AnimusRecipeSerializers;
 
 /**
  * Imperfect Ritual of Clear Skies
- * Trigger: Lapis Block on top of Imperfect Ritual Stone
+ * Trigger: Glowstone Block on top of Imperfect Ritual Stone
  * Cost: 1000 LP
  * Effect: Clears the weather and stops rain/thunder
  */
 public class ClearSkiesRitualRecipe extends ImperfectRitualRecipe {
 
     public ClearSkiesRitualRecipe(ResourceLocation id) {
-        super(id, "clear_skies", Blocks.LAPIS_BLOCK.defaultBlockState(), 1000);
+        super(id, "clear_skies", Blocks.GLOWSTONE.defaultBlockState(), 1000);
     }
 
     @Override

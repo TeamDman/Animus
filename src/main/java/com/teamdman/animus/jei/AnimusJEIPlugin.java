@@ -6,18 +6,24 @@ import com.teamdman.animus.registry.AnimusBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * JEI Plugin for Animus mod
- * Shows special transformations like Lightning + Life Essence = AntiLife
+ * Shows imperfect rituals and special transformations
  */
 @JeiPlugin
 public class AnimusJEIPlugin implements IModPlugin {
@@ -28,7 +34,19 @@ public class AnimusJEIPlugin implements IModPlugin {
     }
 
     @Override
+    public void registerCategories(IRecipeCategoryRegistration registration) {
+        IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
+
+        // Register the Imperfect Ritual category
+        registration.addRecipeCategories(new ImperfectRitualCategory(guiHelper));
+    }
+
+    @Override
     public void registerRecipes(IRecipeRegistration registration) {
+        // Register all imperfect ritual displays
+        List<ImperfectRitualDisplay> ritualDisplays = ImperfectRitualDisplayFactory.createAllDisplays();
+        registration.addRecipes(ImperfectRitualCategory.RECIPE_TYPE, ritualDisplays);
+
         // Add info for AntiLife Bucket - explains the lightning transformation
         registration.addIngredientInfo(
             Arrays.asList(
@@ -47,54 +65,57 @@ public class AnimusJEIPlugin implements IModPlugin {
             Component.translatable("jei.animus.antilife_block.info")
         );
 
-        // Add info for Imperfect Ritual Stone - general info
-        registration.addIngredientInfo(
-            Arrays.asList(
-                new ItemStack(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get())
-            ),
-            VanillaTypes.ITEM_STACK,
-            Component.translatable("jei.animus.imperfect_ritual_stone.info")
-        );
-
-        // Ritual of Regression - Bookshelf trigger
-        registration.addIngredientInfo(
-            Arrays.asList(new ItemStack(Items.BOOKSHELF)),
-            VanillaTypes.ITEM_STACK,
-            Component.translatable("jei.animus.imperfect_ritual_stone.regression")
-        );
-
-        // Ritual of Hunger - Bone Block trigger
-        registration.addIngredientInfo(
-            Arrays.asList(new ItemStack(Items.BONE_BLOCK)),
-            VanillaTypes.ITEM_STACK,
-            Component.translatable("jei.animus.imperfect_ritual_stone.hunger")
-        );
-
-        // Ritual of Enhancement - Amethyst Block trigger
-        registration.addIngredientInfo(
-            Arrays.asList(new ItemStack(Items.AMETHYST_BLOCK)),
-            VanillaTypes.ITEM_STACK,
-            Component.translatable("jei.animus.imperfect_ritual_stone.enhancement")
-        );
-
-        // Ritual of Reduction - Bookshelf trigger (NOTE: Conflicts with Regression!)
-        // This will append to the bookshelf info
-        registration.addIngredientInfo(
-            Arrays.asList(new ItemStack(Items.BOOKSHELF)),
-            VanillaTypes.ITEM_STACK,
-            Component.translatable("jei.animus.imperfect_ritual_stone.reduction")
-        );
-
-        // Ritual of Boundless Skies - Ancient Debris trigger
-        registration.addIngredientInfo(
-            Arrays.asList(new ItemStack(Items.ANCIENT_DEBRIS)),
-            VanillaTypes.ITEM_STACK,
-            Component.translatable("jei.animus.imperfect_ritual_stone.boundless_skies")
-        );
-
         // Sanguine Scrolls (only if Iron's Spellbooks is loaded)
         if (ModList.get().isLoaded("irons_spellbooks")) {
             registerSanguineScrollsJEI(registration);
+        }
+    }
+
+    @Override
+    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        // Imperfect Ritual Stone is the main catalyst - clicking it shows ALL rituals
+        registration.addRecipeCatalyst(
+            new ItemStack(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get()),
+            ImperfectRitualCategory.RECIPE_TYPE
+        );
+
+        // Also register each trigger block as a catalyst so clicking them shows their ritual
+        // Vanilla blocks
+        registration.addRecipeCatalyst(new ItemStack(Items.BOOKSHELF), ImperfectRitualCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(Items.BONE_BLOCK), ImperfectRitualCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(Items.AMETHYST_BLOCK), ImperfectRitualCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(Items.ANCIENT_DEBRIS), ImperfectRitualCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(Items.GLOWSTONE), ImperfectRitualCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(Items.PRISMARINE), ImperfectRitualCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(Items.SCULK), ImperfectRitualCategory.RECIPE_TYPE);
+
+        // Mod-dependent catalyst blocks
+        if (ModList.get().isLoaded("botania")) {
+            Item manasteelBlock = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("botania", "manasteel_block"));
+            if (manasteelBlock != null && manasteelBlock != Items.AIR) {
+                registration.addRecipeCatalyst(new ItemStack(manasteelBlock), ImperfectRitualCategory.RECIPE_TYPE);
+            }
+        }
+
+        if (ModList.get().isLoaded("malum")) {
+            Item hallowedGoldBlock = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold"));
+            if (hallowedGoldBlock != null && hallowedGoldBlock != Items.AIR) {
+                registration.addRecipeCatalyst(new ItemStack(hallowedGoldBlock), ImperfectRitualCategory.RECIPE_TYPE);
+            }
+        }
+
+        if (ModList.get().isLoaded("ars_nouveau")) {
+            Item sourceGemBlock = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("ars_nouveau", "source_gem_block"));
+            if (sourceGemBlock != null && sourceGemBlock != Items.AIR) {
+                registration.addRecipeCatalyst(new ItemStack(sourceGemBlock), ImperfectRitualCategory.RECIPE_TYPE);
+            }
+        }
+
+        if (ModList.get().isLoaded("irons_spellbooks")) {
+            Item arcaneAnvil = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "arcane_anvil"));
+            if (arcaneAnvil != null && arcaneAnvil != Items.AIR) {
+                registration.addRecipeCatalyst(new ItemStack(arcaneAnvil), ImperfectRitualCategory.RECIPE_TYPE);
+            }
         }
     }
 

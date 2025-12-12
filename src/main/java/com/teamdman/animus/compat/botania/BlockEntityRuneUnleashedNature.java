@@ -113,18 +113,18 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
 
     /**
      * Get the capacity multiplier this rune provides
-     * Always provides capacity bonus
+     * Provides 135% of a normal capacity rune bonus
      */
     public float getCapacityMultiplier() {
-        return 1.0f; // Acts as a normal capacity rune
+        return 1.35f; // 135% of a normal capacity rune
     }
 
     /**
      * Get the orb effectiveness this rune provides
-     * Provides half the bonus of a normal Rune of the Orb
+     * Provides 67.5% of the bonus of a normal Rune of the Orb
      */
     public float getOrbEffectiveness() {
-        return 0.5f; // Half of normal Rune of the Orb
+        return 0.675f; // 67.5% of normal Rune of the Orb
     }
 
     /**
