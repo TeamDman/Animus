@@ -1,0 +1,20 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 64.0,
+  "input0": {
+    "item": "minecraft:nether_wart"
+  },
+  "input1": {
+    "item": "minecraft:crimson_fungus"
+  },
+  "input2": {
+    "item": "irons_spellbooks:blood_rune"
+  },
+  "input3": {
+    "item": "minecraft:deepslate"
+  },
+  "minimumDrain": 128.0,
+  "output": {
+    "item": "animus:reagentcrimsonwill"
+  }
+}

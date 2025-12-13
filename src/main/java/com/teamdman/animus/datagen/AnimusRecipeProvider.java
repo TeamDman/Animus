@@ -1,6 +1,7 @@
 package com.teamdman.animus.datagen;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.compat.IronsSpellsCompat;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
@@ -323,6 +324,15 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .build(consumer, loc("soulforge/reagentheavelywrath"));
 
         TartaricForgeRecipeBuilder.tartaricForge(
+                new ItemStack(IronsSpellsCompat.REAGENT_CRIMSON_WILL.get()),
+                128.0, 64.0,
+                Ingredient.of(Items.NETHER_WART),
+                Ingredient.of(Items.CRIMSON_FUNGUS),
+                Ingredient.of(itemFromMod("irons_spellbooks", "blood_rune")),
+                Ingredient.of(Items.DEEPSLATE))
+            .build(consumer, loc("soulforge/reagentcrimsonwill"));
+
+        TartaricForgeRecipeBuilder.tartaricForge(
                 new ItemStack(AnimusItems.REAGENT_LEACH.get()),
                 64.0, 32.0,
                 Ingredient.of(Items.NETHER_WART),
@@ -385,6 +395,13 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
                 new ItemStack(AnimusItems.SIGIL_BOUNDLESS_NATURE.get()),
                 ARRAY_GROWTH)
             .build(consumer, loc("array/sigil_boundless_nature"));
+
+        AlchemyArrayRecipeBuilder.array(
+                Ingredient.of(IronsSpellsCompat.REAGENT_CRIMSON_WILL.get()),
+                Ingredient.of(itemFromMod("bloodmagic", "reinforcedslate")),
+                new ItemStack(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get()),
+                ARRAY_MOBSACRIFICE)
+            .build(consumer, loc("array/sigil_crimson_will"));
 
         AlchemyArrayRecipeBuilder.array(
                 Ingredient.of(AnimusItems.REAGENT_BUILDER.get()),

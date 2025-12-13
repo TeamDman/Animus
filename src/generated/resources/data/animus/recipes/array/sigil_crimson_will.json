@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:array",
+  "addedinput": {
+    "item": "bloodmagic:reinforcedslate"
+  },
+  "baseinput": {
+    "item": "animus:reagentcrimsonwill"
+  },
+  "output": {
+    "item": "animus:sigil_crimson_will"
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/mobsacrifice.png"
+}
