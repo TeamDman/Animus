@@ -2,6 +2,7 @@ package com.teamdman.animus.compat;
 
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.items.ItemReagent;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -44,6 +45,9 @@ public class IronsSpellsCompat implements ICompatModule {
 
     public static final RegistryObject<Item> SIGIL_CRIMSON_WILL = ITEMS.register("sigil_crimson_will",
         com.teamdman.animus.compat.ironsspells.ItemSigilCrimsonWill::new);
+
+    public static final RegistryObject<Item> REAGENT_CRIMSON_WILL = ITEMS.register("reagentcrimsonwill",
+            ItemReagent::new);
 
     // Sanguine Scrolls (one for each slate tier)
     public static final RegistryObject<Item> SANGUINE_SCROLL_BLANK = ITEMS.register("sanguine_scroll_blank",
