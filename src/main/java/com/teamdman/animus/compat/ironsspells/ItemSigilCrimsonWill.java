@@ -2,7 +2,6 @@ package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.client.CrimsonWillSigilClientHelper;
 import com.teamdman.animus.items.sigils.AnimusSigilBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -105,7 +104,7 @@ public class ItemSigilCrimsonWill extends AnimusSigilBase {
 
         // Try to show current boost if player is available (client-side only)
         if (level != null && level.isClientSide()) {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CrimsonWillSigilClientHelper.addCurrentBoostTooltip(tooltip));
+            addCurrentBoostTooltipClient(tooltip);
         }
 
         tooltip.add(Component.literal(""));
@@ -128,4 +127,19 @@ public class ItemSigilCrimsonWill extends AnimusSigilBase {
         tooltip.add(Component.literal("Right-click to toggle active/inactive")
             .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
     }
+
+    private static void addCurrentBoostTooltipClient(List<Component> tooltip) {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+            try {
+                Class<?> c = Class.forName("com.teamdman.animus.client.CrimsonWillSigilClientHelper");
+                var m = c.getMethod("addCurrentBoostTooltip", List.class);
+                m.invoke(null, tooltip);
+            } catch (Throwable ignored) {
+            }
+        });
+    }
+
 }
+
+
+
