@@ -2,6 +2,7 @@ package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -11,14 +12,15 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 
@@ -74,7 +76,7 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -93,11 +95,8 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             int lpCost = AnimusConfig.sigils.freeSoulLPCost.get();
 
             // Try to consume LP
-            SoulNetwork network = NetworkHelper.getSoulNetwork(player);
-            SoulTicket ticket = new SoulTicket(
-                Component.translatable(Constants.Localizations.Text.TICKET_FREE_SOUL),
-                lpCost
-            );
+            SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+            SoulTicket ticket = SoulTicket.create(lpCost);
 
             var syphonResult = network.syphonAndDamage(player, ticket);
             if (!syphonResult.isSuccess()) {
@@ -144,12 +143,13 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
         // Check if sigil is bound to player
         ItemSigilFreeSoul sigil = (ItemSigilFreeSoul) freeSoulStack.getItem();
         var binding = sigil.getBinding(freeSoulStack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return false;
         }
 
         // Check cooldown
-        long lastTrigger = freeSoulStack.getOrCreateTag().getLong("LastDeathPrevent");
+        Long lastTriggerObj = freeSoulStack.get(AnimusDataComponents.LAST_DEATH_PREVENT.get());
+        long lastTrigger = lastTriggerObj != null ? lastTriggerObj : 0L;
         long currentTime = System.currentTimeMillis();
         int cooldownSeconds = AnimusConfig.sigils.freeSoulCooldown.get();
         long cooldownMillis = cooldownSeconds * 1000L;
@@ -167,7 +167,7 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
 
         // Check if player has enough LP
         int lpCost = AnimusConfig.sigils.freeSoulLPCost.get();
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
         int currentEssence = network.getCurrentEssence();
 
         if (currentEssence < lpCost) {
@@ -176,17 +176,14 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
         }
 
         // Consume LP
-        SoulTicket ticket = new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_FREE_SOUL),
-            lpCost
-        );
+        SoulTicket ticket = SoulTicket.create(lpCost);
         var syphonResult = network.syphonAndDamage(player, ticket);
         if (!syphonResult.isSuccess()) {
             return false;
         }
 
         // Set cooldown
-        freeSoulStack.getOrCreateTag().putLong("LastDeathPrevent", currentTime);
+        freeSoulStack.set(AnimusDataComponents.LAST_DEATH_PREVENT.get(), currentTime);
 
         // Heal the player (like totem)
         player.setHealth(1.0F);
@@ -298,7 +295,7 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_INFO));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_COST,
@@ -310,22 +307,20 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             AnimusConfig.sigils.freeSoulCooldown.get()));
 
         // Show cooldown if exists
-        if (stack.hasTag()) {
-            long lastTrigger = stack.getTag().getLong("LastDeathPrevent");
-            if (lastTrigger > 0) {
-                long currentTime = System.currentTimeMillis();
-                int cooldownSeconds = AnimusConfig.sigils.freeSoulCooldown.get();
-                long cooldownMillis = cooldownSeconds * 1000L;
-                long remaining = cooldownMillis - (currentTime - lastTrigger);
+        Long lastTriggerObj = stack.get(AnimusDataComponents.LAST_DEATH_PREVENT.get());
+        if (lastTriggerObj != null && lastTriggerObj > 0) {
+            long currentTime = System.currentTimeMillis();
+            int cooldownSeconds = AnimusConfig.sigils.freeSoulCooldown.get();
+            long cooldownMillis = cooldownSeconds * 1000L;
+            long remaining = cooldownMillis - (currentTime - lastTriggerObj);
 
-                if (remaining > 0) {
-                    long remainingSeconds = remaining / 1000;
-                    tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_COOLDOWN_REMAINING,
-                        remainingSeconds).withStyle(ChatFormatting.RED));
-                }
+            if (remaining > 0) {
+                long remainingSeconds = remaining / 1000;
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_COOLDOWN_REMAINING,
+                    remainingSeconds).withStyle(ChatFormatting.RED));
             }
         }
 
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

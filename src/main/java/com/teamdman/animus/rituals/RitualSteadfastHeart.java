@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffect;
+import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,19 +15,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.items.IItemHandler;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.items.IItemHandler;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.common.item.ItemBloodOrb;
-import wayoftime.bloodmagic.core.data.Binding;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import wayoftime.bloodmagic.common.item.BloodOrbItem;
+import wayoftime.bloodmagic.common.datacomponent.Binding;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.will.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -42,7 +42,6 @@ import java.util.function.Consumer;
  * Refresh Time: Configurable (default 60 ticks = 3 seconds)
  * Range: Configurable (default 128 blocks)
  */
-@RitualRegister(Constants.Rituals.STEADFAST)
 public class RitualSteadfastHeart extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public final int maxWill = 100;
@@ -54,7 +53,7 @@ public class RitualSteadfastHeart extends Ritual {
         // Use config value for range (default 128 blocks)
         int range = AnimusConfig.rituals.steadfastHeartRange.get();
         int halfRange = range / 2;
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-halfRange, -halfRange, -halfRange), range));
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-halfRange, -halfRange, -halfRange), range, range, range));
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, range, range);
     }
 
@@ -72,7 +71,7 @@ public class RitualSteadfastHeart extends Ritual {
 
     @Override
     public void performRitual(IMasterRitualStone mrs) {
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
             return;
         }
@@ -85,7 +84,7 @@ public class RitualSteadfastHeart extends Ritual {
         BlockPos pos = mrs.getMasterBlockPos();
 
         // Get current steadfast demon will
-        EnumDemonWillType type = EnumDemonWillType.STEADFAST;
+        EnumWillType type = EnumWillType.STEADFAST;
         double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
         // Track players who have been buffed to avoid duplicates
@@ -97,7 +96,7 @@ public class RitualSteadfastHeart extends Ritual {
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, range);
 
         int entityCount = 0;
-        MobEffect absorbEffect = MobEffects.ABSORPTION;
+        Holder<net.minecraft.world.effect.MobEffect> absorbEffect = MobEffects.ABSORPTION;
 
         // Buff nearby players
         for (LivingEntity entity : entities) {
@@ -124,13 +123,13 @@ public class RitualSteadfastHeart extends Ritual {
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 
         if (chestTile != null) {
-            IItemHandler handler = chestTile.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
+            IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
             if (handler != null) {
                 // Scan chest for bound blood orbs
                 for (int slot = 0; slot < handler.getSlots(); slot++) {
                     ItemStack stack = handler.getStackInSlot(slot);
 
-                    if (stack.isEmpty() || !(stack.getItem() instanceof ItemBloodOrb)) {
+                    if (stack.isEmpty() || !(stack.getItem() instanceof BloodOrbItem)) {
                         continue;
                     }
 
@@ -141,7 +140,7 @@ public class RitualSteadfastHeart extends Ritual {
                         continue;
                     }
 
-                    UUID orbOwner = binding.getOwnerId();
+                    UUID orbOwner = binding.uuid();
                     if (orbOwner == null) {
                         continue;
                     }
@@ -166,24 +165,19 @@ public class RitualSteadfastHeart extends Ritual {
         }
 
         // Consume LP based on number of players affected
-        SoulTicket ticket = new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_STEADFAST),
-            getRefreshCost() * entityCount
-        );
-        network.syphon(ticket, false);
+        SoulTicket ticket = SoulTicket.create(getRefreshCost() * entityCount);
+        network.syphon(ticket);
 
+        // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API
         // Generate steadfast demon will
-        double drainAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2, 10));
-        double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-        if (filled > 0) {
-            WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-        }
+        // double drainAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2, 10));
+        // WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, true);
     }
 
     /**
      * Apply absorption buff to a player
      */
-    private void applyAbsorptionBuff(Player player, MobEffect absorbEffect) {
+    private void applyAbsorptionBuff(Player player, Holder<net.minecraft.world.effect.MobEffect> absorbEffect) {
         // Get existing absorption effect
         MobEffectInstance existingEffect = player.getEffect(absorbEffect);
         int currentDuration = 0;

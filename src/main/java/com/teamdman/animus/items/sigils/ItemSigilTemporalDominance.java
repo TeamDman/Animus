@@ -2,9 +2,8 @@ package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.network.AcceleratedBlocksSyncPacket;
-import com.teamdman.animus.network.AcceleratedBlocksSyncPacket.AccelerationData;
-import com.teamdman.animus.network.AnimusNetwork;
+import com.teamdman.animus.network.AcceleratedBlocksSyncPayload;
+import com.teamdman.animus.network.AnimusPayloads;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -14,16 +13,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.PacketDistributor;
 import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -200,7 +199,7 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
         }
 
         // Get the player's soul network
-        SoulNetwork network = NetworkHelper.getSoulNetwork((ServerPlayer) player);
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork((ServerPlayer) player);
         if (network == null) {
             return InteractionResult.FAIL;
         }
@@ -232,15 +231,11 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            network.causeNausea();
             return InteractionResult.FAIL;
         }
 
         // Consume LP
-        network.syphon(new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_TEMPORAL_DOMINANCE),
-            lpCost
-        ), false);
+        network.syphon(SoulTicket.create(lpCost));
 
         // Update or create acceleration state
         long expiryTime = level.getGameTime() + DURATION_TICKS;
@@ -263,7 +258,7 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.TEMPORAL_DOMINANCE_1)
             .withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.TEMPORAL_DOMINANCE_2)
@@ -272,7 +267,7 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
             .withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.TEMPORAL_DOMINANCE_4)
             .withStyle(ChatFormatting.GOLD));
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 
     /**
@@ -374,19 +369,19 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
     public static void syncToClients(ServerLevel level) {
         if (acceleratedBlocks.isEmpty()) {
             // Send empty packet to clear client data
-            AcceleratedBlocksSyncPacket packet = new AcceleratedBlocksSyncPacket(new HashMap<>());
+            AcceleratedBlocksSyncPayload payload = new AcceleratedBlocksSyncPayload(new HashMap<>());
             for (ServerPlayer player : level.players()) {
-                AnimusNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
+                AnimusPayloads.sendToPlayer(player, payload);
             }
             return;
         }
 
-        // Convert internal state to packet data, filtering by dimension
-        Map<BlockPos, AccelerationData> packetData = new HashMap<>();
+        // Convert internal state to payload data, filtering by dimension
+        Map<BlockPos, AcceleratedBlocksSyncPayload.AccelerationEntry> payloadData = new HashMap<>();
         for (Map.Entry<BlockPos, AccelerationState> entry : acceleratedBlocks.entrySet()) {
             AccelerationState state = entry.getValue();
             if (state.dimension.equals(level.dimension())) {
-                packetData.put(entry.getKey(), new AccelerationData(
+                payloadData.put(entry.getKey(), new AcceleratedBlocksSyncPayload.AccelerationEntry(
                     state.level,
                     state.expiryTime,
                     state.dimension
@@ -395,9 +390,9 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
         }
 
         // Send to all players in this dimension
-        AcceleratedBlocksSyncPacket packet = new AcceleratedBlocksSyncPacket(packetData);
+        AcceleratedBlocksSyncPayload payload = new AcceleratedBlocksSyncPayload(payloadData);
         for (ServerPlayer player : level.players()) {
-            AnimusNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
+            AnimusPayloads.sendToPlayer(player, payload);
         }
     }
 }

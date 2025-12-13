@@ -1,28 +1,28 @@
 package com.teamdman.animus;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Configuration for Animus mod
- * Uses ForgeConfigSpec for 1.20.1
+ * Uses ModConfigSpec for 1.20.1
  */
 public class AnimusConfig {
-    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec SPEC;
+    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    public static final ModConfigSpec SPEC;
 
     // General Configuration
     public static class General {
-        public final ForgeConfigSpec.BooleanValue muteDragon;
-        public final ForgeConfigSpec.BooleanValue muteWither;
-        public final ForgeConfigSpec.BooleanValue canKillBuffedMobs;
-        public final ForgeConfigSpec.IntValue bloodPerApple;
+        public final ModConfigSpec.BooleanValue muteDragon;
+        public final ModConfigSpec.BooleanValue muteWither;
+        public final ModConfigSpec.BooleanValue canKillBuffedMobs;
+        public final ModConfigSpec.IntValue bloodPerApple;
 
-        public General(ForgeConfigSpec.Builder builder) {
+        public General(ModConfigSpec.Builder builder) {
             builder.push("general");
 
             muteDragon = builder
@@ -47,55 +47,55 @@ public class AnimusConfig {
 
     // Ritual Configuration
     public static class Rituals {
-        public final ForgeConfigSpec.BooleanValue killBoss;
-        public final ForgeConfigSpec.IntValue bossCost;
-        public final ForgeConfigSpec.BooleanValue cullingKillsTnT;
-        public final ForgeConfigSpec.BooleanValue cullingDebug;
-        public final ForgeConfigSpec.IntValue cullingRange;
-        public final ForgeConfigSpec.IntValue cullingVerticalRange;
-        public final ForgeConfigSpec.IntValue cullingLpPerKill;
-        public final ForgeConfigSpec.IntValue peacefulBeckoningCost;
-        public final ForgeConfigSpec.IntValue steadfastHeartRange;
-        public final ForgeConfigSpec.IntValue steadfastHeartRefreshTime;
-        public final ForgeConfigSpec.IntValue steadfastHeartMaxAmplifier;
-        public final ForgeConfigSpec.IntValue naturesLeachRange;
-        public final ForgeConfigSpec.IntValue naturesLeachBaseSpeed;
-        public final ForgeConfigSpec.IntValue naturesLeachLpPerBlock;
-        public final ForgeConfigSpec.IntValue reparareRitualRepairAmount;
-        public final ForgeConfigSpec.IntValue reparareRitualInterval;
-        public final ForgeConfigSpec.IntValue reparareRitualLPPerDamage;
-        public final ForgeConfigSpec.IntValue persistenceChunkRadius;
-        public final ForgeConfigSpec.IntValue persistenceLPPerTick;
-        public final ForgeConfigSpec.IntValue serenityRadius;
-        public final ForgeConfigSpec.IntValue serenityLPPerTick;
-        public final ForgeConfigSpec.IntValue noliteIgnemRadius;
-        public final ForgeConfigSpec.IntValue noliteIgnemLPPerFire;
-        public final ForgeConfigSpec.IntValue relentlessTidesRange;
-        public final ForgeConfigSpec.IntValue relentlessTidesDepth;
-        public final ForgeConfigSpec.IntValue relentlessTidesLPPerPlacement;
-        public final ForgeConfigSpec.IntValue siphonRange;
-        public final ForgeConfigSpec.IntValue siphonDepth;
-        public final ForgeConfigSpec.IntValue siphonLPPerExtraction;
-        public final ForgeConfigSpec.ConfigValue<String> siphonReplacementBlock;
-        public final ForgeConfigSpec.IntValue sourceVitaeumAltarRange;
-        public final ForgeConfigSpec.IntValue sourceVitaeumBaseConversion;
-        public final ForgeConfigSpec.IntValue sourceVitaeumPenaltyRadius;
-        public final ForgeConfigSpec.IntValue sourceVitaeumSourcePerCycle;
-        public final ForgeConfigSpec.IntValue floralSupremacyRadius;
-        public final ForgeConfigSpec.IntValue floralSupremacyLPPerFlower;
-        public final ForgeConfigSpec.IntValue lunaHorizontalRange;
-        public final ForgeConfigSpec.IntValue lunaVerticalRange;
-        public final ForgeConfigSpec.IntValue solHorizontalRange;
-        public final ForgeConfigSpec.IntValue solVerticalRange;
-        public final ForgeConfigSpec.BooleanValue unmakingDisallowEnhanced;
-        public final ForgeConfigSpec.BooleanValue cullingPlayerKillDrops;
-        public final ForgeConfigSpec.DoubleValue cullingWillConsumeChance;
-        public final ForgeConfigSpec.IntValue endlessGreedRange;
-        public final ForgeConfigSpec.IntValue endlessGreedVerticalRange;
-        public final ForgeConfigSpec.IntValue endlessGreedLPPerItem;
-        public final ForgeConfigSpec.IntValue endlessGreedRefreshCost;
+        public final ModConfigSpec.BooleanValue killBoss;
+        public final ModConfigSpec.IntValue bossCost;
+        public final ModConfigSpec.BooleanValue cullingKillsTnT;
+        public final ModConfigSpec.BooleanValue cullingDebug;
+        public final ModConfigSpec.IntValue cullingRange;
+        public final ModConfigSpec.IntValue cullingVerticalRange;
+        public final ModConfigSpec.IntValue cullingLpPerKill;
+        public final ModConfigSpec.IntValue peacefulBeckoningCost;
+        public final ModConfigSpec.IntValue steadfastHeartRange;
+        public final ModConfigSpec.IntValue steadfastHeartRefreshTime;
+        public final ModConfigSpec.IntValue steadfastHeartMaxAmplifier;
+        public final ModConfigSpec.IntValue naturesLeachRange;
+        public final ModConfigSpec.IntValue naturesLeachBaseSpeed;
+        public final ModConfigSpec.IntValue naturesLeachLpPerBlock;
+        public final ModConfigSpec.IntValue reparareRitualRepairAmount;
+        public final ModConfigSpec.IntValue reparareRitualInterval;
+        public final ModConfigSpec.IntValue reparareRitualLPPerDamage;
+        public final ModConfigSpec.IntValue persistenceChunkRadius;
+        public final ModConfigSpec.IntValue persistenceLPPerTick;
+        public final ModConfigSpec.IntValue serenityRadius;
+        public final ModConfigSpec.IntValue serenityLPPerTick;
+        public final ModConfigSpec.IntValue noliteIgnemRadius;
+        public final ModConfigSpec.IntValue noliteIgnemLPPerFire;
+        public final ModConfigSpec.IntValue relentlessTidesRange;
+        public final ModConfigSpec.IntValue relentlessTidesDepth;
+        public final ModConfigSpec.IntValue relentlessTidesLPPerPlacement;
+        public final ModConfigSpec.IntValue siphonRange;
+        public final ModConfigSpec.IntValue siphonDepth;
+        public final ModConfigSpec.IntValue siphonLPPerExtraction;
+        public final ModConfigSpec.ConfigValue<String> siphonReplacementBlock;
+        public final ModConfigSpec.IntValue sourceVitaeumAltarRange;
+        public final ModConfigSpec.IntValue sourceVitaeumBaseConversion;
+        public final ModConfigSpec.IntValue sourceVitaeumPenaltyRadius;
+        public final ModConfigSpec.IntValue sourceVitaeumSourcePerCycle;
+        public final ModConfigSpec.IntValue floralSupremacyRadius;
+        public final ModConfigSpec.IntValue floralSupremacyLPPerFlower;
+        public final ModConfigSpec.IntValue lunaHorizontalRange;
+        public final ModConfigSpec.IntValue lunaVerticalRange;
+        public final ModConfigSpec.IntValue solHorizontalRange;
+        public final ModConfigSpec.IntValue solVerticalRange;
+        public final ModConfigSpec.BooleanValue unmakingDisallowEnhanced;
+        public final ModConfigSpec.BooleanValue cullingPlayerKillDrops;
+        public final ModConfigSpec.DoubleValue cullingWillConsumeChance;
+        public final ModConfigSpec.IntValue endlessGreedRange;
+        public final ModConfigSpec.IntValue endlessGreedVerticalRange;
+        public final ModConfigSpec.IntValue endlessGreedLPPerItem;
+        public final ModConfigSpec.IntValue endlessGreedRefreshCost;
 
-        public Rituals(ForgeConfigSpec.Builder builder) {
+        public Rituals(ModConfigSpec.Builder builder) {
             builder.push("rituals");
 
             killBoss = builder
@@ -325,25 +325,25 @@ public class AnimusConfig {
 
     // Sigil Configuration
     public static class Sigils {
-        public final ForgeConfigSpec.IntValue antiLifeConsumption;
-        public final ForgeConfigSpec.IntValue antiLifeRange;
-        public final ForgeConfigSpec.IntValue builderRange;
-        public final ForgeConfigSpec.IntValue leachRange;
-        public final ForgeConfigSpec.IntValue stormFishLootMin;
-        public final ForgeConfigSpec.IntValue stormFishLootMax;
-        public final ForgeConfigSpec.IntValue reparareRepairAmount;
-        public final ForgeConfigSpec.IntValue reparareInterval;
-        public final ForgeConfigSpec.IntValue reparareLPPerDamage;
-        public final ForgeConfigSpec.IntValue freeSoulLPCost;
-        public final ForgeConfigSpec.IntValue freeSoulDuration;
-        public final ForgeConfigSpec.IntValue freeSoulCooldown;
-        public final ForgeConfigSpec.IntValue sigilEquivalencyRadius;
-        public final ForgeConfigSpec.IntValue sigilEquivalencyLPCost;
-        public final ForgeConfigSpec.IntValue sigilEquivalencyBlocksPerTick;
-        public final ForgeConfigSpec.DoubleValue monkUnarmedDamage;
-        public final ForgeConfigSpec.IntValue monkLPPerSecond;
+        public final ModConfigSpec.IntValue antiLifeConsumption;
+        public final ModConfigSpec.IntValue antiLifeRange;
+        public final ModConfigSpec.IntValue builderRange;
+        public final ModConfigSpec.IntValue leachRange;
+        public final ModConfigSpec.IntValue stormFishLootMin;
+        public final ModConfigSpec.IntValue stormFishLootMax;
+        public final ModConfigSpec.IntValue reparareRepairAmount;
+        public final ModConfigSpec.IntValue reparareInterval;
+        public final ModConfigSpec.IntValue reparareLPPerDamage;
+        public final ModConfigSpec.IntValue freeSoulLPCost;
+        public final ModConfigSpec.IntValue freeSoulDuration;
+        public final ModConfigSpec.IntValue freeSoulCooldown;
+        public final ModConfigSpec.IntValue sigilEquivalencyRadius;
+        public final ModConfigSpec.IntValue sigilEquivalencyLPCost;
+        public final ModConfigSpec.IntValue sigilEquivalencyBlocksPerTick;
+        public final ModConfigSpec.DoubleValue monkUnarmedDamage;
+        public final ModConfigSpec.IntValue monkLPPerSecond;
 
-        public Sigils(ForgeConfigSpec.Builder builder) {
+        public Sigils(ModConfigSpec.Builder builder) {
             builder.push("sigils");
 
             antiLifeConsumption = builder
@@ -438,12 +438,12 @@ public class AnimusConfig {
 
     // Hurt Cooldown (iframes) Configuration
     public static class HurtCooldown {
-        public final ForgeConfigSpec.EnumValue<Mode> mode;
-        public final ForgeConfigSpec.BooleanValue affectBosses;
-        public final ForgeConfigSpec.BooleanValue affectPlayers;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> sources;
+        public final ModConfigSpec.EnumValue<Mode> mode;
+        public final ModConfigSpec.BooleanValue affectBosses;
+        public final ModConfigSpec.BooleanValue affectPlayers;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> sources;
 
-        public HurtCooldown(ForgeConfigSpec.Builder builder) {
+        public HurtCooldown(ModConfigSpec.Builder builder) {
             builder.push("hurtCooldown");
 
             mode = builder
@@ -490,12 +490,12 @@ public class AnimusConfig {
 
     // Blood Core Configuration
     public static class BloodCore {
-        public final ForgeConfigSpec.IntValue leafRegrowthSpeed;
-        public final ForgeConfigSpec.IntValue treeSpreadRadius;
-        public final ForgeConfigSpec.IntValue treeSpreadInterval;
-        public final ForgeConfigSpec.BooleanValue debug;
+        public final ModConfigSpec.IntValue leafRegrowthSpeed;
+        public final ModConfigSpec.IntValue treeSpreadRadius;
+        public final ModConfigSpec.IntValue treeSpreadInterval;
+        public final ModConfigSpec.BooleanValue debug;
 
-        public BloodCore(ForgeConfigSpec.Builder builder) {
+        public BloodCore(ModConfigSpec.Builder builder) {
             builder.push("bloodCore");
 
             debug = builder
@@ -526,12 +526,12 @@ public class AnimusConfig {
 
     // Ars Nouveau Compatibility Configuration
     public static class ArsNouveau {
-        public final ForgeConfigSpec.IntValue arcaneRuneDrainAmount;
-        public final ForgeConfigSpec.IntValue arcaneRuneDrainInterval;
-        public final ForgeConfigSpec.BooleanValue enableLivingArmorXP;
-        public final ForgeConfigSpec.IntValue livingArmorBaseXP;
+        public final ModConfigSpec.IntValue arcaneRuneDrainAmount;
+        public final ModConfigSpec.IntValue arcaneRuneDrainInterval;
+        public final ModConfigSpec.BooleanValue enableLivingArmorXP;
+        public final ModConfigSpec.IntValue livingArmorBaseXP;
 
-        public ArsNouveau(ForgeConfigSpec.Builder builder) {
+        public ArsNouveau(ModConfigSpec.Builder builder) {
             builder.push("arsNouveau");
 
             arcaneRuneDrainAmount = builder
@@ -573,11 +573,11 @@ public class AnimusConfig {
 
     // Botania Integration Configuration
     public static class Botania {
-        public final ForgeConfigSpec.IntValue LPtoManaConversionRate;
-        public final ForgeConfigSpec.IntValue willToManaConversionRate;
-        public final ForgeConfigSpec.IntValue unleashedNatureManaDrain;
+        public final ModConfigSpec.IntValue LPtoManaConversionRate;
+        public final ModConfigSpec.IntValue willToManaConversionRate;
+        public final ModConfigSpec.IntValue unleashedNatureManaDrain;
 
-        public Botania(ForgeConfigSpec.Builder builder) {
+        public Botania(ModConfigSpec.Builder builder) {
             builder.push("botania");
 
             LPtoManaConversionRate = builder
@@ -611,34 +611,34 @@ public class AnimusConfig {
     // Irons Spells n Spellbooks Integration Configuration
     public static class IronsSpells {
         // Phase 1: LP Casting
-        public final ForgeConfigSpec.BooleanValue enableLPCasting;
-        public final ForgeConfigSpec.IntValue lpPerMana;
-        public final ForgeConfigSpec.BooleanValue requireBloodOrb;
-        public final ForgeConfigSpec.BooleanValue allowHybridCasting;
-        public final ForgeConfigSpec.BooleanValue showLPCostInTooltip;
+        public final ModConfigSpec.BooleanValue enableLPCasting;
+        public final ModConfigSpec.IntValue lpPerMana;
+        public final ModConfigSpec.BooleanValue requireBloodOrb;
+        public final ModConfigSpec.BooleanValue allowHybridCasting;
+        public final ModConfigSpec.BooleanValue showLPCostInTooltip;
 
         // Phase 2: Items
-        public final ForgeConfigSpec.BooleanValue enableBloodInfusedSpellbook;
-        public final ForgeConfigSpec.IntValue bloodSpellbookTier1LP;
-        public final ForgeConfigSpec.IntValue bloodSpellbookTier2LP;
-        public final ForgeConfigSpec.IntValue bloodSpellbookTier3LP;
-        public final ForgeConfigSpec.IntValue bloodSpellbookTier4LP;
-        public final ForgeConfigSpec.IntValue bloodSpellbookTier5LP;
-        public final ForgeConfigSpec.IntValue bloodSpellbookTier6LP;
+        public final ModConfigSpec.BooleanValue enableBloodInfusedSpellbook;
+        public final ModConfigSpec.IntValue bloodSpellbookTier1LP;
+        public final ModConfigSpec.IntValue bloodSpellbookTier2LP;
+        public final ModConfigSpec.IntValue bloodSpellbookTier3LP;
+        public final ModConfigSpec.IntValue bloodSpellbookTier4LP;
+        public final ModConfigSpec.IntValue bloodSpellbookTier5LP;
+        public final ModConfigSpec.IntValue bloodSpellbookTier6LP;
 
-        public final ForgeConfigSpec.BooleanValue enableSigilCrimsonWill;
-        public final ForgeConfigSpec.IntValue crimsonWillLPPerMana;
+        public final ModConfigSpec.BooleanValue enableSigilCrimsonWill;
+        public final ModConfigSpec.IntValue crimsonWillLPPerMana;
 
-        public final ForgeConfigSpec.BooleanValue enableSanguineScrolls;
-        public final ForgeConfigSpec.DoubleValue sanguineScrollLPMultiplier;
-        public final ForgeConfigSpec.DoubleValue sanguineScrollDurabilityMultiplier;
-        public final ForgeConfigSpec.BooleanValue sanguineScrollRequireBloodOrb;
+        public final ModConfigSpec.BooleanValue enableSanguineScrolls;
+        public final ModConfigSpec.DoubleValue sanguineScrollLPMultiplier;
+        public final ModConfigSpec.DoubleValue sanguineScrollDurabilityMultiplier;
+        public final ModConfigSpec.BooleanValue sanguineScrollRequireBloodOrb;
 
         // Phase 5: Living Armor Integration
-        public final ForgeConfigSpec.BooleanValue enableLivingArmorXP;
-        public final ForgeConfigSpec.IntValue livingArmorBaseXP;
+        public final ModConfigSpec.BooleanValue enableLivingArmorXP;
+        public final ModConfigSpec.IntValue livingArmorBaseXP;
 
-        public IronsSpells(ForgeConfigSpec.Builder builder) {
+        public IronsSpells(ModConfigSpec.Builder builder) {
             builder.push("ironsSpells");
 
             // ===== Phase 1: LP Casting =====
@@ -830,7 +830,7 @@ public class AnimusConfig {
         SPEC = BUILDER.build();
     }
 
-    public static void register(ModLoadingContext context) {
-        context.registerConfig(ModConfig.Type.COMMON, SPEC);
+    public static void register(ModContainer container) {
+        container.registerConfig(ModConfig.Type.COMMON, SPEC);
     }
 }

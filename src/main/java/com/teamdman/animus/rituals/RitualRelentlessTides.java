@@ -16,13 +16,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.util.RandomSource;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -37,7 +37,6 @@ import java.util.function.Consumer;
  * Horizontal Radius: Configurable (default: 32 blocks)
  * Vertical Depth: Configurable (default: 128 blocks)
  */
-@RitualRegister(Constants.Rituals.RELENTLESS_TIDES)
 public class RitualRelentlessTides extends Ritual {
     // Track current search position for each ritual to resume searching where we left off
     private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
@@ -66,7 +65,7 @@ public class RitualRelentlessTides extends Ritual {
             return;
         }
 
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
             return;
         }
@@ -83,7 +82,7 @@ public class RitualRelentlessTides extends Ritual {
         // Get fluid handler capability with error handling
         IFluidHandler fluidHandler;
         try {
-            fluidHandler = tankEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN).orElse(null);
+            fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, tankPos, Direction.DOWN);
             if (fluidHandler == null) {
                 emitSmokeParticles(serverLevel, masterPos);
                 return;
@@ -124,7 +123,7 @@ public class RitualRelentlessTides extends Ritual {
         int lpCost = AnimusConfig.rituals.relentlessTidesLPPerPlacement.get();
         int currentEssence = network.getCurrentEssence();
         if (currentEssence < lpCost) {
-            network.causeNausea();
+            // Note: causeNausea removed in BM 4.0
             return;
         }
 
@@ -157,10 +156,7 @@ public class RitualRelentlessTides extends Ritual {
             filledPositions.add(placementPos.immutable());
 
             // Consume LP
-            network.syphon(new SoulTicket(
-                Component.translatable(Constants.Localizations.Text.TICKET_RELENTLESS_TIDES),
-                lpCost
-            ), false);
+            network.syphon(SoulTicket.create(lpCost));
         }
     }
 

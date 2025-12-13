@@ -11,8 +11,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import wayoftime.bloodmagic.util.SoulTicket;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -87,7 +89,7 @@ public class ItemSigilStorm extends AnimusSigilBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -108,11 +110,8 @@ public class ItemSigilStorm extends AnimusSigilBase {
             BlockPos pos = result.getBlockPos();
 
             // Consume LP from soul network
-            wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
-            wayoftime.bloodmagic.core.data.SoulTicket ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
-                net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_STORM),
-                getLpUsed()
-            );
+            wayoftime.bloodmagic.common.datacomponent.SoulNetwork network = wayoftime.bloodmagic.util.helper.SoulNetworkHelper.getSoulNetwork(player);
+            SoulTicket ticket = SoulTicket.create(getLpUsed());
 
             var syphonResult = network.syphonAndDamage(player, ticket);
             if (!syphonResult.isSuccess()) {
@@ -176,7 +175,7 @@ public class ItemSigilStorm extends AnimusSigilBase {
     private static void spawnFishingLootStatic(ServerLevel level, BlockPos pos, Player player) {
         // Get the fishing loot table
         ResourceLocation fishingLootTable = ResourceLocation.fromNamespaceAndPath("minecraft", "gameplay/fishing");
-        LootTable lootTable = level.getServer().getLootData().getLootTable(fishingLootTable);
+        LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, fishingLootTable));
 
         // Build loot context
         LootParams.Builder paramsBuilder = new LootParams.Builder(level)
@@ -214,9 +213,9 @@ public class ItemSigilStorm extends AnimusSigilBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, java.util.List<net.minecraft.network.chat.Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, java.util.List<net.minecraft.network.chat.Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
         tooltip.add(net.minecraft.network.chat.Component.translatable(Constants.Localizations.Tooltips.SIGIL_STORM_FLAVOUR));
         tooltip.add(net.minecraft.network.chat.Component.translatable(Constants.Localizations.Tooltips.SIGIL_STORM_INFO));
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

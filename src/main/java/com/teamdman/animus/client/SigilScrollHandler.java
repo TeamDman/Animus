@@ -6,15 +6,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 /**
  * Client-side handler for mouse scroll events on sigils
  */
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public class SigilScrollHandler {
 
     @SubscribeEvent
@@ -29,7 +29,7 @@ public class SigilScrollHandler {
         // Check main hand
         ItemStack mainHand = player.getMainHandItem();
         if (mainHand.getItem() instanceof ItemSigilEquivalency sigil) {
-            if (sigil.onScroll(player, mainHand, event.getScrollDelta(), InteractionHand.MAIN_HAND)) {
+            if (sigil.onScroll(player, mainHand, event.getScrollDeltaY(), InteractionHand.MAIN_HAND)) {
                 event.setCanceled(true);
                 return;
             }
@@ -38,7 +38,7 @@ public class SigilScrollHandler {
         // Check off hand
         ItemStack offHand = player.getOffhandItem();
         if (offHand.getItem() instanceof ItemSigilEquivalency sigil) {
-            if (sigil.onScroll(player, offHand, event.getScrollDelta(), InteractionHand.OFF_HAND)) {
+            if (sigil.onScroll(player, offHand, event.getScrollDeltaY(), InteractionHand.OFF_HAND)) {
                 event.setCanceled(true);
             }
         }

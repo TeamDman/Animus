@@ -1,6 +1,7 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,16 +15,17 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class ItemSigilChains extends AnimusSigilBase {
 
         // Check if sigil is bound to the player
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -76,7 +78,7 @@ public class ItemSigilChains extends AnimusSigilBase {
 
         // Check if sigil is bound to the player
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResult.FAIL;
         }
 
@@ -129,11 +131,8 @@ public class ItemSigilChains extends AnimusSigilBase {
         }
 
         // Consume LP and check if player has enough
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
-        SoulTicket ticket = new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_CHAINS),
-            getLpUsed()
-        );
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        SoulTicket ticket = SoulTicket.create(getLpUsed());
 
         var result = network.syphonAndDamage(player, ticket);
         if (!result.isSuccess()) {
@@ -142,31 +141,31 @@ public class ItemSigilChains extends AnimusSigilBase {
 
         // Create mob soul item
         ItemStack soul = new ItemStack(AnimusItems.MOBSOUL.get());
-        CompoundTag tag = new CompoundTag();
         CompoundTag targetData = new CompoundTag();
 
         // Save entity data
         target.saveWithoutId(targetData);
 
         // Get entity type
-        ResourceLocation entityId = ForgeRegistries.ENTITY_TYPES.getKey(target.getType());
+        ResourceLocation entityId = BuiltInRegistries.ENTITY_TYPE.getKey(target.getType());
         if (entityId != null) {
-            tag.putString(Constants.NBT.SOUL_ENTITY_NAME, entityId.toString());
+            soul.set(AnimusDataComponents.SOUL_ENTITY_NAME.get(), entityId.toString());
         }
 
         // Save custom name if present
+        String customName = null;
         if (target instanceof Mob && target.hasCustomName()) {
-            tag.putString(Constants.NBT.SOUL_NAME, target.getCustomName().getString());
+            customName = target.getCustomName().getString();
+            soul.set(AnimusDataComponents.SOUL_NAME.get(), customName);
         }
 
-        tag.put(Constants.NBT.SOUL_DATA, targetData);
-        soul.setTag(tag);
+        soul.set(AnimusDataComponents.SOUL_DATA.get(), targetData);
 
         // Set display name
-        String displayName = tag.contains(Constants.NBT.SOUL_NAME)
-            ? tag.getString(Constants.NBT.SOUL_NAME)
+        String displayName = customName != null
+            ? customName
             : target.getType().getDescription().getString() + " Soul";
-        soul.setHoverName(Component.literal(displayName));
+        soul.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, Component.literal(displayName));
 
         // Give item to player or drop it
         if (!player.getInventory().add(soul)) {
@@ -187,9 +186,9 @@ public class ItemSigilChains extends AnimusSigilBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_CHAINS_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_CHAINS_INFO));
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

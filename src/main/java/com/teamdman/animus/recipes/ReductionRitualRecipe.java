@@ -1,11 +1,13 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -13,12 +15,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
-
-import java.util.Map;
 
 /**
  * Imperfect Ritual of Reduction
@@ -28,8 +27,8 @@ import java.util.Map;
  */
 public class ReductionRitualRecipe extends ImperfectRitualRecipe {
 
-    public ReductionRitualRecipe(ResourceLocation id) {
-        super(id, "reduction", Blocks.QUARTZ_BLOCK.defaultBlockState(), 1000);
+    public ReductionRitualRecipe() {
+        super("reduction", Blocks.QUARTZ_BLOCK.defaultBlockState(), 1000);
     }
 
     @Override
@@ -44,9 +43,9 @@ public class ReductionRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        // Get enchantments
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(mainhandItem);
-        if (enchantments.isEmpty()) {
+        // Get enchantments using 1.21 API
+        ItemEnchantments enchantments = mainhandItem.get(DataComponents.ENCHANTMENTS);
+        if (enchantments == null || enchantments.isEmpty()) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.reduction.no_enchantments"),
                 true
@@ -55,19 +54,18 @@ public class ReductionRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Downgrade all enchantments by 1 level (minimum level 1)
-        for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-            int newLevel = Math.max(1, entry.getValue() - 1);
-            enchantments.put(entry.getKey(), newLevel);
+        ItemEnchantments.Mutable mutableEnchantments = new ItemEnchantments.Mutable(enchantments);
+        for (Holder<Enchantment> enchantment : enchantments.keySet()) {
+            int currentLevel = enchantments.getLevel(enchantment);
+            int newLevel = Math.max(1, currentLevel - 1);
+            mutableEnchantments.set(enchantment, newLevel);
         }
 
         // Apply downgraded enchantments
-        EnchantmentHelper.setEnchantments(enchantments, mainhandItem);
+        mainhandItem.set(DataComponents.ENCHANTMENTS, mutableEnchantments.toImmutable());
 
         // Remove enhanced marker if present
-        CompoundTag tag = mainhandItem.getOrCreateTag();
-        if (tag.contains("AnimusEnhanced")) {
-            tag.remove("AnimusEnhanced");
-        }
+        mainhandItem.remove(AnimusDataComponents.ANIMUS_ENHANCED.get());
 
         // Play success sound
         level.playSound(
@@ -93,19 +91,18 @@ public class ReductionRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<ReductionRitualRecipe> {
+        private static final MapCodec<ReductionRitualRecipe> CODEC = MapCodec.unit(ReductionRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, ReductionRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new ReductionRitualRecipe());
+
         @Override
-        public ReductionRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new ReductionRitualRecipe(recipeId);
+        public MapCodec<ReductionRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public ReductionRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new ReductionRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, ReductionRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, ReductionRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

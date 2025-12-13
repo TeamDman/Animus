@@ -8,10 +8,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,6 @@ import java.util.function.Consumer;
  * Refresh Time: 20 ticks (1 second)
  * Range: Configurable (default: 64 blocks)
  */
-@RitualRegister(Constants.Rituals.NOLITE_IGNEM)
 public class RitualNoliteIgnem extends Ritual {
 
     public RitualNoliteIgnem() {
@@ -46,7 +45,7 @@ public class RitualNoliteIgnem extends Ritual {
             return;
         }
 
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
             return;
         }
@@ -96,20 +95,14 @@ public class RitualNoliteIgnem extends Ritual {
                 }
 
                 // Consume available LP
-                network.syphon(new SoulTicket(
-                    Component.translatable(Constants.Localizations.Text.TICKET_NOLITE_IGNEM),
-                    affordableFires * lpPerFire
-                ), false);
+                network.syphon(SoulTicket.create(affordableFires * lpPerFire));
             }
-            network.causeNausea();
+            // Note: causeNausea removed in BM 4.0
             return;
         }
 
         // Consume LP
-        network.syphon(new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_NOLITE_IGNEM),
-            totalCost
-        ), false);
+        network.syphon(SoulTicket.create(totalCost));
 
         // Extinguish all fires
         for (BlockPos pos : fireBlocks) {

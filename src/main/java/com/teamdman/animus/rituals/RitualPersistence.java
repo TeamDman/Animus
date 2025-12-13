@@ -1,18 +1,19 @@
 package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.AnimusModEventHandler;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.world.ForgeChunkManager;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import net.neoforged.neoforge.common.world.chunk.TicketController;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -25,7 +26,6 @@ import java.util.function.Consumer;
  * Refresh Time: 20 ticks (1 second)
  * Chunk Radius: Configurable (default: 3 chunks)
  */
-@RitualRegister(Constants.Rituals.PERSISTENCE)
 public class RitualPersistence extends Ritual {
     // Track loaded chunks per ritual stone position
     private static final Map<BlockPos, Set<ChunkPos>> loadedChunks = new HashMap<>();
@@ -51,7 +51,7 @@ public class RitualPersistence extends Ritual {
             return;
         }
 
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
             return;
         }
@@ -63,15 +63,12 @@ public class RitualPersistence extends Ritual {
         if (currentEssence < refreshCost) {
             // Not enough LP - unload chunks
             unloadChunks(serverLevel, masterPos);
-            network.causeNausea();
+            // Note: causeNausea removed in BM 4.0
             return;
         }
 
         // Consume LP
-        network.syphon(new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_PERSISTENCE),
-            refreshCost
-        ), false);
+        network.syphon(SoulTicket.create(refreshCost));
 
         // Load chunks
         loadChunks(serverLevel, masterPos);
@@ -84,6 +81,7 @@ public class RitualPersistence extends Ritual {
     private void loadChunks(ServerLevel level, BlockPos masterPos) {
         int radius = AnimusConfig.rituals.persistenceChunkRadius.get();
         ChunkPos centerChunk = new ChunkPos(masterPos);
+        TicketController controller = AnimusModEventHandler.getTicketController();
 
         // Get or create the set of loaded chunks for this ritual
         Set<ChunkPos> chunks = loadedChunks.computeIfAbsent(masterPos, k -> new HashSet<>());
@@ -100,9 +98,8 @@ public class RitualPersistence extends Ritual {
         // Add any new chunks
         for (ChunkPos chunkPos : chunksToLoad) {
             if (!chunks.contains(chunkPos)) {
-                ForgeChunkManager.forceChunk(
+                controller.forceChunk(
                     level,
-                    Constants.Mod.MODID,
                     masterPos,
                     chunkPos.x,
                     chunkPos.z,
@@ -116,9 +113,8 @@ public class RitualPersistence extends Ritual {
         // Remove any chunks that are no longer in range
         chunks.removeIf(chunkPos -> {
             if (!chunksToLoad.contains(chunkPos)) {
-                ForgeChunkManager.forceChunk(
+                controller.forceChunk(
                     level,
-                    Constants.Mod.MODID,
                     masterPos,
                     chunkPos.x,
                     chunkPos.z,
@@ -136,11 +132,11 @@ public class RitualPersistence extends Ritual {
      */
     private void unloadChunks(ServerLevel level, BlockPos masterPos) {
         Set<ChunkPos> chunks = loadedChunks.get(masterPos);
+        TicketController controller = AnimusModEventHandler.getTicketController();
         if (chunks != null) {
             for (ChunkPos chunkPos : chunks) {
-                ForgeChunkManager.forceChunk(
+                controller.forceChunk(
                     level,
-                    Constants.Mod.MODID,
                     masterPos,
                     chunkPos.x,
                     chunkPos.z,
@@ -198,14 +194,14 @@ public class RitualPersistence extends Ritual {
      * Clean up all chunk loading when the ritual is removed or world unloads
      */
     public static void cleanupAllChunks(ServerLevel level) {
+        TicketController controller = AnimusModEventHandler.getTicketController();
         for (Map.Entry<BlockPos, Set<ChunkPos>> entry : loadedChunks.entrySet()) {
             BlockPos masterPos = entry.getKey();
             Set<ChunkPos> chunks = entry.getValue();
 
             for (ChunkPos chunkPos : chunks) {
-                ForgeChunkManager.forceChunk(
+                controller.forceChunk(
                     level,
-                    Constants.Mod.MODID,
                     masterPos,
                     chunkPos.x,
                     chunkPos.z,

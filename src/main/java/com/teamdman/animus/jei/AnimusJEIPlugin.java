@@ -15,8 +15,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.Arrays;
 import java.util.List;
@@ -91,28 +92,28 @@ public class AnimusJEIPlugin implements IModPlugin {
 
         // Mod-dependent catalyst blocks
         if (ModList.get().isLoaded("botania")) {
-            Item manasteelBlock = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("botania", "manasteel_block"));
+            Item manasteelBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("botania", "manasteel_block"));
             if (manasteelBlock != null && manasteelBlock != Items.AIR) {
                 registration.addRecipeCatalyst(new ItemStack(manasteelBlock), ImperfectRitualCategory.RECIPE_TYPE);
             }
         }
 
         if (ModList.get().isLoaded("malum")) {
-            Item hallowedGoldBlock = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold"));
+            Item hallowedGoldBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold"));
             if (hallowedGoldBlock != null && hallowedGoldBlock != Items.AIR) {
                 registration.addRecipeCatalyst(new ItemStack(hallowedGoldBlock), ImperfectRitualCategory.RECIPE_TYPE);
             }
         }
 
         if (ModList.get().isLoaded("ars_nouveau")) {
-            Item sourceGemBlock = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("ars_nouveau", "source_gem_block"));
+            Item sourceGemBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("ars_nouveau", "source_gem_block"));
             if (sourceGemBlock != null && sourceGemBlock != Items.AIR) {
                 registration.addRecipeCatalyst(new ItemStack(sourceGemBlock), ImperfectRitualCategory.RECIPE_TYPE);
             }
         }
 
         if (ModList.get().isLoaded("irons_spellbooks")) {
-            Item arcaneAnvil = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "arcane_anvil"));
+            Item arcaneAnvil = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "arcane_anvil"));
             if (arcaneAnvil != null && arcaneAnvil != Items.AIR) {
                 registration.addRecipeCatalyst(new ItemStack(arcaneAnvil), ImperfectRitualCategory.RECIPE_TYPE);
             }

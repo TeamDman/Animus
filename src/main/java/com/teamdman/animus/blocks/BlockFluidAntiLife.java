@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.common.NeoForge;
 
 /**
  * AntiLife fluid block - spreads and converts blocks to antilife
@@ -26,7 +26,7 @@ public class BlockFluidAntiLife extends LiquidBlock {
 
     public BlockFluidAntiLife() {
         super(
-            () -> (FlowingFluid) AnimusFluids.ANTILIFE_SOURCE.get(),
+            (FlowingFluid) AnimusFluids.ANTILIFE_SOURCE.get(),
             Properties.of()
                 .noCollission()
                 .strength(100.0F)

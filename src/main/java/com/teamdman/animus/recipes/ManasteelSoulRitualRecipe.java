@@ -1,11 +1,13 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import com.teamdman.animus.compat.CompatHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +20,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
 
 /**
@@ -35,9 +36,9 @@ public class ManasteelSoulRitualRecipe extends ImperfectRitualRecipe {
     private static final ResourceLocation MANASTEEL_BLOCK_ID = ResourceLocation.fromNamespaceAndPath("botania", "manasteel_block");
     private static final ResourceLocation EMPTINESS_EFFECT_ID = ResourceLocation.fromNamespaceAndPath("botania", "emptiness");
 
-    public ManasteelSoulRitualRecipe(ResourceLocation id) {
+    public ManasteelSoulRitualRecipe() {
         // Use air as placeholder - we override matches() to check for the actual Botania block
-        super(id, "manasteel_soul", Blocks.AIR.defaultBlockState(), 2500);
+        super("manasteel_soul", Blocks.AIR.defaultBlockState(), 2500);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class ManasteelSoulRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        Block manasteelBlock = ForgeRegistries.BLOCKS.getValue(MANASTEEL_BLOCK_ID);
+        Block manasteelBlock = BuiltInRegistries.BLOCK.getOptional(MANASTEEL_BLOCK_ID).orElse(null);
         if (manasteelBlock == null || manasteelBlock == Blocks.AIR) {
             return false;
         }
@@ -59,7 +60,7 @@ public class ManasteelSoulRitualRecipe extends ImperfectRitualRecipe {
     public BlockState getTriggerBlock() {
         // Return the actual Botania block if loaded, otherwise air
         if (CompatHandler.isBotaniaLoaded()) {
-            Block manasteelBlock = ForgeRegistries.BLOCKS.getValue(MANASTEEL_BLOCK_ID);
+            Block manasteelBlock = BuiltInRegistries.BLOCK.getOptional(MANASTEEL_BLOCK_ID).orElse(null);
             if (manasteelBlock != null && manasteelBlock != Blocks.AIR) {
                 return manasteelBlock.defaultBlockState();
             }
@@ -79,7 +80,9 @@ public class ManasteelSoulRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Get the Emptiness effect from Botania
-        MobEffect emptinessEffect = ForgeRegistries.MOB_EFFECTS.getValue(EMPTINESS_EFFECT_ID);
+        Holder<MobEffect> emptinessEffect = BuiltInRegistries.MOB_EFFECT.getHolder(EMPTINESS_EFFECT_ID)
+            .orElse(null);
+
         if (emptinessEffect == null) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.manasteel_soul.effect_not_found"),
@@ -132,19 +135,18 @@ public class ManasteelSoulRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<ManasteelSoulRitualRecipe> {
+        private static final MapCodec<ManasteelSoulRitualRecipe> CODEC = MapCodec.unit(ManasteelSoulRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, ManasteelSoulRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new ManasteelSoulRitualRecipe());
+
         @Override
-        public ManasteelSoulRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new ManasteelSoulRitualRecipe(recipeId);
+        public MapCodec<ManasteelSoulRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public ManasteelSoulRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new ManasteelSoulRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, ManasteelSoulRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, ManasteelSoulRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.teamdman.animus.compat;
 
 import com.teamdman.animus.Animus;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 /**
  * Main compatibility handler for optional mod integrations
  * Uses lazy initialization to avoid ClassNotFoundException for missing mods
+ *
+ * NOTE: Most compat modules are disabled until the dependent mods have 1.21.1 versions
  */
 public class CompatHandler {
     private static final Map<String, Supplier<ICompatModule>> COMPAT_MODULES = new HashMap<>();
@@ -19,10 +21,11 @@ public class CompatHandler {
     static {
         // Register compatibility modules here
         // Using suppliers ensures classes are only loaded when the mod is present
-        COMPAT_MODULES.put("irons_spellbooks", IronsSpellsCompat::new);
-        COMPAT_MODULES.put("ars_nouveau", ArsNouveauCompat::new);
-        COMPAT_MODULES.put("malum", MalumCompat::new);
-        COMPAT_MODULES.put("botania", BotaniaCompat::new);
+        // Most modules disabled until mods have 1.21.1 versions
+        // COMPAT_MODULES.put("irons_spellbooks", IronsSpellsCompat::new);
+        // COMPAT_MODULES.put("ars_nouveau", ArsNouveauCompat::new);
+        // COMPAT_MODULES.put("malum", MalumCompat::new);
+        // COMPAT_MODULES.put("botania", BotaniaCompat::new);
     }
 
     /**
@@ -30,32 +33,7 @@ public class CompatHandler {
      * Must be called during mod construction, before registry events fire
      */
     public static void registerDeferredRegisters(IEventBus modEventBus) {
-        // Check for Irons Spells and register its items early
-        if (ModList.get().isLoaded("irons_spellbooks")) {
-            try {
-                IronsSpellsCompat.registerDeferred(modEventBus);
-            } catch (Exception e) {
-                Animus.LOGGER.error("Failed to register Irons Spells DeferredRegister", e);
-            }
-        }
-
-        // Check for Ars Nouveau and register its block entities early
-        if (ModList.get().isLoaded("ars_nouveau")) {
-            try {
-                ArsNouveauCompat.registerDeferred(modEventBus);
-            } catch (Exception e) {
-                Animus.LOGGER.error("Failed to register Ars Nouveau DeferredRegister", e);
-            }
-        }
-
-        // Check for Botania and register its block entities early
-        if (ModList.get().isLoaded("botania")) {
-            try {
-                BotaniaCompat.registerDeferred(modEventBus);
-            } catch (Exception e) {
-                Animus.LOGGER.error("Failed to register Botania DeferredRegister", e);
-            }
-        }
+        // All compat modules disabled until mods have 1.21.1 versions
     }
 
     /**

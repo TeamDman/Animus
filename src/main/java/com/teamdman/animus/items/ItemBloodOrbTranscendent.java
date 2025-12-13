@@ -1,34 +1,33 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.registry.AnimusBloodOrbs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.common.item.ItemBloodOrb;
+import wayoftime.bloodmagic.common.item.BloodOrbItem;
 
 import java.util.List;
 
 /**
- * Transcendent Blood Orb - Tier 6 Blood Orb
- * Holds 300,000 LP
+ * Transcendent Blood Orb - Tier 7 Blood Orb
+ * Holds 30,000,000 LP
  * Crafted in a Tier 6 altar with Crystallized Demon Will Block
+ *
+ * Stats are defined via DataMaps in data/animus/data_maps/item/blood_orb_stats.json
  */
-public class ItemBloodOrbTranscendent extends ItemBloodOrb {
-    private static final int CAPACITY = 300000;
+public class ItemBloodOrbTranscendent extends BloodOrbItem {
 
     public ItemBloodOrbTranscendent() {
-        super(AnimusBloodOrbs.BLOOD_ORB_TRANSCENDENT::get);
+        // In Blood Magic 1.21.1, orb stats come from DataMaps, not constructor args
+        super();
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_ORB_TRANSCENDENT_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_ORB_TRANSCENDENT_INFO, CAPACITY)
-            .withStyle(ChatFormatting.DARK_RED));
     }
 }

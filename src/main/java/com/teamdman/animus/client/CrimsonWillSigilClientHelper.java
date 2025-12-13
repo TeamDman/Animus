@@ -3,7 +3,7 @@ package com.teamdman.animus.client;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class CrimsonWillSigilClientHelper {
         var player = Minecraft.getInstance().player;
         if (player == null) return;
 
-        double currentWill = PlayerDemonWillHandler.getTotalDemonWill(EnumDemonWillType.DEFAULT, player);
+        double currentWill = PlayerDemonWillHandler.getTotalDemonWill(EnumWillType.DEFAULT, player);
         double willMultiplier = Math.min(currentWill / 4096.0, 1.0);
         double willBonus = 0.20 * willMultiplier;
         double totalBonus = 0.30 + willBonus;

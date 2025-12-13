@@ -4,57 +4,29 @@ import com.teamdman.animus.client.models.AnimusModelLayers;
 import com.teamdman.animus.client.models.SpearModel;
 import com.teamdman.animus.client.renderers.ThrownSpearRenderer;
 import com.teamdman.animus.items.sigils.ItemSigilToggleableBase;
-import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusEntityTypes;
-import com.teamdman.animus.registry.AnimusFluids;
 import com.teamdman.animus.registry.AnimusItems;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 /**
  * Client-side setup for Animus mod
  * Handles render layers and other client-only initialization
  */
-@Mod.EventBusSubscriber(modid = Constants.Mod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Constants.Mod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class AnimusClientSetup {
 
-    @SuppressWarnings({"deprecation", "removal"})
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            // Set render layers for transparent blocks
-            // Sapling uses cutout for transparency
-            ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_SAPLING.get(), RenderType.cutout());
-
-            // Diabolical Fungi uses cutout for transparency (like other flowers/saplings)
-            // Only set if Botania is loaded
-            if (net.minecraftforge.fml.ModList.get().isLoaded("botania")) {
-                try {
-                    ItemBlockRenderTypes.setRenderLayer(
-                        com.teamdman.animus.compat.BotaniaCompat.BLOCK_DIABOLICAL_FUNGI.get(),
-                        RenderType.cutout()
-                    );
-                } catch (Exception e) {
-                    // Botania compat not available
-                }
-            }
-
-            // Leaves use cutout_mipped for transparency (fancy graphics support)
-            ItemBlockRenderTypes.setRenderLayer(AnimusBlocks.BLOCK_BLOOD_LEAVES.get(), RenderType.cutoutMipped());
-
-            // Set render layers for fluids (translucent for transparency)
-            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.ANTILIFE_SOURCE.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.ANTILIFE_FLOWING.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.LIVING_TERRA_SOURCE.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(AnimusFluids.LIVING_TERRA_FLOWING.get(), RenderType.translucent());
+            // Note: In NeoForge 1.21+, render layers are defined in block/fluid model JSON files
+            // using "render_type": "cutout" or "render_type": "translucent"
+            // No need to call ItemBlockRenderTypes.setRenderLayer() anymore
 
             // Register item properties for toggleable sigils (use "activated" NBT tag)
             registerToggleableSigilProperty(AnimusItems.SIGIL_BUILDER.get());
@@ -62,12 +34,13 @@ public class AnimusClientSetup {
             registerToggleableSigilProperty(AnimusItems.SIGIL_TRANSPOSITION.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_MONK.get());
 
-            // Register item properties for active-state sigils (Remedium, Reparare, Heavenly Wrath, Boundless Nature)
+            // Register item properties for active-state sigils (Remedium, Reparare, Heavenly Wrath)
             // These use "Active" NBT tag
             registerActiveSigilProperty(AnimusItems.SIGIL_REMEDIUM.get());
             registerActiveSigilProperty(AnimusItems.SIGIL_REPARARE.get());
             registerActiveSigilProperty(AnimusItems.SIGIL_HEAVENLY_WRATH.get());
-            registerActiveSigilProperty(AnimusItems.SIGIL_BOUNDLESS_NATURE.get());
+            // TODO: ItemSigilBoundlessNature needs to be ported from 1.20.1
+            // registerActiveSigilProperty(AnimusItems.SIGIL_BOUNDLESS_NATURE.get());
 
             // Register item property for Bound Spear activation state
             registerBoundSpearProperty(AnimusItems.SPEAR_BOUND.get());
@@ -145,13 +118,16 @@ public class AnimusClientSetup {
 
     /**
      * Registers the "active" item property for sigils with active/inactive states
-     * This allows models to switch textures based on the "Active" NBT tag
+     * This allows models to switch textures based on the "Active" data component
      */
     private static void registerActiveSigilProperty(net.minecraft.world.item.Item item) {
         ItemProperties.register(item,
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "active"),
             (stack, level, entity, seed) -> {
-                if (stack.hasTag() && stack.getTag().getBoolean("Active")) {
+                // In 1.21+, NBT is replaced by data components
+                // For now, check for the old NBT tag pattern - Blood Magic may still use custom data
+                var customData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
+                if (customData != null && customData.copyTag().getBoolean("Active")) {
                     return 1.0F;
                 }
                 return 0.0F;

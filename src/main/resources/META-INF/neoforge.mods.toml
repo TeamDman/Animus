@@ -1,0 +1,56 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+license = "${mod_license}"
+issueTrackerURL = "https://github.com/Saereth/Animus/issues"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+displayURL = "https://github.com/Saereth/Animus"
+logoFile = "logo.png"
+credits = "WayOfTime for Blood Magic"
+authors = "${mod_authors}"
+description = '''${mod_description}'''
+
+[[dependencies.animus]]
+    modId = "neoforge"
+    type = "required"
+    versionRange = "${neoforge_version_range}"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.animus]]
+    modId = "minecraft"
+    type = "required"
+    versionRange = "${minecraft_version_range}"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.animus]]
+    modId = "bloodmagic"
+    type = "required"
+    versionRange = "[4.0,)"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.animus]]
+    modId = "jei"
+    type = "optional"
+    versionRange = "[19.0,)"
+    ordering = "AFTER"
+    side = "CLIENT"
+
+[[dependencies.animus]]
+    modId = "curios"
+    type = "optional"
+    versionRange = "[9.0,)"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.animus]]
+    modId = "patchouli"
+    type = "optional"
+    versionRange = "[1.21,)"
+    ordering = "AFTER"
+    side = "BOTH"

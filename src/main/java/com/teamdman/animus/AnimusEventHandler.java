@@ -25,23 +25,29 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.potion.BloodMagicPotions;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.common.effect.BMMobEffects;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.core.data.Binding;
+import wayoftime.bloodmagic.common.datacomponent.Binding;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +59,7 @@ import java.util.UUID;
  * Prevents moving Fragment of Healing in inventory
  * Converts Life Essence to AntiLife when struck by lightning
  */
-@Mod.EventBusSubscriber(modid = Constants.Mod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = Constants.Mod.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class AnimusEventHandler {
 
     // Track healing cooldown per player
@@ -64,13 +70,13 @@ public class AnimusEventHandler {
      * Runs every tick for each player
      */
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        // Only run on server side, at end of tick
-        if (event.side.isClient() || event.phase != TickEvent.Phase.END) {
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+        // Only run on server side
+        if (event.getEntity().level().isClientSide()) {
             return;
         }
 
-        Player player = event.player;
+        Player player = event.getEntity();
         UUID playerId = player.getUUID();
 
         // Process Remedium Sigil and Reparare Sigil active effects FIRST
@@ -122,7 +128,7 @@ public class AnimusEventHandler {
      * Clean up player data when they log out
      */
     @SubscribeEvent
-    public static void onPlayerLogout(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent event) {
+    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         healingCooldowns.remove(event.getEntity().getUUID());
         ItemSigilRemedium.onPlayerLogout(event.getEntity().getUUID());
         ItemSigilReparare.onPlayerLogout(event.getEntity().getUUID());
@@ -138,7 +144,7 @@ public class AnimusEventHandler {
      * Works like a Totem of Undying - prevents death and activates spectator mode
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onLivingDeath(net.minecraftforge.event.entity.living.LivingDeathEvent event) {
+    public static void onLivingDeath(LivingDeathEvent event) {
         // Only handle players on server side
         if (!(event.getEntity() instanceof Player player) || player.level().isClientSide()) {
             return;
@@ -152,63 +158,10 @@ public class AnimusEventHandler {
     }
 
     /**
-     * Prevent dropping healing fragments
-     */
-    @SubscribeEvent
-    public static void onItemToss(net.minecraftforge.event.entity.item.ItemTossEvent event) {
-        if (event.getEntity().getItem().getItem() == AnimusItems.FRAGMENT_HEALING.get()) {
-            Player player = event.getPlayer();
-            if (player != null && !player.getAbilities().instabuild) {
-                // Cancel the toss and return item to inventory
-                event.setCanceled(true);
-                player.getInventory().add(event.getEntity().getItem());
-                player.displayClientMessage(
-                    net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.HEALING_CANNOT_DROP)
-                        .withStyle(net.minecraft.ChatFormatting.RED),
-                    true
-                );
-            }
-        }
-    }
-
-    /**
-     * Prevent moving Fragment of Healing in ANY inventory (player, chest, etc.)
-     * This event fires for all inventory clicks
-     */
-    @SubscribeEvent
-    public static void onInventoryClick(net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem event) {
-        // This won't work for inventory clicks - we need a different approach
-        // See onSlotClick below
-    }
-
-    /**
-     * Track slots that contain healing fragments to prevent movement
-     * This is a workaround since Forge doesn't expose the container click event directly
-     */
-    @SubscribeEvent
-    public static void onContainerOpen(PlayerContainerEvent.Open event) {
-        // When a container opens, we can't directly prevent slot clicks
-        // The prevention is handled by:
-        // 1. onDroppedByPlayer() in ItemFragmentHealing (prevents dropping)
-        // 2. canFitInsideContainerItems() in ItemFragmentHealing (prevents shulker box storage)
-        // 3. onItemToss() event above (prevents Q-key dropping)
-
-        // For movement within inventory (shift-click, drag, etc.), we rely on client-side
-        // behavior and server-side validation in the item pickup/drop events
-
-        // Note: In 1.20.1, there's no easy server-side way to prevent slot clicks
-        // without using mixins or access transformers. The best we can do is:
-        // - Prevent dropping (done)
-        // - Prevent storage in containers (done)
-        // - Show clear warnings in tooltip (done)
-        // - Return items that are illegally moved (handled by pickup prevention)
-    }
-
-    /**
      * Additional protection: prevent healing fragments from being placed in other containers
      */
     @SubscribeEvent
-    public static void onItemCrafted(net.minecraftforge.event.entity.player.PlayerEvent.ItemCraftedEvent event) {
+    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
         // When fragments are crafted or obtained, they immediately become stuck
         if (event.getCrafting().getItem() == AnimusItems.FRAGMENT_HEALING.get()) {
             Player player = event.getEntity();
@@ -263,7 +216,7 @@ public class AnimusEventHandler {
      * Note: Spawner spawns and conversions (e.g., villager -> zombie villager) are allowed to proceed
      */
     @SubscribeEvent
-    public static void onMobSpawnCheck(MobSpawnEvent.FinalizeSpawn event) {
+    public static void onMobSpawnCheck(FinalizeSpawnEvent event) {
         // Only run on server side
         if (event.getLevel().isClientSide()) {
             return;
@@ -301,14 +254,9 @@ public class AnimusEventHandler {
      * This runs every server tick and checks if any pending spawns/effects are ready
      */
     @SubscribeEvent
-    public static void onLevelTick(TickEvent.LevelTickEvent event) {
-        // Only run on server side, at end of tick
-        if (event.side.isClient() || event.phase != TickEvent.Phase.END) {
-            return;
-        }
-
+    public static void onLevelTick(LevelTickEvent.Post event) {
         // Only process server levels
-        if (event.level instanceof ServerLevel serverLevel) {
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
             ItemSigilStorm.tickPendingSpawns(serverLevel);
             ItemSigilHeavenlyWrath.tickPendingFalls(serverLevel);
             ItemSigilTemporalDominance.tickAcceleratedBlocks(serverLevel);
@@ -392,13 +340,13 @@ public class AnimusEventHandler {
      * Complete pending binding transfers from Key of Binding
      */
     @SubscribeEvent
-    public static void onPlayerTickForBinding(TickEvent.PlayerTickEvent event) {
-        // Only run on server side, at start of tick
-        if (event.side.isClient() || event.phase != TickEvent.Phase.START) {
+    public static void onPlayerTickForBinding(PlayerTickEvent.Pre event) {
+        // Only run on server side
+        if (event.getEntity().level().isClientSide()) {
             return;
         }
 
-        Player player = event.player;
+        Player player = event.getEntity();
         UUID playerId = player.getUUID();
 
         // Check if this player has a pending binding transfer
@@ -414,13 +362,13 @@ public class AnimusEventHandler {
             Binding currentBinding = bindable.getBinding(mainHandStack);
 
             // Check if the item was just bound to this player
-            if (currentBinding != null && currentBinding.getOwnerId().equals(playerId)) {
-                // Transfer the binding to the Key's owner
-                mainHandStack.getOrCreateTag().put("binding", keyBinding.serializeNBT());
+            if (currentBinding != null && currentBinding.uuid().equals(playerId)) {
+// Transfer the binding to the Key's owner using DataComponents
+                mainHandStack.set(wayoftime.bloodmagic.common.datacomponent.BMDataComponents.BINDING.get(), keyBinding);
 
                 // Notify player
                 player.displayClientMessage(
-                    net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.KEY_ITEM_BOUND, keyBinding.getOwnerName())
+                    net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.KEY_ITEM_BOUND, keyBinding.name())
                         .withStyle(net.minecraft.ChatFormatting.AQUA),
                     true
                 );
@@ -433,7 +381,7 @@ public class AnimusEventHandler {
      * When a player blocks an attack with a sentient shield, apply effects based on will type
      */
     @SubscribeEvent
-    public static void onLivingAttack(net.minecraftforge.event.entity.living.LivingAttackEvent event) {
+    public static void onLivingAttack(LivingIncomingDamageEvent event) {
         // Only handle players on server side
         if (!(event.getEntity() instanceof Player player) || player.level().isClientSide()) {
             return;
@@ -456,8 +404,8 @@ public class AnimusEventHandler {
         }
 
         // Get the will type and amount
-        wayoftime.bloodmagic.api.compat.EnumDemonWillType willType = sentientShield.getCurrentType(shield);
-        double willAmount = wayoftime.bloodmagic.demonaura.WorldDemonWillHandler.getCurrentWill(
+        wayoftime.bloodmagic.common.datacomponent.EnumWillType willType = sentientShield.getCurrentType(shield);
+        double willAmount = wayoftime.bloodmagic.will.WorldDemonWillHandler.getCurrentWill(
             player.level(), player.blockPosition(), willType
         );
 
@@ -529,7 +477,7 @@ public class AnimusEventHandler {
      * Execute mechanic: if target falls below execute threshold, instant kill + rewards
      */
     @SubscribeEvent
-    public static void onLivingHurt(net.minecraftforge.event.entity.living.LivingHurtEvent event) {
+    public static void onLivingHurt(LivingIncomingDamageEvent event) {
         // Check if damage source is from a player
         if (!(event.getSource().getEntity() instanceof Player player)) {
             return;
@@ -552,7 +500,7 @@ public class AnimusEventHandler {
         }
 
         // Get unarmed damage attribute value
-        double unarmedDamage = player.getAttributeValue(AnimusAttributes.UNARMED_DAMAGE.get());
+        double unarmedDamage = player.getAttributeValue(AnimusAttributes.UNARMED_DAMAGE);
         if (unarmedDamage <= 0) {
             return;
         }
@@ -632,12 +580,10 @@ public class AnimusEventHandler {
                 }
 
                 // Add 200 LP to player's soul network
-                SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+                SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
                 if (network != null) {
-                    network.add(new SoulTicket(
-                        Component.translatable(Constants.Localizations.Text.TICKET_MONK_EXECUTE),
-                        LP_REWARD_PER_EXECUTE
-                    ), LP_REWARD_PER_EXECUTE);
+                    // In Blood Magic 1.21.1, SoulTicket uses factory methods
+                    network.add(SoulTicket.create(LP_REWARD_PER_EXECUTE), LP_REWARD_PER_EXECUTE);
                 }
             }
         }
@@ -649,7 +595,7 @@ public class AnimusEventHandler {
         target.knockback(knockbackStrength, dx, dz);
 
         // Apply Soul Snare effect (2 seconds, amplifier 1) for guaranteed will drops
-        target.addEffect(new MobEffectInstance(BloodMagicPotions.SOUL_SNARE.get(), 40, 1));
+        target.addEffect(new MobEffectInstance(BMMobEffects.SOUL_SNARE, 40, 1));
     }
 
     /**
@@ -667,7 +613,7 @@ public class AnimusEventHandler {
      * Cancels damage, gives the projectile item to the player, plays sound and particles
      */
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onPlayerHurtByProjectile(net.minecraftforge.event.entity.living.LivingHurtEvent event) {
+    public static void onPlayerHurtByProjectile(LivingIncomingDamageEvent event) {
         // Check if the entity being hurt is a player
         if (!(event.getEntity() instanceof Player player)) {
             return;
@@ -780,7 +726,7 @@ public class AnimusEventHandler {
      * Sigil of the Demon Monk - Cancel fall damage for 25 LP
      */
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onFallDamage(net.minecraftforge.event.entity.living.LivingHurtEvent event) {
+    public static void onFallDamage(LivingIncomingDamageEvent event) {
         // Check if the entity is a player
         if (!(event.getEntity() instanceof Player player)) {
             return;
@@ -824,7 +770,7 @@ public class AnimusEventHandler {
      */
     private static double getTotalDemonWill(Player player) {
         double total = 0;
-        for (EnumDemonWillType type : EnumDemonWillType.values()) {
+        for (EnumWillType type : EnumWillType.values()) {
             total += PlayerDemonWillHandler.getTotalDemonWill(type, player);
         }
         return total;
@@ -837,15 +783,15 @@ public class AnimusEventHandler {
         double remaining = amount;
 
         // Try to consume from each will type, starting with DEFAULT (raw)
-        EnumDemonWillType[] preferredOrder = {
-            EnumDemonWillType.DEFAULT,
-            EnumDemonWillType.VENGEFUL,
-            EnumDemonWillType.STEADFAST,
-            EnumDemonWillType.CORROSIVE,
-            EnumDemonWillType.DESTRUCTIVE
+        EnumWillType[] preferredOrder = {
+            EnumWillType.DEFAULT,
+            EnumWillType.VENGEFUL,
+            EnumWillType.STEADFAST,
+            EnumWillType.CORROSIVE,
+            EnumWillType.DESTRUCTIVE
         };
 
-        for (EnumDemonWillType type : preferredOrder) {
+        for (EnumWillType type : preferredOrder) {
             if (remaining <= 0) break;
 
             double available = PlayerDemonWillHandler.getTotalDemonWill(type, player);
@@ -864,7 +810,7 @@ public class AnimusEventHandler {
      * - Grants Regeneration I for 2 seconds
      */
     @SubscribeEvent
-    public static void onLivingDeath_Monk(net.minecraftforge.event.entity.living.LivingDeathEvent event) {
+    public static void onLivingDeath_Monk(LivingDeathEvent event) {
         // Check if killer is a player
         if (!(event.getSource().getEntity() instanceof Player player)) {
             return;
@@ -909,7 +855,7 @@ public class AnimusEventHandler {
      * Sigil of the Demon Monk - Grant netherite + efficiency 5 mining speed with empty hands
      */
     @SubscribeEvent
-    public static void onBreakSpeed(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
+    public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
 
         // Check if player is mining with empty hands
@@ -929,33 +875,10 @@ public class AnimusEventHandler {
     }
 
     /**
-     * Sigil of the Demon Monk - Allow harvesting blocks that require tools when using empty hands
-     * This makes the player's fist act like a valid tool for all block types
-     */
-    @SubscribeEvent
-    public static void onHarvestCheck(net.minecraftforge.event.entity.player.PlayerEvent.HarvestCheck event) {
-        Player player = event.getEntity();
-
-        // Check if player is mining with empty hands
-        ItemStack mainHand = player.getMainHandItem();
-        if (!mainHand.isEmpty()) {
-            return;
-        }
-
-        // Check if player has an active Sigil of the Monk
-        if (!ItemSigilMonk.hasActiveSigil(player)) {
-            return;
-        }
-
-        // Allow harvesting all blocks when Sigil of the Monk is active
-        event.setCanHarvest(true);
-    }
-
-    /**
      * Sigil of the Demon Monk - Consume LP when breaking a block with empty hands
      */
     @SubscribeEvent
-    public static void onBlockBreak(net.minecraftforge.event.level.BlockEvent.BreakEvent event) {
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
 
         // Only run on server side
@@ -982,7 +905,7 @@ public class AnimusEventHandler {
      * Ritual of Endless Greed - Intercept mob drops and transfer to container
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onLivingDrops(net.minecraftforge.event.entity.living.LivingDropsEvent event) {
+    public static void onLivingDrops(LivingDropsEvent event) {
         net.minecraft.world.entity.LivingEntity entity = event.getEntity();
         net.minecraft.world.level.Level level = entity.level();
 

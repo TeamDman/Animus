@@ -21,7 +21,7 @@ public class BlockFluidLivingTerra extends LiquidBlock {
 
     public BlockFluidLivingTerra() {
         super(
-            () -> (FlowingFluid) AnimusFluids.LIVING_TERRA_SOURCE.get(),
+            (FlowingFluid) AnimusFluids.LIVING_TERRA_SOURCE.get(),
             Properties.of()
                 .noCollission()
                 .strength(100.0F)

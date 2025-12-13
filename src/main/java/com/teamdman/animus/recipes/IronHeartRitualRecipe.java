@@ -1,10 +1,13 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import com.teamdman.animus.compat.CompatHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +19,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
 
 /**
@@ -33,9 +35,9 @@ public class IronHeartRitualRecipe extends ImperfectRitualRecipe {
     private static final ResourceLocation ARCANE_ANVIL_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "arcane_anvil");
     private static final ResourceLocation ECHOING_STRIKES_EFFECT_ID = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "echoing_strikes");
 
-    public IronHeartRitualRecipe(ResourceLocation id) {
+    public IronHeartRitualRecipe() {
         // Use air as placeholder - we override matches() to check for the actual Iron's Spellbooks block
-        super(id, "iron_heart", Blocks.AIR.defaultBlockState(), 3500);
+        super("iron_heart", Blocks.AIR.defaultBlockState(), 3500);
     }
 
     @Override
@@ -45,7 +47,7 @@ public class IronHeartRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        Block arcaneAnvil = ForgeRegistries.BLOCKS.getValue(ARCANE_ANVIL_ID);
+        Block arcaneAnvil = BuiltInRegistries.BLOCK.getOptional(ARCANE_ANVIL_ID).orElse(null);
         if (arcaneAnvil == null || arcaneAnvil == Blocks.AIR) {
             return false;
         }
@@ -57,7 +59,7 @@ public class IronHeartRitualRecipe extends ImperfectRitualRecipe {
     public BlockState getTriggerBlock() {
         // Return the actual Iron's Spellbooks block if loaded, otherwise air
         if (CompatHandler.isIronsSpellsLoaded()) {
-            Block arcaneAnvil = ForgeRegistries.BLOCKS.getValue(ARCANE_ANVIL_ID);
+            Block arcaneAnvil = BuiltInRegistries.BLOCK.getOptional(ARCANE_ANVIL_ID).orElse(null);
             if (arcaneAnvil != null && arcaneAnvil != Blocks.AIR) {
                 return arcaneAnvil.defaultBlockState();
             }
@@ -77,7 +79,9 @@ public class IronHeartRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Get Echoing Strikes effect from Iron's Spellbooks
-        MobEffect echoingStrikesEffect = ForgeRegistries.MOB_EFFECTS.getValue(ECHOING_STRIKES_EFFECT_ID);
+        Holder<MobEffect> echoingStrikesEffect = BuiltInRegistries.MOB_EFFECT.getHolder(ECHOING_STRIKES_EFFECT_ID)
+            .orElse(null);
+
         if (echoingStrikesEffect == null) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.iron_heart.effect_not_found"),
@@ -120,19 +124,18 @@ public class IronHeartRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<IronHeartRitualRecipe> {
+        private static final MapCodec<IronHeartRitualRecipe> CODEC = MapCodec.unit(IronHeartRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, IronHeartRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new IronHeartRitualRecipe());
+
         @Override
-        public IronHeartRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new IronHeartRitualRecipe(recipeId);
+        public MapCodec<IronHeartRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public IronHeartRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new IronHeartRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, IronHeartRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, IronHeartRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

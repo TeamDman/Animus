@@ -2,7 +2,7 @@ package com.teamdman.animus.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamdman.animus.client.AcceleratedBlocksClientData;
-import com.teamdman.animus.network.AcceleratedBlocksSyncPacket.AccelerationData;
+import com.teamdman.animus.network.AcceleratedBlocksSyncPayload.AccelerationData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LightTexture;
@@ -11,10 +11,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import org.joml.Matrix4f;
 
 import java.awt.Color;
@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Renders acceleration multiplier text above accelerated blocks
  */
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public class AcceleratedBlockRenderer {
     private static final int RENDER_DISTANCE = 32; // Only render within 32 blocks
 
@@ -60,7 +60,7 @@ public class AcceleratedBlockRenderer {
             AccelerationData state = entry.getValue();
 
             // Only render if in the same dimension
-            if (!state.dimension.equals(level.dimension())) {
+            if (!state.dimension().equals(level.dimension())) {
                 continue;
             }
 
@@ -78,10 +78,10 @@ public class AcceleratedBlockRenderer {
             // Get multiplier and color
             int multiplier = state.getSpeedMultiplier();
             String text = multiplier + "x";
-            int color = getColorForLevel(state.level);
+            int color = getColorForLevel(state.level());
 
             // Render the text
-            renderFloatingText(poseStack, bufferSource, font, text, x, y, z, color, event.getPartialTick());
+            renderFloatingText(poseStack, bufferSource, font, text, x, y, z, color, event.getPartialTick().getGameTimeDeltaPartialTick(false));
         }
 
         poseStack.popPose();

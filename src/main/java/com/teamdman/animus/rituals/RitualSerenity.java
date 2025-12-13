@@ -6,11 +6,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -23,7 +23,6 @@ import java.util.function.Consumer;
  * Refresh Time: 20 ticks (1 second)
  * Range: Configurable (default: 48 blocks)
  */
-@RitualRegister(Constants.Rituals.SERENITY)
 public class RitualSerenity extends Ritual {
     // Track active ritual positions per level
     private static final Map<Level, Set<BlockPos>> activeRituals = new HashMap<>();
@@ -46,7 +45,7 @@ public class RitualSerenity extends Ritual {
             return;
         }
 
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
             // Remove from active list if network is gone
             removeActiveRitual(level, masterPos);
@@ -60,15 +59,12 @@ public class RitualSerenity extends Ritual {
         if (currentEssence < refreshCost) {
             // Not enough LP - remove from active list
             removeActiveRitual(level, masterPos);
-            network.causeNausea();
+            // Note: causeNausea removed in BM 4.0
             return;
         }
 
         // Consume LP
-        network.syphon(new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_SERENITY),
-            refreshCost
-        ), false);
+        network.syphon(SoulTicket.create(refreshCost));
 
         // Add to active rituals
         addActiveRitual(level, masterPos);

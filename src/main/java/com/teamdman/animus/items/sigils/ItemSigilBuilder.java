@@ -13,17 +13,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.api.distmarker.Dist;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;
 
@@ -51,7 +52,9 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (getActivated(stack) && entity instanceof Player player && level.isClientSide()) {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> BuilderSigilClientHelper::resetRightClickDelay);
+            if (FMLEnvironment.dist == Dist.CLIENT) {
+                BuilderSigilClientHelper.resetRightClickDelay();
+            }
         }
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }
@@ -66,7 +69,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -89,11 +92,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
                     BlockState state = block.defaultBlockState();
 
                     // Consume LP first
-                    SoulNetwork network = NetworkHelper.getSoulNetwork(player);
-                    SoulTicket ticket = new SoulTicket(
-                        Component.translatable(Constants.Localizations.Text.TICKET_BUILDER),
-                        getLpUsed()
-                    );
+                    SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+                    SoulTicket ticket = SoulTicket.create(getLpUsed());
                     var result = network.syphonAndDamage(player, ticket);
                     if (!result.isSuccess()) {
                         return InteractionResultHolder.fail(stack);
@@ -135,7 +135,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResult.FAIL;
         }
 
@@ -193,11 +193,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
 
             if (level.isEmptyBlock(placePos) && !buildStack.isEmpty()) {
                 // Consume LP first
-                SoulNetwork network = NetworkHelper.getSoulNetwork(player);
-                SoulTicket ticket = new SoulTicket(
-                    Component.translatable(Constants.Localizations.Text.TICKET_BUILDER),
-                    getLpUsed()
-                );
+                SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+                SoulTicket ticket = SoulTicket.create(getLpUsed());
                 var result = network.syphonAndDamage(player, ticket);
                 if (!result.isSuccess()) {
                     return InteractionResult.FAIL;
@@ -219,9 +216,9 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_BUILDER_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_BUILDER_INFO));
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

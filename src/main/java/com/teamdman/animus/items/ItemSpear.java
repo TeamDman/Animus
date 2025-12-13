@@ -2,15 +2,19 @@ package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.entities.EntityThrownSpear;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
@@ -18,7 +22,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
@@ -38,7 +41,7 @@ public class ItemSpear extends TridentItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         if (tier == Tiers.IRON) {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_IRON_FLAVOUR));
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_IRON_INFO));
@@ -46,18 +49,20 @@ public class ItemSpear extends TridentItem {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_DIAMOND_FLAVOUR));
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_DIAMOND_INFO));
         }
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
-            int useDuration = this.getUseDuration(stack) - timeLeft;
+            int useDuration = this.getUseDuration(stack, entity) - timeLeft;
             if (useDuration >= 10) {
-                int riptide = EnchantmentHelper.getRiptide(stack);
+                int riptide = getRiptideLevel(stack, level);
                 if (riptide <= 0 || player.isInWaterOrRain()) {
                     if (!level.isClientSide) {
-                        stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(entity.getUsedItemHand()));
+                        // Use the new hurtAndBreak signature for 1.21
+                        stack.hurtAndBreak(1, (ServerLevel) level, player, (item) ->
+                            player.onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
                         if (riptide == 0) {
                             // Spawn our custom spear entity instead of vanilla trident
                             EntityThrownSpear thrownSpear = new EntityThrownSpear(level, player, stack);
@@ -67,7 +72,9 @@ public class ItemSpear extends TridentItem {
                             }
 
                             level.addFreshEntity(thrownSpear);
-                            level.playSound(null, thrownSpear, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            // Use .value() for Holder<SoundEvent>
+                            level.playSound(null, thrownSpear.getX(), thrownSpear.getY(), thrownSpear.getZ(),
+                                SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
                             if (!player.getAbilities().instabuild) {
                                 player.getInventory().removeItem(stack);
                             }
@@ -87,16 +94,32 @@ public class ItemSpear extends TridentItem {
                         ySpeed = ySpeed * (multiplier / length);
                         zSpeed = zSpeed * (multiplier / length);
                         player.push((double)xSpeed, (double)ySpeed, (double)zSpeed);
-                        player.startAutoSpinAttack(20);
+                        // Updated signature for 1.21: startAutoSpinAttack(int ticks, float damage, ItemStack stack)
+                        player.startAutoSpinAttack(20, 8.0F + (float)riptide * 2.0F, stack);
                         if (player.onGround()) {
                             player.move(net.minecraft.world.entity.MoverType.SELF, new net.minecraft.world.phys.Vec3(0.0, 1.2, 0.0));
                         }
 
-                        level.playSound(null, player, SoundEvents.TRIDENT_RIPTIDE_1, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        // Use .value() for Holder<SoundEvent>
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                            SoundEvents.TRIDENT_RIPTIDE_1.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Get riptide enchantment level from the stack
+     * In 1.21, enchantment access changed
+     */
+    private int getRiptideLevel(ItemStack stack, Level level) {
+        if (level instanceof ServerLevel serverLevel) {
+            return stack.getEnchantmentLevel(serverLevel.registryAccess()
+                .lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                .getOrThrow(Enchantments.RIPTIDE));
+        }
+        return 0;
     }
 
     @Override
@@ -114,7 +137,7 @@ public class ItemSpear extends TridentItem {
 
         if (stack.getDamageValue() >= stack.getMaxDamage() - 1) {
             return InteractionResultHolder.fail(stack);
-        } else if (EnchantmentHelper.getRiptide(stack) > 0 && !player.isInWaterOrRain()) {
+        } else if (getRiptideLevel(stack, level) > 0 && !player.isInWaterOrRain()) {
             return InteractionResultHolder.fail(stack);
         } else {
             player.startUsingItem(hand);
@@ -128,7 +151,7 @@ public class ItemSpear extends TridentItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 
@@ -139,17 +162,6 @@ public class ItemSpear extends TridentItem {
         return tier;
     }
 
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        // Allow sharpness and other damage enchantments
-        if (enchantment == Enchantments.SHARPNESS ||
-            enchantment == Enchantments.SMITE ||
-            enchantment == Enchantments.BANE_OF_ARTHROPODS ||
-            enchantment == Enchantments.MOB_LOOTING) {
-            return true;
-        }
-        // Allow all enchantments that TridentItem allows
-        return super.canApplyAtEnchantingTable(stack, enchantment);
-    }
-
+    // Note: canApplyAtEnchantingTable and isBookEnchantable were removed in 1.21
+    // Enchantment compatibility is now handled through enchantment tags
 }

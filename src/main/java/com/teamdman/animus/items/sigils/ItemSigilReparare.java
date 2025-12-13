@@ -2,15 +2,18 @@ package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import wayoftime.bloodmagic.util.SoulTicket;
 
 import java.util.*;
 
@@ -57,7 +60,7 @@ public class ItemSigilReparare extends AnimusSigilBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal("Sigil is not bound to you!")
                     .withStyle(net.minecraft.ChatFormatting.RED),
@@ -98,17 +101,15 @@ public class ItemSigilReparare extends AnimusSigilBase {
      * Check if this sigil is active
      */
     public static boolean isActive(ItemStack stack) {
-        if (stack.hasTag()) {
-            return stack.getTag().getBoolean("Active");
-        }
-        return false;
+        Boolean active = stack.get(AnimusDataComponents.SIGIL_ACTIVATED.get());
+        return active != null && active;
     }
 
     /**
      * Set the active state of this sigil
      */
     private void setActive(ItemStack stack, boolean active) {
-        stack.getOrCreateTag().putBoolean("Active", active);
+        stack.set(AnimusDataComponents.SIGIL_ACTIVATED.get(), active);
     }
 
     /**
@@ -228,11 +229,8 @@ public class ItemSigilReparare extends AnimusSigilBase {
         int lpCost = totalDamageToRepair * lpPerDamage;
 
         // Try to consume LP from soul network
-        wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
-        wayoftime.bloodmagic.core.data.SoulTicket ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_REPARARE),
-            lpCost
-        );
+        wayoftime.bloodmagic.common.datacomponent.SoulNetwork network = wayoftime.bloodmagic.util.helper.SoulNetworkHelper.getSoulNetwork(player);
+        SoulTicket ticket = SoulTicket.create(lpCost);
 
         var syphonResult = network.syphonAndDamage(player, ticket);
         if (!syphonResult.isSuccess()) {
@@ -285,7 +283,7 @@ public class ItemSigilReparare extends AnimusSigilBase {
      * Static version of setActive for use in tick handler
      */
     private static void setActiveStatic(ItemStack stack, boolean active) {
-        stack.getOrCreateTag().putBoolean("Active", active);
+        stack.set(AnimusDataComponents.SIGIL_ACTIVATED.get(), active);
     }
 
     /**
@@ -296,7 +294,7 @@ public class ItemSigilReparare extends AnimusSigilBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_REPARARE_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_REPARARE_INFO));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_REPARARE_COST,
@@ -310,6 +308,6 @@ public class ItemSigilReparare extends AnimusSigilBase {
                 .withStyle(ChatFormatting.GRAY));
         }
 
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

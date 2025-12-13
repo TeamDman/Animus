@@ -7,13 +7,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.function.Consumer;
 
@@ -25,7 +25,6 @@ import java.util.function.Consumer;
  * Refresh Time: Configurable (default: 100 ticks / 5 seconds)
  * Repair Amount: 20% of item's max durability per cycle
  */
-@RitualRegister(Constants.Rituals.REPARARE)
 public class RitualReparare extends Ritual {
     public static final String CHEST_RANGE = "chest";
 
@@ -33,14 +32,14 @@ public class RitualReparare extends Ritual {
         super(Constants.Rituals.REPARARE, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.REPARARE);
 
         // Look for chest directly above the master ritual stone
-        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
+        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
     }
 
     @Override
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {
@@ -61,7 +60,7 @@ public class RitualReparare extends Ritual {
         }
 
         // Get item handler from chest
-        IItemHandler handler = chestTile.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
+        IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
         if (handler == null) {
             return;
         }
@@ -122,11 +121,8 @@ public class RitualReparare extends Ritual {
 
         // If we repaired anything, consume the LP
         if (totalLPCost > 0 && itemsRepaired > 0) {
-            SoulTicket ticket = new SoulTicket(
-                Component.translatable(Constants.Localizations.Text.TICKET_REPARARE),
-                totalLPCost
-            );
-            network.syphon(ticket, false);
+            SoulTicket ticket = SoulTicket.create(totalLPCost);
+            network.syphon(ticket);
         }
     }
 

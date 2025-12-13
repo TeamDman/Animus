@@ -1,6 +1,6 @@
 package com.teamdman.animus.client;
 
-import com.teamdman.animus.network.AcceleratedBlocksSyncPacket.AccelerationData;
+import com.teamdman.animus.network.AcceleratedBlocksSyncPayload.AccelerationData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -50,6 +50,6 @@ public class AcceleratedBlocksClientData {
      */
     public static boolean isAccelerated(BlockPos pos, ResourceKey<Level> dimension) {
         AccelerationData data = acceleratedBlocks.get(pos);
-        return data != null && data.dimension.equals(dimension);
+        return data != null && data.dimension().equals(dimension);
     }
 }

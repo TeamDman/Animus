@@ -1,19 +1,21 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
 
 /**
@@ -24,16 +26,16 @@ import com.teamdman.animus.registry.AnimusRecipeSerializers;
  */
 public class BoundlessSkiesRitualRecipe extends ImperfectRitualRecipe {
 
-    public BoundlessSkiesRitualRecipe(ResourceLocation id) {
-        super(id, "boundless_skies", Blocks.ANCIENT_DEBRIS.defaultBlockState(), 10000);
+    public BoundlessSkiesRitualRecipe() {
+        super("boundless_skies", Blocks.ANCIENT_DEBRIS.defaultBlockState(), 10000);
     }
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
         // Get the Blood Magic flight effect
-        var flightEffect = BuiltInRegistries.MOB_EFFECT.get(
-            ResourceLocation.fromNamespaceAndPath("bloodmagic", "flight")
-        );
+        ResourceLocation flightId = ResourceLocation.fromNamespaceAndPath("bloodmagic", "flight");
+        Holder<MobEffect> flightEffect = BuiltInRegistries.MOB_EFFECT.getHolder(flightId)
+            .orElse(null);
 
         if (flightEffect == null) {
             player.displayClientMessage(
@@ -77,19 +79,18 @@ public class BoundlessSkiesRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<BoundlessSkiesRitualRecipe> {
+        private static final MapCodec<BoundlessSkiesRitualRecipe> CODEC = MapCodec.unit(BoundlessSkiesRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, BoundlessSkiesRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new BoundlessSkiesRitualRecipe());
+
         @Override
-        public BoundlessSkiesRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new BoundlessSkiesRitualRecipe(recipeId);
+        public MapCodec<BoundlessSkiesRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public BoundlessSkiesRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new BoundlessSkiesRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, BoundlessSkiesRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, BoundlessSkiesRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

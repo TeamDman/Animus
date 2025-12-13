@@ -1,7 +1,7 @@
 package com.teamdman.animus.client;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 /**
  * Client-only extension for Sentient Shield rendering.

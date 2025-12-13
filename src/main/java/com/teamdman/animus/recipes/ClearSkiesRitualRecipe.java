@@ -1,17 +1,16 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
 
 /**
@@ -22,8 +21,8 @@ import com.teamdman.animus.registry.AnimusRecipeSerializers;
  */
 public class ClearSkiesRitualRecipe extends ImperfectRitualRecipe {
 
-    public ClearSkiesRitualRecipe(ResourceLocation id) {
-        super(id, "clear_skies", Blocks.GLOWSTONE.defaultBlockState(), 1000);
+    public ClearSkiesRitualRecipe() {
+        super("clear_skies", Blocks.GLOWSTONE.defaultBlockState(), 1000);
     }
 
     @Override
@@ -55,19 +54,18 @@ public class ClearSkiesRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<ClearSkiesRitualRecipe> {
+        private static final MapCodec<ClearSkiesRitualRecipe> CODEC = MapCodec.unit(ClearSkiesRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, ClearSkiesRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new ClearSkiesRitualRecipe());
+
         @Override
-        public ClearSkiesRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new ClearSkiesRitualRecipe(recipeId);
+        public MapCodec<ClearSkiesRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public ClearSkiesRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new ClearSkiesRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, ClearSkiesRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, ClearSkiesRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

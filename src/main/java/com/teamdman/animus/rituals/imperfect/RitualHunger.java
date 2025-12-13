@@ -6,9 +6,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import wayoftime.bloodmagic.ritual.RitualRegister;
-import wayoftime.bloodmagic.ritual.imperfect.IImperfectRitualStone;
-import wayoftime.bloodmagic.ritual.imperfect.ImperfectRitual;
+import wayoftime.bloodmagic.ritual.IImperfectRitualStone;
+import wayoftime.bloodmagic.ritual.ImperfectRitual;
 
 /**
  * Imperfect Ritual of Hunger
@@ -17,7 +16,6 @@ import wayoftime.bloodmagic.ritual.imperfect.ImperfectRitual;
  * Cost: 500 LP
  * Effect: Sets player's food level to 1 and saturation to 10 (makes player very hungry)
  */
-@RitualRegister.Imperfect(Constants.Rituals.HUNGER)
 public class RitualHunger extends ImperfectRitual {
 
     public RitualHunger() {

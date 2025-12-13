@@ -1,10 +1,13 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import com.teamdman.animus.compat.CompatHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +19,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
 
 /**
@@ -33,9 +35,9 @@ public class SoulStainedBloodRitualRecipe extends ImperfectRitualRecipe {
     private static final ResourceLocation HALLOWED_GOLD_BLOCK_ID = ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold");
     private static final ResourceLocation GAIAS_BULWARK_EFFECT_ID = ResourceLocation.fromNamespaceAndPath("malum", "gaias_bulwark");
 
-    public SoulStainedBloodRitualRecipe(ResourceLocation id) {
+    public SoulStainedBloodRitualRecipe() {
         // Use air as placeholder - we override matches() to check for the actual Malum block
-        super(id, "soul_stained_blood", Blocks.AIR.defaultBlockState(), 2000);
+        super("soul_stained_blood", Blocks.AIR.defaultBlockState(), 2000);
     }
 
     @Override
@@ -45,7 +47,7 @@ public class SoulStainedBloodRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        Block hallowedGoldBlock = ForgeRegistries.BLOCKS.getValue(HALLOWED_GOLD_BLOCK_ID);
+        Block hallowedGoldBlock = BuiltInRegistries.BLOCK.getOptional(HALLOWED_GOLD_BLOCK_ID).orElse(null);
         if (hallowedGoldBlock == null || hallowedGoldBlock == Blocks.AIR) {
             return false;
         }
@@ -57,7 +59,7 @@ public class SoulStainedBloodRitualRecipe extends ImperfectRitualRecipe {
     public BlockState getTriggerBlock() {
         // Return the actual Malum block if loaded, otherwise air
         if (CompatHandler.isMalumLoaded()) {
-            Block hallowedGoldBlock = ForgeRegistries.BLOCKS.getValue(HALLOWED_GOLD_BLOCK_ID);
+            Block hallowedGoldBlock = BuiltInRegistries.BLOCK.getOptional(HALLOWED_GOLD_BLOCK_ID).orElse(null);
             if (hallowedGoldBlock != null && hallowedGoldBlock != Blocks.AIR) {
                 return hallowedGoldBlock.defaultBlockState();
             }
@@ -77,7 +79,9 @@ public class SoulStainedBloodRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Get Gaia's Bulwark effect from Malum
-        MobEffect gaiasBulwarkEffect = ForgeRegistries.MOB_EFFECTS.getValue(GAIAS_BULWARK_EFFECT_ID);
+        Holder<MobEffect> gaiasBulwarkEffect = BuiltInRegistries.MOB_EFFECT.getHolder(GAIAS_BULWARK_EFFECT_ID)
+            .orElse(null);
+
         if (gaiasBulwarkEffect == null) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.soul_stained_blood.effect_not_found"),
@@ -100,7 +104,7 @@ public class SoulStainedBloodRitualRecipe extends ImperfectRitualRecipe {
         level.playSound(
             null,
             stonePos,
-            SoundEvents.SOUL_ESCAPE,
+            SoundEvents.SOUL_ESCAPE.value(),
             SoundSource.BLOCKS,
             1.0F,
             0.8F
@@ -120,19 +124,18 @@ public class SoulStainedBloodRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<SoulStainedBloodRitualRecipe> {
+        private static final MapCodec<SoulStainedBloodRitualRecipe> CODEC = MapCodec.unit(SoulStainedBloodRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, SoulStainedBloodRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new SoulStainedBloodRitualRecipe());
+
         @Override
-        public SoulStainedBloodRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new SoulStainedBloodRitualRecipe(recipeId);
+        public MapCodec<SoulStainedBloodRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public SoulStainedBloodRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new SoulStainedBloodRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, SoulStainedBloodRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, SoulStainedBloodRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

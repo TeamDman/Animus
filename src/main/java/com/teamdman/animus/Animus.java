@@ -1,13 +1,14 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.compat.CompatHandler;
-import com.teamdman.animus.network.AnimusNetwork;
+import com.teamdman.animus.network.AnimusPayloads;
 import com.teamdman.animus.registry.*;
 import com.teamdman.animus.worldgen.AnimusTreeDecoratorTypes;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,12 +16,9 @@ import org.apache.logging.log4j.Logger;
 public class Animus {
     public static final Logger LOGGER = LogManager.getLogger();
 
-    @SuppressWarnings("removal")
-    public Animus() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+    public Animus(IEventBus modEventBus, ModContainer modContainer) {
         // Register config
-        AnimusConfig.register(ModLoadingContext.get());
+        AnimusConfig.register(modContainer);
 
         // Register all deferred registers
         AnimusBlocks.BLOCKS.register(modEventBus);
@@ -37,74 +35,41 @@ public class Animus {
         AnimusRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         AnimusRecipeTypes.RECIPE_TYPES.register(modEventBus);
         AnimusAttributes.ATTRIBUTES.register(modEventBus);
+        AnimusDataComponents.DATA_COMPONENTS.register(modEventBus);
+
+        // Register rituals to Blood Magic's registry
+        // Note: Imperfect rituals are now internal to Blood Magic
+        AnimusRituals.RITUALS.register(modEventBus);
 
         // Register compatibility module deferred registers
         CompatHandler.registerDeferredRegisters(modEventBus);
 
         // Register event listeners
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::registerPayloads);
 
         LOGGER.info("Animus mod loading...");
     }
 
-    private void commonSetup(final net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) {
-        LOGGER.info("Animus common setup");
+    private void registerPayloads(final RegisterPayloadHandlersEvent event) {
+        AnimusPayloads.register(event);
+    }
 
-        // Register network packets
-        AnimusNetwork.register();
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        LOGGER.info("Animus common setup");
 
         // Initialize compatibility modules for optional mod integrations
         CompatHandler.init();
 
-        // Register Crystallized Demon Will block as a valid CRYSTAL component for tier 6 altars
-        try {
-            wayoftime.bloodmagic.impl.BloodMagicAPI.INSTANCE.registerAltarComponent(
-                AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get().defaultBlockState(),
-                wayoftime.bloodmagic.altar.ComponentType.CRYSTAL.name()
-            );
-            LOGGER.info("Registered Crystallized Demon Will Block as CRYSTAL component for Blood Magic altars");
-        } catch (Exception e) {
-            LOGGER.error("Failed to register Crystallized Demon Will Block with Blood Magic", e);
-        }
+        // Note: In Blood Magic 1.21.1, altar components are data-driven.
+        // Crystallized Demon Will Block registration is handled via data/animus/data_maps/
 
-        // Note: Arcane Rune and Rune of Unleashed Nature altar components are registered
-        // in their respective compat modules (ArsNouveauCompat, BotaniaCompat)
+        // Note: Blood orb stats are now handled via DataMaps
+        // See data/animus/data_maps/item/blood_orb_stats.json
 
         event.enqueueWork(() -> {
-            // Register Transcendent Blood Orb to the OrbRegistry tierMap
-            // This allows it to be used as a valid recipe ingredient for any tier 1-6 blood orb recipes
-            try {
-                wayoftime.bloodmagic.core.registry.OrbRegistry.tierMap.put(
-                    AnimusBloodOrbs.BLOOD_ORB_TRANSCENDENT.get().getTier(),
-                    new net.minecraft.world.item.ItemStack(AnimusItems.BLOOD_ORB_TRANSCENDENT.get())
-                );
-                LOGGER.info("Registered Transcendent Blood Orb to OrbRegistry tierMap");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register Transcendent Blood Orb to OrbRegistry", e);
-            }
-
-            // Register strippable blocks (axe interaction) using reflection
-            try {
-                java.lang.reflect.Field strippablesField = net.minecraft.world.item.AxeItem.class.getDeclaredField("STRIPPABLES");
-                strippablesField.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                java.util.Map<net.minecraft.world.level.block.Block, net.minecraft.world.level.block.Block> strippables =
-                    (java.util.Map<net.minecraft.world.level.block.Block, net.minecraft.world.level.block.Block>) strippablesField.get(null);
-
-                // Create new map with our addition
-                java.util.Map<net.minecraft.world.level.block.Block, net.minecraft.world.level.block.Block> newStrippables =
-                    new java.util.HashMap<>(strippables);
-                newStrippables.put(AnimusBlocks.BLOCK_BLOOD_WOOD.get(), AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get());
-
-                // Replace the field
-                strippablesField.set(null, newStrippables);
-                LOGGER.info("Registered blood wood as strippable");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register strippable blocks", e);
-            }
-
-            // Register rituals here
-            // Register other things that need to happen during setup
+            // Deferred initialization tasks can go here
+            LOGGER.info("Animus deferred setup complete");
         });
     }
 }

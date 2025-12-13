@@ -1,10 +1,13 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import com.teamdman.animus.compat.CompatHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +19,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
 
 /**
@@ -33,9 +35,9 @@ public class MagiRitualRecipe extends ImperfectRitualRecipe {
     private static final ResourceLocation SOURCE_GEM_BLOCK_ID = ResourceLocation.fromNamespaceAndPath("ars_nouveau", "source_gem_block");
     private static final ResourceLocation MANA_REGEN_EFFECT_ID = ResourceLocation.fromNamespaceAndPath("ars_nouveau", "mana_regen");
 
-    public MagiRitualRecipe(ResourceLocation id) {
+    public MagiRitualRecipe() {
         // Use air as placeholder - we override matches() to check for the actual Ars Nouveau block
-        super(id, "magi", Blocks.AIR.defaultBlockState(), 2500);
+        super("magi", Blocks.AIR.defaultBlockState(), 2500);
     }
 
     @Override
@@ -45,7 +47,7 @@ public class MagiRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        Block sourceGemBlock = ForgeRegistries.BLOCKS.getValue(SOURCE_GEM_BLOCK_ID);
+        Block sourceGemBlock = BuiltInRegistries.BLOCK.getOptional(SOURCE_GEM_BLOCK_ID).orElse(null);
         if (sourceGemBlock == null || sourceGemBlock == Blocks.AIR) {
             return false;
         }
@@ -57,7 +59,7 @@ public class MagiRitualRecipe extends ImperfectRitualRecipe {
     public BlockState getTriggerBlock() {
         // Return the actual Ars Nouveau block if loaded, otherwise air
         if (CompatHandler.isArsNouveauLoaded()) {
-            Block sourceGemBlock = ForgeRegistries.BLOCKS.getValue(SOURCE_GEM_BLOCK_ID);
+            Block sourceGemBlock = BuiltInRegistries.BLOCK.getOptional(SOURCE_GEM_BLOCK_ID).orElse(null);
             if (sourceGemBlock != null && sourceGemBlock != Blocks.AIR) {
                 return sourceGemBlock.defaultBlockState();
             }
@@ -77,7 +79,9 @@ public class MagiRitualRecipe extends ImperfectRitualRecipe {
         }
 
         // Get Mana Regen effect from Ars Nouveau
-        MobEffect manaRegenEffect = ForgeRegistries.MOB_EFFECTS.getValue(MANA_REGEN_EFFECT_ID);
+        Holder<MobEffect> manaRegenEffect = BuiltInRegistries.MOB_EFFECT.getHolder(MANA_REGEN_EFFECT_ID)
+            .orElse(null);
+
         if (manaRegenEffect == null) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.magi.effect_not_found"),
@@ -120,19 +124,18 @@ public class MagiRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<MagiRitualRecipe> {
+        private static final MapCodec<MagiRitualRecipe> CODEC = MapCodec.unit(MagiRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, MagiRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new MagiRitualRecipe());
+
         @Override
-        public MagiRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new MagiRitualRecipe(recipeId);
+        public MapCodec<MagiRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public MagiRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new MagiRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, MagiRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, MagiRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

@@ -1,10 +1,9 @@
 package com.teamdman.animus.items;
 
-import com.teamdman.animus.Constants;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -14,9 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,16 +35,14 @@ public class ItemMobSoul extends Item {
         }
 
         ItemStack stack = context.getItemInHand();
-        CompoundTag tag = stack.getTag();
 
-        if (tag == null || !tag.contains(Constants.NBT.SOUL_ENTITY_NAME)) {
+        // Get entity type from data component
+        String entityName = stack.get(AnimusDataComponents.SOUL_ENTITY_NAME.get());
+        if (entityName == null) {
             return InteractionResult.FAIL;
         }
 
-        // Get entity type from NBT
-        String entityName = tag.getString(Constants.NBT.SOUL_ENTITY_NAME);
         Optional<EntityType<?>> entityTypeOpt = EntityType.byString(entityName);
-
         if (entityTypeOpt.isEmpty()) {
             return InteractionResult.FAIL;
         }
@@ -63,9 +58,9 @@ public class ItemMobSoul extends Item {
             return InteractionResult.FAIL;
         }
 
-        // Load entity data from NBT
-        if (tag.contains(Constants.NBT.SOUL_DATA)) {
-            CompoundTag entityData = tag.getCompound(Constants.NBT.SOUL_DATA);
+        // Load entity data from data component
+        CompoundTag entityData = stack.get(AnimusDataComponents.SOUL_DATA.get());
+        if (entityData != null) {
             entity.load(entityData);
         }
 
@@ -78,13 +73,12 @@ public class ItemMobSoul extends Item {
             return InteractionResult.FAIL;
         }
 
-        // Trigger spawn event for mobs
+        // Trigger spawn event for mobs (in 1.21, finalizeSpawn no longer takes NBT parameter)
         if (entity instanceof net.minecraft.world.entity.Mob mob) {
             mob.finalizeSpawn(
                 (net.minecraft.server.level.ServerLevel) level,
                 level.getCurrentDifficultyAt(pos),
                 MobSpawnType.MOB_SUMMONED,
-                null,
                 null
             );
         }
@@ -96,34 +90,32 @@ public class ItemMobSoul extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null) {
-            // Show entity type
-            if (tag.contains(Constants.NBT.SOUL_ENTITY_NAME)) {
-                String entityName = tag.getString(Constants.NBT.SOUL_ENTITY_NAME);
-                EntityType.byString(entityName).ifPresent(entityType -> {
-                    tooltip.add(Component.translatable("tooltip.animus.mob_soul.type")
-                        .append(": ")
-                        .append(entityType.getDescription()));
-                });
-            }
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        // Show entity type
+        String entityName = stack.get(AnimusDataComponents.SOUL_ENTITY_NAME.get());
+        if (entityName != null) {
+            EntityType.byString(entityName).ifPresent(entityType -> {
+                tooltip.add(Component.translatable("tooltip.animus.mob_soul.type")
+                    .append(": ")
+                    .append(entityType.getDescription()));
+            });
+        }
 
-            // Show custom name if present
-            if (tag.contains(Constants.NBT.SOUL_NAME)) {
-                tooltip.add(Component.literal(tag.getString(Constants.NBT.SOUL_NAME)));
-            }
+        // Show custom name if present
+        String soulName = stack.get(AnimusDataComponents.SOUL_NAME.get());
+        if (soulName != null) {
+            tooltip.add(Component.literal(soulName));
         }
 
         tooltip.add(Component.translatable("tooltip.animus.mob_soul.info"));
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 
     @Override
     public Component getName(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains(Constants.NBT.SOUL_NAME)) {
-            return Component.literal(tag.getString(Constants.NBT.SOUL_NAME));
+        String soulName = stack.get(AnimusDataComponents.SOUL_NAME.get());
+        if (soulName != null) {
+            return Component.literal(soulName);
         }
         return super.getName(stack);
     }

@@ -12,15 +12,17 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import wayoftime.bloodmagic.util.SoulTicket;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.FakePlayer;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.will.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.AreaDescriptor;
 
 import java.util.List;
@@ -49,7 +51,7 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
         if (eatRange == null || lastConfigRange != configRange) {
             // Range is from -range to +range, so size is range * 2 + 1
             int size = configRange * 2 + 1;
-            eatRange = new AreaDescriptor.Rectangle(new BlockPos(-configRange, 0, -configRange), size);
+            eatRange = new AreaDescriptor.Rectangle(new BlockPos(-configRange, 0, -configRange), size, 1, size);
             lastConfigRange = configRange;
         }
         return eatRange;
@@ -78,7 +80,7 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
 
         // Check if sigil is bound to the player
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return;
         }
 
@@ -91,11 +93,8 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
         if (eatFromInventory(player) || eatFromSurroundingWorld(player, level)) {
             if (!level.isClientSide) {
                 // Consume LP
-                var network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
-                var ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
-                    net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_LEACH),
-                    getLpUsed()
-                );
+                var network = wayoftime.bloodmagic.util.helper.SoulNetworkHelper.getSoulNetwork(player);
+                var ticket = SoulTicket.create(getLpUsed());
 
                 var syphonResult = network.syphonAndDamage(player, ticket);
                 if (!syphonResult.isSuccess()) {
@@ -137,13 +136,12 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
 
     private boolean eatFromSurroundingWorld(Player player, Level level) {
         AreaDescriptor range = getEatRange();
-        if (!range.hasNext()) {
-            range.resetIterator();
-        }
+        BlockPos playerPos = player.blockPosition();
 
-        // Check up to 32 blocks per tick
-        for (int i = 0; i < 32 && range.hasNext(); i++) {
-            BlockPos eatPos = range.next().offset(player.blockPosition());
+        // Iterate through contained positions
+        int checked = 0;
+        for (BlockPos eatPos : range.getContainedPositions(playerPos)) {
+            if (checked++ >= 32) break; // Check up to 32 blocks per tick
             BlockState state = level.getBlockState(eatPos);
             Block eatBlock = state.getBlock();
 
@@ -179,19 +177,21 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
                 1.0F
             );
 
+            // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API
+            // The fillWillToMaximum method signature has changed - needs investigation
             // Generate corrosive demon will when consuming blocks from the world
             // Each block consumed generates 0.3-0.8 corrosive will
-            if (!level.isClientSide) {
-                double willToAdd = 0.3 + level.random.nextDouble() * 0.5; // 0.3-0.8
-                WorldDemonWillHandler.fillWillToMaximum(
-                    level,
-                    player.blockPosition(),
-                    EnumDemonWillType.CORROSIVE,
-                    willToAdd,
-                    100.0, // max will
-                    true
-                );
-            }
+            // if (!level.isClientSide) {
+            //     double willToAdd = 0.3 + level.random.nextDouble() * 0.5; // 0.3-0.8
+            //     WorldDemonWillHandler.fillWillToMaximum(
+            //         level,
+            //         player.blockPosition(),
+            //         EnumWillType.CORROSIVE,
+            //         willToAdd,
+            //         100, // max will
+            //         true
+            //     );
+            // }
 
             return true;
         }
@@ -200,9 +200,9 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_LEACH_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_LEACH_INFO));
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

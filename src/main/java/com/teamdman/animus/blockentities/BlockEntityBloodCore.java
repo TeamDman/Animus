@@ -5,6 +5,7 @@ import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -12,8 +13,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.will.WorldDemonWillHandler;
 
 /**
  * Block Entity for Blood Core
@@ -44,7 +45,7 @@ public class BlockEntityBloodCore extends BlockEntity {
         delayCounter--;
         if (delayCounter <= 0) {
             // Check for corrosive will in the chunk to modify timer
-            double corrosiveWill = WorldDemonWillHandler.getCurrentWill(level, worldPosition, EnumDemonWillType.CORROSIVE);
+            double corrosiveWill = WorldDemonWillHandler.getCurrentWill(level, worldPosition, EnumWillType.CORROSIVE);
 
             // Base timer from config
             int baseTimer = AnimusConfig.bloodCore.treeSpreadInterval.get();
@@ -150,7 +151,7 @@ public class BlockEntityBloodCore extends BlockEntity {
             BlockState aboveState = level.getBlockState(saplingPos);
 
             // If the heightmap gave us a grass plant, the actual ground is below it
-            if (groundState.is(Blocks.GRASS) || groundState.is(Blocks.TALL_GRASS)) {
+            if (groundState.is(Blocks.SHORT_GRASS) || groundState.is(Blocks.TALL_GRASS)) {
                 saplingPos = targetPos; // The grass position is where we'll place the sapling
                 targetPos = targetPos.below(); // The actual ground is below
                 groundState = level.getBlockState(targetPos);
@@ -164,14 +165,14 @@ public class BlockEntityBloodCore extends BlockEntity {
 
             // Must be on grass/dirt and have air/grass above (can replace grass)
             if ((groundState.is(Blocks.GRASS_BLOCK) || groundState.is(Blocks.DIRT)) &&
-                (aboveState.isAir() || aboveState.is(Blocks.GRASS) || aboveState.is(Blocks.TALL_GRASS))) {
+                (aboveState.isAir() || aboveState.is(Blocks.SHORT_GRASS) || aboveState.is(Blocks.TALL_GRASS))) {
 
                 // Check if there's enough space for a tree (at least 7 blocks high)
                 // Can replace air, grass, and tall grass
                 boolean hasSpace = true;
                 for (int y = 0; y < 7; y++) {
                     BlockState checkState = level.getBlockState(saplingPos.above(y));
-                    if (!checkState.isAir() && !checkState.is(Blocks.GRASS) && !checkState.is(Blocks.TALL_GRASS)) {
+                    if (!checkState.isAir() && !checkState.is(Blocks.SHORT_GRASS) && !checkState.is(Blocks.TALL_GRASS)) {
                         hasSpace = false;
                         if (AnimusConfig.bloodCore.debug.get()) {
                             Animus.LOGGER.debug("  No space at y={}, block={}", y, checkState.getBlock());
@@ -202,7 +203,7 @@ public class BlockEntityBloodCore extends BlockEntity {
                     }
 
                     // Consume some corrosive will for the growth
-                    WorldDemonWillHandler.drainWill(level, worldPosition, EnumDemonWillType.CORROSIVE, 5.0, true);
+                    WorldDemonWillHandler.drainWillFromChunk(level, worldPosition, EnumWillType.CORROSIVE, 5.0);
 
                     break; // Successfully placed one tree, stop trying
                 }
@@ -220,16 +221,16 @@ public class BlockEntityBloodCore extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
         tag.putInt("DelayCounter", delayCounter);
         tag.putInt("LeafRegrowthCounter", leafRegrowthCounter);
         tag.putBoolean("Spreading", spreading);
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         delayCounter = tag.getInt("DelayCounter");
         leafRegrowthCounter = tag.getInt("LeafRegrowthCounter");
         spreading = tag.getBoolean("Spreading");

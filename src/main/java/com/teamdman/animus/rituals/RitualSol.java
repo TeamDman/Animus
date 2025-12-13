@@ -13,14 +13,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.registries.ForgeRegistries;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +39,6 @@ import java.util.stream.IntStream;
  * Refresh Cost: 1 LP (regular blocks) or 1 LP (blood light)
  * Refresh Time: 5 ticks
  */
-@RitualRegister(Constants.Rituals.SOL)
 public class RitualSol extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
@@ -51,8 +51,8 @@ public class RitualSol extends Ritual {
     public RitualSol() {
         super(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL);
 
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
-        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65, 65, 65));
+        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
 
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
@@ -61,7 +61,7 @@ public class RitualSol extends Ritual {
     @Override
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {
@@ -78,7 +78,7 @@ public class RitualSol extends Ritual {
         }
 
         // Get item handler from chest
-        IItemHandler handler = chestTile.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
+        IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
         if (handler == null) {
             return;
         }
@@ -119,11 +119,8 @@ public class RitualSol extends Ritual {
         }
 
         // Consume LP
-        SoulTicket ticket = new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_SOL),
-            getRefreshCost()
-        );
-        network.syphon(ticket, false);
+        SoulTicket ticket = SoulTicket.create(getRefreshCost());
+        network.syphon(ticket);
     }
 
     /**
@@ -133,7 +130,7 @@ public class RitualSol extends Ritual {
         if (stack.isEmpty()) {
             return false;
         }
-        ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return BLOOD_LIGHT_SIGIL.equals(itemId);
     }
 
@@ -160,7 +157,7 @@ public class RitualSol extends Ritual {
     private BlockState getStateToUse(ItemStack stack) {
         // Check for Blood Magic's Sigil of Blood Light
         if (isBloodLightSigil(stack)) {
-            Block bloodLight = ForgeRegistries.BLOCKS.getValue(BLOOD_LIGHT_BLOCK);
+            Block bloodLight = BuiltInRegistries.BLOCK.getOptional(BLOOD_LIGHT_BLOCK).orElse(null);
             if (bloodLight != null && bloodLight != Blocks.AIR) {
                 return bloodLight.defaultBlockState();
             }

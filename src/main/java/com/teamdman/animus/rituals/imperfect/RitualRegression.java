@@ -1,15 +1,14 @@
 package com.teamdman.animus.rituals.imperfect;
 
 import com.teamdman.animus.Constants;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import wayoftime.bloodmagic.ritual.RitualRegister;
-import wayoftime.bloodmagic.ritual.imperfect.IImperfectRitualStone;
-import wayoftime.bloodmagic.ritual.imperfect.ImperfectRitual;
+import wayoftime.bloodmagic.ritual.IImperfectRitualStone;
+import wayoftime.bloodmagic.ritual.ImperfectRitual;
 
 /**
  * Imperfect Ritual of Regression
@@ -18,7 +17,6 @@ import wayoftime.bloodmagic.ritual.imperfect.ImperfectRitual;
  * Cost: 3000 LP
  * Effect: Removes the repair cost from the held item (anvil penalty reset)
  */
-@RitualRegister.Imperfect(Constants.Rituals.REGRESSION)
 public class RitualRegression extends ImperfectRitual {
 
     public RitualRegression() {
@@ -50,9 +48,9 @@ public class RitualRegression extends ImperfectRitual {
             return false;
         }
 
-        // Remove repair cost from item
-        CompoundTag tag = heldItem.getOrCreateTag();
-        tag.remove("RepairCost");
+        // Remove repair cost from item using DataComponents (1.21 API)
+        // Setting repair cost to 0 effectively removes the anvil penalty
+        heldItem.set(DataComponents.REPAIR_COST, 0);
 
         return true;
     }

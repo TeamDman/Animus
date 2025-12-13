@@ -17,12 +17,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.CuriosApi;
 import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.common.tile.TileAltar;
-import wayoftime.bloodmagic.core.data.Binding;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
+import wayoftime.bloodmagic.common.datacomponent.Binding;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.AreaDescriptor;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,9 +33,8 @@ import java.util.UUID;
 public class ItemBloodApple extends Item {
     private static final FoodProperties FOOD_PROPERTIES = new FoodProperties.Builder()
         .nutrition(3)
-        .saturationMod(0.3F)
-        .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 40, 0), 0.75F)
-        .alwaysEat()
+        .saturationModifier(0.3F)
+        .alwaysEdible()
         .build();
 
     // Search for altars in a 11x21x11 area centered on the player
@@ -49,18 +48,18 @@ public class ItemBloodApple extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_INFO));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_LP));
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (!level.isClientSide && entity instanceof Player player) {
             // Search for nearby altar in range
-            TileAltar altar = AnimusUtil.getNearbyAltar(level, altarRange, entity.blockPosition(), offsetCached);
+            BloodAltarTile altar = AnimusUtil.getNearbyAltar(level, altarRange, entity.blockPosition(), offsetCached);
 
             int bloodAmount = AnimusConfig.general.bloodPerApple.get();
 
@@ -75,19 +74,13 @@ public class ItemBloodApple extends Item {
                 SoulNetwork network;
                 if (targetOwner != null) {
                     // Redirect LP to the Key of Binding owner's network
-                    network = NetworkHelper.getSoulNetwork(targetOwner);
+                    network = SoulNetworkHelper.getSoulNetwork(targetOwner);
                 } else {
                     // No key found - add blood to player's own soul network
-                    network = NetworkHelper.getSoulNetwork(player);
+                    network = SoulNetworkHelper.getSoulNetwork(player);
                 }
 
-                network.add(
-                    new SoulTicket(
-                        Component.translatable(Constants.Localizations.Text.TICKET_APPLE),
-                        bloodAmount
-                    ),
-                    10000
-                );
+                network.add(SoulTicket.create(bloodAmount), 10000);
             }
         }
 
@@ -116,7 +109,7 @@ public class ItemBloodApple extends Item {
         }
 
         // Check curios slots
-        var curiosOpt = CuriosApi.getCuriosInventory(player).resolve();
+        var curiosOpt = CuriosApi.getCuriosInventory(player);
         if (curiosOpt.isPresent()) {
             var curios = curiosOpt.get();
             var handler = curios.getEquippedCurios();
@@ -149,8 +142,8 @@ public class ItemBloodApple extends Item {
         // Check if bound using Blood Magic's binding system
         if (stack.getItem() instanceof IBindable bindable) {
             Binding binding = bindable.getBinding(stack);
-            if (binding != null) {
-                return binding.getOwnerId();
+            if (binding != null && !binding.isEmpty()) {
+                return binding.uuid();
             }
         }
 

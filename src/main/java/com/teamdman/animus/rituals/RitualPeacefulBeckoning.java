@@ -10,15 +10,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.IMasterRitualStone;
 import wayoftime.bloodmagic.ritual.Ritual;
 import wayoftime.bloodmagic.ritual.RitualComponent;
-import wayoftime.bloodmagic.ritual.RitualRegister;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,6 @@ import java.util.function.Consumer;
  * Refresh Cost: Configured (default varies)
  * Refresh Time: 400 ticks
  */
-@RitualRegister(Constants.Rituals.PEACEFUL_BECKONING)
 public class RitualPeacefulBeckoning extends Ritual {
     private List<EntityType<?>> targets;
 
@@ -51,7 +50,7 @@ public class RitualPeacefulBeckoning extends Ritual {
             targets = new ArrayList<>();
 
             // Get all entity types from registry
-            for (EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES.getValues()) {
+            for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
                 // Skip null types
                 if (entityType == null) {
                     continue;
@@ -75,7 +74,7 @@ public class RitualPeacefulBeckoning extends Ritual {
     @Override
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {
@@ -131,11 +130,8 @@ public class RitualPeacefulBeckoning extends Ritual {
         );
 
         // Consume LP
-        SoulTicket ticket = new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_PEACEFUL_BECKONING),
-            getRefreshCost()
-        );
-        network.syphon(ticket, false);
+        SoulTicket ticket = SoulTicket.create(getRefreshCost());
+        network.syphon(ticket);
     }
 
     @Override

@@ -9,16 +9,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,6 @@ import java.util.function.Consumer;
  * Refresh Cost: 1 LP
  * Refresh Time: 5 ticks
  */
-@RitualRegister(Constants.Rituals.LUNA)
 public class RitualLuna extends Ritual {
     private static final Logger LOGGER = LoggerFactory.getLogger(RitualLuna.class);
 
@@ -45,8 +44,8 @@ public class RitualLuna extends Ritual {
     public RitualLuna() {
         super(Constants.Rituals.LUNA, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LUNA);
 
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65));
-        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65, 65, 65));
+        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
 
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
@@ -55,7 +54,7 @@ public class RitualLuna extends Ritual {
     @Override
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         int currentEssence = network.getCurrentEssence();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
@@ -65,7 +64,7 @@ public class RitualLuna extends Ritual {
 
         // Check if player has enough LP
         if (currentEssence < getRefreshCost()) {
-            network.causeNausea();
+            // Note: causeNausea removed in BM 4.0
             return;
         }
 
@@ -92,7 +91,7 @@ public class RitualLuna extends Ritual {
         if (!stack.isEmpty()) {
             // Try to insert into chest
             if (chestTile != null) {
-                IItemHandler handler = chestTile.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
+                IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
                 if (handler != null) {
                     // Try to insert, if successful then we can proceed
                     ItemStack remainder = ItemHandlerHelper.insertItem(handler, stack, true);
@@ -124,11 +123,8 @@ public class RitualLuna extends Ritual {
             level.removeBlock(lightPos, false);
 
             // Consume LP
-            SoulTicket ticket = new SoulTicket(
-                Component.translatable(Constants.Localizations.Text.TICKET_LUNA),
-                getRefreshCost()
-            );
-            network.syphon(ticket, false);
+            SoulTicket ticket = SoulTicket.create(getRefreshCost());
+            network.syphon(ticket);
         }
     }
 

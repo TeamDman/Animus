@@ -11,13 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import wayoftime.bloodmagic.common.item.ItemExperienceBook;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
+import wayoftime.bloodmagic.common.item.ExperienceTomeItem;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -33,7 +33,6 @@ import java.util.function.Consumer;
  * Refresh Time: 20 ticks (1 second)
  * Range: 15x15 horizontal, 5 high (configurable)
  */
-@RitualRegister(Constants.Rituals.ENDLESS_GREED)
 public class RitualEndlessGreed extends Ritual {
     // Track active ritual positions and their AABBs for the event handler
     private static final Map<Level, Map<BlockPos, AABB>> activeRituals = new HashMap<>();
@@ -73,7 +72,7 @@ public class RitualEndlessGreed extends Ritual {
             return;
         }
 
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
             removeActiveRitual(level, masterPos);
             return;
@@ -85,15 +84,12 @@ public class RitualEndlessGreed extends Ritual {
         // Check if we have enough LP
         if (currentEssence < refreshCost) {
             removeActiveRitual(level, masterPos);
-            network.causeNausea();
+            // Note: causeNausea removed in BM 4.0
             return;
         }
 
         // Consume LP
-        network.syphon(new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_ENDLESS_GREED),
-            refreshCost
-        ), false);
+        network.syphon(SoulTicket.create(refreshCost));
 
         // Calculate range
         int hRange = AnimusConfig.rituals.endlessGreedRange.get();
@@ -151,10 +147,7 @@ public class RitualEndlessGreed extends Ritual {
 
                     // Consume LP per item
                     if (lpPerItem > 0) {
-                        network.syphon(new SoulTicket(
-                            Component.translatable(Constants.Localizations.Text.TICKET_ENDLESS_GREED),
-                            lpPerItem * stack.getCount()
-                        ), false);
+                        network.syphon(SoulTicket.create(lpPerItem * stack.getCount()));
                     }
                 } else if (remaining.getCount() < stack.getCount()) {
                     // Partial insert - update entity with remaining
@@ -163,10 +156,7 @@ public class RitualEndlessGreed extends Ritual {
                     // Consume LP for items that were inserted
                     int inserted = stack.getCount() - remaining.getCount();
                     if (lpPerItem > 0 && inserted > 0) {
-                        network.syphon(new SoulTicket(
-                            Component.translatable(Constants.Localizations.Text.TICKET_ENDLESS_GREED),
-                            lpPerItem * inserted
-                        ), false);
+                        network.syphon(SoulTicket.create(lpPerItem * inserted));
                     }
                 }
                 // If container is full (remaining == stack), leave item on ground
@@ -196,13 +186,13 @@ public class RitualEndlessGreed extends Ritual {
         // Add XP to tome if found
         if (tomeSlot >= 0 && itemHandler != null && tomeSlot < itemHandler.getSlots()) {
             ItemStack stack = itemHandler.getStackInSlot(tomeSlot);
-            if (stack.getItem() instanceof ItemExperienceBook) {
+            if (stack.getItem() instanceof ExperienceTomeItem) {
                 // Calculate total XP and add to tome (unlimited capacity)
                 int totalXP = 0;
                 for (ExperienceOrb orb : xpOrbs) {
                     totalXP += orb.getValue();
                 }
-                ItemExperienceBook.addExperience(stack, totalXP);
+                ExperienceTomeItem.addExperience(stack, totalXP);
             }
         }
         // If no tome found, XP is simply discarded
@@ -236,7 +226,7 @@ public class RitualEndlessGreed extends Ritual {
         int foundSlot = -1;
         for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
             ItemStack stack = itemHandler.getStackInSlot(slot);
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemExperienceBook) {
+            if (!stack.isEmpty() && stack.getItem() instanceof ExperienceTomeItem) {
                 foundSlot = slot;
                 break;
             }
@@ -266,12 +256,8 @@ public class RitualEndlessGreed extends Ritual {
      * Get the item handler for a container at the given position
      */
     private IItemHandler getItemHandler(Level level, BlockPos pos) {
-        BlockEntity be = level.getBlockEntity(pos);
-        if (be == null) {
-            return null;
-        }
-
-        return be.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
+        // NeoForge 1.21 capability API
+        return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
     }
 
     /**
@@ -304,12 +290,8 @@ public class RitualEndlessGreed extends Ritual {
                 BlockPos masterPos = entry.getKey();
                 BlockPos containerPos = masterPos.above();
 
-                BlockEntity be = level.getBlockEntity(containerPos);
-                IItemHandler itemHandler = null;
-
-                if (be != null) {
-                    itemHandler = be.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
-                }
+                // NeoForge 1.21 capability API
+                IItemHandler itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, containerPos, null);
 
                 if (itemHandler == null) {
                     // No container found - items will be destroyed

@@ -1,10 +1,10 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -26,8 +26,8 @@ public class NeptuneBlessingRitualRecipe extends ImperfectRitualRecipe {
     // 15 minutes in ticks (15 * 60 * 20)
     private static final int EFFECT_DURATION = 18000;
 
-    public NeptuneBlessingRitualRecipe(ResourceLocation id) {
-        super(id, "neptune_blessing", Blocks.PRISMARINE.defaultBlockState(), 2000);
+    public NeptuneBlessingRitualRecipe() {
+        super("neptune_blessing", Blocks.PRISMARINE.defaultBlockState(), 2000);
     }
 
     @Override
@@ -76,19 +76,18 @@ public class NeptuneBlessingRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<NeptuneBlessingRitualRecipe> {
+        private static final MapCodec<NeptuneBlessingRitualRecipe> CODEC = MapCodec.unit(NeptuneBlessingRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, NeptuneBlessingRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new NeptuneBlessingRitualRecipe());
+
         @Override
-        public NeptuneBlessingRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new NeptuneBlessingRitualRecipe(recipeId);
+        public MapCodec<NeptuneBlessingRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public NeptuneBlessingRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new NeptuneBlessingRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, NeptuneBlessingRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, NeptuneBlessingRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

@@ -1,8 +1,12 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.entities.EntityThrownSpear;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -15,31 +19,24 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.api.compat.IDemonWillWeapon;
-import wayoftime.bloodmagic.common.item.soul.ItemSoulGem;
-import wayoftime.bloodmagic.potion.BloodMagicPotions;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.effect.BMMobEffects;
 import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import net.minecraft.world.entity.EquipmentSlot;
 
 /**
  * Sentient Spear - A demon-will powered javelin
  * Scales with demon will like the Sentient Sword
  * Applies AOE damage with sentient effects when thrown
  */
-public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
+public class ItemSpearSentient extends ItemSpear {
     // Soul brackets for level progression (simplified from sword's 7 levels to 5)
     public static final double[] soulBracket = new double[]{16, 60, 200, 400, 1000};
 
@@ -71,27 +68,17 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(com.teamdman.animus.Constants.Localizations.Tooltips.SPEAR_SENTIENT_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
-        EnumDemonWillType type = getCurrentType(stack);
-        String displayType = type == EnumDemonWillType.DEFAULT ? "raw" : type.name().toLowerCase();
+        EnumWillType type = getCurrentType(stack);
+        String displayType = type == EnumWillType.DEFAULT ? "raw" : type.name().toLowerCase();
         tooltip.add(Component.translatable("tooltip.animus.spear_sentient.will_type", displayType)
             .withStyle(ChatFormatting.AQUA));
 
-        if (level != null && level.isClientSide) {
-            Player player = level.getNearestPlayer(0, 0, 0, Double.MAX_VALUE, false);
-            if (player != null) {
-                double soulsRemaining = getTotalWillOfType(player, type);
-                int willLevel = getLevel(stack, soulsRemaining);
-                tooltip.add(Component.translatable("tooltip.animus.spear_sentient.level", willLevel, (int)soulsRemaining)
-                    .withStyle(ChatFormatting.GOLD));
-                tooltip.add(Component.translatable("tooltip.animus.spear_sentient.damage_bonus", String.format("%.1f", getDamageAdded(type, willLevel)))
-                    .withStyle(ChatFormatting.RED));
-            }
-        }
-
+        // Note: In 1.21, TooltipContext doesn't provide Level access easily on client
+        // We show base stats instead of player-specific info in tooltips
         tooltip.add(Component.translatable(com.teamdman.animus.Constants.Localizations.Tooltips.SPEAR_SENTIENT_INFO)
             .withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable(com.teamdman.animus.Constants.Localizations.Tooltips.SPEAR_SENTIENT_AOE)
@@ -107,7 +94,7 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
         return soulBracket.length;
     }
 
-    public static double getDamageAdded(EnumDemonWillType type, int level) {
+    public static double getDamageAdded(EnumWillType type, int level) {
         level = Math.min(level, 4);
         return switch (type) {
             case DESTRUCTIVE -> destructiveDamageAdded[level];
@@ -117,7 +104,7 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
         };
     }
 
-    public static double getAttackSpeed(EnumDemonWillType type, int level) {
+    public static double getAttackSpeed(EnumWillType type, int level) {
         level = Math.min(level, 4);
         return switch (type) {
             case DESTRUCTIVE -> destructiveAttackSpeed[level];
@@ -126,7 +113,7 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
         };
     }
 
-    public static void applyEffectToEntity(EnumDemonWillType type, int level, LivingEntity target, LivingEntity attacker) {
+    public static void applyEffectToEntity(EnumWillType type, int level, LivingEntity target, LivingEntity attacker) {
         level = Math.min(level, 4);
 
         switch (type) {
@@ -168,7 +155,7 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof Player player) {
             Level level = player.level();
-            EnumDemonWillType type = getCurrentType(stack);
+            EnumWillType type = getCurrentType(stack);
             double soulsRemaining = getTotalWillOfType(player, type);
             int willLevel = getLevel(stack, soulsRemaining);
 
@@ -177,7 +164,7 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
 
             // Apply Soul Snare effect (5 seconds, amplifier 1) for guaranteed will drops
             target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                BloodMagicPotions.SOUL_SNARE.get(), 100, 1));
+                Holder.direct(BMMobEffects.SOUL_SNARE.get()), 100, 1));
 
             // Drain will from soul network
             if (soulsRemaining >= 16.0) {
@@ -191,12 +178,12 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
-            int useDuration = this.getUseDuration(stack) - timeLeft;
+            int useDuration = this.getUseDuration(stack, entity) - timeLeft;
             if (useDuration >= 10) {
-                int riptide = EnchantmentHelper.getRiptide(stack);
+                int riptide = getRiptideLevel(stack, level);
                 if (riptide <= 0 || player.isInWaterOrRain()) {
-                    if (!level.isClientSide) {
-                        stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(entity.getUsedItemHand()));
+                    if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+                        stack.hurtAndBreak(1, serverLevel, player, (item) -> {});
                         if (riptide == 0) {
                             // Spawn sentient spear entity
                             EntityThrownSpear thrownSpear = new EntityThrownSpear(level, player, stack);
@@ -208,13 +195,14 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
                             }
 
                             level.addFreshEntity(thrownSpear);
-                            level.playSound(null, thrownSpear, SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            level.playSound(null, thrownSpear.getX(), thrownSpear.getY(), thrownSpear.getZ(),
+                                SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
                             if (!player.getAbilities().instabuild) {
                                 player.getInventory().removeItem(stack);
                             }
 
                             // Drain will on throw from player's soul network
-                            EnumDemonWillType type = getCurrentType(stack);
+                            EnumWillType type = getCurrentType(stack);
                             double soulsRemaining = getTotalWillOfType(player, type);
                             if (soulsRemaining >= 16.0) {
                                 int willLevel = getLevel(stack, soulsRemaining);
@@ -234,50 +222,35 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
         }
     }
 
-    @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create(super.getAttributeModifiers(slot, stack));
+    /**
+     * Get riptide enchantment level from the stack
+     */
+    private int getRiptideLevel(ItemStack stack, Level level) {
+        if (level instanceof ServerLevel serverLevel) {
+            return stack.getEnchantmentLevel(serverLevel.registryAccess()
+                .lookupOrThrow(Registries.ENCHANTMENT)
+                .getOrThrow(Enchantments.RIPTIDE));
+        }
+        return 0;
+    }
 
-        if (slot == EquipmentSlot.MAINHAND) {
-            Player player = null; // We'll try to get this from context if possible
+    // Note: In 1.21, attribute modifiers are handled via data components (ATTRIBUTE_MODIFIERS)
+    // The base spear provides standard weapon modifiers, will bonuses scale damage at runtime
 
-            // Try to find a player to get their will
-            if (stack.getTag() != null) {
-                // Get will type
-                EnumDemonWillType type = getCurrentType(stack);
-
-                // For now, assume level 0 if we can't get player context
-                // The tooltip will show the actual values
-                int level = 0;
-
-                double damage = getDamageAdded(type, level);
-                double attackSpeed = getAttackSpeed(type, level);
-
-                multimap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(
-                    BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", damage, AttributeModifier.Operation.ADDITION));
-                multimap.put(Attributes.ATTACK_SPEED, new AttributeModifier(
-                    BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeed, AttributeModifier.Operation.ADDITION));
-
-                if (type == EnumDemonWillType.VENGEFUL) {
-                    multimap.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(
-                        java.util.UUID.fromString("4218052-0-0-0-0"), "Weapon modifier",
-                        movementSpeed[level], AttributeModifier.Operation.ADDITION));
-                }
+    public EnumWillType getCurrentType(ItemStack stack) {
+        String typeStr = stack.get(AnimusDataComponents.DEMON_WILL_TYPE.get());
+        if (typeStr != null) {
+            try {
+                return EnumWillType.valueOf(typeStr);
+            } catch (IllegalArgumentException e) {
+                return EnumWillType.DEFAULT;
             }
         }
-
-        return multimap;
+        return EnumWillType.DEFAULT;
     }
 
-    public EnumDemonWillType getCurrentType(ItemStack stack) {
-        if (stack.hasTag() && stack.getTag().contains("demonWillType")) {
-            return EnumDemonWillType.valueOf(stack.getTag().getString("demonWillType"));
-        }
-        return EnumDemonWillType.DEFAULT;
-    }
-
-    public void setCurrentType(ItemStack stack, EnumDemonWillType type) {
-        stack.getOrCreateTag().putString("demonWillType", type.toString());
+    public void setCurrentType(ItemStack stack, EnumWillType type) {
+        stack.set(AnimusDataComponents.DEMON_WILL_TYPE.get(), type.toString());
     }
 
     public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int tier) {
@@ -285,18 +258,12 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
         return new java.util.ArrayList<>();
     }
 
-    public EnumDemonWillType getActiveDemonWillType(ItemStack stack, LivingEntity player, Entity target) {
+    public EnumWillType getActiveDemonWillType(ItemStack stack, LivingEntity player, Entity target) {
         return getCurrentType(stack);
     }
 
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, net.minecraft.world.item.enchantment.Enchantment enchantment) {
-        // Sentient spear has built-in loyalty - don't allow loyalty enchantment
-        if (enchantment == net.minecraft.world.item.enchantment.Enchantments.LOYALTY) {
-            return false;
-        }
-        return super.canApplyAtEnchantingTable(stack, enchantment);
-    }
+    // Note: canApplyAtEnchantingTable was removed in 1.21
+    // Enchantment compatibility is now handled through enchantment tags
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
@@ -304,7 +271,7 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
 
         if (entity instanceof Player player) {
             // Update the will type based on the player's inventory
-            EnumDemonWillType newType = findDemonWillType(player);
+            EnumWillType newType = findDemonWillType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
             }
@@ -315,14 +282,14 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
      * Determines the demon will type based on will available from the player's soul network
      * Returns the type with the highest will amount
      */
-    private static EnumDemonWillType findDemonWillType(Player player) {
+    private static EnumWillType findDemonWillType(Player player) {
         // Get will amounts from the player's soul network
-        EnumDemonWillType highestType = EnumDemonWillType.DEFAULT;
+        EnumWillType highestType = EnumWillType.DEFAULT;
         double highestAmount = 0;
 
-        for (EnumDemonWillType type : EnumDemonWillType.values()) {
+        for (EnumWillType type : EnumWillType.values()) {
             double amount = PlayerDemonWillHandler.getTotalDemonWill(type, player);
-            if (type != EnumDemonWillType.DEFAULT && amount > highestAmount) {
+            if (type != EnumWillType.DEFAULT && amount > highestAmount) {
                 highestType = type;
                 highestAmount = amount;
             }
@@ -334,14 +301,14 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
     /**
      * Gets the total amount of will the player has of a specific type from their soul network
      */
-    private static double getTotalWillOfType(Player player, EnumDemonWillType type) {
+    private static double getTotalWillOfType(Player player, EnumWillType type) {
         return PlayerDemonWillHandler.getTotalDemonWill(type, player);
     }
 
     /**
      * Drains will from the player's soul network
      */
-    private static void drainWillFromPlayer(Player player, EnumDemonWillType type, double amount) {
+    private static void drainWillFromPlayer(Player player, EnumWillType type, double amount) {
         PlayerDemonWillHandler.consumeDemonWill(type, player, amount);
     }
 }

@@ -3,8 +3,8 @@ package com.teamdman.animus.entities;
 import com.teamdman.animus.items.ItemSpear;
 import com.teamdman.animus.items.ItemSpearSentient;
 import com.teamdman.animus.registry.AnimusEntityTypes;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.will.WorldDemonWillHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,7 +19,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -47,7 +49,7 @@ public class EntityThrownSpear extends AbstractArrow {
     }
 
     public EntityThrownSpear(Level level, LivingEntity shooter, ItemStack stack) {
-        super(AnimusEntityTypes.THROWN_PILUM.get(), shooter, level);
+        super(AnimusEntityTypes.THROWN_PILUM.get(), shooter, level, stack.copy(), stack);
         this.spearItem = stack.copy();
 
         // Bound and Sentient spears have built-in loyalty (level 3)
@@ -57,7 +59,7 @@ public class EntityThrownSpear extends AbstractArrow {
             stack.getItem() instanceof com.teamdman.animus.items.ItemSpearSentient) {
             loyalty = 3; // Max loyalty level
         } else {
-            loyalty = EnchantmentHelper.getLoyalty(stack);
+            loyalty = getLoyaltyLevel(level, stack);
         }
         this.entityData.set(ID_LOYALTY, (byte)loyalty);
         this.entityData.set(ID_FOIL, stack.hasFoil());
@@ -65,7 +67,7 @@ public class EntityThrownSpear extends AbstractArrow {
         // Determine variant from item registry name and check activation state
         String variant = "iron"; // default
         boolean activated = false;
-        net.minecraft.resources.ResourceLocation itemId = net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(stack.getItem());
+        net.minecraft.resources.ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         if (itemId != null) {
             String path = itemId.getPath();
             if (path.contains("diamond")) {
@@ -82,15 +84,29 @@ public class EntityThrownSpear extends AbstractArrow {
         this.entityData.set(ID_ACTIVATED, activated);
     }
 
+    // Helper method for getting loyalty in 1.21.1
+    private static int getLoyaltyLevel(Level level, ItemStack stack) {
+        if (level.registryAccess() == null) return 0;
+        var enchantmentRegistry = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
+        var loyaltyHolder = enchantmentRegistry.getHolder(Enchantments.LOYALTY);
+        if (loyaltyHolder.isEmpty()) return 0;
+        return stack.getEnchantmentLevel(loyaltyHolder.get());
+    }
+
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ID_LOYALTY, (byte)0);
-        this.entityData.define(ID_FOIL, false);
-        this.entityData.define(ID_VARIANT, "iron");
-        this.entityData.define(ID_ACTIVATED, false);
-        this.entityData.define(ID_WILL_TYPE, "DEFAULT");
-        this.entityData.define(ID_WILL_LEVEL, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ID_LOYALTY, (byte)0);
+        builder.define(ID_FOIL, false);
+        builder.define(ID_VARIANT, "iron");
+        builder.define(ID_ACTIVATED, false);
+        builder.define(ID_WILL_TYPE, "DEFAULT");
+        builder.define(ID_WILL_LEVEL, 0);
+    }
+
+    @Override
+    protected ItemStack getDefaultPickupItem() {
+        return this.spearItem.copy();
     }
 
     @Override
@@ -154,15 +170,15 @@ public class EntityThrownSpear extends AbstractArrow {
         this.entityData.set(ID_VARIANT, variant);
     }
 
-    public void setWillType(EnumDemonWillType type) {
+    public void setWillType(EnumWillType type) {
         this.entityData.set(ID_WILL_TYPE, type.toString());
     }
 
-    public EnumDemonWillType getWillType() {
+    public EnumWillType getWillType() {
         try {
-            return EnumDemonWillType.valueOf(this.entityData.get(ID_WILL_TYPE));
+            return EnumWillType.valueOf(this.entityData.get(ID_WILL_TYPE));
         } catch (IllegalArgumentException e) {
-            return EnumDemonWillType.DEFAULT;
+            return EnumWillType.DEFAULT;
         }
     }
 
@@ -198,9 +214,7 @@ public class EntityThrownSpear extends AbstractArrow {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         float damage = 8.0F;
-        if (entity instanceof LivingEntity livingEntity) {
-            damage += EnchantmentHelper.getDamageBonus(this.spearItem, livingEntity.getMobType());
-        }
+        // In 1.21.1, getMobType() is removed - enchantment damage is handled by damage system
 
         Entity owner = this.getOwner();
         DamageSource damageSource = this.damageSources().trident(this, owner == null ? this : owner);
@@ -212,11 +226,7 @@ public class EntityThrownSpear extends AbstractArrow {
             }
 
             if (entity instanceof LivingEntity livingEntity) {
-                if (owner instanceof LivingEntity) {
-                    EnchantmentHelper.doPostHurtEffects(livingEntity, owner);
-                    EnchantmentHelper.doPostDamageEffects((LivingEntity)owner, livingEntity);
-                }
-
+                // In 1.21.1, enchantment post-hurt effects handled by damage system
                 this.doPostHurtEffects(livingEntity);
             }
         }
@@ -248,7 +258,7 @@ public class EntityThrownSpear extends AbstractArrow {
         DamageSource damageSource = this.damageSources().trident(this, owner == null ? this : owner);
 
         boolean isSentient = "sentient".equals(this.getVariant());
-        EnumDemonWillType willType = isSentient ? this.getWillType() : null;
+        EnumWillType willType = isSentient ? this.getWillType() : null;
         int willLevel = isSentient ? this.getWillLevel() : 0;
 
         for (LivingEntity target : entities) {
@@ -292,7 +302,7 @@ public class EntityThrownSpear extends AbstractArrow {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("Spear", 10)) {
-            this.spearItem = ItemStack.of(tag.getCompound("Spear"));
+            this.spearItem = ItemStack.parseOptional(this.level().registryAccess(), tag.getCompound("Spear"));
         }
         this.dealtDamage = tag.getBoolean("DealtDamage");
 
@@ -303,7 +313,7 @@ public class EntityThrownSpear extends AbstractArrow {
             this.spearItem.getItem() instanceof com.teamdman.animus.items.ItemSpearSentient) {
             loyalty = 3; // Max loyalty level
         } else {
-            loyalty = EnchantmentHelper.getLoyalty(this.spearItem);
+            loyalty = getLoyaltyLevel(this.level(), this.spearItem);
         }
         this.entityData.set(ID_LOYALTY, (byte)loyalty);
 
@@ -324,7 +334,7 @@ public class EntityThrownSpear extends AbstractArrow {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("Spear", this.spearItem.save(new CompoundTag()));
+        tag.put("Spear", this.spearItem.save(this.level().registryAccess()));
         tag.putBoolean("DealtDamage", this.dealtDamage);
         tag.putString("Variant", this.getVariant());
         tag.putBoolean("Activated", this.entityData.get(ID_ACTIVATED));

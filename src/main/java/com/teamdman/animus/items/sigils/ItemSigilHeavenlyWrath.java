@@ -1,6 +1,7 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -11,10 +12,12 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import wayoftime.bloodmagic.util.SoulTicket;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -90,16 +93,13 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
         // Consume LP from soul network
-        wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
-        wayoftime.bloodmagic.core.data.SoulTicket ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
-            net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_HEAVENLY_WRATH),
-            getLpUsed()
-        );
+        wayoftime.bloodmagic.common.datacomponent.SoulNetwork network = wayoftime.bloodmagic.util.helper.SoulNetworkHelper.getSoulNetwork(player);
+        SoulTicket ticket = SoulTicket.create(getLpUsed());
 
         var syphonResult = network.syphonAndDamage(player, ticket);
         if (!syphonResult.isSuccess()) {
@@ -122,7 +122,7 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
                 }
 
                 // Apply levitation effect for 3 seconds
-                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 60, 1, false, true));
+                entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 60, 1));
 
                 // Apply upward velocity boost for 100% faster levitation
                 Vec3 currentVelocity = entity.getDeltaMovement();
@@ -176,9 +176,10 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
         entity.removeEffect(MobEffects.LEVITATION);
 
         // Apply Blood Magic's heavy_heart effect to prevent flight for 2 seconds at amplifier 4
-        MobEffect heavyHeart = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.fromNamespaceAndPath("bloodmagic", "heavy_heart"));
-        if (heavyHeart != null) {
-            entity.addEffect(new MobEffectInstance(heavyHeart, 40, 4, false, true)); // 40 ticks = 2 seconds, amplifier 4
+        ResourceLocation heavyHeartRL = ResourceLocation.fromNamespaceAndPath("bloodmagic", "heavy_heart");
+        var heavyHeartOpt = BuiltInRegistries.MOB_EFFECT.getOptional(heavyHeartRL);
+        if (heavyHeartOpt.isPresent()) {
+            entity.addEffect(new MobEffectInstance(Holder.direct(heavyHeartOpt.get()), 40, 4)); // 40 ticks = 2 seconds, amplifier 4
         }
 
         // Base downward velocity
@@ -200,9 +201,9 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, java.util.List<net.minecraft.network.chat.Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, java.util.List<net.minecraft.network.chat.Component> tooltip, net.minecraft.world.item.TooltipFlag flag) {
         tooltip.add(net.minecraft.network.chat.Component.translatable(Constants.Localizations.Tooltips.SIGIL_HEAVENLY_WRATH_FLAVOUR));
         tooltip.add(net.minecraft.network.chat.Component.translatable(Constants.Localizations.Tooltips.SIGIL_HEAVENLY_WRATH_INFO));
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

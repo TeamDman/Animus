@@ -1,6 +1,6 @@
 package com.teamdman.animus.items.sigils;
 
-import net.minecraft.nbt.CompoundTag;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
  * Visual indicators are provided via model overrides (registered in AnimusClientSetup)
  */
 public abstract class ItemSigilToggleableBase extends AnimusSigilBase {
-    private static final String ACTIVATED_KEY = "activated";
 
     public ItemSigilToggleableBase(String name, int lpUsed) {
         super(name, lpUsed);
@@ -18,19 +17,15 @@ public abstract class ItemSigilToggleableBase extends AnimusSigilBase {
      * Check if sigil is activated
      */
     public boolean getActivated(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null) {
-            return false;
-        }
-        return tag.getBoolean(ACTIVATED_KEY);
+        Boolean activated = stack.get(AnimusDataComponents.SIGIL_ACTIVATED.get());
+        return activated != null && activated;
     }
 
     /**
      * Set activation state
      */
     public void setActivatedState(ItemStack stack, boolean activated) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putBoolean(ACTIVATED_KEY, activated);
+        stack.set(AnimusDataComponents.SIGIL_ACTIVATED.get(), activated);
     }
 
     /**

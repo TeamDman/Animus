@@ -11,24 +11,26 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
-import wayoftime.bloodmagic.core.data.Binding;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.common.datacomponent.Binding;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import net.minecraft.core.NonNullList;
 import wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Sigil of the Monk - A curio sigil that enhances unarmed combat
@@ -41,7 +43,7 @@ import java.util.UUID;
  * Can be equipped in any curio slot
  */
 public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem {
-    private static final UUID UNARMED_DAMAGE_UUID = UUID.fromString("b3f47e6a-1c2d-4f8e-9a0b-5c6d7e8f9a0b");
+    private static final ResourceLocation UNARMED_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath("animus", "monk_unarmed_damage");
 
     // LP cost: 5 LP per second = 100 LP per 20 ticks
     // We check every 20 ticks (1 second) and consume 100 LP
@@ -61,7 +63,7 @@ public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem
 
         // Check binding
         Binding binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -109,7 +111,7 @@ public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem
             return false;
         }
 
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
         if (network == null) {
             return false;
         }
@@ -118,24 +120,21 @@ public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem
             return false;
         }
 
-        SoulTicket ticket = new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_MONK),
-            amount
-        );
-        network.syphon(ticket, false);
+        SoulTicket ticket = SoulTicket.create(amount);
+        network.syphon(ticket);
         return true;
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
-        Multimap<Attribute, AttributeModifier> modifiers = LinkedHashMultimap.create();
+    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
+        Multimap<Holder<Attribute>, AttributeModifier> modifiers = LinkedHashMultimap.create();
 
         // Only apply modifiers if activated and bound
         if (getActivated(stack) && getBinding(stack) != null) {
             double unarmedDamage = AnimusConfig.sigils.monkUnarmedDamage.get();
             modifiers.put(
-                AnimusAttributes.UNARMED_DAMAGE.get(),
-                new AttributeModifier(UNARMED_DAMAGE_UUID, "Sigil of the Monk unarmed damage", unarmedDamage, AttributeModifier.Operation.ADDITION)
+                AnimusAttributes.UNARMED_DAMAGE,
+                new AttributeModifier(UNARMED_DAMAGE_ID, unarmedDamage, AttributeModifier.Operation.ADD_VALUE)
             );
         }
 
@@ -143,8 +142,8 @@ public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
 
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_MONK_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));

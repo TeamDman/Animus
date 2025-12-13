@@ -5,9 +5,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.common.util.FakePlayer;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.will.WorldDemonWillHandler;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
@@ -67,10 +67,10 @@ public class AnimusFakePlayer extends FakePlayer {
         int lootingLevel = 0;
 
         // Check each will type - each with >10 will adds +1 looting
-        double corrosiveWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumDemonWillType.CORROSIVE);
-        double destructiveWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumDemonWillType.DESTRUCTIVE);
-        double vengefulWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumDemonWillType.VENGEFUL);
-        double steadfastWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumDemonWillType.STEADFAST);
+        double corrosiveWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.CORROSIVE);
+        double destructiveWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.DESTRUCTIVE);
+        double vengefulWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.VENGEFUL);
+        double steadfastWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.STEADFAST);
 
         if (corrosiveWill > 10) lootingLevel++;
         if (destructiveWill > 10) lootingLevel++;
@@ -78,7 +78,7 @@ public class AnimusFakePlayer extends FakePlayer {
         if (steadfastWill > 10) lootingLevel++;
 
         if (lootingLevel > 0) {
-            sword.enchant(Enchantments.MOB_LOOTING, lootingLevel);
+            sword.enchant(Enchantments.LOOTING, lootingLevel);
         }
 
         return sword;

@@ -1,8 +1,9 @@
 package com.teamdman.animus.items;
 
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.ritual.*;
 
 import java.util.*;
@@ -46,11 +46,6 @@ import java.util.stream.Collectors;
  * any other blocks are completely ignored during the scan.
  */
 public class ItemRitualDesigner extends Item {
-    private static final String TAG_POS1 = "Pos1";
-    private static final String TAG_POS2 = "Pos2";
-    private static final String TAG_HAS_POS1 = "HasPos1";
-    private static final String TAG_HAS_POS2 = "HasPos2";
-
     // Map of Blood Magic rune blocks to their EnumRuneType
     private static final Map<Block, String> RUNE_TYPES = new HashMap<>();
 
@@ -61,6 +56,35 @@ public class ItemRitualDesigner extends Item {
 
     public ItemRitualDesigner() {
         super(new Item.Properties().stacksTo(1));
+    }
+
+    private boolean hasCorner1(ItemStack stack) {
+        return stack.has(AnimusDataComponents.RITUAL_CORNER1.get());
+    }
+
+    private boolean hasCorner2(ItemStack stack) {
+        return stack.has(AnimusDataComponents.RITUAL_CORNER2.get());
+    }
+
+    private BlockPos getCorner1(ItemStack stack) {
+        return stack.get(AnimusDataComponents.RITUAL_CORNER1.get());
+    }
+
+    private BlockPos getCorner2(ItemStack stack) {
+        return stack.get(AnimusDataComponents.RITUAL_CORNER2.get());
+    }
+
+    private void setCorner1(ItemStack stack, BlockPos pos) {
+        stack.set(AnimusDataComponents.RITUAL_CORNER1.get(), pos);
+    }
+
+    private void setCorner2(ItemStack stack, BlockPos pos) {
+        stack.set(AnimusDataComponents.RITUAL_CORNER2.get(), pos);
+    }
+
+    private void clearCorners(ItemStack stack) {
+        stack.remove(AnimusDataComponents.RITUAL_CORNER1.get());
+        stack.remove(AnimusDataComponents.RITUAL_CORNER2.get());
     }
 
     @Override
@@ -74,9 +98,7 @@ public class ItemRitualDesigner extends Item {
 
         // Shift + Right-click air: Clear positions
         if (player.isShiftKeyDown()) {
-            CompoundTag tag = stack.getOrCreateTag();
-            tag.putBoolean(TAG_HAS_POS1, false);
-            tag.putBoolean(TAG_HAS_POS2, false);
+            clearCorners(stack);
 
             player.displayClientMessage(
                 Component.literal("Positions cleared!")
@@ -125,13 +147,10 @@ public class ItemRitualDesigner extends Item {
 
         // Shift + Right-click: Set positions
         if (player.isShiftKeyDown()) {
-            CompoundTag tag = stack.getOrCreateTag();
-
             // Set position 1 if not set, otherwise set position 2
-            if (!tag.getBoolean(TAG_HAS_POS1)) {
-                tag.putLong(TAG_POS1, clickedPos.asLong());
-                tag.putBoolean(TAG_HAS_POS1, true);
-                tag.putBoolean(TAG_HAS_POS2, false); // Reset pos2 when setting pos1
+            if (!hasCorner1(stack)) {
+                setCorner1(stack, clickedPos);
+                stack.remove(AnimusDataComponents.RITUAL_CORNER2.get()); // Reset pos2 when setting pos1
 
                 player.displayClientMessage(
                     Component.literal("Corner 1 set to: ")
@@ -149,9 +168,8 @@ public class ItemRitualDesigner extends Item {
                     0.5F,
                     1.0F
                 );
-            } else if (!tag.getBoolean(TAG_HAS_POS2)) {
-                tag.putLong(TAG_POS2, clickedPos.asLong());
-                tag.putBoolean(TAG_HAS_POS2, true);
+            } else if (!hasCorner2(stack)) {
+                setCorner2(stack, clickedPos);
 
                 player.displayClientMessage(
                     Component.literal("Corner 2 set to: ")
@@ -171,9 +189,8 @@ public class ItemRitualDesigner extends Item {
                 );
             } else {
                 // Both positions are set, reset to position 1
-                tag.putLong(TAG_POS1, clickedPos.asLong());
-                tag.putBoolean(TAG_HAS_POS1, true);
-                tag.putBoolean(TAG_HAS_POS2, false);
+                setCorner1(stack, clickedPos);
+                stack.remove(AnimusDataComponents.RITUAL_CORNER2.get());
 
                 player.displayClientMessage(
                     Component.literal("Reset! Corner 1 set to: ")
@@ -202,10 +219,8 @@ public class ItemRitualDesigner extends Item {
                 return InteractionResult.SUCCESS;
             }
 
-            CompoundTag tag = stack.getOrCreateTag();
-
             // Check if both positions are set
-            if (!tag.getBoolean(TAG_HAS_POS1) || !tag.getBoolean(TAG_HAS_POS2)) {
+            if (!hasCorner1(stack) || !hasCorner2(stack)) {
                 player.displayClientMessage(
                     Component.literal("Please set both corners first!")
                         .withStyle(ChatFormatting.RED),
@@ -219,8 +234,8 @@ public class ItemRitualDesigner extends Item {
                 return InteractionResult.FAIL;
             }
 
-            BlockPos pos1 = BlockPos.of(tag.getLong(TAG_POS1));
-            BlockPos pos2 = BlockPos.of(tag.getLong(TAG_POS2));
+            BlockPos pos1 = getCorner1(stack);
+            BlockPos pos2 = getCorner2(stack);
             BlockPos masterPos = clickedPos;
 
             // Scan the area and generate ritual code
@@ -230,11 +245,8 @@ public class ItemRitualDesigner extends Item {
                 // Send code to clipboard
                 if (player instanceof ServerPlayer serverPlayer) {
                     // Send packet to copy to clipboard
-                    com.teamdman.animus.network.RitualCodePacket packet = new com.teamdman.animus.network.RitualCodePacket(code);
-                    com.teamdman.animus.network.AnimusNetwork.CHANNEL.send(
-                        net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> serverPlayer),
-                        packet
-                    );
+                    com.teamdman.animus.network.AnimusPayloads.sendToPlayer(serverPlayer,
+                        new com.teamdman.animus.network.RitualCodePayload(code));
 
                     player.displayClientMessage(
                         Component.literal("Ritual code copied to clipboard!")
@@ -332,7 +344,7 @@ public class ItemRitualDesigner extends Item {
                         runes.add(new RuneData(relX, relY, relZ, runeType));
                     } else {
                         // Track non-rune blocks for debugging
-                        String blockId = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(block).toString();
+                        String blockId = BuiltInRegistries.BLOCK.getKey(block).toString();
                         nonRuneBlockCounts.put(blockId, nonRuneBlockCounts.getOrDefault(blockId, 0) + 1);
                     }
                 }
@@ -410,7 +422,7 @@ public class ItemRitualDesigner extends Item {
             String blockId = entry.getKey();
             String runeType = entry.getValue();
 
-            Block block = ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(blockId));
+            Block block = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.tryParse(blockId)).orElse(null);
 
             if (block != null && block != Blocks.AIR) {
                 RUNE_TYPES.put(block, runeType);
@@ -419,52 +431,11 @@ public class ItemRitualDesigner extends Item {
     }
 
     private String checkRitualConflict(List<RuneData> runes, Level level) {
-        try {
-            // Create a RitualManager instance and discover all registered rituals
-            RitualManager ritualManager = new RitualManager();
-            ritualManager.discover();
-
-            // Get all registered rituals
-            Collection<Ritual> allRituals = ritualManager.getRituals();
-
-            // Convert our scanned runes to a comparable format
-            Set<String> scannedPattern = runes.stream()
-                .map(r -> r.x + "," + r.y + "," + r.z + "," + r.type)
-                .collect(Collectors.toSet());
-
-            // Check each ritual for pattern match
-            for (Ritual ritual : allRituals) {
-                try {
-                    // Collect components from the ritual
-                    List<RitualComponent> components = new ArrayList<>();
-                    ritual.gatherComponents(components::add);
-
-                    // Convert ritual components to comparable format
-                    Set<String> ritualPattern = new HashSet<>();
-                    for (RitualComponent component : components) {
-                        BlockPos offset = component.getOffset();
-                        String runeTypeName = component.getRuneType().name();
-                        ritualPattern.add(offset.getX() + "," + offset.getY() + "," + offset.getZ() + ",EnumRuneType." + runeTypeName);
-                    }
-
-                    // Check if patterns match
-                    if (scannedPattern.equals(ritualPattern)) {
-                        // Found a conflict! Return the ritual name
-                        String ritualId = ritualManager.getId(ritual);
-                        String ritualName = ritual.getTranslationKey();
-                        return ritualName + " (" + ritualId + ")";
-                    }
-                } catch (Exception e) {
-                    // Skip this ritual if we can't check it
-                    continue;
-                }
-            }
-
-            return null; // No conflict detected
-        } catch (Exception e) {
-            // If we can't check, assume no conflict
-            return null;
-        }
+        // Blood Magic 4.x changed the RitualManager API
+        // Conflict checking is disabled until the new API is implemented
+        // For now, always return null (no conflict detected)
+        // TODO: Update to use Blood Magic 4.x's ritual registry when API is documented
+        return null;
     }
 
     private String generateCode(List<RuneData> runes, Player player) {
@@ -559,7 +530,7 @@ public class ItemRitualDesigner extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal("Dev Tool - Requires OP").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
         tooltip.add(Component.literal("Shift + Right-click block: Set corner 1").withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.literal("Shift + Right-click block: Set corner 2").withStyle(ChatFormatting.GRAY));
@@ -567,17 +538,16 @@ public class ItemRitualDesigner extends Item {
         tooltip.add(Component.literal("Right-click Master Stone: Generate code").withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.literal("Shift + Right-click air: Clear positions").withStyle(ChatFormatting.GRAY));
 
-        CompoundTag tag = stack.getOrCreateTag();
-        if (tag.getBoolean(TAG_HAS_POS1)) {
-            BlockPos pos1 = BlockPos.of(tag.getLong(TAG_POS1));
+        if (hasCorner1(stack)) {
+            BlockPos pos1 = getCorner1(stack);
             tooltip.add(Component.literal("Corner 1: " + pos1.toShortString()).withStyle(ChatFormatting.GREEN));
         }
-        if (tag.getBoolean(TAG_HAS_POS2)) {
-            BlockPos pos2 = BlockPos.of(tag.getLong(TAG_POS2));
+        if (hasCorner2(stack)) {
+            BlockPos pos2 = getCorner2(stack);
             tooltip.add(Component.literal("Corner 2: " + pos2.toShortString()).withStyle(ChatFormatting.GREEN));
         }
 
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 
     /**

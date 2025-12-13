@@ -4,8 +4,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +106,7 @@ public class ImperfectRitualDisplayFactory {
 
         // Botania - Manasteel Soul
         if (ModList.get().isLoaded("botania")) {
-            Block manasteelBlock = ForgeRegistries.BLOCKS.getValue(ResourceLocation.fromNamespaceAndPath("botania", "manasteel_block"));
+            Block manasteelBlock = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.fromNamespaceAndPath("botania", "manasteel_block")).orElse(null);
             if (manasteelBlock != null && manasteelBlock != Blocks.AIR) {
                 displays.add(new ImperfectRitualDisplay(
                     "manasteel_soul",
@@ -120,7 +121,7 @@ public class ImperfectRitualDisplayFactory {
 
         // Malum - Soul Stained Blood
         if (ModList.get().isLoaded("malum")) {
-            Block hallowedGoldBlock = ForgeRegistries.BLOCKS.getValue(ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold"));
+            Block hallowedGoldBlock = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold")).orElse(null);
             if (hallowedGoldBlock != null && hallowedGoldBlock != Blocks.AIR) {
                 displays.add(new ImperfectRitualDisplay(
                     "soul_stained_blood",
@@ -135,7 +136,7 @@ public class ImperfectRitualDisplayFactory {
 
         // Ars Nouveau - Magi
         if (ModList.get().isLoaded("ars_nouveau")) {
-            Block sourceGemBlock = ForgeRegistries.BLOCKS.getValue(ResourceLocation.fromNamespaceAndPath("ars_nouveau", "source_gem_block"));
+            Block sourceGemBlock = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.fromNamespaceAndPath("ars_nouveau", "source_gem_block")).orElse(null);
             if (sourceGemBlock != null && sourceGemBlock != Blocks.AIR) {
                 displays.add(new ImperfectRitualDisplay(
                     "magi",
@@ -150,7 +151,7 @@ public class ImperfectRitualDisplayFactory {
 
         // Iron's Spellbooks - Iron Heart
         if (ModList.get().isLoaded("irons_spellbooks")) {
-            Block arcaneAnvil = ForgeRegistries.BLOCKS.getValue(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "arcane_anvil"));
+            Block arcaneAnvil = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "arcane_anvil")).orElse(null);
             if (arcaneAnvil != null && arcaneAnvil != Blocks.AIR) {
                 displays.add(new ImperfectRitualDisplay(
                     "iron_heart",

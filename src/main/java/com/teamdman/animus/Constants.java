@@ -1,7 +1,7 @@
 package com.teamdman.animus;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
 public class Constants {
     private Constants() {

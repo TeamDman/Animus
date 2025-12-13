@@ -9,9 +9,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.common.tile.TileAltar;
+import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 
 import java.util.function.Consumer;
 
@@ -34,7 +34,6 @@ import java.util.function.Consumer;
  * Refresh Cost: 0 LP (conversion happens via Source drain)
  * Refresh Time: Based on altar speed (default 40 ticks / 2 seconds)
  */
-@RitualRegister(Constants.Rituals.SOURCE_VITAEUM)
 public class RitualSourceVitaeum extends Ritual {
 
     public RitualSourceVitaeum() {
@@ -63,7 +62,7 @@ public class RitualSourceVitaeum extends Ritual {
 
         // Find nearby Blood Altar
         int altarSearchRadius = AnimusConfig.rituals.sourceVitaeumAltarRange.get();
-        TileAltar altar = findNearbyAltar(serverLevel, masterPos, altarSearchRadius);
+        BloodAltarTile altar = findNearbyAltar(serverLevel, masterPos, altarSearchRadius);
 
         if (altar == null) {
             // No altar found, ritual cannot function
@@ -99,8 +98,8 @@ public class RitualSourceVitaeum extends Ritual {
         }
 
         // Check altar capacity (don't exceed max capacity)
-        int currentBlood = altar.getCurrentBlood();
-        int maxBlood = altar.getCapacity();
+        int currentBlood = altar.mainTank;
+        int maxBlood = altar.getMainCapacity();
         int availableSpace = maxBlood - currentBlood;
 
         if (availableSpace <= 0) {
@@ -123,13 +122,13 @@ public class RitualSourceVitaeum extends Ritual {
     /**
      * Find a Blood Altar within the specified radius
      */
-    private TileAltar findNearbyAltar(ServerLevel level, BlockPos center, int radius) {
+    private BloodAltarTile findNearbyAltar(ServerLevel level, BlockPos center, int radius) {
         for (BlockPos pos : BlockPos.betweenClosed(
             center.offset(-radius, -radius, -radius),
             center.offset(radius, radius, radius)
         )) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof TileAltar altar) {
+            if (be instanceof BloodAltarTile altar) {
                 return altar;
             }
         }

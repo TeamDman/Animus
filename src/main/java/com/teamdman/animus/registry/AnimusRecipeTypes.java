@@ -4,8 +4,8 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.recipes.ImperfectRitualRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class AnimusRecipeTypes {
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(
@@ -13,7 +13,7 @@ public class AnimusRecipeTypes {
         Constants.Mod.MODID
     );
 
-    public static final RegistryObject<RecipeType<ImperfectRitualRecipe>> IMPERFECT_RITUAL_TYPE = RECIPE_TYPES.register(
+    public static final DeferredHolder<RecipeType<?>, RecipeType<ImperfectRitualRecipe>> IMPERFECT_RITUAL_TYPE = RECIPE_TYPES.register(
         "imperfect_ritual",
         () -> new RecipeType<ImperfectRitualRecipe>() {
             @Override

@@ -9,8 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import wayoftime.bloodmagic.altar.AltarTier;
-import wayoftime.bloodmagic.common.tile.TileAltar;
+import wayoftime.bloodmagic.common.registry.AltarTier;
+import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 import wayoftime.bloodmagic.ritual.AreaDescriptor;
 
 import java.util.Optional;
@@ -52,18 +52,18 @@ public class AnimusUtil {
         ));
     }
 
-    public static TileAltar getNearbyAltar(Level level, AreaDescriptor area, BlockPos offset, BlockPos previous) {
+    public static BloodAltarTile getNearbyAltar(Level level, AreaDescriptor area, BlockPos offset, BlockPos previous) {
         BlockEntity tile;
-        if (area.isWithinArea(previous) && (tile = level.getBlockEntity(previous)) instanceof TileAltar) {
-            return (TileAltar) tile;
+        if (area.isWithinArea(previous) && (tile = level.getBlockEntity(previous)) instanceof BloodAltarTile) {
+            return (BloodAltarTile) tile;
         }
 
         Optional<BlockEntity> found = area.getContainedPositions(offset).stream()
             .map(level::getBlockEntity)
-            .filter(e -> e instanceof TileAltar)
+            .filter(e -> e instanceof BloodAltarTile)
             .findFirst();
 
         area.resetCache();
-        return (TileAltar) found.orElse(null);
+        return (BloodAltarTile) found.orElse(null);
     }
 }

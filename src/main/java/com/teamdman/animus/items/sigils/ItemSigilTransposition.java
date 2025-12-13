@@ -1,9 +1,11 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -13,12 +15,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
@@ -31,12 +33,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.BlockEvent;
-import wayoftime.bloodmagic.common.block.BlockTeleposer;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import wayoftime.bloodmagic.common.block.TeleposerBlock;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;
 
@@ -55,12 +57,10 @@ import java.util.List;
  * - Consumes LP for each teleportation
  */
 public class ItemSigilTransposition extends ItemSigilToggleableBase {
-    private static final String POS_KEY = "transposition_pos";
-    private static final String TELEPOSER_KEY = "teleposer_pos";
     private static final int TELEPORT_COST = 2000; // LP cost to teleport an entity
     private static final TagKey<Block> RELOCATION_NOT_SUPPORTED = TagKey.create(
         Registries.BLOCK,
-        ResourceLocation.fromNamespaceAndPath("forge", "relocation_not_supported")
+        ResourceLocation.fromNamespaceAndPath("c", "relocation_not_supported")
     );
 
     public ItemSigilTransposition() {
@@ -90,8 +90,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
         if (result.getType() == HitResult.Type.MISS || result.getType() != HitResult.Type.BLOCK) {
             // Clear selection
-            CompoundTag tag = stack.getOrCreateTag();
-            tag.putLong(POS_KEY, 0);
+            stack.remove(AnimusDataComponents.TRANSPOSITION_POS.get());
             player.displayClientMessage(
                 Component.translatable(Constants.Localizations.Text.TRANSPOSITION_CLEARED),
                 true
@@ -120,16 +119,15 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResult.FAIL;
         }
 
-        CompoundTag tag = stack.getOrCreateTag();
         BlockState clickedState = level.getBlockState(clickedPos);
 
         // Sneak + Right-click on Teleposer to bind teleportation location
-        if (player.isShiftKeyDown() && clickedState.getBlock() instanceof BlockTeleposer) {
-            tag.putLong(TELEPOSER_KEY, clickedPos.asLong());
+        if (player.isShiftKeyDown() && clickedState.getBlock() instanceof TeleposerBlock) {
+            stack.set(AnimusDataComponents.TELEPOSER_POS.get(), clickedPos);
             player.displayClientMessage(
                 Component.translatable("text.component.animus.transposition.teleposer_bound")
                     .withStyle(ChatFormatting.GOLD),
@@ -152,7 +150,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
             // Check if player can break the block (protection check)
             BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, clickedPos, clickedState, player);
-            if (MinecraftForge.EVENT_BUS.post(breakEvent)) {
+            if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
                 // Protected by FTB Chunks or similar
                 player.displayClientMessage(
                     Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE),
@@ -161,7 +159,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
                 return InteractionResult.PASS;
             }
 
-            tag.putLong(POS_KEY, clickedPos.asLong());
+            stack.set(AnimusDataComponents.TRANSPOSITION_POS.get(), clickedPos);
             player.displayClientMessage(
                 Component.translatable(Constants.Localizations.Text.TRANSPOSITION_SET),
                 true
@@ -172,7 +170,11 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             return InteractionResult.SUCCESS;
         } else {
             // Second click - move the block
-            BlockPos oldPos = BlockPos.of(tag.getLong(POS_KEY));
+            BlockPos oldPos = stack.get(AnimusDataComponents.TRANSPOSITION_POS.get());
+            if (oldPos == null) {
+                setActivatedState(stack, false);
+                return InteractionResult.PASS;
+            }
             BlockPos newPos = clickedPos.relative(face);
 
             // Check if old block is still movable
@@ -180,7 +182,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
             // Check if block is tagged as non-relocatable
             if (oldState.is(RELOCATION_NOT_SUPPORTED)) {
-                tag.putLong(POS_KEY, 0);
+                stack.remove(AnimusDataComponents.TRANSPOSITION_POS.get());
                 level.playSound(null, newPos, SoundEvents.SHIELD_BLOCK, SoundSource.BLOCKS, 1.0F, 1.0F);
                 setActivatedState(stack, false);
                 player.displayClientMessage(
@@ -192,9 +194,9 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
             // Check if player can still break the block (protection check)
             BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, oldPos, oldState, player);
-            if (MinecraftForge.EVENT_BUS.post(breakEvent)) {
+            if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
                 // Protected by FTB Chunks or similar
-                tag.putLong(POS_KEY, 0);
+                stack.remove(AnimusDataComponents.TRANSPOSITION_POS.get());
                 level.playSound(null, newPos, SoundEvents.SHIELD_BLOCK, SoundSource.BLOCKS, 1.0F, 1.0F);
                 setActivatedState(stack, false);
                 player.displayClientMessage(
@@ -207,14 +209,11 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             // Check if destination is air
             if (level.isEmptyBlock(newPos)) {
                 // Consume LP
-                SoulNetwork network = NetworkHelper.getSoulNetwork(player);
-                SoulTicket ticket = new SoulTicket(
-                    Component.translatable(Constants.Localizations.Text.TICKET_TRANSPOSITION),
-                    getLpUsed()
-                );
+                SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+                SoulTicket ticket = SoulTicket.create(getLpUsed());
 
-                var result = network.syphonAndDamage(player, ticket);
-                if (!result.isSuccess()) {
+                var syphonResult = network.syphonAndDamage(player, ticket);
+                if (!syphonResult.isSuccess()) {
                     return InteractionResult.FAIL;
                 }
 
@@ -236,11 +235,12 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
                     if (oldTile != null) {
                         BlockEntity newTile = level.getBlockEntity(newPos);
                         if (newTile != null) {
-                            CompoundTag tileData = oldTile.saveWithoutMetadata();
+                            HolderLookup.Provider registries = level.registryAccess();
+                            CompoundTag tileData = oldTile.saveCustomOnly(registries);
                             tileData.putInt("x", newPos.getX());
                             tileData.putInt("y", newPos.getY());
                             tileData.putInt("z", newPos.getZ());
-                            newTile.load(tileData);
+                            newTile.loadCustomOnly(tileData, registries);
                             level.removeBlockEntity(oldPos);
                         }
                     }
@@ -258,7 +258,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
                 level.playSound(null, newPos, SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
 
                 // Clear selection
-                tag.putLong(POS_KEY, 0);
+                stack.remove(AnimusDataComponents.TRANSPOSITION_POS.get());
                 setActivatedState(stack, false);
 
                 return InteractionResult.SUCCESS;
@@ -273,22 +273,22 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_INFO));
 
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.getLong(POS_KEY) != 0) {
+        BlockPos storedPos = stack.get(AnimusDataComponents.TRANSPOSITION_POS.get());
+        if (storedPos != null) {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_TRANSPOSITION_STORED));
         }
 
-        if (tag != null && tag.getLong(TELEPOSER_KEY) != 0) {
-            BlockPos teleposerPos = BlockPos.of(tag.getLong(TELEPOSER_KEY));
+        BlockPos teleposerPos = stack.get(AnimusDataComponents.TELEPOSER_POS.get());
+        if (teleposerPos != null) {
             tooltip.add(Component.translatable("tooltip.animus.transposition.teleposer_location", teleposerPos.getX(), teleposerPos.getY(), teleposerPos.getZ())
                 .withStyle(ChatFormatting.AQUA));
         }
 
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 
     @Override
@@ -301,8 +301,8 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             return super.hurtEnemy(stack, target, attacker);
         }
 
-        CompoundTag tag = stack.getTag();
-        if (tag == null || tag.getLong(TELEPOSER_KEY) == 0) {
+        BlockPos teleposerPos = stack.get(AnimusDataComponents.TELEPOSER_POS.get());
+        if (teleposerPos == null) {
             player.displayClientMessage(
                 Component.translatable("text.component.animus.transposition.no_teleposer")
                     .withStyle(ChatFormatting.RED),
@@ -321,30 +321,26 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             return super.hurtEnemy(stack, target, attacker);
         }
 
-        // Get teleposer position
-        BlockPos teleposerPos = BlockPos.of(tag.getLong(TELEPOSER_KEY));
-        BlockPos targetPos = teleposerPos.above(); // 1 block above teleposer
+        // Get target position (1 block above teleposer)
+        BlockPos targetTeleportPos = teleposerPos.above();
 
         // Verify teleposer still exists
-        if (!(player.level().getBlockState(teleposerPos).getBlock() instanceof BlockTeleposer)) {
+        if (!(player.level().getBlockState(teleposerPos).getBlock() instanceof TeleposerBlock)) {
             player.displayClientMessage(
                 Component.translatable("text.component.animus.transposition.teleposer_missing")
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            tag.putLong(TELEPOSER_KEY, 0);
+            stack.remove(AnimusDataComponents.TELEPOSER_POS.get());
             return super.hurtEnemy(stack, target, attacker);
         }
 
         // Consume LP
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
-        SoulTicket ticket = new SoulTicket(
-            Component.literal("Entity Teleportation"),
-            TELEPORT_COST
-        );
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        SoulTicket ticket = SoulTicket.create(TELEPORT_COST);
 
-        var result = network.syphonAndDamage(player, ticket);
-        if (!result.isSuccess()) {
+        var syphonResult = network.syphonAndDamage(player, ticket);
+        if (!syphonResult.isSuccess()) {
             player.displayClientMessage(
                 Component.translatable("text.component.animus.transposition.not_enough_lp", TELEPORT_COST)
                     .withStyle(ChatFormatting.RED),
@@ -354,12 +350,12 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
         }
 
         // Teleport the entity
-        target.teleportTo(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
+        target.teleportTo(targetTeleportPos.getX() + 0.5, targetTeleportPos.getY(), targetTeleportPos.getZ() + 0.5);
         target.fallDistance = 0.0F;
 
         // Effects
         player.level().playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
-        player.level().playSound(null, targetPos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
+        player.level().playSound(null, targetTeleportPos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
 
         String targetName = target instanceof Player ? target.getName().getString() : target.getType().getDescription().getString();
         player.displayClientMessage(

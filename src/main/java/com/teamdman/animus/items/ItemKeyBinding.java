@@ -5,11 +5,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.core.data.Binding;
+import wayoftime.bloodmagic.common.datacomponent.Binding;
 
 import java.util.List;
 
@@ -32,13 +31,13 @@ public class ItemKeyBinding extends Item implements IBindable, ICurioItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.KEY));
 
         // Show owner name if bound
         Binding binding = getBinding(stack);
-        if (binding != null) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.getOwnerName()));
+        if (binding != null && !binding.isEmpty()) {
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.name()));
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.KEY_CURIO)
                 .withStyle(net.minecraft.ChatFormatting.AQUA));
         } else {
@@ -46,6 +45,6 @@ public class ItemKeyBinding extends Item implements IBindable, ICurioItem {
                 .withStyle(net.minecraft.ChatFormatting.GRAY));
         }
 
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

@@ -2,7 +2,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'net.neoforged.moddev' version '2.0.42-beta'
 }
 
 version = mod_version
@@ -12,49 +12,30 @@ base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-minecraft {
-    mappings channel: mapping_channel, version: mapping_version
-
-    // Automatically enable forge AccessTransformers if the file exists
-    // This allows you to use the `public`, `protected`, etc. keywords
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+neoForge {
+    version = neoforge_version
 
     runs {
-        configureEach {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
-
         client {
-            property 'forge.enabledGameTestNamespaces', mod_id
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            client()
         }
 
         server {
-            property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
-        }
-
-        gameTestServer {
-            property 'forge.enabledGameTestNamespaces', mod_id
+            server()
+            programArgument '--nogui'
         }
 
         data {
-            workingDirectory project.file('run-data')
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            data()
+            programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
         }
     }
 }
@@ -78,7 +59,7 @@ repositories {
         url = "https://maven.blamejared.com"
     }
     maven {
-        // CurseForge Maven (for Blood Magic)
+        // CurseForge Maven (for optional compat mods)
         name = "CurseForge"
         url = "https://cursemaven.com"
         content {
@@ -86,7 +67,7 @@ repositories {
         }
     }
     maven {
-        // Modrinth Maven (for Malum and Lodestone)
+        // Modrinth Maven (for optional compat mods)
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
         content {
@@ -107,23 +88,25 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    // Blood Magic - local build from mavenLocal or file dependency
+    // Option 1: Use local maven (run ./gradlew publishToMavenLocal in BloodMagic first)
+    // compileOnly "wayoftime.bloodmagic:BloodMagic-1.21.1:${bloodmagic_version}"
 
-    // Blood Magic - via CurseForge Maven (File ID 7253333 = BloodMagic-1.20.1-3.3.5-47)
-    implementation fg.deobf("curse.maven:blood-magic-224791:7253333")
+    // Option 2: Use file dependency (place BloodMagic jar in libs folder)
+    compileOnly files('libs/bloodmagic-3.4.0-1-beta.jar')
+    runtimeOnly files('libs/bloodmagic-3.4.0-1-beta.jar')
 
-    // JEI - compile only for development
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    // JEI - using CurseMaven since official maven doesn't have 1.21.1 yet
+    compileOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
+    runtimeOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
 
     // Curios - for bauble integration
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
     // Patchouli - for documentation books
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}:api"
+    runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
 
     // ============================================================================
     // Optional Compat Dependencies
@@ -135,55 +118,18 @@ dependencies {
     // ============================================================================
 
     // Geckolib - required by Ars Nouveau and Malum
-    runtimeOnly fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:4.4.9")
+    // runtimeOnly "software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7"
 
-    // PlayerAnimator - required by Iron's Spells
-    runtimeOnly fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:1.0.2-rc1+1.20")
-
-    // Caelus - required by Iron's Spells (provides elytra flight API)
-    runtimeOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:3.2.0+1.20.1")
-
-    // Curios API - required by Ars Nouveau and Iron's Spells (already included above for our own use)
-    // (Already added as compileOnly/runtimeOnly above)
-
-    // Malum and Lodestone - optional soft dependencies for cross-mod compatibility
-    // Runtime detection via ModList.get().isLoaded("malum") handles graceful degradation
-    runtimeOnly fg.deobf("curse.maven:lodestone-616457:6213794")
-    runtimeOnly fg.deobf("curse.maven:malum-484064:6646111")
-
-    // Ars Nouveau - optional soft dependency for source-to-LP conversion and arcane runes
-    // compileOnly allows implementing ISourceTile interface
-    // runtimeOnly needed because BlockEntityArcaneRune extends AbstractSourceMachine
-    // Runtime detection via ModList.get().isLoaded("ars_nouveau") handles graceful degradation
-    compileOnly fg.deobf("curse.maven:ars-nouveau-401955:6688854")
-    runtimeOnly fg.deobf("curse.maven:ars-nouveau-401955:6688854")
-
-    // Botania - optional soft dependency for mana-to-LP conversion
-    // compileOnly allows implementing ManaReceiver/ManaPool interfaces
-    // runtimeOnly needed because BlockEntityRuneUnleashedNature implements Botania interfaces
-    // Runtime detection via ModList.get().isLoaded("botania") handles graceful degradation
-    compileOnly fg.deobf("curse.maven:botania-225643:6870713")
-    runtimeOnly fg.deobf("curse.maven:botania-225643:6870713")
-
-    // Irons Spells n Spellbooks - optional soft dependency for spell/LP integration
-    // compileOnly allows using spell APIs and event system
-    // Runtime detection via ModList.get().isLoaded("irons_spellbooks") handles graceful degradation
-    compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:6970299")
-    runtimeOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:6970299")
-
-    // The One Probe - for debugging in dev environment only (not required in production)
-    runtimeOnly fg.deobf("curse.maven:the-one-probe-245211:6106996")
-
-    // Tank Null - dev utility mod for testing with working tanks
-    runtimeOnly fg.deobf("curse.maven:tank-null-361246:5664234")
+    // TODO: Add 1.21.1 versions of compat mods when available
+    // Malum, Lodestone, Ars Nouveau, Botania, Iron's Spells - need 1.21.1 versions
 }
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
             minecraft_version: minecraft_version,
             minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version,
-            forge_version_range: forge_version_range,
+            neoforge_version: neoforge_version,
+            neoforge_version_range: neoforge_version_range,
             loader_version_range: loader_version_range,
             mod_id: mod_id,
             mod_name: mod_name,
@@ -195,7 +141,7 @@ tasks.named('processResources', ProcessResources).configure {
 
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml']) {
+    filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
 }
@@ -212,8 +158,6 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
-
-    finalizedBy 'reobfJar'
 }
 
 publishing {

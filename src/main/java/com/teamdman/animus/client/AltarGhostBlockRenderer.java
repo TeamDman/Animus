@@ -8,13 +8,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.joml.Matrix4f;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ import java.util.Map;
 /**
  * Client-side renderer for ghost blocks shown by the Sanguine Diviner
  */
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public class AltarGhostBlockRenderer {
     private static Map<BlockPos, ResourceLocation> ghostBlocks = new HashMap<>();
     private static int remainingTicks = 0;
@@ -72,8 +73,8 @@ public class AltarGhostBlockRenderer {
             ResourceLocation blockId = entry.getValue();
 
             // Get the block from registry
-            Block block = ForgeRegistries.BLOCKS.getValue(blockId);
-            if (block == null) {
+            Block block = BuiltInRegistries.BLOCK.getOptional(blockId).orElse(null);
+            if (block == null || block == Blocks.AIR) {
                 continue;
             }
 
@@ -159,7 +160,7 @@ public class AltarGhostBlockRenderer {
         }
 
         // Add two vertices for the line
-        consumer.vertex(matrix, x1, y1, z1).color(r, g, b, a).normal(dx, dy, dz).endVertex();
-        consumer.vertex(matrix, x2, y2, z2).color(r, g, b, a).normal(dx, dy, dz).endVertex();
+        consumer.addVertex(matrix, x1, y1, z1).setColor(r, g, b, a).setNormal(dx, dy, dz);
+        consumer.addVertex(matrix, x2, y2, z2).setColor(r, g, b, a).setNormal(dx, dy, dz);
     }
 }

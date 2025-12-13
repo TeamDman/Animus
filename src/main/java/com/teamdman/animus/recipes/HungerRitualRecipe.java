@@ -1,17 +1,16 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
 
 /**
@@ -22,8 +21,8 @@ import com.teamdman.animus.registry.AnimusRecipeSerializers;
  */
 public class HungerRitualRecipe extends ImperfectRitualRecipe {
 
-    public HungerRitualRecipe(ResourceLocation id) {
-        super(id, "hunger", Blocks.BONE_BLOCK.defaultBlockState(), 500);
+    public HungerRitualRecipe() {
+        super("hunger", Blocks.BONE_BLOCK.defaultBlockState(), 500);
     }
 
     @Override
@@ -56,19 +55,18 @@ public class HungerRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<HungerRitualRecipe> {
+        private static final MapCodec<HungerRitualRecipe> CODEC = MapCodec.unit(HungerRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, HungerRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new HungerRitualRecipe());
+
         @Override
-        public HungerRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new HungerRitualRecipe(recipeId);
+        public MapCodec<HungerRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public HungerRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new HungerRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, HungerRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, HungerRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

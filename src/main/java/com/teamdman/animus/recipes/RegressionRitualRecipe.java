@@ -1,11 +1,11 @@
 package com.teamdman.animus.recipes;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +13,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
 
 /**
@@ -24,8 +23,8 @@ import com.teamdman.animus.registry.AnimusRecipeSerializers;
  */
 public class RegressionRitualRecipe extends ImperfectRitualRecipe {
 
-    public RegressionRitualRecipe(ResourceLocation id) {
-        super(id, "regression", Blocks.BOOKSHELF.defaultBlockState(), 3000);
+    public RegressionRitualRecipe() {
+        super("regression", Blocks.BOOKSHELF.defaultBlockState(), 3000);
     }
 
     @Override
@@ -40,9 +39,9 @@ public class RegressionRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        // Remove repair cost from item
-        CompoundTag tag = heldItem.getOrCreateTag();
-        if (!tag.contains("RepairCost")) {
+        // Check if item has repair cost
+        Integer repairCost = heldItem.get(DataComponents.REPAIR_COST);
+        if (repairCost == null || repairCost <= 0) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.regression.no_cost"),
                 true
@@ -50,7 +49,8 @@ public class RegressionRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        tag.remove("RepairCost");
+        // Remove repair cost
+        heldItem.remove(DataComponents.REPAIR_COST);
 
         // Play success sound
         level.playSound(
@@ -76,19 +76,18 @@ public class RegressionRitualRecipe extends ImperfectRitualRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<RegressionRitualRecipe> {
+        private static final MapCodec<RegressionRitualRecipe> CODEC = MapCodec.unit(RegressionRitualRecipe::new);
+        private static final StreamCodec<RegistryFriendlyByteBuf, RegressionRitualRecipe> STREAM_CODEC =
+            StreamCodec.unit(new RegressionRitualRecipe());
+
         @Override
-        public RegressionRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            return new RegressionRitualRecipe(recipeId);
+        public MapCodec<RegressionRitualRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public RegressionRitualRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-            return new RegressionRitualRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, RegressionRitualRecipe recipe) {
-            // Nothing to write - all values are hardcoded
+        public StreamCodec<RegistryFriendlyByteBuf, RegressionRitualRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

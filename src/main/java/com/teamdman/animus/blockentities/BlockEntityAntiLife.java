@@ -3,6 +3,7 @@ package com.teamdman.animus.blockentities;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -62,8 +63,8 @@ public class BlockEntityAntiLife extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
         tag.putString("seeking", seeking.getDescriptionId());
         tag.putInt("range", range);
         if (playerUUID != null) {
@@ -72,8 +73,8 @@ public class BlockEntityAntiLife extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         // Try to get the block - if it fails, default to AIR
         String seekingId = tag.getString("seeking");
         this.seeking = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getOptional(

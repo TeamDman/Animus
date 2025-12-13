@@ -1,21 +1,18 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.client.SigilClientHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
 import wayoftime.bloodmagic.common.item.sigil.ItemSigilBase;
-import wayoftime.bloodmagic.core.data.Binding;
+import wayoftime.bloodmagic.common.datacomponent.Binding;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for Animus sigils
@@ -58,22 +55,22 @@ public abstract class AnimusSigilBase extends ItemSigilBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         // DON'T call super.appendHoverText() - Blood Magic's ItemSigilBase adds bloodmagic namespace tooltips
         // We handle all tooltips in the individual sigil classes using the animus namespace
 
         // Add binding owner information
         Binding binding = getBinding(stack);
-        if (binding != null) {
-            // Try to get the owner's name from the client player cache (client-side only)
-            AtomicReference<String> ownerNameRef = new AtomicReference<>("Unknown");
-            if (level != null && level.isClientSide()) {
-                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ownerNameRef.set(SigilClientHelper.getOwnerName(binding.getOwnerId())));
+        if (binding != null && !binding.isEmpty()) {
+            // Use the name stored in the binding record
+            String ownerName = binding.name();
+            if (ownerName == null || ownerName.isEmpty()) {
+                ownerName = "Unknown";
             }
 
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BOUND_TO)
                 .withStyle(ChatFormatting.GRAY)
-                .append(Component.literal(ownerNameRef.get())
+                .append(Component.literal(ownerName)
                     .withStyle(ChatFormatting.AQUA)));
         } else {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.NOT_BOUND)

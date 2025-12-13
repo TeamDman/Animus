@@ -11,8 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.core.data.Binding;
+import wayoftime.bloodmagic.common.datacomponent.Binding;
 import wayoftime.bloodmagic.ritual.IMasterRitualStone;
 
 import java.util.List;
@@ -60,8 +61,8 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
                 return InteractionResult.FAIL;
             }
 
-            // Try to activate the ritual
-            boolean activated = masterRitualStone.activateRitual(stack, player, ritual);
+            // Try to activate the ritual (crystal level 0 = weak)
+            boolean activated = masterRitualStone.activateRitual(ritual, player, 0);
 
             if (activated) {
                 // Ritual activated successfully - shatter the crystal
@@ -82,14 +83,14 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_INFO));
 
         // Show owner name if bound
         Binding binding = getBinding(stack);
-        if (binding != null) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.getOwnerName())
+        if (binding != null && !binding.isEmpty()) {
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.name())
                 .withStyle(ChatFormatting.AQUA));
         } else {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.UNBOUND_BIND)
@@ -99,6 +100,6 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_WARNING)
             .withStyle(ChatFormatting.RED));
 
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

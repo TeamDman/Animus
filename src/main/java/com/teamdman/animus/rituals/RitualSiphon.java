@@ -14,15 +14,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.util.RandomSource;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -39,7 +39,6 @@ import java.util.function.Consumer;
  * Vertical Depth: Configurable (default: 128 blocks)
  * Replacement Block: Configurable (default: animus:block_antilife)
  */
-@RitualRegister(Constants.Rituals.SIPHON)
 public class RitualSiphon extends Ritual {
     private static final Logger LOGGER = LoggerFactory.getLogger(RitualSiphon.class);
 
@@ -70,7 +69,7 @@ public class RitualSiphon extends Ritual {
             return;
         }
 
-        SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
             return;
         }
@@ -87,7 +86,7 @@ public class RitualSiphon extends Ritual {
         // Get fluid handler capability with error handling
         IFluidHandler fluidHandler;
         try {
-            fluidHandler = tankEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.DOWN).orElse(null);
+            fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, tankPos, Direction.DOWN);
             if (fluidHandler == null) {
                 emitSmokeParticles(serverLevel, masterPos);
                 return;
@@ -140,7 +139,7 @@ public class RitualSiphon extends Ritual {
         int lpCost = AnimusConfig.rituals.siphonLPPerExtraction.get();
         int currentEssence = network.getCurrentEssence();
         if (currentEssence < lpCost) {
-            network.causeNausea();
+            // Note: causeNausea removed in BM 4.0
             return;
         }
 
@@ -167,10 +166,7 @@ public class RitualSiphon extends Ritual {
         extractedPositions.add(fluidPos.immutable());
 
         // Consume LP
-        network.syphon(new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_SIPHON),
-            lpCost
-        ), false);
+        network.syphon(SoulTicket.create(lpCost));
     }
 
     /**
@@ -286,7 +282,7 @@ public class RitualSiphon extends Ritual {
 
             if (resourceLocation != null) {
                 net.minecraft.world.level.block.Block block =
-                    net.minecraftforge.registries.ForgeRegistries.BLOCKS.getValue(resourceLocation);
+                    net.minecraft.core.registries.BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElse(null);
 
                 if (block != null && block != net.minecraft.world.level.block.Blocks.AIR) {
                     return block.defaultBlockState();

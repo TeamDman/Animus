@@ -19,7 +19,7 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.core.data.Binding;
+import wayoftime.bloodmagic.common.datacomponent.Binding;
 
 import java.util.UUID;
 
@@ -115,7 +115,7 @@ public class BlockWillfulStone extends Block implements EntityBlock {
         }
 
         // Check curios slots
-        var curiosOpt = CuriosApi.getCuriosInventory(player).resolve();
+        var curiosOpt = CuriosApi.getCuriosInventory(player);
         if (curiosOpt.isPresent()) {
             var curios = curiosOpt.get();
             var handler = curios.getEquippedCurios();
@@ -146,8 +146,8 @@ public class BlockWillfulStone extends Block implements EntityBlock {
         // Check if bound to the owner using Blood Magic's binding system
         if (stack.getItem() instanceof IBindable bindable) {
             Binding binding = bindable.getBinding(stack);
-            if (binding != null) {
-                return binding.getOwnerId().equals(owner);
+            if (binding != null && !binding.isEmpty()) {
+                return binding.uuid().equals(owner);
             }
         }
 

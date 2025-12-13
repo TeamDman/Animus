@@ -1,25 +1,21 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.client.SentientShieldClientExtension;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.fml.DistExecutor;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.api.compat.IDemonWillWeapon;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Sentient Shield - A demon-will powered shield
@@ -27,7 +23,7 @@ import java.util.function.Consumer;
  * Grants special effects when blocking based on the demon will type available
  * Increases demon will gained by 30% while equipped
  */
-public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
+public class ItemSentientShield extends ShieldItem {
     // Normal shield has 336 durability, sentient has 4x
     private static final int SENTIENT_SHIELD_DURABILITY = 336 * 4; // 1344
 
@@ -36,12 +32,12 @@ public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
-        EnumDemonWillType type = getCurrentType(stack);
-        String displayType = type == EnumDemonWillType.DEFAULT ? "raw" : type.name().toLowerCase();
+        EnumWillType type = getCurrentType(stack);
+        String displayType = type == EnumWillType.DEFAULT ? "raw" : type.name().toLowerCase();
         tooltip.add(Component.translatable("tooltip.animus.sentient_shield.will_type", displayType)
             .withStyle(ChatFormatting.AQUA));
 
@@ -71,7 +67,7 @@ public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_WILL_BONUS)
             .withStyle(ChatFormatting.GREEN));
 
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 
     @Override
@@ -80,7 +76,7 @@ public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
 
         if (entity instanceof Player player) {
             // Update the will type based on the player's inventory
-            EnumDemonWillType newType = findDemonWillType(player);
+            EnumWillType newType = findDemonWillType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
             }
@@ -91,14 +87,14 @@ public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
      * Determines the demon will type based on will available from the player's soul network
      * Returns the type with the highest will amount
      */
-    private static EnumDemonWillType findDemonWillType(Player player) {
+    private static EnumWillType findDemonWillType(Player player) {
         // Get will amounts from the player's soul network
-        EnumDemonWillType highestType = EnumDemonWillType.DEFAULT;
+        EnumWillType highestType = EnumWillType.DEFAULT;
         double highestAmount = 0;
 
-        for (EnumDemonWillType type : EnumDemonWillType.values()) {
+        for (EnumWillType type : EnumWillType.values()) {
             double amount = PlayerDemonWillHandler.getTotalDemonWill(type, player);
-            if (type != EnumDemonWillType.DEFAULT && amount > highestAmount) {
+            if (type != EnumWillType.DEFAULT && amount > highestAmount) {
                 highestType = type;
                 highestAmount = amount;
             }
@@ -110,19 +106,24 @@ public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
     /**
      * Gets the total amount of will the player has of a specific type from their soul network
      */
-    private static double getTotalWillOfType(Player player, EnumDemonWillType type) {
+    private static double getTotalWillOfType(Player player, EnumWillType type) {
         return PlayerDemonWillHandler.getTotalDemonWill(type, player);
     }
 
-    public EnumDemonWillType getCurrentType(ItemStack stack) {
-        if (stack.hasTag() && stack.getTag().contains("demonWillType")) {
-            return EnumDemonWillType.valueOf(stack.getTag().getString("demonWillType"));
+    public EnumWillType getCurrentType(ItemStack stack) {
+        String typeStr = stack.get(AnimusDataComponents.DEMON_WILL_TYPE.get());
+        if (typeStr != null) {
+            try {
+                return EnumWillType.valueOf(typeStr);
+            } catch (IllegalArgumentException e) {
+                return EnumWillType.DEFAULT;
+            }
         }
-        return EnumDemonWillType.DEFAULT;
+        return EnumWillType.DEFAULT;
     }
 
-    public void setCurrentType(ItemStack stack, EnumDemonWillType type) {
-        stack.getOrCreateTag().putString("demonWillType", type.toString());
+    public void setCurrentType(ItemStack stack, EnumWillType type) {
+        stack.set(AnimusDataComponents.DEMON_WILL_TYPE.get(), type.toString());
     }
 
     public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int tier) {
@@ -130,7 +131,7 @@ public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
         return new java.util.ArrayList<>();
     }
 
-    public EnumDemonWillType getActiveDemonWillType(ItemStack stack, LivingEntity player, Entity target) {
+    public EnumWillType getActiveDemonWillType(ItemStack stack, LivingEntity player, Entity target) {
         return getCurrentType(stack);
     }
 
@@ -168,10 +169,5 @@ public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
             return offHand;
         }
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> consumer.accept(SentientShieldClientExtension.INSTANCE));
     }
 }

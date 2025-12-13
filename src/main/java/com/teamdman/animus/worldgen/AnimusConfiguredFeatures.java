@@ -3,7 +3,7 @@ package com.teamdman.animus.worldgen;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -22,7 +22,7 @@ public class AnimusConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> BLOOD_TREE =
         registerKey("blood_tree");
 
-    public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, BLOOD_TREE, Feature.TREE, createBloodTree().build());
     }
 
@@ -44,7 +44,7 @@ public class AnimusConfiguredFeatures {
     }
 
     private static <FC extends net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration, F extends Feature<FC>>
-    void register(BootstapContext<ConfiguredFeature<?, ?>> context,
+    void register(BootstrapContext<ConfiguredFeature<?, ?>> context,
                   ResourceKey<ConfiguredFeature<?, ?>> key,
                   F feature,
                   FC configuration) {

@@ -6,15 +6,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.function.Consumer;
 
@@ -25,21 +24,20 @@ import java.util.function.Consumer;
  * Refresh Cost: 1 LP
  * Refresh Time: 1 tick
  */
-@RitualRegister(Constants.Rituals.ENTROPY)
 public class RitualEntropy extends Ritual {
     public static final String CHEST_RANGE = "chest";
 
     public RitualEntropy() {
         super(Constants.Rituals.ENTROPY, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENTROPY);
 
-        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1));
+        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
     }
 
     @Override
     public void performRitual(IMasterRitualStone masterRitualStone) {
         Level level = masterRitualStone.getWorldObj();
-        SoulNetwork network = NetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
         if (network == null) {
             return;
         }
@@ -51,23 +49,18 @@ public class RitualEntropy extends Ritual {
             return;
         }
 
-        // Get chest
+        // Get chest position
         AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
-        BlockEntity chestTile = level.getBlockEntity(chestPos);
 
-        if (chestTile == null) {
-            return;
-        }
-
-        // Get item handler from chest
-        IItemHandler handler = chestTile.getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElse(null);
+        // Get item handler using NeoForge capability system
+        IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
         if (handler == null) {
             return;
         }
 
         if (currentEssence < getRefreshCost()) {
-            network.causeNausea();
+            // Note: causeNausea removed in BM 4.0
             return;
         }
 
@@ -88,11 +81,8 @@ public class RitualEntropy extends Ritual {
             ItemHandlerHelper.insertItemStacked(handler, new ItemStack(Items.COBBLESTONE, 1), false);
 
             // Consume LP
-            SoulTicket ticket = new SoulTicket(
-                Component.translatable(Constants.Localizations.Text.TICKET_ENTROPY),
-                getRefreshCost()
-            );
-            network.syphon(ticket, false);
+            SoulTicket ticket = SoulTicket.create(getRefreshCost());
+            network.syphon(ticket);
 
             return; // Only process one item per tick
         }

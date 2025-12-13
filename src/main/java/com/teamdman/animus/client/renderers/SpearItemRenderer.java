@@ -19,9 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
@@ -59,14 +58,13 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
         
         Matrix4f matrix = poseStack.last().pose();
-        Matrix3f normal = poseStack.last().normal();
-        
+
         // Render a flat quad (16x16 texture mapped to 1x1 quad)
         // UV coordinates are 0-1 for full texture
-        vertexConsumer.vertex(matrix, 0, 0, 0.5f).color(255, 255, 255, 255).uv(0, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, 0, 0, 1).endVertex();
-        vertexConsumer.vertex(matrix, 1, 0, 0.5f).color(255, 255, 255, 255).uv(1, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, 0, 0, 1).endVertex();
-        vertexConsumer.vertex(matrix, 1, 1, 0.5f).color(255, 255, 255, 255).uv(1, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, 0, 0, 1).endVertex();
-        vertexConsumer.vertex(matrix, 0, 1, 0.5f).color(255, 255, 255, 255).uv(0, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, 0, 0, 1).endVertex();
+        vertexConsumer.addVertex(matrix, 0, 0, 0.5f).setColor(255, 255, 255, 255).setUv(0, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
+        vertexConsumer.addVertex(matrix, 1, 0, 0.5f).setColor(255, 255, 255, 255).setUv(1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
+        vertexConsumer.addVertex(matrix, 1, 1, 0.5f).setColor(255, 255, 255, 255).setUv(1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
+        vertexConsumer.addVertex(matrix, 0, 1, 0.5f).setColor(255, 255, 255, 255).setUv(0, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
         
         poseStack.popPose();
     }
@@ -110,12 +108,12 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
         // Render each quad from the model manually using the poseStack transform
         for (net.minecraft.core.Direction direction : net.minecraft.core.Direction.values()) {
             for (net.minecraft.client.renderer.block.model.BakedQuad quad : model.getQuads(null, direction, mc.level.random)) {
-                vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
+                vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
             }
         }
         // Also render non-directional quads
         for (net.minecraft.client.renderer.block.model.BakedQuad quad : model.getQuads(null, null, mc.level.random)) {
-            vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
+            vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
         }
 
         poseStack.popPose();

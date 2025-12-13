@@ -1,7 +1,7 @@
 package com.teamdman.animus.recipes;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -16,22 +16,15 @@ import com.teamdman.animus.registry.AnimusRecipeTypes;
  * Recipe for imperfect rituals
  * Defines which block triggers which ritual effect and the LP cost
  */
-public abstract class ImperfectRitualRecipe implements Recipe<net.minecraft.world.Container> {
-    private final ResourceLocation id;
+public abstract class ImperfectRitualRecipe implements Recipe<ImperfectRitualInput> {
     private final String ritualKey;
     private final BlockState triggerBlock;
     private final int lpCost;
 
-    protected ImperfectRitualRecipe(ResourceLocation id, String ritualKey, BlockState triggerBlock, int lpCost) {
-        this.id = id;
+    protected ImperfectRitualRecipe(String ritualKey, BlockState triggerBlock, int lpCost) {
         this.ritualKey = ritualKey;
         this.triggerBlock = triggerBlock;
         this.lpCost = lpCost;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return id;
     }
 
     public String getRitualKey() {
@@ -61,12 +54,12 @@ public abstract class ImperfectRitualRecipe implements Recipe<net.minecraft.worl
     public abstract boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player);
 
     @Override
-    public boolean matches(net.minecraft.world.Container container, Level level) {
-        return false; // Not used for this recipe type
+    public boolean matches(ImperfectRitualInput input, Level level) {
+        return false; // Not used for this recipe type - matching done via block state
     }
 
     @Override
-    public ItemStack assemble(net.minecraft.world.Container container, net.minecraft.core.RegistryAccess registryAccess) {
+    public ItemStack assemble(ImperfectRitualInput input, HolderLookup.Provider registries) {
         return ItemStack.EMPTY;
     }
 
@@ -76,7 +69,7 @@ public abstract class ImperfectRitualRecipe implements Recipe<net.minecraft.worl
     }
 
     @Override
-    public ItemStack getResultItem(net.minecraft.core.RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider registries) {
         return ItemStack.EMPTY;
     }
 

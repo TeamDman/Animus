@@ -1,7 +1,9 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -9,9 +11,11 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import wayoftime.bloodmagic.util.SoulTicket;
 
 import java.util.*;
 
@@ -58,7 +62,7 @@ public class ItemSigilRemedium extends AnimusSigilBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -94,17 +98,15 @@ public class ItemSigilRemedium extends AnimusSigilBase {
      * Check if this sigil is active
      */
     public static boolean isActive(ItemStack stack) {
-        if (stack.hasTag()) {
-            return stack.getTag().getBoolean("Active");
-        }
-        return false;
+        Boolean active = stack.get(AnimusDataComponents.SIGIL_ACTIVATED.get());
+        return active != null && active;
     }
 
     /**
      * Set the active state of this sigil
      */
     private void setActive(ItemStack stack, boolean active) {
-        stack.getOrCreateTag().putBoolean("Active", active);
+        stack.set(AnimusDataComponents.SIGIL_ACTIVATED.get(), active);
     }
 
     /**
@@ -123,7 +125,7 @@ public class ItemSigilRemedium extends AnimusSigilBase {
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof ItemSigilRemedium && isActive(stack)) {
                 hasActiveSigil = true;
-                activeSigil.stack.getOrCreateTag().putBoolean("Active", true); // Ensure sync
+                stack.set(AnimusDataComponents.SIGIL_ACTIVATED.get(), true); // Ensure sync
                 break;
             }
         }
@@ -144,11 +146,11 @@ public class ItemSigilRemedium extends AnimusSigilBase {
         activeSigil.lastCleanTick = currentTick;
 
         // Collect all negative effects
-        List<MobEffect> negativeEffects = new ArrayList<>();
+        List<Holder<MobEffect>> negativeEffects = new ArrayList<>();
         for (MobEffectInstance effectInstance : player.getActiveEffects()) {
-            MobEffect effect = effectInstance.getEffect();
+            Holder<MobEffect> effect = effectInstance.getEffect();
             // Check if the effect is harmful (negative)
-            if (!effect.isBeneficial()) {
+            if (!effect.value().isBeneficial()) {
                 negativeEffects.add(effect);
             }
         }
@@ -162,11 +164,8 @@ public class ItemSigilRemedium extends AnimusSigilBase {
         int lpCost = negativeEffects.size() * 50;
 
         // Try to consume LP from soul network
-        wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
-        wayoftime.bloodmagic.core.data.SoulTicket ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_REMEDIUM),
-            lpCost
-        );
+        wayoftime.bloodmagic.common.datacomponent.SoulNetwork network = wayoftime.bloodmagic.util.helper.SoulNetworkHelper.getSoulNetwork(player);
+        SoulTicket ticket = SoulTicket.create(lpCost);
 
         var syphonResult = network.syphonAndDamage(player, ticket);
         if (!syphonResult.isSuccess()) {
@@ -182,7 +181,7 @@ public class ItemSigilRemedium extends AnimusSigilBase {
         }
 
         // Remove all negative effects
-        for (MobEffect effect : negativeEffects) {
+        for (Holder<MobEffect> effect : negativeEffects) {
             player.removeEffect(effect);
         }
     }
@@ -191,7 +190,7 @@ public class ItemSigilRemedium extends AnimusSigilBase {
      * Static version of setActive for use in tick handler
      */
     private static void setActiveStatic(ItemStack stack, boolean active) {
-        stack.getOrCreateTag().putBoolean("Active", active);
+        stack.set(AnimusDataComponents.SIGIL_ACTIVATED.get(), active);
     }
 
     /**
@@ -202,7 +201,7 @@ public class ItemSigilRemedium extends AnimusSigilBase {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_REMEDIUM_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_REMEDIUM_INFO));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_REMEDIUM_COST));
@@ -215,6 +214,6 @@ public class ItemSigilRemedium extends AnimusSigilBase {
                 .withStyle(ChatFormatting.GRAY));
         }
 
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

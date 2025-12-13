@@ -3,12 +3,11 @@ package com.teamdman.animus.items.sigils;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.client.InputClientHelper;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -19,6 +18,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
@@ -30,15 +30,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.minecraft.core.registries.BuiltInRegistries;
 import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,8 +50,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * - Right-click block: Replace all matching blocks in radius with random selection
  */
 public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
-    private static final String NBT_SELECTED_BLOCKS = "SelectedBlocks";
-    private static final String NBT_RADIUS = "Radius";
     private static final int MAX_SELECTED_BLOCKS = 20;
     private static final int MIN_RADIUS = 1;
     private static final int MAX_RADIUS = 32;
@@ -80,8 +77,8 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
             if (player.level().isClientSide) {
                 // Send packet to server to sync radius
-                com.teamdman.animus.network.AnimusNetwork.CHANNEL.sendToServer(
-                    new com.teamdman.animus.network.SigilRadiusPacket(hand, newRadius)
+                com.teamdman.animus.network.AnimusPayloads.sendToServer(
+                    new com.teamdman.animus.network.SigilRadiusPayload(hand, newRadius)
                 );
 
                 player.displayClientMessage(
@@ -223,7 +220,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         }
 
         // Get the player's soul network
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
         if (network == null) {
             return InteractionResult.FAIL;
         }
@@ -276,15 +273,12 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            network.causeNausea();
+            // Note: causeNausea removed in BM 1.21
             return InteractionResult.FAIL;
         }
 
         // Consume LP
-        network.syphon(new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_EQUIVALENCY),
-            totalLP
-        ), false);
+        network.syphon(SoulTicket.create(totalLP));
 
         // Create replacement operation
         ReplacementOperation operation = new ReplacementOperation(
@@ -419,7 +413,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
-            if (ItemStack.isSameItemSameTags(stack, blockItem)) {
+            if (ItemStack.isSameItemSameComponents(stack, blockItem)) {
                 return true;
             }
         }
@@ -455,21 +449,23 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         }
     }
 
-    // NBT Methods
-    @SuppressWarnings("removal")
+    // Data Component Methods for selected blocks
     private List<Block> getSelectedBlocks(ItemStack stack) {
         List<Block> blocks = new ArrayList<>();
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains(NBT_SELECTED_BLOCKS)) {
+        String selectedStr = stack.get(AnimusDataComponents.EQUIVALENCY_SELECTED_BLOCKS.get());
+        if (selectedStr == null || selectedStr.isEmpty()) {
             return blocks;
         }
 
-        ListTag list = tag.getList(NBT_SELECTED_BLOCKS, Tag.TAG_STRING);
-        for (int i = 0; i < list.size(); i++) {
-            String blockId = list.getString(i);
-            Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockId));
-            if (block != null && block != Blocks.AIR) {
-                blocks.add(block);
+        String[] blockIds = selectedStr.split(",");
+        for (String blockId : blockIds) {
+            if (blockId.isEmpty()) continue;
+            ResourceLocation rl = ResourceLocation.tryParse(blockId);
+            if (rl != null) {
+                Block block = BuiltInRegistries.BLOCK.getOptional(rl).orElse(null);
+                if (block != null && block != Blocks.AIR) {
+                    blocks.add(block);
+                }
             }
         }
 
@@ -477,28 +473,24 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
     }
 
     private void setSelectedBlocks(ItemStack stack, List<Block> blocks) {
-        CompoundTag tag = stack.getOrCreateTag();
-        ListTag list = new ListTag();
-
-        for (Block block : blocks) {
-            ResourceLocation id = ForgeRegistries.BLOCKS.getKey(block);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < blocks.size(); i++) {
+            Block block = blocks.get(i);
+            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
             if (id != null) {
-                list.add(StringTag.valueOf(id.toString()));
+                if (i > 0) sb.append(",");
+                sb.append(id.toString());
             }
         }
-
-        tag.put(NBT_SELECTED_BLOCKS, list);
+        stack.set(AnimusDataComponents.EQUIVALENCY_SELECTED_BLOCKS.get(), sb.toString());
     }
 
     private void clearSelectedBlocks(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null) {
-            tag.remove(NBT_SELECTED_BLOCKS);
-        }
+        stack.remove(AnimusDataComponents.EQUIVALENCY_SELECTED_BLOCKS.get());
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.EQUIVALENCY_1)
             .withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.EQUIVALENCY_2)
@@ -520,8 +512,8 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
             // If shift is held, show all selected blocks (check client-side only)
             boolean showDetails = false;
-            if (level != null && level.isClientSide()) {
-                showDetails = DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> InputClientHelper::isShiftDown);
+            if (FMLEnvironment.dist == Dist.CLIENT) {
+                showDetails = InputClientHelper.isShiftDown();
             }
             if (showDetails) {
                 for (Block block : selected) {
@@ -535,28 +527,27 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             }
         }
 
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 
-    // Radius NBT methods
+    // Radius data component methods
     private int getRadius(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
+        Integer radiusVal = stack.get(AnimusDataComponents.EQUIVALENCY_RADIUS.get());
         int radius;
-        if (tag == null || !tag.contains(NBT_RADIUS)) {
+        if (radiusVal == null) {
             // Default to config value
             radius = AnimusConfig.sigils.sigilEquivalencyRadius.get();
         } else {
-            radius = tag.getInt(NBT_RADIUS);
+            radius = radiusVal;
         }
         // Always clamp to valid range to prevent bugs
         return Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
     }
 
     private void setRadius(ItemStack stack, int radius) {
-        CompoundTag tag = stack.getOrCreateTag();
         // Clamp before saving
         radius = Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
-        tag.putInt(NBT_RADIUS, radius);
+        stack.set(AnimusDataComponents.EQUIVALENCY_RADIUS.get(), radius);
     }
 
     /**
@@ -628,7 +619,14 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
             // Get drops with silk touch
             ItemStack tool = new ItemStack(net.minecraft.world.item.Items.DIAMOND_PICKAXE);
-            tool.enchant(Enchantments.SILK_TOUCH, 1);
+            // In 1.21, enchanting requires registry access - use simpler approach
+            if (level.registryAccess().lookup(Registries.ENCHANTMENT).isPresent()) {
+                var enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+                var silkTouch = enchantmentRegistry.get(Enchantments.SILK_TOUCH);
+                if (silkTouch.isPresent()) {
+                    tool.enchant(silkTouch.get(), 1);
+                }
+            }
 
             LootParams.Builder lootBuilder = new LootParams.Builder(level)
                 .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
@@ -676,7 +674,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack stack = player.getInventory().getItem(i);
-                if (ItemStack.isSameItemSameTags(stack, blockItem)) {
+                if (ItemStack.isSameItemSameComponents(stack, blockItem)) {
                     stack.shrink(1);
                     return true;
                 }

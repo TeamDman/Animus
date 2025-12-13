@@ -17,10 +17,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
  * Client-side renderer for Sigil of Equivalency block preview
  * Shows which blocks would be replaced when looking at a block with the sigil
  */
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
 public class SigilEquivalencyRenderer {
 
     @SubscribeEvent
@@ -192,12 +192,8 @@ public class SigilEquivalencyRenderer {
     }
 
     private static int getRadius(ItemStack stack) {
-        net.minecraft.nbt.CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Radius")) {
-            // Default to config value
-            return AnimusConfig.sigils.sigilEquivalencyRadius.get();
-        }
-        return tag.getInt("Radius");
+        // TODO: Use data components for custom radius in future
+        return AnimusConfig.sigils.sigilEquivalencyRadius.get();
     }
 
     private static void renderPreviewBlock(PoseStack poseStack, MultiBufferSource bufferSource) {
@@ -257,7 +253,7 @@ public class SigilEquivalencyRenderer {
         }
 
         // Add two vertices for the line
-        consumer.vertex(matrix, x1, y1, z1).color(r, g, b, a).normal(dx, dy, dz).endVertex();
-        consumer.vertex(matrix, x2, y2, z2).color(r, g, b, a).normal(dx, dy, dz).endVertex();
+        consumer.addVertex(matrix, x1, y1, z1).setColor(r, g, b, a).setNormal(dx, dy, dz);
+        consumer.addVertex(matrix, x2, y2, z2).setColor(r, g, b, a).setNormal(dx, dy, dz);
     }
 }

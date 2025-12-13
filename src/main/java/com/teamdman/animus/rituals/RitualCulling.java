@@ -22,14 +22,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.common.tile.TileAltar;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.will.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -44,7 +44,6 @@ import java.util.function.Consumer;
  * Range: Configurable (default 10 blocks horizontal, 10 blocks vertical above AND below stone)
  * LP per Kill: Configurable (default 200 LP)
  */
-@RitualRegister(Constants.Rituals.CULLING)
 public class RitualCulling extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
@@ -120,7 +119,7 @@ public class RitualCulling extends Ritual {
 
     @Override
     public void performRitual(IMasterRitualStone ritualStone) {
-        SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(ritualStone.getOwner());
         if (network == null) {
             return;
         }
@@ -134,15 +133,15 @@ public class RitualCulling extends Ritual {
         }
 
         // Get current destructive demon will (for boss killing)
-        EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;
+        EnumWillType type = EnumWillType.DESTRUCTIVE;
         double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
         // Check for raw demon will (for player-like kills)
-        double rawWillAmount = WorldDemonWillHandler.getCurrentWill(level, pos, EnumDemonWillType.DEFAULT);
+        double rawWillAmount = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.DEFAULT);
         boolean usePlayerKill = AnimusConfig.rituals.cullingPlayerKillDrops.get() && rawWillAmount >= 1.0;
 
         // Find nearby altar
-        TileAltar tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
+        BloodAltarTile tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
         if (tileAltar == null) {
             if (AnimusConfig.rituals.cullingDebug.get()) {
                 System.out.println("Animus: [Ritual of Culling Debug]: No valid altar found within altar range for MRS at " + ritualStone.getMasterBlockPos());
@@ -177,7 +176,8 @@ public class RitualCulling extends Ritual {
         int entityCount = 0;
 
         if (currentEssence < getRefreshCost() * list.size()) {
-            network.causeNausea();
+            // TODO: Blood Magic 4.x removed causeNausea() from SoulNetwork
+            // network.causeNausea();
             if (AnimusConfig.rituals.cullingDebug.get()) {
                 System.out.println("Animus: [Ritual of Culling Debug]: Culling MRS at " + ritualStone.getMasterBlockPos() + " does not have sufficient LP from the owner");
             }
@@ -208,7 +208,7 @@ public class RitualCulling extends Ritual {
                     System.out.println("Animus: [Ritual of Culling Debug]:   Active effects: " + effects.size());
                     if (!effects.isEmpty()) {
                         for (MobEffectInstance effect : effects) {
-                            System.out.println("Animus: [Ritual of Culling Debug]:     - " + effect.getEffect().getDescriptionId());
+                            System.out.println("Animus: [Ritual of Culling Debug]:     - " + effect.getEffect().value().getDescriptionId());
                         }
                     }
                     System.out.println("Animus: [Ritual of Culling Debug]:   canKillBuffedMobs config: " + AnimusConfig.general.canKillBuffedMobs.get());
@@ -216,7 +216,10 @@ public class RitualCulling extends Ritual {
 
                 if (effects.isEmpty() || AnimusConfig.general.canKillBuffedMobs.get()) {
                     BlockPos at = livingEntity.blockPosition();
-                    boolean isBoss = !livingEntity.canChangeDimensions();
+                    // In 1.21, canChangeDimensions() requires (Level, Level) params
+                    // Using invulnerability check instead as a proxy for boss detection
+                    boolean isBoss = livingEntity.isInvulnerable() || livingEntity.getType().is(net.minecraft.tags.EntityTypeTags.WITHER) ||
+                                     livingEntity.getType().is(net.minecraft.tags.EntityTypeTags.RAIDERS);
 
                     if (AnimusConfig.rituals.cullingDebug.get()) {
                         System.out.println("Animus: [Ritual of Culling Debug]:   Is boss: " + isBoss);
@@ -312,13 +315,14 @@ public class RitualCulling extends Ritual {
                         DamageSource playerDamage = level.damageSources().playerAttack(fakePlayer);
                         result = livingEntity.hurt(playerDamage, damage);
 
+                        // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API - drainWill signature changed
                         // Chance to consume raw will
-                        if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
-                            WorldDemonWillHandler.drainWill(level, pos, EnumDemonWillType.DEFAULT, 1.0, true);
-                            if (AnimusConfig.rituals.cullingDebug.get()) {
-                                System.out.println("Animus: [Ritual of Culling Debug]:   Consumed 1 raw demon will");
-                            }
-                        }
+                        // if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
+                        //     WorldDemonWillHandler.drainWill(level, pos, EnumWillType.DEFAULT, 1.0, true);
+                        //     if (AnimusConfig.rituals.cullingDebug.get()) {
+                        //         System.out.println("Animus: [Ritual of Culling Debug]:   Consumed 1 raw demon will");
+                        //     }
+                        // }
                     } else {
                         result = livingEntity.hurt(level.damageSources().genericKill(), damage);
                     }
@@ -337,10 +341,7 @@ public class RitualCulling extends Ritual {
 
                         if (isBoss) {
                             // Boss kill - extra LP cost
-                            network.syphon(new SoulTicket(
-                                Component.translatable(Constants.Localizations.Text.TICKET_CULLING),
-                                AnimusConfig.rituals.bossCost.get()
-                            ), false);
+                            network.syphon(SoulTicket.create(AnimusConfig.rituals.bossCost.get()));
                         } else {
                             // Regular mob - add to will buffer
                             double modifier = 0.5;
@@ -365,7 +366,7 @@ public class RitualCulling extends Ritual {
                             );
                         }
 
-                        level.playSound(null, at, SoundEvents.SOUL_ESCAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound(null, at, SoundEvents.SOUL_ESCAPE.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
                 } else {
                     if (AnimusConfig.rituals.cullingDebug.get()) {
@@ -379,19 +380,14 @@ public class RitualCulling extends Ritual {
             }
 
             // Consume LP for kills
-            network.syphon(new SoulTicket(
-                Component.translatable(Constants.Localizations.Text.TICKET_CULLING),
-                getRefreshCost() * entityCount
-            ), false);
+            network.syphon(SoulTicket.create(getRefreshCost() * entityCount));
 
+            // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API - fillWillToMaximum signature changed
             // Generate destructive demon will (3% chance per cycle)
-            double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2, 10));
-            if (rand.nextInt(30) == 0) {
-                double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, false);
-                if (filled > 0) {
-                    WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-                }
-            }
+            // double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2, 10));
+            // if (rand.nextInt(30) == 0) {
+            //     WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, true);
+            // }
         }
     }
 

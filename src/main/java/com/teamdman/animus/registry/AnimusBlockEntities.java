@@ -5,15 +5,16 @@ import com.teamdman.animus.blockentities.BlockEntityAntiLife;
 import com.teamdman.animus.blockentities.BlockEntityBloodCore;
 import com.teamdman.animus.blockentities.BlockEntityWillfulStone;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.core.registries.Registries;
+import net.neoforged.neoforge.registries.DeferredHolder;
+
 
 public class AnimusBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-        DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Constants.Mod.MODID);
+        DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Constants.Mod.MODID);
 
-    public static final RegistryObject<BlockEntityType<BlockEntityBloodCore>> BLOOD_CORE = BLOCK_ENTITIES.register(
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityBloodCore>> BLOOD_CORE = BLOCK_ENTITIES.register(
         "bloodcore",
         () -> BlockEntityType.Builder.of(
             BlockEntityBloodCore::new,
@@ -21,7 +22,7 @@ public class AnimusBlockEntities {
         ).build(null)
     );
 
-    public static final RegistryObject<BlockEntityType<BlockEntityAntiLife>> ANTILIFE = BLOCK_ENTITIES.register(
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityAntiLife>> ANTILIFE = BLOCK_ENTITIES.register(
         "antilife",
         () -> BlockEntityType.Builder.of(
             BlockEntityAntiLife::new,
@@ -29,7 +30,7 @@ public class AnimusBlockEntities {
         ).build(null)
     );
 
-    public static final RegistryObject<BlockEntityType<BlockEntityWillfulStone>> WILLFUL_STONE = BLOCK_ENTITIES.register(
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityWillfulStone>> WILLFUL_STONE = BLOCK_ENTITIES.register(
         "willful_stone",
         () -> BlockEntityType.Builder.of(
             BlockEntityWillfulStone::new,

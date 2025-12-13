@@ -2,7 +2,7 @@ package com.teamdman.animus.client;
 
 import com.teamdman.animus.Constants;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 
 /**
  * Client-only extension for Living Terra fluid rendering.

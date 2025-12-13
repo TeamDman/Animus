@@ -29,3 +29,7 @@ run-data/
 src/generated/resources/.cache/*
 
 changelog/
+
+gradle/wrapper/gradle-wrapper.properties
+
+settings.gradle

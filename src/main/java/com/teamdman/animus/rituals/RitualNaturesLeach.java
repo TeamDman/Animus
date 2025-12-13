@@ -14,14 +14,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-import wayoftime.bloodmagic.common.tile.TileAltar;
-import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.core.data.SoulNetwork;
-import wayoftime.bloodmagic.core.data.SoulTicket;
-import wayoftime.bloodmagic.demonaura.WorldDemonWillHandler;
+import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
+import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.will.WorldDemonWillHandler;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.NetworkHelper;
+import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -36,7 +36,6 @@ import java.util.function.Consumer;
  * Altar Search Range: 32 blocks horizontally, ±10 blocks vertically (cached for performance)
  * LP per Block: Configurable (default 50 LP)
  */
-@RitualRegister(Constants.Rituals.LEACH)
 public class RitualNaturesLeach extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
@@ -45,7 +44,7 @@ public class RitualNaturesLeach extends Ritual {
 
     // Altar caching for performance
     public BlockPos cachedAltarPos = null;
-    public TileAltar cachedAltar = null;
+    public BloodAltarTile cachedAltar = null;
     public int ticksSinceAltarCheck = 0;
 
     public double will = 100;
@@ -59,7 +58,7 @@ public class RitualNaturesLeach extends Ritual {
 
         // Altar range: 32 blocks horizontally, 10 blocks down, 10 blocks up
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -10, -32), 65, 21, 65));
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-range, -range, -range), rangeSize));
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-range, -range, -range), rangeSize, rangeSize, rangeSize));
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, range + 10, range + 10, range + 10);
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 32, 32);
     }
@@ -81,10 +80,10 @@ public class RitualNaturesLeach extends Ritual {
         BlockPos pos = ritualStone.getMasterBlockPos();
 
         // Get current corrosive demon will
-        EnumDemonWillType type = EnumDemonWillType.CORROSIVE;
+        EnumWillType type = EnumWillType.CORROSIVE;
         will = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
-        SoulNetwork network = NetworkHelper.getSoulNetwork(ritualStone.getOwner());
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(ritualStone.getOwner());
         if (network == null) {
             return;
         }
@@ -96,23 +95,20 @@ public class RitualNaturesLeach extends Ritual {
         }
 
         if (currentEssence < getRefreshCost()) {
-            network.causeNausea();
+            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        network.syphon(new SoulTicket(
-            Component.translatable(Constants.Localizations.Text.TICKET_LEACH),
-            getRefreshCost()
-        ), false);
+        network.syphon(SoulTicket.create(getRefreshCost()));
 
         // Find nearby altar with caching for performance
-        TileAltar tileAltar = null;
+        BloodAltarTile tileAltar = null;
         ticksSinceAltarCheck++;
 
         // Check if we have a valid cached altar
         if (cachedAltar != null && cachedAltarPos != null && ticksSinceAltarCheck < ALTAR_RECHECK_INTERVAL) {
             // Verify the cached altar is still valid
-            if (level.getBlockEntity(cachedAltarPos) instanceof TileAltar altar) {
+            if (level.getBlockEntity(cachedAltarPos) instanceof BloodAltarTile altar) {
                 tileAltar = altar;
             } else {
                 // Cached altar is no longer valid, clear cache
@@ -188,16 +184,15 @@ public class RitualNaturesLeach extends Ritual {
         int lpPerBlock = AnimusConfig.rituals.naturesLeachLpPerBlock.get();
         tileAltar.sacrificialDaggerCall(eaten * lpPerBlock, true);
 
+        // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API
+        // The fillWillToMaximum method signature has changed - needs investigation
         // Generate corrosive demon will based on blocks consumed
         // Each consumed block generates 0.5-1.5 corrosive will
-        if (eaten > 0) {
-            double willPerBlock = 0.5 + random.nextDouble(); // 0.5-1.5 per block
-            double totalWillToAdd = eaten * willPerBlock;
-            double filled = WorldDemonWillHandler.fillWillToMaximum(level, pos, type, totalWillToAdd, maxWill, false);
-            if (filled > 0) {
-                WorldDemonWillHandler.fillWillToMaximum(level, pos, type, filled, maxWill, true);
-            }
-        }
+        // if (eaten > 0) {
+        //     double willPerBlock = 0.5 + random.nextDouble(); // 0.5-1.5 per block
+        //     double totalWillToAdd = eaten * willPerBlock;
+        //     WorldDemonWillHandler.fillWillToMaximum(level, pos, type, totalWillToAdd, maxWill, true);
+        // }
     }
 
     public static boolean isConsumable(Block block) {
@@ -235,7 +230,7 @@ public class RitualNaturesLeach extends Ritual {
         }
 
         // Check for common plant blocks
-        if (block == Blocks.GRASS ||
+        if (block == Blocks.SHORT_GRASS ||
             block == Blocks.TALL_GRASS ||
             block == Blocks.FERN ||
             block == Blocks.LARGE_FERN ||
