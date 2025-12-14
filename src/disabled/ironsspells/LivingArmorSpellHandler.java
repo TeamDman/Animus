@@ -7,7 +7,7 @@ import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import wayoftime.bloodmagic.core.living.LivingUtil;
+import wayoftime.bloodmagic.common.living.LivingHelper;
 
 /**
  * Handles Living Armor integration with Iron's Spells
@@ -60,7 +60,7 @@ public class LivingArmorSpellHandler {
         }
 
         // Check if player has full Living Armor set
-        if (!LivingUtil.hasFullSet(player)) {
+        if (!LivingHelper.hasFullSet(player)) {
             return;
         }
 
@@ -73,7 +73,7 @@ public class LivingArmorSpellHandler {
         double xpToGrant = baseXP * spellLevel;
 
         // Grant XP to the Arcane Channeling upgrade using the proper API
-        LivingUtil.applyNewExperience(player, arcaneChannelingUpgrade, xpToGrant);
+        LivingHelper.applyNewExperience(player, arcaneChannelingUpgrade, xpToGrant);
 
         Animus.LOGGER.debug("Granted {} XP to Living Armor (Arcane Channeling) for casting spell (level {})",
             xpToGrant, spellLevel);

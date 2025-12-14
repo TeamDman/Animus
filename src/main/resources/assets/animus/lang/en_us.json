@@ -597,5 +597,8 @@
   "jei.animus.ritual.magi.desc": "Mana Regen for 15 minutes.",
 
   "jei.animus.ritual.iron_heart.name": "Ritual of the Iron Heart",
-  "jei.animus.ritual.iron_heart.desc": "Echoing Strikes III for 15 minutes."
+  "jei.animus.ritual.iron_heart.desc": "Echoing Strikes III for 15 minutes.",
+
+  "living_upgrade.animus.source_attunement": "Source Attunement",
+  "living_upgrade.animus.arcane_channeling": "Arcane Channeling"
 }

@@ -15,8 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import wayoftime.bloodmagic.common.item.ItemBloodOrb;
-import wayoftime.bloodmagic.common.tile.TileAltar;
+import wayoftime.bloodmagic.common.item.BloodOrbItem;
+import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 
 /**
  * Handles Blood Altar interactions for infusing spellbooks
@@ -45,7 +45,7 @@ public class AltarInfusionHandler {
         }
 
         // Get altar tile entity
-        if (!(level.getBlockEntity(pos) instanceof TileAltar altar)) {
+        if (!(level.getBlockEntity(pos) instanceof BloodAltarTile altar)) {
             return;
         }
 
@@ -139,7 +139,7 @@ public class AltarInfusionHandler {
     private static boolean hasBloodOrbOfTier(Player player, int requiredTier) {
         // Check inventory for Blood Orb
         for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() instanceof ItemBloodOrb orb) {
+            if (stack.getItem() instanceof BloodOrbItem orb) {
                 int orbTier = orb.getOrb(stack).getTier();
                 if (orbTier >= requiredTier) {
                     return true;
@@ -149,7 +149,7 @@ public class AltarInfusionHandler {
 
         // Check armor slots
         for (ItemStack stack : player.getInventory().armor) {
-            if (stack.getItem() instanceof ItemBloodOrb orb) {
+            if (stack.getItem() instanceof BloodOrbItem orb) {
                 int orbTier = orb.getOrb(stack).getTier();
                 if (orbTier >= requiredTier) {
                     return true;
@@ -159,7 +159,7 @@ public class AltarInfusionHandler {
 
         // Check offhand
         for (ItemStack stack : player.getInventory().offhand) {
-            if (stack.getItem() instanceof ItemBloodOrb orb) {
+            if (stack.getItem() instanceof BloodOrbItem orb) {
                 int orbTier = orb.getOrb(stack).getTier();
                 if (orbTier >= requiredTier) {
                     return true;

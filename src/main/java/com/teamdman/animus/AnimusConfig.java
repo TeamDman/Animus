@@ -9,7 +9,11 @@ import java.util.List;
 
 /**
  * Configuration for Animus mod
- * Uses ModConfigSpec for 1.20.1
+ * Uses ModConfigSpec for 1.21.1
+ *
+ * Note: Config values are NOT available during DeferredRegister callbacks.
+ * Ritual constructors use hardcoded defaults, which can be adjusted via
+ * the ritual stone GUI at runtime.
  */
 public class AnimusConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();

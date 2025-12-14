@@ -52,8 +52,9 @@ public class RitualNaturesLeach extends Ritual {
     public RitualNaturesLeach() {
         super(Constants.Rituals.LEACH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEACH);
 
-        // Use config value for range (default 32 blocks)
-        int range = AnimusConfig.rituals.naturesLeachRange.get();
+        // Use default range (32 blocks) - config is not available at construction time
+        // Range can be adjusted via the ritual stone GUI
+        int range = 32;
         int rangeSize = range * 2 + 4; // Convert to full size
 
         // Altar range: 32 blocks horizontally, 10 blocks down, 10 blocks up

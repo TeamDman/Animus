@@ -62,10 +62,10 @@ public class RitualCulling extends Ritual {
     public RitualCulling() {
         super(Constants.Rituals.CULLING, 0, 50000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.CULLING);
 
-        // Use config values for range (default 10 horizontal, 10 vertical)
-        // Range is symmetric - extends vRange blocks both above and below the master ritual stone
-        int hRange = AnimusConfig.rituals.cullingRange.get();
-        int vRange = AnimusConfig.rituals.cullingVerticalRange.get();
+        // Use default ranges - config is not available at construction time
+        // Default: 10 horizontal, 10 vertical - can be adjusted via ritual stone GUI
+        int hRange = 10;
+        int vRange = 10;
         int hSize = hRange * 2 + 1;  // Full horizontal size (e.g., 10*2+1 = 21)
         int vSize = vRange * 2 + 1;  // Full vertical size (e.g., 10*2+1 = 21, covers -10 to +10)
 

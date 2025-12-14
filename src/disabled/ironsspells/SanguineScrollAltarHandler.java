@@ -20,8 +20,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import wayoftime.bloodmagic.common.block.BlockAltar;
-import wayoftime.bloodmagic.common.tile.TileAltar;
+import wayoftime.bloodmagic.common.block.BloodAltarBlock;
+import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 
 /**
  * Handles conversion of Iron's Spells scrolls into Sanguine Scrolls at the Blood Altar
@@ -66,13 +66,13 @@ public class SanguineScrollAltarHandler {
         }
 
         // Check if clicking on Blood Altar
-        if (!(level.getBlockState(pos).getBlock() instanceof BlockAltar)) {
+        if (!(level.getBlockState(pos).getBlock() instanceof BloodAltarBlock)) {
             return;
         }
 
         // Get altar tile entity
         BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof TileAltar altar)) {
+        if (!(be instanceof BloodAltarTile altar)) {
             return;
         }
 

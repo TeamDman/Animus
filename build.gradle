@@ -96,7 +96,7 @@ dependencies {
     compileOnly files('libs/bloodmagic-3.4.0-1-beta.jar')
     runtimeOnly files('libs/bloodmagic-3.4.0-1-beta.jar')
 
-    // JEI - using CurseMaven since official maven doesn't have 1.21.1 yet
+    // JEI - using CurseMaven NeoForge version (not Forge!)
     compileOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
     runtimeOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
 
@@ -109,6 +109,28 @@ dependencies {
     runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
 
     // ============================================================================
+    // Library Dependencies (required by compat mods)
+    // ============================================================================
+
+    // GeckoLib - required by Ars Nouveau, Iron's Spells
+    compileOnly "curse.maven:geckolib-388172:${geckolib_cursemaven_id}"
+    runtimeOnly "curse.maven:geckolib-388172:${geckolib_cursemaven_id}"
+
+    // PlayerAnimator - required by Iron's Spells
+    // Downloaded from Modrinth (2.0.1+1.21.1 required by Iron's Spells)
+    compileOnly files('libs/player-animation-lib-2.0.1+1.21.1.jar')
+    runtimeOnly files('libs/player-animation-lib-2.0.1+1.21.1.jar')
+
+    // Lodestone - required by Malum
+    compileOnly "curse.maven:lodestone-616457:${lodestone_cursemaven_id}"
+    runtimeOnly "curse.maven:lodestone-616457:${lodestone_cursemaven_id}"
+
+    // Modopedia - required by Blood Magic for in-game documentation
+    // Downloaded from Modrinth since Maven resolution was problematic
+    compileOnly files('libs/modopedia-1.1.5-neoforge.jar')
+    runtimeOnly files('libs/modopedia-1.1.5-neoforge.jar')
+
+    // ============================================================================
     // Optional Compat Dependencies
     // ============================================================================
     // These dependencies are runtimeOnly, meaning they're available in dev/datagen
@@ -118,16 +140,16 @@ dependencies {
     // ============================================================================
 
     // Ars Nouveau
-    compileOnly "curse.maven:ars-nouveau-401955:7100043"
-    runtimeOnly "curse.maven:ars-nouveau-401955:7100043"
+    compileOnly "curse.maven:ars-nouveau-401955:${arsnouveau_cursemaven_id}"
+    runtimeOnly "curse.maven:ars-nouveau-401955:${arsnouveau_cursemaven_id}"
 
     // Iron's Spells n Spellbooks
-    compileOnly "curse.maven:irons-spells-n-spellbooks-855414:7271541"
-    runtimeOnly "curse.maven:irons-spells-n-spellbooks-855414:7271541"
+    compileOnly "curse.maven:irons-spells-n-spellbooks-855414:${ironsspells_cursemaven_id}"
+    runtimeOnly "curse.maven:irons-spells-n-spellbooks-855414:${ironsspells_cursemaven_id}"
 
     // Malum
-    compileOnly "curse.maven:malum-484064:7307339"
-    runtimeOnly "curse.maven:malum-484064:7307339"
+    compileOnly "curse.maven:malum-484064:${malum_cursemaven_id}"
+    runtimeOnly "curse.maven:malum-484064:${malum_cursemaven_id}"
 
     // Note: Botania not yet ported to 1.21.1 - compat remains disabled
 }

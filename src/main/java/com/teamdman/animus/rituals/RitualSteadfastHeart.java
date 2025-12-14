@@ -50,8 +50,9 @@ public class RitualSteadfastHeart extends Ritual {
     public RitualSteadfastHeart() {
         super(Constants.Rituals.STEADFAST, 0, 20000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.STEADFAST);
 
-        // Use config value for range (default 128 blocks)
-        int range = AnimusConfig.rituals.steadfastHeartRange.get();
+        // Use default range (128 blocks) - config is not available at construction time
+        // Range can be adjusted via the ritual stone GUI
+        int range = 128;
         int halfRange = range / 2;
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-halfRange, -halfRange, -halfRange), range, range, range));
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, range, range);

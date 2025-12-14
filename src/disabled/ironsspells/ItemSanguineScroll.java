@@ -1,30 +1,28 @@
 package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.magic.SpellSelectionManager;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
-import io.redspace.ironsspellbooks.api.spells.CastType;
-import io.redspace.ironsspellbooks.api.util.Utils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
 import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -67,39 +65,33 @@ public class ItemSanguineScroll extends Item {
     }
 
     /**
-     * Store spell data in the scroll
+     * Store spell data in the scroll using data components
      */
     public static void setSpell(ItemStack stack, String spellId, int spellLevel) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putString("SpellId", spellId);
-        tag.putInt("SpellLevel", spellLevel);
+        stack.set(AnimusDataComponents.SPELL_ID.get(), spellId);
+        stack.set(AnimusDataComponents.SPELL_LEVEL.get(), spellLevel);
     }
 
     /**
-     * Get spell ID from scroll
+     * Get spell ID from scroll using data components
      */
     public static String getSpellId(ItemStack stack) {
-        if (stack.hasTag() && stack.getTag().contains("SpellId")) {
-            return stack.getTag().getString("SpellId");
-        }
-        return "";
+        return stack.getOrDefault(AnimusDataComponents.SPELL_ID.get(), "");
     }
 
     /**
-     * Get spell level from scroll
+     * Get spell level from scroll using data components
      */
     public static int getSpellLevel(ItemStack stack) {
-        if (stack.hasTag() && stack.getTag().contains("SpellLevel")) {
-            return stack.getTag().getInt("SpellLevel");
-        }
-        return 0;
+        return stack.getOrDefault(AnimusDataComponents.SPELL_LEVEL.get(), 0);
     }
 
     /**
      * Check if scroll has a spell
      */
     public static boolean hasSpell(ItemStack stack) {
-        return !getSpellId(stack).isEmpty();
+        String spellId = getSpellId(stack);
+        return spellId != null && !spellId.isEmpty();
     }
 
     @Override
@@ -152,8 +144,8 @@ public class ItemSanguineScroll extends Item {
         double multiplier = AnimusConfig.ironsSpells.sanguineScrollLPMultiplier.get();
         int lpCost = (int)(manaCost * lpPerMana * multiplier);
 
-        // Check if player has enough LP
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        // Get the player's soul network and check LP
+        wayoftime.bloodmagic.common.datacomponent.SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
         if (network.getCurrentEssence() < lpCost) {
             player.displayClientMessage(
                 Component.literal("Not enough LP! Need " + lpCost + " LP")
@@ -163,11 +155,8 @@ public class ItemSanguineScroll extends Item {
             return InteractionResultHolder.fail(stack);
         }
 
-        // Consume LP
-        network.syphon(new SoulTicket(
-            Component.literal("Sanguine Scroll Casting"),
-            lpCost
-        ));
+        // Consume LP (will damage player if insufficient)
+        network.syphonAndDamage(player, SoulTicket.item(stack, lpCost));
 
         // Cast spell
         try {
@@ -176,8 +165,12 @@ public class ItemSanguineScroll extends Item {
             // Apply cooldown
             magicData.getPlayerCooldowns().addCooldown(spell, spell.getSpellCooldown());
 
-            // Damage scroll
-            stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(hand));
+            // Damage scroll (1.21 API)
+            if (level instanceof ServerLevel serverLevel) {
+                EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                stack.hurtAndBreak(1, serverLevel, player, (item) ->
+                    player.onEquippedItemBroken(item, slot));
+            }
 
             // Play sound
             level.playSound(
@@ -204,8 +197,8 @@ public class ItemSanguineScroll extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
 
         tooltip.add(Component.literal("Reusable spell scroll")
             .withStyle(ChatFormatting.DARK_RED));

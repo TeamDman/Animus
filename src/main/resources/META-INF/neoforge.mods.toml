@@ -30,7 +30,7 @@ description = '''${mod_description}'''
 [[dependencies.animus]]
     modId = "bloodmagic"
     type = "required"
-    versionRange = "[4.0,)"
+    versionRange = "[3.4.0,)"
     ordering = "AFTER"
     side = "BOTH"
 

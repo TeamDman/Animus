@@ -94,6 +94,23 @@ public class AnimusDataComponents {
         DATA_COMPONENTS.registerComponentType("animus_enhanced", builder ->
             builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
+    // ===== Iron's Spells n Spellbooks Compat =====
+
+    // Sanguine Scroll - stored spell ID
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> SPELL_ID =
+        DATA_COMPONENTS.registerComponentType("spell_id", builder ->
+            builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
+    // Sanguine Scroll - stored spell level
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> SPELL_LEVEL =
+        DATA_COMPONENTS.registerComponentType("spell_level", builder ->
+            builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    // Blood-Infused Spellbook - infusion tier (0-6)
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> INFUSION_TIER =
+        DATA_COMPONENTS.registerComponentType("infusion_tier", builder ->
+            builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
     public static void register(IEventBus modBus) {
         DATA_COMPONENTS.register(modBus);
     }

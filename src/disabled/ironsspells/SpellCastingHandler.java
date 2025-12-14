@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
-import wayoftime.bloodmagic.common.item.ItemBloodOrb;
+import wayoftime.bloodmagic.common.item.BloodOrbItem;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
 import wayoftime.bloodmagic.util.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
@@ -221,21 +221,21 @@ public class SpellCastingHandler {
     private static boolean hasBloodOrb(Player player) {
         // Check main inventory
         for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() instanceof ItemBloodOrb) {
+            if (stack.getItem() instanceof BloodOrbItem) {
                 return true;
             }
         }
 
         // Check armor slots
         for (ItemStack stack : player.getInventory().armor) {
-            if (stack.getItem() instanceof ItemBloodOrb) {
+            if (stack.getItem() instanceof BloodOrbItem) {
                 return true;
             }
         }
 
         // Check offhand
         for (ItemStack stack : player.getInventory().offhand) {
-            if (stack.getItem() instanceof ItemBloodOrb) {
+            if (stack.getItem() instanceof BloodOrbItem) {
                 return true;
             }
         }
@@ -247,7 +247,7 @@ public class SpellCastingHandler {
             var handler = curios.getEquippedCurios();
             for (int i = 0; i < handler.getSlots(); i++) {
                 ItemStack stack = handler.getStackInSlot(i);
-                if (stack.getItem() instanceof ItemBloodOrb) {
+                if (stack.getItem() instanceof BloodOrbItem) {
                     return true;
                 }
             }

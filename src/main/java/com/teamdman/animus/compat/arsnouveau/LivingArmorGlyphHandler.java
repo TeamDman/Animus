@@ -3,9 +3,11 @@ package com.teamdman.animus.compat.arsnouveau;
 import com.hollingsworth.arsnouveau.api.event.SpellCastEvent;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.compat.LivingUpgradeHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import wayoftime.bloodmagic.common.living.LivingHelper;
 
 /**
@@ -13,19 +15,16 @@ import wayoftime.bloodmagic.common.living.LivingHelper;
  *
  * Features:
  * - Grants Living Armor XP when glyphs/spells are cast
- * - XP scales with spell complexity (number of glyphs)
  * - XP is granted to the Source Attunement upgrade tree
  */
 public class LivingArmorGlyphHandler {
 
-    // Reference to the upgrade (will be set by ArsNouveauCompat during init)
-    private static UpgradeSourceAttunement sourceAttunementUpgrade;
-
     /**
-     * Set the upgrade instance (called by compat module during initialization)
+     * Register the event handler
      */
-    public static void setUpgrade(UpgradeSourceAttunement upgrade) {
-        sourceAttunementUpgrade = upgrade;
+    public static void register() {
+        NeoForge.EVENT_BUS.register(new LivingArmorGlyphHandler());
+        Animus.LOGGER.info("Registered Living Armor Glyph Handler for Ars Nouveau");
     }
 
     /**
@@ -33,13 +32,8 @@ public class LivingArmorGlyphHandler {
      * Priority LOWEST to run after spell execution
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onSpellCast(SpellCastEvent event) {
+    public void onSpellCast(SpellCastEvent event) {
         if (!AnimusConfig.arsNouveau.enableLivingArmorXP.get()) {
-            return;
-        }
-
-        if (sourceAttunementUpgrade == null) {
-            // Upgrade not registered yet
             return;
         }
 
@@ -56,15 +50,19 @@ public class LivingArmorGlyphHandler {
             return;
         }
 
-        // Calculate XP to grant
-        // Note: SpellCastEvent doesn't expose spell size, so using flat XP
+        // Get base XP from config
         int baseXP = AnimusConfig.arsNouveau.livingArmorBaseXP.get();
-        double xpToGrant = baseXP;
 
-        // Grant XP to the Source Attunement upgrade using the proper API
-        LivingHelper.applyNewExperience(player, sourceAttunementUpgrade, xpToGrant);
+        // Grant XP to the Source Attunement upgrade
+        boolean success = LivingUpgradeHelper.addExperience(
+            player,
+            SourceAttunementHandler.UPGRADE_KEY,
+            baseXP
+        );
 
-        Animus.LOGGER.debug("Granted {} XP to Living Armor (Source Attunement) for casting Ars Nouveau spell",
-            xpToGrant);
+        if (success) {
+            Animus.LOGGER.debug("Granted {} XP to Living Armor (Source Attunement) for casting Ars Nouveau spell",
+                baseXP);
+        }
     }
 }

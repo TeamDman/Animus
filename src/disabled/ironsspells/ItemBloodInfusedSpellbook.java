@@ -1,19 +1,16 @@
 package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.AnimusConfig;
-import com.teamdman.animus.Constants;
-import io.redspace.ironsspellbooks.api.item.ISpellbook;
+import com.teamdman.animus.registry.AnimusDataComponents;
 import io.redspace.ironsspellbooks.api.spells.SpellRarity;
-import io.redspace.ironsspellbooks.capabilities.magic.SpellContainer;
 import io.redspace.ironsspellbooks.item.SpellBook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -27,9 +24,6 @@ import java.util.List;
  * Infused at Blood Altar using Blood Orbs
  */
 public class ItemBloodInfusedSpellbook extends SpellBook {
-
-    // NBT keys
-    private static final String INFUSION_TIER_KEY = "InfusionTier";
 
     public ItemBloodInfusedSpellbook() {
         super(5, SpellRarity.COMMON); // 5 base slots, COMMON rarity
@@ -98,20 +92,17 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
     }
 
     /**
-     * Get the infusion tier of this spellbook
+     * Get the infusion tier of this spellbook using data components
      */
     public static int getInfusionTier(ItemStack stack) {
-        if (stack.hasTag()) {
-            return stack.getTag().getInt(INFUSION_TIER_KEY);
-        }
-        return 0;
+        return stack.getOrDefault(AnimusDataComponents.INFUSION_TIER.get(), 0);
     }
 
     /**
-     * Set the infusion tier of this spellbook
+     * Set the infusion tier of this spellbook using data components
      */
     public static void setInfusionTier(ItemStack stack, int tier) {
-        stack.getOrCreateTag().putInt(INFUSION_TIER_KEY, Math.max(0, Math.min(6, tier)));
+        stack.set(AnimusDataComponents.INFUSION_TIER.get(), Math.max(0, Math.min(6, tier)));
     }
 
     /**
@@ -140,8 +131,8 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
 
         int tier = getInfusionTier(stack);
 
