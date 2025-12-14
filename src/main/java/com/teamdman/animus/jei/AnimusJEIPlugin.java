@@ -101,18 +101,39 @@ public class AnimusJEIPlugin implements IModPlugin {
             Animus.LOGGER.info("JEI: Blood-Infused Spellbook item: {}", bloodInfusedSpellbook);
 
             // Try to get any spellbook from Iron's Spells as input
-            Item inputSpellbook = ForgeRegistries.ITEMS.getValue(
-                ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "iron_spellbook"));
-            Animus.LOGGER.info("JEI: Tried iron_spellbook, got: {}", inputSpellbook);
-            if (inputSpellbook == null || inputSpellbook == Items.AIR) {
+            // Iron's Spellbooks uses "spell_book" naming convention
+            String[] spellbookNames = {
+                "copper_spell_book", "iron_spell_book", "gold_spell_book",
+                "diamond_spell_book", "netherite_spell_book",
+                "copper_spellbook", "iron_spellbook", "gold_spellbook",
+                "diamond_spellbook", "netherite_spellbook",
+                "leather_spell_book", "leather_spellbook"
+            };
+            Item inputSpellbook = null;
+            for (String name : spellbookNames) {
                 inputSpellbook = ForgeRegistries.ITEMS.getValue(
-                    ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "leather_spellbook"));
-                Animus.LOGGER.info("JEI: Tried leather_spellbook, got: {}", inputSpellbook);
+                    ResourceLocation.fromNamespaceAndPath("irons_spellbooks", name));
+                if (inputSpellbook != null && inputSpellbook != Items.AIR) {
+                    Animus.LOGGER.info("JEI: Found input spellbook: irons_spellbooks:{}", name);
+                    break;
+                }
+            }
+            if (inputSpellbook == null || inputSpellbook == Items.AIR) {
+                Animus.LOGGER.warn("JEI: Could not find any Iron's Spellbooks spellbook item");
             }
 
-            if (inputSpellbook != null && inputSpellbook != Items.AIR && bloodInfusedSpellbook != null) {
+            if (bloodInfusedSpellbook != null) {
+                // Use found spellbook or fall back to showing the output as a self-reference
+                ItemStack inputStack;
+                if (inputSpellbook != null && inputSpellbook != Items.AIR) {
+                    inputStack = new ItemStack(inputSpellbook);
+                } else {
+                    // Fallback: use enchanted book as placeholder to indicate "any spellbook"
+                    inputStack = new ItemStack(Items.ENCHANTED_BOOK);
+                    Animus.LOGGER.info("JEI: Using enchanted book as placeholder for input spellbook");
+                }
                 displays.add(AltarInfusionDisplay.createSpellbookInfusion(
-                    new ItemStack(inputSpellbook),
+                    inputStack,
                     new ItemStack(bloodInfusedSpellbook),
                     10000,
                     Component.translatable("jei.animus.blood_infused_spellbook.title"),
@@ -120,7 +141,7 @@ public class AnimusJEIPlugin implements IModPlugin {
                 ));
                 Animus.LOGGER.info("JEI: Added Blood-Infused Spellbook recipe display");
             } else {
-                Animus.LOGGER.warn("JEI: Could not create Blood-Infused Spellbook recipe - inputSpellbook={}, bloodInfusedSpellbook={}", inputSpellbook, bloodInfusedSpellbook);
+                Animus.LOGGER.error("JEI: Blood-Infused Spellbook item is null! Cannot create recipe display.");
             }
 
             // Sanguine Scroll recipes - one per slate tier

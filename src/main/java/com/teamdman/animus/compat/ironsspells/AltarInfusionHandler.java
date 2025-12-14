@@ -23,8 +23,10 @@ import wayoftime.bloodmagic.common.tile.TileAltar;
  */
 public class AltarInfusionHandler {
 
+    private static final int INITIAL_INFUSION_COST = 10000; // LP cost to create Blood-Infused Spellbook
+
     /**
-     * Handle right-click on Blood Altar with Blood-Infused Spellbook
+     * Handle right-click on Blood Altar with spellbook
      */
     @SubscribeEvent
     public static void onAltarRightClick(PlayerInteractEvent.RightClickBlock event) {
@@ -39,13 +41,19 @@ public class AltarInfusionHandler {
         InteractionHand hand = event.getHand();
         ItemStack stack = player.getItemInHand(hand);
 
-        // Check if holding Blood-Infused Spellbook
-        if (!(stack.getItem() instanceof ItemBloodInfusedSpellbook)) {
+        // Get altar tile entity
+        if (!(level.getBlockEntity(pos) instanceof TileAltar altar)) {
             return;
         }
 
-        // Get altar tile entity
-        if (!(level.getBlockEntity(pos) instanceof TileAltar altar)) {
+        // Check if holding a regular Iron's Spellbooks spellbook (not our Blood-Infused one)
+        if (isIronsSpellbook(stack) && !(stack.getItem() instanceof ItemBloodInfusedSpellbook)) {
+            handleInitialInfusion(event, player, level, pos, hand, stack, altar);
+            return;
+        }
+
+        // Check if holding Blood-Infused Spellbook for upgrade
+        if (!(stack.getItem() instanceof ItemBloodInfusedSpellbook)) {
             return;
         }
 
@@ -237,5 +245,91 @@ public class AltarInfusionHandler {
                 );
             }
         }
+    }
+
+    /**
+     * Check if the item is an Iron's Spellbooks spellbook
+     */
+    private static boolean isIronsSpellbook(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+        // Check if the item's registry name is from irons_spellbooks and contains "spell_book"
+        var registryName = net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(stack.getItem());
+        if (registryName == null) {
+            return false;
+        }
+        String namespace = registryName.getNamespace();
+        String path = registryName.getPath();
+        return "irons_spellbooks".equals(namespace) && path.contains("spell_book");
+    }
+
+    /**
+     * Handle initial infusion of a regular spellbook into Blood-Infused Spellbook
+     */
+    private static void handleInitialInfusion(PlayerInteractEvent.RightClickBlock event,
+            Player player, Level level, BlockPos pos, InteractionHand hand,
+            ItemStack stack, TileAltar altar) {
+
+        // Check if altar has enough LP
+        int altarLP = altar.getCurrentBlood();
+        if (altarLP < INITIAL_INFUSION_COST) {
+            player.displayClientMessage(
+                Component.literal("Altar needs " + INITIAL_INFUSION_COST + " LP (has " + altarLP + " LP)")
+                    .withStyle(ChatFormatting.RED),
+                true
+            );
+            event.setCanceled(true);
+            return;
+        }
+
+        // Check altar tier (requires tier 3+)
+        int altarTier = altar.getTier();
+        if (altarTier < 3) {
+            player.displayClientMessage(
+                Component.literal("Requires Tier 3+ Blood Altar!")
+                    .withStyle(ChatFormatting.RED),
+                true
+            );
+            event.setCanceled(true);
+            return;
+        }
+
+        // Consume LP from altar
+        altar.sacrificialDaggerCall(-INITIAL_INFUSION_COST, false);
+
+        // Create Blood-Infused Spellbook with copied NBT data (spells, etc.)
+        ItemStack bloodInfusedSpellbook = new ItemStack(
+            com.teamdman.animus.compat.IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()
+        );
+
+        // Copy NBT data from original spellbook (preserves spells)
+        if (stack.hasTag()) {
+            bloodInfusedSpellbook.setTag(stack.getTag().copy());
+        }
+
+        // Set initial infusion tier
+        ItemBloodInfusedSpellbook.setInfusionTier(bloodInfusedSpellbook, 1);
+
+        // Replace the item in player's hand
+        player.setItemInHand(hand, bloodInfusedSpellbook);
+
+        // Success message
+        player.displayClientMessage(
+            Component.literal("Spellbook infused with blood magic!")
+                .withStyle(ChatFormatting.GOLD),
+            true
+        );
+
+        // Spawn effects
+        spawnInfusionEffects(level, pos, 1);
+
+        // Play sound
+        level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+        Animus.LOGGER.info("Player {} created Blood-Infused Spellbook for {} LP",
+            player.getName().getString(), INITIAL_INFUSION_COST);
+
+        event.setCanceled(true);
     }
 }
