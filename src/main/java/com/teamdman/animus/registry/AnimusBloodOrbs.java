@@ -18,7 +18,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class AnimusBloodOrbs {
     public static final DeferredRegister<Item> BLOOD_ORBS = DeferredRegister.createItems(Constants.Mod.MODID);
 
-    // Transcendent Blood Orb - Tier 7, 30,000,000 LP
+    // Transcendent Blood Orb - Tier 6, 30,000,000 LP
     // Stats are defined via data maps in data/animus/data_maps/item/blood_orb_stats.json
     public static final DeferredHolder<Item, ItemBloodOrbTranscendent> BLOOD_ORB_TRANSCENDENT =
         BLOOD_ORBS.register("blood_orb_transcendent", ItemBloodOrbTranscendent::new);

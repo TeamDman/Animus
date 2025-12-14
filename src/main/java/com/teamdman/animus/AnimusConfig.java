@@ -723,7 +723,7 @@ public class AnimusConfig {
 
             bloodSpellbookTier6LP = builder
                 .comment("LP cost to infuse spellbook to Tier 6 (Transcendent Blood Orb)")
-                .defineInRange("tier6LPCost", 250000, 100, 1000000);
+                .defineInRange("tier6LPCost", 175000, 100, 1000000);
 
             builder.pop();
 

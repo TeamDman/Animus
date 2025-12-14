@@ -11,7 +11,7 @@ import wayoftime.bloodmagic.common.item.BloodOrbItem;
 import java.util.List;
 
 /**
- * Transcendent Blood Orb - Tier 7 Blood Orb
+ * Transcendent Blood Orb - Tier 6 Blood Orb
  * Holds 30,000,000 LP
  * Crafted in a Tier 6 altar with Crystallized Demon Will Block
  *

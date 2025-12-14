@@ -1,0 +1,9 @@
+{
+  "values": {
+    "animus:blood_orb_transcendent": {
+      "capacity": 30000000,
+      "fillRate": 75,
+      "tier": 6
+    }
+  }
+}
