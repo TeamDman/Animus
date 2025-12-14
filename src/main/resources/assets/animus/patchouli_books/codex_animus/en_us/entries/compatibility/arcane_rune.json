@@ -26,17 +26,17 @@
     {
       "type": "patchouli:text",
       "title": "Power States",
-      "text": "The Arcane Rune has two distinct states based on Source availability:$(br2)$(blood)Powered State$() (20 Source consumed every 10 seconds):$(br)• Acts as a Speed Rune but 20% faster$(br)• Provides Dislocation Rune bonus$(br2)$(will)Unpowered State$() (No Source available):$(br)• Acts as a Speed Rune at 67.5% effectiveness$(br)• No Dislocation bonus"
+      "text": "The Arcane Rune has two distinct states based on Source availability:$(br2)$(blood)Powered State$() (20 Source consumed every 10 seconds):$(li)Acts as a Speed Rune but 20%% faster$(li)Provides Dislocation Rune bonus$(br2)$(will)Unpowered State$() (No Source available):$(li)Acts as a Speed Rune at 67.5%% effectiveness$(li)No Dislocation bonus"
     },
     {
       "type": "patchouli:text",
       "title": "Strategic Use",
-      "text": "The Arcane Rune excels in hybrid builds:$(br2)• Provides superior altar speed when Source is plentiful$(br)• Acts as a backup speed rune when Source runs out$(br)• The dislocation bonus increases LP transfer rate$(br2)Consider the Source consumption rate (20 per 10 seconds = 2 Source/second per rune) when planning your Source generation and storage capacity. This can be configured in the config file."
+      "text": "The Arcane Rune excels in hybrid builds:$(br2)$(li)Provides superior altar speed when Source is plentiful$(li)Acts as a backup speed rune when Source runs out$(li)The dislocation bonus increases LP transfer rate$(br2)Consider the Source consumption rate (20 per 10 seconds = 2 Source/second per rune) when planning your Source generation and storage capacity. This can be configured in the config file."
     },
     {
       "type": "patchouli:text",
       "title": "Requirements",
-      "text": "To use the Arcane Rune:$(br)• $(animus)Ars Nouveau must be installed$()$(br)• Use a Dominion Wand to link Source Jars$(br)• Ensure linked jars are kept filled$(br2)The rune emits a subtle glow (light level 7) when placed, making it easy to identify in your altar structure."
+      "text": "To use the Arcane Rune:$(li)$(animus)Ars Nouveau must be installed$()$(li)Use a Dominion Wand to link Source Jars$(li)Ensure linked jars are kept filled$(br2)The rune emits a subtle glow (light level 7) when placed, making it easy to identify in your altar structure."
     }
   ]
 }

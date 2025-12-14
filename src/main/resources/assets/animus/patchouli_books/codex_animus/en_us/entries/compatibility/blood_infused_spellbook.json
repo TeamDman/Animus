@@ -16,17 +16,17 @@
     {
       "type": "patchouli:text",
       "title": "Creating the Book",
-      "text": "To create a Blood-Infused Spellbook, you must perform a ritual at the Blood Altar. You will need:$(br2)• A $(item)Spellbook$() from Iron's Spells 'n Skills$(br)• A $(blood)Tier 4 or higher$() Blood Altar$(br)• A $(blood)Weak Blood Orb$() or better in the altar$(br)• At least $(blood)20,000 LP$() in the altar$(br2)With these requirements met, simply right-click the Blood Altar with the spellbook in hand. The spellbook will be consumed and transformed."
+      "text": "To create a Blood-Infused Spellbook, you must perform a ritual at the Blood Altar. You will need:$(br2)$(li)A $(item)Spellbook$() from Iron's Spells 'n Skills$(li)A $(blood)Tier 4 or higher$() Blood Altar$(li)A $(blood)Weak Blood Orb$() or better in the altar$(li)At least $(blood)20,000 LP$() in the altar$(br2)With these requirements met, simply right-click the Blood Altar with the spellbook in hand. The spellbook will be consumed and transformed."
     },
     {
       "type": "patchouli:text",
       "title": "Abilities",
-      "text": "$(bold)Passive Bonuses:$(br)• $(blood)+10% Spell Power$()$(br)• $(blood)+25% Mana Regeneration$()$(br)• $(blood)+5% Cooldown Reduction$()$(br)$(italic)LP Cost: 10 LP/second$(br2)$(bold)Active Benefits:$(br)• $(blood)10% Mana Cost Reduction$() on all spells$(br)• $(blood)Overdraw Mana:$() If you lack the mana for a spell, the book will consume $(blood)100 LP$() for each point of mana you are missing, allowing you to cast the spell anyway."
+      "text": "$(bold)Passive Bonuses:$()$(li)$(blood)+10%% Spell Power$()$(li)$(blood)+25%% Mana Regeneration$()$(li)$(blood)+5%% Cooldown Reduction$()$(br)$(italic)LP Cost: 10 LP/second$()$(br2)$(bold)Active Benefits:$()$(li)$(blood)10%% Mana Cost Reduction$() on all spells$(li)$(blood)Overdraw Mana:$() Consume $(blood)100 LP$() per missing mana point to cast anyway."
     },
     {
       "type": "patchouli:text",
       "title": "Requirements",
-      "text": "To use the Blood-Infused Spellbook, you must have:$(br2)• $(mod)Iron's Spellbooks$() installed$(br)• An active $(l:bloodmagic:altar/binding)Soul Network$() with sufficient LP$(br2)The book functions from any inventory slot and does not need to be held."
+      "text": "To use the Blood-Infused Spellbook, you must have:$(br2)$(li)$(mod)Iron's Spellbooks$() installed$(li)An active $(l:bloodmagic:altar/binding)Soul Network$() with sufficient LP$(br2)The book functions from any inventory slot and does not need to be held."
     }
   ]
 }

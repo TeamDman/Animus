@@ -16,22 +16,22 @@
     {
       "type": "patchouli:text",
       "title": "Lifesteal",
-      "text": "Every strike with the Hand of Death heals you for $(blood)20%$() of the damage dealt:$(br2)• Minimum heal of 1 health$(br)• Works on all damage$(br)• Stacks with other healing$(br)• No cooldown$(br2)$(italic)Combined with the weapon's high damage, this provides substantial sustain in prolonged fights.$()"
+      "text": "Every strike with the Hand of Death heals you for $(blood)20%%$() of the damage dealt:$(br2)$(li)Minimum heal of 1 health$(li)Works on all damage$(li)Stacks with other healing$(li)No cooldown$(br2)$(italic)Combined with the weapon's high damage, this provides substantial sustain in prolonged fights.$()"
     },
     {
       "type": "patchouli:text",
       "title": "Execute",
-      "text": "When an enemy falls below $(blood)15%$() health, the Hand of Death can $(bold)instantly execute$() them:$(br2)• Triggers on your next hit$(br)• Bypasses remaining health$(br)• Shows execution message$(br)• Full soul/spirit drops$(br2)$(will)⚰ EXECUTED$()$(br2)This makes the weapon devastating against high-health targets and bosses."
+      "text": "When an enemy falls below $(blood)15%%$() health, the Hand of Death can $(bold)instantly execute$() them:$(br2)$(li)Triggers on your next hit$(li)Bypasses remaining health$(li)Shows execution message$(li)Full soul/spirit drops$(br2)$(will)⚰ EXECUTED$()$(br2)This makes the weapon devastating against high-health targets and bosses."
     },
     {
       "type": "patchouli:text",
       "title": "Inherited Powers",
-      "text": "The Hand of Death retains all features from the $(l:animus:compatibility/runic_sentient_scythe)Runic Sentient Scythe$():$(br2)• $(will)+30% attack speed$()$(br)• Full demon will scaling$(br)• Malum spirit harvesting$(br)• All sentient weapon effects$(br2)$(bold)+14 bonus base damage$() over the Runic Sentient Scythe makes this one of the most powerful melee weapons available."
+      "text": "The Hand of Death retains all features from the $(l:animus:compatibility/runic_sentient_scythe)Runic Sentient Scythe$():$(br2)$(li)$(will)+30%% attack speed$()$(li)Full demon will scaling$(li)Malum spirit harvesting$(li)All sentient weapon effects$(br2)$(bold)+14 bonus base damage$() over the Runic Sentient Scythe makes this one of the most powerful melee weapons available."
     },
     {
       "type": "patchouli:text",
       "title": "Crafting",
-      "text": "The Hand of Death requires advanced materials:$(br2)• $(item)Runic Sentient Scythe$()$(br)• $(item)Demon Forged Steel$()$(br)• $(blood)Significant Life Essence$()$(br2)This is an end-game weapon requiring mastery of both Blood Magic and Malum systems. See the recipe for exact crafting requirements."
+      "text": "The Hand of Death requires advanced materials:$(br2)$(li)$(item)Runic Sentient Scythe$()$(li)$(item)Demon Forged Steel$()$(li)$(blood)Significant Life Essence$()$(br2)This is an end-game weapon requiring mastery of both Blood Magic and Malum systems. See the recipe for exact crafting requirements."
     }
   ]
 }

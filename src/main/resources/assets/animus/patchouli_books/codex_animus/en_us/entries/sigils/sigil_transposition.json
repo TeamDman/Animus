@@ -27,7 +27,7 @@
     {
       "type": "patchouli:text",
       "title": "Restrictions",
-      "text": "$(bold)Protection:$() Respects chunk protection (FTB Chunks, etc.)$(br2)$(bold)Relocation Tag:$() Cannot move blocks tagged $(#)forge:relocation_not_supported$()$(br2)$(bold)Destination:$() Target location must be air$(br2)$(bold)Teleposer:$() Must be bound to a valid Teleposer for entity teleportation$(br2)The sigil will chunk-load the source area during transposition to ensure safety."
+      "text": "$(bold)Protection:$() Respects chunk protection (FTB Chunks, etc.)$(br2)$(bold)Relocation Tag:$() Cannot move blocks tagged $(#888888)forge:relocation_not_supported$()$(br2)$(bold)Destination:$() Target location must be air$(br2)$(bold)Teleposer:$() Must be bound to a valid Teleposer for entity teleportation$(br2)The sigil will chunk-load the source area during transposition to ensure safety."
     },
     {
       "type": "patchouli:text",

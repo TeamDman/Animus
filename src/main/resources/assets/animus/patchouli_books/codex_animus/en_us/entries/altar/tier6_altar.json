@@ -1,7 +1,7 @@
 {
   "name": "guide.animus.entry.tier6_altar",
   "icon": "animus:crystallized_demon_will_block",
-  "category": "animus:rituals",
+  "category": "animus:altar",
   "sortnum": 1,
   "pages": [
     {
@@ -9,25 +9,9 @@
       "text": "The Tier 6 Blood Altar is the pinnacle of blood magic, allowing for the creation of the most powerful items and rituals. To construct it, you will need to infuse the altar structure with Crystallized Demon Will, and attune it to the arcane and natural energies of the world."
     },
     {
-      "type": "patchouli:multiblock",
-      "name": "Tier 6 Altar",
-      "multiblock": {
-        "mapping": {
-          "A": "bloodmagic:blankrune",
-          "B": "bloodmagic:largebloodstonebrick",
-          "C": "animus:crystallized_demon_will_block",
-          "D": "bloodmagic:altar",
-          "E": "animus:arcane_rune",
-          "F": "animus:rune_unleashed_nature"
-        },
-        "pattern": [
-          [ "     B     ", "    BAB    ", "   BBFBB   ", "  BE   EB  ", " B       B ", "B         B", " B       B ", "  BE   EB  ", "   BBFBB   ", "    BAB    ", "     B     " ],
-          [ "     C     ", "    C C    ", "   C   C   ", "  C     C  ", " C       C ", "C    D    C", " C       C ", "  C     C  ", "   C   C   ", "    C C    ", "     C     " ],
-          [ "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           " ],
-          [ "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           ", "           " ],
-          [ "     B     ", "    BAB    ", "   BBFBB   ", "  BE   EB  ", " B       B ", "B         B", " B       B ", "  BE   EB  ", "   BBFBB   ", "    BAB    ", "     B     " ]
-        ]
-      }
+      "type": "patchouli:text",
+      "title": "Altar Construction",
+      "text": "Use the Sanguine Diviner to visualize the placement of the altar. The top of the altar is capped with Crystallized Demon Will Blocks."
     }
   ]
 }

@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Decay System",
-      "text": "$(bold)Breaking AntiLife:$()$(br)When any AntiLife block is broken, it triggers a decay chain reaction.$(br2)$(li)All adjacent AntiLife blocks start decaying$(li)Decay spreads to other AntiLife$(li)Decayed blocks are removed$(br2)This prevents infinite expansion and allows cleanup.$(br2)$(bold)Protected Blocks:$() Cannot convert blocks tagged $(#)animus:disallow_antilife$()."
+      "text": "$(bold)Breaking AntiLife:$()$(br)When any AntiLife block is broken, it triggers a decay chain reaction.$(br2)$(li)All adjacent AntiLife blocks start decaying$(li)Decay spreads to other AntiLife$(li)Decayed blocks are removed$(br2)This prevents infinite expansion and allows cleanup.$(br2)$(bold)Protected Blocks:$() Cannot convert blocks tagged $(#888888)animus:disallow_antilife$()."
     }
   ]
 }
