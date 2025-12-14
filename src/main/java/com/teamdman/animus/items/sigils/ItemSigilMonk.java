@@ -83,7 +83,7 @@ public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem
             );
         }
 
-        return InteractionResultHolder.success(stack);
+        return InteractionResultHolder.consume(stack);
     }
 
     @Override

@@ -142,7 +142,7 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
                 ));
             }
 
-            return InteractionResultHolder.success(stack);
+            return InteractionResultHolder.consume(stack);
         }
 
         return InteractionResultHolder.fail(stack);

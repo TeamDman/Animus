@@ -1,8 +1,10 @@
 package com.teamdman.animus.jei;
 
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.compat.IronsSpellsCompat;
+import com.teamdman.animus.compat.ironsspells.ItemBloodInfusedSpellbook;
 import com.teamdman.animus.registry.AnimusBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -132,14 +134,56 @@ public class AnimusJEIPlugin implements IModPlugin {
                     inputStack = new ItemStack(Items.ENCHANTED_BOOK);
                     Animus.LOGGER.info("JEI: Using enchanted book as placeholder for input spellbook");
                 }
+
+                // Create tier 1 output (initial infusion result)
+                ItemStack tier1Output = new ItemStack(bloodInfusedSpellbook);
+                ItemBloodInfusedSpellbook.setInfusionTier(tier1Output, 1);
+
                 displays.add(AltarInfusionDisplay.createSpellbookInfusion(
                     inputStack,
-                    new ItemStack(bloodInfusedSpellbook),
-                    10000,
+                    tier1Output,
+                    AnimusConfig.ironsSpells.bloodSpellbookTier1LP.get(),
                     Component.translatable("jei.animus.blood_infused_spellbook.title"),
                     Component.translatable("jei.animus.blood_infused_spellbook.desc")
                 ));
-                Animus.LOGGER.info("JEI: Added Blood-Infused Spellbook recipe display");
+                Animus.LOGGER.info("JEI: Added Blood-Infused Spellbook creation recipe display");
+
+                // Add upgrade tier displays (Tier 1→2, 2→3, 3→4, 4→5, 5→6)
+                String[] orbNames = {
+                    "Apprentice Blood Orb",    // Tier 2
+                    "Magician's Blood Orb",    // Tier 3
+                    "Master Blood Orb",        // Tier 4
+                    "Archmage's Blood Orb",    // Tier 5
+                    "Transcendent Blood Orb"   // Tier 6
+                };
+                int[] lpCosts = {
+                    AnimusConfig.ironsSpells.bloodSpellbookTier2LP.get(),
+                    AnimusConfig.ironsSpells.bloodSpellbookTier3LP.get(),
+                    AnimusConfig.ironsSpells.bloodSpellbookTier4LP.get(),
+                    AnimusConfig.ironsSpells.bloodSpellbookTier5LP.get(),
+                    AnimusConfig.ironsSpells.bloodSpellbookTier6LP.get()
+                };
+
+                for (int tier = 1; tier <= 5; tier++) {
+                    ItemStack tierInput = new ItemStack(bloodInfusedSpellbook);
+                    ItemBloodInfusedSpellbook.setInfusionTier(tierInput, tier);
+
+                    ItemStack tierOutput = new ItemStack(bloodInfusedSpellbook);
+                    ItemBloodInfusedSpellbook.setInfusionTier(tierOutput, tier + 1);
+
+                    displays.add(AltarInfusionDisplay.createSpellbookUpgrade(
+                        tierInput,
+                        tierOutput,
+                        lpCosts[tier - 1],
+                        tier,
+                        tier + 1,
+                        orbNames[tier - 1],
+                        Component.translatable("jei.animus.blood_infused_spellbook.upgrade_title"),
+                        Component.translatable("jei.animus.blood_infused_spellbook.upgrade_desc")
+                    ));
+                }
+                Animus.LOGGER.info("JEI: Added 5 Blood-Infused Spellbook upgrade displays");
+
             } else {
                 Animus.LOGGER.error("JEI: Blood-Infused Spellbook item is null! Cannot create recipe display.");
             }

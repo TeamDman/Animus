@@ -93,7 +93,7 @@ public class ItemSigilBoundlessNature extends AnimusSigilBase {
         if (!level.isClientSide && player.isShiftKeyDown()) {
             // Toggle activation
             setActive(stack, !isActive(stack));
-            return InteractionResultHolder.success(stack);
+            return InteractionResultHolder.consume(stack);
         }
 
         return InteractionResultHolder.pass(stack);

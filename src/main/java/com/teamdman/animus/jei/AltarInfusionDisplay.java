@@ -12,8 +12,9 @@ import java.util.List;
 public class AltarInfusionDisplay {
 
     public enum InfusionType {
-        SPELLBOOK,      // Regular altar infusion (item in altar)
-        SANGUINE_SCROLL // Special interaction (main hand + offhand + right-click)
+        SPELLBOOK,          // Initial altar infusion (regular spellbook -> blood-infused)
+        SPELLBOOK_UPGRADE,  // Upgrade tiers (tier N -> tier N+1)
+        SANGUINE_SCROLL     // Special interaction (main hand + offhand + right-click)
     }
 
     private final InfusionType type;
@@ -24,9 +25,12 @@ public class AltarInfusionDisplay {
     private final int lpCost;
     private final Component title;
     private final Component description;
+    private final int fromTier;              // For upgrades: source tier
+    private final int toTier;                // For upgrades: target tier
+    private final String requiredOrb;        // For upgrades: orb name required
 
     /**
-     * Constructor for SPELLBOOK type (regular altar infusion)
+     * Constructor for SPELLBOOK type (initial altar infusion)
      */
     public static AltarInfusionDisplay createSpellbookInfusion(
             ItemStack input, ItemStack output, int lpCost,
@@ -39,7 +43,28 @@ public class AltarInfusionDisplay {
             List.of(output),
             lpCost,
             title,
-            description
+            description,
+            0, 1, "Weak Blood Orb"
+        );
+    }
+
+    /**
+     * Constructor for SPELLBOOK_UPGRADE type (tier upgrades)
+     */
+    public static AltarInfusionDisplay createSpellbookUpgrade(
+            ItemStack input, ItemStack output, int lpCost,
+            int fromTier, int toTier, String requiredOrb,
+            Component title, Component description) {
+        return new AltarInfusionDisplay(
+            InfusionType.SPELLBOOK_UPGRADE,
+            ItemStack.EMPTY,
+            ItemStack.EMPTY,
+            input,
+            List.of(output),
+            lpCost,
+            title,
+            description,
+            fromTier, toTier, requiredOrb
         );
     }
 
@@ -57,13 +82,15 @@ public class AltarInfusionDisplay {
             outputs,
             lpCost,
             title,
-            description
+            description,
+            0, 0, ""
         );
     }
 
     private AltarInfusionDisplay(InfusionType type, ItemStack mainHandInput, ItemStack offHandInput,
                                   ItemStack altarInput, List<ItemStack> outputs, int lpCost,
-                                  Component title, Component description) {
+                                  Component title, Component description,
+                                  int fromTier, int toTier, String requiredOrb) {
         this.type = type;
         this.mainHandInput = mainHandInput;
         this.offHandInput = offHandInput;
@@ -72,6 +99,9 @@ public class AltarInfusionDisplay {
         this.lpCost = lpCost;
         this.title = title;
         this.description = description;
+        this.fromTier = fromTier;
+        this.toTier = toTier;
+        this.requiredOrb = requiredOrb;
     }
 
     public InfusionType getType() {
@@ -110,7 +140,23 @@ public class AltarInfusionDisplay {
         return type == InfusionType.SPELLBOOK;
     }
 
+    public boolean isSpellbookUpgradeType() {
+        return type == InfusionType.SPELLBOOK_UPGRADE;
+    }
+
     public boolean isSanguineScrollType() {
         return type == InfusionType.SANGUINE_SCROLL;
+    }
+
+    public int getFromTier() {
+        return fromTier;
+    }
+
+    public int getToTier() {
+        return toTier;
+    }
+
+    public String getRequiredOrb() {
+        return requiredOrb;
     }
 }

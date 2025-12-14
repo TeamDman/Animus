@@ -66,8 +66,8 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AltarInfusionDisplay recipe, IFocusGroup focuses) {
-        if (recipe.isSpellbookType()) {
-            // Spellbook infusion layout:
+        if (recipe.isSpellbookType() || recipe.isSpellbookUpgradeType()) {
+            // Spellbook infusion/upgrade layout:
             // [Input] -> [Altar] -> [Output]
 
             // Input slot (left)
@@ -129,9 +129,29 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
             guiGraphics.drawString(font, lpText, (WIDTH - lpWidth) / 2, 58, 0xAA0000, false);
 
             // Draw tier requirement
-            String tierReq = "Requires Tier 3+ Altar";
+            String tierReq = "Requires Tier 3+ Altar + " + recipe.getRequiredOrb();
             int tierWidth = font.width(tierReq);
             guiGraphics.drawString(font, tierReq, (WIDTH - tierWidth) / 2, 70, 0x606060, false);
+
+        } else if (recipe.isSpellbookUpgradeType()) {
+            // Draw subtitle showing tier upgrade
+            String subtitle = "Tier " + recipe.getFromTier() + " → Tier " + recipe.getToTier();
+            int subtitleWidth = font.width(subtitle);
+            guiGraphics.drawString(font, subtitle, (WIDTH - subtitleWidth) / 2, 18, 0x8B0000, false);
+
+            // Draw arrows for spellbook layout (items at y=35, so arrows at y=38)
+            guiGraphics.drawString(font, "→", 42, 38, 0x404040, false);
+            guiGraphics.drawString(font, "→", 115, 38, 0x404040, false);
+
+            // Draw LP cost below items (items end at y=51)
+            String lpText = String.format("%,d LP", recipe.getLpCost());
+            int lpWidth = font.width(lpText);
+            guiGraphics.drawString(font, lpText, (WIDTH - lpWidth) / 2, 58, 0xAA0000, false);
+
+            // Draw orb requirement
+            String orbReq = "Requires: " + recipe.getRequiredOrb();
+            int orbWidth = font.width(orbReq);
+            guiGraphics.drawString(font, orbReq, (WIDTH - orbWidth) / 2, 70, 0x606060, false);
 
         } else if (recipe.isSanguineScrollType()) {
             // Draw subtitle explaining interaction

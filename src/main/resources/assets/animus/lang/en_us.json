@@ -601,8 +601,10 @@
   "jei.animus.ritual.iron_heart.desc": "Echoing Strikes III for 15 minutes.",
 
   "jei.animus.category.altar_infusion": "Blood Altar Infusion",
-  "jei.animus.blood_infused_spellbook.title": "Blood-Infused Spellbook",
-  "jei.animus.blood_infused_spellbook.desc": "Place leather spellbook in Blood Altar. Tier 3+ altar required.",
+  "jei.animus.blood_infused_spellbook.title": "Create Blood-Infused Spellbook",
+  "jei.animus.blood_infused_spellbook.desc": "Right-click Blood Altar with any Iron's Spellbook. Tier 3+ altar required.",
+  "jei.animus.blood_infused_spellbook.upgrade_title": "Upgrade Blood-Infused Spellbook",
+  "jei.animus.blood_infused_spellbook.upgrade_desc": "Right-click Blood Altar while holding the spellbook.",
   "jei.animus.sanguine_scroll.title.blank": "Sanguine Scroll (Blank)",
   "jei.animus.sanguine_scroll.title.reinforced": "Sanguine Scroll (Reinforced)",
   "jei.animus.sanguine_scroll.title.imbued": "Sanguine Scroll (Imbued)",

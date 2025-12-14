@@ -73,7 +73,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
         if (player.isShiftKeyDown()) {
             // Toggle activation
             setActivatedState(stack, !getActivated(stack));
-            return InteractionResultHolder.success(stack);
+            return InteractionResultHolder.consume(stack);
         } else {
             // Place block in front of player
             ItemStack buildStack = getStackToUse(hand, player);
@@ -108,7 +108,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
                         player.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
                     }
 
-                    return InteractionResultHolder.success(stack);
+                    return InteractionResultHolder.consume(stack);
                 }
             }
         }
