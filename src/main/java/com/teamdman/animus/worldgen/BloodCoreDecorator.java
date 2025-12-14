@@ -1,6 +1,6 @@
 package com.teamdman.animus.worldgen;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorTy
  * Tree decorator that replaces the top center log with a blood core
  */
 public class BloodCoreDecorator extends TreeDecorator {
-    public static final Codec<BloodCoreDecorator> CODEC = Codec.unit(() -> BloodCoreDecorator.INSTANCE);
+    public static final MapCodec<BloodCoreDecorator> CODEC = MapCodec.unit(BloodCoreDecorator.INSTANCE);
     public static final BloodCoreDecorator INSTANCE = new BloodCoreDecorator();
 
     @Override

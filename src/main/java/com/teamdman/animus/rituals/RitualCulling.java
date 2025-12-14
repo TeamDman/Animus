@@ -217,9 +217,11 @@ public class RitualCulling extends Ritual {
                 if (effects.isEmpty() || AnimusConfig.general.canKillBuffedMobs.get()) {
                     BlockPos at = livingEntity.blockPosition();
                     // In 1.21, canChangeDimensions() requires (Level, Level) params
-                    // Using invulnerability check instead as a proxy for boss detection
-                    boolean isBoss = livingEntity.isInvulnerable() || livingEntity.getType().is(net.minecraft.tags.EntityTypeTags.WITHER) ||
-                                     livingEntity.getType().is(net.minecraft.tags.EntityTypeTags.RAIDERS);
+                    // Using invulnerability check and direct type checks for boss detection
+                    boolean isBoss = livingEntity.isInvulnerable()
+                                     || livingEntity.getType() == net.minecraft.world.entity.EntityType.WITHER
+                                     || livingEntity.getType() == net.minecraft.world.entity.EntityType.ENDER_DRAGON
+                                     || livingEntity.getType().is(net.minecraft.tags.EntityTypeTags.RAIDERS);
 
                     if (AnimusConfig.rituals.cullingDebug.get()) {
                         System.out.println("Animus: [Ritual of Culling Debug]:   Is boss: " + isBoss);

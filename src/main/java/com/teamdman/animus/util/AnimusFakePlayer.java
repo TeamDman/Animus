@@ -2,6 +2,7 @@ package com.teamdman.animus.util;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -78,7 +79,12 @@ public class AnimusFakePlayer extends FakePlayer {
         if (steadfastWill > 10) lootingLevel++;
 
         if (lootingLevel > 0) {
-            sword.enchant(Enchantments.LOOTING, lootingLevel);
+            // In 1.21, enchantments need to be looked up from the registry
+            final int finalLootingLevel = lootingLevel;
+            var enchantRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+            enchantRegistry.get(Enchantments.LOOTING).ifPresent(holder ->
+                sword.enchant(holder, finalLootingLevel)
+            );
         }
 
         return sword;

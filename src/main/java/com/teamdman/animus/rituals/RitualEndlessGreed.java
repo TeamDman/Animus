@@ -192,7 +192,7 @@ public class RitualEndlessGreed extends Ritual {
                 for (ExperienceOrb orb : xpOrbs) {
                     totalXP += orb.getValue();
                 }
-                ExperienceTomeItem.addExperience(stack, totalXP);
+                ExperienceTomeItem.addXpToTome(stack, totalXP);
             }
         }
         // If no tome found, XP is simply discarded

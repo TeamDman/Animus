@@ -37,10 +37,9 @@ public class AnimusConfiguredFeatures {
          .decorators(java.util.List.of(BloodCoreDecorator.INSTANCE));  // Add blood core decorator
     }
 
-    @SuppressWarnings("removal")
     private static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE,
-            new ResourceLocation(Constants.Mod.MODID, name));
+            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, name));
     }
 
     private static <FC extends net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration, F extends Feature<FC>>
