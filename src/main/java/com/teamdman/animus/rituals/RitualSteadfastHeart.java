@@ -169,10 +169,11 @@ public class RitualSteadfastHeart extends Ritual {
         SoulTicket ticket = SoulTicket.create(getRefreshCost() * entityCount);
         network.syphon(ticket);
 
-        // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API
         // Generate steadfast demon will
-        // double drainAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2, 10));
-        // WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, true);
+        double addAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2.0, 10));
+        if (addAmount > 0) {
+            WorldDemonWillHandler.addWillToChunk(level, pos, type, addAmount);
+        }
     }
 
     /**

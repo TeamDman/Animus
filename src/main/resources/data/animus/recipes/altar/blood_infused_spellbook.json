@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "irons_spellbooks"
+    }
+  ],
+  "type": "bloodmagic:altar",
+  "altarSyphon": 10000,
+  "consumptionRate": 20,
+  "drainRate": 10,
+  "input": {
+    "item": "irons_spellbooks:leather_spellbook"
+  },
+  "output": {
+    "item": "animus:blood_infused_spellbook"
+  },
+  "upgradeLevel": 3
+}

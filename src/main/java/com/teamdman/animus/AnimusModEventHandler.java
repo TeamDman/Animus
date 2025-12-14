@@ -12,7 +12,7 @@ import net.neoforged.neoforge.common.world.chunk.TicketController;
 /**
  * Event handler for mod bus events (registration, setup, etc.)
  */
-@EventBusSubscriber(modid = Constants.Mod.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Constants.Mod.MODID)
 public class AnimusModEventHandler {
 
     // Ticket controller for chunk loading (used by Ritual of Persistence)

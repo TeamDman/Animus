@@ -17,6 +17,7 @@ import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.registries.BuiltInRegistries;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,17 +66,41 @@ public class AnimusJEIPlugin implements IModPlugin {
             Component.translatable("jei.animus.antilife_block.info")
         );
 
-        // TODO: Sanguine Scrolls JEI disabled - items need porting to 1.21 data components
-        // if (ModList.get().isLoaded("irons_spellbooks")) {
-        //     registerSanguineScrollsJEI(registration);
-        // }
+        // Sanguine Scrolls JEI info (requires Iron's Spells)
+        if (ModList.get().isLoaded("irons_spellbooks")) {
+            registerSanguineScrollsJEI(registration);
+        }
+    }
+
+    /**
+     * Register JEI info for Sanguine Scrolls
+     */
+    private void registerSanguineScrollsJEI(IRecipeRegistration registration) {
+        try {
+            // Get the scroll items from IronsSpellsCompat
+            var compat = com.teamdman.animus.compat.IronsSpellsCompat.class;
+
+            registration.addIngredientInfo(
+                Arrays.asList(
+                    new ItemStack(com.teamdman.animus.compat.IronsSpellsCompat.SANGUINE_SCROLL_BLANK.get()),
+                    new ItemStack(com.teamdman.animus.compat.IronsSpellsCompat.SANGUINE_SCROLL_REINFORCED.get()),
+                    new ItemStack(com.teamdman.animus.compat.IronsSpellsCompat.SANGUINE_SCROLL_IMBUED.get()),
+                    new ItemStack(com.teamdman.animus.compat.IronsSpellsCompat.SANGUINE_SCROLL_DEMON.get()),
+                    new ItemStack(com.teamdman.animus.compat.IronsSpellsCompat.SANGUINE_SCROLL_ETHEREAL.get())
+                ),
+                VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.animus.sanguine_scroll.info")
+            );
+        } catch (Exception e) {
+            // Iron's Spells compat not loaded or items not registered
+        }
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        // Imperfect Ritual Stone is the main catalyst - clicking it shows ALL rituals
+        // Blood Magic's Imperfect Ritual Stone is the main catalyst - clicking it shows ALL rituals
         registration.addRecipeCatalyst(
-            new ItemStack(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get()),
+            new ItemStack(BMBlocks.IMPERFECT_RITUAL_STONE.block().get()),
             ImperfectRitualCategory.RECIPE_TYPE
         );
 
@@ -119,5 +144,4 @@ public class AnimusJEIPlugin implements IModPlugin {
         }
     }
 
-    // TODO: registerSanguineScrollsJEI method removed - needs porting to 1.21 data components
 }

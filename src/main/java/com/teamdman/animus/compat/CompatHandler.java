@@ -21,11 +21,10 @@ public class CompatHandler {
     static {
         // Register compatibility modules here
         // Using suppliers ensures classes are only loaded when the mod is present
-        // Most modules disabled until mods have 1.21.1 versions
         // COMPAT_MODULES.put("irons_spellbooks", IronsSpellsCompat::new);
         // COMPAT_MODULES.put("ars_nouveau", ArsNouveauCompat::new);
-        // COMPAT_MODULES.put("malum", MalumCompat::new);
-        // COMPAT_MODULES.put("botania", BotaniaCompat::new);
+        COMPAT_MODULES.put("malum", MalumCompat::new);
+        // COMPAT_MODULES.put("botania", BotaniaCompat::new); // Botania not available for 1.21.1 yet
     }
 
     /**

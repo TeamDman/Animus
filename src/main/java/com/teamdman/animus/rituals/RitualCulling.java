@@ -176,8 +176,6 @@ public class RitualCulling extends Ritual {
         int entityCount = 0;
 
         if (currentEssence < getRefreshCost() * list.size()) {
-            // TODO: Blood Magic 4.x removed causeNausea() from SoulNetwork
-            // network.causeNausea();
             if (AnimusConfig.rituals.cullingDebug.get()) {
                 System.out.println("Animus: [Ritual of Culling Debug]: Culling MRS at " + ritualStone.getMasterBlockPos() + " does not have sufficient LP from the owner");
             }
@@ -317,14 +315,13 @@ public class RitualCulling extends Ritual {
                         DamageSource playerDamage = level.damageSources().playerAttack(fakePlayer);
                         result = livingEntity.hurt(playerDamage, damage);
 
-                        // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API - drainWill signature changed
                         // Chance to consume raw will
-                        // if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
-                        //     WorldDemonWillHandler.drainWill(level, pos, EnumWillType.DEFAULT, 1.0, true);
-                        //     if (AnimusConfig.rituals.cullingDebug.get()) {
-                        //         System.out.println("Animus: [Ritual of Culling Debug]:   Consumed 1 raw demon will");
-                        //     }
-                        // }
+                        if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
+                            WorldDemonWillHandler.drainWillFromChunk(level, pos, EnumWillType.DEFAULT, 1.0);
+                            if (AnimusConfig.rituals.cullingDebug.get()) {
+                                System.out.println("Animus: [Ritual of Culling Debug]:   Consumed 1 raw demon will");
+                            }
+                        }
                     } else {
                         result = livingEntity.hurt(level.damageSources().genericKill(), damage);
                     }
@@ -384,12 +381,11 @@ public class RitualCulling extends Ritual {
             // Consume LP for kills
             network.syphon(SoulTicket.create(getRefreshCost() * entityCount));
 
-            // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API - fillWillToMaximum signature changed
             // Generate destructive demon will (3% chance per cycle)
-            // double drainAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2, 10));
-            // if (rand.nextInt(30) == 0) {
-            //     WorldDemonWillHandler.fillWillToMaximum(level, pos, type, drainAmount, maxWill, true);
-            // }
+            double addAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2.0, 10));
+            if (rand.nextInt(30) == 0 && addAmount > 0) {
+                WorldDemonWillHandler.addWillToChunk(level, pos, type, addAmount);
+            }
         }
     }
 

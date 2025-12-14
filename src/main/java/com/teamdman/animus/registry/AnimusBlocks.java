@@ -47,8 +47,7 @@ public class AnimusBlocks {
     public static final DeferredHolder<Block, Block> BLOCK_CRYSTALLIZED_DEMON_WILL = BLOCKS.register("crystallized_demon_will_block",
         BlockCrystallizedDemonWill::new);
 
-    public static final DeferredHolder<Block, Block> BLOCK_IMPERFECT_RITUAL_STONE = BLOCKS.register("imperfect_ritual_stone",
-        BlockImperfectRitualStone::new);
+    // Imperfect Ritual Stone removed - use Blood Magic's native BMBlocks.IMPERFECT_RITUAL_STONE instead
 
     // Willful Stone blocks (all 16 colors)
     public static final DeferredHolder<Block, Block> BLOCK_WILLFUL_STONE = BLOCKS.register("willful_stone",

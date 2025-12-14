@@ -94,6 +94,11 @@ public class AnimusDataComponents {
         DATA_COMPONENTS.registerComponentType("animus_enhanced", builder ->
             builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
+    // Runic Sentient Scythe / Hand of Death - cached soul count for damage calculation
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> CACHED_SOULS =
+        DATA_COMPONENTS.registerComponentType("cached_souls", builder ->
+            builder.persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE));
+
     // ===== Iron's Spells n Spellbooks Compat =====
 
     // Sanguine Scroll - stored spell ID

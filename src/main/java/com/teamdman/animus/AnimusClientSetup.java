@@ -3,6 +3,8 @@ package com.teamdman.animus;
 import com.teamdman.animus.client.models.AnimusModelLayers;
 import com.teamdman.animus.client.models.SpearModel;
 import com.teamdman.animus.client.renderers.ThrownSpearRenderer;
+import com.teamdman.animus.compat.IronsSpellsCompat;
+import com.teamdman.animus.compat.ironsspells.ItemSigilCrimsonWill;
 import com.teamdman.animus.items.sigils.ItemSigilToggleableBase;
 import com.teamdman.animus.registry.AnimusEntityTypes;
 import com.teamdman.animus.registry.AnimusItems;
@@ -10,6 +12,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -18,7 +21,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
  * Client-side setup for Animus mod
  * Handles render layers and other client-only initialization
  */
-@EventBusSubscriber(modid = Constants.Mod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Constants.Mod.MODID, value = Dist.CLIENT)
 public class AnimusClientSetup {
 
     @SubscribeEvent
@@ -53,7 +56,25 @@ public class AnimusClientSetup {
             registerSpearThrowingProperty(AnimusItems.SPEAR_DIAMOND.get());
             registerSpearThrowingProperty(AnimusItems.SPEAR_BOUND.get());
             registerSpearThrowingProperty(AnimusItems.SPEAR_SENTIENT.get());
+
+            // Register Iron's Spells compat item properties (if mod is loaded)
+            if (ModList.get().isLoaded("irons_spellbooks")) {
+                registerCrimsonWillSigilProperty();
+            }
         });
+    }
+
+    /**
+     * Registers the "active" item property for Sigil of Crimson Will
+     * This allows the model to switch between active/inactive textures
+     */
+    private static void registerCrimsonWillSigilProperty() {
+        ItemProperties.register(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get(),
+            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "active"),
+            (stack, level, entity, seed) -> {
+                return ItemSigilCrimsonWill.isActive(stack) ? 1.0F : 0.0F;
+            }
+        );
     }
 
     @SubscribeEvent

@@ -1,5 +1,6 @@
 package com.teamdman.animus.compat.malum;
 
+import com.teamdman.animus.Animus;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -10,6 +11,9 @@ import net.minecraft.world.item.ItemStack;
  */
 public class SpiritHarvestHelper {
 
+    private static boolean apiChecked = false;
+    private static java.lang.reflect.Method spawnSpiritsMethod = null;
+
     /**
      * Trigger Malum's spirit harvesting when an entity is killed
      * This will spawn soul particles and collect spirits if Malum is present
@@ -19,20 +23,36 @@ public class SpiritHarvestHelper {
      * @param weapon The weapon used to kill (usually a scythe)
      */
     public static void harvestSpirits(LivingEntity target, Player attacker, ItemStack weapon) {
-        try {
-            // Call Malum's spirit harvest handler to spawn souls
-            // This uses the public static method: SpiritHarvestHandler.spawnSpirits(target, attacker, weapon)
-            Class<?> spiritHarvestHandler = Class.forName("com.sammy.malum.core.handlers.SpiritHarvestHandler");
-            java.lang.reflect.Method spawnSpirits = spiritHarvestHandler.getMethod(
-                "spawnSpirits",
-                LivingEntity.class,
-                LivingEntity.class,
-                ItemStack.class
-            );
-            spawnSpirits.invoke(null, target, attacker, weapon);
-        } catch (Exception e) {
-            // Silent failure - Malum integration is optional
-            System.err.println("Failed to trigger Malum soul harvest: " + e.getMessage());
+        // Cache the reflection lookup
+        if (!apiChecked) {
+            apiChecked = true;
+            try {
+                // Try Malum 1.21.1 API path
+                Class<?> spiritHarvestHandler = Class.forName("com.sammy.malum.core.handlers.SpiritHarvestHandler");
+                spawnSpiritsMethod = spiritHarvestHandler.getMethod(
+                    "spawnSpirits",
+                    LivingEntity.class,
+                    LivingEntity.class,
+                    ItemStack.class
+                );
+                Animus.LOGGER.info("Malum spirit harvest API found - integration active");
+            } catch (ClassNotFoundException e) {
+                Animus.LOGGER.debug("Malum SpiritHarvestHandler not found - spirit integration disabled");
+            } catch (NoSuchMethodException e) {
+                Animus.LOGGER.warn("Malum API changed - spawnSpirits method not found: {}", e.getMessage());
+            } catch (Exception e) {
+                Animus.LOGGER.warn("Failed to initialize Malum spirit harvest integration: {}", e.getMessage());
+            }
+        }
+
+        // If we found the API, use it
+        if (spawnSpiritsMethod != null) {
+            try {
+                spawnSpiritsMethod.invoke(null, target, attacker, weapon);
+                Animus.LOGGER.debug("Triggered Malum spirit harvest for {}", target.getType().getDescriptionId());
+            } catch (Exception e) {
+                Animus.LOGGER.debug("Failed to trigger Malum spirit harvest: {}", e.getMessage());
+            }
         }
     }
 

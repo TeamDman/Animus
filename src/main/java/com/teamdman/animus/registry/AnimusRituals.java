@@ -2,8 +2,7 @@ package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.rituals.*;
-import com.teamdman.animus.rituals.imperfect.RitualHunger;
-import com.teamdman.animus.rituals.imperfect.RitualRegression;
+import com.teamdman.animus.rituals.imperfect.*;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.ritual.ImperfectRitual;
@@ -80,6 +79,24 @@ public class AnimusRituals {
 
     public static final DeferredHolder<ImperfectRitual, RitualRegression> IMPERFECT_REGRESSION =
         registerImperfectRitual(Constants.Rituals.REGRESSION, RitualRegression::new);
+
+    public static final DeferredHolder<ImperfectRitual, RitualEnhancement> IMPERFECT_ENHANCEMENT =
+        registerImperfectRitual(Constants.Rituals.ENHANCEMENT, RitualEnhancement::new);
+
+    public static final DeferredHolder<ImperfectRitual, RitualReduction> IMPERFECT_REDUCTION =
+        registerImperfectRitual(Constants.Rituals.REDUCTION, RitualReduction::new);
+
+    public static final DeferredHolder<ImperfectRitual, RitualBoundlessSkies> IMPERFECT_BOUNDLESS_SKIES =
+        registerImperfectRitual(Constants.Rituals.BOUNDLESS_SKIES, RitualBoundlessSkies::new);
+
+    public static final DeferredHolder<ImperfectRitual, RitualClearSkies> IMPERFECT_CLEAR_SKIES =
+        registerImperfectRitual(Constants.Rituals.CLEAR_SKIES, RitualClearSkies::new);
+
+    public static final DeferredHolder<ImperfectRitual, RitualNeptuneBlessing> IMPERFECT_NEPTUNE_BLESSING =
+        registerImperfectRitual(Constants.Rituals.NEPTUNE_BLESSING, RitualNeptuneBlessing::new);
+
+    public static final DeferredHolder<ImperfectRitual, RitualWarden> IMPERFECT_WARDEN =
+        registerImperfectRitual(Constants.Rituals.WARDEN, RitualWarden::new);
 
     /**
      * Helper method to register imperfect rituals using Blood Magic's registry

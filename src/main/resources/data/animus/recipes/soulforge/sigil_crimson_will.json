@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "irons_spellbooks"
+    }
+  ],
+  "type": "bloodmagic:soulforge",
+  "minimumDrain": 256.0,
+  "soulDrain": 512.0,
+  "input0": {
+    "item": "bloodmagic:basemonstersoul"
+  },
+  "input1": {
+    "item": "bloodmagic:demonslate"
+  },
+  "input2": {
+    "item": "irons_spellbooks:arcane_essence"
+  },
+  "input3": {
+    "item": "minecraft:blaze_powder"
+  },
+  "output": {
+    "item": "animus:sigil_crimson_will"
+  }
+}

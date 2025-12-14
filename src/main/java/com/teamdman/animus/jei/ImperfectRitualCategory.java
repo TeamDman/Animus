@@ -2,7 +2,6 @@ package com.teamdman.animus.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.registry.AnimusBlocks;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -18,6 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import wayoftime.bloodmagic.common.block.BMBlocks;
 
 /**
  * JEI Recipe Category for Imperfect Rituals
@@ -35,9 +35,9 @@ public class ImperfectRitualCategory implements IRecipeCategory<ImperfectRitualD
     public ImperfectRitualCategory(IGuiHelper guiHelper) {
         // Create a simple background - 160x80 pixels
         this.background = guiHelper.createBlankDrawable(160, 85);
-        // Use the imperfect ritual stone as the icon
+        // Use Blood Magic's imperfect ritual stone as the icon
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-            new ItemStack(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get()));
+            new ItemStack(BMBlocks.IMPERFECT_RITUAL_STONE.block().get()));
         this.title = Component.translatable("jei.animus.category.imperfect_ritual");
     }
 
@@ -63,9 +63,9 @@ public class ImperfectRitualCategory implements IRecipeCategory<ImperfectRitualD
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ImperfectRitualDisplay recipe, IFocusGroup focuses) {
-        // Ritual Stone slot (bottom)
+        // Blood Magic's Ritual Stone slot (bottom)
         builder.addSlot(RecipeIngredientRole.CATALYST, 5, 45)
-            .addItemStack(new ItemStack(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get()));
+            .addItemStack(new ItemStack(BMBlocks.IMPERFECT_RITUAL_STONE.block().get()));
 
         // Trigger/Catalyst block slot (top, above ritual stone)
         builder.addSlot(RecipeIngredientRole.INPUT, 5, 22)

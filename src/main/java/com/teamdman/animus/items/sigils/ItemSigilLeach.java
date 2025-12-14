@@ -177,21 +177,22 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
                 1.0F
             );
 
-            // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API
-            // The fillWillToMaximum method signature has changed - needs investigation
             // Generate corrosive demon will when consuming blocks from the world
             // Each block consumed generates 0.3-0.8 corrosive will
-            // if (!level.isClientSide) {
-            //     double willToAdd = 0.3 + level.random.nextDouble() * 0.5; // 0.3-0.8
-            //     WorldDemonWillHandler.fillWillToMaximum(
-            //         level,
-            //         player.blockPosition(),
-            //         EnumWillType.CORROSIVE,
-            //         willToAdd,
-            //         100, // max will
-            //         true
-            //     );
-            // }
+            if (!level.isClientSide) {
+                double willToAdd = 0.3 + level.random.nextDouble() * 0.5; // 0.3-0.8
+                double currentWill = wayoftime.bloodmagic.will.WorldDemonWillHandler.getCurrentWill(level, player.blockPosition(), wayoftime.bloodmagic.common.datacomponent.EnumWillType.CORROSIVE);
+                double maxWill = 100;
+                double actualAdd = Math.min(willToAdd, maxWill - currentWill);
+                if (actualAdd > 0) {
+                    wayoftime.bloodmagic.will.WorldDemonWillHandler.addWillToChunk(
+                        level,
+                        player.blockPosition(),
+                        wayoftime.bloodmagic.common.datacomponent.EnumWillType.CORROSIVE,
+                        actualAdd
+                    );
+                }
+            }
 
             return true;
         }

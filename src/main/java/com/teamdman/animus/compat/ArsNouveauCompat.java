@@ -85,8 +85,13 @@ public class ArsNouveauCompat implements ICompatModule {
         Animus.LOGGER.info("Registered Living Armor Glyph Handler");
 
         // Arcane Rune block is registered via DeferredRegister
-        // TODO: Register Arcane Rune as an altar component (similar to Speed/Dislocation rune)
-        // This requires Blood Magic's altar component system which may need investigation
+        // The block is registered as a valid altar rune via data/bloodmagic/tags/blocks/altar/runes.json
+        // This allows it to count as a BLOODRUNE component in the altar structure.
+        //
+        // Note: The dynamic speed/dislocation bonuses in BlockEntityArcaneRune are not yet
+        // integrated with Blood Magic's altar calculation - this would require Blood Magic
+        // to expose a hook for custom rune behavior. Currently the rune functions as a
+        // basic blood rune while storing and consuming Source.
 
         Animus.LOGGER.info("Ars Nouveau compatibility initialized successfully");
     }

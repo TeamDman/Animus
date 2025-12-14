@@ -192,7 +192,11 @@ public class SigilEquivalencyRenderer {
     }
 
     private static int getRadius(ItemStack stack) {
-        // TODO: Use data components for custom radius in future
+        // Check for custom radius in data component, fall back to config default
+        Integer customRadius = stack.get(com.teamdman.animus.registry.AnimusDataComponents.EQUIVALENCY_RADIUS.get());
+        if (customRadius != null && customRadius > 0) {
+            return customRadius;
+        }
         return AnimusConfig.sigils.sigilEquivalencyRadius.get();
     }
 

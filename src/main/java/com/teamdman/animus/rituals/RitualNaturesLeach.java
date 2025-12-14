@@ -185,15 +185,18 @@ public class RitualNaturesLeach extends Ritual {
         int lpPerBlock = AnimusConfig.rituals.naturesLeachLpPerBlock.get();
         tileAltar.sacrificialDaggerCall(eaten * lpPerBlock, true);
 
-        // TODO: Blood Magic 4.x changed the WorldDemonWillHandler API
-        // The fillWillToMaximum method signature has changed - needs investigation
         // Generate corrosive demon will based on blocks consumed
         // Each consumed block generates 0.5-1.5 corrosive will
-        // if (eaten > 0) {
-        //     double willPerBlock = 0.5 + random.nextDouble(); // 0.5-1.5 per block
-        //     double totalWillToAdd = eaten * willPerBlock;
-        //     WorldDemonWillHandler.fillWillToMaximum(level, pos, type, totalWillToAdd, maxWill, true);
-        // }
+        if (eaten > 0) {
+            double willPerBlock = 0.5 + random.nextDouble(); // 0.5-1.5 per block
+            double totalWillToAdd = eaten * willPerBlock;
+            // Cap will to max
+            double currentWill = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+            double actualAdd = Math.min(totalWillToAdd, maxWill - currentWill);
+            if (actualAdd > 0) {
+                WorldDemonWillHandler.addWillToChunk(level, pos, type, actualAdd);
+            }
+        }
     }
 
     public static boolean isConsumable(Block block) {

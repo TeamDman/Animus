@@ -383,6 +383,14 @@ public class Constants {
         public static final String UNMAKING = "ritual_unmaking";
         public static final String ARCANE_MASTERY = "ritual_arcane_mastery";
         public static final String ENDLESS_GREED = "ritual_endless_greed";
+
+        // Imperfect Rituals
+        public static final String ENHANCEMENT = "ritual_enhancement";
+        public static final String REDUCTION = "ritual_reduction";
+        public static final String BOUNDLESS_SKIES = "ritual_boundless_skies";
+        public static final String CLEAR_SKIES = "ritual_clear_skies";
+        public static final String NEPTUNE_BLESSING = "ritual_neptune_blessing";
+        public static final String WARDEN = "ritual_warden";
     }
 
     public static class Sigils {

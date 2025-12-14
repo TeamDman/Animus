@@ -76,15 +76,7 @@ public class AnimusItems {
             }
         });
 
-    // Imperfect Ritual Stone - with tooltip
-    public static final DeferredHolder<Item, Item> BLOCK_IMPERFECT_RITUAL_STONE = ITEMS.register("imperfect_ritual_stone",
-        () -> new BlockItem(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get(), new Item.Properties()) {
-            @Override
-            public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-                tooltip.add(Component.translatable("tooltip.animus.imperfect_ritual_stone.info"));
-                super.appendHoverText(stack, context, tooltip, flag);
-            }
-        });
+    // Imperfect Ritual Stone removed - use Blood Magic's native BMBlocks.IMPERFECT_RITUAL_STONE instead
 
     // Willful Stone blocks (all 16 colors)
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE = registerBlockItem("willful_stone", AnimusBlocks.BLOCK_WILLFUL_STONE);
@@ -221,13 +213,13 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> SENTIENT_SHIELD = ITEMS.register("sentient_shield",
         ItemSentientShield::new);
 
-    // TODO: ItemRunicSentientScythe needs to be ported from 1.20.1
-    // public static final DeferredHolder<Item, Item> RUNIC_SENTIENT_SCYTHE = ITEMS.register("runic_sentient_scythe",
-    //     ItemRunicSentientScythe::new);
+    // Runic Sentient Scythe - enhanced scythe with Malum integration
+    public static final DeferredHolder<Item, Item> RUNIC_SENTIENT_SCYTHE = ITEMS.register("runic_sentient_scythe",
+        ItemRunicSentientScythe::new);
 
-    // TODO: ItemHandOfDeath needs to be ported from 1.20.1
-    // public static final DeferredHolder<Item, Item> HAND_OF_DEATH = ITEMS.register("hand_of_death",
-    //     ItemHandOfDeath::new);
+    // Hand of Death - ultimate sentient scythe with lifesteal and execute
+    public static final DeferredHolder<Item, Item> HAND_OF_DEATH = ITEMS.register("hand_of_death",
+        ItemHandOfDeath::new);
 
     // Crafting Components
     public static final DeferredHolder<Item, Item> KEY_BINDING = ITEMS.register("key_binding",

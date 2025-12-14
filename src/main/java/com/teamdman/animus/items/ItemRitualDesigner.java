@@ -431,10 +431,10 @@ public class ItemRitualDesigner extends Item {
     }
 
     private String checkRitualConflict(List<RuneData> runes, Level level) {
-        // Blood Magic 4.x changed the RitualManager API
-        // Conflict checking is disabled until the new API is implemented
-        // For now, always return null (no conflict detected)
-        // TODO: Update to use Blood Magic 4.x's ritual registry when API is documented
+        // Blood Magic 4.x changed the RitualComponent API
+        // The getOffset() and getRuneType() methods were removed or renamed
+        // Conflict checking is disabled until Blood Magic exposes a stable API
+        // for accessing ritual component data
         return null;
     }
 

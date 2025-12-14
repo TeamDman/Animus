@@ -33,7 +33,7 @@ public class Animus {
         AnimusCreativeTabs.CREATIVE_TABS.register(modEventBus);
         AnimusTreeDecoratorTypes.TREE_DECORATOR_TYPES.register(modEventBus);
         AnimusRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
-        AnimusRecipeTypes.RECIPE_TYPES.register(modEventBus);
+        // Imperfect ritual recipe type removed - using Blood Magic's native system
         AnimusAttributes.ATTRIBUTES.register(modEventBus);
         AnimusDataComponents.DATA_COMPONENTS.register(modEventBus);
 
