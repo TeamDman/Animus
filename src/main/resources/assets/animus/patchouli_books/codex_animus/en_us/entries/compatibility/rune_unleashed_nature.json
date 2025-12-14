@@ -21,22 +21,22 @@
     {
       "type": "patchouli:text",
       "title": "Passive Bonuses",
-      "text": "The Rune of Unleashed Nature provides bonuses even when empty:$(br2)$(blood)Always Active:$()$(br)- Capacity Bonus: Provides 135% of a Capacity Rune's effect$(br)- Orb Bonus: Provides 67.5% of a Rune of the Orb's effect, increasing Soul Network storage$(br2)These passive bonuses make it valuable even without mana."
+      "text": "The Rune of Unleashed Nature provides bonuses even when empty:$(br2)$(blood)Always Active:$()$(li)Capacity Bonus: Provides 135%% of a Capacity Rune's effect$(li)Orb Bonus: Provides 67.5%% of a Rune of the Orb's effect, increasing Soul Network storage$(br2)These passive bonuses make it valuable even without mana."
     },
     {
       "type": "patchouli:text",
       "title": "Charged Bonus",
-      "text": "When the rune has mana in its internal buffer:$(br2)$(will)Mana-Powered:$()$(br)- Acceleration Bonus: Speeds up altar crafting and LP generation$(br)- Consumes 10 mana per second while active$(br2)The acceleration effect stacks with other speed-enhancing runes, making high-tier crafting faster."
+      "text": "When the rune has mana in its internal buffer:$(br2)$(will)Mana-Powered:$()$(li)Acceleration Bonus: Speeds up altar crafting and LP generation$(li)Consumes 10 mana per second while active$(br2)The acceleration effect stacks with other speed-enhancing runes, making high-tier crafting faster."
     },
     {
       "type": "patchouli:text",
       "title": "Charging Methods",
-      "text": "Supply mana to the rune using any Botania mechanism:$(br2)- Point a $(item)Mana Spreader$() at the rune$(br)- Place it adjacent to a $(item)Mana Pool$()$(br)- Use a $(item)Mana Tablet$() or other mana items$(br2)The rune accepts mana like any Botania block and stores it in an internal buffer for consumption."
+      "text": "Supply mana to the rune using any Botania mechanism:$(br2)$(li)Point a $(item)Mana Spreader$() at the rune$(li)Place it adjacent to a $(item)Mana Pool$()$(li)Use a $(item)Mana Tablet$() or other mana items$(br2)The rune accepts mana like any Botania block and stores it in an internal buffer for consumption."
     },
     {
       "type": "patchouli:text",
       "title": "Requirements",
-      "text": "To use the Rune of Unleashed Nature:$(br)- $(animus)Botania must be installed$()$(br)- Supply mana via spreaders or pools$(br)- Ensure steady mana generation$(br2)Consider the consumption rate (10 mana/second per rune) when planning your mana infrastructure for multiple runes."
+      "text": "To use the Rune of Unleashed Nature:$(li)$(animus)Botania must be installed$()$(li)Supply mana via spreaders or pools$(li)Ensure steady mana generation$(br2)Consider the consumption rate (10 mana/second per rune) when planning your mana infrastructure for multiple runes."
     }
   ]
 }

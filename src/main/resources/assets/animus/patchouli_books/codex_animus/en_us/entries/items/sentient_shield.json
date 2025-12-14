@@ -17,7 +17,7 @@
     {
       "type": "patchouli:text",
       "title": "Will Bonus",
-      "text": "$(bold)Will Gain:$() +30% demon will gained while equipped$(br2)The Sentient Shield increases the amount of will you gain from all sources while it is in your main or offhand. Perfect for will farming!$(br2)$(italic)A shield that hungers for more.$()"
+      "text": "$(bold)Will Gain:$() +30%% demon will gained while equipped$(br2)The Sentient Shield increases the amount of will you gain from all sources while it is in your main or offhand. Perfect for will farming!$(br2)$(italic)A shield that hungers for more.$()"
     }
   ]
 }

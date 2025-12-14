@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Mechanics",
-      "text": "$(bold)Activation:$() 5,000 LP$(br)$(bold)LP Cost:$() Per durability point repaired (configurable)$(br)$(bold)Repair Rate:$() 20% of max durability per cycle$(br)$(bold)Interval:$() Every 5 seconds (configurable)"
+      "text": "$(bold)Activation:$() 5,000 LP$(br)$(bold)LP Cost:$() Per durability point repaired (configurable)$(br)$(bold)Repair Rate:$() 20%% of max durability per cycle$(br)$(bold)Interval:$() Every 5 seconds (configurable)"
     },
     {
       "type": "patchouli:text",

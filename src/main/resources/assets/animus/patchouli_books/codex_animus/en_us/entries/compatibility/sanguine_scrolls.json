@@ -21,27 +21,27 @@
     {
       "type": "patchouli:text",
       "title": "Slate Tiers",
-      "text": "Different slate types produce scrolls with varying durability:$(br2)• $(blood)Blank Slate:$() 50 uses$(br)• $(blood)Reinforced Slate:$() 100 uses$(br)• $(blood)Imbued Slate:$() 200 uses$(br)• $(blood)Demon Slate:$() 400 uses$(br)• $(blood)Ethereal Slate:$() 600 uses$(br2)Higher-tier scrolls can cast more spells before breaking. Choose based on how frequently you'll use the spell."
+      "text": "Different slate types produce scrolls with varying durability:$(br2)$(li)$(blood)Blank Slate:$() 50 uses$(li)$(blood)Reinforced Slate:$() 100 uses$(li)$(blood)Imbued Slate:$() 200 uses$(li)$(blood)Demon Slate:$() 400 uses$(li)$(blood)Ethereal Slate:$() 600 uses$(br2)Higher-tier scrolls can cast more spells before breaking. Choose based on how frequently you'll use the spell."
     },
     {
       "type": "patchouli:text",
       "title": "LP Costs",
-      "text": "Sanguine Scrolls consume more LP than normal spell casting:$(br2)$(bold)Base Cost:$() Mana cost × LP rate × 1.5$(br)$(italic)(Default: 150 LP per mana point)$()$(br2)$(bold)Creation Cost:$() Based on spell rarity and level$(br)• Common: 5,000 LP × level$(br)• Uncommon: 10,000 LP × level$(br)• Rare: 25,000 LP × level$(br)• Epic: 50,000 LP × level$(br)• Legendary: 100,000 LP × level"
+      "text": "Sanguine Scrolls consume more LP than normal spell casting:$(br2)$(bold)Base Cost:$() Mana cost × LP rate × 1.5$(br)$(italic)(Default: 150 LP per mana point)$()$(br2)$(bold)Creation Cost:$() Based on spell rarity and level$(li)Common: 5,000 LP × level$(li)Uncommon: 10,000 LP × level$(li)Rare: 25,000 LP × level$(li)Epic: 50,000 LP × level$(li)Legendary: 100,000 LP × level"
     },
     {
       "type": "patchouli:text",
       "title": "Strategic Uses",
-      "text": "Sanguine Scrolls excel for:$(br2)• $(blood)Emergency spells$() - Quick access without spellbooks$(br)• $(blood)Powerful spells$() - Cast legendary spells anytime$(br)• $(blood)LP-heavy builds$() - Convert excess LP to magic$(br)• $(blood)Backup casting$() - When out of mana$(br2)The 50% LP premium is worth it for convenience and reliability. Store multiple scrolls for different situations."
+      "text": "Sanguine Scrolls excel for:$(br2)$(li)$(blood)Emergency spells$() - Quick access without spellbooks$(li)$(blood)Powerful spells$() - Cast legendary spells anytime$(li)$(blood)LP-heavy builds$() - Convert excess LP to magic$(li)$(blood)Backup casting$() - When out of mana$(br2)The 50%% LP premium is worth it for convenience and reliability. Store multiple scrolls for different situations."
     },
     {
       "type": "patchouli:text",
       "title": "Tips & Tricks",
-      "text": "$(bold)Durability Management:$()$(br)• Check uses remaining in tooltip$(br)• Higher-tier slates for frequently-used spells$(br)• Keep spares of important spells$(br2)$(bold)Synergies:$()$(br)• Combine with $(l:animus:compatibility/sigil_crimson_will)Sigil of Crimson Will$() for massive damage$(br)• Use $(l:animus:compatibility/blood_infused_spellbook)Blood-Infused Spellbook$() to reduce LP costs$(br2)$(italic)Sanguine Scrolls work from any inventory slot.$()"
+      "text": "$(bold)Durability Management:$()$(li)Check uses remaining in tooltip$(li)Higher-tier slates for frequently-used spells$(li)Keep spares of important spells$(br2)$(bold)Synergies:$()$(li)Combine with $(l:animus:compatibility/sigil_crimson_will)Sigil of Crimson Will$() for massive damage$(li)Use $(l:animus:compatibility/blood_infused_spellbook)Blood-Infused Spellbook$() to reduce LP costs$(br2)$(italic)Sanguine Scrolls work from any inventory slot.$()"
     },
     {
       "type": "patchouli:text",
       "title": "Requirements",
-      "text": "To use Sanguine Scrolls:$(br)• $(blood)Iron's Spellbooks must be installed$()$(br)• Active $(l:bloodmagic:altar/binding)Soul Network$()$(br)• Blood Altar for creation$(br)• Slates from Blood Magic$(br)• Iron's Spells scrolls to convert$(br2)Sanguine Scrolls respect spell cooldowns and cannot bypass casting restrictions."
+      "text": "To use Sanguine Scrolls:$(li)$(blood)Iron's Spellbooks must be installed$()$(li)Active $(l:bloodmagic:altar/binding)Soul Network$()$(li)Blood Altar for creation$(li)Slates from Blood Magic$(li)Iron's Spells scrolls to convert$(br2)Sanguine Scrolls respect spell cooldowns and cannot bypass casting restrictions."
     }
   ]
 }

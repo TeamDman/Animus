@@ -1,0 +1,23 @@
+{
+  "name": "guide.animus.entry.sigil_crimson_will",
+  "icon": "animus:sigil_crimson_will",
+  "category": "animus:sigils",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "animus:crafting_array",
+      "recipe": "animus:array/sigil_crimson_will",
+      "text": "The Sigil of Crimson Will is crafted using an $(blood)Alchemy Array$(). It combines a $(l:animus:items/reagentcrimsonwill)Reagent: Crimson Will$() with a $(item)Reinforced Slate$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_crimson_will",
+      "text": "This sigil allows you to tap into the raw power of crimson will, granting enhanced abilities related to blood magic rituals and manipulation. Its specific effects are tied to the potency of the crimson will it draws upon."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)LP Cost:$() Varies based on effect$(br2)$(bold)Effect:$() When active, this sigil amplifies certain aspects of Blood Magic. It can be used to empower rituals, enhance sacrificial effects, or directly manipulate blood energies. Specific functions will become apparent through experimentation and advanced blood magic studies."
+    }
+  ]
+}

@@ -21,27 +21,27 @@
     {
       "type": "patchouli:text",
       "title": "Source Attunement",
-      "text": "The Source Attunement upgrade tree provides five levels of powerful spell enhancements:$(br2)$(blood)Level 1:$() +5% Spell Damage$(br2)$(blood)Level 2:$() +10% Spell Damage$(br2)$(blood)Level 3:$() +15% Spell Damage$(br2)$(blood)Level 4:$() +20% Spell Damage$(br)Mana Regen buff (4s)$(br2)$(blood)Level 5:$() +25% Spell Damage$(br)Mana Cost -20%$(br)Spell Damage III buff (5s)"
+      "text": "The Source Attunement upgrade tree provides five levels of powerful spell enhancements:$(br2)$(blood)Level 1:$() +5%% Spell Damage$(br2)$(blood)Level 2:$() +10%% Spell Damage$(br2)$(blood)Level 3:$() +15%% Spell Damage$(br2)$(blood)Level 4:$() +20%% Spell Damage$(br)Mana Regen buff (4s)$(br2)$(blood)Level 5:$() +25%% Spell Damage$(br)Mana Cost -20%%$(br)Spell Damage III buff (5s)"
     },
     {
       "type": "patchouli:text",
       "title": "Upgrade Costs",
-      "text": "Each level requires Living Armor points:$(br2)• $(blood)Level 1:$() 5 points$(br)• $(blood)Level 2:$() 10 points$(br)• $(blood)Level 3:$() 15 points$(br)• $(blood)Level 4:$() 20 points$(br)• $(blood)Level 5:$() 25 points$(br2)$(bold)Total:$() 75 points for all levels$(br2)These points are earned through Living Armor's normal progression system - wear the armor, gain XP from spell casting and other sources."
+      "text": "Each level requires Living Armor points:$(br2)$(li)$(blood)Level 1:$() 5 points$(li)$(blood)Level 2:$() 10 points$(li)$(blood)Level 3:$() 15 points$(li)$(blood)Level 4:$() 20 points$(li)$(blood)Level 5:$() 25 points$(br2)$(bold)Total:$() 75 points for all levels$(br2)These points are earned through Living Armor's normal progression system - wear the armor, gain XP from spell casting and other sources."
     },
     {
       "type": "patchouli:text",
       "title": "Level Details",
-      "text": "$(bold)Levels 1-3: Increasing Spell Damage$()$(br)Each level adds +5% spell damage. By level 3, you're dealing 15% more damage with all Ars Nouveau spells.$(br2)$(bold)Level 4: Damage & Regen$()$(br)Spell damage increases to +20%. Additionally, every spell cast grants you the $(effect)Mana Regeneration$() effect for 4 seconds, helping you recover mana faster.$(br2)$(bold)Level 5: Ultimate Power$()$(br)Peak performance at +25% spell damage. Casting spells grants $(effect)Spell Damage III$() for 5 seconds AND refunds 20% of the mana cost!"
+      "text": "$(bold)Levels 1-3: Increasing Spell Damage$()$(br)Each level adds +5%% spell damage. By level 3, you're dealing 15%% more damage with all Ars Nouveau spells.$(br2)$(bold)Level 4: Damage & Regen$()$(br)Spell damage increases to +20%%. Additionally, every spell cast grants you the $(effect)Mana Regeneration$() effect for 4 seconds, helping you recover mana faster.$(br2)$(bold)Level 5: Ultimate Power$()$(br)Peak performance at +25%% spell damage. Casting spells grants $(effect)Spell Damage III$() for 5 seconds AND refunds 20%% of the mana cost!"
     },
     {
       "type": "patchouli:text",
       "title": "Synergies",
-      "text": "$(bold)Synergies:$()$(br)• Stack Spell Damage III with Ars Nouveau's native damage buffs$(br)• Level 4 Mana Regen helps with sustained casting$(br)• Level 5's 20% mana refund makes expensive spells more viable$(br)• Combine with mana-generating equipment for infinite casting$(br)• Pair with speed enchantments to cast more frequently$(br)• Use with other Living Armor upgrades for balanced combat$(br2)At max level, you're a spell-slinging powerhouse with massive damage and efficient mana usage!"
+      "text": "$(bold)Synergies:$()$(li)Stack Spell Damage III with Ars Nouveau's native damage buffs$(li)Level 4 Mana Regen helps with sustained casting$(li)Level 5's 20%% mana refund makes expensive spells more viable$(li)Combine with mana-generating equipment for infinite casting$(li)Pair with speed enchantments to cast more frequently$(li)Use with other Living Armor upgrades for balanced combat$(br2)At max level, you're a spell-slinging powerhouse with massive damage and efficient mana usage!"
     },
     {
       "type": "patchouli:text",
       "title": "Tips & Strategy",
-      "text": "$(bold)Maximize XP Gain:$()$(br)• Create longer, more complex spells$(br)• Each glyph counts toward XP$(br)• Practice new spell combinations$(br)• Cast frequently while exploring$(br2)$(bold)Build Paths:$()$(br)• Pure Source Mage: Max Source Attunement first$(br)• Battlemage: Balance with melee upgrades$(br)• Tank Mage: Combine with defensive upgrades$(br2)$(italic)Remember: XP is only granted while wearing Living Armor!$()"
+      "text": "$(bold)Maximize XP Gain:$()$(li)Create longer, more complex spells$(li)Each glyph counts toward XP$(li)Practice new spell combinations$(li)Cast frequently while exploring$(br2)$(bold)Build Paths:$()$(li)Pure Source Mage: Max Source Attunement first$(li)Battlemage: Balance with melee upgrades$(li)Tank Mage: Combine with defensive upgrades$(br2)$(italic)Remember: XP is only granted while wearing Living Armor!$()"
     }
   ]
 }

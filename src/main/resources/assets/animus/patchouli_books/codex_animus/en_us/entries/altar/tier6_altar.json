@@ -1,0 +1,17 @@
+{
+  "name": "guide.animus.entry.tier6_altar",
+  "icon": "animus:crystallized_demon_will_block",
+  "category": "animus:altar",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Tier 6 Blood Altar is the pinnacle of blood magic, allowing for the creation of the most powerful items and rituals. To construct it, you will need to infuse the altar structure with Crystallized Demon Will, and attune it to the arcane and natural energies of the world."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Altar Construction",
+      "text": "Use the Sanguine Diviner to visualize the placement of the altar. The top of the altar is capped with Crystallized Demon Will Blocks."
+    }
+  ]
+}

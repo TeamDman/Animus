@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Search Algorithm",
-      "text": "The ritual uses a center-outward search to find placement spots:$(br)- Starts at the Master Ritual Stone$(br)- Searches downward only (never above)$(br)- Expands in square rings: 0, 1, 2... blocks away$(br)- Searches each column from top to bottom$(br)- Prioritizes placing near the center first$(br)- Processes up to 64 positions per tick$(br)- Resumes where it left off between ticks$(br2)This ensures efficient placement starting from the ritual center and working downward."
+      "text": "The ritual uses a center-outward search to find placement spots:$(br)$(li)Starts at the Master Ritual Stone$(li)Searches downward only (never above)$(li)Expands in square rings: 0, 1, 2... blocks away$(li)Searches each column from top to bottom$(li)Prioritizes placing near the center first$(li)Processes up to 64 positions per tick$(li)Resumes where it left off between ticks$(br2)This ensures efficient placement starting from the ritual center and working downward."
     },
     {
       "type": "patchouli:text",

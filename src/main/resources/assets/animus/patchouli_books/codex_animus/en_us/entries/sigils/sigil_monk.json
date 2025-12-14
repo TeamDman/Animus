@@ -27,12 +27,12 @@
     {
       "type": "patchouli:text",
       "title": "Demon Will Bonus",
-      "text": "The sigil grows stronger with demon will. Your unarmed attacks deal $(thing)bonus damage$() equal to a percentage of the target's maximum health:$(br2)$(li)$(bold)1 Will:$() +1% max HP damage$(br)$(li)$(bold)4096 Will:$() +15% max HP damage$(br2)Damage scales linearly between these values. All will types (Raw, Corrosive, etc.) are combined."
+      "text": "The sigil grows stronger with demon will. Your unarmed attacks deal $(thing)bonus damage$() equal to a percentage of the target's maximum health:$(br2)$(li)$(bold)1 Will:$() +1%% max HP damage$(li)$(bold)4096 Will:$() +15%% max HP damage$(br2)Damage scales linearly between these values. All will types (Raw, Corrosive, etc.) are combined."
     },
     {
       "type": "patchouli:text",
       "title": "Execute",
-      "text": "If your attack would leave an enemy below the $(thing)execute threshold$() (same % as your bonus damage), you perform an $(bold)Execute$():$(br2)$(li)$(gold)Instant kill$() the target$(br)$(li)$(green)+200 LP$() added to soul network$(br)$(li)$(red)-5 Will$() consumed from inventory$(br2)Requires at least 5 will to trigger. A burst of soul particles marks the kill."
+      "text": "If your attack would leave an enemy below the $(thing)execute threshold$() (same %% as your bonus damage), you perform an $(bold)Execute$():$(br2)$(li)$(gold)Instant kill$() the target$(li)$(green)+200 LP$() added to soul network$(li)$(red)-5 Will$() consumed from inventory$(br2)Requires at least 5 will to trigger. A burst of soul particles marks the kill."
     },
     {
       "type": "patchouli:crafting",

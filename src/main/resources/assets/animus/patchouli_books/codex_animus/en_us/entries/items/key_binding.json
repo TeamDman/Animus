@@ -22,7 +22,7 @@
     {
       "type": "patchouli:text",
       "title": "Strategic Uses",
-      "text": "$(animus)Team Strategies:$()$(br)- Designate one player as the LP generator$(br)- Share keys with combat-focused teammates$(br)- Power expensive rituals from a friend's network$(br)- Let new players use advanced sigils immediately$(br2)$(italic)The key to unlocking cooperation in the sanguine arts.$()"
+      "text": "$(animus)Team Strategies:$()$(br)$(li)Designate one player as the LP generator$(li)Share keys with combat-focused teammates$(li)Power expensive rituals from a friend's network$(li)Let new players use advanced sigils immediately$(br2)$(italic)The key to unlocking cooperation in the sanguine arts.$()"
     }
   ]
 }
