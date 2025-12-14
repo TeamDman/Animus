@@ -598,5 +598,15 @@
   "jei.animus.ritual.magi.desc": "Mana Regen for 15 minutes.",
 
   "jei.animus.ritual.iron_heart.name": "Ritual of the Iron Heart",
-  "jei.animus.ritual.iron_heart.desc": "Echoing Strikes III for 15 minutes."
+  "jei.animus.ritual.iron_heart.desc": "Echoing Strikes III for 15 minutes.",
+
+  "jei.animus.category.altar_infusion": "Blood Altar Infusion",
+  "jei.animus.blood_infused_spellbook.title": "Blood-Infused Spellbook",
+  "jei.animus.blood_infused_spellbook.desc": "Place leather spellbook in Blood Altar. Tier 3+ altar required.",
+  "jei.animus.sanguine_scroll.title.blank": "Sanguine Scroll (Blank)",
+  "jei.animus.sanguine_scroll.title.reinforced": "Sanguine Scroll (Reinforced)",
+  "jei.animus.sanguine_scroll.title.imbued": "Sanguine Scroll (Imbued)",
+  "jei.animus.sanguine_scroll.title.demon": "Sanguine Scroll (Demon)",
+  "jei.animus.sanguine_scroll.title.ethereal": "Sanguine Scroll (Ethereal)",
+  "jei.animus.sanguine_scroll.desc": "*LP varies by spell"
 }

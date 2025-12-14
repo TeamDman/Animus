@@ -13,11 +13,11 @@ import java.util.List;
 
 /**
  * Transcendent Blood Orb - Tier 6 Blood Orb
- * Holds 300,000 LP
+ * Holds 30,000,000 LP
  * Crafted in a Tier 6 altar with Crystallized Demon Will Block
  */
 public class ItemBloodOrbTranscendent extends ItemBloodOrb {
-    private static final int CAPACITY = 300000;
+    private static final int CAPACITY = 30000000;
 
     public ItemBloodOrbTranscendent() {
         super(AnimusBloodOrbs.BLOOD_ORB_TRANSCENDENT::get);

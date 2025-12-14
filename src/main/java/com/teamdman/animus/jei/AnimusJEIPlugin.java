@@ -1,5 +1,6 @@
 package com.teamdman.animus.jei;
 
+import com.teamdman.animus.Animus;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.compat.IronsSpellsCompat;
 import com.teamdman.animus.registry.AnimusBlocks;
@@ -17,7 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
+import wayoftime.bloodmagic.common.block.BloodMagicBlocks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,8 +40,19 @@ public class AnimusJEIPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
 
+        Animus.LOGGER.info("JEI: Registering recipe categories");
+
         // Register the Imperfect Ritual category
         registration.addRecipeCategories(new ImperfectRitualCategory(guiHelper));
+        Animus.LOGGER.info("JEI: Registered ImperfectRitualCategory");
+
+        // Register the Altar Infusion category (for Iron's Spells compat)
+        if (ModList.get().isLoaded("irons_spellbooks")) {
+            registration.addRecipeCategories(new AltarInfusionCategory(guiHelper));
+            Animus.LOGGER.info("JEI: Registered AltarInfusionCategory (irons_spellbooks loaded)");
+        } else {
+            Animus.LOGGER.info("JEI: Skipping AltarInfusionCategory (irons_spellbooks not loaded)");
+        }
     }
 
     @Override
@@ -65,9 +79,95 @@ public class AnimusJEIPlugin implements IModPlugin {
             Component.translatable("jei.animus.antilife_block.info")
         );
 
-        // Sanguine Scrolls (only if Iron's Spellbooks is loaded)
+        // Sanguine Scrolls and Altar Infusion recipes (only if Iron's Spellbooks is loaded)
         if (ModList.get().isLoaded("irons_spellbooks")) {
             registerSanguineScrollsJEI(registration);
+            registerAltarInfusionRecipes(registration);
+        }
+    }
+
+    /**
+     * Register visual recipes for Altar Infusion category
+     * Shows Blood-Infused Spellbook and Sanguine Scroll creation
+     */
+    private void registerAltarInfusionRecipes(IRecipeRegistration registration) {
+        try {
+            List<AltarInfusionDisplay> displays = new ArrayList<>();
+
+            Animus.LOGGER.info("JEI: Starting altar infusion recipe registration");
+
+            // Blood-Infused Spellbook recipe - use direct registry reference
+            Item bloodInfusedSpellbook = IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get();
+            Animus.LOGGER.info("JEI: Blood-Infused Spellbook item: {}", bloodInfusedSpellbook);
+
+            // Try to get any spellbook from Iron's Spells as input
+            Item inputSpellbook = ForgeRegistries.ITEMS.getValue(
+                ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "iron_spellbook"));
+            Animus.LOGGER.info("JEI: Tried iron_spellbook, got: {}", inputSpellbook);
+            if (inputSpellbook == null || inputSpellbook == Items.AIR) {
+                inputSpellbook = ForgeRegistries.ITEMS.getValue(
+                    ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "leather_spellbook"));
+                Animus.LOGGER.info("JEI: Tried leather_spellbook, got: {}", inputSpellbook);
+            }
+
+            if (inputSpellbook != null && inputSpellbook != Items.AIR && bloodInfusedSpellbook != null) {
+                displays.add(AltarInfusionDisplay.createSpellbookInfusion(
+                    new ItemStack(inputSpellbook),
+                    new ItemStack(bloodInfusedSpellbook),
+                    10000,
+                    Component.translatable("jei.animus.blood_infused_spellbook.title"),
+                    Component.translatable("jei.animus.blood_infused_spellbook.desc")
+                ));
+                Animus.LOGGER.info("JEI: Added Blood-Infused Spellbook recipe display");
+            } else {
+                Animus.LOGGER.warn("JEI: Could not create Blood-Infused Spellbook recipe - inputSpellbook={}, bloodInfusedSpellbook={}", inputSpellbook, bloodInfusedSpellbook);
+            }
+
+            // Sanguine Scroll recipes - one per slate tier
+            Item ironsScroll = ForgeRegistries.ITEMS.getValue(
+                ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "scroll"));
+
+            if (ironsScroll != null && ironsScroll != Items.AIR) {
+                ItemStack scrollStack = new ItemStack(ironsScroll);
+
+                // Define scroll tiers: slate name, output item getter, lang key suffix
+                Object[][] scrollTiers = {
+                    {"blankslate", IronsSpellsCompat.SANGUINE_SCROLL_BLANK, "blank"},
+                    {"reinforcedslate", IronsSpellsCompat.SANGUINE_SCROLL_REINFORCED, "reinforced"},
+                    {"imbuedslate", IronsSpellsCompat.SANGUINE_SCROLL_IMBUED, "imbued"},
+                    {"demonslate", IronsSpellsCompat.SANGUINE_SCROLL_DEMON, "demon"},
+                    {"etherealslate", IronsSpellsCompat.SANGUINE_SCROLL_ETHEREAL, "ethereal"}
+                };
+
+                for (Object[] tier : scrollTiers) {
+                    Item slate = ForgeRegistries.ITEMS.getValue(
+                        ResourceLocation.fromNamespaceAndPath("bloodmagic", (String) tier[0]));
+                    @SuppressWarnings("unchecked")
+                    Item outputScroll = ((net.minecraftforge.registries.RegistryObject<Item>) tier[1]).get();
+
+                    if (slate != null && slate != Items.AIR && outputScroll != null) {
+                        displays.add(AltarInfusionDisplay.createSanguineScrollInfusion(
+                            scrollStack,
+                            new ItemStack(slate),
+                            List.of(new ItemStack(outputScroll)),
+                            2000,
+                            Component.translatable("jei.animus.sanguine_scroll.title." + tier[2]),
+                            Component.translatable("jei.animus.sanguine_scroll.desc")
+                        ));
+                    }
+                }
+            }
+
+            // Register all displays
+            if (!displays.isEmpty()) {
+                registration.addRecipes(AltarInfusionCategory.RECIPE_TYPE, displays);
+                Animus.LOGGER.info("Registered {} altar infusion recipes for JEI", displays.size());
+            } else {
+                Animus.LOGGER.warn("No altar infusion recipes to register for JEI");
+            }
+
+        } catch (Exception e) {
+            Animus.LOGGER.error("Failed to register altar infusion recipes for JEI", e);
         }
     }
 
@@ -115,6 +215,21 @@ public class AnimusJEIPlugin implements IModPlugin {
             Item arcaneAnvil = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "arcane_anvil"));
             if (arcaneAnvil != null && arcaneAnvil != Items.AIR) {
                 registration.addRecipeCatalyst(new ItemStack(arcaneAnvil), ImperfectRitualCategory.RECIPE_TYPE);
+            }
+
+            // Altar Infusion catalysts
+            registration.addRecipeCatalyst(
+                new ItemStack(BloodMagicBlocks.BLOOD_ALTAR.get()),
+                AltarInfusionCategory.RECIPE_TYPE
+            );
+
+            // Blood-Infused Spellbook as catalyst so clicking it shows the recipe
+            Item bloodInfusedSpellbook = IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get();
+            if (bloodInfusedSpellbook != null) {
+                registration.addRecipeCatalyst(
+                    new ItemStack(bloodInfusedSpellbook),
+                    AltarInfusionCategory.RECIPE_TYPE
+                );
             }
         }
     }
