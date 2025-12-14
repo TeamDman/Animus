@@ -1,11 +1,14 @@
 package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.compat.IronsSpellsCompat;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -13,6 +16,17 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class AnimusCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS =
         DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Constants.Mod.MODID);
+
+    // Iron's Spells compat item names - looked up from registry to avoid class loading issues
+    private static final String[] IRONS_SPELLS_COMPAT_ITEMS = {
+        "blood_infused_spellbook",
+        "sigil_crimson_will",
+        "sanguine_scroll_blank",
+        "sanguine_scroll_reinforced",
+        "sanguine_scroll_imbued",
+        "sanguine_scroll_demon",
+        "sanguine_scroll_ethereal"
+    };
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ANIMUS_TAB = CREATIVE_TABS.register("animus_tab",
         () -> CreativeModeTab.builder()
@@ -22,9 +36,15 @@ public class AnimusCreativeTabs {
                 // Add all items to the creative tab
                 AnimusItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
 
-                // Add Iron's Spellbooks compat items if loaded
+                // Add Iron's Spellbooks compat items if loaded (use registry lookup to avoid class loading issues)
                 if (ModList.get().isLoaded("irons_spellbooks")) {
-                    IronsSpellsCompat.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                    for (String itemName : IRONS_SPELLS_COMPAT_ITEMS) {
+                        Item item = BuiltInRegistries.ITEM.get(
+                            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
+                        if (item != null && item != Items.AIR) {
+                            output.accept(new ItemStack(item));
+                        }
+                    }
                 }
             })
             .build()

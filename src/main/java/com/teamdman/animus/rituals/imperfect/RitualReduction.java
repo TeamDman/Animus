@@ -13,7 +13,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import wayoftime.bloodmagic.ritual.IImperfectRitualStone;
+import wayoftime.bloodmagic.api.ritual.IImperfectRitualStone;
 import wayoftime.bloodmagic.ritual.ImperfectRitual;
 
 /**

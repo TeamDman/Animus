@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;

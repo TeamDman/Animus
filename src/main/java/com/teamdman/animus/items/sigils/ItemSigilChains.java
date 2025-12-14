@@ -24,7 +24,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.registries.BuiltInRegistries;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;
@@ -135,7 +135,7 @@ public class ItemSigilChains extends AnimusSigilBase {
         SoulTicket ticket = SoulTicket.create(getLpUsed());
 
         var result = network.syphonAndDamage(player, ticket);
-        if (!result.isSuccess()) {
+        if (!result.success()) {
             return false;
         }
 

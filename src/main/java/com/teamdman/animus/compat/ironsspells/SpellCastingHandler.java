@@ -17,7 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import wayoftime.bloodmagic.common.item.BloodOrbItem;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 /**
@@ -123,7 +123,7 @@ public class SpellCastingHandler {
         SoulTicket ticket = SoulTicket.create(lpCost);
 
         var syphonResult = network.syphonAndDamage(player, ticket);
-        if (!syphonResult.isSuccess()) {
+        if (!syphonResult.success()) {
             // Failed to consume LP
             player.displayClientMessage(
                 Component.literal("Failed to consume Life Points!")

@@ -93,8 +93,9 @@ dependencies {
     // compileOnly "wayoftime.bloodmagic:BloodMagic-1.21.1:${bloodmagic_version}"
 
     // Option 2: Use file dependency (place BloodMagic jar in libs folder)
-    compileOnly files('libs/bloodmagic-3.4.0-1-beta.jar')
-    runtimeOnly files('libs/bloodmagic-3.4.0-1-beta.jar')
+    compileOnly files('libs/bloodmagic-3.4.0-2-beta.jar')
+    compileOnly files('libs/bloodmagic-3.4.0-2-beta-api.jar')
+    runtimeOnly files('libs/bloodmagic-3.4.0-2-beta.jar')
 
     // JEI - using CurseMaven NeoForge version (not Forge!)
     compileOnly "curse.maven:jei-238222:${jei_cursemaven_id}"

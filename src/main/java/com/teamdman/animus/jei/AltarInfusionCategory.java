@@ -1,0 +1,185 @@
+package com.teamdman.animus.jei;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.teamdman.animus.Constants;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import wayoftime.bloodmagic.common.block.BMBlocks;
+
+/**
+ * JEI Recipe Category for special Blood Altar infusions
+ * Shows Blood-Infused Spellbook and Sanguine Scroll creation processes
+ */
+public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDisplay> {
+
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "altar_infusion");
+    public static final RecipeType<AltarInfusionDisplay> RECIPE_TYPE = RecipeType.create(Constants.Mod.MODID, "altar_infusion", AltarInfusionDisplay.class);
+
+    private final IDrawable background;
+    private final IDrawable icon;
+    private final Component title;
+
+    public AltarInfusionCategory(IGuiHelper guiHelper) {
+        // Create a background - 170x100 pixels for more space
+        this.background = guiHelper.createBlankDrawable(170, 100);
+        // Use Blood Altar as the icon
+        this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
+            new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
+        this.title = Component.translatable("jei.animus.category.altar_infusion");
+    }
+
+    @Override
+    public RecipeType<AltarInfusionDisplay> getRecipeType() {
+        return RECIPE_TYPE;
+    }
+
+    @Override
+    public Component getTitle() {
+        return title;
+    }
+
+    @Override
+    public IDrawable getBackground() {
+        return background;
+    }
+
+    @Override
+    public IDrawable getIcon() {
+        return icon;
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayoutBuilder builder, AltarInfusionDisplay recipe, IFocusGroup focuses) {
+        if (recipe.isSpellbookType()) {
+            // Spellbook infusion layout:
+            // [Input] -> [Altar] -> [Output]
+
+            // Input slot (left)
+            builder.addSlot(RecipeIngredientRole.INPUT, 20, 40)
+                .addItemStack(recipe.getAltarInput());
+
+            // Blood Altar (center)
+            builder.addSlot(RecipeIngredientRole.CATALYST, 75, 40)
+                .addItemStack(new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
+
+            // Output slot (right)
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 40)
+                .addItemStacks(recipe.getOutputs());
+
+        } else if (recipe.isSanguineScrollType()) {
+            // Sanguine Scroll layout:
+            // [Main Hand]     [Offhand]
+            //        \         /
+            //         [Altar]
+            //            |
+            //        [Output]
+
+            // Main hand input (top left) - the Iron's Spells scroll
+            builder.addSlot(RecipeIngredientRole.INPUT, 35, 10)
+                .addItemStack(recipe.getMainHandInput());
+
+            // Offhand input (top right) - the slate
+            builder.addSlot(RecipeIngredientRole.INPUT, 115, 10)
+                .addItemStack(recipe.getOffHandInput());
+
+            // Blood Altar (center)
+            builder.addSlot(RecipeIngredientRole.CATALYST, 75, 40)
+                .addItemStack(new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
+
+            // Output slot (bottom center)
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 75)
+                .addItemStacks(recipe.getOutputs());
+        }
+    }
+
+    @Override
+    public void draw(AltarInfusionDisplay recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        Font font = Minecraft.getInstance().font;
+
+        // Draw title
+        String titleStr = recipe.getTitle().getString();
+        int titleWidth = font.width(titleStr);
+        guiGraphics.drawString(font, titleStr, (170 - titleWidth) / 2, 2, 0x8B0000, false);
+
+        if (recipe.isSpellbookType()) {
+            // Draw arrows for spellbook layout
+            guiGraphics.drawString(font, "→", 45, 43, 0x404040, false);
+            guiGraphics.drawString(font, "→", 105, 43, 0x404040, false);
+
+            // Draw LP cost below altar
+            String lpText = String.format("%,d LP", recipe.getLpCost());
+            int lpWidth = font.width(lpText);
+            guiGraphics.drawString(font, lpText, (170 - lpWidth) / 2, 60, 0xAA0000, false);
+
+            // Draw description at bottom
+            drawWrappedText(guiGraphics, font, recipe.getDescription().getString(), 5, 75, 160, 0x606060);
+
+        } else if (recipe.isSanguineScrollType()) {
+            // Draw hand labels
+            guiGraphics.drawString(font, "Main Hand", 23, 0, 0x404040, false);
+            guiGraphics.drawString(font, "Offhand", 107, 0, 0x404040, false);
+
+            // Draw converging arrows
+            guiGraphics.drawString(font, "↘", 55, 25, 0x404040, false);
+            guiGraphics.drawString(font, "↙", 105, 25, 0x404040, false);
+
+            // Draw arrow from altar to output
+            guiGraphics.drawString(font, "↓", 80, 60, 0x404040, false);
+
+            // Draw LP cost and description on the sides
+            String lpText = String.format("%,d LP*", recipe.getLpCost());
+            guiGraphics.drawString(font, lpText, 5, 45, 0xAA0000, false);
+
+            // Draw description/note at bottom
+            String desc = recipe.getDescription().getString();
+            drawWrappedText(guiGraphics, font, desc, 5, 92, 160, 0x606060);
+        }
+    }
+
+    /**
+     * Draw text with simple word wrapping
+     */
+    private void drawWrappedText(GuiGraphics guiGraphics, Font font, String text, int x, int y, int maxWidth, int color) {
+        String[] words = text.split(" ");
+        StringBuilder currentLine = new StringBuilder();
+        int yOffset = y;
+        int lineHeight = 9;
+
+        for (String word : words) {
+            String testLine = currentLine.length() == 0 ? word : currentLine + " " + word;
+            int width = font.width(testLine);
+
+            if (width > maxWidth && currentLine.length() > 0) {
+                guiGraphics.drawString(font, currentLine.toString(), x, yOffset, color, false);
+                yOffset += lineHeight;
+                currentLine = new StringBuilder(word);
+            } else {
+                if (currentLine.length() > 0) {
+                    currentLine.append(" ");
+                }
+                currentLine.append(word);
+            }
+
+            // Limit lines
+            if (yOffset > y + lineHeight * 2) break;
+        }
+
+        // Draw remaining text
+        if (currentLine.length() > 0 && yOffset <= y + lineHeight * 2) {
+            guiGraphics.drawString(font, currentLine.toString(), x, yOffset, color, false);
+        }
+    }
+}

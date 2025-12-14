@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -114,7 +114,7 @@ public class ItemSigilStorm extends AnimusSigilBase {
             SoulTicket ticket = SoulTicket.create(getLpUsed());
 
             var syphonResult = network.syphonAndDamage(player, ticket);
-            if (!syphonResult.isSuccess()) {
+            if (!syphonResult.success()) {
                 return InteractionResultHolder.fail(stack);
             }
 

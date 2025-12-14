@@ -131,7 +131,7 @@ public class SanguineScrollAltarHandler {
         int totalLPCost = baseCost * levelMultiplier;
 
         // Check if altar has enough LP (1.21.1 API: use mainTank field)
-        if (altar.mainTank < totalLPCost) {
+        if (altar.getCurrentBlood() < totalLPCost) {
             player.displayClientMessage(
                 Component.literal("Not enough LP in altar! Need " + totalLPCost + " LP")
                     .withStyle(ChatFormatting.RED),

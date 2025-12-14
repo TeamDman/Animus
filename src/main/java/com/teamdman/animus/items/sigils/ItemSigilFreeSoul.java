@@ -19,7 +19,7 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.*;
@@ -99,7 +99,7 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             SoulTicket ticket = SoulTicket.create(lpCost);
 
             var syphonResult = network.syphonAndDamage(player, ticket);
-            if (!syphonResult.isSuccess()) {
+            if (!syphonResult.success()) {
                 // Not enough LP
                 player.displayClientMessage(
                     Component.translatable(Constants.Localizations.Text.FREE_SOUL_NO_LP)
@@ -178,7 +178,7 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
         // Consume LP
         SoulTicket ticket = SoulTicket.create(lpCost);
         var syphonResult = network.syphonAndDamage(player, ticket);
-        if (!syphonResult.isSuccess()) {
+        if (!syphonResult.success()) {
             return false;
         }
 

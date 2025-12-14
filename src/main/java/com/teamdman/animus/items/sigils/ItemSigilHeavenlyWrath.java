@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -102,7 +102,7 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
         SoulTicket ticket = SoulTicket.create(getLpUsed());
 
         var syphonResult = network.syphonAndDamage(player, ticket);
-        if (!syphonResult.isSuccess()) {
+        if (!syphonResult.success()) {
             return InteractionResultHolder.fail(stack);
         }
 

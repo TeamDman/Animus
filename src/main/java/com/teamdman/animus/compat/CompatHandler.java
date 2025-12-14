@@ -21,7 +21,7 @@ public class CompatHandler {
     static {
         // Register compatibility modules here
         // Using suppliers ensures classes are only loaded when the mod is present
-        // COMPAT_MODULES.put("irons_spellbooks", IronsSpellsCompat::new);
+        COMPAT_MODULES.put("irons_spellbooks", IronsSpellsCompat::new);
         // COMPAT_MODULES.put("ars_nouveau", ArsNouveauCompat::new);
         COMPAT_MODULES.put("malum", MalumCompat::new);
         // COMPAT_MODULES.put("botania", BotaniaCompat::new); // Botania not available for 1.21.1 yet
@@ -32,7 +32,11 @@ public class CompatHandler {
      * Must be called during mod construction, before registry events fire
      */
     public static void registerDeferredRegisters(IEventBus modEventBus) {
-        // All compat modules disabled until mods have 1.21.1 versions
+        // Register Iron's Spells compat DeferredRegisters if the mod is present
+        if (ModList.get().isLoaded("irons_spellbooks")) {
+            IronsSpellsCompat.registerDeferred(modEventBus);
+            Animus.LOGGER.info("Registered Iron's Spells compatibility deferred registries");
+        }
     }
 
     /**

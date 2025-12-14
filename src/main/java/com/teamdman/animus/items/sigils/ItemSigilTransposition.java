@@ -37,7 +37,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import wayoftime.bloodmagic.common.block.TeleposerBlock;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;
@@ -213,7 +213,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
                 SoulTicket ticket = SoulTicket.create(getLpUsed());
 
                 var syphonResult = network.syphonAndDamage(player, ticket);
-                if (!syphonResult.isSuccess()) {
+                if (!syphonResult.success()) {
                     return InteractionResult.FAIL;
                 }
 
@@ -340,7 +340,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
         SoulTicket ticket = SoulTicket.create(TELEPORT_COST);
 
         var syphonResult = network.syphonAndDamage(player, ticket);
-        if (!syphonResult.isSuccess()) {
+        if (!syphonResult.success()) {
             player.displayClientMessage(
                 Component.translatable("text.component.animus.transposition.not_enough_lp", TELEPORT_COST)
                     .withStyle(ChatFormatting.RED),

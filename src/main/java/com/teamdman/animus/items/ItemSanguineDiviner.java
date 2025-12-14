@@ -158,9 +158,9 @@ public class ItemSanguineDiviner extends Item {
             }
 
             // In Blood Magic 4.x, altar info is accessed via public fields
-            int currentBlood = altar.mainTank;
+            int currentBlood = altar.getCurrentBlood();
             int capacity = altar.getMainCapacity();
-            int tierLevel = altar.tier;
+            int tierLevel = altar.getTier();
 
             // Display information to player
             player.displayClientMessage(

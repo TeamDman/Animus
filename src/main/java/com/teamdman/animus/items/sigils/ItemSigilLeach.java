@@ -16,14 +16,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
 import wayoftime.bloodmagic.will.WorldDemonWillHandler;
-import wayoftime.bloodmagic.ritual.AreaDescriptor;
+import wayoftime.bloodmagic.api.ritual.AreaDescriptor;
 
 import java.util.List;
 import java.util.Optional;
@@ -97,7 +97,7 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
                 var ticket = SoulTicket.create(getLpUsed());
 
                 var syphonResult = network.syphonAndDamage(player, ticket);
-                if (!syphonResult.isSuccess()) {
+                if (!syphonResult.success()) {
                     // Not enough LP - deactivate sigil
                     setActivatedState(stack, false);
                     return;

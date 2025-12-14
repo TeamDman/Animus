@@ -20,8 +20,8 @@ import wayoftime.bloodmagic.common.item.IBindable;
 import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 import wayoftime.bloodmagic.common.datacomponent.Binding;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.SoulTicket;
-import wayoftime.bloodmagic.ritual.AreaDescriptor;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
+import wayoftime.bloodmagic.api.ritual.AreaDescriptor;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;

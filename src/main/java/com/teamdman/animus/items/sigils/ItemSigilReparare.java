@@ -13,7 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 
 import java.util.*;
 
@@ -233,7 +233,7 @@ public class ItemSigilReparare extends AnimusSigilBase {
         SoulTicket ticket = SoulTicket.create(lpCost);
 
         var syphonResult = network.syphonAndDamage(player, ticket);
-        if (!syphonResult.isSuccess()) {
+        if (!syphonResult.success()) {
             // Not enough LP - deactivate sigil
             setActiveStatic(activeSigil.stack, false);
             activeSigils.remove(playerId);

@@ -72,7 +72,7 @@ public class AltarInfusionHandler {
         int lpCost = ItemBloodInfusedSpellbook.getUpgradeCost(stack);
 
         // Check if altar has enough LP (1.21.1 API: use mainTank field instead of getCurrentBlood())
-        int altarLP = altar.mainTank;
+        int altarLP = altar.getCurrentBlood();
         if (altarLP < lpCost) {
             player.displayClientMessage(
                 Component.literal("Altar needs " + lpCost + " LP (has " + altarLP + " LP)")

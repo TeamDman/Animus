@@ -35,7 +35,7 @@ import wayoftime.bloodmagic.common.item.IBindable;
 import wayoftime.bloodmagic.common.datacomponent.Binding;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
 import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;
@@ -102,7 +102,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         SoulTicket ticket = SoulTicket.create(LP_COST);
 
         var result = network.syphonAndDamage(player, ticket);
-        return result.isSuccess();
+        return result.success();
     }
 
     /**
@@ -457,7 +457,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof BloodAltarTile altar) {
                 // Check if altar has space
-                int currentBlood = altar.mainTank;
+                int currentBlood = altar.getCurrentBlood();
                 int capacity = altar.getMainCapacity();
                 if (currentBlood < capacity) {
                     // Add LP using the standard method

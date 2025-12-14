@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 
@@ -98,7 +98,7 @@ public class RitualSourceVitaeum extends Ritual {
         }
 
         // Check altar capacity (don't exceed max capacity)
-        int currentBlood = altar.mainTank;
+        int currentBlood = altar.getCurrentBlood();
         int maxBlood = altar.getMainCapacity();
         int availableSpace = maxBlood - currentBlood;
 

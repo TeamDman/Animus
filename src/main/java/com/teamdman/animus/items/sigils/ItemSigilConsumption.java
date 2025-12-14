@@ -15,7 +15,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class ItemSigilConsumption extends AnimusSigilBase {
             SoulTicket ticket = SoulTicket.create(getLpUsed());
 
             var syphonResult = network.syphonAndDamage(player, ticket);
-            if (!syphonResult.isSuccess()) {
+            if (!syphonResult.success()) {
                 return InteractionResultHolder.fail(stack);
             }
 

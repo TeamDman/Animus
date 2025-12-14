@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.api.distmarker.Dist;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.List;
@@ -95,7 +95,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
                     SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
                     SoulTicket ticket = SoulTicket.create(getLpUsed());
                     var result = network.syphonAndDamage(player, ticket);
-                    if (!result.isSuccess()) {
+                    if (!result.success()) {
                         return InteractionResultHolder.fail(stack);
                     }
 
@@ -196,7 +196,7 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
                 SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
                 SoulTicket ticket = SoulTicket.create(getLpUsed());
                 var result = network.syphonAndDamage(player, ticket);
-                if (!result.isSuccess()) {
+                if (!result.success()) {
                     return InteractionResult.FAIL;
                 }
 

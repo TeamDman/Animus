@@ -26,7 +26,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.SoulTicket;
+import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
 import java.util.ArrayList;

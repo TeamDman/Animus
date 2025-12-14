@@ -11,7 +11,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import wayoftime.bloodmagic.common.registry.AltarTier;
 import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
-import wayoftime.bloodmagic.ritual.AreaDescriptor;
+import wayoftime.bloodmagic.api.ritual.AreaDescriptor;
 
 import java.util.Optional;
 

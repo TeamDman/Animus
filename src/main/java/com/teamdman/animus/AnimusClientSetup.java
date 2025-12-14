@@ -3,13 +3,14 @@ package com.teamdman.animus;
 import com.teamdman.animus.client.models.AnimusModelLayers;
 import com.teamdman.animus.client.models.SpearModel;
 import com.teamdman.animus.client.renderers.ThrownSpearRenderer;
-import com.teamdman.animus.compat.IronsSpellsCompat;
-import com.teamdman.animus.compat.ironsspells.ItemSigilCrimsonWill;
 import com.teamdman.animus.items.sigils.ItemSigilToggleableBase;
 import com.teamdman.animus.registry.AnimusEntityTypes;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
@@ -67,14 +68,28 @@ public class AnimusClientSetup {
     /**
      * Registers the "active" item property for Sigil of Crimson Will
      * This allows the model to switch between active/inactive textures
+     * Uses registry lookup to avoid class loading issues with IronsSpellsCompat
      */
     private static void registerCrimsonWillSigilProperty() {
-        ItemProperties.register(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get(),
-            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "active"),
-            (stack, level, entity, seed) -> {
-                return ItemSigilCrimsonWill.isActive(stack) ? 1.0F : 0.0F;
+        try {
+            Item sigilCrimsonWill = BuiltInRegistries.ITEM.get(
+                ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "sigil_crimson_will"));
+            if (sigilCrimsonWill != null && sigilCrimsonWill != Items.AIR) {
+                ItemProperties.register(sigilCrimsonWill,
+                    ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "active"),
+                    (stack, level, entity, seed) -> {
+                        // Check for Active state in custom data
+                        var customData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
+                        if (customData != null && customData.copyTag().getBoolean("Active")) {
+                            return 1.0F;
+                        }
+                        return 0.0F;
+                    }
+                );
             }
-        );
+        } catch (Exception e) {
+            // Item not registered yet or compat not loaded
+        }
     }
 
     @SubscribeEvent
