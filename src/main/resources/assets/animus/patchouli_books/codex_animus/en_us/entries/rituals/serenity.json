@@ -5,6 +5,12 @@
   "sortnum": 21,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Serenity",
+      "multiblock_id": "bloodmagic:ritual_serenity",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "The Ritual of Serenity creates a zone of peace where hostile creatures cannot spawn. Perfect for protecting your base without relying on torches or other lighting."
     },

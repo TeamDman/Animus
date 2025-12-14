@@ -5,7 +5,7 @@
   "sortnum": 25,
   "pages": [
     {
-      "type": "animus:crafting_soulforge",
+      "type": "bloodmagic:crafting_soulforge",
       "heading": "Reagent: Transposition",
       "recipe": "animus:soulforge/reagenttransposition",
       "text": "A reagent that bends space itself."

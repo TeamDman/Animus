@@ -5,6 +5,12 @@
   "sortnum": 1,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Nature's Leach",
+      "multiblock_id": "bloodmagic:ritual_natures_leach",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "Drain the life force from plants to fill your Blood Altar. This ritual scans for plant matter and consumes it, converting organic energy into Life Essence."
     },

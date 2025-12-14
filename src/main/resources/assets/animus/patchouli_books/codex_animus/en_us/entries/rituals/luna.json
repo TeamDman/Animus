@@ -5,6 +5,12 @@
   "sortnum": 6,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Luna",
+      "multiblock_id": "bloodmagic:ritual_luna",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "Harvest the light. The counterpart to the Ritual of Sol, this ritual collects all light-emitting blocks within its range and stores them in a chest above the ritual stone."
     },

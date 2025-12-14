@@ -5,6 +5,12 @@
   "sortnum": 23,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Nolite Ignem",
+      "multiblock_id": "bloodmagic:ritual_nolite_ignem",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "\"Nolite Ignem\" - Do Not Burn. This ritual continuously extinguishes all fires within its range, protecting your builds from accidental (or intentional) destruction by flame."
     },

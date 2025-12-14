@@ -5,7 +5,7 @@
   "sortnum": 0,
   "pages": [
     {
-      "type": "animus:crafting_array",
+      "type": "bloodmagic:crafting_array",
       "recipe": "animus:array/sigil_crimson_will",
       "text": "The Sigil of Crimson Will is crafted using an $(blood)Alchemy Array$(). It combines a $(l:animus:items/reagentcrimsonwill)Reagent: Crimson Will$() with a $(item)Reinforced Slate$()."
     },

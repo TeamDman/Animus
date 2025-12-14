@@ -5,6 +5,12 @@
   "sortnum": 8,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Unmaking",
+      "multiblock_id": "bloodmagic:ritual_unmaking",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "Break the bonds of magic. The Ritual of Unmaking extracts enchantments from items and places them onto books, allowing you to repurpose or duplicate enchantments."
     },

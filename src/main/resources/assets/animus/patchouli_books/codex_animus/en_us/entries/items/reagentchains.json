@@ -5,7 +5,7 @@
   "sortnum": 21,
   "pages": [
     {
-      "type": "animus:crafting_soulforge",
+      "type": "bloodmagic:crafting_soulforge",
       "heading": "Reagent: Chains",
       "recipe": "animus:soulforge/reagentchains",
       "text": "A reagent bound with spectral chains."

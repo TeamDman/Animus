@@ -5,7 +5,7 @@
   "sortnum": 22,
   "pages": [
     {
-      "type": "animus:crafting_soulforge",
+      "type": "bloodmagic:crafting_soulforge",
       "heading": "Reagent: Consumption",
       "recipe": "animus:soulforge/reagentconsumption",
       "text": "A reagent infused with devouring hunger."

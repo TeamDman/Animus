@@ -5,7 +5,7 @@
   "sortnum": 24,
   "pages": [
     {
-      "type": "animus:crafting_soulforge",
+      "type": "bloodmagic:crafting_soulforge",
       "heading": "Reagent: Storm",
       "recipe": "animus:soulforge/reagentstorm",
       "text": "A reagent infused with the fury of storms."

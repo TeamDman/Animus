@@ -5,7 +5,7 @@
   "sortnum": 20,
   "pages": [
     {
-      "type": "animus:crafting_soulforge",
+      "type": "bloodmagic:crafting_soulforge",
       "heading": "Reagent: Builder",
       "recipe": "animus:soulforge/reagentbuilder",
       "text": "A reagent infused with constructive energy."

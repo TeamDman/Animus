@@ -5,7 +5,7 @@
   "sortnum": 23,
   "pages": [
     {
-      "type": "animus:crafting_soulforge",
+      "type": "bloodmagic:crafting_soulforge",
       "heading": "Reagent: Leach",
       "recipe": "animus:soulforge/reagentleach",
       "text": "A reagent that drains life from nature."

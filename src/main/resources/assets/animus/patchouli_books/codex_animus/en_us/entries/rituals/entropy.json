@@ -5,6 +5,12 @@
   "sortnum": 4,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Entropy",
+      "multiblock_id": "bloodmagic:ritual_entropy",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "Reduce all matter to its most basic form. This simple ritual converts any items in a chest directly above it into cobblestone, perfect for clearing unwanted items or generating infinite cobblestone from renewable resources."
     },

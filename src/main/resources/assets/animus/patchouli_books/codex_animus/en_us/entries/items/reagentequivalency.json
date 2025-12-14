@@ -5,7 +5,7 @@
   "sortnum": 11,
   "pages": [
     {
-      "type": "animus:crafting_soulforge",
+      "type": "bloodmagic:crafting_soulforge",
       "heading": "Reagent: Equivalency",
       "recipe": "animus:soulforge/reagentequivalency",
       "text": "A reagent embodying equal exchange."

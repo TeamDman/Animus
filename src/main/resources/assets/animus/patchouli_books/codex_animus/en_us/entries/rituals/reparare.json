@@ -5,6 +5,12 @@
   "sortnum": 22,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Reparare",
+      "multiblock_id": "bloodmagic:ritual_reparare",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "The Ritual of Reparare mends damaged items stored in an inventory above the ritual stone. Place a chest directly above the master ritual stone and items within will slowly repair."
     },

@@ -5,6 +5,12 @@
   "sortnum": 3,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Culling",
+      "multiblock_id": "bloodmagic:ritual_culling",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "A powerful ritual of death that destroys all living things in its domain. The Ritual of Culling silently kills entities within its range, adding their life force to your Blood Altar."
     },

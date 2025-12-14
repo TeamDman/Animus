@@ -5,7 +5,7 @@
   "sortnum": 16,
   "pages": [
     {
-      "type": "animus:crafting_soulforge",
+      "type": "bloodmagic:crafting_soulforge",
       "heading": "Reagent: Temporal Dominance",
       "recipe": "animus:soulforge/reagenttemporaldominance",
       "text": "A reagent that bends time itself."

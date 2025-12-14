@@ -5,6 +5,12 @@
   "sortnum": 24,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Siphon",
+      "multiblock_id": "bloodmagic:ritual_siphon",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "The Ritual of Siphon extracts fluids from the world below and deposits them into a tank above. It searches from center outward, draining oceans, lava lakes, or any fluid source."
     },

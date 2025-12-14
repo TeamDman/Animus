@@ -5,6 +5,12 @@
   "sortnum": 25,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Relentless Tides",
+      "multiblock_id": "bloodmagic:ritual_relentless_tides",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "The Ritual of Relentless Tides is the inverse of Siphon - it extracts fluid from a tank above and places it into the world below. Create lakes, flood caves, or fill moats with any fluid."
     },

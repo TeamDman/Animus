@@ -5,6 +5,12 @@
   "sortnum": 5,
   "pages": [
     {
+      "type": "patchouli:multiblock",
+      "name": "Ritual of Sol",
+      "multiblock_id": "bloodmagic:ritual_sol",
+      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+    },
+    {
       "type": "patchouli:text",
       "text": "Banish the darkness. The Ritual of Sol automatically places light sources in dark areas, preventing mob spawns and illuminating your surroundings. Place light-emitting blocks in a chest above the ritual."
     },
