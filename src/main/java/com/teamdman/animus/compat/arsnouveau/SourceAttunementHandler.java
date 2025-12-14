@@ -5,16 +5,12 @@ import com.hollingsworth.arsnouveau.api.event.SpellDamageEvent;
 import com.hollingsworth.arsnouveau.setup.registry.ModPotions;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.compat.LivingUpgradeHelper;
-import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import wayoftime.bloodmagic.common.living.LivingUpgrade;
-import wayoftime.bloodmagic.common.registry.BMRegistries;
 
 /**
  * Source Attunement - Living Armor upgrade tree for Ars Nouveau spellcasters
@@ -27,10 +23,12 @@ import wayoftime.bloodmagic.common.registry.BMRegistries;
  */
 public class SourceAttunementHandler {
 
-    public static final ResourceKey<LivingUpgrade> UPGRADE_KEY = ResourceKey.create(
-        BMRegistries.Keys.LIVING_UPGRADES,
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "source_attunement")
-    );
+    /**
+     * ResourceLocation for the Source Attunement upgrade.
+     * The upgrade is defined in data/animus/bloodmagic/living_upgrades/source_attunement.json
+     */
+    public static final ResourceLocation UPGRADE_ID =
+        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "source_attunement");
 
     public static void register() {
         NeoForge.EVENT_BUS.register(new SourceAttunementHandler());
@@ -46,7 +44,7 @@ public class SourceAttunementHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_KEY);
+        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         if (upgradeLevel <= 0) {
             return;
         }
@@ -68,7 +66,7 @@ public class SourceAttunementHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_KEY);
+        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         if (upgradeLevel <= 0) {
             return;
         }

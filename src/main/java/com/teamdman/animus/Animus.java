@@ -37,9 +37,9 @@ public class Animus {
         AnimusAttributes.ATTRIBUTES.register(modEventBus);
         AnimusDataComponents.DATA_COMPONENTS.register(modEventBus);
 
-        // Register rituals to Blood Magic's registry
-        // Note: Imperfect rituals are now internal to Blood Magic
+        // Register rituals to Blood Magic's registry via API registry keys
         AnimusRituals.RITUALS.register(modEventBus);
+        AnimusRituals.IMPERFECT_RITUALS.register(modEventBus);
 
         // Register compatibility module deferred registers
         CompatHandler.registerDeferredRegisters(modEventBus);

@@ -2,6 +2,7 @@ package com.teamdman.animus.compat;
 
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.compat.arsnouveau.ArcaneRuneEventHandler;
 import com.teamdman.animus.compat.arsnouveau.BlockArcaneRune;
 import com.teamdman.animus.compat.arsnouveau.BlockEntityArcaneRune;
 import com.teamdman.animus.compat.arsnouveau.LivingArmorGlyphHandler;
@@ -14,6 +15,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import wayoftime.bloodmagic.api.BloodMagicAPI;
+import wayoftime.bloodmagic.api.altar.rune.EnumAltarRuneType;
+import wayoftime.bloodmagic.api.altar.rune.IAltarRuneRegistry;
 
 /**
  * Compatibility module for Ars Nouveau
@@ -84,16 +88,40 @@ public class ArsNouveauCompat implements ICompatModule {
         LivingArmorGlyphHandler.register();
         Animus.LOGGER.info("Registered Living Armor Glyph Handler");
 
-        // Arcane Rune block is registered via DeferredRegister
-        // The block is registered as a valid altar rune via data/bloodmagic/tags/blocks/altar/runes.json
-        // This allows it to count as a BLOODRUNE component in the altar structure.
-        //
-        // Note: The dynamic speed/dislocation bonuses in BlockEntityArcaneRune are not yet
-        // integrated with Blood Magic's altar calculation - this would require Blood Magic
-        // to expose a hook for custom rune behavior. Currently the rune functions as a
-        // basic blood rune while storing and consuming Source.
+        // Register Arcane Rune event handler for dynamic altar bonuses
+        ArcaneRuneEventHandler.register();
+        Animus.LOGGER.info("Registered Arcane Rune event handler");
+
+        // Register Arcane Rune with Blood Magic's rune registry
+        // This registers the block as a basic speed rune (amount 1) so it's recognized
+        // as a valid rune in the altar structure. The dynamic bonuses based on Source
+        // availability are handled by the ArcaneRuneEventHandler.
+        registerArcaneRuneWithBloodMagic();
 
         Animus.LOGGER.info("Ars Nouveau compatibility initialized successfully");
+    }
+
+    /**
+     * Register the Arcane Rune block with Blood Magic's altar rune registry.
+     *
+     * The Arcane Rune is registered as a SPEED rune with amount 0 (no base bonus).
+     * The actual bonuses are applied dynamically by the ArcaneRuneEventHandler
+     * based on the rune's Source availability.
+     */
+    private void registerArcaneRuneWithBloodMagic() {
+        try {
+            IAltarRuneRegistry registry = BloodMagicAPI.getInstance().getRuneRegistry();
+
+            // Register with SPEED rune type, amount 0 (no inherent bonus)
+            // The event handler applies the actual bonuses based on Source state
+            // We use amount 1 with SPEED to ensure the block is recognized as a rune,
+            // but the event handler will override this with dynamic values
+            registry.registerRuneBlock(ARCANE_RUNE.get(), EnumAltarRuneType.SPEED, 1);
+
+            Animus.LOGGER.info("Registered Arcane Rune with Blood Magic altar rune registry");
+        } catch (Exception e) {
+            Animus.LOGGER.error("Failed to register Arcane Rune with Blood Magic: {}", e.getMessage());
+        }
     }
 
     @Override

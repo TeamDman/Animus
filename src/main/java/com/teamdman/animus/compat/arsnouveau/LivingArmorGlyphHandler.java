@@ -56,7 +56,7 @@ public class LivingArmorGlyphHandler {
         // Grant XP to the Source Attunement upgrade
         boolean success = LivingUpgradeHelper.addExperience(
             player,
-            SourceAttunementHandler.UPGRADE_KEY,
+            SourceAttunementHandler.UPGRADE_ID,
             baseXP
         );
 

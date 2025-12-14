@@ -1,6 +1,6 @@
 {
   "name": "guide.animus.entry.ritual_nolite_ignem",
-  "icon": "bloodmagic:masterritualstone",
+  "icon": "bloodmagic:master_ritual_stone",
   "category": "animus:rituals",
   "sortnum": 23,
   "pages": [

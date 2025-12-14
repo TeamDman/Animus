@@ -61,7 +61,7 @@ public class LivingArmorSpellHandler {
         // Grant XP to the Arcane Channeling upgrade using the data-pack based system
         boolean success = LivingUpgradeHelper.addExperience(
             player,
-            ArcaneChannelingHandler.UPGRADE_KEY,
+            ArcaneChannelingHandler.UPGRADE_ID,
             xpToGrant
         );
 

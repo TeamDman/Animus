@@ -6,7 +6,6 @@ import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -17,8 +16,6 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import wayoftime.bloodmagic.common.living.LivingUpgrade;
-import wayoftime.bloodmagic.common.registry.BMRegistries;
 
 /**
  * Arcane Channeling - Living Armor upgrade tree for Iron's Spells casters
@@ -31,10 +28,12 @@ import wayoftime.bloodmagic.common.registry.BMRegistries;
  */
 public class ArcaneChannelingHandler {
 
-    public static final ResourceKey<LivingUpgrade> UPGRADE_KEY = ResourceKey.create(
-        BMRegistries.Keys.LIVING_UPGRADES,
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_channeling")
-    );
+    /**
+     * ResourceLocation for the Arcane Channeling upgrade.
+     * The upgrade is defined in data/animus/bloodmagic/living_upgrades/arcane_channeling.json
+     */
+    public static final ResourceLocation UPGRADE_ID =
+        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_channeling");
 
     // ResourceLocation for our cooldown reduction attribute modifier (replaces UUID in 1.21)
     private static final ResourceLocation COOLDOWN_MODIFIER_ID =
@@ -80,7 +79,7 @@ public class ArcaneChannelingHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_KEY);
+        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         if (upgradeLevel <= 0) {
             return;
         }
@@ -104,7 +103,7 @@ public class ArcaneChannelingHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_KEY);
+        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
 
         // Level 5: Grant damage resistance when casting
         if (upgradeLevel >= 5) {
@@ -137,7 +136,7 @@ public class ArcaneChannelingHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_KEY);
+        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         double targetReduction = getCooldownReduction(upgradeLevel);
 
         // Get the cooldown reduction attribute

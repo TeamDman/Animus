@@ -1,7 +1,7 @@
 {
   "name": "guide.animus.entry.ritual_arcane_mastery",
   "category": "animus:compatibility",
-  "icon": "bloodmagic:masterritualstone",
+  "icon": "bloodmagic:master_ritual_stone",
   "flag": "mod:irons_spellbooks",
   "pages": [
     {
@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "bloodmagic:masterritualstone",
+      "item": "bloodmagic:master_ritual_stone",
       "text": "$(blood)Spell Learning Ritual$()$(br2)Place spell scrolls in chests within 5 blocks of the Master Ritual Stone. The ritual will automatically process scrolls, teaching you new spells or upgrading ones you already know."
     },
     {
