@@ -24,7 +24,7 @@ public class CompatHandler {
         // to avoid eager class loading. Method references like IronsSpellsCompat::new will
         // cause the class to be loaded immediately, which fails if the dependency is missing.
         COMPAT_MODULES.put("irons_spellbooks", () -> new IronsSpellsCompat());
-        // COMPAT_MODULES.put("ars_nouveau", () -> new ArsNouveauCompat());
+        COMPAT_MODULES.put("ars_nouveau", () -> new ArsNouveauCompat());
         COMPAT_MODULES.put("malum", () -> new MalumCompat());
         // COMPAT_MODULES.put("botania", () -> new BotaniaCompat()); // Botania not available for 1.21.1 yet
     }
@@ -32,13 +32,46 @@ public class CompatHandler {
     /**
      * Register all DeferredRegisters for loaded compatibility modules
      * Must be called during mod construction, before registry events fire
+     *
+     * IMPORTANT: We use separate helper methods to avoid class verification issues.
+     * If we reference IronsSpellsCompat directly in this method body, the JVM may
+     * try to verify that class exists even when the if condition is false, causing
+     * NoClassDefFoundError when Iron's Spells isn't installed.
      */
     public static void registerDeferredRegisters(IEventBus modEventBus) {
         // Register Iron's Spells compat DeferredRegisters if the mod is present
         if (ModList.get().isLoaded("irons_spellbooks")) {
-            IronsSpellsCompat.registerDeferred(modEventBus);
-            Animus.LOGGER.info("Registered Iron's Spells compatibility deferred registries");
+            registerIronsSpellsDeferred(modEventBus);
         }
+
+        // Register Ars Nouveau compat DeferredRegisters if the mod is present
+        if (ModList.get().isLoaded("ars_nouveau")) {
+            registerArsNouveauDeferred(modEventBus);
+        }
+    }
+
+    /**
+     * Helper method that isolates the IronsSpellsCompat class reference.
+     * This method should ONLY be called after verifying irons_spellbooks is loaded.
+     *
+     * We delegate to IronsSpellsCompatLoader to avoid referencing IronsSpellsCompat
+     * directly in this class, which would cause class verification to fail when
+     * Iron's Spells isn't installed.
+     */
+    private static void registerIronsSpellsDeferred(IEventBus modEventBus) {
+        IronsSpellsCompatLoader.registerDeferred(modEventBus);
+    }
+
+    /**
+     * Helper method that isolates the ArsNouveauCompat class reference.
+     * This method should ONLY be called after verifying ars_nouveau is loaded.
+     *
+     * We delegate to ArsNouveauCompatLoader to avoid referencing ArsNouveauCompat
+     * directly in this class, which would cause class verification to fail when
+     * Ars Nouveau isn't installed.
+     */
+    private static void registerArsNouveauDeferred(IEventBus modEventBus) {
+        ArsNouveauCompatLoader.registerDeferred(modEventBus);
     }
 
     /**

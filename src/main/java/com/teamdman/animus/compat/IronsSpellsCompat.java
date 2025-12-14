@@ -46,20 +46,23 @@ public class IronsSpellsCompat implements ICompatModule {
     // ===== Rituals =====
 
     // Ritual of Arcane Mastery - upgrades spell scrolls
+    // Using lambda instead of method reference to defer class loading
     public static final DeferredHolder<Ritual, RitualArcaneMastery> ARCANE_MASTERY =
-        RITUALS.register(Constants.Rituals.ARCANE_MASTERY, RitualArcaneMastery::new);
+        RITUALS.register(Constants.Rituals.ARCANE_MASTERY, () -> new RitualArcaneMastery());
 
     // ===== Spellbooks =====
 
     // Blood-Infused Spellbook - upgradeable at Blood Altar
+    // Using lambda instead of method reference to defer class loading
     public static final DeferredHolder<Item, ItemBloodInfusedSpellbook> BLOOD_INFUSED_SPELLBOOK =
-        ITEMS.register("blood_infused_spellbook", ItemBloodInfusedSpellbook::new);
+        ITEMS.register("blood_infused_spellbook", () -> new ItemBloodInfusedSpellbook());
 
     // ===== Sigils =====
 
     // Sigil of Crimson Will - boosts spell power with demon will
+    // Using lambda instead of method reference to defer class loading
     public static final DeferredHolder<Item, ItemSigilCrimsonWill> SIGIL_CRIMSON_WILL =
-        ITEMS.register("sigil_crimson_will", ItemSigilCrimsonWill::new);
+        ITEMS.register("sigil_crimson_will", () -> new ItemSigilCrimsonWill());
 
     // ===== Sanguine Scrolls =====
 

@@ -45,8 +45,9 @@ public class ArsNouveauCompat implements ICompatModule {
         DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Constants.Mod.MODID);
 
     // Arcane Rune - An Ars Nouveau powered altar component
+    // Using lambda instead of method reference to defer class loading
     public static final DeferredHolder<Block, BlockArcaneRune> ARCANE_RUNE = BLOCKS.register(
-        "arcane_rune", BlockArcaneRune::new);
+        "arcane_rune", () -> new BlockArcaneRune());
 
     public static final DeferredHolder<Item, Item> ARCANE_RUNE_ITEM = ITEMS.register(
         "arcane_rune", () -> new BlockItem(ARCANE_RUNE.get(), new Item.Properties()));
