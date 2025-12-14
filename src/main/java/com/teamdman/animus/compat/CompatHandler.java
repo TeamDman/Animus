@@ -20,11 +20,13 @@ public class CompatHandler {
 
     static {
         // Register compatibility modules here
-        // Using suppliers ensures classes are only loaded when the mod is present
-        COMPAT_MODULES.put("irons_spellbooks", IronsSpellsCompat::new);
-        // COMPAT_MODULES.put("ars_nouveau", ArsNouveauCompat::new);
-        COMPAT_MODULES.put("malum", MalumCompat::new);
-        // COMPAT_MODULES.put("botania", BotaniaCompat::new); // Botania not available for 1.21.1 yet
+        // IMPORTANT: Use lambdas with Class.forName or full class instantiation inside the lambda
+        // to avoid eager class loading. Method references like IronsSpellsCompat::new will
+        // cause the class to be loaded immediately, which fails if the dependency is missing.
+        COMPAT_MODULES.put("irons_spellbooks", () -> new IronsSpellsCompat());
+        // COMPAT_MODULES.put("ars_nouveau", () -> new ArsNouveauCompat());
+        COMPAT_MODULES.put("malum", () -> new MalumCompat());
+        // COMPAT_MODULES.put("botania", () -> new BotaniaCompat()); // Botania not available for 1.21.1 yet
     }
 
     /**

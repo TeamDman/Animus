@@ -91,7 +91,7 @@ public class ItemSigilRemedium extends AnimusSigilBase {
             );
         }
 
-        return InteractionResultHolder.success(stack);
+        return InteractionResultHolder.consume(stack);
     }
 
     /**

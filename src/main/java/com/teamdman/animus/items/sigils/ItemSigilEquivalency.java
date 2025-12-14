@@ -106,7 +106,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                     true
                 );
             }
-            return InteractionResultHolder.success(stack);
+            return InteractionResultHolder.consume(stack);
         }
 
         return InteractionResultHolder.pass(stack);

@@ -64,7 +64,7 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
         if (!level.isClientSide && player.isShiftKeyDown()) {
             // Toggle activation
             setActivatedState(stack, !getActivated(stack));
-            return InteractionResultHolder.success(stack);
+            return InteractionResultHolder.consume(stack);
         }
 
         return InteractionResultHolder.pass(stack);

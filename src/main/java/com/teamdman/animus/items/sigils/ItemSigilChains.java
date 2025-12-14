@@ -64,7 +64,7 @@ public class ItemSigilChains extends AnimusSigilBase {
 
         // Try to capture the target
         if (captureEntity(player, target, stack)) {
-            return InteractionResultHolder.success(stack);
+            return InteractionResultHolder.consume(stack);
         }
 
         return InteractionResultHolder.fail(stack);

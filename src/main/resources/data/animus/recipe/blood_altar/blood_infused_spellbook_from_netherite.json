@@ -1,0 +1,23 @@
+{
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "irons_spellbooks"
+    }
+  ],
+  "input": {
+    "item": "irons_spellbooks:netherite_spellbook"
+  },
+  "output": {
+    "id": "animus:blood_infused_spellbook",
+    "components": {
+      "animus:infusion_tier": 1
+    }
+  },
+  "minTier": 0,
+  "bloodNeeded": 5000,
+  "craftSpeed": 20,
+  "drainSpeed": 20,
+  "copyInputComponents": true
+}

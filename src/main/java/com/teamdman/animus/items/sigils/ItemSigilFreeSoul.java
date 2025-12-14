@@ -112,7 +112,7 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             // Activate spectator mode
             activateSpectatorMode(serverPlayer, (ServerLevel) level, false);
 
-            return InteractionResultHolder.success(stack);
+            return InteractionResultHolder.consume(stack);
         }
 
         return InteractionResultHolder.pass(stack);

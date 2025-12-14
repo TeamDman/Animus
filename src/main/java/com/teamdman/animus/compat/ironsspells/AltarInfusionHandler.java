@@ -1,6 +1,7 @@
 package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.Animus;
+import com.teamdman.animus.AnimusConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -15,11 +16,19 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.util.TriState;
 import wayoftime.bloodmagic.common.item.BloodOrbItem;
 import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 
 /**
- * Handles Blood Altar interactions for infusing spellbooks
+ * Handles Blood Altar interactions for upgrading Blood-Infused Spellbooks.
+ *
+ * Initial infusion (converting regular spellbooks to Blood-Infused Spellbooks)
+ * is now handled via data-driven Blood Altar recipes with copyInputComponents
+ * to preserve spell data from the original spellbook.
+ *
+ * This handler only manages tier upgrades (1->2, 2->3, etc.) which require
+ * checking Blood Orb tiers and tier-specific LP costs.
  */
 public class AltarInfusionHandler {
 
@@ -32,6 +41,7 @@ public class AltarInfusionHandler {
 
     /**
      * Handle right-click on Blood Altar with Blood-Infused Spellbook
+     * Upgrades the spellbook to the next tier if requirements are met.
      */
     @SubscribeEvent
     public static void onAltarRightClick(PlayerInteractEvent.RightClickBlock event) {
@@ -46,7 +56,7 @@ public class AltarInfusionHandler {
         InteractionHand hand = event.getHand();
         ItemStack stack = player.getItemInHand(hand);
 
-        // Check if holding Blood-Infused Spellbook
+        // Only handle Blood-Infused Spellbook upgrades
         if (!(stack.getItem() instanceof ItemBloodInfusedSpellbook)) {
             return;
         }
@@ -56,6 +66,15 @@ public class AltarInfusionHandler {
             return;
         }
 
+        handleSpellbookUpgrade(event, player, level, pos, hand, stack, altar);
+    }
+
+    /**
+     * Handle spellbook upgrade - increase tier of Blood-Infused Spellbook
+     */
+    private static void handleSpellbookUpgrade(PlayerInteractEvent.RightClickBlock event, Player player,
+            Level level, BlockPos pos, InteractionHand hand, ItemStack stack, BloodAltarTile altar) {
+
         // Check if spellbook can be upgraded
         if (!ItemBloodInfusedSpellbook.canUpgrade(stack)) {
             player.displayClientMessage(
@@ -64,6 +83,8 @@ public class AltarInfusionHandler {
                 true
             );
             event.setCanceled(true);
+            event.setUseBlock(TriState.FALSE);
+            event.setUseItem(TriState.FALSE);
             return;
         }
 
@@ -71,7 +92,7 @@ public class AltarInfusionHandler {
         int nextTier = currentTier + 1;
         int lpCost = ItemBloodInfusedSpellbook.getUpgradeCost(stack);
 
-        // Check if altar has enough LP (1.21.1 API: use mainTank field instead of getCurrentBlood())
+        // Check if altar has enough LP
         int altarLP = altar.getCurrentBlood();
         if (altarLP < lpCost) {
             player.displayClientMessage(
@@ -80,6 +101,8 @@ public class AltarInfusionHandler {
                 true
             );
             event.setCanceled(true);
+            event.setUseBlock(TriState.FALSE);
+            event.setUseItem(TriState.FALSE);
             return;
         }
 
@@ -92,6 +115,8 @@ public class AltarInfusionHandler {
                 true
             );
             event.setCanceled(true);
+            event.setUseBlock(TriState.FALSE);
+            event.setUseItem(TriState.FALSE);
             return;
         }
 
@@ -116,6 +141,8 @@ public class AltarInfusionHandler {
             player.getName().getString(), nextTier, lpCost);
 
         event.setCanceled(true);
+        event.setUseBlock(TriState.FALSE);
+        event.setUseItem(TriState.FALSE);
     }
 
     /**

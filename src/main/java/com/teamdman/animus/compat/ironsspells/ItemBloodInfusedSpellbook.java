@@ -136,41 +136,103 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
 
         if (tier > 0) {
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.literal("Blood Infusion: Tier " + tier)
+            // Show current tier with max tier for reference
+            tooltip.add(Component.literal("Blood Infusion: Tier " + tier + "/6")
                 .withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
 
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.literal("Current Bonuses:")
+                .withStyle(ChatFormatting.GOLD));
+
             // Show current bonuses
-            tooltip.add(Component.literal("Spell Slots: " + getMaxSpellSlots(stack))
+            tooltip.add(Component.literal("  Spell Slots: " + getMaxSpellSlots(stack))
                 .withStyle(ChatFormatting.GRAY));
 
             double costReduction = getLPCostReduction(stack);
             if (costReduction > 0) {
-                tooltip.add(Component.literal("LP Cost: -" + (int)(costReduction * 100) + "%")
-                    .withStyle(ChatFormatting.GOLD));
+                tooltip.add(Component.literal("  LP Cost Reduction: -" + (int)(costReduction * 100) + "%")
+                    .withStyle(ChatFormatting.GRAY));
             }
 
             double lifesteal = getLifesteal(stack);
             if (lifesteal > 0) {
-                tooltip.add(Component.literal("Lifesteal: " + (int)(lifesteal * 100) + "%")
+                tooltip.add(Component.literal("  Spell Lifesteal: " + (int)(lifesteal * 100) + "%")
                     .withStyle(ChatFormatting.GREEN));
             }
 
             // Show next tier info if upgradeable
             if (canUpgrade(stack)) {
                 tooltip.add(Component.literal(""));
-                tooltip.add(Component.literal("Right-click on Blood Altar to upgrade")
-                    .withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));
-                tooltip.add(Component.literal("Next tier cost: " + getUpgradeCost(stack) + " LP")
+                tooltip.add(Component.literal("Next Tier Bonus:")
+                    .withStyle(ChatFormatting.AQUA));
+                tooltip.add(Component.literal("  " + getNextTierBonus(tier + 1))
+                    .withStyle(ChatFormatting.GRAY));
+
+                tooltip.add(Component.literal(""));
+                tooltip.add(Component.literal("Upgrade Requirements:")
                     .withStyle(ChatFormatting.DARK_RED));
+                tooltip.add(Component.literal("  " + getOrbNameForTier(tier + 1) + " or higher")
+                    .withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.literal("  " + String.format("%,d LP in Blood Altar", getUpgradeCost(stack)))
+                    .withStyle(ChatFormatting.GRAY));
+
+                tooltip.add(Component.literal(""));
+                tooltip.add(Component.literal("Right-click Blood Altar to upgrade")
+                    .withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));
+            } else {
+                tooltip.add(Component.literal(""));
+                tooltip.add(Component.literal("Maximum tier reached!")
+                    .withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
             }
         } else {
-            // Not infused yet
+            // Tier 0 - this shouldn't normally happen since altar recipe outputs tier 1
+            // But handle it gracefully in case of commands/creative
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.literal("Right-click on Blood Altar to infuse")
-                .withStyle(ChatFormatting.DARK_RED, ChatFormatting.ITALIC));
-            tooltip.add(Component.literal("Requires: Blood Orb + " + AnimusConfig.ironsSpells.bloodSpellbookTier1LP.get() + " LP")
+            tooltip.add(Component.literal("Not yet infused")
+                .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.literal("Tier 1 Bonus:")
+                .withStyle(ChatFormatting.AQUA));
+            tooltip.add(Component.literal("  +1 Spell Slot (6 total)")
+                .withStyle(ChatFormatting.GRAY));
+
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.literal("To Infuse:")
                 .withStyle(ChatFormatting.DARK_RED));
+            tooltip.add(Component.literal("  Place in Blood Altar with " + String.format("%,d LP", AnimusConfig.ironsSpells.bloodSpellbookTier1LP.get()))
+                .withStyle(ChatFormatting.GRAY));
         }
+    }
+
+    /**
+     * Get the bonus description for a given tier
+     */
+    private static String getNextTierBonus(int tier) {
+        return switch (tier) {
+            case 1 -> "+1 Spell Slot (6 total)";
+            case 2 -> "+2 Spell Slots (7 total)";
+            case 3 -> "+3 Spell Slots (8 total)";
+            case 4 -> "-10% LP Cost Reduction";
+            case 5 -> "-20% LP Cost Reduction";
+            case 6 -> "+5% Spell Lifesteal";
+            default -> "Unknown bonus";
+        };
+    }
+
+    /**
+     * Get the required orb name for a given tier
+     */
+    private static String getOrbNameForTier(int tier) {
+        return switch (tier) {
+            case 1 -> "Weak Blood Orb";
+            case 2 -> "Apprentice Blood Orb";
+            case 3 -> "Magician's Blood Orb";
+            case 4 -> "Master Blood Orb";
+            case 5 -> "Archmage's Blood Orb";
+            case 6 -> "Transcendent Blood Orb";
+            default -> "Blood Orb";
+        };
     }
 
     @Override

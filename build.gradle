@@ -93,7 +93,7 @@ dependencies {
     // implementation "wayoftime:bloodmagic:${bloodmagic_version}"
 
     // Option 2: Use file dependency (place BloodMagic jar in libs folder)
-    implementation files('libs/bloodmagic-3.4.0-2-beta.jar')
+    implementation files('libs/bloodmagicnv-3.4.0-3-beta.jar')
 
     // JEI - using CurseMaven NeoForge version (not Forge!)
     compileOnly "curse.maven:jei-238222:${jei_cursemaven_id}"

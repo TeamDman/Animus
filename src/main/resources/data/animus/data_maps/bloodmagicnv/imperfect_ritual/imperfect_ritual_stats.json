@@ -1,0 +1,52 @@
+{
+  "values": {
+    "animus:ritual_hunger": {
+      "activation_cost": 500,
+      "block": "minecraft:bone_block",
+      "consume_block": false,
+      "lightning_effect": true
+    },
+    "animus:ritual_regression": {
+      "activation_cost": 3000,
+      "block": "minecraft:bookshelf",
+      "consume_block": false,
+      "lightning_effect": true
+    },
+    "animus:ritual_enhancement": {
+      "activation_cost": 5000,
+      "block": "minecraft:amethyst_block",
+      "consume_block": false,
+      "lightning_effect": true
+    },
+    "animus:ritual_reduction": {
+      "activation_cost": 1000,
+      "block": "minecraft:quartz_block",
+      "consume_block": false,
+      "lightning_effect": true
+    },
+    "animus:ritual_boundless_skies": {
+      "activation_cost": 10000,
+      "block": "minecraft:ancient_debris",
+      "consume_block": false,
+      "lightning_effect": true
+    },
+    "animus:ritual_clear_skies": {
+      "activation_cost": 1000,
+      "block": "minecraft:glowstone",
+      "consume_block": false,
+      "lightning_effect": true
+    },
+    "animus:ritual_neptune_blessing": {
+      "activation_cost": 2000,
+      "block": "minecraft:prismarine",
+      "consume_block": false,
+      "lightning_effect": true
+    },
+    "animus:ritual_warden": {
+      "activation_cost": 3000,
+      "block": "minecraft:sculk",
+      "consume_block": false,
+      "lightning_effect": true
+    }
+  }
+}

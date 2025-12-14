@@ -6,27 +6,37 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The Blood-Infused Spellbook channels Life Essence to enhance spellcasting capabilities. This hybrid tome consumes LP to boost spell power and mana regeneration, bridging Iron's Spells magic with Blood Magic's sacrificial arts."
+      "text": "The Blood-Infused Spellbook combines the power of Iron's Spells with Blood Magic's sacrificial arts. This unique tome can be progressively enhanced through $(blood)six tiers of blood infusion$(), each granting powerful new abilities.$(br2)Unlike regular spellbooks, this hybrid tome grows stronger as you feed it more Life Essence at the Blood Altar."
     },
     {
       "type": "patchouli:spotlight",
       "item": "animus:blood_infused_spellbook",
-      "text": "$(blood)Blood-Powered Spellbook$()$(br2)Passively consume LP from your Blood Network to fuel your magical studies. The Blood-Infused Spellbook provides powerful bonuses when held in your inventory while you cast spells."
+      "text": "$(blood)Blood-Powered Spellbook$()$(br2)A spellbook infused with the power of blood magic. Place any Iron's Spells spellbook in the Blood Altar to create one, then right-click to upgrade it.$(br2)$(bold)Base Stats:$() 5 spell slots$(br)$(bold)Maximum Tier:$() 6"
     },
     {
       "type": "patchouli:text",
-      "title": "Creating the Book",
-      "text": "To create a Blood-Infused Spellbook, you must perform a ritual at the Blood Altar. You will need:$(br2)$(li)A $(item)Spellbook$() from Iron's Spells 'n Skills$(li)A $(blood)Tier 4 or higher$() Blood Altar$(li)A $(blood)Weak Blood Orb$() or better in the altar$(li)At least $(blood)20,000 LP$() in the altar$(br2)With these requirements met, simply right-click the Blood Altar with the spellbook in hand. The spellbook will be consumed and transformed."
+      "title": "Initial Infusion",
+      "text": "To create a Blood-Infused Spellbook:$(br2)1. Obtain any $(item)Spellbook$() from Iron's Spells$(br)2. $(bold)Place the spellbook in the Blood Altar$()$(br)3. Ensure the altar has $(blood)5,000 LP$() stored$(br)4. Wait for the altar to craft it$(br2)The spellbook transforms into a $(blood)Tier 1 Blood-Infused Spellbook$(). $(thing)All your equipped spells are preserved!$()"
     },
     {
       "type": "patchouli:text",
-      "title": "Abilities",
-      "text": "$(bold)Passive Bonuses:$()$(li)$(blood)+10%% Spell Power$()$(li)$(blood)+25%% Mana Regeneration$()$(li)$(blood)+5%% Cooldown Reduction$()$(br)$(italic)LP Cost: 10 LP/second$()$(br2)$(bold)Active Benefits:$()$(li)$(blood)10%% Mana Cost Reduction$() on all spells$(li)$(blood)Overdraw Mana:$() Consume $(blood)100 LP$() per missing mana point to cast anyway."
+      "title": "Tier Progression",
+      "text": "Each tier requires a higher tier Blood Orb and more LP:$(br2)$(bold)Tiers 1-3: Spell Slot Bonuses$()$(li)$(blood)Tier 1:$() Weak Orb, 5k LP $(thing)+1 slot$()$(li)$(blood)Tier 2:$() Apprentice Orb, 10k LP $(thing)+2 slots$()$(li)$(blood)Tier 3:$() Magician Orb, 25k LP $(thing)+3 slots$()$(br2)$(italic)Max 8 spell slots at Tier 3$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Advanced Tiers",
+      "text": "$(bold)Tiers 4-5: LP Cost Reduction$()$(li)$(blood)Tier 4:$() Master Orb, 50k LP $(thing)-10%% LP cost$()$(li)$(blood)Tier 5:$() Archmage Orb, 100k LP $(thing)-20%% LP cost$()$(br2)$(bold)Tier 6: Lifesteal$()$(li)$(blood)Tier 6:$() Transcendent Orb, 175k LP $(thing)+5%% spell lifesteal$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Upgrading",
+      "text": "To upgrade your spellbook to the next tier:$(br2)1. Place the required Blood Orb tier (or higher) in the altar$(br)2. Ensure the altar has enough LP$(br)3. Right-click the altar while holding your Blood-Infused Spellbook$(br2)The spellbook's tooltip shows your current tier, bonuses, and the requirements for the next upgrade. JEI also displays all upgrade recipes."
     },
     {
       "type": "patchouli:text",
       "title": "Requirements",
-      "text": "To use the Blood-Infused Spellbook, you must have:$(br2)$(li)$(mod)Iron's Spellbooks$() installed$(li)An active $(l:bloodmagic:altar/binding)Soul Network$() with sufficient LP$(br2)The book functions from any inventory slot and does not need to be held."
+      "text": "To use the Blood-Infused Spellbook:$(br2)$(li)$(mod)Iron's Spellbooks$() must be installed$(li)An active $(l:bloodmagic:altar/binding)Soul Network$()$(li)A Blood Altar with the appropriate orb tier$(br2)The spellbook's rarity and enchantment glint change based on its infusion tier, making it easy to see how powerful your tome has become."
     }
   ]
 }

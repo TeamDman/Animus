@@ -69,7 +69,7 @@ public class ItemSigilConsumption extends AnimusSigilBase {
             // Convert block to antilife
             var antiLifeResult = BlockAntiLife.setBlockToAntiLife(level, result.getBlockPos(), player);
             if (antiLifeResult.consumesAction()) {
-                return InteractionResultHolder.success(stack);
+                return InteractionResultHolder.consume(stack);
             }
 
             return InteractionResultHolder.fail(stack);

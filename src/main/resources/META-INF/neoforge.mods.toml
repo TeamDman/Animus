@@ -13,6 +13,10 @@ credits = "WayOfTime for Blood Magic"
 authors = "${mod_authors}"
 description = '''${mod_description}'''
 
+# =============================================================================
+# Required Dependencies
+# =============================================================================
+
 [[dependencies.animus]]
     modId = "neoforge"
     type = "required"
@@ -28,11 +32,15 @@ description = '''${mod_description}'''
     side = "BOTH"
 
 [[dependencies.animus]]
-    modId = "bloodmagic"
+    modId = "bloodmagicnv"
     type = "required"
     versionRange = "[3.4.0,)"
     ordering = "AFTER"
     side = "BOTH"
+
+# =============================================================================
+# Optional Dependencies - Core Integrations
+# =============================================================================
 
 [[dependencies.animus]]
     modId = "jei"
@@ -52,5 +60,30 @@ description = '''${mod_description}'''
     modId = "patchouli"
     type = "optional"
     versionRange = "[1.21,)"
+    ordering = "AFTER"
+    side = "BOTH"
+
+# =============================================================================
+# Optional Dependencies - Compat Mods
+# =============================================================================
+
+[[dependencies.animus]]
+    modId = "ars_nouveau"
+    type = "optional"
+    versionRange = "[5.0,)"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.animus]]
+    modId = "irons_spellbooks"
+    type = "optional"
+    versionRange = "[3.0,)"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.animus]]
+    modId = "malum"
+    type = "optional"
+    versionRange = "[1.7,)"
     ordering = "AFTER"
     side = "BOTH"

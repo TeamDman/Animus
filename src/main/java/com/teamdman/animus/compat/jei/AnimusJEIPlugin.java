@@ -1,6 +1,8 @@
 package com.teamdman.animus.compat.jei;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.compat.ironsspells.ItemBloodInfusedSpellbook;
 import com.teamdman.animus.registry.AnimusBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -116,26 +118,58 @@ public class AnimusJEIPlugin implements IModPlugin {
     }
 
     /**
-     * Register visual recipes for Altar Infusion category
-     * Shows Blood-Infused Spellbook and Sanguine Scroll creation
+     * Register visual recipes for Altar Infusion category.
+     *
+     * Note: Initial Blood-Infused Spellbook infusion is now a data-driven Blood Altar
+     * recipe (with copyInputComponents for preserving spell data) and shows in Blood
+     * Magic's native JEI category. This only registers:
+     * - Spellbook tier upgrades (1->2, 2->3, etc.) which require right-click interaction
+     * - Sanguine Scroll creation which requires right-click interaction
      */
     private void registerAltarInfusionRecipes(IRecipeRegistration registration) {
         try {
             List<AltarInfusionDisplay> displays = new ArrayList<>();
 
-            // Blood-Infused Spellbook recipe
-            Item leatherSpellbook = BuiltInRegistries.ITEM.get(
-                ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "leather_spellbook"));
+            // Blood-Infused Spellbook tier upgrades (right-click on altar)
+            // Initial infusion is now a data-driven recipe shown in Blood Magic's JEI
             Item bloodInfusedSpellbook = getAnimusItem("blood_infused_spellbook");
-            if (leatherSpellbook != null && leatherSpellbook != Items.AIR
-                && bloodInfusedSpellbook != null && bloodInfusedSpellbook != Items.AIR) {
-                displays.add(AltarInfusionDisplay.createSpellbookInfusion(
-                    new ItemStack(leatherSpellbook),
-                    new ItemStack(bloodInfusedSpellbook),
-                    10000,
-                    Component.translatable("jei.animus.blood_infused_spellbook.title"),
-                    Component.translatable("jei.animus.blood_infused_spellbook.desc")
-                ));
+            if (bloodInfusedSpellbook != null && bloodInfusedSpellbook != Items.AIR) {
+
+                // Upgrade tiers: Tier 1->2, 2->3, 3->4, 4->5, 5->6
+                String[] orbNames = {
+                    "Apprentice Blood Orb",    // Tier 1 -> 2
+                    "Magician's Blood Orb",    // Tier 2 -> 3
+                    "Master Blood Orb",        // Tier 3 -> 4
+                    "Archmage's Blood Orb",    // Tier 4 -> 5
+                    "Transcendent Blood Orb"   // Tier 5 -> 6
+                };
+
+                int[] lpCosts = {
+                    AnimusConfig.ironsSpells.bloodSpellbookTier2LP.get(),
+                    AnimusConfig.ironsSpells.bloodSpellbookTier3LP.get(),
+                    AnimusConfig.ironsSpells.bloodSpellbookTier4LP.get(),
+                    AnimusConfig.ironsSpells.bloodSpellbookTier5LP.get(),
+                    AnimusConfig.ironsSpells.bloodSpellbookTier6LP.get()
+                };
+
+                for (int tier = 1; tier <= 5; tier++) {
+                    ItemStack tierInput = new ItemStack(bloodInfusedSpellbook);
+                    ItemBloodInfusedSpellbook.setInfusionTier(tierInput, tier);
+
+                    ItemStack tierOutput = new ItemStack(bloodInfusedSpellbook);
+                    ItemBloodInfusedSpellbook.setInfusionTier(tierOutput, tier + 1);
+
+                    displays.add(AltarInfusionDisplay.createSpellbookUpgrade(
+                        tierInput,
+                        tierOutput,
+                        lpCosts[tier - 1],
+                        tier,
+                        tier + 1,
+                        orbNames[tier - 1],
+                        Component.translatable("jei.animus.blood_infused_spellbook.upgrade_title"),
+                        Component.translatable("jei.animus.blood_infused_spellbook.upgrade_desc")
+                    ));
+                }
             }
 
             // Sanguine Scroll recipes - one per slate tier

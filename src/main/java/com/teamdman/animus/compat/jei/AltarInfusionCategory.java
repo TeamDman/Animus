@@ -84,6 +84,22 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
             builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 40)
                 .addItemStacks(recipe.getOutputs());
 
+        } else if (recipe.isSpellbookUpgradeType()) {
+            // Spellbook upgrade layout: same as spellbook but shows tier info
+            // [Input] -> [Altar] -> [Output]
+
+            // Input slot (left)
+            builder.addSlot(RecipeIngredientRole.INPUT, 20, 40)
+                .addItemStack(recipe.getAltarInput());
+
+            // Blood Altar (center)
+            builder.addSlot(RecipeIngredientRole.CATALYST, 75, 40)
+                .addItemStack(new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
+
+            // Output slot (right)
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 40)
+                .addItemStacks(recipe.getOutputs());
+
         } else if (recipe.isSanguineScrollType()) {
             // Sanguine Scroll layout:
             // [Main Hand]     [Offhand]
@@ -131,6 +147,29 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
 
             // Draw description at bottom
             drawWrappedText(guiGraphics, font, recipe.getDescription().getString(), 5, 75, 160, 0x606060);
+
+        } else if (recipe.isSpellbookUpgradeType()) {
+            // Draw arrows for upgrade layout
+            guiGraphics.drawString(font, "→", 45, 43, 0x404040, false);
+            guiGraphics.drawString(font, "→", 105, 43, 0x404040, false);
+
+            // Draw tier subtitle under title
+            String subtitle = "Tier " + recipe.getFromTier() + " → Tier " + recipe.getToTier();
+            int subtitleWidth = font.width(subtitle);
+            guiGraphics.drawString(font, subtitle, (WIDTH - subtitleWidth) / 2, 14, 0x8B0000, false);
+
+            // Draw LP cost below altar
+            String lpText = String.format("%,d LP", recipe.getLpCost());
+            int lpWidth = font.width(lpText);
+            guiGraphics.drawString(font, lpText, (WIDTH - lpWidth) / 2, 60, 0xAA0000, false);
+
+            // Draw orb requirement
+            String orbReq = "Requires: " + recipe.getRequiredOrb();
+            int orbWidth = font.width(orbReq);
+            guiGraphics.drawString(font, orbReq, (WIDTH - orbWidth) / 2, 72, 0x606060, false);
+
+            // Draw description at bottom
+            drawWrappedText(guiGraphics, font, recipe.getDescription().getString(), 5, 85, 160, 0x606060);
 
         } else if (recipe.isSanguineScrollType()) {
             // Draw hand labels
