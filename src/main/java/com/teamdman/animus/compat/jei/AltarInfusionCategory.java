@@ -1,6 +1,6 @@
-package com.teamdman.animus.jei;
+package com.teamdman.animus.compat.jei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import org.jetbrains.annotations.Nullable;
 import com.teamdman.animus.Constants;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -28,13 +28,13 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
     public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "altar_infusion");
     public static final RecipeType<AltarInfusionDisplay> RECIPE_TYPE = RecipeType.create(Constants.Mod.MODID, "altar_infusion", AltarInfusionDisplay.class);
 
-    private final IDrawable background;
+    private static final int WIDTH = 170;
+    private static final int HEIGHT = 100;
+
     private final IDrawable icon;
     private final Component title;
 
     public AltarInfusionCategory(IGuiHelper guiHelper) {
-        // Create a background - 170x100 pixels for more space
-        this.background = guiHelper.createBlankDrawable(170, 100);
         // Use Blood Altar as the icon
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
             new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
@@ -52,12 +52,17 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
     }
 
     @Override
-    public IDrawable getBackground() {
-        return background;
+    public int getWidth() {
+        return WIDTH;
     }
 
     @Override
-    public IDrawable getIcon() {
+    public int getHeight() {
+        return HEIGHT;
+    }
+
+    @Override
+    public @Nullable IDrawable getIcon() {
         return icon;
     }
 
@@ -112,7 +117,7 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
         // Draw title
         String titleStr = recipe.getTitle().getString();
         int titleWidth = font.width(titleStr);
-        guiGraphics.drawString(font, titleStr, (170 - titleWidth) / 2, 2, 0x8B0000, false);
+        guiGraphics.drawString(font, titleStr, (WIDTH - titleWidth) / 2, 2, 0x8B0000, false);
 
         if (recipe.isSpellbookType()) {
             // Draw arrows for spellbook layout
@@ -122,7 +127,7 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
             // Draw LP cost below altar
             String lpText = String.format("%,d LP", recipe.getLpCost());
             int lpWidth = font.width(lpText);
-            guiGraphics.drawString(font, lpText, (170 - lpWidth) / 2, 60, 0xAA0000, false);
+            guiGraphics.drawString(font, lpText, (WIDTH - lpWidth) / 2, 60, 0xAA0000, false);
 
             // Draw description at bottom
             drawWrappedText(guiGraphics, font, recipe.getDescription().getString(), 5, 75, 160, 0x606060);

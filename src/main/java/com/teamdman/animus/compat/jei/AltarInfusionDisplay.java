@@ -1,4 +1,4 @@
-package com.teamdman.animus.jei;
+package com.teamdman.animus.compat.jei;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;

@@ -1,4 +1,4 @@
-package com.teamdman.animus.jei;
+package com.teamdman.animus.compat.jei;
 
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
@@ -15,7 +15,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.registries.BuiltInRegistries;
 import wayoftime.bloodmagic.common.block.BMBlocks;
 
@@ -25,7 +24,9 @@ import java.util.List;
 
 /**
  * JEI Plugin for Animus mod
- * Shows imperfect rituals and special transformations
+ * Shows item info and Iron's Spells altar infusion recipes
+ *
+ * Note: Imperfect Ritual JEI integration is handled by Blood Magic itself.
  */
 @JeiPlugin
 public class AnimusJEIPlugin implements IModPlugin {
@@ -39,9 +40,6 @@ public class AnimusJEIPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
 
-        // Register the Imperfect Ritual category
-        registration.addRecipeCategories(new ImperfectRitualCategory(guiHelper));
-
         // Register the Altar Infusion category (for Iron's Spells compat)
         if (ModList.get().isLoaded("irons_spellbooks")) {
             registration.addRecipeCategories(new AltarInfusionCategory(guiHelper));
@@ -50,10 +48,6 @@ public class AnimusJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        // Register all imperfect ritual displays
-        List<ImperfectRitualDisplay> ritualDisplays = ImperfectRitualDisplayFactory.createAllDisplays();
-        registration.addRecipes(ImperfectRitualCategory.RECIPE_TYPE, ritualDisplays);
-
         // Add info for AntiLife Bucket - explains the lightning transformation
         registration.addIngredientInfo(
             Arrays.asList(
@@ -192,50 +186,8 @@ public class AnimusJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        // Blood Magic's Imperfect Ritual Stone is the main catalyst - clicking it shows ALL rituals
-        registration.addRecipeCatalyst(
-            new ItemStack(BMBlocks.IMPERFECT_RITUAL_STONE.block().get()),
-            ImperfectRitualCategory.RECIPE_TYPE
-        );
-
-        // Also register each trigger block as a catalyst so clicking them shows their ritual
-        // Vanilla blocks
-        registration.addRecipeCatalyst(new ItemStack(Items.BOOKSHELF), ImperfectRitualCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(Items.BONE_BLOCK), ImperfectRitualCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(Items.AMETHYST_BLOCK), ImperfectRitualCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(Items.ANCIENT_DEBRIS), ImperfectRitualCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(Items.GLOWSTONE), ImperfectRitualCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(Items.PRISMARINE), ImperfectRitualCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(Items.SCULK), ImperfectRitualCategory.RECIPE_TYPE);
-
-        // Mod-dependent catalyst blocks
-        if (ModList.get().isLoaded("botania")) {
-            Item manasteelBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("botania", "manasteel_block"));
-            if (manasteelBlock != null && manasteelBlock != Items.AIR) {
-                registration.addRecipeCatalyst(new ItemStack(manasteelBlock), ImperfectRitualCategory.RECIPE_TYPE);
-            }
-        }
-
-        if (ModList.get().isLoaded("malum")) {
-            Item hallowedGoldBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold"));
-            if (hallowedGoldBlock != null && hallowedGoldBlock != Items.AIR) {
-                registration.addRecipeCatalyst(new ItemStack(hallowedGoldBlock), ImperfectRitualCategory.RECIPE_TYPE);
-            }
-        }
-
-        if (ModList.get().isLoaded("ars_nouveau")) {
-            Item sourceGemBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("ars_nouveau", "source_gem_block"));
-            if (sourceGemBlock != null && sourceGemBlock != Items.AIR) {
-                registration.addRecipeCatalyst(new ItemStack(sourceGemBlock), ImperfectRitualCategory.RECIPE_TYPE);
-            }
-        }
-
+        // Iron's Spells Altar Infusion catalysts
         if (ModList.get().isLoaded("irons_spellbooks")) {
-            Item arcaneAnvil = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "arcane_anvil"));
-            if (arcaneAnvil != null && arcaneAnvil != Items.AIR) {
-                registration.addRecipeCatalyst(new ItemStack(arcaneAnvil), ImperfectRitualCategory.RECIPE_TYPE);
-            }
-
             // Blood Altar is the catalyst for Altar Infusion recipes (Iron's Spells compat)
             registration.addRecipeCatalyst(
                 new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()),
@@ -261,5 +213,4 @@ public class AnimusJEIPlugin implements IModPlugin {
             }
         }
     }
-
 }
