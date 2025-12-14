@@ -117,11 +117,19 @@ dependencies {
     // graceful degradation when mods are missing.
     // ============================================================================
 
-    // Geckolib - required by Ars Nouveau and Malum
-    // runtimeOnly "software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7"
+    // Ars Nouveau
+    compileOnly "curse.maven:ars-nouveau-401955:7100043"
+    runtimeOnly "curse.maven:ars-nouveau-401955:7100043"
 
-    // TODO: Add 1.21.1 versions of compat mods when available
-    // Malum, Lodestone, Ars Nouveau, Botania, Iron's Spells - need 1.21.1 versions
+    // Iron's Spells n Spellbooks
+    compileOnly "curse.maven:irons-spells-n-spellbooks-855414:7271541"
+    runtimeOnly "curse.maven:irons-spells-n-spellbooks-855414:7271541"
+
+    // Malum
+    compileOnly "curse.maven:malum-484064:7307339"
+    runtimeOnly "curse.maven:malum-484064:7307339"
+
+    // Note: Botania not yet ported to 1.21.1 - compat remains disabled
 }
 
 tasks.named('processResources', ProcessResources).configure {
