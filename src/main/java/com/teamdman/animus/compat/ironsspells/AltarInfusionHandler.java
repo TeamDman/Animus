@@ -48,8 +48,12 @@ public class AltarInfusionHandler {
 
         // Check if holding a regular Iron's Spellbooks spellbook (not our Blood-Infused one)
         if (isIronsSpellbook(stack) && !(stack.getItem() instanceof ItemBloodInfusedSpellbook)) {
-            handleInitialInfusion(event, player, level, pos, hand, stack, altar);
-            return;
+            // Only return if we actually handled the infusion (either success or requirements not met)
+            // If requirements not met, we return false to let normal altar behavior proceed
+            if (handleInitialInfusion(event, player, level, pos, hand, stack, altar)) {
+                return;
+            }
+            // If not handled, fall through to let normal altar behavior work
         }
 
         // Check if holding Blood-Infused Spellbook for upgrade
@@ -266,33 +270,35 @@ public class AltarInfusionHandler {
 
     /**
      * Handle initial infusion of a regular spellbook into Blood-Infused Spellbook
+     * Returns true if infusion was handled (success or error message shown), false to let normal altar behavior proceed
      */
-    private static void handleInitialInfusion(PlayerInteractEvent.RightClickBlock event,
+    private static boolean handleInitialInfusion(PlayerInteractEvent.RightClickBlock event,
             Player player, Level level, BlockPos pos, InteractionHand hand,
             ItemStack stack, TileAltar altar) {
 
-        // Check if altar has enough LP
+        // Check if altar has enough LP - if not, show message but DON'T cancel event
+        // This allows normal altar behavior to continue
         int altarLP = altar.getCurrentBlood();
         if (altarLP < INITIAL_INFUSION_COST) {
             player.displayClientMessage(
-                Component.literal("Altar needs " + INITIAL_INFUSION_COST + " LP (has " + altarLP + " LP)")
+                Component.literal("Blood infusion needs " + INITIAL_INFUSION_COST + " LP (altar has " + altarLP + " LP)")
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            event.setCanceled(true);
-            return;
+            // Don't cancel - let normal altar behavior proceed
+            return false;
         }
 
-        // Check altar tier (requires tier 3+)
+        // Check altar tier (requires tier 3+) - if not, show message but DON'T cancel event
         int altarTier = altar.getTier();
         if (altarTier < 3) {
             player.displayClientMessage(
-                Component.literal("Requires Tier 3+ Blood Altar!")
+                Component.literal("Blood infusion requires Tier 3+ Altar!")
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            event.setCanceled(true);
-            return;
+            // Don't cancel - let normal altar behavior proceed
+            return false;
         }
 
         // Consume LP from altar
@@ -331,5 +337,6 @@ public class AltarInfusionHandler {
             player.getName().getString(), INITIAL_INFUSION_COST);
 
         event.setCanceled(true);
+        return true;
     }
 }
