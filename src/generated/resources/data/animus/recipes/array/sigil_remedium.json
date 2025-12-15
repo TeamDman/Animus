@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagic:array",
+  "type": "bloodmagicnv:array",
   "addedinput": {
-    "item": "bloodmagic:infusedslate"
+    "item": "bloodmagicnv:infusedslate"
   },
   "baseinput": {
     "item": "animus:reagentremendium"
@@ -9,5 +9,5 @@
   "output": {
     "item": "animus:sigil_remedium"
   },
-  "texture": "bloodmagic:textures/models/alchemyarrays/lightsigil.png"
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/lightsigil.png"
 }

@@ -5,14 +5,14 @@
       "modid": "irons_spellbooks"
     }
   ],
-  "type": "bloodmagic:soulforge",
+  "type": "bloodmagicnv:soulforge",
   "minimumDrain": 256.0,
   "soulDrain": 512.0,
   "input0": {
-    "item": "bloodmagic:basemonstersoul"
+    "item": "bloodmagicnv:basemonstersoul"
   },
   "input1": {
-    "item": "bloodmagic:demonslate"
+    "item": "bloodmagicnv:demonslate"
   },
   "input2": {
     "item": "irons_spellbooks:arcane_essence"

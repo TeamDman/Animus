@@ -5,7 +5,7 @@
       "modid": "irons_spellbooks"
     }
   ],
-  "type": "bloodmagic:altar",
+  "type": "bloodmagicnv:altar",
   "altarSyphon": 10000,
   "consumptionRate": 20,
   "drainRate": 10,

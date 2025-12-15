@@ -1,5 +1,5 @@
 {
-  "type": "bloodmagic:altar",
+  "type": "bloodmagicnv:altar",
   "altarSyphon": 2000,
   "consumptionRate": 5,
   "drainRate": 1,

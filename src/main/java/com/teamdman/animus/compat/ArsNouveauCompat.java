@@ -6,6 +6,7 @@ import com.teamdman.animus.compat.arsnouveau.ArcaneRuneEventHandler;
 import com.teamdman.animus.compat.arsnouveau.BlockArcaneRune;
 import com.teamdman.animus.compat.arsnouveau.BlockEntityArcaneRune;
 import com.teamdman.animus.compat.arsnouveau.LivingArmorGlyphHandler;
+import com.teamdman.animus.compat.arsnouveau.RitualMagi;
 import com.teamdman.animus.compat.arsnouveau.SourceAttunementHandler;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
@@ -18,6 +19,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import wayoftime.bloodmagic.api.BloodMagicAPI;
 import wayoftime.bloodmagic.api.altar.rune.EnumAltarRuneType;
 import wayoftime.bloodmagic.api.altar.rune.IAltarRuneRegistry;
+import wayoftime.bloodmagic.ritual.ImperfectRitual;
+import wayoftime.bloodmagic.ritual.RitualRegistry;
 
 /**
  * Compatibility module for Ars Nouveau
@@ -43,6 +46,19 @@ public class ArsNouveauCompat implements ICompatModule {
     // DeferredRegister for Ars Nouveau compatibility block entities
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
         DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Constants.Mod.MODID);
+
+    // DeferredRegister for Ars Nouveau compatibility imperfect rituals
+    public static final DeferredRegister<ImperfectRitual> IMPERFECT_RITUALS =
+        DeferredRegister.create(RitualRegistry.IMPERFECT_RITUAL_REGISTRY_KEY, Constants.Mod.MODID);
+
+    // ===== Imperfect Rituals =====
+
+    // Imperfect Ritual of the Magi - grants Mana Regen effect
+    // Requires Source Jar on Imperfect Ritual Stone
+    public static final DeferredHolder<ImperfectRitual, RitualMagi> MAGI =
+        IMPERFECT_RITUALS.register(Constants.Rituals.MAGI, () -> new RitualMagi());
+
+    // ===== Blocks =====
 
     // Arcane Rune - An Ars Nouveau powered altar component
     // Using lambda instead of method reference to defer class loading
@@ -73,7 +89,8 @@ public class ArsNouveauCompat implements ICompatModule {
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         BLOCK_ENTITIES.register(modEventBus);
-        Animus.LOGGER.info("Registered Ars Nouveau compatibility registries");
+        IMPERFECT_RITUALS.register(modEventBus);
+        Animus.LOGGER.info("Registered Ars Nouveau compatibility registries (blocks, items, block entities, imperfect rituals)");
     }
 
     @Override

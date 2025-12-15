@@ -7,8 +7,8 @@
     {
       "type": "patchouli:multiblock",
       "name": "Ritual of Unmaking",
-      "multiblock_id": "bloodmagic:ritual_unmaking",
-      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+      "multiblock_id": "bloodmagicnv:ritual_unmaking",
+      "text": "Use a $(l:bloodmagicnv:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
     },
     {
       "type": "patchouli:text",

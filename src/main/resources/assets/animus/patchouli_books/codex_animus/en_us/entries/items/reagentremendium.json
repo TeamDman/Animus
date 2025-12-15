@@ -5,7 +5,7 @@
   "sortnum": 14,
   "pages": [
     {
-      "type": "bloodmagic:crafting_soulforge",
+      "type": "animus:crafting_soulforge",
       "heading": "Reagent: Remedium",
       "recipe": "animus:soulforge/reagentremendium",
       "text": "A reagent with cleansing properties."

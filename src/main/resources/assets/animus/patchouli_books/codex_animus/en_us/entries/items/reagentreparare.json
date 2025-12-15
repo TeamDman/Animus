@@ -5,7 +5,7 @@
   "sortnum": 15,
   "pages": [
     {
-      "type": "bloodmagic:crafting_soulforge",
+      "type": "animus:crafting_soulforge",
       "heading": "Reagent: Reparare",
       "recipe": "animus:soulforge/reagentreparare",
       "text": "A reagent with restorative essence."

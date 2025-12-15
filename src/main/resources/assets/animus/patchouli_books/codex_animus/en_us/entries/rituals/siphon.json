@@ -1,14 +1,14 @@
 {
   "name": "guide.animus.entry.ritual_siphon",
-  "icon": "bloodmagic:master_ritual_stone",
+  "icon": "bloodmagicnv:master_ritual_stone",
   "category": "animus:rituals",
   "sortnum": 24,
   "pages": [
     {
       "type": "patchouli:multiblock",
       "name": "Ritual of Siphon",
-      "multiblock_id": "bloodmagic:ritual_siphon",
-      "text": "Use a $(l:bloodmagic:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
+      "multiblock_id": "bloodmagicnv:ritual_siphon",
+      "text": "Use a $(l:bloodmagicnv:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
     },
     {
       "type": "patchouli:text",

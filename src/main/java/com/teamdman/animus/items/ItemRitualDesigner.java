@@ -408,13 +408,13 @@ public class ItemRitualDesigner extends Item {
 
         // Define the exact ritual stone block IDs
         Map<String, String> ritualStoneMap = Map.of(
-            "bloodmagic:blankritualstone", "EnumRuneType.BLANK",
-            "bloodmagic:waterritualstone", "EnumRuneType.WATER",
-            "bloodmagic:airritualstone", "EnumRuneType.AIR",
-            "bloodmagic:earthritualstone", "EnumRuneType.EARTH",
-            "bloodmagic:fireritualstone", "EnumRuneType.FIRE",
-            "bloodmagic:duskritualstone", "EnumRuneType.DUSK",
-            "bloodmagic:dawnritualstone", "EnumRuneType.DAWN"
+            "bloodmagicnv:blankritualstone", "EnumRuneType.BLANK",
+            "bloodmagicnv:waterritualstone", "EnumRuneType.WATER",
+            "bloodmagicnv:airritualstone", "EnumRuneType.AIR",
+            "bloodmagicnv:earthritualstone", "EnumRuneType.EARTH",
+            "bloodmagicnv:fireritualstone", "EnumRuneType.FIRE",
+            "bloodmagicnv:duskritualstone", "EnumRuneType.DUSK",
+            "bloodmagicnv:dawnritualstone", "EnumRuneType.DAWN"
         );
 
         // Find and map each ritual stone block

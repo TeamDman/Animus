@@ -36,7 +36,7 @@
     {
       "type": "patchouli:text",
       "title": "Requirements",
-      "text": "To use the Blood-Infused Spellbook:$(br2)$(li)$(mod)Iron's Spellbooks$() must be installed$(li)An active $(l:bloodmagic:altar/binding)Soul Network$()$(li)A Blood Altar with the appropriate orb tier$(br2)The spellbook's rarity and enchantment glint change based on its infusion tier, making it easy to see how powerful your tome has become."
+      "text": "To use the Blood-Infused Spellbook:$(br2)$(li)$(mod)Iron's Spellbooks$() must be installed$(li)An active $(l:bloodmagicnv:altar/binding)Soul Network$()$(li)A Blood Altar with the appropriate orb tier$(br2)The spellbook's rarity and enchantment glint change based on its infusion tier, making it easy to see how powerful your tome has become."
     }
   ]
 }

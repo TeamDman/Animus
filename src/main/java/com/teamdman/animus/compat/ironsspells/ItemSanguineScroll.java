@@ -160,7 +160,7 @@ public class ItemSanguineScroll extends Item {
         }
 
         // Consume LP (will damage player if insufficient)
-        network.syphonAndDamage(player, SoulTicket.item(stack, lpCost));
+        network.syphonAndDamage(player, SoulTicket.create(lpCost));
 
         // Cast spell (1.21.1 API: needs selection key parameter)
         try {

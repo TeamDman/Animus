@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagic:array",
+  "type": "bloodmagicnv:array",
   "addedinput": {
-    "item": "bloodmagic:reinforcedslate"
+    "item": "bloodmagicnv:reinforcedslate"
   },
   "baseinput": {
     "item": "animus:reagentleach"
@@ -9,5 +9,5 @@
   "output": {
     "item": "animus:sigil_leach"
   },
-  "texture": "bloodmagic:textures/models/alchemyarrays/mobsacrifice.png"
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/mobsacrifice.png"
 }

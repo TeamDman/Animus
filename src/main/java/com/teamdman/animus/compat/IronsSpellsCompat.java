@@ -10,6 +10,7 @@ import com.teamdman.animus.compat.ironsspells.ItemSanguineScroll;
 import com.teamdman.animus.compat.ironsspells.ItemSigilCrimsonWill;
 import com.teamdman.animus.compat.ironsspells.LivingArmorSpellHandler;
 import com.teamdman.animus.compat.ironsspells.RitualArcaneMastery;
+import com.teamdman.animus.compat.ironsspells.RitualIronHeart;
 import com.teamdman.animus.compat.ironsspells.SanguineScrollAltarHandler;
 import com.teamdman.animus.compat.ironsspells.SpellCastingHandler;
 import net.minecraft.world.item.Item;
@@ -17,6 +18,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.minecraft.core.registries.Registries;
+import wayoftime.bloodmagic.ritual.ImperfectRitual;
 import wayoftime.bloodmagic.ritual.Ritual;
 import wayoftime.bloodmagic.ritual.RitualRegistry;
 
@@ -43,12 +45,23 @@ public class IronsSpellsCompat implements ICompatModule {
     public static final DeferredRegister<Ritual> RITUALS =
         DeferredRegister.create(RitualRegistry.RITUAL_REGISTRY_KEY, Constants.Mod.MODID);
 
+    // DeferredRegister for Irons Spells compatibility imperfect rituals
+    public static final DeferredRegister<ImperfectRitual> IMPERFECT_RITUALS =
+        DeferredRegister.create(RitualRegistry.IMPERFECT_RITUAL_REGISTRY_KEY, Constants.Mod.MODID);
+
     // ===== Rituals =====
 
     // Ritual of Arcane Mastery - upgrades spell scrolls
     // Using lambda instead of method reference to defer class loading
     public static final DeferredHolder<Ritual, RitualArcaneMastery> ARCANE_MASTERY =
         RITUALS.register(Constants.Rituals.ARCANE_MASTERY, () -> new RitualArcaneMastery());
+
+    // ===== Imperfect Rituals =====
+
+    // Imperfect Ritual of the Iron Heart - grants Echoing Strikes effect
+    // Requires anvil on Imperfect Ritual Stone
+    public static final DeferredHolder<ImperfectRitual, RitualIronHeart> IRON_HEART =
+        IMPERFECT_RITUALS.register(Constants.Rituals.IRON_HEART, () -> new RitualIronHeart());
 
     // ===== Spellbooks =====
 
@@ -97,7 +110,8 @@ public class IronsSpellsCompat implements ICompatModule {
     public static void registerDeferred(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
         RITUALS.register(modEventBus);
-        Animus.LOGGER.info("Registered Irons Spells compatibility registries (items, rituals)");
+        IMPERFECT_RITUALS.register(modEventBus);
+        Animus.LOGGER.info("Registered Irons Spells compatibility registries (items, rituals, imperfect rituals)");
     }
 
     @Override

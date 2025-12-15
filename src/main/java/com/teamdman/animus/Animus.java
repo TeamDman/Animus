@@ -37,6 +37,9 @@ public class Animus {
         AnimusAttributes.ATTRIBUTES.register(modEventBus);
         AnimusDataComponents.DATA_COMPONENTS.register(modEventBus);
 
+        // Force class loading for rituals to ensure all registrations are queued
+        AnimusRituals.init();
+
         // Register rituals to Blood Magic's registry via API registry keys
         AnimusRituals.RITUALS.register(modEventBus);
         AnimusRituals.IMPERFECT_RITUALS.register(modEventBus);
@@ -66,10 +69,5 @@ public class Animus {
 
         // Note: Blood orb stats are now handled via DataMaps
         // See data/animus/data_maps/item/blood_orb_stats.json
-
-        event.enqueueWork(() -> {
-            // Deferred initialization tasks can go here
-            LOGGER.info("Animus deferred setup complete");
-        });
     }
 }

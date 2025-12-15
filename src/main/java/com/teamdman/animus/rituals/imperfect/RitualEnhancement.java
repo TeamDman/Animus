@@ -38,6 +38,7 @@ public class RitualEnhancement extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
+        // Server-side only - Blood Magic handles client check in performRitual
         if (level.isClientSide) {
             return false;
         }
@@ -45,9 +46,10 @@ public class RitualEnhancement extends ImperfectRitual {
         // Check if player is holding an item in mainhand
         ItemStack mainhandItem = player.getMainHandItem();
         if (mainhandItem.isEmpty()) {
+            // Send to chat (false) so it doesn't get overwritten by Blood Magic's action bar message
             player.displayClientMessage(
                 Component.translatable("ritual.animus.enhancement.no_item"),
-                true
+                false
             );
             return false;
         }
@@ -57,7 +59,7 @@ public class RitualEnhancement extends ImperfectRitual {
         if (enhanced != null && enhanced) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.enhancement.already_enhanced"),
-                true
+                false
             );
             return false;
         }
@@ -67,7 +69,7 @@ public class RitualEnhancement extends ImperfectRitual {
         if (enchantments == null || enchantments.isEmpty()) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.enhancement.no_enchantments"),
-                true
+                false
             );
             return false;
         }

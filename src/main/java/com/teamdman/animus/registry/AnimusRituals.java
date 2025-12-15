@@ -114,4 +114,14 @@ public class AnimusRituals {
             String name, Supplier<T> supplier) {
         return IMPERFECT_RITUALS.register(name, supplier);
     }
+
+    /**
+     * Force class loading to trigger static field initialization.
+     * Called during mod construction to ensure rituals are registered.
+     */
+    public static void init() {
+        // This method intentionally left empty.
+        // Simply calling this method forces the class to be loaded,
+        // which triggers all static field initializers (the DeferredHolder registrations).
+    }
 }

@@ -48,6 +48,11 @@ public class CompatHandler {
         if (ModList.get().isLoaded("ars_nouveau")) {
             registerArsNouveauDeferred(modEventBus);
         }
+
+        // Register Malum compat DeferredRegisters if the mod is present
+        if (ModList.get().isLoaded("malum")) {
+            registerMalumDeferred(modEventBus);
+        }
     }
 
     /**
@@ -72,6 +77,18 @@ public class CompatHandler {
      */
     private static void registerArsNouveauDeferred(IEventBus modEventBus) {
         ArsNouveauCompatLoader.registerDeferred(modEventBus);
+    }
+
+    /**
+     * Helper method that isolates the MalumCompat class reference.
+     * This method should ONLY be called after verifying malum is loaded.
+     *
+     * We delegate to MalumCompatLoader to avoid referencing MalumCompat
+     * directly in this class, which would cause class verification to fail when
+     * Malum isn't installed.
+     */
+    private static void registerMalumDeferred(IEventBus modEventBus) {
+        MalumCompatLoader.registerDeferred(modEventBus);
     }
 
     /**

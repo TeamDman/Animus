@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagic:array",
+  "type": "bloodmagicnv:array",
   "addedinput": {
-    "item": "bloodmagic:infusedslate"
+    "item": "bloodmagicnv:infusedslate"
   },
   "baseinput": {
     "item": "animus:reagentconsumption"
@@ -9,5 +9,5 @@
   "output": {
     "item": "animus:sigil_consumption"
   },
-  "texture": "bloodmagic:textures/models/alchemyarrays/voidsigil.png"
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/voidsigil.png"
 }

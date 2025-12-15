@@ -1,11 +1,11 @@
 {
-  "type": "bloodmagic:soulforge",
+  "type": "bloodmagicnv:soulforge",
   "drain": 100.0,
   "input0": {
     "item": "minecraft:shield"
   },
   "input1": {
-    "item": "bloodmagic:soulgempetty"
+    "item": "bloodmagicnv:soulgempetty"
   },
   "input2": {
     "item": "minecraft:diamond"

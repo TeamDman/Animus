@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:image",
-      "image": "bloodmagic:textures/gui/patchouli_book/crafting.png",
+      "image": "bloodmagicnv:textures/gui/patchouli_book/crafting.png",
       "x": 11,
       "y": 4,
       "u": 0,
@@ -58,7 +58,7 @@
     },
     {
       "type": "patchouli:item",
-      "item": "bloodmagic:soul_forge",
+      "item": "bloodmagicnv:hellfire_forge",
       "x": 84,
       "y": 27
     },

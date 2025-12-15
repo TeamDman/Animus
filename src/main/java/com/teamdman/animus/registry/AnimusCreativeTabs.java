@@ -28,6 +28,11 @@ public class AnimusCreativeTabs {
         "sanguine_scroll_ethereal"
     };
 
+    // Ars Nouveau compat item names - looked up from registry to avoid class loading issues
+    private static final String[] ARS_NOUVEAU_COMPAT_ITEMS = {
+        "arcane_rune"
+    };
+
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ANIMUS_TAB = CREATIVE_TABS.register("animus_tab",
         () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + Constants.Mod.MODID))
@@ -39,6 +44,17 @@ public class AnimusCreativeTabs {
                 // Add Iron's Spellbooks compat items if loaded (use registry lookup to avoid class loading issues)
                 if (ModList.get().isLoaded("irons_spellbooks")) {
                     for (String itemName : IRONS_SPELLS_COMPAT_ITEMS) {
+                        Item item = BuiltInRegistries.ITEM.get(
+                            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
+                        if (item != null && item != Items.AIR) {
+                            output.accept(new ItemStack(item));
+                        }
+                    }
+                }
+
+                // Add Ars Nouveau compat items if loaded (use registry lookup to avoid class loading issues)
+                if (ModList.get().isLoaded("ars_nouveau")) {
+                    for (String itemName : ARS_NOUVEAU_COMPAT_ITEMS) {
                         Item item = BuiltInRegistries.ITEM.get(
                             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
                         if (item != null && item != Items.AIR) {

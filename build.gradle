@@ -151,6 +151,9 @@ dependencies {
     runtimeOnly "curse.maven:malum-484064:${malum_cursemaven_id}"
 
     // Note: Botania not yet ported to 1.21.1 - compat remains disabled
+
+    // Jade - for in-game block/entity information HUD
+    runtimeOnly "curse.maven:jade-324717:${jade_cursemaven_id}"
 }
 
 tasks.named('processResources', ProcessResources).configure {

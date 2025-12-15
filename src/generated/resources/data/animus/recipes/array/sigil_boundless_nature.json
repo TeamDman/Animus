@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagic:array",
+  "type": "bloodmagicnv:array",
   "addedinput": {
-    "item": "bloodmagic:reinforcedslate"
+    "item": "bloodmagicnv:reinforcedslate"
   },
   "baseinput": {
     "item": "animus:reagentboundlessnature"
@@ -9,5 +9,5 @@
   "output": {
     "item": "animus:sigil_boundless_nature"
   },
-  "texture": "bloodmagic:textures/models/alchemyarrays/growthsigil.png"
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/growthsigil.png"
 }

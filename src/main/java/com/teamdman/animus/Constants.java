@@ -391,6 +391,12 @@ public class Constants {
         public static final String CLEAR_SKIES = "ritual_clear_skies";
         public static final String NEPTUNE_BLESSING = "ritual_neptune_blessing";
         public static final String WARDEN = "ritual_warden";
+
+        // Compat Imperfect Rituals
+        public static final String MAGI = "ritual_magi";                         // Ars Nouveau
+        public static final String IRON_HEART = "ritual_iron_heart";             // Iron's Spells
+        public static final String SOUL_STAINED_BLOOD = "ritual_soul_stained_blood"; // Malum
+        public static final String MANASTEEL_SOUL = "ritual_manasteel_soul";     // Botania (future)
     }
 
     public static class Sigils {

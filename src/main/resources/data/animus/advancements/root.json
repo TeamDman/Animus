@@ -13,9 +13,9 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "bloodmagic:textures/block/altar.png"
+    "background": "bloodmagicnv:textures/block/altar.png"
   },
-  "parent": "bloodmagic:main/self_sacrifice",
+  "parent": "bloodmagicnv:main/self_sacrifice",
   "criteria": {
     "has_diviner": {
       "trigger": "minecraft:inventory_changed",

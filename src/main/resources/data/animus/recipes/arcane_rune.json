@@ -11,13 +11,13 @@
       "tag": "forge:stone"
     },
     "B": {
-      "item": "bloodmagic:blankslate"
+      "item": "bloodmagicnv:blankslate"
     },
     "G": {
       "item": "ars_nouveau:source_gem"
     },
     "R": {
-      "item": "bloodmagic:blankrune"
+      "item": "bloodmagicnv:blankrune"
     }
   },
   "result": {

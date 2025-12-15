@@ -1,7 +1,7 @@
 {
   "name": "guide.animus.entry.living_armor_ars_nouveau",
   "category": "animus:compatibility",
-  "icon": "bloodmagic:living_helmet",
+  "icon": "bloodmagicnv:living_helmet",
   "flag": "mod:ars_nouveau",
   "pages": [
     {
@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "bloodmagic:living_helmet",
+      "item": "bloodmagicnv:living_helmet",
       "text": "$(blood)Source-Infused Armor$()$(br2)Cast Ars Nouveau spells while wearing Living Armor to gain experience. Your armor attunes to the flow of Source energy, growing stronger with each glyph you cast."
     },
     {

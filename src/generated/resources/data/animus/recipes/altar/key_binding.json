@@ -1,10 +1,10 @@
 {
-  "type": "bloodmagic:altar",
+  "type": "bloodmagicnv:altar",
   "altarSyphon": 1500,
   "consumptionRate": 5,
   "drainRate": 5,
   "input": {
-    "item": "bloodmagic:simplekey"
+    "item": "bloodmagicnv:simplekey"
   },
   "output": {
     "item": "animus:key_binding"

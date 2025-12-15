@@ -41,7 +41,7 @@
     {
       "type": "patchouli:text",
       "title": "Requirements",
-      "text": "To use Sanguine Scrolls:$(li)$(blood)Iron's Spellbooks must be installed$()$(li)Active $(l:bloodmagic:altar/binding)Soul Network$()$(li)Blood Altar for creation$(li)Slates from Blood Magic$(li)Iron's Spells scrolls to convert$(br2)Sanguine Scrolls respect spell cooldowns and cannot bypass casting restrictions."
+      "text": "To use Sanguine Scrolls:$(li)$(blood)Iron's Spellbooks must be installed$()$(li)Active $(l:bloodmagicnv:altar/binding)Soul Network$()$(li)Blood Altar for creation$(li)Slates from Blood Magic$(li)Iron's Spells scrolls to convert$(br2)Sanguine Scrolls respect spell cooldowns and cannot bypass casting restrictions."
     }
   ]
 }

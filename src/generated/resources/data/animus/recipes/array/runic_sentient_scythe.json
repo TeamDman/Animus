@@ -1,13 +1,13 @@
 {
-  "type": "bloodmagic:array",
+  "type": "bloodmagicnv:array",
   "addedinput": {
     "item": "malum:soul_stained_steel_ingot"
   },
   "baseinput": {
-    "item": "bloodmagic:soulscythe"
+    "item": "bloodmagicnv:soulscythe"
   },
   "output": {
     "item": "animus:runic_sentient_scythe"
   },
-  "texture": "bloodmagic:textures/models/alchemyarrays/airsigil.png"
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/airsigil.png"
 }

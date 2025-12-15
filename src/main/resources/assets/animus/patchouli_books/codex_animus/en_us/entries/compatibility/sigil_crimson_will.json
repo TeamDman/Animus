@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Activation States",
-      "text": "The sigil has two states:$(br2)$(bold)Active:$() (glowing red icon)$(br)$(li)Consumes resources per spell$(li)Boosts spell power & summon damage$(li)Shows dynamic power bonus in tooltip$(br2)$(bold)Inactive:$() (gray icon)$(br)$(li)No resource consumption$(li)No power boost$(li)Right-click to toggle$(br2)The sigil must be $(l:bloodmagic:altar/binding)bound$() to your Soul Network to activate."
+      "text": "The sigil has two states:$(br2)$(bold)Active:$() (glowing red icon)$(br)$(li)Consumes resources per spell$(li)Boosts spell power & summon damage$(li)Shows dynamic power bonus in tooltip$(br2)$(bold)Inactive:$() (gray icon)$(br)$(li)No resource consumption$(li)No power boost$(li)Right-click to toggle$(br2)The sigil must be $(l:bloodmagicnv:altar/binding)bound$() to your Soul Network to activate."
     },
     {
       "type": "patchouli:text",
@@ -36,7 +36,7 @@
     {
       "type": "patchouli:text",
       "title": "Requirements",
-      "text": "To use the Sigil of Crimson Will:$(br)$(li)$(blood)Iron's Spellbooks must be installed$()$(li)Active $(l:bloodmagic:altar/binding)Soul Network$()$(li)Sufficient LP for spell costs$(li)Optional: Demon will in Soul Network for scaling$(br2)The sigil applies attribute modifiers during casting, ensuring compatibility with other spell power modifiers."
+      "text": "To use the Sigil of Crimson Will:$(br)$(li)$(blood)Iron's Spellbooks must be installed$()$(li)Active $(l:bloodmagicnv:altar/binding)Soul Network$()$(li)Sufficient LP for spell costs$(li)Optional: Demon will in Soul Network for scaling$(br2)The sigil applies attribute modifiers during casting, ensuring compatibility with other spell power modifiers."
     }
   ]
 }

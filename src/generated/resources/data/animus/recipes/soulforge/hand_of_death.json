@@ -1,11 +1,11 @@
 {
-  "type": "bloodmagic:soulforge",
+  "type": "bloodmagicnv:soulforge",
   "drain": 1024.0,
   "input0": {
     "item": "animus:runic_sentient_scythe"
   },
   "input1": {
-    "item": "bloodmagic:demonslate"
+    "item": "bloodmagicnv:demonslate"
   },
   "input2": {
     "item": "minecraft:dragon_breath"

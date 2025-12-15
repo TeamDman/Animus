@@ -1,5 +1,5 @@
 {
-  "type": "bloodmagic:soulforge",
+  "type": "bloodmagicnv:soulforge",
   "input0": {
     "tag": "forge:stone"
   },
@@ -10,7 +10,7 @@
     "item": "minecraft:obsidian"
   },
   "input3": {
-    "item": "bloodmagic:blankslate"
+    "item": "bloodmagicnv:blankslate"
   },
   "output": {
     "item": "animus:willful_stone",

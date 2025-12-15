@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagic:array",
+  "type": "bloodmagicnv:array",
   "addedinput": {
-    "item": "bloodmagic:demonslate"
+    "item": "bloodmagicnv:demonslate"
   },
   "baseinput": {
     "item": "animus:reagentfreesoul"
@@ -9,5 +9,5 @@
   "output": {
     "item": "animus:sigil_free_soul"
   },
-  "texture": "bloodmagic:textures/models/alchemyarrays/teleportationarray.png"
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/teleportationarray.png"
 }

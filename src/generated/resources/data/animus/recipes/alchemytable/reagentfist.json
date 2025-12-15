@@ -1,5 +1,5 @@
 {
-  "type": "bloodmagic:alchemytable",
+  "type": "bloodmagicnv:alchemytable",
   "input": [
     {
       "item": "minecraft:rotten_flesh"

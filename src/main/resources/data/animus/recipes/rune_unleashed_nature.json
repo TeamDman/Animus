@@ -14,10 +14,10 @@
       "item": "botania:manasteel_ingot"
     },
     "R": {
-      "item": "bloodmagic:blankrune"
+      "item": "bloodmagicnv:blankrune"
     },
     "I": {
-      "item": "bloodmagic:infusedslate"
+      "item": "bloodmagicnv:infusedslate"
     }
   },
   "result": {

@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagic:array",
+  "type": "bloodmagicnv:array",
   "addedinput": {
-    "item": "bloodmagic:demonslate"
+    "item": "bloodmagicnv:demonslate"
   },
   "baseinput": {
     "item": "animus:reagentheavelywrath"
@@ -9,5 +9,5 @@
   "output": {
     "item": "animus:sigil_heavenly_wrath"
   },
-  "texture": "bloodmagic:textures/models/alchemyarrays/bindinglightningarray.png"
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/bindinglightningarray.png"
 }

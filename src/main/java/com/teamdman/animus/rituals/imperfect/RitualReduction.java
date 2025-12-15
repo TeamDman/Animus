@@ -45,9 +45,10 @@ public class RitualReduction extends ImperfectRitual {
         // Check if player is holding an item in mainhand
         ItemStack mainhandItem = player.getMainHandItem();
         if (mainhandItem.isEmpty()) {
+            // Send to chat (false) so it doesn't get overwritten by Blood Magic's action bar message
             player.displayClientMessage(
                 Component.translatable("ritual.animus.reduction.no_item"),
-                true
+                false
             );
             return false;
         }
@@ -55,9 +56,10 @@ public class RitualReduction extends ImperfectRitual {
         // Get enchantments using 1.21 API
         ItemEnchantments enchantments = mainhandItem.get(DataComponents.ENCHANTMENTS);
         if (enchantments == null || enchantments.isEmpty()) {
+            // Send to chat (false) so it doesn't get overwritten by Blood Magic's action bar message
             player.displayClientMessage(
                 Component.translatable("ritual.animus.reduction.no_enchantments"),
-                true
+                false
             );
             return false;
         }

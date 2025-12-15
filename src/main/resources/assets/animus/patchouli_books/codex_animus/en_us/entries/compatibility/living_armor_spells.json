@@ -1,7 +1,7 @@
 {
   "name": "guide.animus.entry.living_armor_spells",
   "category": "animus:compatibility",
-  "icon": "bloodmagic:living_helmet",
+  "icon": "bloodmagicnv:living_helmet",
   "flag": "mod:irons_spellbooks",
   "pages": [
     {
@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "bloodmagic:living_helmet",
+      "item": "bloodmagicnv:living_helmet",
       "text": "$(blood)Spellcaster's Armor$()$(br2)Wear Living Armor while casting spells to gain experience. The armor learns from your magical prowess and unlocks the Arcane Channeling upgrade tree, specifically designed for mages."
     },
     {

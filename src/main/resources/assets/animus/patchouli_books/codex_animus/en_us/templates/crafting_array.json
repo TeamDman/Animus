@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:image",
-      "image": "bloodmagic:textures/gui/patchouli_book/crafting.png",
+      "image": "bloodmagicnv:textures/gui/patchouli_book/crafting.png",
       "x": 11,
       "y": 4,
       "u": 0,
@@ -40,7 +40,7 @@
     },
     {
       "type": "patchouli:item",
-      "item": "bloodmagic:arcane_ashes",
+      "item": "bloodmagicnv:arcane_ashes",
       "x": 85,
       "y": 40
     },

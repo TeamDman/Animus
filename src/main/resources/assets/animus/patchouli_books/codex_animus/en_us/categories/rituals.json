@@ -1,6 +1,6 @@
 {
   "name": "guide.animus.category.rituals",
   "description": "Ancient ceremonies that harness the power of blood and will. From summoning creatures to corrupting nature itself.",
-  "icon": "bloodmagic:master_ritual_stone",
+  "icon": "bloodmagicnv:master_ritual_stone",
   "sortnum": 2
 }
