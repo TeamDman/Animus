@@ -1,13 +1,14 @@
 {
-  "type": "bloodmagicnv:altar",
-  "altarSyphon": 1500,
-  "consumptionRate": 5,
-  "drainRate": 5,
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "bloodNeeded": 1500,
+  "craftSpeed": 5,
+  "drainSpeed": 5,
   "input": {
     "item": "bloodmagicnv:simplekey"
   },
+  "minTier": 1,
   "output": {
-    "item": "animus:key_binding"
-  },
-  "upgradeLevel": 1
+    "count": 1,
+    "id": "animus:key_binding"
+  }
 }

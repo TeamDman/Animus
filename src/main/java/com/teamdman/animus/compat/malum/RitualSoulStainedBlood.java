@@ -19,10 +19,10 @@ import wayoftime.bloodmagic.ritual.ImperfectRitual;
  * Imperfect Ritual of the Soul-Stained Blood
  * Requires: Block of Hallowed Gold on top of Imperfect Ritual Stone (Malum)
  * Cost: 3000 LP
- * Effect: Grants Sacrificial Empowerment III for 15 minutes
+ * Effect: Grants Stone Ward for 15 minutes
  *
  * Lore: The sacred gold, hallowed by spirits, resonates with the blood magic
- * ritual stone, empowering the caster with the strength of sacrificed souls.
+ * ritual stone, surrounding the caster in an oaken carapace that increases defenses.
  */
 public class RitualSoulStainedBlood extends ImperfectRitual {
 
@@ -31,7 +31,7 @@ public class RitualSoulStainedBlood extends ImperfectRitual {
 
     // Resource locations for Malum blocks and effects
     private static final ResourceLocation HALLOWED_GOLD_BLOCK = ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold");
-    private static final ResourceLocation SACRIFICIAL_EMPOWERMENT = ResourceLocation.fromNamespaceAndPath("malum", "sacrificial_empowerment");
+    private static final ResourceLocation STONE_WARD = ResourceLocation.fromNamespaceAndPath("malum", "stone_ward");
 
     public RitualSoulStainedBlood() {
         super(
@@ -54,8 +54,8 @@ public class RitualSoulStainedBlood extends ImperfectRitual {
             return false;
         }
 
-        // Get the Malum Sacrificial Empowerment effect by registry lookup
-        Holder<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.getHolder(SACRIFICIAL_EMPOWERMENT)
+        // Get the Malum Stone Ward effect by registry lookup
+        Holder<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.getHolder(STONE_WARD)
             .orElse(null);
 
         if (effect == null) {
@@ -67,11 +67,11 @@ public class RitualSoulStainedBlood extends ImperfectRitual {
             return false;
         }
 
-        // Grant Sacrificial Empowerment III for 15 minutes
+        // Grant Stone Ward for 15 minutes
         player.addEffect(new MobEffectInstance(
             effect,
             EFFECT_DURATION,
-            2,  // Amplifier 2 = level 3
+            0,  // Amplifier 0 = level 1
             false,  // Not ambient
             true,   // Show particles
             true    // Show icon

@@ -5,15 +5,16 @@
       "modid": "irons_spellbooks"
     }
   ],
-  "type": "bloodmagicnv:altar",
-  "altarSyphon": 10000,
-  "consumptionRate": 20,
-  "drainRate": 10,
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "bloodNeeded": 10000,
+  "craftSpeed": 20,
+  "drainSpeed": 10,
   "input": {
     "item": "irons_spellbooks:leather_spellbook"
   },
+  "minTier": 3,
   "output": {
-    "item": "animus:blood_infused_spellbook"
-  },
-  "upgradeLevel": 3
+    "count": 1,
+    "id": "animus:blood_infused_spellbook"
+  }
 }

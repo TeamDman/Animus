@@ -1,13 +1,14 @@
 {
-  "type": "bloodmagicnv:altar",
-  "altarSyphon": 80000,
-  "consumptionRate": 10,
-  "drainRate": 10,
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "bloodNeeded": 500000,
+  "craftSpeed": 50,
+  "drainSpeed": 100,
   "input": {
     "item": "animus:crystallized_demon_will_block"
   },
+  "minTier": 5,
   "output": {
-    "item": "animus:blood_orb_transcendent"
-  },
-  "upgradeLevel": 6
+    "count": 1,
+    "id": "animus:blood_orb_transcendent"
+  }
 }

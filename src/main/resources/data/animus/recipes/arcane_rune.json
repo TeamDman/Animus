@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "ars_nouveau"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
@@ -8,7 +14,7 @@
   ],
   "key": {
     "S": {
-      "tag": "forge:stone"
+      "tag": "c:stones"
     },
     "B": {
       "item": "bloodmagicnv:blankslate"
@@ -21,7 +27,7 @@
     }
   },
   "result": {
-    "item": "animus:arcane_rune",
+    "id": "animus:arcane_rune",
     "count": 1
   }
 }

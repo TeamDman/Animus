@@ -1,13 +1,14 @@
 {
-  "type": "bloodmagicnv:altar",
-  "altarSyphon": 5000,
-  "consumptionRate": 5,
-  "drainRate": 5,
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "bloodNeeded": 5000,
+  "craftSpeed": 5,
+  "drainSpeed": 5,
   "input": {
     "item": "minecraft:clay_ball"
   },
+  "minTier": 2,
   "output": {
-    "item": "animus:activation_crystal_fragile"
-  },
-  "upgradeLevel": 2
+    "count": 1,
+    "id": "animus:activation_crystal_fragile"
+  }
 }

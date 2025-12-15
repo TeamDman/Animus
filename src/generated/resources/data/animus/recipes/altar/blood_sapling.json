@@ -1,13 +1,14 @@
 {
-  "type": "bloodmagicnv:altar",
-  "altarSyphon": 5000,
-  "consumptionRate": 5,
-  "drainRate": 5,
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "bloodNeeded": 5000,
+  "craftSpeed": 5,
+  "drainSpeed": 5,
   "input": {
     "tag": "minecraft:saplings"
   },
+  "minTier": 0,
   "output": {
-    "item": "animus:blood_sapling"
-  },
-  "upgradeLevel": 0
+    "count": 1,
+    "id": "animus:blood_sapling"
+  }
 }

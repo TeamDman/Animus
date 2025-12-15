@@ -1,13 +1,14 @@
 {
-  "type": "bloodmagicnv:altar",
-  "altarSyphon": 2000,
-  "consumptionRate": 5,
-  "drainRate": 1,
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "bloodNeeded": 2000,
+  "craftSpeed": 5,
+  "drainSpeed": 1,
   "input": {
     "item": "botania:endoflame"
   },
+  "minTier": 2,
   "output": {
-    "item": "animus:diabolical_fungi"
-  },
-  "upgradeLevel": 2
+    "count": 1,
+    "id": "animus:diabolical_fungi"
+  }
 }
