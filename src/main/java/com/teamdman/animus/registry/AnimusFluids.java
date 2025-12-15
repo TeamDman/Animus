@@ -8,17 +8,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-
-import java.util.function.Consumer;
 
 public class AnimusFluids {
     public static final DeferredRegister<FluidType> FLUID_TYPES =
@@ -40,19 +37,8 @@ public class AnimusFluids {
             .adjacentPathType(null)
             .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
             .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
-        ) {
-            @Override
-            public String getDescriptionId() {
-                return "fluid.animus.antilife";
-            }
-
-            @Override
-            public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
-                if (FMLEnvironment.dist == Dist.CLIENT) {
-                    consumer.accept(AntiLifeFluidClientExtension.INSTANCE);
-                }
-            }
-        }
+            .descriptionId("fluid.animus.antilife")
+        )
     );
 
     // Living Terra Fluid Type
@@ -68,19 +54,8 @@ public class AnimusFluids {
             .adjacentPathType(null)
             .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
             .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
-        ) {
-            @Override
-            public String getDescriptionId() {
-                return "fluid.animus.living_terra";
-            }
-
-            @Override
-            public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
-                if (FMLEnvironment.dist == Dist.CLIENT) {
-                    consumer.accept(LivingTerraFluidClientExtension.INSTANCE);
-                }
-            }
-        }
+            .descriptionId("fluid.animus.living_terra")
+        )
     );
 
     // AntiLife Fluids
@@ -121,4 +96,20 @@ public class AnimusFluids {
     )
         .block(() -> (LiquidBlock) AnimusBlocks.BLOCK_FLUID_LIVING_TERRA.get())
         .bucket(() -> AnimusItems.LIVING_TERRA_BUCKET.get());
+
+    /**
+     * Register client extensions for fluid rendering.
+     * This should be called from the MOD event bus.
+     */
+    public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerFluidType(AntiLifeFluidClientExtension.INSTANCE, ANTILIFE_FLUID_TYPE);
+        event.registerFluidType(LivingTerraFluidClientExtension.INSTANCE, LIVING_TERRA_FLUID_TYPE);
+    }
+
+    /**
+     * Register the client extensions listener on the mod event bus.
+     */
+    public static void registerClientExtensionsListener(IEventBus modBus) {
+        modBus.addListener(AnimusFluids::registerClientExtensions);
+    }
 }

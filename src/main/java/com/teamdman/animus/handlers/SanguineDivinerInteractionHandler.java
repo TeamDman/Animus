@@ -1,5 +1,6 @@
 package com.teamdman.animus.handlers;
 
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -13,7 +14,7 @@ import wayoftime.bloodmagic.ritual.IMasterRitualStone;
 /**
  * Prevents the Sanguine Diviner from being placed into Blood Altars or interfering with Ritual Stones
  */
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Constants.Mod.MODID)
 public class SanguineDivinerInteractionHandler {
 
     @SubscribeEvent

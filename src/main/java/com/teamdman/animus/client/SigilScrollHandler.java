@@ -1,7 +1,7 @@
 package com.teamdman.animus.client;
 
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.sigils.ItemSigilEquivalency;
-import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +14,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 /**
  * Client-side handler for mouse scroll events on sigils
  */
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class SigilScrollHandler {
 
     @SubscribeEvent

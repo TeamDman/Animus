@@ -28,6 +28,7 @@ public class Animus {
         AnimusEntityTypes.ENTITY_TYPES.register(modEventBus);
         AnimusFluids.FLUID_TYPES.register(modEventBus);
         AnimusFluids.FLUIDS.register(modEventBus);
+        AnimusFluids.registerClientExtensionsListener(modEventBus);
         AnimusMobEffects.MOB_EFFECTS.register(modEventBus);
         AnimusSounds.SOUNDS.register(modEventBus);
         AnimusCreativeTabs.CREATIVE_TABS.register(modEventBus);
