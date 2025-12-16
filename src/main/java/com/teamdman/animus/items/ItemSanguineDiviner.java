@@ -240,7 +240,7 @@ public class ItemSanguineDiviner extends Item {
                 Component.translatable(Constants.Localizations.Text.DIVINER_ALTAR_INFO), false
             );
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.DIVINER_BLOOD_INFO, currentBlood, capacity), false
+                Component.translatable(Constants.Localizations.Text.DIVINER_ESSENCE_INFO, currentBlood, capacity), false
             );
 
             // Show tier information (display as 1-indexed to match Blood Magic convention)

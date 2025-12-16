@@ -287,7 +287,7 @@
   "text.component.animus.spear.no_lp_throw": "Not enough LP to throw!",
   "text.component.animus.spear.no_lp_attack": "Not enough LP to attack!",
   "text.component.animus.diviner.altar_info": "§6=== Blood Altar Info ===",
-  "text.component.animus.diviner.blood_info": "§4Blood: §f%d / %d LP",
+  "text.component.animus.diviner.essence_info": "§cLife Essence: §f%d / %d",
   "text.component.animus.diviner.tier_info": "§cTier: §f%d",
   "text.component.animus.temporal.no_tile": "No block entity at target location",
   "text.component.animus.temporal.disallowed": "This block cannot be accelerated",

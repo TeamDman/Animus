@@ -104,7 +104,7 @@ public class Constants {
 
             // Sanguine Diviner
             public static final String DIVINER_ALTAR_INFO = "text.component.animus.diviner.altar_info";
-            public static final String DIVINER_BLOOD_INFO = "text.component.animus.diviner.blood_info";
+            public static final String DIVINER_ESSENCE_INFO = "text.component.animus.diviner.essence_info";
             public static final String DIVINER_TIER_INFO = "text.component.animus.diviner.tier_info";
 
             // Temporal Dominance Sigil
