@@ -171,10 +171,11 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
                 2, 5000, 5, 5)
             .build(consumer, loc("altar/activation_crystal_fragile"));
 
+        // Transcendent Blood Orb - tier 6 altar (0-indexed = 5)
         BloodAltarRecipeBuilder.altar(
                 Ingredient.of(AnimusItems.BLOCK_CRYSTALLIZED_DEMON_WILL.get()),
                 new ItemStack(AnimusItems.BLOOD_ORB_TRANSCENDENT.get()),
-                6, 80000, 10, 10)
+                5, 80000, 10, 10)
             .build(consumer, loc("altar/blood_orb_transcendent"));
 
         BloodAltarRecipeBuilder.altar(

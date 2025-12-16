@@ -3,6 +3,7 @@ package com.teamdman.animus.compat.ironsspells;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import io.redspace.ironsspellbooks.api.item.ISpellbook;
+import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
 import io.redspace.ironsspellbooks.api.spells.SpellRarity;
 import io.redspace.ironsspellbooks.capabilities.magic.SpellContainer;
 import io.redspace.ironsspellbooks.item.SpellBook;
@@ -58,21 +59,7 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
      * Get max spell slots based on infusion tier
      */
     public static int getMaxSpellSlots(ItemStack stack) {
-        int tier = getInfusionTier(stack);
-
-        // Base slots from parent class would be 5 for COMMON
-        int baseSlots = 5;
-
-        // Tier 1-3: +1/+2/+3 slots
-        if (tier >= 1 && tier <= 3) {
-            return baseSlots + tier;
-        }
-        // Tier 4+: +3 slots (same as tier 3)
-        else if (tier >= 4) {
-            return baseSlots + 3;
-        }
-
-        return baseSlots;
+        return calculateSlots(getInfusionTier(stack));
     }
 
     /**
@@ -109,9 +96,46 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
 
     /**
      * Set the infusion tier of this spellbook
+     * Also updates the SpellContainer's max spell count to match the new tier
      */
     public static void setInfusionTier(ItemStack stack, int tier) {
-        stack.getOrCreateTag().putInt(INFUSION_TIER_KEY, Math.max(0, Math.min(6, tier)));
+        tier = Math.max(0, Math.min(6, tier));
+        stack.getOrCreateTag().putInt(INFUSION_TIER_KEY, tier);
+
+        // Update the SpellContainer's max spell count to match the new tier
+        updateSpellContainerSlots(stack, tier);
+    }
+
+    /**
+     * Update the SpellContainer's maxSpellCount to match the infusion tier
+     */
+    public static void updateSpellContainerSlots(ItemStack stack, int tier) {
+        int newSlotCount = calculateSlots(tier);
+
+        // Get or create the spell container and update its max count
+        ISpellContainer container = ISpellContainer.getOrCreate(stack);
+        if (container.getMaxSpellCount() != newSlotCount) {
+            container.setMaxSpellCount(newSlotCount);
+            container.save(stack);
+        }
+    }
+
+    /**
+     * Calculate the number of spell slots for a given tier
+     */
+    private static int calculateSlots(int tier) {
+        int baseSlots = 5;
+
+        // Tier 1-3: +1/+2/+3 slots
+        if (tier >= 1 && tier <= 3) {
+            return baseSlots + tier;
+        }
+        // Tier 4+: +3 slots (same as tier 3)
+        else if (tier >= 4) {
+            return baseSlots + 3;
+        }
+
+        return baseSlots;
     }
 
     /**

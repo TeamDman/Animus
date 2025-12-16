@@ -20,7 +20,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
@@ -85,18 +84,18 @@ public class RitualArcaneMastery extends Ritual {
             return;
         }
 
-        // Search for chests in range
+        // Search for containers in range (chests, barrels, etc.)
         for (BlockPos pos : BlockPos.betweenClosed(
             masterPos.offset(-SEARCH_RANGE, -SEARCH_RANGE, -SEARCH_RANGE),
             masterPos.offset(SEARCH_RANGE, SEARCH_RANGE, SEARCH_RANGE)
         )) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (!(be instanceof ChestBlockEntity chest)) {
+            if (!(be instanceof Container container)) {
                 continue;
             }
 
-            // Check chest for spell scrolls
-            if (processChest(chest, owner, network, serverLevel, masterPos)) {
+            // Check container for spell scrolls
+            if (processChest(container, owner, network, serverLevel, masterPos)) {
                 // Successfully processed a scroll, stop for this tick
                 return;
             }
@@ -120,16 +119,25 @@ public class RitualArcaneMastery extends Ritual {
             }
 
             // Found a scroll, try to process it using ISpellContainer
-            SpellData spellData = ISpellContainer.get(stack).getSpellAtIndex(0);
+            ISpellContainer container = ISpellContainer.get(stack);
+            if (container == null || container.isEmpty()) {
+                continue;
+            }
+
+            SpellData spellData = container.getSpellAtIndex(0);
+            if (spellData == null) {
+                continue;
+            }
+
             AbstractSpell spell = spellData.getSpell();
+            if (spell == null) {
+                continue;
+            }
+
             int scrollLevel = spellData.getLevel();
             String spellId = spell.getSpellId();
 
             if (spellId == null || spellId.isEmpty()) {
-                continue;
-            }
-
-            if (spell == null) {
                 continue;
             }
 
@@ -143,9 +151,9 @@ public class RitualArcaneMastery extends Ritual {
                 continue;
             }
 
-            // Calculate LP cost
+            // Calculate LP cost (minimum of baseCost, scales with current scroll level)
             int baseCost = getLPCostForRarity(spell.getRarity(targetLevel));
-            int totalCost = baseCost * scrollLevel; // Cost scales with current scroll level
+            int totalCost = Math.max(baseCost, baseCost * scrollLevel); // Cost scales with current scroll level, minimum is baseCost
 
             // Check if player has enough LP
             if (network.getCurrentEssence() < totalCost) {

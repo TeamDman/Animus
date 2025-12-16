@@ -62,9 +62,16 @@ public class RitualSol extends Ritual {
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
+        int currentEssence = network.getCurrentEssence();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {
+            return;
+        }
+
+        // Check if player has enough LP
+        if (currentEssence < getRefreshCost()) {
+            network.causeNausea();
             return;
         }
 
@@ -201,7 +208,7 @@ public class RitualSol extends Ritual {
     private BlockPos findDarkSpot(Level level, BlockPos masterPos) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
-        int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
+        int maxChecksPerTick = 4096; // Checks per tick - tested with no noticeable performance impact
         int checksThisTick = 0;
         int horizontalRadius = AnimusConfig.rituals.solHorizontalRange.get();
         int configVerticalRange = AnimusConfig.rituals.solVerticalRange.get();
@@ -293,9 +300,9 @@ public class RitualSol extends Ritual {
      */
     private static class SearchState {
         int currentRadius = 0; // Start from center (at master ritual stone)
-        int currentX = 0; // X position within current radius ring
-        int currentZ = 0; // Z position within current radius ring
-        int currentY = 0; // Vertical position (0 = ritual stone level, searches downward)
+        int currentX = Integer.MIN_VALUE; // X position - MIN_VALUE means start fresh (no skipping)
+        int currentZ = Integer.MIN_VALUE; // Z position - MIN_VALUE means start fresh (no skipping)
+        int currentY = Integer.MAX_VALUE; // Y position - MAX_VALUE means start fresh (no skipping, since y is checked differently)
     }
 
     @Override

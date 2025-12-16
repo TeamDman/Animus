@@ -159,7 +159,7 @@ public class RitualLuna extends Ritual {
     private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
-        int maxChecksPerTick = 512; // Limit checks per tick to avoid lag
+        int maxChecksPerTick = 4096; // Checks per tick - tested with no noticeable performance impact
         int checksThisTick = 0;
         int horizontalRadius = AnimusConfig.rituals.lunaHorizontalRange.get();
         int configVerticalRange = AnimusConfig.rituals.lunaVerticalRange.get();
@@ -254,9 +254,9 @@ public class RitualLuna extends Ritual {
      */
     private static class SearchState {
         int currentDistance = 0; // Current Manhattan distance being searched
-        int currentX = -1; // X offset from start position (starts at -1 so first increment goes to 0)
-        int currentZ = -1; // Z offset from start position
-        int currentY = 0; // Y offset from start position (0 = start level, searches downward)
+        int currentX = Integer.MIN_VALUE; // X offset - MIN_VALUE means start fresh (no skipping)
+        int currentZ = Integer.MIN_VALUE; // Z offset - MIN_VALUE means start fresh (no skipping)
+        int currentY = Integer.MAX_VALUE; // Y offset - MAX_VALUE means start fresh (no skipping, since y checks y > state)
     }
 
     @Override

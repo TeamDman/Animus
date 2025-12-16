@@ -1,10 +1,10 @@
 {
-  "type": "bloodmagic:alchemy_array",
-  "input": {
-    "item": "animus:reagentcrimsonwill"
-  },
-  "addedInput": {
+  "type": "bloodmagic:array",
+  "addedinput": {
     "item": "bloodmagic:reinforcedslate"
+  },
+  "baseinput": {
+    "item": "animus:reagentcrimsonwill"
   },
   "output": {
     "item": "animus:sigil_crimson_will"
