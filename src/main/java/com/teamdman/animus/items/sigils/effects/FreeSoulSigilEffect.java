@@ -1,94 +1,69 @@
-package com.teamdman.animus.items.sigils;
+package com.teamdman.animus.items.sigils.effects;
 
+import com.mojang.serialization.MapCodec;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import wayoftime.bloodmagic.api.sigil.ISigilEffect;
+import wayoftime.bloodmagic.common.datacomponent.Binding;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
 import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
- * Sigil of the Free Soul - Grants temporary spectator mode and prevents death
+ * Sigil of the Free Soul - Grants temporary spectator mode and prevents death.
  * <p>
  * Features:
  * - Right-click to manually enter spectator mode for configurable duration (default: 10 seconds)
- * - Costs configurable LP on use (default: 5000 LP)
+ * - LP cost is handled in this effect (not delegated to sigil_type JSON due to special behavior)
  * - Automatically activates on death (like totem of undying) if player has enough LP
  * - Cannot trigger death prevention again for configurable cooldown (default: 60 seconds)
- * - Must be bound to use
- * - Teleports player back to original position 10 ticks before spectator mode ends (prevents wall exploits)
- * - Heals player 10 health (5 hearts) ONLY when death prevention is triggered (not on manual use)
+ * - Teleports player back to original position before spectator mode ends
+ * - Heals player 10 health ONLY when death prevention is triggered
  * <p>
  * Death prevention hooked up in AnimusEventHandler.onLivingDeath()
  * Spectator mode timer hooked up in AnimusEventHandler.onPlayerTick()
  */
-public class ItemSigilFreeSoul extends AnimusSigilBase {
+public record FreeSoulSigilEffect() implements ISigilEffect {
+    public static final MapCodec<FreeSoulSigilEffect> CODEC = MapCodec.unit(FreeSoulSigilEffect::new);
 
     // Track players currently in spectator mode - map of player UUID to exit time
     private static final Map<UUID, SpectatorState> activeSpectators = new HashMap<>();
 
-    private static class SpectatorState {
-        final long exitTick;
-        final GameType previousGameMode;
-        final Vec3 originalPosition;
-        final boolean fromDeath;
-        boolean hasTeleportedBack = false;
-
-        SpectatorState(long exitTick, GameType previousGameMode, Vec3 originalPosition, boolean fromDeath) {
-            this.exitTick = exitTick;
-            this.previousGameMode = previousGameMode;
-            this.originalPosition = originalPosition;
-            this.fromDeath = fromDeath;
-        }
-    }
-
-    public ItemSigilFreeSoul() {
-        super(Constants.Sigils.FREE_SOUL, 0); // LP cost handled in activation
-    }
-
-    /**
-     * Manual activation - enter spectator mode
-     */
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
+    public MapCodec<? extends ISigilEffect> codec() {
+        return CODEC;
+    }
 
+    @Override
+    public boolean useOnAir(Level level, Player player, ItemStack stack) {
         if (level.isClientSide) {
-            return InteractionResultHolder.pass(stack);
-        }
-
-        // Check binding
-        var binding = getBinding(stack);
-        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
-            return InteractionResultHolder.fail(stack);
+            return false;
         }
 
         // Check if player is already in spectator mode
         if (player instanceof ServerPlayer serverPlayer) {
             if (serverPlayer.gameMode.getGameModeForPlayer() == GameType.SPECTATOR) {
                 player.displayClientMessage(
-                    Component.translatable(Constants.Localizations.Text.FREE_SOUL_ALREADY_SPECTATOR)
-                        .withStyle(ChatFormatting.RED),
-                    true
+                        Component.translatable(Constants.Localizations.Text.FREE_SOUL_ALREADY_SPECTATOR)
+                                .withStyle(ChatFormatting.RED),
+                        true
                 );
-                return InteractionResultHolder.fail(stack);
+                return false;
             }
 
             // Get LP cost from config
@@ -102,48 +77,30 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             if (!syphonResult.success()) {
                 // Not enough LP
                 player.displayClientMessage(
-                    Component.translatable(Constants.Localizations.Text.FREE_SOUL_NO_LP)
-                        .withStyle(ChatFormatting.RED),
-                    true
+                        Component.translatable(Constants.Localizations.Text.FREE_SOUL_NO_LP)
+                                .withStyle(ChatFormatting.RED),
+                        true
                 );
-                return InteractionResultHolder.fail(stack);
+                return false;
             }
 
             // Activate spectator mode
             activateSpectatorMode(serverPlayer, (ServerLevel) level, false);
 
-            return InteractionResultHolder.consume(stack);
+            // Return false to skip LP cost from sigil_type (we handle it ourselves)
+            return false;
         }
 
-        return InteractionResultHolder.pass(stack);
+        return false;
     }
 
     /**
-     * Try to prevent death by activating spectator mode
-     * Returns true if death was prevented, false otherwise
+     * Try to prevent death by activating spectator mode.
+     * Returns true if death was prevented, false otherwise.
+     * Called from AnimusEventHandler.onLivingDeath()
      */
-    public static boolean tryPreventDeath(Player player, DamageSource source) {
+    public static boolean tryPreventDeath(Player player, DamageSource source, ItemStack freeSoulStack) {
         if (!(player instanceof ServerPlayer serverPlayer)) {
-            return false;
-        }
-
-        // Find Free Soul sigil in inventory
-        ItemStack freeSoulStack = null;
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() instanceof ItemSigilFreeSoul) {
-                freeSoulStack = stack;
-                break;
-            }
-        }
-
-        if (freeSoulStack == null) {
-            return false;
-        }
-
-        // Check if sigil is bound to player
-        ItemSigilFreeSoul sigil = (ItemSigilFreeSoul) freeSoulStack.getItem();
-        var binding = sigil.getBinding(freeSoulStack);
-        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return false;
         }
 
@@ -158,9 +115,9 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             // Still on cooldown
             long remainingSeconds = (cooldownMillis - (currentTime - lastTrigger)) / 1000;
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.FREE_SOUL_ON_COOLDOWN, remainingSeconds)
-                    .withStyle(ChatFormatting.RED),
-                true
+                    Component.translatable(Constants.Localizations.Text.FREE_SOUL_ON_COOLDOWN, remainingSeconds)
+                            .withStyle(ChatFormatting.RED),
+                    true
             );
             return false;
         }
@@ -194,16 +151,16 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
 
         // Display message
         player.displayClientMessage(
-            Component.translatable(Constants.Localizations.Text.FREE_SOUL_SAVED)
-                .withStyle(ChatFormatting.GOLD),
-            true
+                Component.translatable(Constants.Localizations.Text.FREE_SOUL_SAVED)
+                        .withStyle(ChatFormatting.GOLD),
+                true
         );
 
         return true;
     }
 
     /**
-     * Activate spectator mode for the player
+     * Activate spectator mode for the player.
      */
     private static void activateSpectatorMode(ServerPlayer player, ServerLevel level, boolean fromDeath) {
         // Store previous game mode and position
@@ -212,7 +169,7 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
 
         // Calculate exit time
         int durationSeconds = AnimusConfig.sigils.freeSoulDuration.get();
-        long exitTick = level.getServer().getTickCount() + (durationSeconds * 20); // Convert seconds to ticks
+        long exitTick = level.getServer().getTickCount() + (durationSeconds * 20L); // Convert seconds to ticks
 
         // Store spectator state (including original position and whether from death)
         activeSpectators.put(player.getUUID(), new SpectatorState(exitTick, previousGameMode, originalPosition, fromDeath));
@@ -223,15 +180,15 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
         // Display message
         if (!fromDeath) {
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.FREE_SOUL_ACTIVATED, durationSeconds)
-                    .withStyle(ChatFormatting.AQUA),
-                true
+                    Component.translatable(Constants.Localizations.Text.FREE_SOUL_ACTIVATED, durationSeconds)
+                            .withStyle(ChatFormatting.AQUA),
+                    true
             );
         }
     }
 
     /**
-     * Process active spectators - should be called from player tick event
+     * Process active spectators - should be called from player tick event.
      */
     public static void tickActiveSpectators(ServerPlayer player, ServerLevel level) {
         UUID playerId = player.getUUID();
@@ -247,16 +204,16 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
         // This prevents wall teleportation exploits while still allowing scouting
         if (!state.hasTeleportedBack && currentTick >= state.exitTick - 10) {
             player.teleportTo(
-                state.originalPosition.x,
-                state.originalPosition.y,
-                state.originalPosition.z
+                    state.originalPosition.x,
+                    state.originalPosition.y,
+                    state.originalPosition.z
             );
             state.hasTeleportedBack = true;
 
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.FREE_SOUL_RETURNING)
-                    .withStyle(ChatFormatting.GOLD),
-                true
+                    Component.translatable(Constants.Localizations.Text.FREE_SOUL_RETURNING)
+                            .withStyle(ChatFormatting.GOLD),
+                    true
             );
         }
 
@@ -274,15 +231,15 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             activeSpectators.remove(playerId);
 
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.FREE_SOUL_EXPIRED)
-                    .withStyle(ChatFormatting.YELLOW),
-                true
+                    Component.translatable(Constants.Localizations.Text.FREE_SOUL_EXPIRED)
+                            .withStyle(ChatFormatting.YELLOW),
+                    true
             );
         }
     }
 
     /**
-     * Clean up when player logs out
+     * Clean up when player logs out.
      */
     public static void onPlayerLogout(ServerPlayer player) {
         UUID playerId = player.getUUID();
@@ -294,33 +251,28 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
         }
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_FLAVOUR));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_INFO));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_COST,
-            AnimusConfig.sigils.freeSoulLPCost.get()));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_DURATION,
-            AnimusConfig.sigils.freeSoulDuration.get()));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_DEATH));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_COOLDOWN,
-            AnimusConfig.sigils.freeSoulCooldown.get()));
+    /**
+     * Check if a player is currently in Free Soul spectator mode.
+     */
+    public static boolean isInSpectatorMode(UUID playerId) {
+        return activeSpectators.containsKey(playerId);
+    }
 
-        // Show cooldown if exists
-        Long lastTriggerObj = stack.get(AnimusDataComponents.LAST_DEATH_PREVENT.get());
-        if (lastTriggerObj != null && lastTriggerObj > 0) {
-            long currentTime = System.currentTimeMillis();
-            int cooldownSeconds = AnimusConfig.sigils.freeSoulCooldown.get();
-            long cooldownMillis = cooldownSeconds * 1000L;
-            long remaining = cooldownMillis - (currentTime - lastTriggerObj);
+    /**
+     * Tracks spectator state for a player.
+     */
+    private static class SpectatorState {
+        final long exitTick;
+        final GameType previousGameMode;
+        final Vec3 originalPosition;
+        final boolean fromDeath;
+        boolean hasTeleportedBack = false;
 
-            if (remaining > 0) {
-                long remainingSeconds = remaining / 1000;
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SIGIL_FREE_SOUL_COOLDOWN_REMAINING,
-                    remainingSeconds).withStyle(ChatFormatting.RED));
-            }
+        SpectatorState(long exitTick, GameType previousGameMode, Vec3 originalPosition, boolean fromDeath) {
+            this.exitTick = exitTick;
+            this.previousGameMode = previousGameMode;
+            this.originalPosition = originalPosition;
+            this.fromDeath = fromDeath;
         }
-
-        super.appendHoverText(stack, context, tooltip, flag);
     }
 }

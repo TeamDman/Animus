@@ -3,7 +3,6 @@ package com.teamdman.animus;
 import com.teamdman.animus.client.models.AnimusModelLayers;
 import com.teamdman.animus.client.models.SpearModel;
 import com.teamdman.animus.client.renderers.ThrownSpearRenderer;
-import com.teamdman.animus.items.sigils.ItemSigilToggleableBase;
 import com.teamdman.animus.registry.AnimusEntityTypes;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -17,6 +16,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import wayoftime.bloodmagic.common.item.IActivatable;
 
 /**
  * Client-side setup for Animus mod
@@ -112,8 +112,8 @@ public class AnimusClientSetup {
         ItemProperties.register(item,
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "activated"),
             (stack, level, entity, seed) -> {
-                if (item instanceof ItemSigilToggleableBase toggleable) {
-                    return toggleable.getActivated(stack) ? 1.0F : 0.0F;
+                if (item instanceof IActivatable activatable) {
+                    return activatable.getActivated(stack) ? 1.0F : 0.0F;
                 }
                 return 0.0F;
             }

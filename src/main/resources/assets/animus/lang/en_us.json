@@ -301,6 +301,7 @@
   "text.component.animus.equivalency.no_matches": "No matching blocks found in radius",
   "text.component.animus.equivalency.no_lp": "Not enough LP. Need %s LP",
   "text.component.animus.equivalency.started": "Replacing %s blocks...",
+  "text.component.animus.equivalency.radius": "Radius: %s",
   "text.component.animus.ticket.equivalency": "Sigil of Equivalency",
   "text.component.animus.ticket.boundless_nature": "Boundless Nature",
   "text.component.animus.ticket.floral_supremacy": "Floral Supremacy",

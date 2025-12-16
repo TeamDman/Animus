@@ -2,9 +2,9 @@ package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.*;
-import com.teamdman.animus.items.sigils.*;
 import com.teamdman.animus.items.ItemReagent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
@@ -15,6 +15,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import wayoftime.bloodmagic.common.item.sigil.SigilItem;
+import wayoftime.bloodmagic.registry.SigilTypeRegistry;
 
 
 import java.util.List;
@@ -27,6 +29,16 @@ public class AnimusItems {
      */
     private static DeferredHolder<Item, Item> registerBlockItem(String name, DeferredHolder<Block, ? extends Block> block) {
         return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+
+    /**
+     * Helper method to register a SigilItem for a given sigil type.
+     * The sigil type is loaded from data/animus/bloodmagicnv/sigil_type/{path}.json
+     */
+    private static DeferredHolder<Item, Item> registerSigil(String name, String sigilTypePath) {
+        return ITEMS.register(name, () -> new SigilItem(
+                SigilTypeRegistry.key(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, sigilTypePath))
+        ));
     }
 
     // Block Items
@@ -154,48 +166,24 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> REAGENT_FIST = ITEMS.register("reagentfist",
         ItemReagent::new);
 
-    // Sigils
-    public static final DeferredHolder<Item, Item> SIGIL_BUILDER = ITEMS.register("sigil_builder",
-        ItemSigilBuilder::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_CHAINS = ITEMS.register("sigil_chains",
-        ItemSigilChains::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_CONSUMPTION = ITEMS.register("sigil_consumption",
-        ItemSigilConsumption::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_LEACH = ITEMS.register("sigil_leach",
-        ItemSigilLeach::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_STORM = ITEMS.register("sigil_storm",
-        ItemSigilStorm::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_HEAVENLY_WRATH = ITEMS.register("sigil_heavenly_wrath",
-        ItemSigilHeavenlyWrath::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_REMEDIUM = ITEMS.register("sigil_remedium",
-        ItemSigilRemedium::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_REPARARE = ITEMS.register("sigil_reparare",
-        ItemSigilReparare::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_TRANSPOSITION = ITEMS.register("sigil_transposition",
-        ItemSigilTransposition::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_FREE_SOUL = ITEMS.register("sigil_free_soul",
-        ItemSigilFreeSoul::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_TEMPORAL_DOMINANCE = ITEMS.register("sigil_temporal_dominance",
-        ItemSigilTemporalDominance::new);
-    public static final DeferredHolder<Item, Item> SIGIL_EQUIVALENCY = ITEMS.register("sigil_equivalency",
-        ItemSigilEquivalency::new);
+    // Sigils - using Blood Magic's data-driven sigil system
+    // Sigil types are loaded from data/animus/bloodmagicnv/sigil_type/{path}.json
+    public static final DeferredHolder<Item, Item> SIGIL_BUILDER = registerSigil("sigil_builder", "builder");
+    public static final DeferredHolder<Item, Item> SIGIL_CHAINS = registerSigil("sigil_chains", "chains");
+    public static final DeferredHolder<Item, Item> SIGIL_CONSUMPTION = registerSigil("sigil_consumption", "consumption");
+    public static final DeferredHolder<Item, Item> SIGIL_LEACH = registerSigil("sigil_leach", "leach");
+    public static final DeferredHolder<Item, Item> SIGIL_STORM = registerSigil("sigil_storm", "storm");
+    public static final DeferredHolder<Item, Item> SIGIL_HEAVENLY_WRATH = registerSigil("sigil_heavenly_wrath", "heavenly_wrath");
+    public static final DeferredHolder<Item, Item> SIGIL_REMEDIUM = registerSigil("sigil_remedium", "remedium");
+    public static final DeferredHolder<Item, Item> SIGIL_REPARARE = registerSigil("sigil_reparare", "reparare");
+    public static final DeferredHolder<Item, Item> SIGIL_TRANSPOSITION = registerSigil("sigil_transposition", "transposition");
+    public static final DeferredHolder<Item, Item> SIGIL_FREE_SOUL = registerSigil("sigil_free_soul", "free_soul");
+    public static final DeferredHolder<Item, Item> SIGIL_TEMPORAL_DOMINANCE = registerSigil("sigil_temporal_dominance", "temporal_dominance");
+    public static final DeferredHolder<Item, Item> SIGIL_EQUIVALENCY = registerSigil("sigil_equivalency", "equivalency");
+    public static final DeferredHolder<Item, Item> SIGIL_MONK = registerSigil("sigil_monk", "monk");
 
     // TODO: ItemSigilBoundlessNature needs to be ported from 1.20.1
-    // public static final DeferredHolder<Item, Item> SIGIL_BOUNDLESS_NATURE = ITEMS.register("sigil_boundless_nature",
-    //     ItemSigilBoundlessNature::new);
-
-    public static final DeferredHolder<Item, Item> SIGIL_MONK = ITEMS.register("sigil_monk",
-        ItemSigilMonk::new);
+    // public static final DeferredHolder<Item, Item> SIGIL_BOUNDLESS_NATURE = registerSigil("sigil_boundless_nature", "boundless_nature");
 
     // Tools & Weapons
     public static final DeferredHolder<Item, Item> SPEAR_IRON = ITEMS.register("spear_iron",

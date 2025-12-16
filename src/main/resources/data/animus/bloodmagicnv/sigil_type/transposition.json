@@ -1,0 +1,7 @@
+{
+  "lp_cost_air": 200,
+  "lp_cost_block": 5000,
+  "effect": {
+    "type": "animus:transposition"
+  }
+}

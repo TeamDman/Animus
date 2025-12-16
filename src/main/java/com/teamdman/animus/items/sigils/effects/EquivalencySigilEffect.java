@@ -1,27 +1,22 @@
-package com.teamdman.animus.items.sigils;
+package com.teamdman.animus.items.sigils.effects;
 
+import com.mojang.serialization.MapCodec;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.client.InputClientHelper;
 import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -30,26 +25,34 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLEnvironment;
-import net.minecraft.core.registries.BuiltInRegistries;
-import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.api.sigil.ISigilEffect;
 import wayoftime.bloodmagic.api.soul.SoulTicket;
+import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Sigil of Equivalency
- * Equal-trade style sigil that swaps blocks in a radius using LP
- *
+ * Sigil of Equivalency - Equal-trade style sigil that swaps blocks in a radius using LP.
+ * <p>
  * - Sneak + right-click block: Add to selection list (up to 20)
  * - Sneak + right-click air: Clear selection
  * - Right-click block: Replace all matching blocks in radius with random selection
+ * - Scroll while sneaking: Adjust radius (handled via event handler)
  */
-public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
+public record EquivalencySigilEffect() implements ISigilEffect {
+    public static final MapCodec<EquivalencySigilEffect> CODEC = MapCodec.unit(EquivalencySigilEffect::new);
+
     private static final int MAX_SELECTED_BLOCKS = 20;
     private static final int MIN_RADIUS = 1;
     private static final int MAX_RADIUS = 32;
@@ -57,80 +60,38 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
     // Track ongoing replacement operations
     private static final Map<UUID, ReplacementOperation> activeOperations = new ConcurrentHashMap<>();
 
-    public ItemSigilEquivalency() {
-        super(Constants.Sigils.EQUIVALENCY, 0); // LP cost per block
-    }
-
-    public boolean onScroll(Player player, ItemStack stack, double scrollDelta, InteractionHand hand) {
-        if (!player.isShiftKeyDown()) {
-            return false;
-        }
-
-        // Adjust radius
-        int currentRadius = getRadius(stack);
-        int newRadius = currentRadius + (scrollDelta > 0 ? 1 : -1);
-        newRadius = Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, newRadius));
-
-        if (newRadius != currentRadius) {
-            setRadius(stack, newRadius);
-            int areaDimension = (newRadius * 2) + 1;
-
-            if (player.level().isClientSide) {
-                // Send packet to server to sync radius
-                com.teamdman.animus.network.AnimusPayloads.sendToServer(
-                    new com.teamdman.animus.network.SigilRadiusPayload(hand, newRadius)
-                );
-
-                player.displayClientMessage(
-                    Component.translatable("text.component.animus.equivalency.radius_changed", newRadius, areaDimension, areaDimension)
-                        .withStyle(ChatFormatting.GOLD),
-                    true
-                );
-            }
-        }
-
-        return true;
+    @Override
+    public MapCodec<? extends ISigilEffect> codec() {
+        return CODEC;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-
+    public boolean useOnAir(Level level, Player player, ItemStack stack) {
         // Sneak + right-click air to clear selection
         if (player.isShiftKeyDown()) {
             if (!level.isClientSide) {
                 clearSelectedBlocks(stack);
                 player.displayClientMessage(
-                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_CLEARED)
-                        .withStyle(ChatFormatting.GOLD),
-                    true
+                        Component.translatable(Constants.Localizations.Text.EQUIVALENCY_CLEARED)
+                                .withStyle(ChatFormatting.GOLD),
+                        true
                 );
             }
-            return InteractionResultHolder.consume(stack);
+            return false; // Don't consume LP for clearing
         }
 
-        return InteractionResultHolder.pass(stack);
+        return false;
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
-        Level level = context.getLevel();
-        BlockPos pos = context.getClickedPos();
-        Player player = context.getPlayer();
-        ItemStack stack = context.getItemInHand();
-
-        if (player == null) {
-            return InteractionResult.PASS;
-        }
-
+    public boolean useOnBlock(Level level, Player player, ItemStack stack, BlockPos pos, Direction side, Vec3 hitVec) {
         BlockState targetState = level.getBlockState(pos);
         if (targetState.isAir()) {
-            return InteractionResult.FAIL;
+            return false;
         }
 
-        // On client side, consume the interaction to prevent use() from being called
         if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
+            return true; // Consume on client to prevent further processing
         }
 
         // Sneak + right-click to add block to selection
@@ -139,70 +100,68 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         }
 
         // Right-click to perform replacement
-        return handleBlockReplacement((ServerLevel) level, (ServerPlayer) player, stack, pos, targetState, context.getClickedFace());
+        return handleBlockReplacement((ServerLevel) level, (ServerPlayer) player, stack, pos, targetState, side);
     }
 
-    private InteractionResult handleBlockSelection(Level level, Player player, ItemStack stack, BlockState targetState) {
+    private boolean handleBlockSelection(Level level, Player player, ItemStack stack, BlockState targetState) {
         List<Block> selectedBlocks = getSelectedBlocks(stack);
         Block targetBlock = targetState.getBlock();
 
         // Check if already selected
         if (selectedBlocks.contains(targetBlock)) {
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.EQUIVALENCY_ALREADY_SELECTED)
-                    .withStyle(ChatFormatting.RED),
-                true
+                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_ALREADY_SELECTED)
+                            .withStyle(ChatFormatting.RED),
+                    true
             );
-            return InteractionResult.FAIL;
+            return false;
         }
 
         // Check max selection
         if (selectedBlocks.size() >= MAX_SELECTED_BLOCKS) {
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.EQUIVALENCY_MAX_SELECTED, MAX_SELECTED_BLOCKS)
-                    .withStyle(ChatFormatting.RED),
-                true
+                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_MAX_SELECTED, MAX_SELECTED_BLOCKS)
+                            .withStyle(ChatFormatting.RED),
+                    true
             );
-            return InteractionResult.FAIL;
+            return false;
         }
 
-        // Add to selection (no inventory check - that happens during replacement)
+        // Add to selection
         selectedBlocks.add(targetBlock);
         setSelectedBlocks(stack, selectedBlocks);
 
         player.displayClientMessage(
-            Component.translatable(
-                Constants.Localizations.Text.EQUIVALENCY_ADDED,
-                targetBlock.getName(),
-                selectedBlocks.size(),
-                MAX_SELECTED_BLOCKS
-            ).withStyle(ChatFormatting.GREEN),
-            true
+                Component.translatable(
+                        Constants.Localizations.Text.EQUIVALENCY_ADDED,
+                        targetBlock.getName(),
+                        selectedBlocks.size(),
+                        MAX_SELECTED_BLOCKS
+                ).withStyle(ChatFormatting.GREEN),
+                true
         );
 
-        return InteractionResult.SUCCESS;
+        return false; // Don't consume LP for selection
     }
 
-    private InteractionResult handleBlockReplacement(ServerLevel level, ServerPlayer player, ItemStack stack,
-                                                      BlockPos centerPos, BlockState targetState, net.minecraft.core.Direction clickedFace) {
+    private boolean handleBlockReplacement(ServerLevel level, ServerPlayer player, ItemStack stack,
+                                           BlockPos centerPos, BlockState targetState, Direction clickedFace) {
         // Check if we have selected blocks
         List<Block> selectedBlocks = getSelectedBlocks(stack);
         if (selectedBlocks.isEmpty()) {
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_SELECTION)
-                    .withStyle(ChatFormatting.RED),
-                true
+                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_SELECTION)
+                            .withStyle(ChatFormatting.RED),
+                    true
             );
-            return InteractionResult.FAIL;
+            return false;
         }
 
         // Filter selected blocks that are in inventory (skip check for creative mode)
         List<Block> availableBlocks = new ArrayList<>();
         if (player.isCreative()) {
-            // In creative mode, all selected blocks are available
             availableBlocks.addAll(selectedBlocks);
         } else {
-            // In survival/adventure, only use blocks from inventory
             for (Block block : selectedBlocks) {
                 if (hasBlockInInventory(player, block)) {
                     availableBlocks.add(block);
@@ -212,17 +171,17 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
         if (availableBlocks.isEmpty()) {
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_BLOCKS)
-                    .withStyle(ChatFormatting.RED),
-                true
+                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_BLOCKS)
+                            .withStyle(ChatFormatting.RED),
+                    true
             );
-            return InteractionResult.FAIL;
+            return false;
         }
 
         // Get the player's soul network
         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
         if (network == null) {
-            return InteractionResult.FAIL;
+            return false;
         }
 
         // Find all matching blocks in radius
@@ -231,17 +190,16 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
         if (matchingBlocks.isEmpty()) {
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_MATCHES)
-                    .withStyle(ChatFormatting.RED),
-                true
+                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_MATCHES)
+                            .withStyle(ChatFormatting.RED),
+                    true
             );
-            return InteractionResult.FAIL;
+            return false;
         }
 
         // Filter out blocks that would be replaced with the same type
         List<BlockPos> blocksToReplace = new ArrayList<>();
-        for (BlockPos pos : matchingBlocks) {
-            // Check if any available block is different from current
+        for (BlockPos blockPos : matchingBlocks) {
             boolean canReplace = false;
             for (Block availableBlock : availableBlocks) {
                 if (availableBlock != targetState.getBlock()) {
@@ -250,17 +208,17 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                 }
             }
             if (canReplace) {
-                blocksToReplace.add(pos);
+                blocksToReplace.add(blockPos);
             }
         }
 
         if (blocksToReplace.isEmpty()) {
             player.displayClientMessage(
-                Component.translatable("text.component.animus.equivalency.same_block_warning")
-                    .withStyle(ChatFormatting.RED),
-                true
+                    Component.translatable("text.component.animus.equivalency.same_block_warning")
+                            .withStyle(ChatFormatting.RED),
+                    true
             );
-            return InteractionResult.FAIL;
+            return false;
         }
 
         // Calculate total LP cost based on blocks that will actually be replaced
@@ -269,12 +227,11 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
         if (network.getCurrentEssence() < totalLP) {
             player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_LP, totalLP)
-                    .withStyle(ChatFormatting.RED),
-                true
+                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_LP, totalLP)
+                            .withStyle(ChatFormatting.RED),
+                    true
             );
-            // Note: causeNausea removed in BM 1.21
-            return InteractionResult.FAIL;
+            return false;
         }
 
         // Consume LP
@@ -282,38 +239,39 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
         // Create replacement operation
         ReplacementOperation operation = new ReplacementOperation(
-            level,
-            player.getUUID(),
-            blocksToReplace,
-            availableBlocks,
-            targetState.getBlock(),
-            centerPos
+                level,
+                player.getUUID(),
+                blocksToReplace,
+                availableBlocks,
+                targetState.getBlock(),
+                centerPos
         );
         activeOperations.put(player.getUUID(), operation);
 
         // Play sound once at start (30% volume)
         level.playSound(null, centerPos, net.minecraft.sounds.SoundEvents.PORTAL_TRAVEL,
-            net.minecraft.sounds.SoundSource.BLOCKS, 0.3f, 1.5f);
+                net.minecraft.sounds.SoundSource.BLOCKS, 0.3f, 1.5f);
 
         player.displayClientMessage(
-            Component.translatable(
-                Constants.Localizations.Text.EQUIVALENCY_STARTED,
-                blocksToReplace.size()
-            ).withStyle(ChatFormatting.GOLD),
-            true
+                Component.translatable(
+                        Constants.Localizations.Text.EQUIVALENCY_STARTED,
+                        blocksToReplace.size()
+                ).withStyle(ChatFormatting.GOLD),
+                true
         );
 
-        return InteractionResult.SUCCESS;
+        // Return false to skip LP cost from sigil_type (we handle it ourselves)
+        return false;
     }
 
     /**
-     * Find all connected blocks matching the target using flood-fill (BFS)
-     * Only finds blocks on the same plane as the clicked face
+     * Find all connected blocks matching the target using flood-fill (BFS).
+     * Only finds blocks on the same plane as the clicked face.
      */
-    private List<BlockPos> findMatchingBlocksInRadius(ServerLevel level, BlockPos center, Block targetBlock, int radius, net.minecraft.core.Direction clickedFace) {
+    private List<BlockPos> findMatchingBlocksInRadius(ServerLevel level, BlockPos center, Block targetBlock, int radius, Direction clickedFace) {
         List<BlockPos> matches = new ArrayList<>();
-        Set<BlockPos> visited = new java.util.HashSet<>();
-        Queue<BlockPos> queue = new java.util.LinkedList<>();
+        Set<BlockPos> visited = new HashSet<>();
+        Queue<BlockPos> queue = new LinkedList<>();
 
         // Maximum blocks for a plane (square area)
         int maxBlocks = (radius * 2 + 1) * (radius * 2 + 1);
@@ -323,32 +281,30 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         visited.add(center);
 
         // Determine which neighbors to use based on clicked face
-        // For horizontal faces (UP/DOWN), only check horizontal neighbors
-        // For vertical faces, only check neighbors on that vertical plane
         BlockPos[] neighbors;
-        if (clickedFace == net.minecraft.core.Direction.UP || clickedFace == net.minecraft.core.Direction.DOWN) {
+        if (clickedFace == Direction.UP || clickedFace == Direction.DOWN) {
             // Horizontal plane - only check cardinal directions on XZ plane
-            neighbors = new BlockPos[] {
-                new BlockPos(1, 0, 0),   // East
-                new BlockPos(-1, 0, 0),  // West
-                new BlockPos(0, 0, 1),   // South
-                new BlockPos(0, 0, -1)   // North
+            neighbors = new BlockPos[]{
+                    new BlockPos(1, 0, 0),
+                    new BlockPos(-1, 0, 0),
+                    new BlockPos(0, 0, 1),
+                    new BlockPos(0, 0, -1)
             };
-        } else if (clickedFace == net.minecraft.core.Direction.NORTH || clickedFace == net.minecraft.core.Direction.SOUTH) {
+        } else if (clickedFace == Direction.NORTH || clickedFace == Direction.SOUTH) {
             // North/South vertical plane - check on XY plane
-            neighbors = new BlockPos[] {
-                new BlockPos(1, 0, 0),   // East
-                new BlockPos(-1, 0, 0),  // West
-                new BlockPos(0, 1, 0),   // Up
-                new BlockPos(0, -1, 0)   // Down
+            neighbors = new BlockPos[]{
+                    new BlockPos(1, 0, 0),
+                    new BlockPos(-1, 0, 0),
+                    new BlockPos(0, 1, 0),
+                    new BlockPos(0, -1, 0)
             };
         } else {
             // East/West vertical plane - check on ZY plane
-            neighbors = new BlockPos[] {
-                new BlockPos(0, 0, 1),   // South
-                new BlockPos(0, 0, -1),  // North
-                new BlockPos(0, 1, 0),   // Up
-                new BlockPos(0, -1, 0)   // Down
+            neighbors = new BlockPos[]{
+                    new BlockPos(0, 0, 1),
+                    new BlockPos(0, 0, -1),
+                    new BlockPos(0, 1, 0),
+                    new BlockPos(0, -1, 0)
             };
         }
 
@@ -368,8 +324,6 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                 // Add neighbors to queue
                 for (BlockPos offset : neighbors) {
                     BlockPos neighbor = current.offset(offset.getX(), offset.getY(), offset.getZ());
-
-                    // Only process if not visited and on same plane within radius
                     if (!visited.contains(neighbor) && isOnSamePlaneAndInRadius(neighbor, center, radius, clickedFace)) {
                         visited.add(neighbor);
                         queue.add(neighbor);
@@ -382,28 +336,24 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
     }
 
     /**
-     * Check if a position is on the same plane as center and within radius
+     * Check if a position is on the same plane as center and within radius.
      */
-    private boolean isOnSamePlaneAndInRadius(BlockPos pos, BlockPos center, int radius, net.minecraft.core.Direction clickedFace) {
+    private boolean isOnSamePlaneAndInRadius(BlockPos pos, BlockPos center, int radius, Direction clickedFace) {
         int dx = Math.abs(pos.getX() - center.getX());
         int dy = Math.abs(pos.getY() - center.getY());
         int dz = Math.abs(pos.getZ() - center.getZ());
 
-        // Check plane constraint and 2D distance
-        if (clickedFace == net.minecraft.core.Direction.UP || clickedFace == net.minecraft.core.Direction.DOWN) {
-            // Horizontal plane - must be same Y, check X and Z distance
+        if (clickedFace == Direction.UP || clickedFace == Direction.DOWN) {
             return pos.getY() == center.getY() && Math.max(dx, dz) <= radius;
-        } else if (clickedFace == net.minecraft.core.Direction.NORTH || clickedFace == net.minecraft.core.Direction.SOUTH) {
-            // North/South plane - must be same Z, check X and Y distance
+        } else if (clickedFace == Direction.NORTH || clickedFace == Direction.SOUTH) {
             return pos.getZ() == center.getZ() && Math.max(dx, dy) <= radius;
         } else {
-            // East/West plane - must be same X, check Y and Z distance
             return pos.getX() == center.getX() && Math.max(dy, dz) <= radius;
         }
     }
 
     /**
-     * Check if player has the block item in inventory
+     * Check if player has the block item in inventory.
      */
     private boolean hasBlockInInventory(Player player, Block block) {
         ItemStack blockItem = new ItemStack(block.asItem());
@@ -421,8 +371,8 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
     }
 
     /**
-     * Process active replacement operations
-     * Called from event handler
+     * Process active replacement operations.
+     * Called from event handler.
      */
     public static void tickReplacements(ServerLevel level) {
         if (activeOperations.isEmpty()) {
@@ -436,12 +386,10 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             Map.Entry<UUID, ReplacementOperation> entry = iterator.next();
             ReplacementOperation operation = entry.getValue();
 
-            // Only process operations in this dimension
             if (!operation.level.equals(level)) {
                 continue;
             }
 
-            // Process blocks
             boolean finished = operation.processBlocks(blocksPerTick);
             if (finished) {
                 iterator.remove();
@@ -489,76 +437,58 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         stack.remove(AnimusDataComponents.EQUIVALENCY_SELECTED_BLOCKS.get());
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.EQUIVALENCY_1)
-            .withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.EQUIVALENCY_2)
-            .withStyle(ChatFormatting.GRAY));
-
-        // Show current radius with area dimensions for clarity
-        int radius = getRadius(stack);
-        int areaDimension = (radius * 2) + 1; // e.g., radius 1 = 3x3, radius 2 = 5x5
-        tooltip.add(Component.translatable("tooltip.animus.equivalency.radius_info", radius, areaDimension, areaDimension)
-            .withStyle(ChatFormatting.AQUA));
-        tooltip.add(Component.translatable("tooltip.animus.equivalency.scroll_adjust", MAX_RADIUS)
-            .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
-
-        // Show selected blocks
-        List<Block> selected = getSelectedBlocks(stack);
-        if (!selected.isEmpty()) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.EQUIVALENCY_SELECTED, selected.size(), MAX_SELECTED_BLOCKS)
-                .withStyle(ChatFormatting.GOLD));
-
-            // If shift is held, show all selected blocks (check client-side only)
-            boolean showDetails = false;
-            if (FMLEnvironment.dist == Dist.CLIENT) {
-                showDetails = InputClientHelper.isShiftDown();
-            }
-            if (showDetails) {
-                for (Block block : selected) {
-                    tooltip.add(Component.literal("  • ")
-                        .append(block.getName())
-                        .withStyle(ChatFormatting.GRAY));
-                }
-            } else {
-                tooltip.add(Component.translatable("tooltip.animus.equivalency.hold_sneak")
-                    .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
-            }
-        }
-
-        super.appendHoverText(stack, context, tooltip, flag);
-    }
-
     // Radius data component methods
     private int getRadius(ItemStack stack) {
         Integer radiusVal = stack.get(AnimusDataComponents.EQUIVALENCY_RADIUS.get());
         int radius;
         if (radiusVal == null) {
-            // Default to config value
             radius = AnimusConfig.sigils.sigilEquivalencyRadius.get();
         } else {
             radius = radiusVal;
         }
-        // Always clamp to valid range to prevent bugs
         return Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
     }
 
-    private void setRadius(ItemStack stack, int radius) {
-        // Clamp before saving
+    /**
+     * Set the radius for an Equivalency sigil.
+     * Public for use by scroll event handler.
+     */
+    public static void setRadius(ItemStack stack, int radius) {
         radius = Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
         stack.set(AnimusDataComponents.EQUIVALENCY_RADIUS.get(), radius);
     }
 
     /**
-     * Public method for the network packet handler to update radius on server side
+     * Get the radius from an Equivalency sigil.
+     * Public for use by scroll event handler.
      */
-    public void setRadiusFromPacket(ItemStack stack, int radius) {
-        setRadius(stack, radius);
+    public static int getRadiusStatic(ItemStack stack) {
+        Integer radiusVal = stack.get(AnimusDataComponents.EQUIVALENCY_RADIUS.get());
+        int radius;
+        if (radiusVal == null) {
+            radius = AnimusConfig.sigils.sigilEquivalencyRadius.get();
+        } else {
+            radius = radiusVal;
+        }
+        return Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
     }
 
     /**
-     * Tracks an ongoing block replacement operation
+     * Get the maximum radius.
+     */
+    public static int getMaxRadius() {
+        return MAX_RADIUS;
+    }
+
+    /**
+     * Get the minimum radius.
+     */
+    public static int getMinRadius() {
+        return MIN_RADIUS;
+    }
+
+    /**
+     * Tracks an ongoing block replacement operation.
      */
     private static class ReplacementOperation {
         private final ServerLevel level;
@@ -571,7 +501,7 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         private final Random random = new Random();
 
         public ReplacementOperation(ServerLevel level, UUID playerUUID, List<BlockPos> positions,
-                                   List<Block> replacementBlocks, Block originalBlock, BlockPos centerPos) {
+                                    List<Block> replacementBlocks, Block originalBlock, BlockPos centerPos) {
             this.level = level;
             this.playerUUID = playerUUID;
             this.positions = positions;
@@ -581,8 +511,8 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         }
 
         /**
-         * Process up to maxBlocks replacements
-         * Returns true if operation is finished
+         * Process up to maxBlocks replacements.
+         * Returns true if operation is finished.
          */
         public boolean processBlocks(int maxBlocks) {
             ServerPlayer player = level.getServer().getPlayerList().getPlayer(playerUUID);
@@ -609,17 +539,16 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                 return;
             }
 
-            // Select random replacement block (filtered list only contains different blocks)
+            // Select random replacement block
             Block replacementBlock = replacementBlocks.get(random.nextInt(replacementBlocks.size()));
 
-            // Safety check: Skip if somehow the same (shouldn't happen due to pre-filtering)
+            // Skip if somehow the same
             if (currentState.getBlock() == replacementBlock) {
                 return;
             }
 
             // Get drops with silk touch
-            ItemStack tool = new ItemStack(net.minecraft.world.item.Items.DIAMOND_PICKAXE);
-            // In 1.21, enchanting requires registry access - use simpler approach
+            ItemStack tool = new ItemStack(Items.DIAMOND_PICKAXE);
             if (level.registryAccess().lookup(Registries.ENCHANTMENT).isPresent()) {
                 var enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
                 var silkTouch = enchantmentRegistry.get(Enchantments.SILK_TOUCH);
@@ -629,10 +558,10 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             }
 
             LootParams.Builder lootBuilder = new LootParams.Builder(level)
-                .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
-                .withParameter(LootContextParams.TOOL, tool)
-                .withOptionalParameter(LootContextParams.THIS_ENTITY, player)
-                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(pos));
+                    .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+                    .withParameter(LootContextParams.TOOL, tool)
+                    .withOptionalParameter(LootContextParams.THIS_ENTITY, player)
+                    .withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(pos));
 
             List<ItemStack> drops = currentState.getDrops(lootBuilder);
 
@@ -659,9 +588,9 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             // Spawn particles on ~20% of blocks for visual feedback without spam
             if (random.nextFloat() < 0.2f) {
                 level.sendParticles(
-                    net.minecraft.core.particles.ParticleTypes.WITCH,
-                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                    3, 0.3, 0.3, 0.3, 0.02
+                        ParticleTypes.WITCH,
+                        pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                        3, 0.3, 0.3, 0.3, 0.02
                 );
             }
         }

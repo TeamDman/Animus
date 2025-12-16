@@ -38,6 +38,9 @@ public class Animus {
         AnimusAttributes.ATTRIBUTES.register(modEventBus);
         AnimusDataComponents.DATA_COMPONENTS.register(modEventBus);
 
+        // Register sigil effect types to Blood Magic's sigil effect registry
+        AnimusSigilEffects.register(modEventBus);
+
         // Force class loading for rituals to ensure all registrations are queued
         AnimusRituals.init();
 

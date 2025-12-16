@@ -66,6 +66,7 @@ public class Constants {
             public static final String EQUIVALENCY_NO_MATCHES = "text.component.animus.equivalency.no_matches";
             public static final String EQUIVALENCY_NO_LP = "text.component.animus.equivalency.no_lp";
             public static final String EQUIVALENCY_STARTED = "text.component.animus.equivalency.started";
+            public static final String EQUIVALENCY_RADIUS = "text.component.animus.equivalency.radius";
 
             // Free Soul Sigil
             public static final String FREE_SOUL_ALREADY_SPECTATOR = "text.component.animus.free_soul.already_spectator";

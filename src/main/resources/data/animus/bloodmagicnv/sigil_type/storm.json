@@ -1,0 +1,6 @@
+{
+  "lp_cost_air": 500,
+  "effect": {
+    "type": "animus:storm"
+  }
+}

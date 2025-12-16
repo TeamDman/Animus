@@ -5,7 +5,8 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.client.AcceleratedBlocksClientData;
 import com.teamdman.animus.client.AltarGhostBlockRenderer;
 import com.teamdman.animus.client.ClipboardClientHelper;
-import com.teamdman.animus.items.sigils.ItemSigilEquivalency;
+import com.teamdman.animus.items.sigils.effects.EquivalencySigilEffect;
+import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -65,8 +66,8 @@ public class AnimusPayloads {
         ctx.enqueueWork(() -> {
             if (ctx.player() instanceof ServerPlayer player) {
                 ItemStack stack = player.getItemInHand(payload.hand());
-                if (stack.getItem() instanceof ItemSigilEquivalency sigil) {
-                    sigil.setRadiusFromPacket(stack, payload.radius());
+                if (stack.is(AnimusItems.SIGIL_EQUIVALENCY.get())) {
+                    EquivalencySigilEffect.setRadius(stack, payload.radius());
                 }
             }
         });

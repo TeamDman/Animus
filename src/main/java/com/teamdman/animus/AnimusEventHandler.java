@@ -1,14 +1,14 @@
 package com.teamdman.animus;
 
 import com.teamdman.animus.items.ItemFragmentHealing;
-import com.teamdman.animus.items.sigils.ItemSigilFreeSoul;
-import com.teamdman.animus.items.sigils.ItemSigilHeavenlyWrath;
-import com.teamdman.animus.items.sigils.ItemSigilMonk;
-import com.teamdman.animus.items.sigils.ItemSigilRemedium;
-import com.teamdman.animus.items.sigils.ItemSigilReparare;
-import com.teamdman.animus.items.sigils.ItemSigilStorm;
-import com.teamdman.animus.items.sigils.ItemSigilTemporalDominance;
-import com.teamdman.animus.items.sigils.ItemSigilEquivalency;
+import com.teamdman.animus.items.sigils.effects.EquivalencySigilEffect;
+import com.teamdman.animus.items.sigils.effects.FreeSoulSigilEffect;
+import com.teamdman.animus.items.sigils.effects.HeavenlyWrathSigilEffect;
+import com.teamdman.animus.items.sigils.effects.MonkSigilEffect;
+import com.teamdman.animus.items.sigils.effects.RemediumSigilEffect;
+import com.teamdman.animus.items.sigils.effects.RepareSigilEffect;
+import com.teamdman.animus.items.sigils.effects.StormSigilEffect;
+import com.teamdman.animus.items.sigils.effects.TemporalDominanceSigilEffect;
 import com.teamdman.animus.registry.AnimusAttributes;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
@@ -79,15 +79,11 @@ public class AnimusEventHandler {
         Player player = event.getEntity();
         UUID playerId = player.getUUID();
 
-        // Process Remedium Sigil and Reparare Sigil active effects FIRST
-        // This needs to run every tick, regardless of healing fragments
+        // Process Free Soul spectator mode timer
+        // Note: Remedium and Reparare sigils now use activeTick() which is called automatically by SigilItem.inventoryTick()
         if (player.level() instanceof ServerLevel serverLevel) {
-            ItemSigilRemedium.tickActiveSigils(player, serverLevel);
-            ItemSigilReparare.tickActiveSigils(player, serverLevel);
-
-            // Process Free Soul spectator mode timer
             if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                ItemSigilFreeSoul.tickActiveSpectators(serverPlayer, serverLevel);
+                FreeSoulSigilEffect.tickActiveSpectators(serverPlayer, serverLevel);
             }
         }
 
@@ -130,12 +126,12 @@ public class AnimusEventHandler {
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         healingCooldowns.remove(event.getEntity().getUUID());
-        ItemSigilRemedium.onPlayerLogout(event.getEntity().getUUID());
-        ItemSigilReparare.onPlayerLogout(event.getEntity().getUUID());
+        RemediumSigilEffect.onPlayerLogout(event.getEntity().getUUID());
+        RepareSigilEffect.onPlayerLogout(event.getEntity().getUUID());
 
         // Clean up Free Soul spectator mode when player logs out
         if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-            ItemSigilFreeSoul.onPlayerLogout(serverPlayer);
+            FreeSoulSigilEffect.onPlayerLogout(serverPlayer);
         }
     }
 
@@ -150,11 +146,63 @@ public class AnimusEventHandler {
             return;
         }
 
+        // Find Free Soul sigil in player's inventory
+        ItemStack freeSoulStack = findFreeSoulSigil(player);
+        if (freeSoulStack.isEmpty()) {
+            return;
+        }
+
         // Try to prevent death with Free Soul sigil
-        if (ItemSigilFreeSoul.tryPreventDeath(player, event.getSource())) {
+        if (FreeSoulSigilEffect.tryPreventDeath(player, event.getSource(), freeSoulStack)) {
             // Death was prevented by the sigil
             event.setCanceled(true);
         }
+    }
+
+    /**
+     * Find a Free Soul sigil in the player's inventory.
+     */
+    private static ItemStack findFreeSoulSigil(Player player) {
+        for (ItemStack stack : player.getInventory().items) {
+            if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
+                return stack;
+            }
+        }
+        // Also check offhand
+        for (ItemStack stack : player.getInventory().offhand) {
+            if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    /**
+     * Check if a player has an active Sigil of the Monk.
+     * The sigil must be in the player's inventory and activated.
+     */
+    private static boolean hasActiveMonkSigil(Player player) {
+        // Check main inventory
+        for (ItemStack stack : player.getInventory().items) {
+            if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_MONK.get())) {
+                if (stack.getItem() instanceof wayoftime.bloodmagic.common.item.IActivatable activatable) {
+                    if (activatable.getActivated(stack)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        // Check offhand
+        for (ItemStack stack : player.getInventory().offhand) {
+            if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_MONK.get())) {
+                if (stack.getItem() instanceof wayoftime.bloodmagic.common.item.IActivatable activatable) {
+                    if (activatable.getActivated(stack)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -257,14 +305,14 @@ public class AnimusEventHandler {
     public static void onLevelTick(LevelTickEvent.Post event) {
         // Only process server levels
         if (event.getLevel() instanceof ServerLevel serverLevel) {
-            ItemSigilStorm.tickPendingSpawns(serverLevel);
-            ItemSigilHeavenlyWrath.tickPendingFalls(serverLevel);
-            ItemSigilTemporalDominance.tickAcceleratedBlocks(serverLevel);
-            ItemSigilEquivalency.tickReplacements(serverLevel);
+            StormSigilEffect.tickPendingSpawns(serverLevel);
+            HeavenlyWrathSigilEffect.tickPendingFalls(serverLevel);
+            TemporalDominanceSigilEffect.tickAcceleratedBlocks(serverLevel);
+            EquivalencySigilEffect.tickReplacements(serverLevel);
 
             // Sync accelerated blocks to clients every 10 ticks (0.5 seconds)
             if (serverLevel.getGameTime() % 10 == 0) {
-                ItemSigilTemporalDominance.syncToClients(serverLevel);
+                TemporalDominanceSigilEffect.syncToClients(serverLevel);
             }
         }
     }
@@ -495,7 +543,7 @@ public class AnimusEventHandler {
         }
 
         // Check if player has an active Sigil of the Monk
-        if (!ItemSigilMonk.hasActiveSigil(player)) {
+        if (!hasActiveMonkSigil(player)) {
             return;
         }
 
@@ -539,7 +587,7 @@ public class AnimusEventHandler {
         float executeThreshold = (float) (targetMaxHealth * executePercent);
 
         // Consume LP per hit
-        ItemSigilMonk.consumeLP(player, LP_COST_PER_ACTION);
+        MonkSigilEffect.consumeLP(player, LP_COST_PER_ACTION);
 
         // Check for execute: if health after attack is below execute threshold
         // Guaranteed execute if player has enough will
@@ -632,7 +680,7 @@ public class AnimusEventHandler {
         }
 
         // Check if player has an active Sigil of the Monk
-        if (!ItemSigilMonk.hasActiveSigil(player)) {
+        if (!hasActiveMonkSigil(player)) {
             return;
         }
 
@@ -718,7 +766,7 @@ public class AnimusEventHandler {
             }
 
             // Consume LP for the catch action (50 LP)
-            ItemSigilMonk.consumeLP(player, 50);
+            MonkSigilEffect.consumeLP(player, 50);
         }
     }
 
@@ -743,13 +791,13 @@ public class AnimusEventHandler {
         }
 
         // Check if player has an active Sigil of the Monk
-        if (!ItemSigilMonk.hasActiveSigil(player)) {
+        if (!hasActiveMonkSigil(player)) {
             return;
         }
 
         // Cancel fall damage and consume 25 LP
         event.setCanceled(true);
-        ItemSigilMonk.consumeLP(player, 25);
+        MonkSigilEffect.consumeLP(player, 25);
 
         // Spawn some landing particles
         if (player.level() instanceof ServerLevel serverLevel) {
@@ -828,7 +876,7 @@ public class AnimusEventHandler {
         }
 
         // Check if player has an active Sigil of the Monk
-        if (!ItemSigilMonk.hasActiveSigil(player)) {
+        if (!hasActiveMonkSigil(player)) {
             return;
         }
 
@@ -865,7 +913,7 @@ public class AnimusEventHandler {
         }
 
         // Check if player has an active Sigil of the Monk
-        if (!ItemSigilMonk.hasActiveSigil(player)) {
+        if (!hasActiveMonkSigil(player)) {
             return;
         }
 
@@ -893,12 +941,12 @@ public class AnimusEventHandler {
         }
 
         // Check if player has an active Sigil of the Monk
-        if (!ItemSigilMonk.hasActiveSigil(player)) {
+        if (!hasActiveMonkSigil(player)) {
             return;
         }
 
         // Consume LP per block broken
-        ItemSigilMonk.consumeLP(player, LP_COST_PER_ACTION);
+        MonkSigilEffect.consumeLP(player, LP_COST_PER_ACTION);
     }
 
     /**

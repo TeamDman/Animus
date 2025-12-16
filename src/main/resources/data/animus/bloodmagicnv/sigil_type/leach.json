@@ -1,0 +1,7 @@
+{
+  "lp_cost_active": 5,
+  "drain_interval": 20,
+  "effect": {
+    "type": "animus:leach"
+  }
+}
