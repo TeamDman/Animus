@@ -82,6 +82,8 @@ public class AltarInfusionHandler {
                     .withStyle(ChatFormatting.RED),
                 true
             );
+            // Force sync the held item to prevent client desync
+            player.setItemInHand(hand, stack);
             event.setCanceled(true);
             event.setUseBlock(TriState.FALSE);
             event.setUseItem(TriState.FALSE);
@@ -100,6 +102,8 @@ public class AltarInfusionHandler {
                     .withStyle(ChatFormatting.RED),
                 true
             );
+            // Force sync the held item to prevent client desync
+            player.setItemInHand(hand, stack);
             event.setCanceled(true);
             event.setUseBlock(TriState.FALSE);
             event.setUseItem(TriState.FALSE);
@@ -114,6 +118,8 @@ public class AltarInfusionHandler {
                     .withStyle(ChatFormatting.RED),
                 true
             );
+            // Force sync the held item to prevent client desync
+            player.setItemInHand(hand, stack);
             event.setCanceled(true);
             event.setUseBlock(TriState.FALSE);
             event.setUseItem(TriState.FALSE);
