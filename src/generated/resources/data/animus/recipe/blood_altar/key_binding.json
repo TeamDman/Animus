@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "bloodNeeded": 1500,
+  "craftSpeed": 5,
+  "drainSpeed": 5,
+  "input": {
+    "item": "bloodmagicnv:simple_key"
+  },
+  "minTier": 1,
+  "output": {
+    "count": 1,
+    "id": "animus:key_binding"
+  }
+}

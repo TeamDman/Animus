@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:imbued_slate"
+  },
+  "baseinput": {
+    "item": "animus:reagentremendium"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:sigil_remedium"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/lightsigil.png"
+}

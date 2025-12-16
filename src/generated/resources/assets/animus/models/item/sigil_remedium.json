@@ -2,9 +2,9 @@
   "parent": "minecraft:item/generated",
   "overrides": [
     {
-      "model": "animus:item/sigil_remedium_active",
+      "model": "animus:item/sigil_remedium_activated",
       "predicate": {
-        "animus:active": 1.0
+        "animus:activated": 1.0
       }
     }
   ],

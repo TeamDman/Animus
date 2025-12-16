@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Builder",
-      "recipe": "animus:soulforge/reagentbuilder",
+      "recipe": "animus:soul_forge/reagentbuilder",
       "text": "A reagent infused with constructive energy."
     },
     {

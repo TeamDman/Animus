@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Remedium",
-      "recipe": "animus:soulforge/reagentremendium",
+      "recipe": "animus:soul_forge/reagentremendium",
       "text": "A reagent with cleansing properties."
     },
     {

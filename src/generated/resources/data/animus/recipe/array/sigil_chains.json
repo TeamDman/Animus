@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:imbued_slate"
+  },
+  "baseinput": {
+    "item": "animus:reagentchains"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:sigil_chains"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/bindingarray.png"
+}

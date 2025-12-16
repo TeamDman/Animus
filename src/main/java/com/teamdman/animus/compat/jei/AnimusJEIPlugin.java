@@ -59,6 +59,24 @@ public class AnimusJEIPlugin implements IModPlugin {
             Component.translatable("jei.animus.antilife.info")
         );
 
+        // Add info for Living Terra Bucket - explains the terrain-creating fluid
+        registration.addIngredientInfo(
+            Arrays.asList(
+                new ItemStack(com.teamdman.animus.registry.AnimusItems.LIVING_TERRA_BUCKET.get())
+            ),
+            VanillaTypes.ITEM_STACK,
+            Component.translatable("jei.animus.living_terra.info")
+        );
+
+        // Add info for Blood Apple - obtained from blood tree leaves
+        registration.addIngredientInfo(
+            Arrays.asList(
+                new ItemStack(com.teamdman.animus.registry.AnimusItems.BLOOD_APPLE.get())
+            ),
+            VanillaTypes.ITEM_STACK,
+            Component.translatable("jei.animus.blood_apple.info")
+        );
+
         // Add info for AntiLife block
         registration.addIngredientInfo(
             Arrays.asList(
@@ -181,17 +199,18 @@ public class AnimusJEIPlugin implements IModPlugin {
                 ItemStack scrollStack = new ItemStack(ironsScroll);
 
                 // Define scroll tiers: slate name, output item name, lang key suffix
+                // Blood Magic 1.21.1 uses snake_case naming and bloodmagicnv namespace
                 String[][] scrollTiers = {
-                    {"blankslate", "sanguine_scroll_blank", "blank"},
-                    {"reinforcedslate", "sanguine_scroll_reinforced", "reinforced"},
-                    {"imbuedslate", "sanguine_scroll_imbued", "imbued"},
-                    {"demonslate", "sanguine_scroll_demon", "demon"},
-                    {"etherealslate", "sanguine_scroll_ethereal", "ethereal"}
+                    {"blank_slate", "sanguine_scroll_blank", "blank"},
+                    {"reinforced_slate", "sanguine_scroll_reinforced", "reinforced"},
+                    {"imbued_slate", "sanguine_scroll_imbued", "imbued"},
+                    {"demon_slate", "sanguine_scroll_demon", "demon"},
+                    {"ethereal_slate", "sanguine_scroll_ethereal", "ethereal"}
                 };
 
                 for (String[] tier : scrollTiers) {
                     Item slate = BuiltInRegistries.ITEM.get(
-                        ResourceLocation.fromNamespaceAndPath("bloodmagic", tier[0]));
+                        ResourceLocation.fromNamespaceAndPath("bloodmagicnv", tier[0]));
                     Item outputScroll = getAnimusItem(tier[1]);
 
                     if (slate != null && slate != Items.AIR

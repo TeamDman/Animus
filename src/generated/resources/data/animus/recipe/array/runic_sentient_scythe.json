@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:demonic_slate"
+  },
+  "baseinput": {
+    "item": "bloodmagicnv:soul_scythe"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:runic_sentient_scythe"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/bindingarray.png"
+}

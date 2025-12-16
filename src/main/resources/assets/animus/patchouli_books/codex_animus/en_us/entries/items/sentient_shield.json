@@ -5,8 +5,9 @@
   "sortnum": 11,
   "pages": [
     {
-      "type": "patchouli:spotlight",
-      "item": "animus:sentient_shield",
+      "type": "animus:crafting_soulforge",
+      "heading": "Sentient Shield",
+      "recipe": "animus:soul_forge/sentient_shield",
       "text": "A demonic shield infused with will. Has 4x the durability of a normal shield (1344 vs 336) and grants special effects when blocking based on the type of demon will available."
     },
     {

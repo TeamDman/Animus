@@ -59,7 +59,7 @@ import java.util.UUID;
  * Prevents moving Fragment of Healing in inventory
  * Converts Life Essence to AntiLife when struck by lightning
  */
-@EventBusSubscriber(modid = Constants.Mod.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Constants.Mod.MODID)
 public class AnimusEventHandler {
 
     // Track healing cooldown per player

@@ -1,0 +1,24 @@
+{
+  "type": "bloodmagicnv:alchemytable",
+  "input": [
+    {
+      "item": "minecraft:rotten_flesh"
+    },
+    {
+      "item": "minecraft:diamond_pickaxe"
+    },
+    {
+      "item": "minecraft:iron_shovel"
+    },
+    {
+      "item": "minecraft:iron_axe"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "id": "animus:reagentfist"
+  },
+  "syphon": 500,
+  "ticks": 100,
+  "upgradeLevel": 2
+}

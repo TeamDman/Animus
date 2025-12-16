@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Leach",
-      "recipe": "animus:soulforge/reagentleach",
+      "recipe": "animus:soul_forge/reagentleach",
       "text": "A reagent that drains life from nature."
     },
     {

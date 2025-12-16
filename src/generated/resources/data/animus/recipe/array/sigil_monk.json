@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:reinforced_slate"
+  },
+  "baseinput": {
+    "item": "animus:reagentfist"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:sigil_monk"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/fastminersigil.png"
+}

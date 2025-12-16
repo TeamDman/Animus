@@ -1,0 +1,23 @@
+{
+  "type": "bloodmagicnv:soul_forge",
+  "drain": 512.0,
+  "inputs": [
+    {
+      "item": "minecraft:echo_shard"
+    },
+    {
+      "item": "minecraft:clock"
+    },
+    {
+      "item": "minecraft:netherite_ingot"
+    },
+    {
+      "item": "minecraft:chorus_fruit"
+    }
+  ],
+  "minDrain": 1024.0,
+  "output": {
+    "count": 1,
+    "id": "animus:reagenttemporaldominance"
+  }
+}

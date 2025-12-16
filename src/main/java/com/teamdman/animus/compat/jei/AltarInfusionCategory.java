@@ -102,6 +102,7 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
 
         } else if (recipe.isSanguineScrollType()) {
             // Sanguine Scroll layout:
+            // [Title]
             // [Main Hand]     [Offhand]
             //        \         /
             //         [Altar]
@@ -109,19 +110,19 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
             //        [Output]
 
             // Main hand input (top left) - the Iron's Spells scroll
-            builder.addSlot(RecipeIngredientRole.INPUT, 35, 10)
+            builder.addSlot(RecipeIngredientRole.INPUT, 35, 28)
                 .addItemStack(recipe.getMainHandInput());
 
             // Offhand input (top right) - the slate
-            builder.addSlot(RecipeIngredientRole.INPUT, 115, 10)
+            builder.addSlot(RecipeIngredientRole.INPUT, 115, 28)
                 .addItemStack(recipe.getOffHandInput());
 
             // Blood Altar (center)
-            builder.addSlot(RecipeIngredientRole.CATALYST, 75, 40)
+            builder.addSlot(RecipeIngredientRole.CATALYST, 75, 52)
                 .addItemStack(new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
 
             // Output slot (bottom center)
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 75)
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 80)
                 .addItemStacks(recipe.getOutputs());
         }
     }
@@ -172,24 +173,20 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
             drawWrappedText(guiGraphics, font, recipe.getDescription().getString(), 5, 85, 160, 0x606060);
 
         } else if (recipe.isSanguineScrollType()) {
-            // Draw hand labels
-            guiGraphics.drawString(font, "Main Hand", 23, 0, 0x404040, false);
-            guiGraphics.drawString(font, "Offhand", 107, 0, 0x404040, false);
+            // Draw hand labels (below title, above item slots)
+            guiGraphics.drawString(font, "Main Hand", 23, 16, 0x404040, false);
+            guiGraphics.drawString(font, "Offhand", 107, 16, 0x404040, false);
 
-            // Draw converging arrows
-            guiGraphics.drawString(font, "↘", 55, 25, 0x404040, false);
-            guiGraphics.drawString(font, "↙", 105, 25, 0x404040, false);
+            // Draw converging arrows (below the input slots at y=28+16=44)
+            guiGraphics.drawString(font, "↘", 55, 46, 0x404040, false);
+            guiGraphics.drawString(font, "↙", 105, 46, 0x404040, false);
 
-            // Draw arrow from altar to output
-            guiGraphics.drawString(font, "↓", 80, 60, 0x404040, false);
+            // Draw arrow from altar to output (altar at y=52+16=68)
+            guiGraphics.drawString(font, "↓", 80, 70, 0x404040, false);
 
-            // Draw LP cost and description on the sides
+            // Draw LP cost on the side (next to altar at y=52)
             String lpText = String.format("%,d LP*", recipe.getLpCost());
-            guiGraphics.drawString(font, lpText, 5, 45, 0xAA0000, false);
-
-            // Draw description/note at bottom
-            String desc = recipe.getDescription().getString();
-            drawWrappedText(guiGraphics, font, desc, 5, 92, 160, 0x606060);
+            guiGraphics.drawString(font, lpText, 5, 56, 0xAA0000, false);
         }
     }
 

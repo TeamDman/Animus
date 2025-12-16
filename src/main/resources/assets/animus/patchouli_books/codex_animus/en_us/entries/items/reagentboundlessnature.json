@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Boundless Nature",
-      "recipe": "animus:soulforge/reagentboundlessnature",
+      "recipe": "animus:soul_forge/reagentboundlessnature",
       "text": "A reagent infused with natural mana."
     },
     {

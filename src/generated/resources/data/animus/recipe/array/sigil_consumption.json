@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:imbued_slate"
+  },
+  "baseinput": {
+    "item": "animus:reagentconsumption"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:sigil_consumption"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/voidsigil.png"
+}

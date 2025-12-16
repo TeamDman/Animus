@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:demonic_slate"
+  },
+  "baseinput": {
+    "item": "animus:reagenttransposition"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:sigil_transposition"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/teleportation.png"
+}

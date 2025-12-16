@@ -2,7 +2,7 @@
   "parent": "minecraft:item/generated",
   "overrides": [
     {
-      "model": "animus:item/key_binding_active",
+      "model": "animus:item/key_binding_bound",
       "predicate": {
         "animus:bound": 1.0
       }

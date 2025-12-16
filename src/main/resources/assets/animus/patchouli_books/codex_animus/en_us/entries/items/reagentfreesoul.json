@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Free Soul",
-      "recipe": "animus:soulforge/reagentfreesoul",
+      "recipe": "animus:soul_forge/reagentfreesoul",
       "text": "A reagent that liberates the soul."
     },
     {

@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:demonic_slate"
+  },
+  "baseinput": {
+    "item": "animus:reagentheavelywrath"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:sigil_heavenly_wrath"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/bindinglightningarray.png"
+}

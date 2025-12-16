@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "animus:willful_stone_yellow_dyeing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_willful_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#animus:willful_stones"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_willful_stone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "animus:willful_stone_yellow_dyeing"
+    ]
+  }
+}

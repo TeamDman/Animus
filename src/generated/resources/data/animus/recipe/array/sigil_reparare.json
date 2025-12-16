@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:imbued_slate"
+  },
+  "baseinput": {
+    "item": "animus:reagentreparare"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:sigil_reparare"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/fastminersigil.png"
+}

@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Temporal Dominance",
-      "recipe": "animus:soulforge/reagenttemporaldominance",
+      "recipe": "animus:soul_forge/reagenttemporaldominance",
       "text": "A reagent that bends time itself."
     },
     {

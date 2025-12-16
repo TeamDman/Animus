@@ -208,15 +208,16 @@ public class SanguineScrollAltarHandler {
 
         String id = stack.getItem().toString();
 
-        if (id.contains("blankslate")) {
+        // Check for Blood Magic 1.21.1 snake_case naming
+        if (id.contains("blank_slate")) {
             return ItemSanguineScroll.SlateType.BLANK;
-        } else if (id.contains("reinforcedslate")) {
+        } else if (id.contains("reinforced_slate")) {
             return ItemSanguineScroll.SlateType.REINFORCED;
-        } else if (id.contains("imbuedslate")) {
+        } else if (id.contains("imbued_slate")) {
             return ItemSanguineScroll.SlateType.IMBUED;
-        } else if (id.contains("demonslate")) {
+        } else if (id.contains("demon_slate")) {
             return ItemSanguineScroll.SlateType.DEMON;
-        } else if (id.contains("etherealslate")) {
+        } else if (id.contains("ethereal_slate")) {
             return ItemSanguineScroll.SlateType.ETHEREAL;
         }
 

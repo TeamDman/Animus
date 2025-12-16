@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Chains",
-      "recipe": "animus:soulforge/reagentchains",
+      "recipe": "animus:soul_forge/reagentchains",
       "text": "A reagent bound with spectral chains."
     },
     {

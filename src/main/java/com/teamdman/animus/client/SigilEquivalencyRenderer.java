@@ -30,7 +30,7 @@ import java.util.List;
  * Client-side renderer for Sigil of Equivalency block preview
  * Shows which blocks would be replaced when looking at a block with the sigil
  */
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(value = Dist.CLIENT, modid = "animus")
 public class SigilEquivalencyRenderer {
 
     @SubscribeEvent

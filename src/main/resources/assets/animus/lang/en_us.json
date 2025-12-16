@@ -330,6 +330,8 @@
   "animus.subtitle.ninja_time": "Monk empowered",
   "animus.subtitle.execute": "Execution",
   "jei.animus.antilife.info": "Created when lightning strikes Life Essence fluid from Blood Magic. Spreads to adjacent blocks, converting them into AntiLife. When touching Life Essence, spreads as fluid instead.",
+  "jei.animus.living_terra.info": "Crafted in the Alchemy Table using water, dirt, bone meal, and a sapling. When placed in the world, Living Terra slowly solidifies into dirt over time, useful for creating terrain or filling gaps.",
+  "jei.animus.blood_apple.info": "Blood Apples are obtained by harvesting Blood Tree Leaves. They restore 4 hunger and 9.6 saturation when eaten, and grant 200 LP to your Soul Network. Blood Trees grow from Blood Saplings, which can be created at the Blood Altar.",
   "guide.animus.entry.sigil_equivalency": "Sigil of Equivalency",
   "jei.animus.antilife_block.info": "Created by the Sigil of Consumption or when AntiLife fluid touches solid blocks. Spreads to matching adjacent blocks up to the configured range.",
   "jei.animus.crystallized_demon_will_block.info": "Crafted in the Alchemy Table using powerful reagents. Required component for Tier 6 Blood Altars. Acts as a valid CRYSTAL component in altar structures.",

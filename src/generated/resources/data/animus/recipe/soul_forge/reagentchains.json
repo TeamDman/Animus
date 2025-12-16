@@ -1,0 +1,23 @@
+{
+  "type": "bloodmagicnv:soul_forge",
+  "drain": 64.0,
+  "inputs": [
+    {
+      "item": "minecraft:iron_bars"
+    },
+    {
+      "item": "minecraft:ender_pearl"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "minecraft:end_stone"
+    }
+  ],
+  "minDrain": 128.0,
+  "output": {
+    "count": 1,
+    "id": "animus:reagentchains"
+  }
+}

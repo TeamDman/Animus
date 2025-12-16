@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Renders acceleration multiplier text above accelerated blocks
  */
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(value = Dist.CLIENT, modid = "animus")
 public class AcceleratedBlockRenderer {
     private static final int RENDER_DISTANCE = 32; // Only render within 32 blocks
 

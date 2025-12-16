@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "bloodNeeded": 1000,
+  "craftSpeed": 5,
+  "drainSpeed": 5,
+  "input": {
+    "item": "minecraft:prismarine_shard"
+  },
+  "minTier": 1,
+  "output": {
+    "count": 1,
+    "id": "animus:fragment_healing"
+  }
+}

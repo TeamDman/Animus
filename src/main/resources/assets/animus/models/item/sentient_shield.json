@@ -324,6 +324,14 @@
 			"translation": [0, 6.5, -2.5]
 		}
 	},
+	"overrides": [
+		{
+			"predicate": {
+				"blocking": 1
+			},
+			"model": "animus:item/sentient_shield_blocking"
+		}
+	],
 	"groups": [
 		{
 			"name": "group",

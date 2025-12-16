@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Reparare",
-      "recipe": "animus:soulforge/reagentreparare",
+      "recipe": "animus:soul_forge/reagentreparare",
       "text": "A reagent with restorative essence."
     },
     {

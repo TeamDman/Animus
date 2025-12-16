@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Transposition",
-      "recipe": "animus:soulforge/reagenttransposition",
+      "recipe": "animus:soul_forge/reagenttransposition",
       "text": "A reagent that bends space itself."
     },
     {

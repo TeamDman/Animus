@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:demonic_slate"
+  },
+  "baseinput": {
+    "item": "animus:reagenttemporaldominance"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:sigil_temporal_dominance"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/moonarray.png"
+}

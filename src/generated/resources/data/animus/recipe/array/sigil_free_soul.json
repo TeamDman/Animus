@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:array",
+  "addedinput": {
+    "item": "bloodmagicnv:demonic_slate"
+  },
+  "baseinput": {
+    "item": "animus:reagentfreesoul"
+  },
+  "output": {
+    "count": 1,
+    "id": "animus:sigil_free_soul"
+  },
+  "texture": "bloodmagicnv:textures/models/alchemyarrays/teleportationarray.png"
+}

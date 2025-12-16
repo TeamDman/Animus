@@ -1,0 +1,17 @@
+{
+  "type": "bloodmagicnv:soul_forge",
+  "drain": 0.0,
+  "inputs": [
+    {
+      "item": "animus:spear_diamond"
+    },
+    {
+      "item": "bloodmagicnv:soul_gem_petty"
+    }
+  ],
+  "minDrain": 0.0,
+  "output": {
+    "count": 1,
+    "id": "animus:spear_sentient"
+  }
+}

@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Storm",
-      "recipe": "animus:soulforge/reagentstorm",
+      "recipe": "animus:soul_forge/reagentstorm",
       "text": "A reagent infused with the fury of storms."
     },
     {

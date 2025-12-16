@@ -1,15 +1,16 @@
 {
-  "type": "bloodmagicnv:blood_altar_recipe",
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "irons_spellbooks"
     }
   ],
+  "type": "bloodmagicnv:blood_altar_recipe",
   "input": {
-    "item": "irons_spellbooks:diamond_spellbook"
+    "item": "irons_spellbooks:diamond_spell_book"
   },
   "output": {
+    "count": 1,
     "id": "animus:blood_infused_spellbook",
     "components": {
       "animus:infusion_tier": 1

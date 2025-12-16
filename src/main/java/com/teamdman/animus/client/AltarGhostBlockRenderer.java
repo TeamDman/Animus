@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Client-side renderer for ghost blocks shown by the Sanguine Diviner
  */
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(value = Dist.CLIENT, modid = "animus")
 public class AltarGhostBlockRenderer {
     private static Map<BlockPos, ResourceLocation> ghostBlocks = new HashMap<>();
     private static int remainingTicks = 0;

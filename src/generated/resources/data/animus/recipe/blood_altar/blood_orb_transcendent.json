@@ -1,0 +1,14 @@
+{
+  "type": "bloodmagicnv:blood_altar_recipe",
+  "bloodNeeded": 80000,
+  "craftSpeed": 10,
+  "drainSpeed": 10,
+  "input": {
+    "item": "animus:crystallized_demon_will_block"
+  },
+  "minTier": 5,
+  "output": {
+    "count": 1,
+    "id": "animus:blood_orb_transcendent"
+  }
+}

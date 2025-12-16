@@ -1,0 +1,23 @@
+{
+  "type": "bloodmagicnv:soul_forge",
+  "drain": 1024.0,
+  "inputs": [
+    {
+      "item": "minecraft:sculk"
+    },
+    {
+      "item": "bloodmagicnv:ethereal_slate"
+    },
+    {
+      "item": "bloodmagicnv:weak_blood_shard"
+    },
+    {
+      "item": "minecraft:nether_star"
+    }
+  ],
+  "minDrain": 2048.0,
+  "output": {
+    "count": 1,
+    "id": "animus:crystallized_demon_will_block"
+  }
+}

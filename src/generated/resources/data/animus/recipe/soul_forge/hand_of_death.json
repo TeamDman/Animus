@@ -1,0 +1,23 @@
+{
+  "type": "bloodmagicnv:soul_forge",
+  "drain": 512.0,
+  "inputs": [
+    {
+      "item": "animus:runic_sentient_scythe"
+    },
+    {
+      "item": "bloodmagicnv:vengeful_crystal"
+    },
+    {
+      "item": "minecraft:wither_skeleton_skull"
+    },
+    {
+      "item": "minecraft:netherite_ingot"
+    }
+  ],
+  "minDrain": 1024.0,
+  "output": {
+    "count": 1,
+    "id": "animus:hand_of_death"
+  }
+}

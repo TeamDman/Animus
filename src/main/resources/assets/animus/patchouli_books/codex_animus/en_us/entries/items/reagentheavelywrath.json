@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Heavenly Wrath",
-      "recipe": "animus:soulforge/reagentheavelywrath",
+      "recipe": "animus:soul_forge/reagentheavelywrath",
       "text": "A reagent charged with divine fury."
     },
     {

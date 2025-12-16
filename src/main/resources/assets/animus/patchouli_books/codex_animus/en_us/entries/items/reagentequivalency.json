@@ -7,7 +7,7 @@
     {
       "type": "animus:crafting_soulforge",
       "heading": "Reagent: Equivalency",
-      "recipe": "animus:soulforge/reagentequivalency",
+      "recipe": "animus:soul_forge/reagentequivalency",
       "text": "A reagent embodying equal exchange."
     },
     {
