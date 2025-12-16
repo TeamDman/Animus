@@ -97,12 +97,25 @@ public class LivingUpgradeHelper {
     }
 
     /**
-     * Get the maximum number of upgrade points available.
+     * Get the default maximum number of upgrade points available.
+     * For evolved armor with higher point caps, use {@link #getMaxUpgradePoints(Player)} instead.
      *
-     * @return The maximum upgrade points (typically 100)
+     * @return The default maximum upgrade points (typically 100)
      */
     public static int getMaxUpgradePoints() {
         return getManager().getMaxUpgradePoints();
+    }
+
+    /**
+     * Get the maximum number of upgrade points available for the player's armor.
+     * This takes into account armor evolution and any other modifiers that may
+     * have increased the maximum points (e.g., evolved armor can have 300 points).
+     *
+     * @param player The player to check
+     * @return The maximum upgrade points for this player's armor
+     */
+    public static int getMaxUpgradePoints(Player player) {
+        return getManager().getMaxUpgradePoints(player);
     }
 
     /**
