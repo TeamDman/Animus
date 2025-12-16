@@ -14,10 +14,11 @@ public final class RitualAreaDescriptors {
     }
 
     /**
-     * Standard chest range - single block directly above the ritual stone
+     * Single block directly above the ritual stone
      * Position: (0, 1, 0), Size: 1x1x1
+     * Common for rituals that interact with inventories, fluid containers, or other blocks
      */
-    public static AreaDescriptor chestAbove() {
+    public static AreaDescriptor singleBlockAbove() {
         return new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1);
     }
 

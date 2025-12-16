@@ -31,7 +31,7 @@ public class RitualEntropy extends Ritual {
     public RitualEntropy() {
         super(Constants.Rituals.ENTROPY, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENTROPY);
 
-        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.chestAbove());
+        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.singleBlockAbove());
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
     }
 

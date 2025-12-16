@@ -53,7 +53,7 @@ public class RitualSol extends Ritual {
         super(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL);
 
         addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.largeCube65());
-        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.chestAbove());
+        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.singleBlockAbove());
 
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);

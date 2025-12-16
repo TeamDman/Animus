@@ -46,7 +46,7 @@ public class RitualLuna extends Ritual {
         super(Constants.Rituals.LUNA, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LUNA);
 
         addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.largeCube65());
-        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.chestAbove());
+        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.singleBlockAbove());
 
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
