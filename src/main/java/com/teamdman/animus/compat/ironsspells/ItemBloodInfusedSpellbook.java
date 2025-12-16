@@ -1,16 +1,22 @@
 package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusDataComponents;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainerMutable;
 import io.redspace.ironsspellbooks.item.SpellBook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
+import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.List;
 
@@ -18,13 +24,19 @@ import java.util.List;
  * Blood-Infused Spellbook - Enhanced spellbook powered by Blood Magic
  *
  * Infusion Tiers and Bonuses:
- * - Tier 1-3: +1/+2/+3 spell slots
- * - Tier 4-5: -10%/-20% LP cost reduction
- * - Tier 6: Spells gain 5% lifesteal
+ * - All tiers: +50 max mana per tier (up to +300)
+ * - Tier 1: 6 spell slots
+ * - Tier 2: 7 spell slots
+ * - Tier 3: 8 spell slots
+ * - Tier 4: 10 spell slots, -10% LP cost reduction
+ * - Tier 5: 11 spell slots, -20% LP cost reduction
+ * - Tier 6: 12 spell slots, -20% LP cost reduction, +5% lifesteal
  *
  * Infused at Blood Altar using Blood Orbs
  */
 public class ItemBloodInfusedSpellbook extends SpellBook {
+
+    private static final ResourceLocation MANA_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "blood_spellbook_mana");
 
     public ItemBloodInfusedSpellbook() {
         super(5); // 5 base spell slots
@@ -45,20 +57,24 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
     public int getMaxSpellSlots() {
         // Base spellbook has dynamic slots based on rarity
         // We'll override this in getMaxSpellSlots(ItemStack)
-        return 10; // Maximum
+        return 12; // Maximum at tier 6
     }
 
     /**
      * Calculate slots for a given tier
+     * Scaling: 5 → 6 → 7 → 8 → 10 → 11 → 12
      */
     private static int calculateSlots(int tier) {
-        int baseSlots = 5;
-        if (tier >= 1 && tier <= 3) {
-            return baseSlots + tier;
-        } else if (tier >= 4) {
-            return baseSlots + 3;
-        }
-        return baseSlots;
+        return switch (tier) {
+            case 0 -> 5;
+            case 1 -> 6;
+            case 2 -> 7;
+            case 3 -> 8;
+            case 4 -> 10;
+            case 5 -> 11;
+            case 6 -> 12;
+            default -> 5;
+        };
     }
 
     /**
@@ -88,6 +104,21 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
     public static double getLifesteal(ItemStack stack) {
         int tier = getInfusionTier(stack);
         return tier >= 6 ? 0.05 : 0.0; // 5% lifesteal at tier 6
+    }
+
+    /**
+     * Get max mana bonus based on infusion tier (+50 per tier)
+     */
+    public static int getMaxManaBonus(ItemStack stack) {
+        int tier = getInfusionTier(stack);
+        return tier * 50; // +50 per tier, up to +300 at tier 6
+    }
+
+    /**
+     * Get max mana bonus for a specific tier
+     */
+    public static int getMaxManaBonusForTier(int tier) {
+        return tier * 50;
     }
 
     /**
@@ -165,6 +196,12 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
             tooltip.add(Component.literal("  Spell Slots: " + getMaxSpellSlots(stack))
                 .withStyle(ChatFormatting.GRAY));
 
+            int manaBonus = getMaxManaBonus(stack);
+            if (manaBonus > 0) {
+                tooltip.add(Component.literal("  Max Mana: +" + manaBonus)
+                    .withStyle(ChatFormatting.AQUA));
+            }
+
             double costReduction = getLPCostReduction(stack);
             if (costReduction > 0) {
                 tooltip.add(Component.literal("  LP Cost Reduction: -" + (int)(costReduction * 100) + "%")
@@ -211,7 +248,7 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
             tooltip.add(Component.literal(""));
             tooltip.add(Component.literal("Tier 1 Bonus:")
                 .withStyle(ChatFormatting.AQUA));
-            tooltip.add(Component.literal("  +1 Spell Slot (6 total)")
+            tooltip.add(Component.literal("  6 Spell Slots, +50 Max Mana")
                 .withStyle(ChatFormatting.GRAY));
 
             tooltip.add(Component.literal(""));
@@ -226,13 +263,14 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
      * Get the bonus description for a given tier
      */
     private static String getNextTierBonus(int tier) {
+        int slots = calculateSlots(tier);
+        int mana = getMaxManaBonusForTier(tier);
+        String base = slots + " Spell Slots, +" + mana + " Max Mana";
         return switch (tier) {
-            case 1 -> "+1 Spell Slot (6 total)";
-            case 2 -> "+2 Spell Slots (7 total)";
-            case 3 -> "+3 Spell Slots (8 total)";
-            case 4 -> "-10% LP Cost Reduction";
-            case 5 -> "-20% LP Cost Reduction";
-            case 6 -> "+5% Spell Lifesteal";
+            case 1, 2, 3 -> base;
+            case 4 -> base + ", -10% LP Cost";
+            case 5 -> base + ", -20% LP Cost";
+            case 6 -> base + ", -20% LP Cost, +5% Lifesteal";
             default -> "Unknown bonus";
         };
     }
@@ -256,5 +294,69 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
     public boolean isFoil(ItemStack stack) {
         // Add enchantment glint if infused
         return getInfusionTier(stack) > 0;
+    }
+
+    /**
+     * Called every tick when the spellbook is equipped in a curios slot
+     * Applies the max mana modifier based on infusion tier
+     */
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        super.curioTick(slotContext, stack);
+
+        if (slotContext.entity().level().isClientSide) {
+            return;
+        }
+
+        int manaBonus = getMaxManaBonus(stack);
+        AttributeInstance manaAttribute = slotContext.entity().getAttribute(AttributeRegistry.MAX_MANA);
+
+        if (manaAttribute == null) {
+            return;
+        }
+
+        AttributeModifier existingModifier = manaAttribute.getModifier(MANA_MODIFIER_ID);
+
+        if (manaBonus <= 0) {
+            // Remove modifier if tier 0
+            if (existingModifier != null) {
+                manaAttribute.removeModifier(MANA_MODIFIER_ID);
+            }
+        } else {
+            // Add or update modifier
+            if (existingModifier == null || existingModifier.amount() != manaBonus) {
+                if (existingModifier != null) {
+                    manaAttribute.removeModifier(MANA_MODIFIER_ID);
+                }
+                manaAttribute.addPermanentModifier(new AttributeModifier(
+                    MANA_MODIFIER_ID,
+                    manaBonus,
+                    AttributeModifier.Operation.ADD_VALUE
+                ));
+            }
+        }
+    }
+
+    /**
+     * Called when the spellbook is unequipped from a curios slot
+     * Removes the max mana modifier
+     */
+    @Override
+    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+        super.onUnequip(slotContext, newStack, stack);
+
+        if (slotContext.entity().level().isClientSide) {
+            return;
+        }
+
+        // Only remove if we're not just swapping to another blood spellbook
+        if (newStack.getItem() instanceof ItemBloodInfusedSpellbook) {
+            return;
+        }
+
+        AttributeInstance manaAttribute = slotContext.entity().getAttribute(AttributeRegistry.MAX_MANA);
+        if (manaAttribute != null) {
+            manaAttribute.removeModifier(MANA_MODIFIER_ID);
+        }
     }
 }

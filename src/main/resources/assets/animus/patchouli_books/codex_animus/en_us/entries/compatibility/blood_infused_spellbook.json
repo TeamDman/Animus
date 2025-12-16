@@ -11,7 +11,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:blood_infused_spellbook",
-      "text": "$(blood)Blood-Powered Spellbook$()$(br2)A spellbook infused with the power of blood magic. Place any Iron's Spells spellbook in the Blood Altar to create one, then right-click to upgrade it.$(br2)$(bold)Base Stats:$() 5 spell slots$(br)$(bold)Maximum Tier:$() 6"
+      "text": "$(blood)Blood-Powered Spellbook$()$(br2)A spellbook infused with the power of blood magic. Place any Iron's Spells spellbook in the Blood Altar to create one, then right-click to upgrade it.$(br2)$(bold)Base Stats:$() 5 spell slots$(br)$(bold)Max Tier:$() 6 (12 slots, +300 mana)"
     },
     {
       "type": "patchouli:text",
@@ -21,12 +21,12 @@
     {
       "type": "patchouli:text",
       "title": "Tier Progression",
-      "text": "Each tier requires a higher tier Blood Orb and more LP:$(br2)$(bold)Tiers 1-3: Spell Slot Bonuses$()$(li)$(blood)Tier 1:$() Weak Orb, 5k LP $(thing)+1 slot$()$(li)$(blood)Tier 2:$() Apprentice Orb, 10k LP $(thing)+2 slots$()$(li)$(blood)Tier 3:$() Magician Orb, 25k LP $(thing)+3 slots$()$(br2)$(italic)Max 8 spell slots at Tier 3$()"
+      "text": "Each tier grants $(thing)+50 Max Mana$() and more spell slots:$(br2)$(bold)Tiers 1-3: Slot & Mana Bonuses$()$(li)$(blood)Tier 1:$() Weak Orb, 5k LP $(thing)6 slots, +50 mana$()$(li)$(blood)Tier 2:$() Apprentice Orb, 10k LP $(thing)7 slots, +100 mana$()$(li)$(blood)Tier 3:$() Magician Orb, 25k LP $(thing)8 slots, +150 mana$()"
     },
     {
       "type": "patchouli:text",
       "title": "Advanced Tiers",
-      "text": "$(bold)Tiers 4-5: LP Cost Reduction$()$(li)$(blood)Tier 4:$() Master Orb, 50k LP $(thing)-10%% LP cost$()$(li)$(blood)Tier 5:$() Archmage Orb, 100k LP $(thing)-20%% LP cost$()$(br2)$(bold)Tier 6: Lifesteal$()$(li)$(blood)Tier 6:$() Transcendent Orb, 175k LP $(thing)+5%% spell lifesteal$()"
+      "text": "$(bold)Tiers 4-6: LP Cost & Lifesteal$()$(li)$(blood)Tier 4:$() Master Orb, 50k LP $(thing)10 slots, +200 mana, -10%% LP$()$(li)$(blood)Tier 5:$() Archmage Orb, 100k LP $(thing)11 slots, +250 mana, -20%% LP$()$(li)$(blood)Tier 6:$() Transcendent Orb, 175k LP $(thing)12 slots, +300 mana, +5%% lifesteal$()"
     },
     {
       "type": "patchouli:text",
