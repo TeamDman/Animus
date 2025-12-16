@@ -1,5 +1,6 @@
 package com.teamdman.animus.client.renderers;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamdman.animus.client.AcceleratedBlocksClientData;
 import com.teamdman.animus.network.AcceleratedBlocksSyncPayload.AccelerationData;
@@ -29,7 +30,7 @@ public class AcceleratedBlockRenderer {
 
     @SubscribeEvent
     public static void onRenderWorldLast(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             return;
         }
 
@@ -51,9 +52,8 @@ public class AcceleratedBlockRenderer {
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
         Vec3 cameraPos = event.getCamera().getPosition();
-        Font font = mc.font;
 
-        poseStack.pushPose();
+        Font font = mc.font;
 
         for (Map.Entry<BlockPos, AccelerationData> entry : acceleratedBlocks.entrySet()) {
             BlockPos pos = entry.getKey();
@@ -75,46 +75,56 @@ public class AcceleratedBlockRenderer {
             double y = pos.getY() + 1.2 - cameraPos.y; // Floating above the block
             double z = pos.getZ() + 0.5 - cameraPos.z;
 
-            // Get multiplier and color
+            // Get multiplier, remaining time, and color
             int multiplier = state.getSpeedMultiplier();
-            String text = multiplier + "x";
+            long remainingTicks = Math.max(0, state.expiryTime() - level.getGameTime());
+            double remainingSeconds = remainingTicks / 20.0;
+            String text = String.format("%dx * %.1fs", multiplier, remainingSeconds);
             int color = getColorForLevel(state.level());
 
             // Render the text
-            renderFloatingText(poseStack, bufferSource, font, text, x, y, z, color, event.getPartialTick().getGameTimeDeltaPartialTick(false));
+            renderFloatingText(poseStack, bufferSource, font, text, x, y, z, color);
         }
 
-        poseStack.popPose();
+        // Disable depth test and flush buffer to render text on top
+        RenderSystem.disableDepthTest();
+        bufferSource.endBatch();
+        RenderSystem.enableDepthTest();
     }
 
     /**
-     * Render floating text at a specific position
+     * Render floating text at a specific position (matching Minecraft's name tag approach)
      */
     private static void renderFloatingText(PoseStack poseStack, MultiBufferSource bufferSource, Font font,
-                                          String text, double x, double y, double z, int color, float partialTick) {
+                                          String text, double x, double y, double z, int color) {
         poseStack.pushPose();
 
         // Translate to position
         poseStack.translate(x, y, z);
 
-        // Rotate to face the camera
-        poseStack.mulPose(Minecraft.getInstance().gameRenderer.getMainCamera().rotation());
+        // Rotate to face the camera (use entityRenderDispatcher's orientation for consistency)
+        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
 
-        // Scale
-        float scale = 0.025f;
-        poseStack.scale(-scale, -scale, scale);
+        // Scale - match Minecraft's name tag: positive X/Z, negative Y only
+        poseStack.scale(0.025F, -0.025F, 0.025F);
 
         // Get the matrix
         Matrix4f matrix = poseStack.last().pose();
 
         // Calculate text width for centering
-        float width = font.width(text);
-        float xOffset = -width / 2.0f;
+        float halfWidth = -font.width(text) / 2.0f;
 
-        // Render background (dark background for visibility)
-        int backgroundColor = 0x40000000; // Semi-transparent black
-        font.drawInBatch(text, xOffset, 0, color, false, matrix, bufferSource,
+        // Ensure color has full alpha
+        int colorWithAlpha = color | 0xFF000000;
+
+        // Render background pass (semi-transparent, see-through)
+        int backgroundColor = (int)(0.25F * 255.0F) << 24; // 25% opacity black background
+        font.drawInBatch(text, halfWidth, 0, 0x20FFFFFF, false, matrix, bufferSource,
             Font.DisplayMode.SEE_THROUGH, backgroundColor, LightTexture.FULL_BRIGHT);
+
+        // Render foreground pass (solid color on top)
+        font.drawInBatch(text, halfWidth, 0, colorWithAlpha, false, matrix, bufferSource,
+            Font.DisplayMode.NORMAL, 0, LightTexture.FULL_BRIGHT);
 
         poseStack.popPose();
     }

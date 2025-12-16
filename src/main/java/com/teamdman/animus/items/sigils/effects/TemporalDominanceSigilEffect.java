@@ -218,16 +218,17 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
             }
 
             // Perform extra ticks by calling the ticker directly
+            // Note: Some block entities don't have server-side tickers (only client tickers)
+            // or use other mechanisms (random ticks, neighbor updates, etc.)
+            // We keep the entry regardless so the level can increment and visual feedback works
             if (ticker != null) {
                 for (int i = 0; i < extraTicks; i++) {
                     @SuppressWarnings("unchecked")
                     BlockEntityTicker<BlockEntity> safeTicker = (BlockEntityTicker<BlockEntity>) ticker;
                     safeTicker.tick(level, pos, blockState, blockEntity);
                 }
-            } else {
-                // No ticker available, remove this block from acceleration
-                iterator.remove();
             }
+            // If no ticker, we still keep the entry - it will expire naturally
         }
     }
 
