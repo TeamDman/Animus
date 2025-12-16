@@ -127,7 +127,8 @@ public class AnimusConfig {
                 .defineInRange("cullingVerticalRange", 10, 1, 64);
 
             cullingLpPerKill = builder
-                .comment("Amount of LP added to the Blood Altar per entity killed by Ritual of Culling")
+                .comment("DEPRECATED - No longer used. LP values are now determined by Blood Magic's entity_sacrifice_value datamap. " +
+                         "Customize via datapacks at: data/<namespace>/data_maps/entity_type/entity_sacrifice_value.json")
                 .defineInRange("cullingLpPerKill", 200, 1, 10000);
 
             peacefulBeckoningCost = builder

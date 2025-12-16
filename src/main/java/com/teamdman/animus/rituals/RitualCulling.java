@@ -28,6 +28,7 @@ import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
 import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.will.WorldDemonWillHandler;
 import wayoftime.bloodmagic.api.ritual.AreaDescriptor;
+import wayoftime.bloodmagic.common.datamap.EntitySacrificeHelper;
 import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
@@ -43,7 +44,7 @@ import java.util.function.Consumer;
  * Refresh Cost: 75 LP per entity
  * Refresh Time: 25 ticks
  * Range: Configurable (default 10 blocks horizontal, 10 blocks vertical above AND below stone)
- * LP per Kill: Configurable (default 200 LP)
+ * LP per Kill: Determined by Blood Magic's entity_sacrifice_value datamap (entity's full health worth)
  */
 public class RitualCulling extends Ritual {
     public static final String ALTAR_RANGE = "altar";
@@ -332,9 +333,15 @@ public class RitualCulling extends Ritual {
 
                     if (result) {
                         entityCount++;
-                        // Use config value for LP per kill (default 200)
-                        int lpPerKill = AnimusConfig.rituals.cullingLpPerKill.get();
+                        // Calculate LP using entity sacrifice datamap - full kill = max health worth of damage
+                        int lpPerKill = EntitySacrificeHelper.calculateLP(livingEntity, livingEntity.getMaxHealth());
                         tileAltar.sacrificialDaggerCall(lpPerKill, true);
+
+                        if (AnimusConfig.rituals.cullingDebug.get()) {
+                            System.out.println("Animus: [Ritual of Culling Debug]:   LP generated: " + lpPerKill +
+                                " (LP/dmg: " + EntitySacrificeHelper.getLpPerDamage(livingEntity) +
+                                ", maxHP: " + livingEntity.getMaxHealth() + ")");
+                        }
 
                         if (isBoss) {
                             // Boss kill - extra LP cost

@@ -16,11 +16,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.monster.Blaze;
-import net.minecraft.world.entity.monster.Endermite;
-import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -34,6 +29,7 @@ import net.minecraft.world.phys.AABB;
 import wayoftime.bloodmagic.common.item.IBindable;
 import wayoftime.bloodmagic.common.datacomponent.Binding;
 import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
+import wayoftime.bloodmagic.common.datamap.EntitySacrificeHelper;
 import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
 import wayoftime.bloodmagic.api.soul.SoulTicket;
 import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
@@ -359,41 +355,21 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
 
 
     /**
-     * Calculates entity sacrifice value based on entity type
-     * Values are based on Blood Magic's standard sacrifice values
+     * Calculates entity sacrifice value using Blood Magic's entity sacrifice datamap.
+     * Full kill = LP per damage × max health (with optional cap for bosses).
+     * Values can be customized via datapacks at:
+     * data/<namespace>/data_maps/entity_type/entity_sacrifice_value.json
      */
     private int getEntitySacrificeValue(LivingEntity entity) {
-        // Boss entities - very high value
-        if (entity instanceof WitherBoss) {
-            return 2000;
-        }
-        if (entity instanceof EnderDragon) {
-            return 3000;
-        }
-
-        // Special cases - low value
-        if (entity instanceof Silverfish || entity instanceof Endermite) {
-            return 25;
-        }
-
-        // Fire entities - higher value
-        if (entity instanceof Blaze) {
-            return 250;
-        }
-
-        // Default values based on entity attributes
-        int baseValue = 500;
+        // Use the datamap to calculate full sacrifice value (kill = max health worth of damage)
+        int lpValue = EntitySacrificeHelper.calculateLP(entity, entity.getMaxHealth());
 
         // Baby entities give half value
         if (entity.isBaby()) {
-            baseValue /= 2;
+            lpValue /= 2;
         }
 
-        // Scale by max health (entities with more health give more LP)
-        float healthMultiplier = Math.min(entity.getMaxHealth() / 20.0F, 2.0F);
-        baseValue = (int) (baseValue * healthMultiplier);
-
-        return Math.max(baseValue, 50); // Minimum 50 LP
+        return Math.max(lpValue, 50); // Minimum 50 LP
     }
 
     @Override
