@@ -65,17 +65,14 @@ public class RitualCulling extends Ritual {
 
         // Use default ranges - config is not available at construction time
         // Default: 10 horizontal, 10 vertical - can be adjusted via ritual stone GUI
-        int hRange = 10;
-        int vRange = 10;
-        int hSize = hRange * 2 + 1;  // Full horizontal size (e.g., 10*2+1 = 21)
-        int vSize = vRange * 2 + 1;  // Full vertical size (e.g., 10*2+1 = 21, covers -10 to +10)
+        int effectRange = 10;
 
-        addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
-        // Symmetric range: extends vRange blocks above and below the ritual stone
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRange, -vRange, -hRange), hSize, vSize, hSize));
+        addBlockRange(ALTAR_RANGE, RitualAreaDescriptors.horizontalArea(5, 10));
+        // Symmetric range: extends effectRange blocks in all directions from ritual stone
+        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.symmetricCube(effectRange));
 
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, vRange + 5, hRange + 5);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, effectRange + 5, effectRange + 5);
     }
 
     public double smallGauss(double d) {

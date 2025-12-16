@@ -3,6 +3,7 @@ package com.teamdman.animus.blocks;
 import com.teamdman.animus.blockentities.BlockEntityWillfulStone;
 import com.teamdman.animus.items.ItemKeyBinding;
 import com.teamdman.animus.registry.AnimusItems;
+import com.teamdman.animus.util.InventorySearchHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -100,18 +101,9 @@ public class BlockWillfulStone extends Block implements EntityBlock {
      * Checks if the player has a Key of Binding bound to the specified owner
      */
     private boolean hasKeyOfBinding(Player player, UUID owner) {
-        // Check main inventory
-        for (ItemStack stack : player.getInventory().items) {
-            if (isKeyOfBindingForOwner(stack, owner)) {
-                return true;
-            }
-        }
-
-        // Check offhand
-        for (ItemStack stack : player.getInventory().offhand) {
-            if (isKeyOfBindingForOwner(stack, owner)) {
-                return true;
-            }
+        // Check main inventory, armor, and offhand using helper
+        if (InventorySearchHelper.hasItem(player, stack -> isKeyOfBindingForOwner(stack, owner))) {
+            return true;
         }
 
         // Check curios slots

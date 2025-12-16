@@ -52,8 +52,8 @@ public class RitualSol extends Ritual {
     public RitualSol() {
         super(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL);
 
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65, 65, 65));
-        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
+        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.largeCube65());
+        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.chestAbove());
 
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
@@ -190,11 +190,9 @@ public class RitualSol extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
+        // Air runes at corners, rising 3 layers high
         for (int layer = 0; layer < 3; layer++) {
-            addRune(components, 2, layer, 2, EnumRuneType.AIR);
-            addRune(components, -2, layer, 2, EnumRuneType.AIR);
-            addRune(components, 2, layer, -2, EnumRuneType.AIR);
-            addRune(components, -2, layer, -2, EnumRuneType.AIR);
+            addCornerRunes(components, 2, layer, EnumRuneType.AIR);
         }
     }
 

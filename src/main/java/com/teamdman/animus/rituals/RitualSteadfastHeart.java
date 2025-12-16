@@ -55,7 +55,7 @@ public class RitualSteadfastHeart extends Ritual {
         // Range can be adjusted via the ritual stone GUI
         int range = 128;
         int halfRange = range / 2;
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-halfRange, -halfRange, -halfRange), range, range, range));
+        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.symmetricCube(halfRange));
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, range, range);
     }
 

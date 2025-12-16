@@ -33,7 +33,7 @@ public class RitualReparare extends Ritual {
         super(Constants.Rituals.REPARARE, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.REPARARE);
 
         // Look for chest directly above the master ritual stone
-        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
+        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.chestAbove());
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
     }
 

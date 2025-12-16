@@ -1,6 +1,7 @@
 package com.teamdman.animus.items.sigils.effects;
 
 import com.mojang.serialization.MapCodec;
+import com.teamdman.animus.util.SigilStateTracker;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,8 +21,9 @@ import java.util.List;
 public record RemediumSigilEffect() implements ISigilEffect {
     public static final MapCodec<RemediumSigilEffect> CODEC = MapCodec.unit(RemediumSigilEffect::new);
 
-    // Track last cleanse tick per player (using game time)
-    private static final java.util.Map<java.util.UUID, Long> lastCleanseTime = new java.util.concurrent.ConcurrentHashMap<>();
+    // Track last cleanse tick per player (auto-registered for cleanup)
+    private static final SigilStateTracker TRACKER = new SigilStateTracker("remedium");
+    private static final int CLEANSE_INTERVAL = 20; // 1 second
 
     @Override
     public MapCodec<? extends ISigilEffect> codec() {
@@ -39,10 +41,9 @@ public record RemediumSigilEffect() implements ISigilEffect {
             return;
         }
 
-        // Check if enough time has passed (1 second = 20 ticks)
+        // Check if enough time has passed using the tracker
         long currentTime = level.getGameTime();
-        Long lastCleanse = lastCleanseTime.get(player.getUUID());
-        if (lastCleanse != null && currentTime - lastCleanse < 20) {
+        if (!TRACKER.isReady(player.getUUID(), currentTime, CLEANSE_INTERVAL)) {
             return;
         }
 
@@ -66,13 +67,8 @@ public record RemediumSigilEffect() implements ISigilEffect {
             player.removeEffect(effect);
         }
 
-        lastCleanseTime.put(player.getUUID(), currentTime);
+        TRACKER.updateTime(player.getUUID(), currentTime);
     }
 
-    /**
-     * Clean up tracking data when player logs out.
-     */
-    public static void onPlayerLogout(java.util.UUID playerId) {
-        lastCleanseTime.remove(playerId);
-    }
+    // Cleanup is handled automatically by SigilStateCleanupManager via TRACKER registration
 }

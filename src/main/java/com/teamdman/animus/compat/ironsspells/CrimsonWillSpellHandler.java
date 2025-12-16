@@ -3,6 +3,7 @@ package com.teamdman.animus.compat.ironsspells;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.util.InventorySearchHelper;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
@@ -203,57 +204,35 @@ public class CrimsonWillSpellHandler {
      * @return The active sigil ItemStack, or null if none found
      */
     private ItemStack findActiveSigil(Player player) {
-        // Check main hand
-        ItemStack mainHand = player.getMainHandItem();
-        if (mainHand.getItem() instanceof ItemSigilCrimsonWill && ItemSigilCrimsonWill.isActive(mainHand)) {
-            return mainHand;
-        }
+        // Predicate for active Crimson Will sigil
+        java.util.function.Predicate<ItemStack> isActiveCrimsonWill = stack ->
+            stack.getItem() instanceof ItemSigilCrimsonWill && ItemSigilCrimsonWill.isActive(stack);
 
-        // Check offhand
-        ItemStack offHand = player.getOffhandItem();
-        if (offHand.getItem() instanceof ItemSigilCrimsonWill && ItemSigilCrimsonWill.isActive(offHand)) {
-            return offHand;
-        }
-
-        // Check main inventory
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() instanceof ItemSigilCrimsonWill && ItemSigilCrimsonWill.isActive(stack)) {
-                return stack;
-            }
+        // Check main inventory, armor, and offhand using helper
+        var fromInventory = InventorySearchHelper.findFirst(player, isActiveCrimsonWill);
+        if (fromInventory.isPresent()) {
+            return fromInventory.get();
         }
 
         // Check Curios slots
         var curiosResult = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
-            .map(inv -> inv.findFirstCurio(stack ->
-                stack.getItem() instanceof ItemSigilCrimsonWill && ItemSigilCrimsonWill.isActive(stack)))
+            .map(inv -> inv.findFirstCurio(isActiveCrimsonWill))
             .orElse(java.util.Optional.empty());
 
         if (curiosResult.isPresent()) {
             return curiosResult.get().stack();
         }
 
-        // Check inside Sigil of Holding in inventory
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() instanceof wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding) {
-                net.minecraft.core.NonNullList<ItemStack> holdingInv =
-                    wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding.getInternalInventory(stack);
-                for (ItemStack heldStack : holdingInv) {
-                    if (heldStack.getItem() instanceof ItemSigilCrimsonWill && ItemSigilCrimsonWill.isActive(heldStack)) {
-                        return heldStack;
-                    }
-                }
-            }
-        }
+        // Check inside Sigil of Holding (in inventory and hands)
+        var sigilHoldings = InventorySearchHelper.findAll(player,
+            stack -> stack.getItem() instanceof wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding);
 
-        // Check Sigil of Holding in hands
-        for (ItemStack stack : new ItemStack[]{player.getMainHandItem(), player.getOffhandItem()}) {
-            if (stack.getItem() instanceof wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding) {
-                net.minecraft.core.NonNullList<ItemStack> holdingInv =
-                    wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding.getInternalInventory(stack);
-                for (ItemStack heldStack : holdingInv) {
-                    if (heldStack.getItem() instanceof ItemSigilCrimsonWill && ItemSigilCrimsonWill.isActive(heldStack)) {
-                        return heldStack;
-                    }
+        for (ItemStack holdingStack : sigilHoldings) {
+            net.minecraft.core.NonNullList<ItemStack> holdingInv =
+                wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding.getInternalInventory(holdingStack);
+            for (ItemStack heldStack : holdingInv) {
+                if (isActiveCrimsonWill.test(heldStack)) {
+                    return heldStack;
                 }
             }
         }

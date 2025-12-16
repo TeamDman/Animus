@@ -59,7 +59,7 @@ public class RitualNaturesLeach extends Ritual {
         int rangeSize = range * 2 + 4; // Convert to full size
 
         // Altar range: 32 blocks horizontally, 10 blocks down, 10 blocks up
-        addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -10, -32), 65, 21, 65));
+        addBlockRange(ALTAR_RANGE, RitualAreaDescriptors.horizontalArea(32, 10));
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-range, -range, -range), rangeSize, rangeSize, rangeSize));
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, range + 10, range + 10, range + 10);
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 32, 32);

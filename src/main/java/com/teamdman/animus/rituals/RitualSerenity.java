@@ -140,23 +140,14 @@ public class RitualSerenity extends Ritual {
         // Create a peaceful pattern with water runes (representing calm)
         // and air runes (representing tranquility)
 
-        // Inner circle with water runes
-        addRune(components, 0, 0, -2, EnumRuneType.WATER);
-        addRune(components, 0, 0, 2, EnumRuneType.WATER);
-        addRune(components, -2, 0, 0, EnumRuneType.WATER);
-        addRune(components, 2, 0, 0, EnumRuneType.WATER);
+        // Inner circle with water runes (cardinal directions)
+        addParallelRunes(components, 2, 0, EnumRuneType.WATER);
 
         // Diagonal positions with air runes
-        addRune(components, -1, 0, -1, EnumRuneType.AIR);
-        addRune(components, -1, 0, 1, EnumRuneType.AIR);
-        addRune(components, 1, 0, -1, EnumRuneType.AIR);
-        addRune(components, 1, 0, 1, EnumRuneType.AIR);
+        addCornerRunes(components, 1, 0, EnumRuneType.AIR);
 
         // Outer corners with earth runes for grounding
-        addRune(components, -2, 0, -2, EnumRuneType.EARTH);
-        addRune(components, -2, 0, 2, EnumRuneType.EARTH);
-        addRune(components, 2, 0, -2, EnumRuneType.EARTH);
-        addRune(components, 2, 0, 2, EnumRuneType.EARTH);
+        addCornerRunes(components, 2, 0, EnumRuneType.EARTH);
     }
 
     @Override

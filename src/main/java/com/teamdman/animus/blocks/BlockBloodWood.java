@@ -1,8 +1,6 @@
 package com.teamdman.animus.blocks;
 
 import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 
 /**
  * Blood Wood Log block
@@ -11,9 +9,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
  */
 public class BlockBloodWood extends RotatedPillarBlock {
     public BlockBloodWood() {
-        super(BlockBehaviour.Properties.of()
-            .strength(2.0F)
-            .sound(SoundType.WOOD)
-        );
+        super(AnimusBlockProperties.bloodWoodLog());
     }
 }

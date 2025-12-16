@@ -45,8 +45,8 @@ public class RitualLuna extends Ritual {
     public RitualLuna() {
         super(Constants.Rituals.LUNA, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LUNA);
 
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -32, -32), 65, 65, 65));
-        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
+        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.largeCube65());
+        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.chestAbove());
 
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
@@ -141,11 +141,9 @@ public class RitualLuna extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
+        // Earth runes at corners, rising 3 layers high
         for (int layer = 0; layer < 3; layer++) {
-            addRune(components, 2, layer, 2, EnumRuneType.EARTH);
-            addRune(components, -2, layer, 2, EnumRuneType.EARTH);
-            addRune(components, 2, layer, -2, EnumRuneType.EARTH);
-            addRune(components, -2, layer, -2, EnumRuneType.EARTH);
+            addCornerRunes(components, 2, layer, EnumRuneType.EARTH);
         }
     }
 

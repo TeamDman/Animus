@@ -2,6 +2,7 @@ package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.util.InventorySearchHelper;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import net.minecraft.ChatFormatting;
@@ -223,32 +224,14 @@ public class SpellCastingHandler {
      * Check if player has a Blood Orb in inventory or curios slots
      */
     private boolean hasBloodOrb(Player player) {
-        // Check main inventory
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() instanceof BloodOrbItem) {
-                return true;
-            }
-        }
-
-        // Check armor slots
-        for (ItemStack stack : player.getInventory().armor) {
-            if (stack.getItem() instanceof BloodOrbItem) {
-                return true;
-            }
-        }
-
-        // Check offhand
-        for (ItemStack stack : player.getInventory().offhand) {
-            if (stack.getItem() instanceof BloodOrbItem) {
-                return true;
-            }
+        // Check main inventory, armor, and offhand using helper
+        if (InventorySearchHelper.hasItem(player, stack -> stack.getItem() instanceof BloodOrbItem)) {
+            return true;
         }
 
         // Check Curios slots
-        boolean foundInCurios = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
+        return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
             .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof BloodOrbItem).isPresent())
             .orElse(false);
-
-        return foundInCurios;
     }
 }

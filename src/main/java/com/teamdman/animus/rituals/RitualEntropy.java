@@ -31,7 +31,7 @@ public class RitualEntropy extends Ritual {
     public RitualEntropy() {
         super(Constants.Rituals.ENTROPY, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENTROPY);
 
-        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
+        addBlockRange(CHEST_RANGE, RitualAreaDescriptors.chestAbove());
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
     }
 
@@ -101,18 +101,12 @@ public class RitualEntropy extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        for (int x = -1; x <= 1; x++) {
-            for (int z = -1; z <= 1; z++) {
-                if (x == 0 && z == 0) {
-                    continue;
-                }
-                addRune(components, x, 0, z, EnumRuneType.EARTH);
-            }
-        }
-        addRune(components, -2, 0, -2, EnumRuneType.EARTH);
-        addRune(components, -2, 0, 2, EnumRuneType.EARTH);
-        addRune(components, 2, 0, -2, EnumRuneType.EARTH);
-        addRune(components, 2, 0, 2, EnumRuneType.EARTH);
+        // Inner ring (3x3 minus center)
+        addCornerRunes(components, 1, 0, EnumRuneType.EARTH);
+        addParallelRunes(components, 1, 0, EnumRuneType.EARTH);
+
+        // Outer corners
+        addCornerRunes(components, 2, 0, EnumRuneType.EARTH);
     }
 
     @Override

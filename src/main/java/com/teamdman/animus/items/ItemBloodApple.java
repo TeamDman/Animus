@@ -4,6 +4,7 @@ import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.util.AnimusUtil;
+import com.teamdman.animus.util.InventorySearchHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -92,20 +93,10 @@ public class ItemBloodApple extends Item {
      * @return The owner UUID of the bound key, or null if no bound key found
      */
     private UUID findBoundKeyOwner(Player player) {
-        // Check main inventory
-        for (ItemStack itemStack : player.getInventory().items) {
-            UUID owner = getKeyBindingOwner(itemStack);
-            if (owner != null) {
-                return owner;
-            }
-        }
-
-        // Check offhand
-        for (ItemStack itemStack : player.getInventory().offhand) {
-            UUID owner = getKeyBindingOwner(itemStack);
-            if (owner != null) {
-                return owner;
-            }
+        // Check main inventory, armor, and offhand using helper
+        var fromInventory = InventorySearchHelper.findFirst(player, stack -> getKeyBindingOwner(stack) != null);
+        if (fromInventory.isPresent()) {
+            return getKeyBindingOwner(fromInventory.get());
         }
 
         // Check curios slots

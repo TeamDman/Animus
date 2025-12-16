@@ -42,7 +42,7 @@ public class RitualUnmaking extends Ritual {
     public RitualUnmaking() {
         super(Constants.Rituals.UNMAKING, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.UNMAKING);
 
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-2, -2, -2), 5, 5, 5));
+        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.smallCube5());
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 8, 8);
     }
 
