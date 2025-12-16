@@ -117,16 +117,25 @@ public class RitualArcaneMastery extends Ritual {
             }
 
             // Found a scroll, try to process it using ISpellContainer
-            SpellData spellData = ISpellContainer.get(stack).getSpellAtIndex(0);
+            ISpellContainer container = ISpellContainer.get(stack);
+            if (container == null || container.isEmpty()) {
+                continue;
+            }
+
+            SpellData spellData = container.getSpellAtIndex(0);
+            if (spellData == null) {
+                continue;
+            }
+
             AbstractSpell spell = spellData.getSpell();
+            if (spell == null) {
+                continue;
+            }
+
             int scrollLevel = spellData.getLevel();
             String spellId = spell.getSpellId();
 
             if (spellId == null || spellId.isEmpty()) {
-                continue;
-            }
-
-            if (spell == null) {
                 continue;
             }
 
@@ -140,9 +149,9 @@ public class RitualArcaneMastery extends Ritual {
                 continue;
             }
 
-            // Calculate LP cost
+            // Calculate LP cost (ensure non-zero by using max with baseCost)
             int baseCost = getLPCostForRarity(spell.getRarity(targetLevel));
-            int totalCost = baseCost * scrollLevel; // Cost scales with current scroll level
+            int totalCost = Math.max(baseCost, baseCost * scrollLevel); // Cost scales with current scroll level
 
             // Check if player has enough LP
             if (network.getCurrentEssence() < totalCost) {

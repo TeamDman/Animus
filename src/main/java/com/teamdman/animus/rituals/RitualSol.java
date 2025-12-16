@@ -69,6 +69,12 @@ public class RitualSol extends Ritual {
             return;
         }
 
+        // Check if player has enough LP
+        int currentEssence = network.getCurrentEssence();
+        if (currentEssence < getRefreshCost()) {
+            return;
+        }
+
         // Get chest
         AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
@@ -199,7 +205,7 @@ public class RitualSol extends Ritual {
     private BlockPos findDarkSpot(Level level, BlockPos masterPos) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
-        int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
+        int maxChecksPerTick = 4096; // Increased for faster operation
         int checksThisTick = 0;
         int horizontalRadius = AnimusConfig.rituals.solHorizontalRange.get();
         int configVerticalRange = AnimusConfig.rituals.solVerticalRange.get();
@@ -288,12 +294,13 @@ public class RitualSol extends Ritual {
      * Track the search state for each ritual to resume where it left off
      * Searches from center outward in expanding square rings
      * Searches downward from ritual stone (Y=0) to Y=-verticalRadius
+     * Uses sentinel values to indicate "start from beginning" for each dimension
      */
     private static class SearchState {
         int currentRadius = 0; // Start from center (at master ritual stone)
-        int currentX = 0; // X position within current radius ring
-        int currentZ = 0; // Z position within current radius ring
-        int currentY = 0; // Vertical position (0 = ritual stone level, searches downward)
+        int currentX = Integer.MIN_VALUE; // Sentinel: start from beginning of X range
+        int currentZ = Integer.MIN_VALUE; // Sentinel: start from beginning of Z range
+        int currentY = Integer.MAX_VALUE; // Sentinel: start from top of Y range (searches downward)
     }
 
     @Override

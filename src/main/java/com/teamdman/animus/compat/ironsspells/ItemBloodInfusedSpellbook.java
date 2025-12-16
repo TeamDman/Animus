@@ -2,6 +2,8 @@ package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.registry.AnimusDataComponents;
+import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
+import io.redspace.ironsspellbooks.api.spells.ISpellContainerMutable;
 import io.redspace.ironsspellbooks.item.SpellBook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -47,24 +49,23 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
     }
 
     /**
+     * Calculate slots for a given tier
+     */
+    private static int calculateSlots(int tier) {
+        int baseSlots = 5;
+        if (tier >= 1 && tier <= 3) {
+            return baseSlots + tier;
+        } else if (tier >= 4) {
+            return baseSlots + 3;
+        }
+        return baseSlots;
+    }
+
+    /**
      * Get max spell slots based on infusion tier
      */
     public static int getMaxSpellSlots(ItemStack stack) {
-        int tier = getInfusionTier(stack);
-
-        // Base slots from parent class would be 5 for COMMON
-        int baseSlots = 5;
-
-        // Tier 1-3: +1/+2/+3 slots
-        if (tier >= 1 && tier <= 3) {
-            return baseSlots + tier;
-        }
-        // Tier 4+: +3 slots (same as tier 3)
-        else if (tier >= 4) {
-            return baseSlots + 3;
-        }
-
-        return baseSlots;
+        return calculateSlots(getInfusionTier(stack));
     }
 
     /**
@@ -98,9 +99,25 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
 
     /**
      * Set the infusion tier of this spellbook using data components
+     * Also updates the SpellContainer's max spell count to match
      */
     public static void setInfusionTier(ItemStack stack, int tier) {
-        stack.set(AnimusDataComponents.INFUSION_TIER.get(), Math.max(0, Math.min(6, tier)));
+        tier = Math.max(0, Math.min(6, tier));
+        stack.set(AnimusDataComponents.INFUSION_TIER.get(), tier);
+        updateSpellContainerSlots(stack, tier);
+    }
+
+    /**
+     * Update the SpellContainer's max spell count based on infusion tier
+     */
+    public static void updateSpellContainerSlots(ItemStack stack, int tier) {
+        int newSlotCount = calculateSlots(tier);
+        ISpellContainer container = ISpellContainer.getOrCreate(stack);
+        if (container.getMaxSpellCount() != newSlotCount) {
+            ISpellContainerMutable mutable = container.mutableCopy();
+            mutable.setMaxSpellCount(newSlotCount);
+            ISpellContainer.set(stack, mutable.toImmutable());
+        }
     }
 
     /**
