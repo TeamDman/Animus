@@ -7,8 +7,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import wayoftime.bloodmagic.api.ritual.IImperfectRitualStone;
-import wayoftime.bloodmagic.ritual.ImperfectRitual;
+import com.breakinblocks.neovitae.api.ritual.IImperfectRitualStone;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
 
 /**
  * Imperfect Ritual of Regression

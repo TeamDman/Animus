@@ -3,8 +3,8 @@ package com.teamdman.animus.client;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
-import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
+import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
 
 import java.util.List;
 

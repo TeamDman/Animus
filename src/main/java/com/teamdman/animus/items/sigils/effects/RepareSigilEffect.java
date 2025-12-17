@@ -8,7 +8,7 @@ import com.teamdman.animus.util.SigilStateTracker;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 
 import java.util.List;
 

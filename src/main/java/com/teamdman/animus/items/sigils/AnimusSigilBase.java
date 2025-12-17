@@ -8,8 +8,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
-import wayoftime.bloodmagic.common.item.sigil.ItemSigilBase;
-import wayoftime.bloodmagic.common.datacomponent.Binding;
+import com.breakinblocks.neovitae.common.item.sigil.ItemSigilBase;
+import com.breakinblocks.neovitae.common.datacomponent.Binding;
 
 import java.util.List;
 import java.util.Objects;

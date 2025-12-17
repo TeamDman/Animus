@@ -18,9 +18,9 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.minecraft.core.registries.Registries;
-import wayoftime.bloodmagic.ritual.ImperfectRitual;
-import wayoftime.bloodmagic.ritual.Ritual;
-import wayoftime.bloodmagic.ritual.RitualRegistry;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
+import com.breakinblocks.neovitae.ritual.Ritual;
+import com.breakinblocks.neovitae.ritual.RitualRegistry;
 
 /**
  * Compatibility module for Irons Spells n Spellbooks
@@ -119,7 +119,7 @@ public class IronsSpellsCompat implements ICompatModule {
         Animus.LOGGER.info("Initializing Irons Spells n Spellbooks compatibility");
 
         // Register Arcane Channeling Living Armor upgrade event handlers
-        // The upgrade itself is defined in data/animus/bloodmagic/living_upgrades/arcane_channeling.json
+        // The upgrade itself is defined in data/animus/neovitae/living_upgrades/arcane_channeling.json
         ArcaneChannelingHandler.register();
         Animus.LOGGER.info("Registered Arcane Channeling Living Armor upgrade handler");
 

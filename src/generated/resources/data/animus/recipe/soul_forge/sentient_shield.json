@@ -1,12 +1,12 @@
 {
-  "type": "bloodmagicnv:soul_forge",
+  "type": "neovitae:soul_forge",
   "drain": 100.0,
   "inputs": [
     {
       "item": "minecraft:shield"
     },
     {
-      "item": "bloodmagicnv:soul_gem_petty"
+      "item": "neovitae:soul_gem_petty"
     },
     {
       "item": "minecraft:diamond"

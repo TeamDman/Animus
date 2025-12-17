@@ -1,14 +1,14 @@
 {
   "name": "guide.animus.entry.ritual_persistence",
-  "icon": "bloodmagicnv:master_ritual_stone",
+  "icon": "neovitae:master_ritual_stone",
   "category": "animus:rituals",
   "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:multiblock",
       "name": "Ritual of Persistence",
-      "multiblock_id": "bloodmagicnv:ritual_persistence",
-      "text": "Use a $(l:bloodmagicnv:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
+      "multiblock_id": "neovitae:ritual_persistence",
+      "text": "Use a $(l:neovitae:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
     },
     {
       "type": "patchouli:text",

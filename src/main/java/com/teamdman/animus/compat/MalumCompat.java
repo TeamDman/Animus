@@ -6,8 +6,8 @@ import com.teamdman.animus.compat.malum.RitualSoulStainedBlood;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import wayoftime.bloodmagic.ritual.ImperfectRitual;
-import wayoftime.bloodmagic.ritual.RitualRegistry;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
+import com.breakinblocks.neovitae.ritual.RitualRegistry;
 
 /**
  * Compatibility module for Malum

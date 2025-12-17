@@ -9,9 +9,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import wayoftime.bloodmagic.api.soul.SoulTicket;
-import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
+import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.ritual.*;
+import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 
 import java.util.function.Consumer;
 

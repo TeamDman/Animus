@@ -14,11 +14,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import wayoftime.bloodmagic.api.sigil.ISigilEffect;
-import wayoftime.bloodmagic.common.datacomponent.Binding;
-import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.api.soul.SoulTicket;
-import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
+import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.common.datacomponent.Binding;
+import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.HashMap;
 import java.util.Map;

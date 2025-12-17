@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagicnv:array",
+  "type": "neovitae:array",
   "addedinput": {
-    "item": "bloodmagicnv:imbued_slate"
+    "item": "neovitae:imbued_slate"
   },
   "baseinput": {
     "item": "animus:reagentconsumption"
@@ -10,5 +10,5 @@
     "count": 1,
     "id": "animus:sigil_consumption"
   },
-  "texture": "bloodmagicnv:textures/models/alchemyarrays/voidsigil.png"
+  "texture": "neovitae:textures/models/alchemyarrays/voidsigil.png"
 }

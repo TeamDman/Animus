@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import wayoftime.bloodmagic.common.recipe.alchemytable.AlchemyTableRecipe;
+import com.breakinblocks.neovitae.common.recipe.alchemytable.AlchemyTableRecipe;
 
 import java.util.ArrayList;
 import java.util.List;

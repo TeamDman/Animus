@@ -8,8 +8,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.TriState;
-import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
-import wayoftime.bloodmagic.ritual.IMasterRitualStone;
+import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
+import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 
 /**
  * Prevents the Sanguine Diviner from being placed into Blood Altars or interfering with Ritual Stones

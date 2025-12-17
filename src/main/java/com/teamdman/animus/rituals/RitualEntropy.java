@@ -9,12 +9,12 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.api.soul.SoulTicket;
-import wayoftime.bloodmagic.api.ritual.AreaDescriptor;
-import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.ritual.EnumRuneType;
-import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
+import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
+import com.breakinblocks.neovitae.ritual.*;
+import com.breakinblocks.neovitae.ritual.EnumRuneType;
+import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.function.Consumer;
 

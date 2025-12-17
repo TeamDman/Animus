@@ -9,8 +9,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.api.ritual.IImperfectRitualStone;
-import wayoftime.bloodmagic.ritual.ImperfectRitual;
+import com.breakinblocks.neovitae.api.ritual.IImperfectRitualStone;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
 
 /**
  * Imperfect Ritual of the Magi

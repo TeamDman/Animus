@@ -30,13 +30,13 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import wayoftime.bloodmagic.client.render.BloodMagicRenderer;
-import wayoftime.bloodmagic.client.render.RenderResizableCuboid;
-import wayoftime.bloodmagic.common.block.BMBlocks;
-import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
-import wayoftime.bloodmagic.common.registry.AltarComponent;
-import wayoftime.bloodmagic.common.structure.BMMultiblock;
-import wayoftime.bloodmagic.common.tag.BMTags;
+import com.breakinblocks.neovitae.client.render.NeoVitaeRenderer;
+import com.breakinblocks.neovitae.client.render.RenderResizableCuboid;
+import com.breakinblocks.neovitae.common.block.BMBlocks;
+import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
+import com.breakinblocks.neovitae.common.registry.AltarComponent;
+import com.breakinblocks.neovitae.common.structure.BMMultiblock;
+import com.breakinblocks.neovitae.common.tag.BMTags;
 
 import java.util.List;
 
@@ -48,11 +48,11 @@ import java.util.List;
 public class AltarTierRenderer {
 
     // Texture resource locations for different block types
-    private static final ResourceLocation BLANK_RUNE = ResourceLocation.fromNamespaceAndPath("bloodmagicnv", "block/rune_blank");
+    private static final ResourceLocation BLANK_RUNE = ResourceLocation.fromNamespaceAndPath("neovitae", "block/rune_blank");
     private static final ResourceLocation STONE_BRICKS = ResourceLocation.withDefaultNamespace("block/stone_bricks");
     private static final ResourceLocation GLOWSTONE = ResourceLocation.withDefaultNamespace("block/glowstone");
-    private static final ResourceLocation BLOODSTONE = ResourceLocation.fromNamespaceAndPath("bloodmagicnv", "block/bloodstone_brick");
-    private static final ResourceLocation HELLFORGED = ResourceLocation.fromNamespaceAndPath("bloodmagicnv", "block/hellforged_block");
+    private static final ResourceLocation BLOODSTONE = ResourceLocation.fromNamespaceAndPath("neovitae", "block/bloodstone_brick");
+    private static final ResourceLocation HELLFORGED = ResourceLocation.fromNamespaceAndPath("neovitae", "block/hellforged_block");
     private static final ResourceLocation CRYSTALLIZED_DEMON_WILL = ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "block/crystallized_demon_will_block");
 
     // Ghost effect colors - translucent with different tints
@@ -145,7 +145,7 @@ public class AltarTierRenderer {
 
             ResourceLocation textureRL = getComponentTexture(component);
             int color = getComponentColor(component);
-            BloodMagicRenderer.Model3D model = getBlockModel(textureRL);
+            NeoVitaeRenderer.Model3D model = getBlockModel(textureRL);
 
             RenderResizableCuboid.INSTANCE.renderCube(
                     model, poseStack, buffer, color, FULL_BRIGHT, OverlayTexture.NO_OVERLAY
@@ -209,8 +209,8 @@ public class AltarTierRenderer {
         return GHOST_COLOR_PILLAR;
     }
 
-    private static BloodMagicRenderer.Model3D getBlockModel(ResourceLocation textureRL) {
-        BloodMagicRenderer.Model3D model = new BloodMagicRenderer.Model3D();
+    private static NeoVitaeRenderer.Model3D getBlockModel(ResourceLocation textureRL) {
+        NeoVitaeRenderer.Model3D model = new NeoVitaeRenderer.Model3D();
         TextureAtlasSprite sprite = Minecraft.getInstance()
                 .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
                 .apply(textureRL);

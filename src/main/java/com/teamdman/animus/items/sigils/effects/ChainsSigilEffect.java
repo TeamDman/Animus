@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import wayoftime.bloodmagic.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 
 /**
  * Sigil of Chains - captures entities into soul items.

@@ -29,8 +29,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import wayoftime.bloodmagic.api.sigil.ISigilEffect;
-import wayoftime.bloodmagic.common.block.TeleposerBlock;
+import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.common.block.TeleposerBlock;
 
 /**
  * Sigil of Transposition - moves blocks with their tile entities and teleports entities.

@@ -12,8 +12,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import wayoftime.bloodmagic.api.ritual.IImperfectRitualStone;
-import wayoftime.bloodmagic.ritual.ImperfectRitual;
+import com.breakinblocks.neovitae.api.ritual.IImperfectRitualStone;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
 
 /**
  * Imperfect Ritual of the Soul-Stained Blood

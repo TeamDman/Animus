@@ -1,10 +1,10 @@
 {
-  "type": "bloodmagicnv:blood_altar_recipe",
+  "type": "neovitae:blood_altar_recipe",
   "bloodNeeded": 2500,
   "craftSpeed": 5,
   "drainSpeed": 1,
   "input": {
-    "item": "bloodmagicnv:ritual_diviner"
+    "item": "neovitae:ritual_diviner"
   },
   "minTier": 1,
   "output": {

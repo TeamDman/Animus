@@ -1,14 +1,14 @@
 {
   "name": "guide.animus.entry.ritual_endless_greed",
-  "icon": "bloodmagicnv:master_ritual_stone",
+  "icon": "neovitae:master_ritual_stone",
   "category": "animus:rituals",
   "sortnum": 22,
   "pages": [
     {
       "type": "patchouli:multiblock",
       "name": "Ritual of Endless Greed",
-      "multiblock_id": "bloodmagicnv:ritual_endless_greed",
-      "text": "Use a $(l:bloodmagicnv:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+      "multiblock_id": "neovitae:ritual_endless_greed",
+      "text": "Use a $(l:neovitae:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
     },
     {
       "type": "patchouli:text",

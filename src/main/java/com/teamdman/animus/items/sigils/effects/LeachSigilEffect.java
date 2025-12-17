@@ -14,10 +14,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import wayoftime.bloodmagic.api.ritual.AreaDescriptor;
-import wayoftime.bloodmagic.api.sigil.ISigilEffect;
-import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
-import wayoftime.bloodmagic.will.WorldDemonWillHandler;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
+import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
+import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
 
 import java.util.Optional;
 

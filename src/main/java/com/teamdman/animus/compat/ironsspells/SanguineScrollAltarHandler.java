@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import wayoftime.bloodmagic.common.block.BloodAltarBlock;
-import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
+import com.breakinblocks.neovitae.common.block.BloodAltarBlock;
+import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 
 /**
  * Handles conversion of Iron's Spells scrolls into Sanguine Scrolls at the Blood Altar

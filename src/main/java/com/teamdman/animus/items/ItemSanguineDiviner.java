@@ -23,13 +23,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import wayoftime.bloodmagic.common.block.BMBlocks;
-import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
-import wayoftime.bloodmagic.common.tag.BMTags;
-import wayoftime.bloodmagic.common.registry.AltarComponent;
-import wayoftime.bloodmagic.common.structure.BMMultiblock;
-import wayoftime.bloodmagic.ritual.IMasterRitualStone;
-import wayoftime.bloodmagic.ritual.Ritual;
+import com.breakinblocks.neovitae.common.block.BMBlocks;
+import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
+import com.breakinblocks.neovitae.common.tag.BMTags;
+import com.breakinblocks.neovitae.common.registry.AltarComponent;
+import com.breakinblocks.neovitae.common.structure.BMMultiblock;
+import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
+import com.breakinblocks.neovitae.ritual.Ritual;
 
 import java.util.List;
 

@@ -1,14 +1,14 @@
 {
   "name": "guide.animus.entry.ritual_culling",
-  "icon": "bloodmagicnv:master_ritual_stone",
+  "icon": "neovitae:master_ritual_stone",
   "category": "animus:rituals",
   "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:multiblock",
       "name": "Ritual of Culling",
-      "multiblock_id": "bloodmagicnv:ritual_culling",
-      "text": "Use a $(l:bloodmagicnv:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
+      "multiblock_id": "neovitae:ritual_culling",
+      "text": "Use a $(l:neovitae:rituals/ritual_diviner#dusk)Ritual Diviner [Dusk]$(/l) for easier construction."
     },
     {
       "type": "patchouli:text",

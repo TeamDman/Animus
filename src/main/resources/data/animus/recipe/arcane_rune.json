@@ -17,13 +17,13 @@
       "tag": "c:stones"
     },
     "B": {
-      "item": "bloodmagicnv:blank_slate"
+      "item": "neovitae:blank_slate"
     },
     "G": {
       "item": "ars_nouveau:source_gem"
     },
     "R": {
-      "item": "bloodmagicnv:rune_blank"
+      "item": "neovitae:rune_blank"
     }
   },
   "result": {

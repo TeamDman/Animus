@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Prerequisites",
-      "text": "This tome assumes you have mastered the basics of $(l:https://www.curseforge.com/minecraft/mc-mods/blood-magic)Blood Magic$(). You should be familiar with:$(li)The Blood Altar and LP$(li)Weak Blood Orbs$(li)Basic Rituals$(li)Soul Network$(br)If you are new to Blood Magic, consult the $(l:bloodmagicnv:guide)Blood Magic Guide$() first."
+      "text": "This tome assumes you have mastered the basics of $(l:https://www.curseforge.com/minecraft/mc-mods/blood-magic)Blood Magic$(). You should be familiar with:$(li)The Blood Altar and LP$(li)Weak Blood Orbs$(li)Basic Rituals$(li)Soul Network$(br)If you are new to Blood Magic, consult the $(l:neovitae:guide)Blood Magic Guide$() first."
     },
     {
       "type": "patchouli:text",

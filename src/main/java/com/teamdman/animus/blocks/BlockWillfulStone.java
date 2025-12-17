@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
-import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.common.datacomponent.Binding;
+import com.breakinblocks.neovitae.common.item.IBindable;
+import com.breakinblocks.neovitae.common.datacomponent.Binding;
 
 import java.util.UUID;
 

@@ -1,7 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import net.minecraft.core.BlockPos;
-import wayoftime.bloodmagic.api.ritual.AreaDescriptor;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 
 /**
  * Common area descriptor constants for ritual block ranges

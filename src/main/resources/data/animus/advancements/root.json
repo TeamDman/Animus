@@ -13,9 +13,9 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "bloodmagicnv:textures/block/altar.png"
+    "background": "neovitae:textures/block/altar.png"
   },
-  "parent": "bloodmagicnv:main/self_sacrifice",
+  "parent": "neovitae:main/self_sacrifice",
   "criteria": {
     "has_diviner": {
       "trigger": "minecraft:inventory_changed",

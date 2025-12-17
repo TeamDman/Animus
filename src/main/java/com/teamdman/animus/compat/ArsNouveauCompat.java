@@ -16,11 +16,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import wayoftime.bloodmagic.api.BloodMagicAPI;
-import wayoftime.bloodmagic.api.altar.rune.EnumAltarRuneType;
-import wayoftime.bloodmagic.api.altar.rune.IAltarRuneRegistry;
-import wayoftime.bloodmagic.ritual.ImperfectRitual;
-import wayoftime.bloodmagic.ritual.RitualRegistry;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.altar.rune.EnumAltarRuneType;
+import com.breakinblocks.neovitae.api.altar.rune.IAltarRuneRegistry;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
+import com.breakinblocks.neovitae.ritual.RitualRegistry;
 
 /**
  * Compatibility module for Ars Nouveau
@@ -98,7 +98,7 @@ public class ArsNouveauCompat implements ICompatModule {
         Animus.LOGGER.info("Initializing Ars Nouveau compatibility");
 
         // Register Source Attunement Living Armor upgrade event handlers
-        // The upgrade itself is defined in data/animus/bloodmagic/living_upgrades/source_attunement.json
+        // The upgrade itself is defined in data/animus/neovitae/living_upgrades/source_attunement.json
         SourceAttunementHandler.register();
         Animus.LOGGER.info("Registered Source Attunement Living Armor upgrade handler");
 
@@ -128,7 +128,7 @@ public class ArsNouveauCompat implements ICompatModule {
      */
     private void registerArcaneRuneWithBloodMagic() {
         try {
-            IAltarRuneRegistry registry = BloodMagicAPI.getInstance().getRuneRegistry();
+            IAltarRuneRegistry registry = NeoVitaeAPI.getInstance().getRuneRegistry();
 
             // Register with SPEED rune type, amount 0 (no inherent bonus)
             // The event handler applies the actual bonuses based on Source state

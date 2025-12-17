@@ -12,9 +12,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import wayoftime.bloodmagic.common.item.IBindable;
-import wayoftime.bloodmagic.common.datacomponent.Binding;
-import wayoftime.bloodmagic.ritual.IMasterRitualStone;
+import com.breakinblocks.neovitae.common.item.IBindable;
+import com.breakinblocks.neovitae.common.datacomponent.Binding;
+import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
             }
 
             // Get the ritual from the master ritual stone
-            wayoftime.bloodmagic.ritual.Ritual ritual = masterRitualStone.getCurrentRitual();
+            com.breakinblocks.neovitae.ritual.Ritual ritual = masterRitualStone.getCurrentRitual();
             if (ritual == null) {
                 // No ritual set in this master ritual stone
                 return InteractionResult.FAIL;

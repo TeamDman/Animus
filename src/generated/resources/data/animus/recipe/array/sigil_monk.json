@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagicnv:array",
+  "type": "neovitae:array",
   "addedinput": {
-    "item": "bloodmagicnv:reinforced_slate"
+    "item": "neovitae:reinforced_slate"
   },
   "baseinput": {
     "item": "animus:reagentfist"
@@ -10,5 +10,5 @@
     "count": 1,
     "id": "animus:sigil_monk"
   },
-  "texture": "bloodmagicnv:textures/models/alchemyarrays/fastminersigil.png"
+  "texture": "neovitae:textures/models/alchemyarrays/fastminersigil.png"
 }

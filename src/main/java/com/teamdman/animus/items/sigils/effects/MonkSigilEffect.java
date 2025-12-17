@@ -7,10 +7,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.api.sigil.ISigilEffect;
-import wayoftime.bloodmagic.api.soul.SoulTicket;
-import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
+import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 /**
  * Sigil of the Monk - A toggleable sigil that enhances unarmed combat.

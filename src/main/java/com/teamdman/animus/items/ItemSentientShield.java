@@ -12,8 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
-import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
+import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
 
 import java.util.List;
 

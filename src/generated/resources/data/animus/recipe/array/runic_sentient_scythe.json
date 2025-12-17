@@ -1,14 +1,14 @@
 {
-  "type": "bloodmagicnv:array",
+  "type": "neovitae:array",
   "addedinput": {
-    "item": "bloodmagicnv:demonic_slate"
+    "item": "neovitae:demonic_slate"
   },
   "baseinput": {
-    "item": "bloodmagicnv:soul_scythe"
+    "item": "neovitae:soul_scythe"
   },
   "output": {
     "count": 1,
     "id": "animus:runic_sentient_scythe"
   },
-  "texture": "bloodmagicnv:textures/models/alchemyarrays/bindingarray.png"
+  "texture": "neovitae:textures/models/alchemyarrays/bindingarray.png"
 }

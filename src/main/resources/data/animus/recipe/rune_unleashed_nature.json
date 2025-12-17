@@ -20,10 +20,10 @@
       "item": "botania:manasteel_ingot"
     },
     "R": {
-      "item": "bloodmagicnv:blank_rune"
+      "item": "neovitae:blank_rune"
     },
     "I": {
-      "item": "bloodmagicnv:imbued_slate"
+      "item": "neovitae:imbued_slate"
     }
   },
   "result": {

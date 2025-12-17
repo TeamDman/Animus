@@ -19,10 +19,10 @@ import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.api.soul.SoulTicket;
-import wayoftime.bloodmagic.ritual.*;
-import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
+import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.ritual.*;
+import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;

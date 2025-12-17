@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModList;
 import net.minecraft.core.registries.BuiltInRegistries;
-import wayoftime.bloodmagic.common.block.BMBlocks;
+import com.breakinblocks.neovitae.common.block.BMBlocks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -210,7 +210,7 @@ public class AnimusJEIPlugin implements IModPlugin {
 
                 for (String[] tier : scrollTiers) {
                     Item slate = BuiltInRegistries.ITEM.get(
-                        ResourceLocation.fromNamespaceAndPath("bloodmagicnv", tier[0]));
+                        ResourceLocation.fromNamespaceAndPath("neovitae", tier[0]));
                     Item outputScroll = getAnimusItem(tier[1]);
 
                     if (slate != null && slate != Items.AIR

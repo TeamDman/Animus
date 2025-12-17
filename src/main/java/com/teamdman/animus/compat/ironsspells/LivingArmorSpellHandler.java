@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import wayoftime.bloodmagic.common.living.LivingHelper;
+import com.breakinblocks.neovitae.common.living.LivingHelper;
 
 /**
  * Handles Living Armor integration with Iron's Spells

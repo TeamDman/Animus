@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
-import wayoftime.bloodmagic.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 
 /**
  * Sigil of the Phantom Builder - places blocks from the offhand.

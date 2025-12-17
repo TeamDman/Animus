@@ -17,8 +17,8 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.util.TriState;
-import wayoftime.bloodmagic.common.item.BloodOrbItem;
-import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
+import com.breakinblocks.neovitae.common.item.BloodOrbItem;
+import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 
 /**
  * Handles Blood Altar interactions for upgrading Blood-Infused Spellbooks.

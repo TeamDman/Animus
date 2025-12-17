@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagicnv:array",
+  "type": "neovitae:array",
   "addedinput": {
-    "item": "bloodmagicnv:demonic_slate"
+    "item": "neovitae:demonic_slate"
   },
   "baseinput": {
     "item": "animus:reagentheavelywrath"
@@ -10,5 +10,5 @@
     "count": 1,
     "id": "animus:sigil_heavenly_wrath"
   },
-  "texture": "bloodmagicnv:textures/models/alchemyarrays/bindinglightningarray.png"
+  "texture": "neovitae:textures/models/alchemyarrays/bindinglightningarray.png"
 }

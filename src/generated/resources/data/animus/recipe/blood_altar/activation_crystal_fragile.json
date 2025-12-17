@@ -1,5 +1,5 @@
 {
-  "type": "bloodmagicnv:blood_altar_recipe",
+  "type": "neovitae:blood_altar_recipe",
   "bloodNeeded": 5000,
   "craftSpeed": 5,
   "drainSpeed": 5,

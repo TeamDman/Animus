@@ -1,15 +1,15 @@
 {
-  "type": "bloodmagicnv:soul_forge",
+  "type": "neovitae:soul_forge",
   "drain": 1024.0,
   "inputs": [
     {
       "item": "minecraft:sculk"
     },
     {
-      "item": "bloodmagicnv:ethereal_slate"
+      "item": "neovitae:ethereal_slate"
     },
     {
-      "item": "bloodmagicnv:weak_blood_shard"
+      "item": "neovitae:weak_blood_shard"
     },
     {
       "item": "minecraft:nether_star"

@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import wayoftime.bloodmagic.common.item.IActivatable;
+import com.breakinblocks.neovitae.common.item.IActivatable;
 
 import java.util.ArrayList;
 import java.util.List;

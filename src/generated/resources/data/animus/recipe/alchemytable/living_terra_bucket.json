@@ -1,5 +1,5 @@
 {
-  "type": "bloodmagicnv:alchemytable",
+  "type": "neovitae:alchemytable",
   "input": [
     {
       "item": "minecraft:water_bucket"

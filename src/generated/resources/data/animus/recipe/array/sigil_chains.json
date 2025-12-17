@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagicnv:array",
+  "type": "neovitae:array",
   "addedinput": {
-    "item": "bloodmagicnv:imbued_slate"
+    "item": "neovitae:imbued_slate"
   },
   "baseinput": {
     "item": "animus:reagentchains"
@@ -10,5 +10,5 @@
     "count": 1,
     "id": "animus:sigil_chains"
   },
-  "texture": "bloodmagicnv:textures/models/alchemyarrays/bindingarray.png"
+  "texture": "neovitae:textures/models/alchemyarrays/bindingarray.png"
 }

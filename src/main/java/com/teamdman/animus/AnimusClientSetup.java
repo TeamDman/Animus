@@ -16,7 +16,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import wayoftime.bloodmagic.common.item.IActivatable;
+import com.breakinblocks.neovitae.common.item.IActivatable;
 
 /**
  * Client-side setup for Animus mod
@@ -144,7 +144,7 @@ public class AnimusClientSetup {
         ItemProperties.register(item,
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "bound"),
             (stack, level, entity, seed) -> {
-                if (item instanceof wayoftime.bloodmagic.common.item.IBindable bindable) {
+                if (item instanceof com.breakinblocks.neovitae.common.item.IBindable bindable) {
                     return bindable.getBinding(stack) != null ? 1.0F : 0.0F;
                 }
                 return 0.0F;

@@ -5,16 +5,16 @@
       "modid": "irons_spellbooks"
     }
   ],
-  "type": "bloodmagicnv:array",
+  "type": "neovitae:array",
   "baseinput": {
     "item": "animus:reagentfist"
   },
   "addedinput": {
-    "item": "bloodmagicnv:imbued_slate"
+    "item": "neovitae:imbued_slate"
   },
   "output": {
     "count": 1,
     "id": "animus:sigil_crimson_will"
   },
-  "texture": "bloodmagicnv:textures/models/alchemyarrays/sigil.png"
+  "texture": "neovitae:textures/models/alchemyarrays/sigil.png"
 }

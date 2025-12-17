@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import wayoftime.bloodmagic.common.item.BloodOrbItem;
+import com.breakinblocks.neovitae.common.item.BloodOrbItem;
 
 import java.util.List;
 

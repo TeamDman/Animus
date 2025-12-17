@@ -21,11 +21,11 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
-import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.api.soul.SoulTicket;
-import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
-import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
+import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
+import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 /**
  * Handles spell power boosting for Sigil of Crimson Will
@@ -225,11 +225,11 @@ public class CrimsonWillSpellHandler {
 
         // Check inside Sigil of Holding (in inventory and hands)
         var sigilHoldings = InventorySearchHelper.findAll(player,
-            stack -> stack.getItem() instanceof wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding);
+            stack -> stack.getItem() instanceof com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding);
 
         for (ItemStack holdingStack : sigilHoldings) {
             net.minecraft.core.NonNullList<ItemStack> holdingInv =
-                wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding.getInternalInventory(holdingStack);
+                com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding.getInternalInventory(holdingStack);
             for (ItemStack heldStack : holdingInv) {
                 if (isActiveCrimsonWill.test(heldStack)) {
                     return heldStack;

@@ -7,8 +7,8 @@
     {
       "type": "patchouli:multiblock",
       "name": "Ritual of the Steadfast Heart",
-      "multiblock_id": "bloodmagicnv:ritual_steadfast_heart",
-      "text": "Use a $(l:bloodmagicnv:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+      "multiblock_id": "neovitae:ritual_steadfast_heart",
+      "text": "Use a $(l:neovitae:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
     },
     {
       "type": "patchouli:text",

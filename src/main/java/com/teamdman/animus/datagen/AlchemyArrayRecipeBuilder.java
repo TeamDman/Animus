@@ -5,8 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.common.recipe.alchemyarray.AlchemyArrayRecipe;
+import com.breakinblocks.neovitae.NeoVitae;
+import com.breakinblocks.neovitae.common.recipe.alchemyarray.AlchemyArrayRecipe;
 
 /**
  * Builder for Alchemy Array recipes compatible with Blood Magic NV 1.21.1
@@ -22,7 +22,7 @@ public class AlchemyArrayRecipeBuilder {
             throw new IllegalArgumentException("AlchemyArrayRecipe output cannot be null or empty");
         }
         this.output = output;
-        this.texture = BloodMagic.rl("textures/models/alchemyarrays/sigil.png");
+        this.texture = NeoVitae.rl("textures/models/alchemyarrays/sigil.png");
     }
 
     public static AlchemyArrayRecipeBuilder build(ItemLike output) {
@@ -54,7 +54,7 @@ public class AlchemyArrayRecipeBuilder {
     }
 
     public AlchemyArrayRecipeBuilder texture(String path) {
-        this.texture = BloodMagic.rl(path);
+        this.texture = NeoVitae.rl(path);
         return this;
     }
 

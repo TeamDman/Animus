@@ -27,12 +27,12 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import wayoftime.bloodmagic.api.soul.SoulTicket;
-import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
-import wayoftime.bloodmagic.common.datacomponent.SoulNetwork;
-import wayoftime.bloodmagic.common.effect.BMMobEffects;
-import wayoftime.bloodmagic.util.helper.SoulNetworkHelper;
-import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
+import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.common.effect.BMMobEffects;
+import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
+import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
 
 /**
  * Event handler for Sigil of the Demon Monk functionality
@@ -63,7 +63,7 @@ public class MonkSigilEventHandler {
         // Check main inventory
         for (ItemStack stack : player.getInventory().items) {
             if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_MONK.get())) {
-                if (stack.getItem() instanceof wayoftime.bloodmagic.common.item.IActivatable activatable) {
+                if (stack.getItem() instanceof com.breakinblocks.neovitae.common.item.IActivatable activatable) {
                     if (activatable.getActivated(stack)) {
                         return true;
                     }
@@ -73,7 +73,7 @@ public class MonkSigilEventHandler {
         // Check offhand
         for (ItemStack stack : player.getInventory().offhand) {
             if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_MONK.get())) {
-                if (stack.getItem() instanceof wayoftime.bloodmagic.common.item.IActivatable activatable) {
+                if (stack.getItem() instanceof com.breakinblocks.neovitae.common.item.IActivatable activatable) {
                     if (activatable.getActivated(stack)) {
                         return true;
                     }

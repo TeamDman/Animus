@@ -1,14 +1,14 @@
 {
   "name": "guide.animus.entry.ritual_reparare",
-  "icon": "bloodmagicnv:master_ritual_stone",
+  "icon": "neovitae:master_ritual_stone",
   "category": "animus:rituals",
   "sortnum": 22,
   "pages": [
     {
       "type": "patchouli:multiblock",
       "name": "Ritual of Reparare",
-      "multiblock_id": "bloodmagicnv:ritual_reparare",
-      "text": "Use a $(l:bloodmagicnv:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+      "multiblock_id": "neovitae:ritual_reparare",
+      "text": "Use a $(l:neovitae:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
     },
     {
       "type": "patchouli:text",

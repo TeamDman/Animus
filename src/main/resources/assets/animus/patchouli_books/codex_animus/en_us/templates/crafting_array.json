@@ -1,5 +1,5 @@
 {
-  "processor": "wayoftime.bloodmagic.compat.patchouli.processors.AlchemyArrayProcessor",
+  "processor": "com.breakinblocks.neovitae.compat.patchouli.processors.AlchemyArrayProcessor",
   "components": [
     {
       "type": "patchouli:header",
@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:image",
-      "image": "bloodmagicnv:textures/gui/patchouli_book/crafting.png",
+      "image": "neovitae:textures/gui/patchouli_book/crafting.png",
       "x": 11,
       "y": 4,
       "u": 0,
@@ -40,7 +40,7 @@
     },
     {
       "type": "patchouli:item",
-      "item": "bloodmagicnv:arcane_ashes",
+      "item": "neovitae:arcane_ashes",
       "x": 85,
       "y": 40
     },

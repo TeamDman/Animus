@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import wayoftime.bloodmagic.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -157,7 +157,7 @@ public record HeavenlyWrathSigilEffect() implements ISigilEffect {
         entity.removeEffect(MobEffects.LEVITATION);
 
         // Apply Blood Magic's heavy_heart effect to prevent flight
-        ResourceLocation heavyHeartRL = ResourceLocation.fromNamespaceAndPath("bloodmagicnv", "heavy_heart");
+        ResourceLocation heavyHeartRL = ResourceLocation.fromNamespaceAndPath("neovitae", "heavy_heart");
         var heavyHeartOpt = BuiltInRegistries.MOB_EFFECT.getOptional(heavyHeartRL);
         if (heavyHeartOpt.isPresent()) {
             entity.addEffect(new MobEffectInstance(Holder.direct(heavyHeartOpt.get()), 40, 4));

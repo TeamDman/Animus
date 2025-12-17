@@ -5,9 +5,9 @@ import com.teamdman.animus.rituals.*;
 import com.teamdman.animus.rituals.imperfect.*;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import wayoftime.bloodmagic.ritual.ImperfectRitual;
-import wayoftime.bloodmagic.ritual.Ritual;
-import wayoftime.bloodmagic.ritual.RitualRegistry;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
+import com.breakinblocks.neovitae.ritual.Ritual;
+import com.breakinblocks.neovitae.ritual.RitualRegistry;
 
 import java.util.function.Supplier;
 

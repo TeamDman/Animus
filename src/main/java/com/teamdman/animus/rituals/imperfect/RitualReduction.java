@@ -13,8 +13,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import wayoftime.bloodmagic.api.ritual.IImperfectRitualStone;
-import wayoftime.bloodmagic.ritual.ImperfectRitual;
+import com.breakinblocks.neovitae.api.ritual.IImperfectRitualStone;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
 
 /**
  * Imperfect Ritual of Reduction

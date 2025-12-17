@@ -1,5 +1,5 @@
 {
-  "type": "bloodmagicnv:soul_forge",
+  "type": "neovitae:soul_forge",
   "minDrain": 200.0,
   "drain": 50.0,
   "inputs": [
@@ -13,7 +13,7 @@
       "item": "minecraft:obsidian"
     },
     {
-      "item": "bloodmagicnv:blank_slate"
+      "item": "neovitae:blank_slate"
     }
   ],
   "output": {

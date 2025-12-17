@@ -5,8 +5,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import wayoftime.bloodmagic.api.registry.BloodMagicRegistries;
-import wayoftime.bloodmagic.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.api.registry.NeoVitaeRegistries;
+import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.items.sigils.effects.*;
 
@@ -20,7 +20,7 @@ public class AnimusSigilEffects {
     @SuppressWarnings("unchecked")
     public static final DeferredRegister<MapCodec<? extends ISigilEffect>> SIGIL_EFFECTS =
             DeferredRegister.create(
-                    (ResourceKey<Registry<MapCodec<? extends ISigilEffect>>>) (ResourceKey<?>) BloodMagicRegistries.SIGIL_EFFECT_TYPE_KEY,
+                    (ResourceKey<Registry<MapCodec<? extends ISigilEffect>>>) (ResourceKey<?>) NeoVitaeRegistries.SIGIL_EFFECT_TYPE_KEY,
                     Constants.Mod.MODID
             );
 

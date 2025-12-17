@@ -1,7 +1,7 @@
 {
-  "type": "bloodmagicnv:array",
+  "type": "neovitae:array",
   "addedinput": {
-    "item": "bloodmagicnv:reagent_binding"
+    "item": "neovitae:reagent_binding"
   },
   "baseinput": {
     "item": "animus:spear_diamond"
@@ -10,5 +10,5 @@
     "count": 1,
     "id": "animus:spear_bound"
   },
-  "texture": "bloodmagicnv:textures/models/alchemyarrays/spikearray.png"
+  "texture": "neovitae:textures/models/alchemyarrays/spikearray.png"
 }

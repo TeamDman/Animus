@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import wayoftime.bloodmagic.ritual.*;
+import com.breakinblocks.neovitae.ritual.*;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -408,13 +408,13 @@ public class ItemRitualDesigner extends Item {
 
         // Define the exact ritual stone block IDs
         Map<String, String> ritualStoneMap = Map.of(
-            "bloodmagicnv:blankritualstone", "EnumRuneType.BLANK",
-            "bloodmagicnv:waterritualstone", "EnumRuneType.WATER",
-            "bloodmagicnv:airritualstone", "EnumRuneType.AIR",
-            "bloodmagicnv:earthritualstone", "EnumRuneType.EARTH",
-            "bloodmagicnv:fireritualstone", "EnumRuneType.FIRE",
-            "bloodmagicnv:duskritualstone", "EnumRuneType.DUSK",
-            "bloodmagicnv:dawnritualstone", "EnumRuneType.DAWN"
+            "neovitae:blankritualstone", "EnumRuneType.BLANK",
+            "neovitae:waterritualstone", "EnumRuneType.WATER",
+            "neovitae:airritualstone", "EnumRuneType.AIR",
+            "neovitae:earthritualstone", "EnumRuneType.EARTH",
+            "neovitae:fireritualstone", "EnumRuneType.FIRE",
+            "neovitae:duskritualstone", "EnumRuneType.DUSK",
+            "neovitae:dawnritualstone", "EnumRuneType.DAWN"
         );
 
         // Find and map each ritual stone block

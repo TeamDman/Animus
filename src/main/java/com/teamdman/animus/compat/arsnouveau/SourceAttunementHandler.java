@@ -25,7 +25,7 @@ public class SourceAttunementHandler {
 
     /**
      * ResourceLocation for the Source Attunement upgrade.
-     * The upgrade is defined in data/animus/bloodmagic/living_upgrades/source_attunement.json
+     * The upgrade is defined in data/animus/neovitae/living_upgrades/source_attunement.json
      */
     public static final ResourceLocation UPGRADE_ID =
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "source_attunement");

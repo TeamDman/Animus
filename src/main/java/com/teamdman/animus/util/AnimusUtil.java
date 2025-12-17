@@ -9,9 +9,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import wayoftime.bloodmagic.common.registry.AltarTier;
-import wayoftime.bloodmagic.common.blockentity.BloodAltarTile;
-import wayoftime.bloodmagic.api.ritual.AreaDescriptor;
+import com.breakinblocks.neovitae.common.registry.AltarTier;
+import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 
 import java.util.Optional;
 

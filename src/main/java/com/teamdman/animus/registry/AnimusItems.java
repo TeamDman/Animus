@@ -15,8 +15,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import wayoftime.bloodmagic.common.item.sigil.SigilItem;
-import wayoftime.bloodmagic.registry.SigilTypeRegistry;
+import com.breakinblocks.neovitae.common.item.sigil.SigilItem;
+import com.breakinblocks.neovitae.registry.SigilTypeRegistry;
 
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class AnimusItems {
 
     /**
      * Helper method to register a SigilItem for a given sigil type.
-     * The sigil type is loaded from data/animus/bloodmagicnv/sigil_type/{path}.json
+     * The sigil type is loaded from data/animus/neovitae/sigil_type/{path}.json
      */
     private static DeferredHolder<Item, Item> registerSigil(String name, String sigilTypePath) {
         return ITEMS.register(name, () -> new SigilItem(
@@ -167,7 +167,7 @@ public class AnimusItems {
         ItemReagent::new);
 
     // Sigils - using Blood Magic's data-driven sigil system
-    // Sigil types are loaded from data/animus/bloodmagicnv/sigil_type/{path}.json
+    // Sigil types are loaded from data/animus/neovitae/sigil_type/{path}.json
     public static final DeferredHolder<Item, Item> SIGIL_BUILDER = registerSigil("sigil_builder", "builder");
     public static final DeferredHolder<Item, Item> SIGIL_CHAINS = registerSigil("sigil_chains", "chains");
     public static final DeferredHolder<Item, Item> SIGIL_CONSUMPTION = registerSigil("sigil_consumption", "consumption");

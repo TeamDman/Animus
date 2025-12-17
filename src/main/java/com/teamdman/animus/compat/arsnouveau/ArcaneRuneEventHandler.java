@@ -3,8 +3,8 @@ package com.teamdman.animus.compat.arsnouveau;
 import com.teamdman.animus.Animus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import wayoftime.bloodmagic.api.altar.rune.AltarRuneModifiers;
-import wayoftime.bloodmagic.api.event.AltarRuneEvent;
+import com.breakinblocks.neovitae.api.altar.rune.AltarRuneModifiers;
+import com.breakinblocks.neovitae.api.event.AltarRuneEvent;
 
 import java.util.List;
 

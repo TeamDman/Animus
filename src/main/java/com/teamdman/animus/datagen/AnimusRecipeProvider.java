@@ -14,28 +14,28 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
-import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.common.item.BMItems;
+import com.breakinblocks.neovitae.NeoVitae;
+import com.breakinblocks.neovitae.common.item.BMItems;
 
 import java.util.concurrent.CompletableFuture;
 
 public class AnimusRecipeProvider extends RecipeProvider {
     // Common array textures
-    private static final ResourceLocation ARRAY_GROWTH = BloodMagic.rl("textures/models/alchemyarrays/growthsigil.png");
-    private static final ResourceLocation ARRAY_LAPUTA = BloodMagic.rl("textures/models/alchemyarrays/shardoflaputa.png");
-    private static final ResourceLocation ARRAY_BINDING = BloodMagic.rl("textures/models/alchemyarrays/bindingarray.png");
-    private static final ResourceLocation ARRAY_VOID = BloodMagic.rl("textures/models/alchemyarrays/voidsigil.png");
-    private static final ResourceLocation ARRAY_FURNACE = BloodMagic.rl("textures/models/alchemyarrays/furnacearray.png");
-    private static final ResourceLocation ARRAY_TELEPORT = BloodMagic.rl("textures/models/alchemyarrays/teleportationarray.png");
-    private static final ResourceLocation ARRAY_LIGHTNING = BloodMagic.rl("textures/models/alchemyarrays/bindinglightningarray.png");
-    private static final ResourceLocation ARRAY_MOBSACRIFICE = BloodMagic.rl("textures/models/alchemyarrays/mobsacrifice.png");
-    private static final ResourceLocation ARRAY_LIGHT = BloodMagic.rl("textures/models/alchemyarrays/lightsigil.png");
-    private static final ResourceLocation ARRAY_FASTMINER = BloodMagic.rl("textures/models/alchemyarrays/fastminersigil.png");
-    private static final ResourceLocation ARRAY_WATER = BloodMagic.rl("textures/models/alchemyarrays/watersigil.png");
-    private static final ResourceLocation ARRAY_MOON = BloodMagic.rl("textures/models/alchemyarrays/moonarray.png");
-    private static final ResourceLocation ARRAY_TELEPORTATION = BloodMagic.rl("textures/models/alchemyarrays/teleportation.png");
-    private static final ResourceLocation ARRAY_SPIKE = BloodMagic.rl("textures/models/alchemyarrays/spikearray.png");
-    private static final ResourceLocation ARRAY_AIR = BloodMagic.rl("textures/models/alchemyarrays/airsigil.png");
+    private static final ResourceLocation ARRAY_GROWTH = NeoVitae.rl("textures/models/alchemyarrays/growthsigil.png");
+    private static final ResourceLocation ARRAY_LAPUTA = NeoVitae.rl("textures/models/alchemyarrays/shardoflaputa.png");
+    private static final ResourceLocation ARRAY_BINDING = NeoVitae.rl("textures/models/alchemyarrays/bindingarray.png");
+    private static final ResourceLocation ARRAY_VOID = NeoVitae.rl("textures/models/alchemyarrays/voidsigil.png");
+    private static final ResourceLocation ARRAY_FURNACE = NeoVitae.rl("textures/models/alchemyarrays/furnacearray.png");
+    private static final ResourceLocation ARRAY_TELEPORT = NeoVitae.rl("textures/models/alchemyarrays/teleportationarray.png");
+    private static final ResourceLocation ARRAY_LIGHTNING = NeoVitae.rl("textures/models/alchemyarrays/bindinglightningarray.png");
+    private static final ResourceLocation ARRAY_MOBSACRIFICE = NeoVitae.rl("textures/models/alchemyarrays/mobsacrifice.png");
+    private static final ResourceLocation ARRAY_LIGHT = NeoVitae.rl("textures/models/alchemyarrays/lightsigil.png");
+    private static final ResourceLocation ARRAY_FASTMINER = NeoVitae.rl("textures/models/alchemyarrays/fastminersigil.png");
+    private static final ResourceLocation ARRAY_WATER = NeoVitae.rl("textures/models/alchemyarrays/watersigil.png");
+    private static final ResourceLocation ARRAY_MOON = NeoVitae.rl("textures/models/alchemyarrays/moonarray.png");
+    private static final ResourceLocation ARRAY_TELEPORTATION = NeoVitae.rl("textures/models/alchemyarrays/teleportation.png");
+    private static final ResourceLocation ARRAY_SPIKE = NeoVitae.rl("textures/models/alchemyarrays/spikearray.png");
+    private static final ResourceLocation ARRAY_AIR = NeoVitae.rl("textures/models/alchemyarrays/airsigil.png");
 
     public AnimusRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);

@@ -11,10 +11,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import wayoftime.bloodmagic.common.datacomponent.EnumWillType;
-import wayoftime.bloodmagic.common.effect.BMMobEffects;
-import wayoftime.bloodmagic.common.item.soul.SentientScytheItem;
-import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
+import com.breakinblocks.neovitae.common.effect.BMMobEffects;
+import com.breakinblocks.neovitae.common.item.soul.SentientScytheItem;
+import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
 
 import java.util.List;
 

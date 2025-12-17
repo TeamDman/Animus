@@ -30,7 +30,7 @@ public class ArcaneChannelingHandler {
 
     /**
      * ResourceLocation for the Arcane Channeling upgrade.
-     * The upgrade is defined in data/animus/bloodmagic/living_upgrades/arcane_channeling.json
+     * The upgrade is defined in data/animus/neovitae/living_upgrades/arcane_channeling.json
      */
     public static final ResourceLocation UPGRADE_ID =
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_channeling");

@@ -8,9 +8,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import wayoftime.bloodmagic.api.ritual.IImperfectRitualStone;
-import wayoftime.bloodmagic.common.effect.BMMobEffects;
-import wayoftime.bloodmagic.ritual.ImperfectRitual;
+import com.breakinblocks.neovitae.api.ritual.IImperfectRitualStone;
+import com.breakinblocks.neovitae.common.effect.BMMobEffects;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
 
 /**
  * Imperfect Ritual of Boundless Skies

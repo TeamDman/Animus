@@ -3,8 +3,8 @@ package com.teamdman.animus.compat;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import wayoftime.bloodmagic.api.BloodMagicAPI;
-import wayoftime.bloodmagic.api.living.ILivingArmorManager;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.living.ILivingArmorManager;
 
 /**
  * Helper class for checking and modifying Living Armor upgrade levels.
@@ -17,7 +17,7 @@ public class LivingUpgradeHelper {
      * Get the Living Armor manager from the Blood Magic API.
      */
     private static ILivingArmorManager getManager() {
-        return BloodMagicAPI.getInstance().getLivingArmorManager();
+        return NeoVitaeAPI.getInstance().getLivingArmorManager();
     }
 
     /**

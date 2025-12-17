@@ -7,8 +7,8 @@
     {
       "type": "patchouli:multiblock",
       "name": "Ritual of Entropy",
-      "multiblock_id": "bloodmagicnv:ritual_entropy",
-      "text": "Use a $(l:bloodmagicnv:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
+      "multiblock_id": "neovitae:ritual_entropy",
+      "text": "Use a $(l:neovitae:rituals/ritual_diviner)Ritual Diviner$(/l) for easier construction."
     },
     {
       "type": "patchouli:text",
