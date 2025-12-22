@@ -662,5 +662,23 @@
   "ritual.animus.ritual_soul_stained_blood.desc": "Sacrificial Empowerment III for 15 minutes",
   "ritual.animus.ritual_manasteel_soul.desc": "Emptiness + Speed for 15 minutes",
 
-  "ritual.animus.reduction.no_enchantments": "This item has no enchantments to reduce!"
+  "ritual.animus.reduction.no_enchantments": "This item has no enchantments to reduce!",
+
+  "text.component.animus.diviner.arcane_rune_header": "=== Arcane Rune Status ===",
+  "text.component.animus.diviner.arcane_rune_source": "Source: %d / %d",
+  "text.component.animus.diviner.arcane_rune_powered": "Powered: ",
+  "text.component.animus.diviner.arcane_rune_powered_yes": "Yes",
+  "text.component.animus.diviner.arcane_rune_powered_no": "No",
+  "text.component.animus.diviner.arcane_rune_speed": "Speed Multiplier: %s",
+  "text.component.animus.diviner.arcane_rune_dislocation": "  + Dislocation Bonus Active",
+  "text.component.animus.diviner.rune_breakdown_header": "=== Runes ===",
+  "text.component.animus.diviner.multipliers_header": "=== Altar Bonuses ===",
+  "text.component.animus.diviner.multiplier_speed": "Speed: ",
+  "text.component.animus.diviner.multiplier_dislocation": "Dislocation: ",
+  "text.component.animus.diviner.multiplier_sacrifice": "Sacrifice: ",
+  "text.component.animus.diviner.multiplier_self_sacrifice": "Self-Sacrifice: ",
+  "text.component.animus.diviner.multiplier_orb": "Orb Capacity: ",
+  "text.component.animus.diviner.multiplier_capacity": "Capacity: ",
+  "text.component.animus.diviner.multiplier_efficiency": "Efficiency: ",
+  "text.component.animus.diviner.multiplier_tick_rate": "Tick Rate: "
 }

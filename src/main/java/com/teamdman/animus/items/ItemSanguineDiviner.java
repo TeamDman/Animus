@@ -1,6 +1,7 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.compat.arsnouveau.BlockEntityArcaneRune;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -23,6 +24,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.fml.ModList;
+import com.breakinblocks.neovitae.api.altar.rune.IAltarRuneType;
 import com.breakinblocks.neovitae.common.block.BMBlocks;
 import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 import com.breakinblocks.neovitae.common.tag.BMTags;
@@ -30,8 +33,11 @@ import com.breakinblocks.neovitae.common.registry.AltarComponent;
 import com.breakinblocks.neovitae.common.structure.BMMultiblock;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 import com.breakinblocks.neovitae.ritual.Ritual;
+import com.breakinblocks.neovitae.util.AltarScanResult;
+import com.breakinblocks.neovitae.util.AltarUtil;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sanguine Diviner - Displays information about Blood Magic altars and rituals
@@ -60,6 +66,27 @@ public class ItemSanguineDiviner extends Item {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockEntity blockEntity = level.getBlockEntity(pos);
+
+        // Check if clicked block is an Arcane Rune (Ars Nouveau compat)
+        if (ModList.get().isLoaded("ars_nouveau") && blockEntity instanceof BlockEntityArcaneRune arcaneRune) {
+            if (level.isClientSide) {
+                return InteractionResult.SUCCESS;
+            }
+
+            displayArcaneRuneInfo(player, arcaneRune);
+
+            // Play sound
+            level.playSound(
+                null,
+                pos,
+                SoundEvents.EXPERIENCE_ORB_PICKUP,
+                SoundSource.BLOCKS,
+                0.5F,
+                1.2F
+            );
+
+            return InteractionResult.SUCCESS;
+        }
 
         // Check if clicked block is a Master Ritual Stone
         if (blockEntity instanceof IMasterRitualStone ritualStone) {
@@ -248,6 +275,14 @@ public class ItemSanguineDiviner extends Item {
             player.displayClientMessage(
                 Component.translatable(Constants.Localizations.Text.DIVINER_TIER_INFO, displayTier), false
             );
+
+            // Show rune breakdown for tier 1+ (tier is 0-indexed, so >= 1 means tier 2+)
+            if (tierLevel >= 1) {
+                displayRuneBreakdown(player, level, pos, tierLevel);
+            }
+
+            // Show altar multipliers
+            displayAltarMultipliers(player, altar);
 
             int nextTier = tierLevel + 1;
             if (nextTier < BMMultiblock.TIER_LIST.length && BMMultiblock.TIER_LIST[nextTier] != null) {
@@ -466,6 +501,243 @@ public class ItemSanguineDiviner extends Item {
             }
         }
         return ItemStack.EMPTY;
+    }
+
+    /**
+     * Displays information about an Arcane Rune (Ars Nouveau compat).
+     */
+    private void displayArcaneRuneInfo(Player player, BlockEntityArcaneRune arcaneRune) {
+        player.displayClientMessage(
+            Component.translatable("text.component.animus.diviner.arcane_rune_header")
+                .withStyle(ChatFormatting.LIGHT_PURPLE),
+            false
+        );
+
+        // Source level
+        int currentSource = arcaneRune.getSource();
+        int maxSource = arcaneRune.getMaxSource();
+        player.displayClientMessage(
+            Component.translatable("text.component.animus.diviner.arcane_rune_source", currentSource, maxSource)
+                .withStyle(ChatFormatting.AQUA),
+            false
+        );
+
+        // Powered state
+        boolean hasPower = arcaneRune.hasSource();
+        player.displayClientMessage(
+            Component.translatable("text.component.animus.diviner.arcane_rune_powered")
+                .withStyle(ChatFormatting.AQUA)
+                .append(Component.translatable(hasPower
+                    ? "text.component.animus.diviner.arcane_rune_powered_yes"
+                    : "text.component.animus.diviner.arcane_rune_powered_no")
+                    .withStyle(hasPower ? ChatFormatting.GREEN : ChatFormatting.RED)),
+            false
+        );
+
+        // Speed multiplier
+        float speedMult = arcaneRune.getSpeedMultiplier();
+        String speedPercent = String.format("%.0f%%", speedMult * 100);
+        player.displayClientMessage(
+            Component.translatable("text.component.animus.diviner.arcane_rune_speed", speedPercent)
+                .withStyle(hasPower ? ChatFormatting.GREEN : ChatFormatting.YELLOW),
+            false
+        );
+
+        // Dislocation bonus (only when powered)
+        if (arcaneRune.providesDislocationBonus()) {
+            player.displayClientMessage(
+                Component.translatable("text.component.animus.diviner.arcane_rune_dislocation")
+                    .withStyle(ChatFormatting.GREEN),
+                false
+            );
+        }
+    }
+
+    /**
+     * Displays the rune breakdown for an altar.
+     */
+    private void displayRuneBreakdown(Player player, Level level, BlockPos altarPos, int tier) {
+        AltarScanResult scanResult = AltarUtil.scanForRunes(tier, level, altarPos);
+
+        if (!scanResult.hasRunes()) {
+            return;
+        }
+
+        player.displayClientMessage(
+            Component.translatable("text.component.animus.diviner.rune_breakdown_header")
+                .withStyle(ChatFormatting.DARK_PURPLE),
+            false
+        );
+
+        // Display each rune type with count
+        for (Map.Entry<IAltarRuneType, Integer> entry : scanResult.runeCounts().entrySet()) {
+            String runeName = entry.getKey().getSerializedName();
+            int count = entry.getValue();
+
+            // Capitalize and format the rune name nicely
+            String displayName = formatRuneName(runeName);
+
+            player.displayClientMessage(
+                Component.literal("  " + displayName + ": ")
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(String.valueOf(count))
+                        .withStyle(ChatFormatting.WHITE)),
+                false
+            );
+        }
+    }
+
+    /**
+     * Formats a rune name for display (e.g., "self_sacrifice" -> "Self Sacrifice").
+     */
+    private String formatRuneName(String runeName) {
+        String[] words = runeName.split("_");
+        StringBuilder result = new StringBuilder();
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                if (result.length() > 0) {
+                    result.append(" ");
+                }
+                result.append(Character.toUpperCase(word.charAt(0)));
+                if (word.length() > 1) {
+                    result.append(word.substring(1));
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    /**
+     * Displays altar multipliers from runes.
+     */
+    private void displayAltarMultipliers(Player player, BloodAltarTile altar) {
+        float speedBonus = altar.getSpeedBonus();
+        float dislocationBonus = altar.getDislocationBonus();
+        float sacrificeBonus = altar.getSacrificeBonus();
+        float selfSacrificeBonus = altar.getSelfSacrificeBonus();
+        float orbCapacityBonus = altar.getOrbCapacityBonus();
+        float capacityBonus = altar.getBonusCapacity();
+        float efficiency = altar.getEfficiency();
+        int tickRate = altar.getTickRate();
+
+        // Only show multipliers section if there are any bonuses
+        boolean hasAnyBonus = speedBonus != 0 || dislocationBonus != 1.0f ||
+                              sacrificeBonus != 0 || selfSacrificeBonus != 0 ||
+                              orbCapacityBonus != 0 || capacityBonus != 0 ||
+                              efficiency != 1.0f || tickRate != 20;
+
+        if (!hasAnyBonus) {
+            return;
+        }
+
+        player.displayClientMessage(
+            Component.translatable("text.component.animus.diviner.multipliers_header")
+                .withStyle(ChatFormatting.GOLD),
+            false
+        );
+
+        // Speed bonus (displayed as percentage)
+        if (speedBonus != 0) {
+            String speedStr = String.format("%+.0f%%", speedBonus * 100);
+            player.displayClientMessage(
+                Component.literal("  ")
+                    .append(Component.translatable("text.component.animus.diviner.multiplier_speed"))
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(speedStr)
+                        .withStyle(speedBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+        }
+
+        // Dislocation bonus (displayed as multiplier)
+        if (dislocationBonus != 1.0f) {
+            String dislocationStr = String.format("%.2fx", dislocationBonus);
+            player.displayClientMessage(
+                Component.literal("  ")
+                    .append(Component.translatable("text.component.animus.diviner.multiplier_dislocation"))
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(dislocationStr)
+                        .withStyle(dislocationBonus > 1 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+        }
+
+        // Sacrifice bonus
+        if (sacrificeBonus != 0) {
+            String sacrificeStr = String.format("%+.0f%%", sacrificeBonus * 100);
+            player.displayClientMessage(
+                Component.literal("  ")
+                    .append(Component.translatable("text.component.animus.diviner.multiplier_sacrifice"))
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(sacrificeStr)
+                        .withStyle(sacrificeBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+        }
+
+        // Self-sacrifice bonus
+        if (selfSacrificeBonus != 0) {
+            String selfSacrificeStr = String.format("%+.0f%%", selfSacrificeBonus * 100);
+            player.displayClientMessage(
+                Component.literal("  ")
+                    .append(Component.translatable("text.component.animus.diviner.multiplier_self_sacrifice"))
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(selfSacrificeStr)
+                        .withStyle(selfSacrificeBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+        }
+
+        // Orb capacity bonus
+        if (orbCapacityBonus != 0) {
+            String orbStr = String.format("%+.0f%%", orbCapacityBonus * 100);
+            player.displayClientMessage(
+                Component.literal("  ")
+                    .append(Component.translatable("text.component.animus.diviner.multiplier_orb"))
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(orbStr)
+                        .withStyle(orbCapacityBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+        }
+
+        // Capacity bonus
+        if (capacityBonus != 0) {
+            String capacityStr = String.format("%+.0f%%", capacityBonus * 100);
+            player.displayClientMessage(
+                Component.literal("  ")
+                    .append(Component.translatable("text.component.animus.diviner.multiplier_capacity"))
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(capacityStr)
+                        .withStyle(capacityBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+        }
+
+        // Efficiency (lower is better - less LP lost when paused)
+        if (efficiency != 1.0f) {
+            String efficiencyStr = String.format("%.0f%%", efficiency * 100);
+            player.displayClientMessage(
+                Component.literal("  ")
+                    .append(Component.translatable("text.component.animus.diviner.multiplier_efficiency"))
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(efficiencyStr)
+                        .withStyle(efficiency < 1 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+        }
+
+        // Tick rate (lower is better - faster operations)
+        if (tickRate != 20) {
+            player.displayClientMessage(
+                Component.literal("  ")
+                    .append(Component.translatable("text.component.animus.diviner.multiplier_tick_rate"))
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(String.valueOf(tickRate))
+                        .withStyle(tickRate < 20 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+        }
     }
 
     @Override
