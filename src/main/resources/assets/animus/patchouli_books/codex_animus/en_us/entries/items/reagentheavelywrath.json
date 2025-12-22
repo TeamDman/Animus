@@ -12,7 +12,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "This catalyst can be combined with a $(item)Demon Slate$() in an Alchemy Array to create the $(l:animus:sigil_heavenly_wrath)Sigil of Heavenly Wrath$()."
+      "text": "This catalyst can be combined with a $(item)Demonic Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_heavenly_wrath)Sigil of Heavenly Wrath$()."
     }
   ]
 }

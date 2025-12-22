@@ -1,5 +1,13 @@
 {
   "values": [
-    "animus:antilife"
+    "animus:antilife",
+    {
+      "id": "animus:arcane_rune",
+      "required": false
+    },
+    {
+      "id": "animus:rune_unleashed_nature",
+      "required": false
+    }
   ]
 }

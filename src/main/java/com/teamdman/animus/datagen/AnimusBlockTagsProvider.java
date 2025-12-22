@@ -4,6 +4,7 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
@@ -71,9 +72,12 @@ public class AnimusBlockTagsProvider extends BlockTagsProvider {
         this.tag(BlockTags.MINEABLE_WITH_HOE)
             .add(AnimusBlocks.BLOCK_BLOOD_LEAVES.get());
 
-        // MINEABLE WITH PICKAXE - AntiLife block
+        // MINEABLE WITH PICKAXE - AntiLife block and compat runes
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-            .add(AnimusBlocks.BLOCK_ANTILIFE.get());
+            .add(AnimusBlocks.BLOCK_ANTILIFE.get())
+            // Compat blocks - added as optional so they don't fail if compat mods aren't loaded during datagen
+            .addOptional(new ResourceLocation(Constants.Mod.MODID, "arcane_rune"))
+            .addOptional(new ResourceLocation(Constants.Mod.MODID, "rune_unleashed_nature"));
 
         // No mining level requirements - all blocks mineable with any tier
         // (Blood wood blocks are wood tier, antilife has no special requirements)

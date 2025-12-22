@@ -1,6 +1,8 @@
 package com.teamdman.animus.registry;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.compat.ArsNouveauCompat;
+import com.teamdman.animus.compat.BotaniaCompat;
 import com.teamdman.animus.compat.IronsSpellsCompat;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -25,6 +27,16 @@ public class AnimusCreativeTabs {
                 // Add Iron's Spellbooks compat items if loaded
                 if (ModList.get().isLoaded("irons_spellbooks")) {
                     IronsSpellsCompat.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                }
+
+                // Add Ars Nouveau compat items if loaded
+                if (ModList.get().isLoaded("ars_nouveau")) {
+                    ArsNouveauCompat.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                }
+
+                // Add Botania compat items if loaded
+                if (ModList.get().isLoaded("botania")) {
+                    BotaniaCompat.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                 }
             })
             .build()

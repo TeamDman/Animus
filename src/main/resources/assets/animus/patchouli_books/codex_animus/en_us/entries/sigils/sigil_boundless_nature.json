@@ -1,0 +1,23 @@
+{
+  "name": "guide.animus.entry.sigil_boundless_nature",
+  "icon": "animus:sigil_boundless_nature",
+  "category": "animus:sigils",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "animus:crafting_array",
+      "recipe": "animus:array/sigil_boundless_nature",
+      "text": "Created using an $(blood)Alchemy Array$() by combining a $(l:animus:items/reagentboundlessnature)Reagent: Boundless Nature$() with a $(item)Reinforced Slate$(). The reagent must first be forged in the Hellfire Forge."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sigil_boundless_nature",
+      "text": "A bridge between Blood Magic and Botania. This sigil acts as a mana tablet that converts Life Essence into mana, allowing blood mages to power Botania tools and devices."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Usage",
+      "text": "$(bold)LP Cost:$() 50 LP per second when active$(br2)$(bold)Effect:$() Converts LP to mana at a configurable rate (default: 50 LP = 100 mana per second).$(br2)$(bold)Mana Storage:$() Up to 2500 mana$(br2)Shift-right-click to toggle activation. When active, the sigil will continuously convert LP to mana and can power Botania tools and export to mana pools.$(br2)$(bold)Requires Botania to function.$()$(br)"
+    }
+  ]
+}

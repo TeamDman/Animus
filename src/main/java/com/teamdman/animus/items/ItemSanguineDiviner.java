@@ -1,6 +1,10 @@
 package com.teamdman.animus.items;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.compat.ArsNouveauCompat;
+import com.teamdman.animus.compat.BotaniaCompat;
+import com.teamdman.animus.compat.arsnouveau.BlockEntityArcaneRune;
+import com.teamdman.animus.compat.botania.BlockEntityRuneUnleashedNature;
 import com.teamdman.animus.network.AltarGhostBlocksPacket;
 import com.teamdman.animus.network.AnimusNetwork;
 import com.teamdman.animus.util.AltarUpgradeHelper;
@@ -18,9 +22,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.PacketDistributor;
 import wayoftime.bloodmagic.altar.AltarTier;
+import wayoftime.bloodmagic.altar.AltarUpgrade;
+import wayoftime.bloodmagic.altar.AltarUtil;
+import wayoftime.bloodmagic.block.enums.BloodRuneType;
 import wayoftime.bloodmagic.common.tile.TileAltar;
 import wayoftime.bloodmagic.ritual.IMasterRitualStone;
 import wayoftime.bloodmagic.ritual.Ritual;
@@ -153,6 +162,106 @@ public class ItemSanguineDiviner extends Item {
                 0.5F,
                 1.2F
             );
+
+            return InteractionResult.SUCCESS;
+        }
+
+        // Check if clicked block is an Arcane Rune (Ars Nouveau compat)
+        if (ModList.get().isLoaded("ars_nouveau") && blockEntity instanceof BlockEntityArcaneRune arcaneRune) {
+            if (level.isClientSide) {
+                return InteractionResult.SUCCESS;
+            }
+
+            // Display Arcane Rune status
+            player.displayClientMessage(
+                Component.literal("=== Arcane Rune Status ===").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD),
+                false
+            );
+
+            boolean hasSource = arcaneRune.hasSource();
+            int currentSource = arcaneRune.getSource();
+            int maxSource = arcaneRune.getMaxSource();
+
+            player.displayClientMessage(
+                Component.literal("Source: ").withStyle(ChatFormatting.LIGHT_PURPLE)
+                    .append(Component.literal(String.format("%,d / %,d", currentSource, maxSource))
+                        .withStyle(currentSource > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("Powered: ").withStyle(ChatFormatting.LIGHT_PURPLE)
+                    .append(Component.literal(hasSource ? "Yes" : "No")
+                        .withStyle(hasSource ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("Speed Multiplier: ").withStyle(ChatFormatting.LIGHT_PURPLE)
+                    .append(Component.literal(String.format("%.2fx", arcaneRune.getSpeedMultiplier()))
+                        .withStyle(ChatFormatting.YELLOW)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("Dislocation Bonus: ").withStyle(ChatFormatting.LIGHT_PURPLE)
+                    .append(Component.literal(arcaneRune.providesDislocationBonus() ? "Active" : "Inactive")
+                        .withStyle(arcaneRune.providesDislocationBonus() ? ChatFormatting.GREEN : ChatFormatting.GRAY)),
+                false
+            );
+
+            // Play sound
+            level.playSound(null, pos, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5F, 1.4F);
+
+            return InteractionResult.SUCCESS;
+        }
+
+        // Check if clicked block is a Rune of Unleashed Nature (Botania compat)
+        if (ModList.get().isLoaded("botania") && blockEntity instanceof BlockEntityRuneUnleashedNature unleashedNature) {
+            if (level.isClientSide) {
+                return InteractionResult.SUCCESS;
+            }
+
+            // Display Rune of Unleashed Nature status
+            player.displayClientMessage(
+                Component.literal("=== Rune of Unleashed Nature Status ===").withStyle(ChatFormatting.DARK_GREEN, ChatFormatting.BOLD),
+                false
+            );
+
+            boolean isActive = unleashedNature.isActive();
+            int currentMana = unleashedNature.getCurrentMana();
+            int maxMana = unleashedNature.getMaxMana();
+
+            player.displayClientMessage(
+                Component.literal("Mana: ").withStyle(ChatFormatting.AQUA)
+                    .append(Component.literal(String.format("%,d / %,d", currentMana, maxMana))
+                        .withStyle(currentMana > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("Acceleration Active: ").withStyle(ChatFormatting.AQUA)
+                    .append(Component.literal(isActive ? "Yes" : "No")
+                        .withStyle(isActive ? ChatFormatting.GREEN : ChatFormatting.RED)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("Capacity Multiplier: ").withStyle(ChatFormatting.AQUA)
+                    .append(Component.literal(String.format("%.2fx", unleashedNature.getCapacityMultiplier()))
+                        .withStyle(ChatFormatting.YELLOW)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("Orb Effectiveness: ").withStyle(ChatFormatting.AQUA)
+                    .append(Component.literal(String.format("%.1f%%", unleashedNature.getOrbEffectiveness() * 100))
+                        .withStyle(ChatFormatting.YELLOW)),
+                false
+            );
+
+            // Play sound
+            level.playSound(null, pos, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5F, 1.4F);
 
             return InteractionResult.SUCCESS;
         }
@@ -292,6 +401,90 @@ public class ItemSanguineDiviner extends Item {
             // Show tier information
             player.displayClientMessage(
                 Component.translatable(Constants.Localizations.Text.DIVINER_TIER_INFO, tierLevel), false
+            );
+
+            // Show rune breakdown (tier 2+ has runes)
+            if (tierLevel >= 2) {
+                player.displayClientMessage(
+                    Component.literal("=== Rune Breakdown ===").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD),
+                    false
+                );
+
+                // Get upgrade info using AltarUtil - use getCurrentTierDisplayed() to get the actual AltarTier enum
+                AltarTier tier = altar.getCurrentTierDisplayed();
+                AltarUpgrade upgrades = AltarUtil.getUpgrades(level, pos, tier);
+
+                // Display count for each rune type
+                for (BloodRuneType runeType : BloodRuneType.values()) {
+                    int count = upgrades.getLevel(runeType);
+                    if (count > 0) {
+                        player.displayClientMessage(
+                            Component.literal("  " + runeType.name() + ": ").withStyle(ChatFormatting.YELLOW)
+                                .append(Component.literal(String.valueOf(count)).withStyle(ChatFormatting.WHITE)),
+                            false
+                        );
+                    }
+                }
+            }
+
+            // Display computed multipliers from the altar (always show)
+            player.displayClientMessage(
+                Component.literal("=== Altar Multipliers ===").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("  Sacrifice: ").withStyle(ChatFormatting.YELLOW)
+                    .append(Component.literal(String.format("%.2fx", altar.getSacrificeMultiplier())).withStyle(ChatFormatting.WHITE)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("  Self-Sacrifice: ").withStyle(ChatFormatting.YELLOW)
+                    .append(Component.literal(String.format("%.2fx", altar.getSelfSacrificeMultiplier())).withStyle(ChatFormatting.WHITE)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("  Orb Capacity: ").withStyle(ChatFormatting.YELLOW)
+                    .append(Component.literal(String.format("%.2fx", altar.getOrbMultiplier())).withStyle(ChatFormatting.WHITE)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("  Dislocation: ").withStyle(ChatFormatting.YELLOW)
+                    .append(Component.literal(String.format("%.2fx", altar.getDislocationMultiplier())).withStyle(ChatFormatting.WHITE)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("  Speed: ").withStyle(ChatFormatting.YELLOW)
+                    .append(Component.literal(String.format("%.2fx", altar.getConsumptionMultiplier())).withStyle(ChatFormatting.WHITE)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("  Acceleration: ").withStyle(ChatFormatting.YELLOW)
+                    .append(Component.literal(String.format("%d ticks", altar.getChargingFrequency())).withStyle(ChatFormatting.WHITE)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("  Buffer Capacity: ").withStyle(ChatFormatting.YELLOW)
+                    .append(Component.literal(String.format("%,d", altar.getBufferCapacity())).withStyle(ChatFormatting.WHITE)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("  Charging Rate: ").withStyle(ChatFormatting.YELLOW)
+                    .append(Component.literal(String.valueOf(altar.getChargingRate())).withStyle(ChatFormatting.WHITE)),
+                false
+            );
+
+            player.displayClientMessage(
+                Component.literal("  Total Charge: ").withStyle(ChatFormatting.YELLOW)
+                    .append(Component.literal(String.valueOf(altar.getTotalCharge())).withStyle(ChatFormatting.WHITE)),
+                false
             );
 
             // Send ghost blocks for next tier upgrade (if not max tier)

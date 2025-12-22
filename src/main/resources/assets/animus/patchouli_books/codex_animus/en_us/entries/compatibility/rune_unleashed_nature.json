@@ -16,7 +16,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "animus:rune_unleashed_nature",
-      "text": "$(animus)Mana-Powered Rune$()$(br2)Place this rune in your Blood Altar structure like any other rune. It stores mana internally and can be charged by pointing a Mana Spreader at it or placing it near a Mana Pool."
+      "text": "$(animus)Mana-Powered Rune$()$(br2)This rune functions as a small $(item)Mana Pool$() that can be placed in your Blood Altar structure. It stores up to 10,000 mana internally and provides bonuses based on its charge level."
     },
     {
       "type": "patchouli:text",
@@ -31,12 +31,12 @@
     {
       "type": "patchouli:text",
       "title": "Charging Methods",
-      "text": "Supply mana to the rune using any Botania mechanism:$(br2)$(li)Point a $(item)Mana Spreader$() at the rune$(li)Place it adjacent to a $(item)Mana Pool$()$(li)Use a $(item)Mana Tablet$() or other mana items$(br2)The rune accepts mana like any Botania block and stores it in an internal buffer for consumption."
+      "text": "Since the rune acts as a small Mana Pool, you can charge it using standard Botania methods:$(br2)$(li)$(item)Mana Spreader$(): Point a spreader at the rune to send mana bursts directly to it$(li)$(item)Spark$(): Place a Mana Spark on top of the rune to connect it to your spark network$(br2)The spark method is recommended for altar setups as it allows automatic mana distribution from your main pool."
     },
     {
       "type": "patchouli:text",
       "title": "Requirements",
-      "text": "To use the Rune of Unleashed Nature:$(li)$(animus)Botania must be installed$()$(li)Supply mana via spreaders or pools$(li)Ensure steady mana generation$(br2)Consider the consumption rate (10 mana/second per rune) when planning your mana infrastructure for multiple runes."
+      "text": "To use the Rune of Unleashed Nature:$(li)$(animus)Botania must be installed$()$(li)Supply mana via spreaders or sparks$(li)Ensure steady mana generation$(br2)Consider the consumption rate (10 mana/second per rune) when planning your mana infrastructure for multiple runes."
     }
   ]
 }

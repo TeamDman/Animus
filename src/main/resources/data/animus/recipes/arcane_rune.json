@@ -1,27 +1,40 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "pattern": [
-    "SBS",
-    "GRG",
-    "SBS"
-  ],
-  "key": {
-    "S": {
-      "tag": "forge:stone"
-    },
-    "B": {
-      "item": "bloodmagic:blankslate"
-    },
-    "G": {
-      "item": "ars_nouveau:source_gem"
-    },
-    "R": {
-      "item": "bloodmagic:blankrune"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "misc",
+        "pattern": [
+          "SBS",
+          "GRG",
+          "SBS"
+        ],
+        "key": {
+          "S": {
+            "tag": "forge:stone"
+          },
+          "B": {
+            "item": "bloodmagic:blankslate"
+          },
+          "G": {
+            "item": "ars_nouveau:source_gem"
+          },
+          "R": {
+            "item": "bloodmagic:blankrune"
+          }
+        },
+        "result": {
+          "item": "animus:arcane_rune",
+          "count": 1
+        }
+      }
     }
-  },
-  "result": {
-    "item": "animus:arcane_rune",
-    "count": 1
-  }
+  ]
 }

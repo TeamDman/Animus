@@ -12,7 +12,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "This catalyst can be combined with a $(item)Demon Slate$() in an Alchemy Array to create the $(l:animus:sigil_temporal_dominance)Sigil of Temporal Dominance$()."
+      "text": "This catalyst can be combined with a $(item)Demonic Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_temporal_dominance)Sigil of Temporal Dominance$()."
     }
   ]
 }

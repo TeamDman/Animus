@@ -2,8 +2,10 @@ package com.teamdman.animus.compat.ironsspells;
 
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
-import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
+import com.teamdman.animus.compat.IronsSpellsCompat;
+import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
+import io.redspace.ironsspellbooks.damage.SpellDamageSource;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -12,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -24,29 +27,32 @@ import wayoftime.bloodmagic.util.helper.NetworkHelper;
  * Handles spell casting events to enable LP-powered spell casting
  *
  * Features:
- * - Intercepts spell casting to use LP instead of mana
+ * - Intercepts spell casting to use LP instead of mana when mana is insufficient
  * - Checks for Blood Orb requirement (configurable)
  * - Supports hybrid casting (partial mana + partial LP)
+ * - Applies LP cost reduction from Blood Infused Spellbook tiers
+ * - Provides lifesteal when using Tier 6 Blood Infused Spellbook
  * - Respects all configuration options
  */
 public class SpellCastingHandler {
 
     /**
-     * Handle spell pre-cast event to enable LP consumption
-     * Priority: HIGH to run before Irons Spells' own validation
+     * Handle spell on-cast event to consume LP when mana is insufficient
+     * This event has the actual mana cost available
+     * Priority: HIGH to run before normal mana consumption
      */
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onSpellPreCast(SpellPreCastEvent event) {
-        // Only process on server side
-        if (event.getEntity().level().isClientSide()) {
-            return;
-        }
-
+    public static void onSpellOnCast(SpellOnCastEvent event) {
         // Only handle players
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
         Player player = (Player) event.getEntity();
+
+        // Only process on server side
+        if (player.level().isClientSide()) {
+            return;
+        }
 
         // Check if LP casting is enabled
         if (!AnimusConfig.ironsSpells.enableLPCasting.get()) {
@@ -59,8 +65,8 @@ public class SpellCastingHandler {
             return;
         }
 
-        // Calculate mana cost for this spell
-        int manaCost = event.getSpellLevel(); // Base cost is spell level (this might need adjustment based on actual spell cost)
+        // Get the actual mana cost from the event
+        int manaCost = event.getManaCost();
         int currentMana = (int) magicData.getMana();
 
         // If player has enough mana, let normal casting proceed
@@ -100,15 +106,27 @@ public class SpellCastingHandler {
             lpCost = manaCost * lpPerMana;
         }
 
+        // Check for Blood Infused Spellbook and apply LP cost reduction
+        ItemStack spellbook = findBloodInfusedSpellbook(player);
+        if (!spellbook.isEmpty()) {
+            double lpReduction = ItemBloodInfusedSpellbook.getLPCostReduction(spellbook);
+            if (lpReduction > 0) {
+                int reducedLpCost = (int) Math.max(1, lpCost * (1.0 - lpReduction));
+                Animus.LOGGER.debug("Blood Infused Spellbook LP reduction: {} -> {} ({}% reduction)",
+                    lpCost, reducedLpCost, (int)(lpReduction * 100));
+                lpCost = reducedLpCost;
+            }
+        }
+
         // Check if player has enough LP
         if (network.getCurrentEssence() < lpCost) {
-            // Not enough LP - send message and cancel
+            // Not enough LP - the spell will fail due to insufficient mana
+            // Don't cancel here - let the normal mana check handle it
             player.displayClientMessage(
                 Component.literal("Not enough Life Points! Required: " + lpCost + " LP")
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            event.setCanceled(true);
             return;
         }
 
@@ -126,14 +144,18 @@ public class SpellCastingHandler {
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            event.setCanceled(true);
             return;
         }
 
         // Successfully consumed LP!
-        // If using hybrid casting, consume the available mana
+        // Set the mana cost to what we can cover with remaining mana
+        // This allows the spell to proceed
         if (manaToConsume > 0) {
-            magicData.setMana((int) (magicData.getMana() - manaToConsume));
+            // Hybrid: set cost to what mana can cover
+            event.setManaCost(manaToConsume);
+        } else {
+            // Pure LP: set mana cost to 0
+            event.setManaCost(0);
         }
 
         // Spawn visual and audio feedback
@@ -145,9 +167,90 @@ public class SpellCastingHandler {
             lpCost,
             manaToConsume > 0 ? " (+ " + manaToConsume + " mana)" : ""
         );
+    }
 
-        // Don't cancel the event - allow the spell to cast normally
-        // The mana cost has effectively been paid via LP
+    /**
+     * Handle damage events to apply lifesteal from Blood Infused Spellbook
+     * Tier 6 spellbooks grant 5% lifesteal from spell damage
+     */
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void onLivingDamage(LivingDamageEvent event) {
+        // Only process on server side
+        if (event.getEntity().level().isClientSide()) {
+            return;
+        }
+
+        // Check if the damage is from a spell (SpellDamageSource)
+        if (!(event.getSource() instanceof SpellDamageSource spellDamageSource)) {
+            return;
+        }
+
+        // Check if the spell caster is a player
+        if (!(spellDamageSource.getEntity() instanceof Player player)) {
+            return;
+        }
+
+        // Find Blood Infused Spellbook
+        ItemStack spellbook = findBloodInfusedSpellbook(player);
+        if (spellbook.isEmpty()) {
+            return;
+        }
+
+        // Get lifesteal percentage
+        double lifesteal = ItemBloodInfusedSpellbook.getLifesteal(spellbook);
+        if (lifesteal <= 0) {
+            return;
+        }
+
+        // Calculate healing amount (5% of damage dealt)
+        float damage = event.getAmount();
+        float healing = damage * (float) lifesteal;
+
+        if (healing > 0) {
+            // Apply healing
+            player.heal(healing);
+
+            // Visual feedback - heart particles
+            if (player.level() instanceof ServerLevel serverLevel) {
+                for (int i = 0; i < 5; i++) {
+                    double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    double offsetY = serverLevel.random.nextDouble();
+                    double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+
+                    serverLevel.sendParticles(
+                        ParticleTypes.HEART,
+                        player.getX() + offsetX,
+                        player.getY() + 1.0 + offsetY,
+                        player.getZ() + offsetZ,
+                        1,
+                        0.1, 0.1, 0.1,
+                        0.02
+                    );
+                }
+            }
+
+            Animus.LOGGER.debug("Blood Infused Spellbook lifesteal: healed {} HP from {} damage",
+                healing, damage);
+        }
+    }
+
+    /**
+     * Find the Blood Infused Spellbook in player's curios slots
+     * @return The spellbook ItemStack, or ItemStack.EMPTY if not found
+     */
+    private static ItemStack findBloodInfusedSpellbook(Player player) {
+        var curiosOpt = CuriosApi.getCuriosInventory(player).resolve();
+        if (curiosOpt.isPresent()) {
+            var curios = curiosOpt.get();
+            var handler = curios.getEquippedCurios();
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack stack = handler.getStackInSlot(i);
+                if (stack.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
+                    return stack;
+                }
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     /**

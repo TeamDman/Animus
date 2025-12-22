@@ -12,7 +12,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "This catalyst can be combined with an $(item)Infused Slate$() in an Alchemy Array to create the $(l:animus:sigil_free_soul)Sigil of the Free Soul$()."
+      "text": "This catalyst can be combined with an $(item)Imbued Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_free_soul)Sigil of the Free Soul$()."
     }
   ]
 }

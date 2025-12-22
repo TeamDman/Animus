@@ -12,7 +12,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigil_remedium)Sigil of Remedium$()."
+      "text": "This catalyst can be combined with a $(item)Reinforced Slate$() in an Alchemy Array to create the $(l:animus:sigils/sigil_remedium)Sigil of Remedium$()."
     }
   ]
 }

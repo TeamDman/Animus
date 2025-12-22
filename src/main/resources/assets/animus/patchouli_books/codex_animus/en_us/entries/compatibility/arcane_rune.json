@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Linking Source",
-      "text": "To supply the Arcane Rune with Source:$(br2)1. Use an Ars Nouveau $(l:https://www.arsnouveau.wiki/Dominion_Wand)Dominion Wand$() to link a Source Jar to the Arcane Rune$(br)2. Source will automatically flow from the jar to the rune$(br)3. The rune can hold up to 1000 Source at a time$(br2)This gives you precise control over which Source Jars supply your altar runes."
+      "text": "To supply the Arcane Rune with Source:$(br2)1. Hold a $(item)Dominion Wand$()$(br)2. Sneak + Right-click a $(item)Source Jar$() or $(item)Relay$() to select it$(br)3. Right-click the $(item)Arcane Rune$() to link them$(br)4. Source will automatically flow to the rune$(br2)The rune holds up to 1000 Source. You must link it - it cannot pull Source on its own!"
     },
     {
       "type": "patchouli:text",

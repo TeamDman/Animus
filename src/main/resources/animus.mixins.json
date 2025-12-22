@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.teamdman.animus.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "animus.refmap.json",
+  "mixins": [
+    "AltarUtilMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

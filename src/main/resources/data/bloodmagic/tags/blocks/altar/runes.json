@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "animus:arcane_rune"
+    "animus:arcane_rune",
+    "animus:rune_unleashed_nature"
   ]
 }
