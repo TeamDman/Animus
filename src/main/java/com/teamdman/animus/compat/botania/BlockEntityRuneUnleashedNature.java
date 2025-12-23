@@ -5,6 +5,9 @@ import com.teamdman.animus.compat.BotaniaCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -95,11 +98,11 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
                 // Consume mana
                 mana -= manaConsumption;
                 isActive = true;
-                setChanged();
+                markDirtyAndSync();
             } else {
                 // Not enough mana - deactivate acceleration bonus
                 isActive = false;
-                setChanged();
+                markDirtyAndSync();
             }
         }
     }
@@ -159,7 +162,7 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
     @Override
     public void receiveMana(int manaToReceive) {
         mana = Math.min(mana + manaToReceive, MAX_MANA);
-        setChanged();
+        markDirtyAndSync();
     }
 
     @Override
@@ -250,5 +253,36 @@ public class BlockEntityRuneUnleashedNature extends BlockEntity implements ManaP
         tag.putInt("mana", mana);
         tag.putBoolean("isActive", isActive);
         tag.putInt("tickCounter", tickCounter);
+    }
+
+    // Client sync methods for WandHUD rendering
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
+        tag.putInt("mana", mana);
+        tag.putBoolean("isActive", isActive);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        super.handleUpdateTag(tag);
+        mana = tag.getInt("mana");
+        isActive = tag.getBoolean("isActive");
+    }
+
+    /**
+     * Mark dirty and sync to clients
+     */
+    public void markDirtyAndSync() {
+        setChanged();
+        if (level != null && !level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
     }
 }

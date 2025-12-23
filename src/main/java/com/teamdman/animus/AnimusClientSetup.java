@@ -42,6 +42,8 @@ public class AnimusClientSetup {
                         com.teamdman.animus.compat.BotaniaCompat.BLOCK_DIABOLICAL_FUNGI.get(),
                         RenderType.cutout()
                     );
+                    // Initialize Botania client compatibility (WandHUD support)
+                    com.teamdman.animus.compat.botania.BotaniaClientCompat.init();
                 } catch (Exception e) {
                     // Botania compat not available
                 }

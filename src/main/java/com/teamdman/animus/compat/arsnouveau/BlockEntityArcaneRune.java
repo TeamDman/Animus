@@ -1,10 +1,15 @@
 package com.teamdman.animus.compat.arsnouveau;
 
+import com.hollingsworth.arsnouveau.api.client.ITooltipProvider;
 import com.hollingsworth.arsnouveau.api.source.AbstractSourceMachine;
 import com.teamdman.animus.AnimusConfig;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.List;
 
 /**
  * Block Entity for Arcane Rune
@@ -20,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  * Source consumption rate is configurable in AnimusConfig.arsNouveau
  */
-public class BlockEntityArcaneRune extends AbstractSourceMachine {
+public class BlockEntityArcaneRune extends AbstractSourceMachine implements ITooltipProvider {
     private static final int MAX_SOURCE = 1000;
 
     // Timing
@@ -108,5 +113,29 @@ public class BlockEntityArcaneRune extends AbstractSourceMachine {
     @Override
     public int getTransferRate() {
         return 1000; // Allow fast transfers
+    }
+
+    /**
+     * Provide tooltip information for dominion wand HUD
+     * Shows source level as percentage and current state
+     */
+    @Override
+    public void getTooltip(List<Component> tooltip) {
+        int current = getSource();
+        int max = getMaxSource();
+        int percent = max > 0 ? (current * 100) / max : 0;
+
+        // Show source percentage (like source jar)
+        tooltip.add(Component.translatable("tooltip.animus.arcane_rune.source",
+            percent + "%", current, max).withStyle(ChatFormatting.GOLD));
+
+        // Show current state
+        if (hasSource) {
+            tooltip.add(Component.translatable("tooltip.animus.arcane_rune.state.powered")
+                .withStyle(ChatFormatting.GREEN));
+        } else {
+            tooltip.add(Component.translatable("tooltip.animus.arcane_rune.state.unpowered")
+                .withStyle(ChatFormatting.RED));
+        }
     }
 }
