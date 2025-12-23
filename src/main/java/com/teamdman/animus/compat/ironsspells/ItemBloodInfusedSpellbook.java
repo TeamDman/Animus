@@ -10,11 +10,15 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
+import wayoftime.bloodmagic.common.item.IBindable;
+import wayoftime.bloodmagic.core.data.Binding;
+import wayoftime.bloodmagic.util.helper.BindableHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -34,7 +38,7 @@ import java.util.UUID;
  *
  * Infused at Blood Altar using Blood Orbs
  */
-public class ItemBloodInfusedSpellbook extends SpellBook {
+public class ItemBloodInfusedSpellbook extends SpellBook implements IBindable {
 
     // NBT keys
     private static final String INFUSION_TIER_KEY = "InfusionTier";
@@ -170,6 +174,29 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
     }
 
     /**
+     * Bind this spellbook to a player's LP network
+     * This is called when the spellbook is first created or upgraded at the Blood Altar
+     *
+     * @param stack The spellbook ItemStack
+     * @param player The player to bind to
+     */
+    public static void bindToPlayer(ItemStack stack, Player player) {
+        BindableHelper.applyBinding(stack, player);
+    }
+
+    /**
+     * Get the binding from this spellbook
+     * Returns the Binding object if bound, null otherwise
+     *
+     * @param stack The spellbook ItemStack
+     * @return The binding, or null if not bound
+     */
+    @Nullable
+    public static Binding getBindingStatic(ItemStack stack) {
+        return Binding.fromStack(stack);
+    }
+
+    /**
      * Get the LP cost to upgrade to the next tier
      */
     public static int getUpgradeCost(ItemStack stack) {
@@ -198,6 +225,18 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         if (tier > 0) {
             tooltip.add(Component.literal("Blood Infusion: Tier " + tier + "/6")
                 .withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+
+            // Show binding information
+            Binding binding = getBinding(stack);
+            if (binding != null) {
+                tooltip.add(Component.translatable("tooltip.animus.bound_to")
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(Component.literal(binding.getOwnerName())
+                        .withStyle(ChatFormatting.AQUA)));
+            } else {
+                tooltip.add(Component.translatable("tooltip.animus.not_bound")
+                    .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            }
 
             tooltip.add(Component.literal(""));
             tooltip.add(Component.literal("Current Bonuses:")

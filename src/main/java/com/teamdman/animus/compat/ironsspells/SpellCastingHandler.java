@@ -19,9 +19,12 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import wayoftime.bloodmagic.common.item.ItemBloodOrb;
+import wayoftime.bloodmagic.core.data.Binding;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
+
+import java.util.UUID;
 
 /**
  * Handles spell casting events to enable LP-powered spell casting
@@ -85,10 +88,42 @@ public class SpellCastingHandler {
             }
         }
 
-        // Get player's soul network
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
-        if (network == null) {
-            return;
+        // Find Blood Infused Spellbook and get the bound owner's network
+        ItemStack spellbook = findBloodInfusedSpellbook(player);
+        SoulNetwork network;
+
+        if (!spellbook.isEmpty()) {
+            // Use the spellbook's bound owner's network
+            Binding binding = ItemBloodInfusedSpellbook.getBindingStatic(spellbook);
+            if (binding != null) {
+                UUID ownerUUID = binding.getOwnerId();
+                network = NetworkHelper.getSoulNetwork(ownerUUID);
+                if (network == null) {
+                    player.displayClientMessage(
+                        Component.literal("Spellbook's bound LP network not found!")
+                            .withStyle(ChatFormatting.RED),
+                        true
+                    );
+                    return;
+                }
+            } else {
+                // Spellbook not bound - fall back to caster's network but warn
+                player.displayClientMessage(
+                    Component.literal("Spellbook not bound to an LP network!")
+                        .withStyle(ChatFormatting.RED),
+                    true
+                );
+                network = NetworkHelper.getSoulNetwork(player);
+                if (network == null) {
+                    return;
+                }
+            }
+        } else {
+            // No spellbook - use caster's network
+            network = NetworkHelper.getSoulNetwork(player);
+            if (network == null) {
+                return;
+            }
         }
 
         // Calculate LP cost
@@ -106,8 +141,7 @@ public class SpellCastingHandler {
             lpCost = manaCost * lpPerMana;
         }
 
-        // Check for Blood Infused Spellbook and apply LP cost reduction
-        ItemStack spellbook = findBloodInfusedSpellbook(player);
+        // Apply LP cost reduction from Blood Infused Spellbook (if equipped)
         if (!spellbook.isEmpty()) {
             double lpReduction = ItemBloodInfusedSpellbook.getLPCostReduction(spellbook);
             if (lpReduction > 0) {

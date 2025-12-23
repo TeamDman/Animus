@@ -72,14 +72,34 @@ public class AnimusBlockTagsProvider extends BlockTagsProvider {
         this.tag(BlockTags.MINEABLE_WITH_HOE)
             .add(AnimusBlocks.BLOCK_BLOOD_LEAVES.get());
 
-        // MINEABLE WITH PICKAXE - AntiLife block and compat runes
+        // MINEABLE WITH PICKAXE - Stone-like blocks and compat runes
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(AnimusBlocks.BLOCK_ANTILIFE.get())
+            .add(AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get())
+            .add(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get())
+            // Willful Stone blocks (all 17 variants)
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_ORANGE.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_MAGENTA.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_LIGHT_BLUE.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_YELLOW.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_LIME.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_PINK.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_LIGHT_GRAY.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_CYAN.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_PURPLE.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_BLUE.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_BROWN.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_GREEN.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get())
             // Compat blocks - added as optional so they don't fail if compat mods aren't loaded during datagen
             .addOptional(new ResourceLocation(Constants.Mod.MODID, "arcane_rune"))
             .addOptional(new ResourceLocation(Constants.Mod.MODID, "rune_unleashed_nature"));
 
         // No mining level requirements - all blocks mineable with any tier
         // (Blood wood blocks are wood tier, antilife has no special requirements)
+        // Diabolical fungi has strength 0.0F so it breaks instantly without tool requirements
     }
 }

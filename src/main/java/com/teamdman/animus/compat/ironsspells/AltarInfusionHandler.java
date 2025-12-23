@@ -110,6 +110,9 @@ public class AltarInfusionHandler {
         altar.sacrificialDaggerCall(-lpCost, false); // Negative amount to consume LP
         ItemBloodInfusedSpellbook.setInfusionTier(stack, nextTier);
 
+        // Bind to player's LP network (rebind on each upgrade in case ownership changes)
+        ItemBloodInfusedSpellbook.bindToPlayer(stack, player);
+
         // Success message
         player.displayClientMessage(
             Component.literal("Spellbook infused to Tier " + nextTier + "!")
@@ -322,6 +325,9 @@ public class AltarInfusionHandler {
 
         // Set initial infusion tier
         ItemBloodInfusedSpellbook.setInfusionTier(bloodInfusedSpellbook, 1);
+
+        // Bind to player's LP network
+        ItemBloodInfusedSpellbook.bindToPlayer(bloodInfusedSpellbook, player);
 
         // Replace the item in player's hand
         player.setItemInHand(hand, bloodInfusedSpellbook);
