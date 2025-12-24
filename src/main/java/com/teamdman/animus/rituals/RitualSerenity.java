@@ -8,9 +8,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
 import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
+import net.minecraft.world.phys.AABB;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -24,8 +26,10 @@ import java.util.function.Consumer;
  * Range: Configurable (default: 48 blocks)
  */
 public class RitualSerenity extends Ritual {
-    // Track active ritual positions per level
-    private static final Map<Level, Set<BlockPos>> activeRituals = new HashMap<>();
+    public static final String EFFECT_RANGE = "effect";
+
+    // Track active ritual positions and their AABBs per level
+    private static final Map<Level, Map<BlockPos, AABB>> activeRituals = new HashMap<>();
 
     public RitualSerenity() {
         super(
@@ -34,6 +38,13 @@ public class RitualSerenity extends Ritual {
             10000,
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SERENITY
         );
+
+        // Use config value for default range
+        int radius = AnimusConfig.rituals.serenityRadius.get();
+        int size = radius * 2 + 1;
+
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-radius, -radius, -radius), size, size, size));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, radius + 32, radius + 32);
     }
 
     @Override
@@ -66,22 +77,24 @@ public class RitualSerenity extends Ritual {
         // Consume LP
         network.syphon(SoulTicket.create(refreshCost));
 
-        // Add to active rituals
-        addActiveRitual(level, masterPos);
+        // Add to active rituals with the current effect AABB
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AABB effectAABB = effectRange.getAABB(masterPos);
+        addActiveRitual(level, masterPos, effectAABB);
     }
 
     /**
-     * Add a ritual position to the active list
+     * Add a ritual position and its AABB to the active list
      */
-    private static void addActiveRitual(Level level, BlockPos pos) {
-        activeRituals.computeIfAbsent(level, k -> new HashSet<>()).add(pos.immutable());
+    private static void addActiveRitual(Level level, BlockPos pos, AABB aabb) {
+        activeRituals.computeIfAbsent(level, k -> new HashMap<>()).put(pos.immutable(), aabb);
     }
 
     /**
      * Remove a ritual position from the active list
      */
     private static void removeActiveRitual(Level level, BlockPos pos) {
-        Set<BlockPos> rituals = activeRituals.get(level);
+        Map<BlockPos, AABB> rituals = activeRituals.get(level);
         if (rituals != null) {
             rituals.remove(pos);
             if (rituals.isEmpty()) {
@@ -94,16 +107,13 @@ public class RitualSerenity extends Ritual {
      * Check if a position is within range of any active Serenity ritual
      */
     public static boolean isInSerenityZone(Level level, BlockPos spawnPos) {
-        Set<BlockPos> rituals = activeRituals.get(level);
+        Map<BlockPos, AABB> rituals = activeRituals.get(level);
         if (rituals == null || rituals.isEmpty()) {
             return false;
         }
 
-        int radius = AnimusConfig.rituals.serenityRadius.get();
-        int radiusSquared = radius * radius;
-
-        for (BlockPos ritualPos : rituals) {
-            if (spawnPos.distSqr(ritualPos) <= radiusSquared) {
+        for (AABB aabb : rituals.values()) {
+            if (aabb.contains(spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5)) {
                 return true;
             }
         }

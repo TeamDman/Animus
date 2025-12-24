@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
@@ -41,6 +42,8 @@ import java.util.function.Consumer;
  */
 public class RitualSiphon extends Ritual {
     private static final Logger LOGGER = LoggerFactory.getLogger(RitualSiphon.class);
+    public static final String EFFECT_RANGE = "effect";
+    public static final String TANK_RANGE = "tank";
 
     // Track current search position for each ritual to resume searching where we left off
     private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
@@ -58,6 +61,16 @@ public class RitualSiphon extends Ritual {
             5000,
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SIPHON
         );
+
+        // Use config values for default range (search area below ritual)
+        int hRadius = AnimusConfig.rituals.siphonRange.get();
+        int vDepth = AnimusConfig.rituals.siphonDepth.get();
+        int hSize = hRadius * 2 + 1;
+
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRadius, -vDepth, -hRadius), hSize, vDepth, hSize));
+        addBlockRange(TANK_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, hRadius + 32, vDepth + 64);
+        setMaximumVolumeAndDistanceOfRange(TANK_RANGE, 0, 5, 5);
     }
 
     @Override
@@ -74,8 +87,9 @@ public class RitualSiphon extends Ritual {
             return;
         }
 
-        // Check for fluid tank above the ritual stone
-        BlockPos tankPos = masterPos.above();
+        // Check for fluid tank using configurable tank range
+        AreaDescriptor tankRange = getBlockRange(TANK_RANGE);
+        BlockPos tankPos = tankRange.getContainedPositions(masterPos).iterator().next();
         BlockEntity tankEntity = level.getBlockEntity(tankPos);
 
         if (tankEntity == null) {
@@ -98,8 +112,11 @@ public class RitualSiphon extends Ritual {
         }
 
         // Find a fluid source to extract below the ritual stone (center-outward search)
-        int horizontalRadius = AnimusConfig.rituals.siphonRange.get();
-        int verticalDepth = AnimusConfig.rituals.siphonDepth.get();
+        // Derive range from Ritual Tinkerer-modifiable block range
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        net.minecraft.world.phys.AABB effectAABB = effectRange.getAABB(masterPos);
+        int horizontalRadius = (int) Math.max(Math.abs(effectAABB.maxX - masterPos.getX()), Math.abs(effectAABB.maxZ - masterPos.getZ()));
+        int verticalDepth = (int) Math.abs(effectAABB.minY - masterPos.getY());
         BlockPos fluidPos = findFluidSource(serverLevel, masterPos, horizontalRadius, verticalDepth);
 
         if (fluidPos == null) {

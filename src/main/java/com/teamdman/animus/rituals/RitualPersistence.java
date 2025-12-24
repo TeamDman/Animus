@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
 import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
@@ -27,6 +28,8 @@ import java.util.function.Consumer;
  * Chunk Radius: Configurable (default: 3 chunks)
  */
 public class RitualPersistence extends Ritual {
+    public static final String CHUNK_RANGE = "chunks";
+
     // Track loaded chunks per ritual stone position
     private static final Map<BlockPos, Set<ChunkPos>> loadedChunks = new HashMap<>();
 
@@ -40,6 +43,15 @@ public class RitualPersistence extends Ritual {
             50000,
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PERSISTENCE
         );
+
+        // Use config value for default chunk radius (convert to blocks for visualization)
+        // Chunk radius of 3 = 7 chunks total = 112 blocks width
+        int chunkRadius = AnimusConfig.rituals.persistenceChunkRadius.get();
+        int blockRadius = (chunkRadius * 2 + 1) * 8; // Half of total width in blocks
+        int size = blockRadius * 2;
+
+        addBlockRange(CHUNK_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-blockRadius, 0, -blockRadius), size, 1, size));
+        setMaximumVolumeAndDistanceOfRange(CHUNK_RANGE, 0, blockRadius + 64, 1);
     }
 
     @Override
@@ -77,9 +89,15 @@ public class RitualPersistence extends Ritual {
 
     /**
      * Load chunks in the configured radius around the ritual stone
+     * Derives radius from the Ritual Tinkerer-modifiable block range
      */
     private void loadChunks(ServerLevel level, BlockPos masterPos) {
-        int radius = AnimusConfig.rituals.persistenceChunkRadius.get();
+        // Derive chunk radius from block range
+        AreaDescriptor chunkRange = getBlockRange(CHUNK_RANGE);
+        net.minecraft.world.phys.AABB rangeAABB = chunkRange.getAABB(masterPos);
+        int blockRadius = (int) Math.max(Math.abs(rangeAABB.maxX - masterPos.getX()), Math.abs(rangeAABB.maxZ - masterPos.getZ()));
+        int radius = Math.max(0, (blockRadius / 16)); // Convert blocks to chunks
+
         ChunkPos centerChunk = new ChunkPos(masterPos);
         TicketController controller = AnimusModEventHandler.getTicketController();
 

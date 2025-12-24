@@ -35,12 +35,14 @@ import java.util.UUID;
  */
 public class BlockWillfulStone extends Block implements EntityBlock {
 
+    // Hardness value for when allowed to mine (similar to stone)
+    private static final float HARDNESS = 1.5F;
+
     public BlockWillfulStone() {
         super(BlockBehaviour.Properties.of()
             .mapColor(MapColor.STONE)
-            .strength(-1.0F, 3600000.0F) // Same as bedrock
+            .strength(HARDNESS, 3600000.0F) // Normal hardness, high blast resistance
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()
         );
     }
 

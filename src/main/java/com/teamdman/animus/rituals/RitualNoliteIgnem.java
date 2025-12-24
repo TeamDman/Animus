@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
@@ -26,6 +27,7 @@ import java.util.function.Consumer;
  * Range: Configurable (default: 64 blocks)
  */
 public class RitualNoliteIgnem extends Ritual {
+    public static final String EFFECT_RANGE = "effect";
 
     public RitualNoliteIgnem() {
         super(
@@ -34,6 +36,13 @@ public class RitualNoliteIgnem extends Ritual {
             5000,
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.NOLITE_IGNEM
         );
+
+        // Use config value for default range
+        int radius = AnimusConfig.rituals.noliteIgnemRadius.get();
+        int size = radius * 2 + 1;
+
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-radius, -radius, -radius), size, size, size));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, radius + 20, radius + 20);
     }
 
     @Override
@@ -51,22 +60,13 @@ public class RitualNoliteIgnem extends Ritual {
         }
 
         // Get configuration
-        int radius = AnimusConfig.rituals.noliteIgnemRadius.get();
         int lpPerFire = AnimusConfig.rituals.noliteIgnemLPPerFire.get();
 
-        // Find all fire blocks in range
+        // Find all fire blocks in range using the effect range
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         List<BlockPos> fireBlocks = new ArrayList<>();
-        int radiusSquared = radius * radius;
 
-        for (BlockPos pos : BlockPos.betweenClosed(
-            masterPos.offset(-radius, -radius, -radius),
-            masterPos.offset(radius, radius, radius)
-        )) {
-            // Check if within spherical range
-            if (pos.distSqr(masterPos) > radiusSquared) {
-                continue;
-            }
-
+        for (BlockPos pos : effectRange.getContainedPositions(masterPos)) {
             BlockState state = level.getBlockState(pos);
 
             // Check if it's a fire block

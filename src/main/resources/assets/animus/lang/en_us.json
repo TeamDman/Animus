@@ -680,5 +680,18 @@
   "text.component.animus.diviner.multiplier_orb": "Orb Capacity: ",
   "text.component.animus.diviner.multiplier_capacity": "Capacity: ",
   "text.component.animus.diviner.multiplier_efficiency": "Efficiency: ",
-  "text.component.animus.diviner.multiplier_tick_rate": "Tick Rate: "
+  "text.component.animus.diviner.multiplier_tick_rate": "Tick Rate: ",
+
+  "ritual.animus.ritual_peaceful_beckoning.spawn.info": "Area where peaceful mobs will spawn",
+  "ritual.animus.ritual_siphon.effect.info": "Area to extract fluids from",
+  "ritual.animus.ritual_siphon.tank.info": "Location of fluid tank to fill",
+  "ritual.animus.ritual_relentless_tides.effect.info": "Area to place fluids into",
+  "ritual.animus.ritual_relentless_tides.tank.info": "Location of fluid tank to drain from",
+  "ritual.animus.ritual_serenity.effect.info": "Area where hostile mob spawning is prevented",
+  "ritual.animus.ritual_persistence.chunks.info": "Area of chunks to keep loaded",
+  "ritual.animus.ritual_nolite_ignem.effect.info": "Area to extinguish fires",
+  "ritual.animus.ritual_endless_greed.effect.info": "Area to collect items and XP from",
+  "ritual.animus.ritual_endless_greed.chest.info": "Location of chest to deposit items",
+  "ritual.animus.ritual_culling.effect.info": "Area to damage hostile mobs",
+  "ritual.animus.ritual_natures_leach.effect.info": "Area to drain life from plants"
 }

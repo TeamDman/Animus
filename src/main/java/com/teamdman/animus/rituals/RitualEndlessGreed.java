@@ -16,6 +16,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import com.breakinblocks.neovitae.common.item.ExperienceTomeItem;
 import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
@@ -34,6 +35,9 @@ import java.util.function.Consumer;
  * Range: 15x15 horizontal, 5 high (configurable)
  */
 public class RitualEndlessGreed extends Ritual {
+    public static final String EFFECT_RANGE = "effect";
+    public static final String CHEST_RANGE = "chest";
+
     // Track active ritual positions and their AABBs for the event handler
     private static final Map<Level, Map<BlockPos, AABB>> activeRituals = new HashMap<>();
 
@@ -61,6 +65,17 @@ public class RitualEndlessGreed extends Ritual {
             5000,  // Activation cost
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENDLESS_GREED
         );
+
+        // Use config values for default range
+        int hRange = AnimusConfig.rituals.endlessGreedRange.get();
+        int vRange = AnimusConfig.rituals.endlessGreedVerticalRange.get();
+        int hSize = hRange * 2 + 1;
+
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRange, 0, -hRange), hSize, vRange + 1, hSize));
+        addBlockRange(CHEST_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
+
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, hRange + 10, vRange + 10);
+        setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 0, 5, 5);
     }
 
     @Override
@@ -91,18 +106,9 @@ public class RitualEndlessGreed extends Ritual {
         // Consume LP
         network.syphon(SoulTicket.create(refreshCost));
 
-        // Calculate range
-        int hRange = AnimusConfig.rituals.endlessGreedRange.get();
-        int vRange = AnimusConfig.rituals.endlessGreedVerticalRange.get();
-
-        AABB range = new AABB(
-            masterPos.getX() - hRange,
-            masterPos.getY(),
-            masterPos.getZ() - hRange,
-            masterPos.getX() + hRange + 1,
-            masterPos.getY() + vRange + 1,
-            masterPos.getZ() + hRange + 1
-        );
+        // Get range from block range
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AABB range = effectRange.getAABB(masterPos);
 
         // Register this ritual as active
         addActiveRitual(level, masterPos, range);
@@ -124,7 +130,8 @@ public class RitualEndlessGreed extends Ritual {
             return;
         }
 
-        BlockPos containerPos = masterPos.above();
+        AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
+        BlockPos containerPos = chestRange.getContainedPositions(masterPos).iterator().next();
         IItemHandler itemHandler = getItemHandler(level, containerPos);
 
         int lpPerItem = AnimusConfig.rituals.endlessGreedLPPerItem.get();
@@ -177,7 +184,8 @@ public class RitualEndlessGreed extends Ritual {
             return;
         }
 
-        BlockPos containerPos = masterPos.above();
+        AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
+        BlockPos containerPos = chestRange.getContainedPositions(masterPos).iterator().next();
         IItemHandler itemHandler = getItemHandler(level, containerPos);
 
         // Get cached tome slot or rebuild cache

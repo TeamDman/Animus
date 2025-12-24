@@ -14,6 +14,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.registries.BuiltInRegistries;
 import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 import com.breakinblocks.neovitae.ritual.Ritual;
 import com.breakinblocks.neovitae.ritual.RitualComponent;
@@ -32,10 +33,16 @@ import java.util.function.Consumer;
  * Refresh Time: 400 ticks
  */
 public class RitualPeacefulBeckoning extends Ritual {
+    public static final String SPAWN_RANGE = "spawn";
+
     private List<EntityType<?>> targets;
 
     public RitualPeacefulBeckoning() {
         super(Constants.Rituals.PEACEFUL_BECKONING, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PEACEFUL_BECKONING);
+
+        // Default spawn range: 8x8 area, 1 block above ritual stone
+        addBlockRange(SPAWN_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-4, 1, -4), 9, 3, 9));
+        setMaximumVolumeAndDistanceOfRange(SPAWN_RANGE, 0, 15, 10);
     }
 
     @Override
@@ -98,10 +105,13 @@ public class RitualPeacefulBeckoning extends Ritual {
             return;
         }
 
-        // Find a random position near the ritual
-        double x = masterPos.getX() + level.random.nextInt(8) - 4 + 0.5;
-        double y = masterPos.getY() + 1;
-        double z = masterPos.getZ() + level.random.nextInt(8) - 4 + 0.5;
+        // Find a random position within the spawn range
+        AreaDescriptor spawnRange = getBlockRange(SPAWN_RANGE);
+        net.minecraft.world.phys.AABB spawnAABB = spawnRange.getAABB(masterPos);
+
+        double x = spawnAABB.minX + level.random.nextDouble() * (spawnAABB.maxX - spawnAABB.minX);
+        double y = spawnAABB.minY;
+        double z = spawnAABB.minZ + level.random.nextDouble() * (spawnAABB.maxZ - spawnAABB.minZ);
 
         // Try to find a valid spawn position (max 16 attempts)
         for (int i = 0; i < 16; i++) {
@@ -109,8 +119,8 @@ public class RitualPeacefulBeckoning extends Ritual {
             BlockPos mobPos = mob.blockPosition();
 
             if (!level.isEmptyBlock(mobPos)) {
-                x = masterPos.getX() + level.random.nextInt(8) - 4 + 0.5;
-                z = masterPos.getZ() + level.random.nextInt(8) - 4 + 0.5;
+                x = spawnAABB.minX + level.random.nextDouble() * (spawnAABB.maxX - spawnAABB.minX);
+                z = spawnAABB.minZ + level.random.nextDouble() * (spawnAABB.maxZ - spawnAABB.minZ);
             } else {
                 break;
             }
