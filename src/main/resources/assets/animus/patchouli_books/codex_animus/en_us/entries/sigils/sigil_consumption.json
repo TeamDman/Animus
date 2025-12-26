@@ -22,7 +22,7 @@
     {
       "type": "patchouli:text",
       "title": "Protected Blocks",
-      "text": "Blocks tagged $(#888888)animus:disallow_antilife$() cannot be converted:$(li)Barrier, Bedrock$(li)Command blocks$(li)Structure blocks$(li)End portals$(li)AntiLife itself$(br2)See $(l:animus:blocks/antilife)AntiLife$() for full details on this corruption."
+      "text": "Blocks tagged $(#888888)animus:disallow_antilife$() cannot be converted:$(li)Barrier, Light$(li)Command blocks$(li)Structure blocks$(li)End portals$(li)AntiLife itself$(br2)See $(l:animus:blocks/antilife)AntiLife$() for full details on this corruption."
     }
   ]
 }

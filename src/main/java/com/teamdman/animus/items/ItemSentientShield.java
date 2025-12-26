@@ -116,7 +116,13 @@ public class ItemSentientShield extends ShieldItem implements IDemonWillWeapon {
 
     public EnumDemonWillType getCurrentType(ItemStack stack) {
         if (stack.hasTag() && stack.getTag().contains("demonWillType")) {
-            return EnumDemonWillType.valueOf(stack.getTag().getString("demonWillType"));
+            try {
+                // Use toUpperCase() because enum values are uppercase but toString() saves lowercase
+                return EnumDemonWillType.valueOf(stack.getTag().getString("demonWillType").toUpperCase());
+            } catch (IllegalArgumentException e) {
+                // If invalid type stored, return default
+                return EnumDemonWillType.DEFAULT;
+            }
         }
         return EnumDemonWillType.DEFAULT;
     }

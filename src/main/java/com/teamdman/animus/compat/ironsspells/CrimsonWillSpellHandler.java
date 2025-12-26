@@ -10,12 +10,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
@@ -24,7 +26,9 @@ import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Handles spell power boosting for Sigil of Crimson Will
@@ -50,6 +54,9 @@ public class CrimsonWillSpellHandler {
 
     // Will consumed per spell cast
     private static final double WILL_CONSUMED_PER_CAST = 5.0;
+
+    // Track players who have modifiers applied (for cleanup on cancel/toggle)
+    private static final Set<UUID> playersWithModifiers = ConcurrentHashMap.newKeySet();
 
     /**
      * Hook into spell casting to boost power and consume resources
@@ -106,6 +113,9 @@ public class CrimsonWillSpellHandler {
 
         // Apply temporary attribute modifiers for spell power and summon damage
         applyPowerModifiers(player, totalBonus);
+
+        // Track this player as having modifiers applied
+        playersWithModifiers.add(player.getUUID());
 
         // Consume LP
         network.syphon(new SoulTicket(
@@ -184,14 +194,41 @@ public class CrimsonWillSpellHandler {
             return;
         }
 
-        // Find active sigil
-        ItemStack activeSigil = findActiveSigil(player);
-        if (activeSigil == null) {
+        // Always remove modifiers if player had them applied (regardless of sigil state)
+        // This handles the case where the sigil was toggled off during casting
+        if (playersWithModifiers.remove(player.getUUID())) {
+            removePowerModifiers(player);
+        }
+    }
+
+    /**
+     * Tick handler to clean up modifiers if casting is cancelled
+     * This catches cases where SpellOnCastEvent never fires (cancelled casts)
+     */
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
             return;
         }
 
-        // Remove the attribute modifiers now that the spell has been cast
-        removePowerModifiers(player);
+        if (!(event.player instanceof ServerPlayer serverPlayer)) {
+            return;
+        }
+
+        // Only check players who have modifiers applied
+        if (!playersWithModifiers.contains(serverPlayer.getUUID())) {
+            return;
+        }
+
+        // Check if player is still casting
+        MagicData magicData = MagicData.getPlayerMagicData(serverPlayer);
+        if (!magicData.isCasting()) {
+            // Player stopped casting without SpellOnCastEvent firing (cancelled)
+            if (playersWithModifiers.remove(serverPlayer.getUUID())) {
+                removePowerModifiers(serverPlayer);
+                Animus.LOGGER.debug("Cleaned up Crimson Will modifiers for {} (casting cancelled)", serverPlayer.getName().getString());
+            }
+        }
     }
 
     /**

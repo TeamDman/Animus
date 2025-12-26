@@ -160,7 +160,7 @@ public class EntityThrownSpear extends AbstractArrow {
 
     public EnumDemonWillType getWillType() {
         try {
-            return EnumDemonWillType.valueOf(this.entityData.get(ID_WILL_TYPE));
+            return EnumDemonWillType.valueOf(this.entityData.get(ID_WILL_TYPE).toUpperCase());
         } catch (IllegalArgumentException e) {
             return EnumDemonWillType.DEFAULT;
         }

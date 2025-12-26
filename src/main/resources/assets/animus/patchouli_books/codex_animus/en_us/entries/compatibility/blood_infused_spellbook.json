@@ -35,6 +35,11 @@
     },
     {
       "type": "patchouli:text",
+      "title": "LP Casting",
+      "text": "When you don't have enough mana, the Blood-Infused Spellbook can $(blood)consume LP instead$()!$(br2)$(bold)Requirements:$()$(li)A $(item)Blood Orb$() in your inventory or curio slot$(li)Sufficient LP in your Soul Network$(br2)The LP cost is $(thing)100 LP per mana$() by default. Higher tier spellbooks reduce this cost by up to 20%%. This can be configured or disabled in the mod settings."
+    },
+    {
+      "type": "patchouli:text",
       "title": "Requirements",
       "text": "To use the Blood-Infused Spellbook:$(br2)$(li)$(mod)Iron's Spellbooks$() must be installed$(li)An active $(l:bloodmagicnv:altar/binding)Soul Network$()$(li)A Blood Altar with the appropriate orb tier$(br2)The spellbook's rarity and enchantment glint change based on its infusion tier, making it easy to see how powerful your tome has become."
     }

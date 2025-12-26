@@ -271,7 +271,11 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
 
     public EnumDemonWillType getCurrentType(ItemStack stack) {
         if (stack.hasTag() && stack.getTag().contains("demonWillType")) {
-            return EnumDemonWillType.valueOf(stack.getTag().getString("demonWillType"));
+            try {
+                return EnumDemonWillType.valueOf(stack.getTag().getString("demonWillType").toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return EnumDemonWillType.DEFAULT;
+            }
         }
         return EnumDemonWillType.DEFAULT;
     }
