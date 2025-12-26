@@ -1,5 +1,7 @@
 package com.teamdman.animus.recipes;
 
+import com.teamdman.animus.AnimusConfig;
+
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -28,6 +30,11 @@ public class ClearSkiesRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.clearSkiesEnabled.get()) {
+            return false;
+        }
+
         // Clear the weather
         level.setWeatherParameters(6000, 0, false, false);
 
@@ -47,6 +54,12 @@ public class ClearSkiesRitualRecipe extends ImperfectRitualRecipe {
         );
 
         return true;
+    }
+
+
+    @Override
+    public int getLpCost() {
+        return AnimusConfig.imperfectRituals.clearSkiesCost.get();
     }
 
     @Override

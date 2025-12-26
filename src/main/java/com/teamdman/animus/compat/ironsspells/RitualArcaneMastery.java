@@ -72,6 +72,11 @@ public class RitualArcaneMastery extends Ritual {
         if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.arcaneMasteryEnabled.get()) {
+            return;
+        }
+
 
         // Get owner
         ServerPlayer owner = (ServerPlayer) level.getPlayerByUUID(mrs.getOwner());

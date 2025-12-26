@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -39,6 +40,7 @@ import java.util.function.Consumer;
  */
 @RitualRegister(Constants.Rituals.RELENTLESS_TIDES)
 public class RitualRelentlessTides extends Ritual {
+    public static final String EFFECT_RANGE = "effect";
     // Track current search position for each ritual to resume searching where we left off
     private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
 
@@ -55,6 +57,13 @@ public class RitualRelentlessTides extends Ritual {
             5000,
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.RELENTLESS_TIDES
         );
+        
+        int horizontalRadius = AnimusConfig.rituals.relentlessTidesRange.get();
+        int verticalDepth = AnimusConfig.rituals.relentlessTidesDepth.get();
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(
+            new BlockPos(-horizontalRadius, -verticalDepth, -horizontalRadius),
+            horizontalRadius * 2 + 1, verticalDepth, horizontalRadius * 2 + 1));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 256);
     }
 
     @Override
@@ -65,6 +74,11 @@ public class RitualRelentlessTides extends Ritual {
         if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.relentlessTidesEnabled.get()) {
+            return;
+        }
+
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
@@ -109,8 +123,14 @@ public class RitualRelentlessTides extends Ritual {
         }
 
         // Find a valid placement position below the ritual stone
-        int horizontalRadius = AnimusConfig.rituals.relentlessTidesRange.get();
-        int verticalDepth = AnimusConfig.rituals.relentlessTidesDepth.get();
+        // Uses ritual effect range which respects Ritual Tinkerer modifications
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AABB aabb = effectRange.getAABB(masterPos);
+        int horizontalRadius = (int) Math.max(
+            Math.abs(aabb.minX - masterPos.getX()),
+            Math.abs(aabb.maxX - masterPos.getX())
+        );
+        int verticalDepth = (int) Math.abs(aabb.minY - masterPos.getY());
         Fluid fluidToPlace = extractedFluid.getFluid();
         BlockPos placementPos = findValidPlacementPosition(serverLevel, masterPos, horizontalRadius, verticalDepth, fluidToPlace);
 

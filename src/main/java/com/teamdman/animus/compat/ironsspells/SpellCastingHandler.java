@@ -4,6 +4,9 @@ import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.compat.IronsSpellsCompat;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
+import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
+import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
+import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.damage.SpellDamageSource;
 import net.minecraft.ChatFormatting;
@@ -25,6 +28,8 @@ import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 /**
  * Handles spell casting events to enable LP-powered spell casting
@@ -39,13 +44,33 @@ import java.util.UUID;
  */
 public class SpellCastingHandler {
 
+    // Track pending LP costs per player UUID for two-phase LP casting
+    private static final Map<UUID, PendingLPCost> pendingLPCosts = new ConcurrentHashMap<>();
+
     /**
-     * Handle spell on-cast event to consume LP when mana is insufficient
-     * This event has the actual mana cost available
-     * Priority: HIGH to run before normal mana consumption
+     * Inner class to track pending LP consumption between pre-cast and on-cast events
      */
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onSpellOnCast(SpellOnCastEvent event) {
+    private static class PendingLPCost {
+        final int lpCost;
+        final int manaAdded;
+        final SoulNetwork network;
+        final boolean isHybrid;
+
+        PendingLPCost(int lpCost, int manaAdded, SoulNetwork network, boolean isHybrid) {
+            this.lpCost = lpCost;
+            this.manaAdded = manaAdded;
+            this.network = network;
+            this.isHybrid = isHybrid;
+        }
+    }
+
+    /**
+     * Handle spell pre-cast event to temporarily add mana when LP will be used
+     * This fires BEFORE Iron's Spells checks mana, allowing LP substitution to work
+     * Priority: HIGHEST to run before mana checks
+     */
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onSpellPreCast(SpellPreCastEvent event) {
         // Only handle players
         if (!(event.getEntity() instanceof Player)) {
             return;
@@ -68,8 +93,12 @@ public class SpellCastingHandler {
             return;
         }
 
-        // Get the actual mana cost from the event
-        int manaCost = event.getManaCost();
+        // Get the mana cost for this spell via SpellRegistry
+        AbstractSpell spell = SpellRegistry.getSpell(event.getSpellId());
+        if (spell == null) {
+            return;
+        }
+        int manaCost = spell.getManaCost(event.getSpellLevel());
         int currentMana = (int) magicData.getMana();
 
         // If player has enough mana, let normal casting proceed
@@ -83,7 +112,6 @@ public class SpellCastingHandler {
         // Check if Blood Orb is required and present
         if (AnimusConfig.ironsSpells.requireBloodOrb.get()) {
             if (!hasBloodOrb(player)) {
-                // No Blood Orb and it's required - let the spell fail normally
                 return;
             }
         }
@@ -93,33 +121,20 @@ public class SpellCastingHandler {
         SoulNetwork network;
 
         if (!spellbook.isEmpty()) {
-            // Use the spellbook's bound owner's network
             Binding binding = ItemBloodInfusedSpellbook.getBindingStatic(spellbook);
             if (binding != null) {
                 UUID ownerUUID = binding.getOwnerId();
                 network = NetworkHelper.getSoulNetwork(ownerUUID);
                 if (network == null) {
-                    player.displayClientMessage(
-                        Component.literal("Spellbook's bound LP network not found!")
-                            .withStyle(ChatFormatting.RED),
-                        true
-                    );
                     return;
                 }
             } else {
-                // Spellbook not bound - fall back to caster's network but warn
-                player.displayClientMessage(
-                    Component.literal("Spellbook not bound to an LP network!")
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
                 network = NetworkHelper.getSoulNetwork(player);
                 if (network == null) {
                     return;
                 }
             }
         } else {
-            // No spellbook - use caster's network
             network = NetworkHelper.getSoulNetwork(player);
             if (network == null) {
                 return;
@@ -129,33 +144,31 @@ public class SpellCastingHandler {
         // Calculate LP cost
         int lpPerMana = AnimusConfig.ironsSpells.lpPerMana.get();
         int lpCost;
-        int manaToConsume;
+        int manaToAdd;
+        boolean isHybrid;
 
         if (AnimusConfig.ironsSpells.allowHybridCasting.get() && currentMana > 0) {
             // Hybrid casting: use available mana + LP for the rest
-            manaToConsume = currentMana;
+            manaToAdd = manaDeficit;
             lpCost = manaDeficit * lpPerMana;
+            isHybrid = true;
         } else {
             // Pure LP casting: use LP for entire cost
-            manaToConsume = 0;
+            manaToAdd = manaCost;
             lpCost = manaCost * lpPerMana;
+            isHybrid = false;
         }
 
-        // Apply LP cost reduction from Blood Infused Spellbook (if equipped)
+        // Apply LP cost reduction from Blood Infused Spellbook
         if (!spellbook.isEmpty()) {
             double lpReduction = ItemBloodInfusedSpellbook.getLPCostReduction(spellbook);
             if (lpReduction > 0) {
-                int reducedLpCost = (int) Math.max(1, lpCost * (1.0 - lpReduction));
-                Animus.LOGGER.debug("Blood Infused Spellbook LP reduction: {} -> {} ({}% reduction)",
-                    lpCost, reducedLpCost, (int)(lpReduction * 100));
-                lpCost = reducedLpCost;
+                lpCost = (int) Math.max(1, lpCost * (1.0 - lpReduction));
             }
         }
 
         // Check if player has enough LP
         if (network.getCurrentEssence() < lpCost) {
-            // Not enough LP - the spell will fail due to insufficient mana
-            // Don't cancel here - let the normal mana check handle it
             player.displayClientMessage(
                 Component.literal("Not enough Life Points! Required: " + lpCost + " LP")
                     .withStyle(ChatFormatting.RED),
@@ -164,15 +177,50 @@ public class SpellCastingHandler {
             return;
         }
 
+        // Temporarily add mana so the spell can proceed
+        magicData.setMana(currentMana + manaToAdd);
+
+        // Store pending LP cost to consume in onSpellOnCast
+        pendingLPCosts.put(player.getUUID(), new PendingLPCost(lpCost, manaToAdd, network, isHybrid));
+
+        Animus.LOGGER.debug("Pre-cast: added {} temporary mana for player {}, pending {} LP",
+            manaToAdd, player.getName().getString(), lpCost);
+    }
+
+    /**
+     * Handle spell on-cast event to consume LP when mana is insufficient
+     * This event has the actual mana cost available
+     * Priority: HIGH to run before normal mana consumption
+     */
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onSpellOnCast(SpellOnCastEvent event) {
+        // Only handle players
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getEntity();
+
+        // Only process on server side
+        if (player.level().isClientSide()) {
+            return;
+        }
+
+        // Check if there's a pending LP cost from onSpellPreCast
+        PendingLPCost pending = pendingLPCosts.remove(player.getUUID());
+        if (pending == null) {
+            // No pending LP cost - normal mana casting
+            return;
+        }
+
         // Consume LP from soul network
         SoulTicket ticket = new SoulTicket(
             Component.literal("Spell Casting"),
-            lpCost
+            pending.lpCost
         );
 
-        var syphonResult = network.syphonAndDamage(player, ticket);
+        var syphonResult = pending.network.syphonAndDamage(player, ticket);
         if (!syphonResult.isSuccess()) {
-            // Failed to consume LP
+            // Failed to consume LP - shouldn't happen since we checked in pre-cast
             player.displayClientMessage(
                 Component.literal("Failed to consume Life Points!")
                     .withStyle(ChatFormatting.RED),
@@ -181,25 +229,14 @@ public class SpellCastingHandler {
             return;
         }
 
-        // Successfully consumed LP!
-        // Set the mana cost to what we can cover with remaining mana
-        // This allows the spell to proceed
-        if (manaToConsume > 0) {
-            // Hybrid: set cost to what mana can cover
-            event.setManaCost(manaToConsume);
-        } else {
-            // Pure LP: set mana cost to 0
-            event.setManaCost(0);
-        }
-
         // Spawn visual and audio feedback
-        spawnLPCastFeedback(player, manaToConsume > 0);
+        spawnLPCastFeedback(player, pending.isHybrid);
 
         // Log success
         Animus.LOGGER.debug("Player {} cast spell using {} LP{}",
             player.getName().getString(),
-            lpCost,
-            manaToConsume > 0 ? " (+ " + manaToConsume + " mana)" : ""
+            pending.lpCost,
+            pending.isHybrid ? " (hybrid)" : ""
         );
     }
 

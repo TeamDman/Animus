@@ -1,5 +1,7 @@
 package com.teamdman.animus.recipes;
 
+import com.teamdman.animus.AnimusConfig;
+
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -30,6 +32,11 @@ public class RegressionRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.regressionEnabled.get()) {
+            return false;
+        }
+
         // Check if player is holding an item
         ItemStack heldItem = player.getMainHandItem();
         if (heldItem.isEmpty()) {
@@ -68,6 +75,12 @@ public class RegressionRitualRecipe extends ImperfectRitualRecipe {
         );
 
         return true;
+    }
+
+
+    @Override
+    public int getLpCost() {
+        return AnimusConfig.imperfectRituals.regressionCost.get();
     }
 
     @Override

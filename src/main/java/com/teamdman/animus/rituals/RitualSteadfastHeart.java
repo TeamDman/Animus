@@ -81,6 +81,11 @@ public class RitualSteadfastHeart extends Ritual {
         if (level.isClientSide) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.steadfastHeartEnabled.get()) {
+            return;
+        }
+
 
         BlockPos pos = mrs.getMasterBlockPos();
 

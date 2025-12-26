@@ -1,5 +1,7 @@
 package com.teamdman.animus.recipes;
 
+import com.teamdman.animus.AnimusConfig;
+
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,6 +32,11 @@ public class BoundlessSkiesRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.boundlessSkiesEnabled.get()) {
+            return false;
+        }
+
         // Get the Blood Magic flight effect
         var flightEffect = BuiltInRegistries.MOB_EFFECT.get(
             ResourceLocation.fromNamespaceAndPath("bloodmagic", "flight")
@@ -69,6 +76,12 @@ public class BoundlessSkiesRitualRecipe extends ImperfectRitualRecipe {
         );
 
         return true;
+    }
+
+
+    @Override
+    public int getLpCost() {
+        return AnimusConfig.imperfectRituals.boundlessSkiesCost.get();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.teamdman.animus.recipes;
 
+import com.teamdman.animus.AnimusConfig;
+
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -34,6 +36,11 @@ public class EnhancementRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.enhancementEnabled.get()) {
+            return false;
+        }
+
         // Check if player is holding an item in mainhand
         ItemStack mainhandItem = player.getMainHandItem();
         if (mainhandItem.isEmpty()) {
@@ -91,6 +98,12 @@ public class EnhancementRitualRecipe extends ImperfectRitualRecipe {
         );
 
         return true;
+    }
+
+
+    @Override
+    public int getLpCost() {
+        return AnimusConfig.imperfectRituals.enhancementCost.get();
     }
 
     @Override

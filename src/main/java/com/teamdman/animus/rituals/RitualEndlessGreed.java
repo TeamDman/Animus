@@ -35,6 +35,7 @@ import java.util.function.Consumer;
  */
 @RitualRegister(Constants.Rituals.ENDLESS_GREED)
 public class RitualEndlessGreed extends Ritual {
+    public static final String EFFECT_RANGE = "effect";
     // Track active ritual positions and their AABBs for the event handler
     private static final Map<Level, Map<BlockPos, AABB>> activeRituals = new HashMap<>();
 
@@ -62,6 +63,12 @@ public class RitualEndlessGreed extends Ritual {
             5000,  // Activation cost
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENDLESS_GREED
         );
+        
+        int hRange = AnimusConfig.rituals.endlessGreedRange.get();
+        int vRange = AnimusConfig.rituals.endlessGreedVerticalRange.get();
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(
+            new BlockPos(-hRange, 0, -hRange), hRange * 2 + 1, vRange + 1, hRange * 2 + 1));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 64, 64);
     }
 
     @Override
@@ -72,6 +79,11 @@ public class RitualEndlessGreed extends Ritual {
         if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.endlessGreedEnabled.get()) {
+            return;
+        }
+
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
@@ -95,18 +107,9 @@ public class RitualEndlessGreed extends Ritual {
             refreshCost
         ), false);
 
-        // Calculate range
-        int hRange = AnimusConfig.rituals.endlessGreedRange.get();
-        int vRange = AnimusConfig.rituals.endlessGreedVerticalRange.get();
-
-        AABB range = new AABB(
-            masterPos.getX() - hRange,
-            masterPos.getY(),
-            masterPos.getZ() - hRange,
-            masterPos.getX() + hRange + 1,
-            masterPos.getY() + vRange + 1,
-            masterPos.getZ() + hRange + 1
-        );
+        // Calculate range (respects Ritual Tinkerer modifications)
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AABB range = effectRange.getAABB(masterPos);
 
         // Register this ritual as active
         addActiveRitual(level, masterPos, range);

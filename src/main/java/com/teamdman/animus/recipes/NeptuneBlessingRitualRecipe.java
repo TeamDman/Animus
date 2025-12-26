@@ -1,5 +1,7 @@
 package com.teamdman.animus.recipes;
 
+import com.teamdman.animus.AnimusConfig;
+
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,6 +34,11 @@ public class NeptuneBlessingRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.neptuneBlessingEnabled.get()) {
+            return false;
+        }
+
         // Grant Water Breathing for 15 minutes (no particles)
         player.addEffect(new MobEffectInstance(
             MobEffects.WATER_BREATHING,
@@ -68,6 +75,12 @@ public class NeptuneBlessingRitualRecipe extends ImperfectRitualRecipe {
         );
 
         return true;
+    }
+
+
+    @Override
+    public int getLpCost() {
+        return AnimusConfig.imperfectRituals.neptuneBlessingCost.get();
     }
 
     @Override

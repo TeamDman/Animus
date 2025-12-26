@@ -94,6 +94,11 @@ public class RitualNaturesLeach extends Ritual {
         if (level.isClientSide) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.naturesLeachEnabled.get()) {
+            return;
+        }
+
 
         if (currentEssence < getRefreshCost()) {
             network.causeNausea();

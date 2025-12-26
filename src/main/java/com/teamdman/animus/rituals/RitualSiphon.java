@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
@@ -41,6 +42,7 @@ import java.util.function.Consumer;
  */
 @RitualRegister(Constants.Rituals.SIPHON)
 public class RitualSiphon extends Ritual {
+    public static final String EFFECT_RANGE = "effect";
     private static final Logger LOGGER = LoggerFactory.getLogger(RitualSiphon.class);
 
     // Track current search position for each ritual to resume searching where we left off
@@ -59,6 +61,13 @@ public class RitualSiphon extends Ritual {
             5000,
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SIPHON
         );
+        
+        int horizontalRadius = AnimusConfig.rituals.siphonRange.get();
+        int verticalDepth = AnimusConfig.rituals.siphonDepth.get();
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(
+            new BlockPos(-horizontalRadius, -verticalDepth, -horizontalRadius),
+            horizontalRadius * 2 + 1, verticalDepth, horizontalRadius * 2 + 1));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 256);
     }
 
     @Override
@@ -69,6 +78,11 @@ public class RitualSiphon extends Ritual {
         if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.siphonEnabled.get()) {
+            return;
+        }
+
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
@@ -99,8 +113,14 @@ public class RitualSiphon extends Ritual {
         }
 
         // Find a fluid source to extract below the ritual stone (center-outward search)
-        int horizontalRadius = AnimusConfig.rituals.siphonRange.get();
-        int verticalDepth = AnimusConfig.rituals.siphonDepth.get();
+        // Uses ritual effect range which respects Ritual Tinkerer modifications
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AABB aabb = effectRange.getAABB(masterPos);
+        int horizontalRadius = (int) Math.max(
+            Math.abs(aabb.minX - masterPos.getX()),
+            Math.abs(aabb.maxX - masterPos.getX())
+        );
+        int verticalDepth = (int) Math.abs(aabb.minY - masterPos.getY());
         BlockPos fluidPos = findFluidSource(serverLevel, masterPos, horizontalRadius, verticalDepth);
 
         if (fluidPos == null) {

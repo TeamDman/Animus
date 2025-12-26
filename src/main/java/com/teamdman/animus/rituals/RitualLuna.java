@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -62,6 +63,11 @@ public class RitualLuna extends Ritual {
         if (level.isClientSide) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.lunaEnabled.get()) {
+            return;
+        }
+
 
         // Check if player has enough LP
         if (currentEssence < getRefreshCost()) {
@@ -75,7 +81,8 @@ public class RitualLuna extends Ritual {
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 
         // Find a light-emitting block using center-outward search
-        BlockPos lightPos = findLightEmittingBlock(level, masterPos);
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        BlockPos lightPos = findLightEmittingBlock(level, masterPos, effectRange);
 
         if (lightPos == null) {
             return;
@@ -155,28 +162,27 @@ public class RitualLuna extends Ritual {
     /**
      * Find a light-emitting block using breadth-first search
      * Starts from 1 block below the master ritual stone and expands outward in all directions
+     * Uses the ritual's effect range (modifiable via Ritual Tinkerer)
      */
-    private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos) {
+    private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
         int maxChecksPerTick = 4096; // Checks per tick - tested with no noticeable performance impact
         int checksThisTick = 0;
-        int horizontalRadius = AnimusConfig.rituals.lunaHorizontalRange.get();
-        int configVerticalRange = AnimusConfig.rituals.lunaVerticalRange.get();
+        
+        // Get bounds from the AreaDescriptor (respects Ritual Tinkerer modifications)
+        AABB aabb = effectRange.getAABB(masterPos);
+        int horizontalRadius = (int) Math.max(
+            Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
+            Math.max(Math.abs(aabb.minZ - masterPos.getZ()), Math.abs(aabb.maxZ - masterPos.getZ()))
+        );
+        int verticalRadius = (int) Math.max(
+            Math.abs(aabb.minY - masterPos.getY()),
+            Math.abs(aabb.maxY - masterPos.getY())
+        );
 
         // Start position is 1 block below the ritual stone
         BlockPos startPos = masterPos.below();
-
-        // Calculate actual vertical radius
-        // -1 means search from starting position to world bottom
-        int verticalRadius;
-        if (configVerticalRange == -1) {
-            // Search from start position down to world minimum build height
-            int minY = level.getMinBuildHeight();
-            verticalRadius = startPos.getY() - minY;
-        } else {
-            verticalRadius = configVerticalRange;
-        }
 
         // Breadth-first search: expand outward in "shells" of increasing distance
         // We use Manhattan distance for efficiency

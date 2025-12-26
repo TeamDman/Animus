@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -50,6 +51,11 @@ public class RitualEntropy extends Ritual {
         if (level.isClientSide) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.entropyEnabled.get()) {
+            return;
+        }
+
 
         // Get chest
         AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);

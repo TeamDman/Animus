@@ -1,5 +1,7 @@
 package com.teamdman.animus.recipes;
 
+import com.teamdman.animus.AnimusConfig;
+
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,6 +34,11 @@ public class WardenRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.wardenEnabled.get()) {
+            return false;
+        }
+
         // Grant Obsidian Cloak for 15 minutes (no particles)
         player.addEffect(new MobEffectInstance(
             BloodMagicPotions.OBSIDIAN_CLOAK.get(),
@@ -58,6 +65,12 @@ public class WardenRitualRecipe extends ImperfectRitualRecipe {
         );
 
         return true;
+    }
+
+
+    @Override
+    public int getLpCost() {
+        return AnimusConfig.imperfectRituals.wardenCost.get();
     }
 
     @Override

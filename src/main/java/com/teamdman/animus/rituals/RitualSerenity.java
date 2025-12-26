@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
@@ -21,12 +22,14 @@ import java.util.function.Consumer;
  * Activation Cost: 10000 LP
  * Refresh Cost: Configurable (default: 50 LP)
  * Refresh Time: 20 ticks (1 second)
- * Range: Configurable (default: 48 blocks)
+ * Range: Configurable (default: 48 blocks), modifiable via Ritual Tinkerer
  */
 @RitualRegister(Constants.Rituals.SERENITY)
 public class RitualSerenity extends Ritual {
-    // Track active ritual positions per level
-    private static final Map<Level, Set<BlockPos>> activeRituals = new HashMap<>();
+    public static final String EFFECT_RANGE = "effect";
+
+    // Track active ritual positions per level with their AABB for spawn checking
+    private static final Map<Level, Map<BlockPos, AABB>> activeRituals = new HashMap<>();
 
     public RitualSerenity() {
         super(
@@ -35,6 +38,11 @@ public class RitualSerenity extends Ritual {
             10000,
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SERENITY
         );
+
+        int radius = AnimusConfig.rituals.serenityRadius.get();
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(
+            new BlockPos(-radius, -radius, -radius), radius * 2 + 1));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
     }
 
     @Override
@@ -45,6 +53,11 @@ public class RitualSerenity extends Ritual {
         if (level.isClientSide || !(level instanceof ServerLevel)) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.serenityEnabled.get()) {
+            return;
+        }
+
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
@@ -70,22 +83,26 @@ public class RitualSerenity extends Ritual {
             refreshCost
         ), false);
 
-        // Add to active rituals
-        addActiveRitual(level, masterPos);
+        // Get the effect range (respects Ritual Tinkerer modifications)
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AABB aabb = effectRange.getAABB(masterPos);
+
+        // Add to active rituals with the current AABB
+        addActiveRitual(level, masterPos, aabb);
     }
 
     /**
-     * Add a ritual position to the active list
+     * Add a ritual position to the active list with its AABB
      */
-    private static void addActiveRitual(Level level, BlockPos pos) {
-        activeRituals.computeIfAbsent(level, k -> new HashSet<>()).add(pos.immutable());
+    private static void addActiveRitual(Level level, BlockPos pos, AABB aabb) {
+        activeRituals.computeIfAbsent(level, k -> new HashMap<>()).put(pos.immutable(), aabb);
     }
 
     /**
      * Remove a ritual position from the active list
      */
     private static void removeActiveRitual(Level level, BlockPos pos) {
-        Set<BlockPos> rituals = activeRituals.get(level);
+        Map<BlockPos, AABB> rituals = activeRituals.get(level);
         if (rituals != null) {
             rituals.remove(pos);
             if (rituals.isEmpty()) {
@@ -96,18 +113,16 @@ public class RitualSerenity extends Ritual {
 
     /**
      * Check if a position is within range of any active Serenity ritual
+     * Uses stored AABB which respects Ritual Tinkerer modifications
      */
     public static boolean isInSerenityZone(Level level, BlockPos spawnPos) {
-        Set<BlockPos> rituals = activeRituals.get(level);
+        Map<BlockPos, AABB> rituals = activeRituals.get(level);
         if (rituals == null || rituals.isEmpty()) {
             return false;
         }
 
-        int radius = AnimusConfig.rituals.serenityRadius.get();
-        int radiusSquared = radius * radius;
-
-        for (BlockPos ritualPos : rituals) {
-            if (spawnPos.distSqr(ritualPos) <= radiusSquared) {
+        for (AABB aabb : rituals.values()) {
+            if (aabb.contains(spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5)) {
                 return true;
             }
         }

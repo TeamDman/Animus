@@ -55,6 +55,11 @@ public class RitualUnmaking extends Ritual {
         if (level.isClientSide) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.unmakingEnabled.get()) {
+            return;
+        }
+
 
         if (currentEssence < getRefreshCost()) {
             network.causeNausea();

@@ -50,6 +50,11 @@ public class RitualPersistence extends Ritual {
         if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.persistenceEnabled.get()) {
+            return;
+        }
+
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {

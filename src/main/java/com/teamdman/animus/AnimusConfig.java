@@ -47,6 +47,26 @@ public class AnimusConfig {
 
     // Ritual Configuration
     public static class Rituals {
+        // Ritual enabled flags
+        public final ForgeConfigSpec.BooleanValue cullingEnabled;
+        public final ForgeConfigSpec.BooleanValue endlessGreedEnabled;
+        public final ForgeConfigSpec.BooleanValue entropyEnabled;
+        public final ForgeConfigSpec.BooleanValue lunaEnabled;
+        public final ForgeConfigSpec.BooleanValue naturesLeachEnabled;
+        public final ForgeConfigSpec.BooleanValue noliteIgnemEnabled;
+        public final ForgeConfigSpec.BooleanValue peacefulBeckoningEnabled;
+        public final ForgeConfigSpec.BooleanValue persistenceEnabled;
+        public final ForgeConfigSpec.BooleanValue relentlessTidesEnabled;
+        public final ForgeConfigSpec.BooleanValue reparareEnabled;
+        public final ForgeConfigSpec.BooleanValue serenityEnabled;
+        public final ForgeConfigSpec.BooleanValue siphonEnabled;
+        public final ForgeConfigSpec.BooleanValue solEnabled;
+        public final ForgeConfigSpec.BooleanValue sourceVitaeumEnabled;
+        public final ForgeConfigSpec.BooleanValue steadfastHeartEnabled;
+        public final ForgeConfigSpec.BooleanValue unmakingEnabled;
+        public final ForgeConfigSpec.BooleanValue floralSupremacyEnabled;
+        public final ForgeConfigSpec.BooleanValue arcaneMasteryEnabled;
+
         public final ForgeConfigSpec.BooleanValue killBoss;
         public final ForgeConfigSpec.IntValue bossCost;
         public final ForgeConfigSpec.BooleanValue cullingKillsTnT;
@@ -55,6 +75,7 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue cullingVerticalRange;
         public final ForgeConfigSpec.IntValue cullingLpPerKill;
         public final ForgeConfigSpec.IntValue peacefulBeckoningCost;
+        public final ForgeConfigSpec.IntValue peacefulBeckoningRange;
         public final ForgeConfigSpec.IntValue steadfastHeartRange;
         public final ForgeConfigSpec.IntValue steadfastHeartRefreshTime;
         public final ForgeConfigSpec.IntValue steadfastHeartMaxAmplifier;
@@ -98,6 +119,83 @@ public class AnimusConfig {
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
 
+            // Ritual enabled/disabled flags
+            builder.comment("Enable or disable individual rituals").push("enabled");
+
+            cullingEnabled = builder
+                .comment("Enable the Ritual of Culling")
+                .define("culling", true);
+
+            endlessGreedEnabled = builder
+                .comment("Enable the Ritual of Endless Greed")
+                .define("endlessGreed", true);
+
+            entropyEnabled = builder
+                .comment("Enable the Ritual of Entropy")
+                .define("entropy", true);
+
+            lunaEnabled = builder
+                .comment("Enable the Ritual of Luna")
+                .define("luna", true);
+
+            naturesLeachEnabled = builder
+                .comment("Enable the Ritual of Nature's Leach")
+                .define("naturesLeach", true);
+
+            noliteIgnemEnabled = builder
+                .comment("Enable the Ritual of Nolite Ignem")
+                .define("noliteIgnem", true);
+
+            peacefulBeckoningEnabled = builder
+                .comment("Enable the Ritual of Peaceful Beckoning")
+                .define("peacefulBeckoning", true);
+
+            persistenceEnabled = builder
+                .comment("Enable the Ritual of Persistence")
+                .define("persistence", true);
+
+            relentlessTidesEnabled = builder
+                .comment("Enable the Ritual of Relentless Tides")
+                .define("relentlessTides", true);
+
+            reparareEnabled = builder
+                .comment("Enable the Ritual of Reparare")
+                .define("reparare", true);
+
+            serenityEnabled = builder
+                .comment("Enable the Ritual of Serenity")
+                .define("serenity", true);
+
+            siphonEnabled = builder
+                .comment("Enable the Ritual of Siphon")
+                .define("siphon", true);
+
+            solEnabled = builder
+                .comment("Enable the Ritual of Sol")
+                .define("sol", true);
+
+            sourceVitaeumEnabled = builder
+                .comment("Enable the Ritual of Source Vitaeum (requires Ars Nouveau)")
+                .define("sourceVitaeum", true);
+
+            steadfastHeartEnabled = builder
+                .comment("Enable the Ritual of Steadfast Heart")
+                .define("steadfastHeart", true);
+
+            unmakingEnabled = builder
+                .comment("Enable the Ritual of Unmaking")
+                .define("unmaking", true);
+
+            floralSupremacyEnabled = builder
+                .comment("Enable the Ritual of Floral Supremacy (requires Botania)")
+                .define("floralSupremacy", true);
+
+            arcaneMasteryEnabled = builder
+                .comment("Enable the Ritual of Arcane Mastery (requires Iron's Spells)")
+                .define("arcaneMastery", true);
+
+            builder.pop();
+
             killBoss = builder
                 .comment("Allow Ritual of Culling to kill boss monsters (Wither, Ender Dragon, etc.)")
                 .define("killBoss", true);
@@ -129,6 +227,10 @@ public class AnimusConfig {
             peacefulBeckoningCost = builder
                 .comment("LP cost per mob spawned by Ritual of Peaceful Beckoning")
                 .defineInRange("peacefulBeckoningCost", 1000, 1, 100000);
+
+            peacefulBeckoningRange = builder
+                .comment("Horizontal range in blocks for Ritual of Peaceful Beckoning mob spawning")
+                .defineInRange("peacefulBeckoningRange", 8, 1, 32);
 
             steadfastHeartRange = builder
                 .comment("Range in blocks for Ritual of Steadfast Heart absorption effect")
@@ -317,6 +419,183 @@ public class AnimusConfig {
                 .comment("Base LP cost per refresh cycle (20 ticks) for Ritual of Endless Greed")
                 .defineInRange("refreshCost", 5, 0, 1000);
 
+            builder.pop();
+
+            builder.pop();
+        }
+    }
+
+    // Imperfect Ritual Configuration
+    public static class ImperfectRituals {
+        // Boundless Skies - Sets weather to permanent clear
+        public final ForgeConfigSpec.BooleanValue boundlessSkiesEnabled;
+        public final ForgeConfigSpec.IntValue boundlessSkiesCost;
+
+        // Clear Skies - Clears the weather temporarily
+        public final ForgeConfigSpec.BooleanValue clearSkiesEnabled;
+        public final ForgeConfigSpec.IntValue clearSkiesCost;
+
+        // Enhancement - Enhances enchantments on held item
+        public final ForgeConfigSpec.BooleanValue enhancementEnabled;
+        public final ForgeConfigSpec.IntValue enhancementCost;
+
+        // Hunger - Sets player to hungry state
+        public final ForgeConfigSpec.BooleanValue hungerEnabled;
+        public final ForgeConfigSpec.IntValue hungerCost;
+
+        // Iron Heart - Provides absorption hearts
+        public final ForgeConfigSpec.BooleanValue ironHeartEnabled;
+        public final ForgeConfigSpec.IntValue ironHeartCost;
+
+        // Magi - Converts mana to LP (Ars Nouveau)
+        public final ForgeConfigSpec.BooleanValue magiEnabled;
+        public final ForgeConfigSpec.IntValue magiCost;
+
+        // Manasteel Soul - Infuses manasteel with soul (Botania)
+        public final ForgeConfigSpec.BooleanValue manasteelSoulEnabled;
+        public final ForgeConfigSpec.IntValue manasteelSoulCost;
+
+        // Neptune Blessing - Water breathing and swim speed
+        public final ForgeConfigSpec.BooleanValue neptuneBlessingEnabled;
+        public final ForgeConfigSpec.IntValue neptuneBlessingCost;
+
+        // Reduction - Downgrades enchantments by 1 level
+        public final ForgeConfigSpec.BooleanValue reductionEnabled;
+        public final ForgeConfigSpec.IntValue reductionCost;
+
+        // Regression - Removes anvil repair cost
+        public final ForgeConfigSpec.BooleanValue regressionEnabled;
+        public final ForgeConfigSpec.IntValue regressionCost;
+
+        // Soul Stained Blood - Creates soul stained blood orb
+        public final ForgeConfigSpec.BooleanValue soulStainedBloodEnabled;
+        public final ForgeConfigSpec.IntValue soulStainedBloodCost;
+
+        // Warden - Summons warden-related effects
+        public final ForgeConfigSpec.BooleanValue wardenEnabled;
+        public final ForgeConfigSpec.IntValue wardenCost;
+
+        public ImperfectRituals(ForgeConfigSpec.Builder builder) {
+            builder.comment("Imperfect Ritual Configuration").push("imperfectRituals");
+
+            // Boundless Skies
+            builder.comment("Imperfect Ritual of Boundless Skies - Sets weather to permanent clear").push("boundlessSkies");
+            boundlessSkiesEnabled = builder
+                .comment("Enable the Imperfect Ritual of Boundless Skies")
+                .define("enabled", true);
+            boundlessSkiesCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Boundless Skies")
+                .defineInRange("cost", 10000, 0, 1000000);
+            builder.pop();
+
+            // Clear Skies
+            builder.comment("Imperfect Ritual of Clear Skies - Clears the weather temporarily").push("clearSkies");
+            clearSkiesEnabled = builder
+                .comment("Enable the Imperfect Ritual of Clear Skies")
+                .define("enabled", true);
+            clearSkiesCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Clear Skies")
+                .defineInRange("cost", 1000, 0, 1000000);
+            builder.pop();
+
+            // Enhancement
+            builder.comment("Imperfect Ritual of Enhancement - Enhances enchantments on held item by 1 level").push("enhancement");
+            enhancementEnabled = builder
+                .comment("Enable the Imperfect Ritual of Enhancement")
+                .define("enabled", true);
+            enhancementCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Enhancement")
+                .defineInRange("cost", 5000, 0, 1000000);
+            builder.pop();
+
+            // Hunger
+            builder.comment("Imperfect Ritual of Hunger - Sets player to hungry state").push("hunger");
+            hungerEnabled = builder
+                .comment("Enable the Imperfect Ritual of Hunger")
+                .define("enabled", true);
+            hungerCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Hunger")
+                .defineInRange("cost", 500, 0, 1000000);
+            builder.pop();
+
+            // Iron Heart
+            builder.comment("Imperfect Ritual of Iron Heart - Provides absorption hearts").push("ironHeart");
+            ironHeartEnabled = builder
+                .comment("Enable the Imperfect Ritual of Iron Heart")
+                .define("enabled", true);
+            ironHeartCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Iron Heart")
+                .defineInRange("cost", 3500, 0, 1000000);
+            builder.pop();
+
+            // Magi (Ars Nouveau)
+            builder.comment("Imperfect Ritual of Magi - Converts source to LP (requires Ars Nouveau)").push("magi");
+            magiEnabled = builder
+                .comment("Enable the Imperfect Ritual of Magi")
+                .define("enabled", true);
+            magiCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Magi")
+                .defineInRange("cost", 2500, 0, 1000000);
+            builder.pop();
+
+            // Manasteel Soul (Botania)
+            builder.comment("Imperfect Ritual of Manasteel Soul - Infuses manasteel with blood (requires Botania)").push("manasteelSoul");
+            manasteelSoulEnabled = builder
+                .comment("Enable the Imperfect Ritual of Manasteel Soul")
+                .define("enabled", true);
+            manasteelSoulCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Manasteel Soul")
+                .defineInRange("cost", 2500, 0, 1000000);
+            builder.pop();
+
+            // Neptune Blessing
+            builder.comment("Imperfect Ritual of Neptune's Blessing - Grants water breathing and swim speed").push("neptuneBlessing");
+            neptuneBlessingEnabled = builder
+                .comment("Enable the Imperfect Ritual of Neptune's Blessing")
+                .define("enabled", true);
+            neptuneBlessingCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Neptune's Blessing")
+                .defineInRange("cost", 2000, 0, 1000000);
+            builder.pop();
+
+            // Reduction
+            builder.comment("Imperfect Ritual of Reduction - Downgrades all enchantments on held item by 1 level").push("reduction");
+            reductionEnabled = builder
+                .comment("Enable the Imperfect Ritual of Reduction")
+                .define("enabled", true);
+            reductionCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Reduction")
+                .defineInRange("cost", 1000, 0, 1000000);
+            builder.pop();
+
+            // Regression
+            builder.comment("Imperfect Ritual of Regression - Removes anvil repair cost from held item").push("regression");
+            regressionEnabled = builder
+                .comment("Enable the Imperfect Ritual of Regression")
+                .define("enabled", true);
+            regressionCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Regression")
+                .defineInRange("cost", 3000, 0, 1000000);
+            builder.pop();
+
+            // Soul Stained Blood
+            builder.comment("Imperfect Ritual of Soul Stained Blood - Converts blood orb to soul stained variant").push("soulStainedBlood");
+            soulStainedBloodEnabled = builder
+                .comment("Enable the Imperfect Ritual of Soul Stained Blood")
+                .define("enabled", true);
+            soulStainedBloodCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of Soul Stained Blood")
+                .defineInRange("cost", 2000, 0, 1000000);
+            builder.pop();
+
+            // Warden
+            builder.comment("Imperfect Ritual of the Warden - Summons warden-related effects").push("warden");
+            wardenEnabled = builder
+                .comment("Enable the Imperfect Ritual of the Warden")
+                .define("enabled", true);
+            wardenCost = builder
+                .comment("LP cost to activate the Imperfect Ritual of the Warden")
+                .defineInRange("cost", 3000, 0, 1000000);
             builder.pop();
 
             builder.pop();
@@ -807,6 +1086,7 @@ public class AnimusConfig {
     // Config instances
     public static General general;
     public static Rituals rituals;
+    public static ImperfectRituals imperfectRituals;
     public static Sigils sigils;
     public static HurtCooldown hurtCooldown;
     public static BloodCore bloodCore;
@@ -819,6 +1099,7 @@ public class AnimusConfig {
 
         general = new General(BUILDER);
         rituals = new Rituals(BUILDER);
+        imperfectRituals = new ImperfectRituals(BUILDER);
         sigils = new Sigils(BUILDER);
         hurtCooldown = new HurtCooldown(BUILDER);
         bloodCore = new BloodCore(BUILDER);

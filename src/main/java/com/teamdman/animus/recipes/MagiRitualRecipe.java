@@ -1,5 +1,7 @@
 package com.teamdman.animus.recipes;
 
+import com.teamdman.animus.AnimusConfig;
+
 import com.google.gson.JsonObject;
 import com.teamdman.animus.compat.CompatHandler;
 import net.minecraft.core.BlockPos;
@@ -67,6 +69,11 @@ public class MagiRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.magiEnabled.get()) {
+            return false;
+        }
+
         // Double-check Ars Nouveau is loaded
         if (!CompatHandler.isArsNouveauLoaded()) {
             player.displayClientMessage(
@@ -112,6 +119,12 @@ public class MagiRitualRecipe extends ImperfectRitualRecipe {
         );
 
         return true;
+    }
+
+
+    @Override
+    public int getLpCost() {
+        return AnimusConfig.imperfectRituals.magiCost.get();
     }
 
     @Override

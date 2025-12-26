@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals.imperfect;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,6 +36,11 @@ public class RitualRegression extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.regressionEnabled.get()) {
+            return false;
+        }
+
         if (level.isClientSide) {
             return false;
         }
@@ -55,5 +61,10 @@ public class RitualRegression extends ImperfectRitual {
         tag.remove("RepairCost");
 
         return true;
+    }
+
+    @Override
+    public int getActivationCost() {
+        return AnimusConfig.imperfectRituals.regressionCost.get();
     }
 }

@@ -132,6 +132,11 @@ public class RitualCulling extends Ritual {
         if (level.isClientSide) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.cullingEnabled.get()) {
+            return;
+        }
+
 
         // Get current destructive demon will (for boss killing)
         EnumDemonWillType type = EnumDemonWillType.DESTRUCTIVE;

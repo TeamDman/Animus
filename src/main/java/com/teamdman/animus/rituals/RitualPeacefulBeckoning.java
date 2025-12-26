@@ -81,6 +81,11 @@ public class RitualPeacefulBeckoning extends Ritual {
         if (level.isClientSide) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.peacefulBeckoningEnabled.get()) {
+            return;
+        }
+
 
         // Rebuild list if empty or invalid
         if (targets == null || targets.isEmpty()) {
@@ -99,10 +104,12 @@ public class RitualPeacefulBeckoning extends Ritual {
             return;
         }
 
-        // Find a random position near the ritual
-        double x = masterPos.getX() + level.random.nextInt(8) - 4 + 0.5;
+        // Find a random position near the ritual (uses configurable range)
+        int range = AnimusConfig.rituals.peacefulBeckoningRange.get();
+        int rangeDiameter = range * 2;
+        double x = masterPos.getX() + level.random.nextInt(rangeDiameter + 1) - range + 0.5;
         double y = masterPos.getY() + 1;
-        double z = masterPos.getZ() + level.random.nextInt(8) - 4 + 0.5;
+        double z = masterPos.getZ() + level.random.nextInt(rangeDiameter + 1) - range + 0.5;
 
         // Try to find a valid spawn position (max 16 attempts)
         for (int i = 0; i < 16; i++) {
@@ -110,8 +117,8 @@ public class RitualPeacefulBeckoning extends Ritual {
             BlockPos mobPos = mob.blockPosition();
 
             if (!level.isEmptyBlock(mobPos)) {
-                x = masterPos.getX() + level.random.nextInt(8) - 4 + 0.5;
-                z = masterPos.getZ() + level.random.nextInt(8) - 4 + 0.5;
+                x = masterPos.getX() + level.random.nextInt(rangeDiameter + 1) - range + 0.5;
+                z = masterPos.getZ() + level.random.nextInt(rangeDiameter + 1) - range + 0.5;
             } else {
                 break;
             }

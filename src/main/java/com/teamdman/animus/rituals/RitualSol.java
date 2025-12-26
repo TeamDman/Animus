@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -68,6 +69,11 @@ public class RitualSol extends Ritual {
         if (level.isClientSide) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.solEnabled.get()) {
+            return;
+        }
+
 
         // Check if player has enough LP
         if (currentEssence < getRefreshCost()) {
@@ -105,7 +111,8 @@ public class RitualSol extends Ritual {
         ItemStack stack = handler.getStackInSlot(slot);
 
         // Find a dark spot to place the block using center-outward search
-        BlockPos placePos = findDarkSpot(level, masterPos);
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        BlockPos placePos = findDarkSpot(level, masterPos, effectRange);
 
         if (placePos == null) {
             return;
@@ -204,25 +211,24 @@ public class RitualSol extends Ritual {
     /**
      * Find a dark spot using center-outward search
      * Starts from the master ritual stone and expands outward in square rings
+     * Uses the ritual's effect range (modifiable via Ritual Tinkerer)
      */
-    private BlockPos findDarkSpot(Level level, BlockPos masterPos) {
+    private BlockPos findDarkSpot(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
         int maxChecksPerTick = 4096; // Checks per tick - tested with no noticeable performance impact
         int checksThisTick = 0;
-        int horizontalRadius = AnimusConfig.rituals.solHorizontalRange.get();
-        int configVerticalRange = AnimusConfig.rituals.solVerticalRange.get();
-
-        // Calculate actual vertical radius
-        // -1 means search from ritual stone to world bottom
-        int verticalRadius;
-        if (configVerticalRange == -1) {
-            // Search from ritual stone down to world minimum build height
-            int minY = level.getMinBuildHeight();
-            verticalRadius = masterPos.getY() - minY;
-        } else {
-            verticalRadius = configVerticalRange;
-        }
+        
+        // Get bounds from the AreaDescriptor (respects Ritual Tinkerer modifications)
+        AABB aabb = effectRange.getAABB(masterPos);
+        int horizontalRadius = (int) Math.max(
+            Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
+            Math.max(Math.abs(aabb.minZ - masterPos.getZ()), Math.abs(aabb.maxZ - masterPos.getZ()))
+        );
+        int verticalRadius = (int) Math.max(
+            Math.abs(aabb.minY - masterPos.getY()),
+            Math.abs(aabb.maxY - masterPos.getY())
+        );
 
         // Search by expanding square rings from center outward
         for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {

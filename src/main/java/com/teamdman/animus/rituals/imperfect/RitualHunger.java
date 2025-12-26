@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals.imperfect;
 
+import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -34,6 +35,11 @@ public class RitualHunger extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.hungerEnabled.get()) {
+            return false;
+        }
+
         if (level.isClientSide) {
             return false;
         }
@@ -55,5 +61,10 @@ public class RitualHunger extends ImperfectRitual {
         );
 
         return true;
+    }
+
+    @Override
+    public int getActivationCost() {
+        return AnimusConfig.imperfectRituals.hungerCost.get();
     }
 }

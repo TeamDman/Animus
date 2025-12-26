@@ -1,5 +1,7 @@
 package com.teamdman.animus.recipes;
 
+import com.teamdman.animus.AnimusConfig;
+
 import com.google.gson.JsonObject;
 import com.teamdman.animus.compat.CompatHandler;
 import net.minecraft.core.BlockPos;
@@ -69,6 +71,11 @@ public class ManasteelSoulRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean onActivate(ServerLevel level, BlockPos stonePos, BlockPos triggerPos, ServerPlayer player) {
+        // Check if ritual is enabled
+        if (!AnimusConfig.imperfectRituals.manasteelSoulEnabled.get()) {
+            return false;
+        }
+
         // Double-check Botania is loaded
         if (!CompatHandler.isBotaniaLoaded()) {
             player.displayClientMessage(
@@ -124,6 +131,12 @@ public class ManasteelSoulRitualRecipe extends ImperfectRitualRecipe {
         );
 
         return true;
+    }
+
+
+    @Override
+    public int getLpCost() {
+        return AnimusConfig.imperfectRituals.manasteelSoulCost.get();
     }
 
     @Override

@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.ritual.*;
@@ -27,6 +28,7 @@ import java.util.function.Consumer;
  */
 @RitualRegister(Constants.Rituals.NOLITE_IGNEM)
 public class RitualNoliteIgnem extends Ritual {
+    public static final String EFFECT_RANGE = "effect";
 
     public RitualNoliteIgnem() {
         super(
@@ -35,6 +37,11 @@ public class RitualNoliteIgnem extends Ritual {
             5000,
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.NOLITE_IGNEM
         );
+        
+        int radius = AnimusConfig.rituals.noliteIgnemRadius.get();
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(
+            new BlockPos(-radius, -radius, -radius), radius * 2 + 1));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
     }
 
     @Override
@@ -45,6 +52,11 @@ public class RitualNoliteIgnem extends Ritual {
         if (level.isClientSide || !(level instanceof ServerLevel)) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.noliteIgnemEnabled.get()) {
+            return;
+        }
+
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
@@ -52,21 +64,17 @@ public class RitualNoliteIgnem extends Ritual {
         }
 
         // Get configuration
-        int radius = AnimusConfig.rituals.noliteIgnemRadius.get();
         int lpPerFire = AnimusConfig.rituals.noliteIgnemLPPerFire.get();
 
-        // Find all fire blocks in range
+        // Find all fire blocks in range (respects Ritual Tinkerer modifications)
+        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AABB aabb = effectRange.getAABB(masterPos);
         List<BlockPos> fireBlocks = new ArrayList<>();
-        int radiusSquared = radius * radius;
 
         for (BlockPos pos : BlockPos.betweenClosed(
-            masterPos.offset(-radius, -radius, -radius),
-            masterPos.offset(radius, radius, radius)
+            BlockPos.containing(aabb.minX, aabb.minY, aabb.minZ),
+            BlockPos.containing(aabb.maxX, aabb.maxY, aabb.maxZ)
         )) {
-            // Check if within spherical range
-            if (pos.distSqr(masterPos) > radiusSquared) {
-                continue;
-            }
 
             BlockState state = level.getBlockState(pos);
 

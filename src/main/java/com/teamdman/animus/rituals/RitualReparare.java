@@ -46,6 +46,11 @@ public class RitualReparare extends Ritual {
         if (level.isClientSide) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.reparareEnabled.get()) {
+            return;
+        }
+
 
         if (network == null) {
             return;

@@ -56,6 +56,11 @@ public class RitualFloralSupremacy extends Ritual {
         if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
+        // Check if ritual is enabled
+        if (!AnimusConfig.rituals.floralSupremacyEnabled.get()) {
+            return;
+        }
+
 
         // Check if Botania is loaded
         if (!ModList.get().isLoaded("botania")) {
