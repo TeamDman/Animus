@@ -10,8 +10,10 @@ import com.teamdman.animus.registry.AnimusFluids;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -82,6 +84,12 @@ public class AnimusClientSetup {
             registerSpearThrowingProperty(AnimusItems.SPEAR_DIAMOND.get());
             registerSpearThrowingProperty(AnimusItems.SPEAR_BOUND.get());
             registerSpearThrowingProperty(AnimusItems.SPEAR_SENTIENT.get());
+
+            // Register bow properties for Sentient Bow (like vanilla bow)
+            registerBowProperties(AnimusItems.SENTIENT_BOW.get());
+
+            // Register bow properties for Hellforged Bow (extended charge)
+            registerHellforgedBowProperties(AnimusItems.HELLFORGED_BOW.get());
         });
     }
 
@@ -89,6 +97,24 @@ public class AnimusClientSetup {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // Register custom renderer for thrown spear
         event.registerEntityRenderer(AnimusEntityTypes.THROWN_PILUM.get(), ThrownSpearRenderer::new);
+
+        // Register arrow renderer for sentient arrow
+        event.registerEntityRenderer(AnimusEntityTypes.SENTIENT_ARROW.get(),
+            context -> new ArrowRenderer<>(context) {
+                @Override
+                public ResourceLocation getTextureLocation(com.teamdman.animus.entities.EntitySentientArrow entity) {
+                    return ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "textures/entity/sentient_arrow.png");
+                }
+            });
+
+        // Register arrow renderer for hellforged arrow
+        event.registerEntityRenderer(AnimusEntityTypes.HELLFORGED_ARROW.get(),
+            context -> new ArrowRenderer<>(context) {
+                @Override
+                public ResourceLocation getTextureLocation(com.teamdman.animus.entities.EntityHellforgedArrow entity) {
+                    return ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "textures/entity/hellforged_arrow.png");
+                }
+            });
     }
 
     @SubscribeEvent
@@ -173,6 +199,84 @@ public class AnimusClientSetup {
                     return 1.0F;
                 }
                 return 0.0F;
+            }
+        );
+    }
+
+    /**
+     * Registers bow properties for pull animation (like vanilla bow)
+     */
+    private static void registerBowProperties(net.minecraft.world.item.Item item) {
+        // "pulling" property - 1.0 when the bow is being drawn
+        ItemProperties.register(item,
+            ResourceLocation.withDefaultNamespace("pulling"),
+            (stack, level, entity, seed) -> {
+                if (entity != null && entity.isUsingItem() && entity.getUseItem() == stack) {
+                    return 1.0F;
+                }
+                return 0.0F;
+            }
+        );
+
+        // "pull" property - 0.0 to 1.0 based on how far the bow is drawn
+        ItemProperties.register(item,
+            ResourceLocation.withDefaultNamespace("pull"),
+            (stack, level, entity, seed) -> {
+                if (entity == null || entity.getUseItem() != stack) {
+                    return 0.0F;
+                }
+                return (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+            }
+        );
+    }
+
+    /**
+     * Registers bow properties for Hellforged Bow with extended charge visualization
+     * - pulling: 1.0 when the bow is being drawn
+     * - pull: 0.0 to 1.0 based on normal draw (first 20 ticks)
+     * - charging: 0.0 to 1.0 based on extended charge (after normal draw)
+     */
+    private static void registerHellforgedBowProperties(net.minecraft.world.item.Item item) {
+        // "pulling" property - 1.0 when the bow is being drawn
+        ItemProperties.register(item,
+            ResourceLocation.withDefaultNamespace("pulling"),
+            (stack, level, entity, seed) -> {
+                if (entity != null && entity.isUsingItem() && entity.getUseItem() == stack) {
+                    return 1.0F;
+                }
+                return 0.0F;
+            }
+        );
+
+        // "pull" property - 0.0 to 1.0 based on normal draw (caps at 1.0 after 20 ticks)
+        ItemProperties.register(item,
+            ResourceLocation.withDefaultNamespace("pull"),
+            (stack, level, entity, seed) -> {
+                if (entity == null || entity.getUseItem() != stack) {
+                    return 0.0F;
+                }
+                int useDuration = stack.getUseDuration() - entity.getUseItemRemainingTicks();
+                return Math.min(useDuration / 20.0F, 1.0F);
+            }
+        );
+
+        // "charging" property - 0.0 to 1.0 based on extended charge beyond normal draw
+        // Used to visually indicate charging progress for the execute shot
+        ItemProperties.register(item,
+            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "charging"),
+            (stack, level, entity, seed) -> {
+                if (entity == null || entity.getUseItem() != stack) {
+                    return 0.0F;
+                }
+                int useDuration = stack.getUseDuration() - entity.getUseItemRemainingTicks();
+                if (useDuration <= 20) {
+                    return 0.0F; // Still in normal draw phase
+                }
+                // Calculate charge progress from tick 20 to max charge ticks
+                int maxChargeTicks = com.teamdman.animus.items.ItemHellforgedBow.getMaxChargeTicks();
+                int extraTicks = useDuration - 20;
+                int maxExtraTicks = maxChargeTicks - 20;
+                return Math.min((float) extraTicks / maxExtraTicks, 1.0F);
             }
         );
     }

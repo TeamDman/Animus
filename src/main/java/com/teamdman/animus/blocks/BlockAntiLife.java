@@ -64,7 +64,7 @@ public class BlockAntiLife extends BaseEntityBlock {
             return InteractionResult.PASS;
         }
 
-        // Fire break event to check if protected (e.g., FTB Chunks)
+        // Fire break event to check if protected (such as FTB Chunks)
         BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, blockPos, state, player);
         if (MinecraftForge.EVENT_BUS.post(breakEvent)) {
             return InteractionResult.PASS; // Protected, cannot convert

@@ -1,0 +1,28 @@
+{
+  "name": "guide.animus.entry.hellforged_bow",
+  "icon": "animus:hellforged_bow",
+  "category": "animus:items",
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:hellforged_bow",
+      "text": "The ultimate evolution of the Sentient Bow, forged in hellfire and bound by blood. This devastating weapon draws power from your Life Essence while still benefiting from demon will attunement. Its arrows $(#f00)pierce through all targets$() in a line!"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Charged Shot Mechanic",
+      "text": "$(bold)LP Consumption:$() Consumes LP instead of arrows$(br)$(bold)Charge System:$() Hold to charge beyond normal draw time$(br)$(bold)LP Per Tick:$() Drains 50 LP per tick while charging$(br2)When fully charged (3.5 seconds), the bow drains $(#f00)3500 LP$() and can deal up to $(#f00)40 damage$() per shot."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Execute Mechanic",
+      "text": "$(bold)Execution:$() At full charge, arrows can $(#f00)instantly kill$() any target below 15%% health.$(br2)$(bold)Will Effects:$() Like the Sentient Bow, arrows gain effects based on your dominant demon will type.$(br2)$(bold)Self-Repair:$() The bow automatically repairs itself using LP from your network (100 LP per durability)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Crafting & Binding",
+      "text": "$(bold)Recipe:$() Crafted in the Hellfire Forge using a Sentient Bow, Netherite Ingot, Hellforged Ingot, and Weak Blood Shard. Requires 2048 will minimum.$(br2)$(bold)Binding:$() Like other blood magic items, the bow must be bound to your Soul Network before use. Sneak + Right-click to bind.$(br2)$(italic)A weapon for those who have mastered both blood and will.$()"
+    }
+  ]
+}

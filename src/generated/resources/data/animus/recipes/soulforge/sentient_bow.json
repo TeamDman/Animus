@@ -1,0 +1,21 @@
+{
+  "type": "bloodmagic:soulforge",
+  "drain": 64.0,
+  "input0": {
+    "item": "minecraft:bow"
+  },
+  "input1": {
+    "item": "minecraft:diamond"
+  },
+  "input2": {
+    "item": "bloodmagic:soulgempetty"
+  },
+  "input3": {
+    "item": "minecraft:chorus_fruit"
+  },
+  "minimumDrain": 256.0,
+  "output": {
+    "item": "animus:sentient_bow",
+    "nbt": "{Damage:0}"
+  }
+}

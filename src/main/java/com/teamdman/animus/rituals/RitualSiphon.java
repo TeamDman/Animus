@@ -107,7 +107,7 @@ public class RitualSiphon extends Ritual {
                 return;
             }
         } catch (Exception e) {
-            // Handle capability errors (e.g., when tank is removed)
+            // Handle capability errors (such as when tank is removed)
             emitSmokeParticles(serverLevel, masterPos);
             return;
         }

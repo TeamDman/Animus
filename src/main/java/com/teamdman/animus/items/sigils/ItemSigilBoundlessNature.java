@@ -265,7 +265,7 @@ public class ItemSigilBoundlessNature extends AnimusSigilBase {
 
         @Override
         public boolean canExportManaToItem(ItemStack otherStack) {
-            // Allow exporting mana to other items (e.g., mana tools)
+            // Allow exporting mana to other items (such as mana tools)
             return true;
         }
 

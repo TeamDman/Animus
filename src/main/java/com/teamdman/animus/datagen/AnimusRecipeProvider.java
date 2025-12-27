@@ -260,6 +260,24 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
                 Ingredient.of(itemFromMod("bloodmagic", "soulgempetty")))
             .build(consumer, loc("soulforge/spear_sentient"));
 
+        TartaricForgeRecipeBuilder.tartaricForge(
+                new ItemStack(AnimusItems.SENTIENT_BOW.get()),
+                256.0, 64.0,
+                Ingredient.of(Items.BOW),
+                Ingredient.of(Items.DIAMOND),
+                Ingredient.of(itemFromMod("bloodmagic", "soulgempetty")),
+                Ingredient.of(Items.CHORUS_FRUIT))
+            .build(consumer, loc("soulforge/sentient_bow"));
+
+        TartaricForgeRecipeBuilder.tartaricForge(
+                new ItemStack(AnimusItems.HELLFORGED_BOW.get()),
+                2048.0, 1024.0,
+                Ingredient.of(AnimusItems.SENTIENT_BOW.get()),
+                Ingredient.of(Items.NETHERITE_INGOT),
+                Ingredient.of(itemFromMod("bloodmagic", "ingot_hellforged")),
+                Ingredient.of(itemFromMod("bloodmagic", "weakbloodshard")))
+            .build(consumer, loc("soulforge/hellforged_bow"));
+
         // Reagents
         TartaricForgeRecipeBuilder.tartaricForge(
                 new ItemStack(AnimusItems.REAGENT_BOUNDLESS_NATURE.get()),

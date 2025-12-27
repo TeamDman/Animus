@@ -260,7 +260,7 @@ public class AnimusEventHandler {
     /**
      * Prevent mob spawning in Ritual of Serenity zones
      * This event fires before a mob finalizes spawning, allowing us to cancel it
-     * Note: Spawner spawns and conversions (e.g., villager -> zombie villager) are allowed to proceed
+     * Note: Spawner spawns and conversions (such as villager -> zombie villager) are allowed to proceed
      */
     @SubscribeEvent
     public static void onMobSpawnCheck(MobSpawnEvent.FinalizeSpawn event) {
@@ -274,7 +274,7 @@ public class AnimusEventHandler {
             return;
         }
 
-        // Allow conversion spawns (e.g., villager -> zombie villager) to proceed
+        // Allow conversion spawns (such as villager -> zombie villager) to proceed
         // These fire FinalizeSpawn "late" after the entity is already in the world,
         // and calling setSpawnCancelled on them throws UnsupportedOperationException
         if (event.getSpawnType() == net.minecraft.world.entity.MobSpawnType.CONVERSION) {
@@ -517,10 +517,21 @@ public class AnimusEventHandler {
     private static final double MIN_WILL_FOR_EXECUTE = 1.0;
     private static final double MAX_WILL_FOR_EXECUTE = 4096.0;
     private static final double MIN_EXECUTE_PERCENT = 0.01; // 1%
-    private static final double MAX_EXECUTE_PERCENT = 0.15; // 15%
+    private static final double DEFAULT_MAX_EXECUTE_PERCENT = 0.15; // 15% (fallback if config not loaded)
     private static final double WILL_COST_PER_EXECUTE = 5.0;
     private static final int LP_REWARD_PER_EXECUTE = 200;
     private static final int LP_COST_PER_ACTION = 5; // LP cost per hit or mine
+
+    /**
+     * Gets the max execute threshold from config with a fallback for pre-config-load access
+     */
+    private static double getMaxExecutePercent() {
+        try {
+            return AnimusConfig.sigils.monkExecuteThreshold.get();
+        } catch (IllegalStateException e) {
+            return DEFAULT_MAX_EXECUTE_PERCENT;
+        }
+    }
 
     /**
      * Sigil of the Monk - Apply unarmed damage bonus when attacking with empty hands
@@ -581,7 +592,7 @@ public class AnimusEventHandler {
 
             // Linear interpolation: (will - min) / (max - min) * (maxPercent - minPercent) + minPercent
             double willRatio = (clampedWill - MIN_WILL_FOR_EXECUTE) / (MAX_WILL_FOR_EXECUTE - MIN_WILL_FOR_EXECUTE);
-            executePercent = MIN_EXECUTE_PERCENT + willRatio * (MAX_EXECUTE_PERCENT - MIN_EXECUTE_PERCENT);
+            executePercent = MIN_EXECUTE_PERCENT + willRatio * (getMaxExecutePercent() - MIN_EXECUTE_PERCENT);
 
             // Add bonus damage equal to executePercent of target's max health
             willBonusDamage = (float) (targetMaxHealth * executePercent);

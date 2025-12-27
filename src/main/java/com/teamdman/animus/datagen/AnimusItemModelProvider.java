@@ -71,6 +71,10 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         // Fluid Buckets - use custom bucket textures (like Blood Magic's lifebucket.png)
         simpleItem(AnimusItems.ANTILIFE_BUCKET, "item/antilife_bucket");
         simpleItem(AnimusItems.LIVING_TERRA_BUCKET, "item/living_terra_bucket");
+
+        // Bows
+        bowItem(AnimusItems.SENTIENT_BOW, "sentient_bow");
+        bowItem(AnimusItems.HELLFORGED_BOW, "hellforged_bow");
     }
 
     /**
@@ -140,6 +144,39 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         String name = item.getId().getPath();
         withExistingParent(name, mcLoc("item/generated"))
             .texture("layer0", modLoc(texturePath));
+    }
+
+    /**
+     * Creates a bow model with pulling states
+     */
+    private void bowItem(RegistryObject<Item> item, String baseTextureName) {
+        String name = item.getId().getPath();
+
+        // Pulling state models
+        withExistingParent(name + "_pulling_0", mcLoc("item/bow"))
+            .texture("layer0", modLoc("item/" + baseTextureName + "_pulling_0"));
+        withExistingParent(name + "_pulling_1", mcLoc("item/bow"))
+            .texture("layer0", modLoc("item/" + baseTextureName + "_pulling_1"));
+        withExistingParent(name + "_pulling_2", mcLoc("item/bow"))
+            .texture("layer0", modLoc("item/" + baseTextureName + "_pulling_2"));
+
+        // Main model with overrides
+        withExistingParent(name, mcLoc("item/bow"))
+            .texture("layer0", modLoc("item/" + baseTextureName))
+            .override()
+                .predicate(mcLoc("pulling"), 1.0F)
+                .model(getBuilder(name + "_pulling_0"))
+            .end()
+            .override()
+                .predicate(mcLoc("pulling"), 1.0F)
+                .predicate(mcLoc("pull"), 0.65F)
+                .model(getBuilder(name + "_pulling_1"))
+            .end()
+            .override()
+                .predicate(mcLoc("pulling"), 1.0F)
+                .predicate(mcLoc("pull"), 0.9F)
+                .model(getBuilder(name + "_pulling_2"))
+            .end();
     }
 
     @Override

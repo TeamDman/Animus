@@ -95,8 +95,8 @@ public class AnimusBlockTagsProvider extends BlockTagsProvider {
             .add(AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get())
             .add(AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get())
             // Compat blocks - added as optional so they don't fail if compat mods aren't loaded during datagen
-            .addOptional(new ResourceLocation(Constants.Mod.MODID, "arcane_rune"))
-            .addOptional(new ResourceLocation(Constants.Mod.MODID, "rune_unleashed_nature"));
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_rune"))
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "rune_unleashed_nature"));
 
         // No mining level requirements - all blocks mineable with any tier
         // (Blood wood blocks are wood tier, antilife has no special requirements)

@@ -37,7 +37,7 @@ public class BlockWillfulStone extends Block implements EntityBlock {
     public BlockWillfulStone() {
         super(BlockBehaviour.Properties.of()
             .mapColor(MapColor.STONE)
-            .strength(-1.0F, 3600000.0F) // Same as bedrock
+            .strength(1.5F, 3600000.0F) // Breakable like stone, but blast resistant
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()
         );

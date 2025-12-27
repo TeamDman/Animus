@@ -11,9 +11,9 @@ import wayoftime.bloodmagic.altar.IBloodRune;
  * Standard Blood Magic runes can only return a single BloodRuneType via IBloodRune.
  * This interface allows Animus runes (like Arcane Rune and Rune of Unleashed Nature)
  * to provide multiple bonuses simultaneously, such as:
- * - Multiple rune types at once (e.g., Capacity + Orb + Acceleration)
- * - Fractional rune counts (e.g., 1.35x Capacity bonus)
- * - State-dependent bonuses (e.g., extra bonuses when mana/source is available)
+ * - Multiple rune types at once (such as Capacity + Orb + Acceleration)
+ * - Fractional rune counts (such as 1.35x Capacity bonus)
+ * - State-dependent bonuses (such as extra bonuses when mana/source is available)
  *
  * This interface is checked by a mixin that modifies AltarUtil.getUpgrades() to
  * apply the multi-bonus upgrades in addition to the standard single-rune bonus.
@@ -26,7 +26,7 @@ public interface IMultiBonusRune extends IBloodRune {
      *
      * Implementation should call upgrades.upgrade(BloodRuneType, count) for each
      * bonus the rune provides. Fractional bonuses should be handled by the
-     * implementation (e.g., tracking partial counts across multiple runes).
+     * implementation (such as tracking partial counts across multiple runes).
      *
      * @param level The level/world
      * @param pos The position of the rune

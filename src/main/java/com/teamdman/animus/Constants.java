@@ -120,6 +120,11 @@ public class Constants {
 
             // Ritual of Endless Greed
             public static final String TICKET_ENDLESS_GREED = "text.component.animus.ticket.endless_greed";
+
+            // Hellforged Bow
+            public static final String TICKET_HELLFORGED_BOW = "text.component.animus.ticket.hellforged_bow";
+            public static final String TICKET_HELLFORGED_BOW_CHARGE = "text.component.animus.ticket.hellforged_bow_charge";
+            public static final String TICKET_HELLFORGED_EXECUTE = "text.component.animus.ticket.hellforged_execute";
         }
 
         public static class Tooltips {
@@ -250,6 +255,18 @@ public class Constants {
             public static final String SIGIL_MONK_COST = "tooltip.animus.sigil.monk.cost";
             public static final String SIGIL_MONK_ACTIVE = "tooltip.animus.sigil.monk.active";
             public static final String SIGIL_MONK_INACTIVE = "tooltip.animus.sigil.monk.inactive";
+
+            // Sentient Bow Tooltips
+            public static final String SENTIENT_BOW_FLAVOUR = "tooltip.animus.sentient_bow.flavour";
+            public static final String SENTIENT_BOW_INFO = "tooltip.animus.sentient_bow.info";
+            public static final String SENTIENT_BOW_SNARE = "tooltip.animus.sentient_bow.snare";
+
+            // Hellforged Bow Tooltips
+            public static final String HELLFORGED_BOW_FLAVOUR = "tooltip.animus.hellforged_bow.flavour";
+            public static final String HELLFORGED_BOW_INFO = "tooltip.animus.hellforged_bow.info";
+            public static final String HELLFORGED_BOW_LP_COST = "tooltip.animus.hellforged_bow.lp_cost";
+            public static final String HELLFORGED_BOW_CHARGE = "tooltip.animus.hellforged_bow.charge";
+            public static final String HELLFORGED_BOW_EXECUTE = "tooltip.animus.hellforged_bow.execute";
         }
     }
 

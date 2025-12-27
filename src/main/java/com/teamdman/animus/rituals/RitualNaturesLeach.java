@@ -32,7 +32,8 @@ import java.util.function.Consumer;
  * Activation Cost: 3000 LP
  * Refresh Cost: 10 LP
  * Refresh Time: Configurable (default 80 ticks, varies with demon will)
- * Range: Configurable (default 32 blocks)
+ * Default Range: 8 blocks (can be expanded via Ritual Tinkerer)
+ * Maximum Range: Configurable (default 32 blocks, max 64)
  * Altar Search Range: 32 blocks horizontally, ±10 blocks vertically (cached for performance)
  * LP per Block: Configurable (default 50 LP)
  */
@@ -53,14 +54,19 @@ public class RitualNaturesLeach extends Ritual {
     public RitualNaturesLeach() {
         super(Constants.Rituals.LEACH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEACH);
 
-        // Use config value for range (default 32 blocks)
-        int range = AnimusConfig.rituals.naturesLeachRange.get();
-        int rangeSize = range * 2 + 4; // Convert to full size
+        // Maximum range from config (Ritual Tinkerer can expand up to this)
+        int maxRange = AnimusConfig.rituals.naturesLeachRange.get();
+
+        // Default initial range (can be expanded via Ritual Tinkerer up to maxRange)
+        int defaultRange = 8;
+        int rangeSize = defaultRange * 2 + 1; // Convert to full size (diameter)
 
         // Altar range: 32 blocks horizontally, 10 blocks down, 10 blocks up
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-32, -10, -32), 65, 21, 65));
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-range, -range, -range), rangeSize));
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, range + 10, range + 10, range + 10);
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-defaultRange, -defaultRange, -defaultRange), rangeSize));
+
+        // Set maximum range that Ritual Tinkerer can expand to (from config)
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, maxRange, maxRange);
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 32, 32);
     }
 

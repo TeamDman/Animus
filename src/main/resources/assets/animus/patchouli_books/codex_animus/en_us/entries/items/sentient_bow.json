@@ -1,0 +1,23 @@
+{
+  "name": "guide.animus.entry.sentient_bow",
+  "icon": "animus:sentient_bow",
+  "category": "animus:items",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "animus:sentient_bow",
+      "text": "A bow infused with demon will that fires spectral arrows powered by raw demonic energy. Unlike mundane bows, it requires no physical arrows - only the will of demons."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Will-Powered Combat",
+      "text": "$(bold)Will Consumption:$() Uses demon will instead of arrows$(br)$(bold)Attunement:$() Automatically matches your highest will type$(br2)$(bold)Will Effects:$()$(li)$(#900)Raw:$() Balanced damage$(li)$(#0a0)Corrosive:$() +Poison on hit$(li)$(#f00)Destructive:$() Maximum damage$(li)$(#0af)Vengeful:$() Fast arrows$(li)$(#888)Steadfast:$() +Slowness on hit"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Additional Features",
+      "text": "$(bold)Soul Snare:$() All arrows apply Soul Snare, guaranteeing demon will drops from slain enemies.$(br2)$(bold)Damage Scaling:$() Arrow damage increases with your demon will reserves, similar to sentient melee weapons.$(br2)$(bold)Vanishing Arrows:$() Spectral arrows disappear after impact and cannot be picked up.$(br2)$(italic)Compatible with Power, Punch, and Flame enchantments.$()"
+    }
+  ]
+}

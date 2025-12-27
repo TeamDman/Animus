@@ -1,5 +1,7 @@
 package com.teamdman.animus.datagen;
 
+import com.teamdman.animus.compat.ArsNouveauCompat;
+import com.teamdman.animus.compat.BotaniaCompat;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
 import net.minecraft.data.PackOutput;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -79,8 +82,12 @@ public class AnimusLootTableProvider extends LootTableProvider {
             // Imperfect Ritual Stone - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_IMPERFECT_RITUAL_STONE.get());
 
-            // Note: Arcane Rune, Rune of Unleashed Nature, and Diabolical Fungi
-            // loot tables are generated separately in their compat modules
+            // Compat blocks - Botania
+            this.dropSelf(BotaniaCompat.BLOCK_RUNE_UNLEASHED_NATURE.get());
+            this.dropSelf(BotaniaCompat.BLOCK_DIABOLICAL_FUNGI.get());
+
+            // Compat blocks - Ars Nouveau
+            this.dropSelf(ArsNouveauCompat.BLOCK_ARCANE_RUNE.get());
 
             // Willful Stone blocks - all drop themselves
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE.get());
@@ -144,12 +151,19 @@ public class AnimusLootTableProvider extends LootTableProvider {
         @Override
         protected Iterable<Block> getKnownBlocks() {
             // Return all registered blocks from AnimusBlocks, excluding fluid blocks and blocks with noLootTable
-            return AnimusBlocks.BLOCKS.getEntries().stream()
+            List<Block> blocks = new ArrayList<>(AnimusBlocks.BLOCKS.getEntries().stream()
                 .filter(entry -> entry != AnimusBlocks.BLOCK_FLUID_ANTILIFE
                     && entry != AnimusBlocks.BLOCK_FLUID_LIVING_TERRA
                     && entry != AnimusBlocks.BLOCK_ANTILIFE) // BLOCK_ANTILIFE has noLootTable flag
                 .map(RegistryObject::get)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+
+            // Add compat blocks
+            blocks.add(BotaniaCompat.BLOCK_RUNE_UNLEASHED_NATURE.get());
+            blocks.add(BotaniaCompat.BLOCK_DIABOLICAL_FUNGI.get());
+            blocks.add(ArsNouveauCompat.BLOCK_ARCANE_RUNE.get());
+
+            return blocks;
         }
     }
 }

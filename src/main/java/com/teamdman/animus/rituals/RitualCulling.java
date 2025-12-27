@@ -41,7 +41,8 @@ import java.util.function.Consumer;
  * Activation Cost: 50000 LP
  * Refresh Cost: 75 LP per entity
  * Refresh Time: 25 ticks
- * Range: Configurable (default 10 blocks horizontal, 10 blocks vertical above AND below stone)
+ * Default Range: 5 blocks horizontal, 5 blocks vertical (can be expanded via Ritual Tinkerer)
+ * Maximum Range: Configurable (default 10 blocks horizontal, 10 blocks vertical)
  * LP per Kill: Configurable (default 200 LP)
  */
 @RitualRegister(Constants.Rituals.CULLING)
@@ -63,19 +64,23 @@ public class RitualCulling extends Ritual {
     public RitualCulling() {
         super(Constants.Rituals.CULLING, 0, 50000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.CULLING);
 
-        // Use config values for range (default 10 horizontal, 10 vertical)
-        // Range is symmetric - extends vRange blocks both above and below the master ritual stone
-        int hRange = AnimusConfig.rituals.cullingRange.get();
-        int vRange = AnimusConfig.rituals.cullingVerticalRange.get();
-        int hSize = hRange * 2 + 1;  // Full horizontal size (e.g., 10*2+1 = 21)
-        int vSize = vRange * 2 + 1;  // Full vertical size (e.g., 10*2+1 = 21, covers -10 to +10)
+        // Maximum ranges from config (Ritual Tinkerer can expand up to these)
+        int maxHRange = AnimusConfig.rituals.cullingRange.get();
+        int maxVRange = AnimusConfig.rituals.cullingVerticalRange.get();
+
+        // Default initial range (can be expanded via Ritual Tinkerer up to config max)
+        int defaultHRange = 5;
+        int defaultVRange = 5;
+        int hSize = defaultHRange * 2 + 1;  // Full horizontal size (5*2+1 = 11)
+        int vSize = defaultVRange * 2 + 1;  // Full vertical size (5*2+1 = 11, covers -5 to +5)
 
         addBlockRange(ALTAR_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11));
         // Symmetric range: extends vRange blocks above and below the ritual stone
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRange, -vRange, -hRange), hSize, vSize, hSize));
+        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-defaultHRange, -defaultVRange, -defaultHRange), hSize, vSize, hSize));
 
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, vRange + 5, hRange + 5);
+        // Set maximum range that Ritual Tinkerer can expand to (from config)
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, maxHRange, maxVRange);
     }
 
     public double smallGauss(double d) {

@@ -621,6 +621,7 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue sigilEquivalencyBlocksPerTick;
         public final ForgeConfigSpec.DoubleValue monkUnarmedDamage;
         public final ForgeConfigSpec.IntValue monkLPPerSecond;
+        public final ForgeConfigSpec.DoubleValue monkExecuteThreshold;
 
         public Sigils(ForgeConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -709,6 +710,15 @@ public class AnimusConfig {
                     "Set to 0 to disable LP drain"
                 )
                 .defineInRange("lpPerSecond", 100, 0, 10000);
+
+            monkExecuteThreshold = builder
+                .comment(
+                    "Maximum HP percentage threshold for execute effect with full demon will",
+                    "Execute threshold scales from 1% (at 1 will) to this value (at 4096 will)",
+                    "Targets at or below this % of max HP will be instantly killed",
+                    "Default: 0.15 (15%)"
+                )
+                .defineInRange("executeThreshold", 0.15, 0.0, 1.0);
 
             builder.pop();
             builder.pop();
@@ -890,6 +900,8 @@ public class AnimusConfig {
     // Irons Spells n Spellbooks Integration Configuration
     public static class IronsSpells {
         // Phase 1: LP Casting
+        public final ForgeConfigSpec.BooleanValue enableIronsSpellsIntegration;
+
         public final ForgeConfigSpec.BooleanValue enableLPCasting;
         public final ForgeConfigSpec.IntValue lpPerMana;
         public final ForgeConfigSpec.BooleanValue requireBloodOrb;
@@ -919,6 +931,16 @@ public class AnimusConfig {
 
         public IronsSpells(ForgeConfigSpec.Builder builder) {
             builder.push("ironsSpells");
+
+            enableIronsSpellsIntegration = builder
+                .comment(
+                    "Master toggle for Iron's Spellbooks integration",
+                    "Set to false to completely disable all Iron's Spellbooks features",
+                    "Use this if you're experiencing crashes with Iron's Spellbooks pre-release versions",
+                    "Requires game restart to take effect",
+                    "Default: true"
+                )
+                .define("enableIntegration", true);
 
             // ===== Phase 1: LP Casting =====
             builder.comment("Phase 1: LP-Powered Spell Casting").push("lpCasting");
@@ -1083,6 +1105,78 @@ public class AnimusConfig {
         }
     }
 
+    // Weapons Configuration
+    public static class Weapons {
+        public final ForgeConfigSpec.DoubleValue sentientBowWillCost;
+
+        // Hellforged Bow
+        public final ForgeConfigSpec.IntValue hellforgedBowBaseLpCost;
+        public final ForgeConfigSpec.IntValue hellforgedBowLpPerTick;
+        public final ForgeConfigSpec.IntValue hellforgedBowMaxChargeTicks;
+        public final ForgeConfigSpec.DoubleValue hellforgedBowMaxDamage;
+        public final ForgeConfigSpec.DoubleValue hellforgedBowExecuteThreshold;
+
+        public Weapons(ForgeConfigSpec.Builder builder) {
+            builder.comment("Weapon Configuration").push("weapons");
+
+            // Sentient Bow
+            builder.comment("Sentient Bow - Demon will powered bow").push("sentientBow");
+
+            sentientBowWillCost = builder
+                .comment(
+                    "Amount of demon will consumed per arrow fired",
+                    "Default: 1.0"
+                )
+                .defineInRange("willCostPerShot", 1.0, 0.0, 100.0);
+
+            builder.pop();
+
+            // Hellforged Bow
+            builder.comment("Hellforged Bow - LP powered bow with charged shots").push("hellforgedBow");
+
+            hellforgedBowBaseLpCost = builder
+                .comment(
+                    "Base LP cost to fire an arrow (before charging)",
+                    "Default: 5"
+                )
+                .defineInRange("baseLpCost", 5, 0, 1000);
+
+            hellforgedBowLpPerTick = builder
+                .comment(
+                    "LP consumed per tick while charging beyond normal draw",
+                    "At max charge (70 ticks), this totals 3500 LP for the charge alone",
+                    "Default: 50"
+                )
+                .defineInRange("lpPerChargeTick", 50, 0, 1000);
+
+            hellforgedBowMaxChargeTicks = builder
+                .comment(
+                    "Maximum charge time in ticks (20 ticks = 1 second)",
+                    "Normal bow draw is ~22 ticks (1.1 seconds)",
+                    "Default: 70 (3.5 seconds total)"
+                )
+                .defineInRange("maxChargeTicks", 70, 20, 200);
+
+            hellforgedBowMaxDamage = builder
+                .comment(
+                    "Maximum damage at full charge",
+                    "Default: 40.0"
+                )
+                .defineInRange("maxDamage", 40.0, 1.0, 200.0);
+
+            hellforgedBowExecuteThreshold = builder
+                .comment(
+                    "HP percentage threshold for execute effect at full charge",
+                    "Targets at or below this % of max HP will be instantly killed",
+                    "Default: 0.15 (15%)"
+                )
+                .defineInRange("executeThreshold", 0.15, 0.0, 1.0);
+
+            builder.pop();
+            builder.pop();
+        }
+    }
+
     // Config instances
     public static General general;
     public static Rituals rituals;
@@ -1093,6 +1187,7 @@ public class AnimusConfig {
     public static ArsNouveau arsNouveau;
     public static Botania botania;
     public static IronsSpells ironsSpells;
+    public static Weapons weapons;
 
     static {
         BUILDER.comment("Animus Configuration").push("animus");
@@ -1106,6 +1201,7 @@ public class AnimusConfig {
         arsNouveau = new ArsNouveau(BUILDER);
         botania = new Botania(BUILDER);
         ironsSpells = new IronsSpells(BUILDER);
+        weapons = new Weapons(BUILDER);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
