@@ -17,7 +17,9 @@ public class Animus {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public Animus(IEventBus modEventBus, ModContainer modContainer) {
-        // Register config
+        // Register startup config first (available during registry)
+        AnimusStartupConfig.register(modContainer);
+        // Register common config
         AnimusConfig.register(modContainer);
 
         // Register all deferred registers

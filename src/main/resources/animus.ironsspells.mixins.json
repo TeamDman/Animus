@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.teamdman.animus.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "animus.refmap.json",
+  "plugin": "com.teamdman.animus.mixin.IronsSpellsMixinPlugin",
+  "mixins": [
+    "AbstractSpellMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

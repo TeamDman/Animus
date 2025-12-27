@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.AnimusStartupConfig;
 import com.teamdman.animus.AnimusModEventHandler;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
@@ -44,9 +45,7 @@ public class RitualPersistence extends Ritual {
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PERSISTENCE
         );
 
-        // Use config value for default chunk radius (convert to blocks for visualization)
-        // Chunk radius of 3 = 7 chunks total = 112 blocks width
-        int chunkRadius = AnimusConfig.rituals.persistenceChunkRadius.get();
+        int chunkRadius = AnimusStartupConfig.ritualRanges.persistenceChunkRadius.get();
         int blockRadius = (chunkRadius * 2 + 1) * 8; // Half of total width in blocks
         int size = blockRadius * 2;
 

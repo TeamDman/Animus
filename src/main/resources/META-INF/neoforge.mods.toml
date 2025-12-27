@@ -87,3 +87,10 @@ description = '''${mod_description}'''
     versionRange = "*"
     ordering = "AFTER"
     side = "BOTH"
+
+# =============================================================================
+# Mixins
+# =============================================================================
+
+[[mixins]]
+config = "animus.ironsspells.mixins.json"

@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.AnimusStartupConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.util.AnimusFakePlayer;
 import com.teamdman.animus.util.AnimusUtil;
@@ -64,16 +65,14 @@ public class RitualCulling extends Ritual {
     public RitualCulling() {
         super(Constants.Rituals.CULLING, 0, 50000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.CULLING);
 
-        // Use default ranges - config is not available at construction time
-        // Default: 10 horizontal, 10 vertical - can be adjusted via ritual stone GUI
-        int effectRange = 10;
+        int hRange = AnimusStartupConfig.ritualRanges.cullingHorizontalRange.get();
+        int vRange = AnimusStartupConfig.ritualRanges.cullingVerticalRange.get();
 
         addBlockRange(ALTAR_RANGE, RitualAreaDescriptors.horizontalArea(5, 10));
-        // Symmetric range: extends effectRange blocks in all directions from ritual stone
-        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.symmetricCube(effectRange));
+        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.horizontalArea(hRange, vRange));
 
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, effectRange + 5, effectRange + 5);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, hRange + 5, vRange + 5);
     }
 
     public double smallGauss(double d) {

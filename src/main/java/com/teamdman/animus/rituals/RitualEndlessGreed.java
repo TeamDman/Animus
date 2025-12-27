@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.AnimusStartupConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -66,9 +67,8 @@ public class RitualEndlessGreed extends Ritual {
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENDLESS_GREED
         );
 
-        // Use config values for default range
-        int hRange = AnimusConfig.rituals.endlessGreedRange.get();
-        int vRange = AnimusConfig.rituals.endlessGreedVerticalRange.get();
+        int hRange = AnimusStartupConfig.ritualRanges.endlessGreedHorizontalRange.get();
+        int vRange = AnimusStartupConfig.ritualRanges.endlessGreedVerticalRange.get();
         int hSize = hRange * 2 + 1;
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRange, 0, -hRange), hSize, vRange + 1, hSize));

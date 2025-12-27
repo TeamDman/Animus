@@ -126,12 +126,17 @@ public class BlockAntiLife extends BaseEntityBlock {
                 // Only spread conversion if we have range remaining
                 // If not decaying, spread to matching blocks
                 if (!level.isEmptyBlock(neighborPos) && neighborState.getBlock() == antilife.getSeeking()) {
-                    // Fire break event to check if protected
+                    // Get player - may be null if offline/dead
                     Player player = antilife.getPlayerUUID() != null ? level.getPlayerByUUID(antilife.getPlayerUUID()) : null;
-                    BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, neighborPos, neighborState, player);
-                    if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
-                        continue; // Protected, skip this block
+
+                    // Fire break event to check if protected (only if player is available and alive)
+                    if (player != null && player.isAlive()) {
+                        BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, neighborPos, neighborState, player);
+                        if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
+                            continue; // Protected, skip this block
+                        }
                     }
+                    // If player is null/dead, skip protection check and allow spread without LP cost
 
                     // Set neighbor to antilife
                     level.setBlock(neighborPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState()
@@ -147,11 +152,10 @@ public class BlockAntiLife extends BaseEntityBlock {
                     // Schedule neighbor tick
                     level.scheduleTick(neighborPos, this, random.nextInt(25));
 
-                    // Consume LP from player
-                    if (player != null) {
+                    // Consume LP from player (only if alive to prevent crash on dead player)
+                    if (player != null && player.isAlive()) {
                         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
-                        SoulTicket ticket = SoulTicket.create(AnimusConfig.sigils.antiLifeConsumption.get()
-                        );
+                        SoulTicket ticket = SoulTicket.create(AnimusConfig.sigils.antiLifeConsumption.get());
                         network.syphonAndDamage(player, ticket);
                     }
 

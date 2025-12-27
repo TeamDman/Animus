@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.AnimusStartupConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -37,8 +38,7 @@ public class RitualNoliteIgnem extends Ritual {
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.NOLITE_IGNEM
         );
 
-        // Use config value for default range
-        int radius = AnimusConfig.rituals.noliteIgnemRadius.get();
+        int radius = AnimusStartupConfig.ritualRanges.noliteIgnemRadius.get();
         int size = radius * 2 + 1;
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-radius, -radius, -radius), size, size, size));

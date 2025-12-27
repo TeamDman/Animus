@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.AnimusStartupConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -59,9 +60,8 @@ public class RitualRelentlessTides extends Ritual {
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.RELENTLESS_TIDES
         );
 
-        // Use config values for default range (placement area below ritual)
-        int hRadius = AnimusConfig.rituals.relentlessTidesRange.get();
-        int vDepth = AnimusConfig.rituals.relentlessTidesDepth.get();
+        int hRadius = AnimusStartupConfig.ritualRanges.relentlessTidesRange.get();
+        int vDepth = AnimusStartupConfig.ritualRanges.relentlessTidesDepth.get();
         int hSize = hRadius * 2 + 1;
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRadius, -vDepth, -hRadius), hSize, vDepth, hSize));

@@ -1,6 +1,7 @@
 package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
+import com.teamdman.animus.AnimusStartupConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.core.BlockPos;
@@ -62,9 +63,8 @@ public class RitualSiphon extends Ritual {
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SIPHON
         );
 
-        // Use config values for default range (search area below ritual)
-        int hRadius = AnimusConfig.rituals.siphonRange.get();
-        int vDepth = AnimusConfig.rituals.siphonDepth.get();
+        int hRadius = AnimusStartupConfig.ritualRanges.siphonRange.get();
+        int vDepth = AnimusStartupConfig.ritualRanges.siphonDepth.get();
         int hSize = hRadius * 2 + 1;
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRadius, -vDepth, -hRadius), hSize, vDepth, hSize));

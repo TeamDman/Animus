@@ -112,10 +112,12 @@ public class ItemSentientShield extends ShieldItem {
 
     public EnumWillType getCurrentType(ItemStack stack) {
         String typeStr = stack.get(AnimusDataComponents.DEMON_WILL_TYPE.get());
-        if (typeStr != null) {
+        if (typeStr != null && !typeStr.isEmpty()) {
             try {
-                return EnumWillType.valueOf(typeStr);
+                // Case-insensitive enum parsing to handle both "DEFAULT" and "default"
+                return EnumWillType.valueOf(typeStr.toUpperCase());
             } catch (IllegalArgumentException e) {
+                // Invalid enum value - fall back to default
                 return EnumWillType.DEFAULT;
             }
         }

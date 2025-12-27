@@ -101,6 +101,12 @@ public class MonkSigilEventHandler {
             return;
         }
 
+        // Must be a direct melee attack (player is the direct entity, not a projectile/spell)
+        // This prevents spell damage from Iron's Spells from triggering the monk bonus
+        if (event.getSource().getDirectEntity() != player) {
+            return;
+        }
+
         // Check if player is attacking with empty hands
         ItemStack mainHand = player.getMainHandItem();
         if (!mainHand.isEmpty()) {
@@ -394,6 +400,11 @@ public class MonkSigilEventHandler {
             return;
         }
 
+        // Must be a direct melee kill (player is the direct entity, not a projectile/spell)
+        if (event.getSource().getDirectEntity() != player) {
+            return;
+        }
+
         // Check if player killed with empty hands
         ItemStack mainHand = player.getMainHandItem();
         if (!mainHand.isEmpty()) {
@@ -448,6 +459,11 @@ public class MonkSigilEventHandler {
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
+
+        // Null check for player (can be null in edge cases)
+        if (player == null) {
+            return;
+        }
 
         // Only run on server side
         if (player.level().isClientSide()) {

@@ -6,12 +6,18 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.util.InventorySearchHelper;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
+import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -21,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
 import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
@@ -53,6 +60,9 @@ public class CrimsonWillSpellHandler {
 
     // Will consumed per spell cast
     private static final double WILL_CONSUMED_PER_CAST = 5.0;
+
+    // Track players who have modifiers applied (for cleanup on cancel/toggle)
+    private static final Set<UUID> playersWithModifiers = ConcurrentHashMap.newKeySet();
 
     /**
      * Register the event handler
@@ -115,6 +125,9 @@ public class CrimsonWillSpellHandler {
 
         // Apply temporary attribute modifiers for spell power and summon damage
         applyPowerModifiers(player, totalBonus);
+
+        // Track this player as having modifiers applied
+        playersWithModifiers.add(player.getUUID());
 
         // Consume LP using factory method
         network.syphon(SoulTicket.create(lpCost));
@@ -189,14 +202,42 @@ public class CrimsonWillSpellHandler {
             return;
         }
 
-        // Find active sigil
-        ItemStack activeSigil = findActiveSigil(player);
-        if (activeSigil == null) {
+        // Always remove modifiers if player had them applied (regardless of sigil state)
+        // This handles the case where the sigil was toggled off during casting
+        if (playersWithModifiers.remove(player.getUUID())) {
+            removePowerModifiers(player);
+        }
+    }
+
+    /**
+     * Tick handler to clean up modifiers if spell casting was cancelled
+     * This handles cases where SpellOnCastEvent is never fired (e.g., player cancels cast)
+     */
+    @SubscribeEvent
+    public void onServerTick(ServerTickEvent.Post event) {
+        if (playersWithModifiers.isEmpty()) {
             return;
         }
 
-        // Remove the attribute modifiers now that the spell has been cast
-        removePowerModifiers(player);
+        // Check all players with modifiers to see if they're still casting
+        for (UUID playerId : Set.copyOf(playersWithModifiers)) {
+            ServerPlayer player = event.getServer().getPlayerList().getPlayer(playerId);
+            if (player == null) {
+                // Player disconnected, remove from tracking
+                playersWithModifiers.remove(playerId);
+                continue;
+            }
+
+            // Check if player is still casting
+            MagicData magicData = MagicData.getPlayerMagicData(player);
+            if (!magicData.isCasting()) {
+                // Player stopped casting without SpellOnCastEvent firing (cancelled)
+                if (playersWithModifiers.remove(playerId)) {
+                    removePowerModifiers(player);
+                    Animus.LOGGER.debug("Cleaned up Crimson Will modifiers for {} (casting cancelled)", player.getName().getString());
+                }
+            }
+        }
     }
 
     /**
