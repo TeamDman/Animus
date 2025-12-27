@@ -99,6 +99,18 @@ public class AnimusDataComponents {
         DATA_COMPONENTS.registerComponentType("cached_souls", builder ->
             builder.persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE));
 
+    // ===== Hellforged Bow Binding =====
+
+    // Hellforged Bow - owner UUID
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> BINDING_OWNER_UUID =
+        DATA_COMPONENTS.registerComponentType("binding_owner_uuid", builder ->
+            builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
+    // Hellforged Bow - owner name
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> BINDING_OWNER_NAME =
+        DATA_COMPONENTS.registerComponentType("binding_owner_name", builder ->
+            builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
     // ===== Iron's Spells n Spellbooks Compat =====
 
     // Sanguine Scroll - stored spell ID

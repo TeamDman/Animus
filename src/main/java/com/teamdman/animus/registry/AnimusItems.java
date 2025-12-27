@@ -201,6 +201,13 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> SENTIENT_SHIELD = ITEMS.register("sentient_shield",
         ItemSentientShield::new);
 
+    // Bows
+    public static final DeferredHolder<Item, Item> SENTIENT_BOW = ITEMS.register("sentient_bow",
+        ItemSentientBow::new);
+
+    public static final DeferredHolder<Item, Item> HELLFORGED_BOW = ITEMS.register("hellforged_bow",
+        ItemHellforgedBow::new);
+
     // Runic Sentient Scythe - enhanced scythe with Malum integration
     public static final DeferredHolder<Item, Item> RUNIC_SENTIENT_SCYTHE = ITEMS.register("runic_sentient_scythe",
         ItemRunicSentientScythe::new);

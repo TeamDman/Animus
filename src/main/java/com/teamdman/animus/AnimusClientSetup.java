@@ -5,6 +5,7 @@ import com.teamdman.animus.client.models.SpearModel;
 import com.teamdman.animus.client.renderers.ThrownSpearRenderer;
 import com.teamdman.animus.registry.AnimusEntityTypes;
 import com.teamdman.animus.registry.AnimusItems;
+import com.teamdman.animus.client.renderers.AnimusArrowRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -96,6 +97,10 @@ public class AnimusClientSetup {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // Register custom renderer for thrown spear
         event.registerEntityRenderer(AnimusEntityTypes.THROWN_PILUM.get(), ThrownSpearRenderer::new);
+
+        // Register arrow renderers for custom bow projectiles
+        event.registerEntityRenderer(AnimusEntityTypes.SENTIENT_ARROW.get(), AnimusArrowRenderer::new);
+        event.registerEntityRenderer(AnimusEntityTypes.HELLFORGED_ARROW.get(), AnimusArrowRenderer::new);
     }
 
     @SubscribeEvent

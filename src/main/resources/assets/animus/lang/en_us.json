@@ -693,5 +693,21 @@
   "ritual.animus.ritual_endless_greed.effect.info": "Area to collect items and XP from",
   "ritual.animus.ritual_endless_greed.chest.info": "Location of chest to deposit items",
   "ritual.animus.ritual_culling.effect.info": "Area to damage hostile mobs",
-  "ritual.animus.ritual_natures_leach.effect.info": "Area to drain life from plants"
+  "ritual.animus.ritual_natures_leach.effect.info": "Area to drain life from plants",
+
+  "item.animus.sentient_bow": "Sentient Bow",
+  "item.animus.hellforged_bow": "Hellforged Bow",
+  "tooltip.animus.sentient_bow.flavour": "A bow infused with demonic essence",
+  "tooltip.animus.sentient_bow.info": "Arrows gain power from demon will",
+  "tooltip.animus.sentient_bow.snare": "Applies Soul Snare II - guaranteed demon will drops",
+  "tooltip.animus.sentient_bow.will_type": "Will Type: %s",
+  "tooltip.animus.sentient_bow.damage_bonus": "+%s Arrow Damage",
+  "tooltip.animus.hellforged_bow.flavour": "Forged in the depths of the demon realm",
+  "tooltip.animus.hellforged_bow.info": "Draws power from your Life Essence network",
+  "tooltip.animus.hellforged_bow.lp_cost": "Base LP cost: %s per shot",
+  "tooltip.animus.hellforged_bow.charge": "Charge bonus: up to %sx damage at full charge",
+  "tooltip.animus.hellforged_bow.execute": "Execute: Instant kill below %s%% health",
+  "tooltip.animus.hellforged_bow.piercing": "Arrows pierce through enemies",
+  "text.component.animus.hellforged_bow.no_lp": "Not enough LP to fire!",
+  "text.component.animus.hellforged_bow.execute": "§4⚰ EXECUTED: %s"
 }

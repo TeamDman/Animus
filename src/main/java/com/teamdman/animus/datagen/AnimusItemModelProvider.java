@@ -112,8 +112,44 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         // Ritual Designer
         simpleItem(AnimusItems.RITUAL_DESIGNER, "item/itemritualdesigner");
 
+        // Bows - with pulling animations
+        bowItem(AnimusItems.SENTIENT_BOW, "sentient_bow");
+        bowItem(AnimusItems.HELLFORGED_BOW, "hellforged_bow");
+
         // Note: Sentient Shield, Runic Sentient Scythe, and Hand of Death
         // use manual models in resources for proper 3D rendering and display transforms
+    }
+
+    private void bowItem(DeferredHolder<Item, Item> item, String textureName) {
+        String name = item.getId().getPath();
+
+        // Create pulling models first
+        withExistingParent(name + "_pulling_0", mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + textureName + "_pulling_0"));
+
+        withExistingParent(name + "_pulling_1", mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + textureName + "_pulling_1"));
+
+        withExistingParent(name + "_pulling_2", mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + textureName + "_pulling_2"));
+
+        // Main bow model with overrides for pulling states
+        withExistingParent(name, mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + textureName))
+            .override()
+                .predicate(mcLoc("pulling"), 1.0F)
+                .model(getBuilder(name + "_pulling_0"))
+            .end()
+            .override()
+                .predicate(mcLoc("pulling"), 1.0F)
+                .predicate(mcLoc("pull"), 0.65F)
+                .model(getBuilder(name + "_pulling_1"))
+            .end()
+            .override()
+                .predicate(mcLoc("pulling"), 1.0F)
+                .predicate(mcLoc("pull"), 0.9F)
+                .model(getBuilder(name + "_pulling_2"))
+            .end();
     }
 
     private void toggleableSigil(DeferredHolder<Item, Item> item, String deactivatedTexture, String activatedTexture) {

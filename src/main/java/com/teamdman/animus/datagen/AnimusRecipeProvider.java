@@ -258,6 +258,26 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .requires(BMItems.SOUL_GEM_PETTY.get())
             .save(output, loc("spear_sentient"));
 
+        // Sentient Bow - similar to sentient sword/spear
+        SoulForgeRecipeBuilder.build(AnimusItems.SENTIENT_BOW.get())
+            .minWill(64.0)
+            .drain(32.0)
+            .requires(Items.BOW)
+            .requires(BMItems.SOUL_GEM_PETTY.get())
+            .requires(Items.STRING)
+            .requires(Items.STRING)
+            .save(output, loc("sentient_bow"));
+
+        // Hellforged Bow - more powerful, requires higher will
+        SoulForgeRecipeBuilder.build(AnimusItems.HELLFORGED_BOW.get())
+            .minWill(256.0)
+            .drain(128.0)
+            .requires(AnimusItems.SENTIENT_BOW.get())
+            .requires(BMItems.VENGEFUL_CRYSTAL.get())
+            .requires(Items.BLAZE_ROD)
+            .requires(Items.NETHER_STAR)
+            .save(output, loc("hellforged_bow"));
+
         // Hand of Death - ultimate scythe, requires high demon will
         SoulForgeRecipeBuilder.build(AnimusItems.HAND_OF_DEATH.get())
             .minWill(1024.0)
