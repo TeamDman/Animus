@@ -1,6 +1,9 @@
 {
   "values": [
-    "ic2:te",
+    {
+      "id": "ic2:te",
+      "required": false
+    },
     "minecraft:grass"
   ]
 }
