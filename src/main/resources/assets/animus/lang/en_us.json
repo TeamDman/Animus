@@ -393,7 +393,7 @@
   "tooltip.animus.sentient_bow.will_type": "Will Type: %s",
   "tooltip.animus.sentient_bow.level": "Level: %s (%s will)",
   "tooltip.animus.sentient_bow.damage_bonus": "+%s Arrow Damage",
-  "tooltip.animus.sentient_bow.snare": "Applies Soul Snare for will drops on kill",
+  "tooltip.animus.sentient_bow.will_drops": "Drops demon will matching your attuned type on kill",
   "message.animus.sentient_bow.out_of_will": "Not enough demon will to fire!",
   "tooltip.animus.hellforged_bow.flavour": "A bow forged in hellfire and blood",
   "tooltip.animus.hellforged_bow.info": "Consumes LP to fire, empowered by demon will",

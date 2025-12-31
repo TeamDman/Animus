@@ -259,7 +259,7 @@ public class Constants {
             // Sentient Bow Tooltips
             public static final String SENTIENT_BOW_FLAVOUR = "tooltip.animus.sentient_bow.flavour";
             public static final String SENTIENT_BOW_INFO = "tooltip.animus.sentient_bow.info";
-            public static final String SENTIENT_BOW_SNARE = "tooltip.animus.sentient_bow.snare";
+            public static final String SENTIENT_BOW_WILL_DROPS = "tooltip.animus.sentient_bow.will_drops";
 
             // Hellforged Bow Tooltips
             public static final String HELLFORGED_BOW_FLAVOUR = "tooltip.animus.hellforged_bow.flavour";

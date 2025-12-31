@@ -18,13 +18,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
-import wayoftime.bloodmagic.potion.BloodMagicPotions;
-
 /**
  * Sentient Arrow Entity
  * Virtual arrow fired by the Sentient Bow
  * - Vanishes after impact (no item left behind)
- * - Applies Soul Snare effect for will drops
+ * - Drops demon will matching the bow's attuned type on kill
  * - Deals bonus damage based on will type and level
  * - Applies status effects based on will type
  */
@@ -109,9 +107,7 @@ public class EntitySentientArrow extends AbstractArrow {
             EnumDemonWillType willType = this.getWillType();
             int willLevel = Math.min(this.getWillLevel(), 4);
 
-            // Apply Soul Snare for will drops on kill (5 seconds, amplifier 1)
-            target.addEffect(new MobEffectInstance(
-                BloodMagicPotions.SOUL_SNARE.get(), 100, 1));
+            // Will drops are handled by AnimusEventHandler.handleSentientWeaponWillDrops()
 
             // Apply effects based on will type
             applyWillEffects(target, willType, willLevel, owner instanceof LivingEntity ? (LivingEntity) owner : null);

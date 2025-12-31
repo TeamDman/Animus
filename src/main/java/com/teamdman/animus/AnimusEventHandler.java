@@ -9,6 +9,10 @@ import com.teamdman.animus.items.sigils.ItemSigilReparare;
 import com.teamdman.animus.items.sigils.ItemSigilStorm;
 import com.teamdman.animus.items.sigils.ItemSigilTemporalDominance;
 import com.teamdman.animus.items.sigils.ItemSigilEquivalency;
+import com.teamdman.animus.items.ItemSpearSentient;
+import com.teamdman.animus.items.ItemSentientBow;
+import com.teamdman.animus.entities.EntityThrownSpear;
+import com.teamdman.animus.entities.EntitySentientArrow;
 import com.teamdman.animus.registry.AnimusAttributes;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
@@ -21,11 +25,15 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
+import wayoftime.bloodmagic.api.compat.IDemonWill;
+import wayoftime.bloodmagic.api.compat.IDemonWillWeapon;
+import wayoftime.bloodmagic.common.item.BloodMagicItems;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.potion.BloodMagicPotions;
@@ -42,6 +50,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import wayoftime.bloodmagic.common.item.IBindable;
 import wayoftime.bloodmagic.core.data.Binding;
+import wayoftime.bloodmagic.anointment.AnointmentHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -1010,22 +1021,261 @@ public class AnimusEventHandler {
     }
 
     /**
+     * Handle Blood Magic anointment bonus damage for thrown spears
+     * Blood Magic's GenericHandler only handles melee attacks (checks player's held item)
+     * This handler applies anointment damage bonuses when entities are hit by thrown spears
+     */
+    @SubscribeEvent
+    public static void onThrownSpearHurt(net.minecraftforge.event.entity.living.LivingHurtEvent event) {
+        Entity directEntity = event.getSource().getDirectEntity();
+        Entity sourceEntity = event.getSource().getEntity();
+
+        // Check if damage is from a thrown spear
+        if (!(directEntity instanceof EntityThrownSpear thrownSpear)) {
+            return;
+        }
+
+        // Get the spear item (use actual item for consistency)
+        ItemStack spearStack = thrownSpear.getSpearItem();
+        if (spearStack.isEmpty()) {
+            return;
+        }
+
+        // Check if the spear has anointments
+        AnointmentHolder holder = AnointmentHolder.fromItemStack(spearStack);
+        if (holder == null) {
+            return;
+        }
+
+        // Get the attacking player (if any)
+        Player attackingPlayer = sourceEntity instanceof Player ? (Player) sourceEntity : null;
+
+        // Apply anointment damage bonuses
+        LivingEntity target = event.getEntity();
+        double additionalDamage = holder.getAdditionalDamage(attackingPlayer, spearStack, event.getAmount(), target);
+        if (additionalDamage > 0) {
+            event.setAmount((float) (event.getAmount() + additionalDamage));
+        }
+    }
+
+    /**
+     * Consume anointment durability when thrown spear deals damage
+     * This mirrors Blood Magic's GenericHandler.onLivingDamage behavior
+     */
+    @SubscribeEvent
+    public static void onThrownSpearDamage(net.minecraftforge.event.entity.living.LivingDamageEvent event) {
+        Entity directEntity = event.getSource().getDirectEntity();
+        Entity sourceEntity = event.getSource().getEntity();
+
+        // Check if damage is from a thrown spear
+        if (!(directEntity instanceof EntityThrownSpear thrownSpear)) {
+            return;
+        }
+
+        // Only process on server side
+        if (thrownSpear.level().isClientSide()) {
+            return;
+        }
+
+        // Get the player who threw the spear
+        if (!(sourceEntity instanceof Player player)) {
+            return;
+        }
+
+        // Get the actual spear item (not a copy) so we can update anointments
+        ItemStack spearStack = thrownSpear.getSpearItem();
+        if (spearStack.isEmpty()) {
+            return;
+        }
+
+        // Check if the spear has anointments
+        AnointmentHolder holder = AnointmentHolder.fromItemStack(spearStack);
+        if (holder == null) {
+            return;
+        }
+
+        // Consume anointment durability
+        // Note: We use MAINHAND as the slot since that's where the spear came from
+        if (holder.consumeAnointmentDurabilityOnHit(spearStack, EquipmentSlot.MAINHAND, player)) {
+            // Update the anointments on the actual stored item
+            holder.toItemStack(spearStack);
+        }
+    }
+
+    /**
+     * Handle will drops from Sentient weapons (Spear melee/thrown, Bow arrows) and
      * Ritual of Endless Greed - Intercept mob drops and transfer to container
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onLivingDrops(net.minecraftforge.event.entity.living.LivingDropsEvent event) {
-        net.minecraft.world.entity.LivingEntity entity = event.getEntity();
-        net.minecraft.world.level.Level level = entity.level();
+        net.minecraft.world.entity.LivingEntity killedEntity = event.getEntity();
+        net.minecraft.world.level.Level level = killedEntity.level();
 
         // Only run on server side
         if (level.isClientSide()) {
             return;
         }
 
+        // Handle Sentient weapon will drops (spear melee/thrown and bow arrows)
+        handleSentientWeaponWillDrops(event);
+
         // Check if the entity died within range of an Endless Greed ritual
-        if (com.teamdman.animus.rituals.RitualEndlessGreed.handleMobDrops(level, entity.blockPosition(), event.getDrops())) {
+        if (com.teamdman.animus.rituals.RitualEndlessGreed.handleMobDrops(level, killedEntity.blockPosition(), event.getDrops())) {
             // Clear drops since they were handled (either collected or destroyed)
             event.getDrops().clear();
         }
+    }
+
+    /**
+     * Handle demon will drops from Sentient weapon kills
+     * Works for:
+     * - Melee kills (player holding spear)
+     * - Thrown spear kills (EntityThrownSpear)
+     * - Sentient Bow arrow kills (EntitySentientArrow)
+     * Matches the behavior of Blood Magic's Sentient Sword
+     */
+    private static void handleSentientWeaponWillDrops(net.minecraftforge.event.entity.living.LivingDropsEvent event) {
+        net.minecraft.world.entity.LivingEntity killedEntity = event.getEntity();
+        net.minecraft.world.damagesource.DamageSource source = event.getSource();
+        Entity sourceEntity = source.getEntity();
+        Entity directEntity = source.getDirectEntity();
+
+        // Check for thrown sentient spear kill
+        if (directEntity instanceof EntityThrownSpear thrownSpear && "sentient".equals(thrownSpear.getVariant())) {
+            // Get the player who threw the spear
+            if (sourceEntity instanceof Player player) {
+                // Get will type and level from the thrown spear
+                EnumDemonWillType willType = thrownSpear.getWillType();
+                int willLevel = Math.min(thrownSpear.getWillLevel(), 4);
+
+                // Generate will drops using spear drop tables
+                java.util.List<ItemStack> willDrops = generateSentientWillDrops(
+                    killedEntity, player, willType, willLevel, event.getLootingLevel(),
+                    ItemSpearSentient.soulDrop, ItemSpearSentient.staticDrop
+                );
+
+                // Try to add will directly to player's tartaric gem, drop excess
+                addWillDropsToPlayerOrWorld(player, killedEntity, willDrops, event.getDrops());
+            }
+            return;
+        }
+
+        // Check for sentient bow arrow kill
+        if (directEntity instanceof EntitySentientArrow sentientArrow) {
+            // Get the player who shot the arrow
+            if (sourceEntity instanceof Player player) {
+                // Get will type and level from the arrow
+                EnumDemonWillType willType = sentientArrow.getWillType();
+                int willLevel = Math.min(sentientArrow.getWillLevel(), 4);
+
+                // Generate will drops using bow drop tables
+                java.util.List<ItemStack> willDrops = generateSentientWillDrops(
+                    killedEntity, player, willType, willLevel, event.getLootingLevel(),
+                    ItemSentientBow.soulDrop, ItemSentientBow.staticDrop
+                );
+
+                // Try to add will directly to player's tartaric gem, drop excess
+                addWillDropsToPlayerOrWorld(player, killedEntity, willDrops, event.getDrops());
+            }
+            return;
+        }
+
+        // Check for melee sentient spear kill (player holding the spear)
+        // Note: Blood Magic's WillHandler already handles IDemonWillWeapon for held weapons,
+        // so this is just a backup in case that doesn't fire for our spear
+        if (sourceEntity instanceof Player player) {
+            ItemStack heldStack = player.getMainHandItem();
+            if (heldStack.getItem() instanceof ItemSpearSentient sentientSpear) {
+                // Generate will drops using the spear's method
+                java.util.List<ItemStack> willDrops = sentientSpear.getRandomDemonWillDrop(
+                    killedEntity, player, heldStack, event.getLootingLevel()
+                );
+
+                // Try to add will directly to player's tartaric gem, drop excess
+                addWillDropsToPlayerOrWorld(player, killedEntity, willDrops, event.getDrops());
+            }
+        }
+    }
+
+    /**
+     * Generate demon will drops for a sentient weapon kill
+     */
+    private static java.util.List<ItemStack> generateSentientWillDrops(
+        net.minecraft.world.entity.LivingEntity killedEntity,
+        Player attackingEntity,
+        EnumDemonWillType willType,
+        int willLevel,
+        int looting,
+        double[] soulDrop,
+        double[] staticDrop
+    ) {
+        java.util.List<ItemStack> soulList = new java.util.ArrayList<>();
+
+        // Only drop from hostile mobs (same check as Sentient Sword)
+        if (killedEntity.getCommandSenderWorld().getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL
+            && !(killedEntity instanceof net.minecraft.world.entity.monster.Enemy)) {
+            return soulList;
+        }
+
+        // Slimes give reduced will
+        double willModifier = killedEntity instanceof net.minecraft.world.entity.monster.Slime ? 0.67 : 1;
+
+        // Get the appropriate demon will item based on will type
+        IDemonWill soul = switch (willType) {
+            case CORROSIVE -> ((IDemonWill) BloodMagicItems.MONSTER_SOUL_CORROSIVE.get());
+            case DESTRUCTIVE -> ((IDemonWill) BloodMagicItems.MONSTER_SOUL_DESTRUCTIVE.get());
+            case STEADFAST -> ((IDemonWill) BloodMagicItems.MONSTER_SOUL_STEADFAST.get());
+            case VENGEFUL -> ((IDemonWill) BloodMagicItems.MONSTER_SOUL_VENGEFUL.get());
+            default -> ((IDemonWill) BloodMagicItems.MONSTER_SOUL_RAW.get());
+        };
+
+        // Drop will items (with looting bonus like sword)
+        for (int i = 0; i <= looting; i++) {
+            if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
+                double dropAmount = willModifier * (soulDrop[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
+                    + staticDrop[willLevel]) * killedEntity.getMaxHealth() / 20.0;
+                ItemStack soulStack = soul.createWill(dropAmount);
+                soulList.add(soulStack);
+            }
+        }
+
+        return soulList;
+    }
+
+    /**
+     * Try to add will drops directly to player's tartaric gem, drop excess as items
+     * Matches Blood Magic's WillHandler behavior
+     */
+    private static void addWillDropsToPlayerOrWorld(
+        Player player,
+        net.minecraft.world.entity.LivingEntity killedEntity,
+        java.util.List<ItemStack> willDrops,
+        java.util.Collection<ItemEntity> existingDrops
+    ) {
+        if (willDrops.isEmpty()) {
+            return;
+        }
+
+        for (ItemStack willStack : willDrops) {
+            // Try to add directly to player's tartaric gem
+            ItemStack remainder = PlayerDemonWillHandler.addDemonWill(player, willStack);
+
+            // If gem is full or can't hold more, drop as item entity
+            if (!remainder.isEmpty()) {
+                EnumDemonWillType pickupType = ((IDemonWill) remainder.getItem()).getType(remainder);
+                if (((IDemonWill) remainder.getItem()).getWill(pickupType, remainder) >= 0.0001) {
+                    existingDrops.add(new ItemEntity(
+                        killedEntity.getCommandSenderWorld(),
+                        killedEntity.getX(),
+                        killedEntity.getY(),
+                        killedEntity.getZ(),
+                        remainder
+                    ));
+                }
+            }
+        }
+
+        // Sync inventory changes
+        player.inventoryMenu.broadcastChanges();
     }
 }

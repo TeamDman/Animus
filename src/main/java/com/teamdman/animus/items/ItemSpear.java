@@ -21,6 +21,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 import java.util.List;
 
@@ -150,6 +152,19 @@ public class ItemSpear extends TridentItem {
         }
         // Allow all enchantments that TridentItem allows
         return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    /**
+     * Allow spears to be treated as sword-like weapons for Blood Magic anointments
+     * This makes them pass ItemAnointmentProvider.isItemTool() check
+     */
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        // Treat spears as swords for anointment compatibility
+        if (toolAction == ToolActions.SWORD_DIG) {
+            return true;
+        }
+        return super.canPerformAction(stack, toolAction);
     }
 
 }
