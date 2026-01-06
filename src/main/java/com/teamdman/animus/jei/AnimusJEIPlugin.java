@@ -6,6 +6,7 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.compat.IronsSpellsCompat;
 import com.teamdman.animus.compat.ironsspells.ItemBloodInfusedSpellbook;
 import com.teamdman.animus.registry.AnimusBlocks;
+import com.teamdman.animus.registry.AnimusItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -13,6 +14,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -347,5 +349,49 @@ public class AnimusJEIPlugin implements IModPlugin {
             VanillaTypes.ITEM_STACK,
             Component.translatable("jei.animus.sanguine_scroll.ethereal")
         );
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        // Hide Malum-dependent items when Malum is not loaded
+        if (!ModList.get().isLoaded("malum")) {
+            var ingredientManager = jeiRuntime.getIngredientManager();
+
+            // Hide Runic Sentient Scythe - requires Malum
+            ingredientManager.removeIngredientsAtRuntime(
+                VanillaTypes.ITEM_STACK,
+                List.of(new ItemStack(AnimusItems.RUNIC_SENTIENT_SCYTHE.get()))
+            );
+
+            // Hide Hand of Death - requires Malum
+            ingredientManager.removeIngredientsAtRuntime(
+                VanillaTypes.ITEM_STACK,
+                List.of(new ItemStack(AnimusItems.HAND_OF_DEATH.get()))
+            );
+
+            Animus.LOGGER.info("JEI: Hidden Malum-dependent items (Malum not loaded)");
+        }
+
+        // Hide Iron's Spells-dependent items when Iron's Spells is not loaded
+        if (!ModList.get().isLoaded("irons_spellbooks")) {
+            var ingredientManager = jeiRuntime.getIngredientManager();
+
+            // Hide all Iron's Spells compat items
+            ingredientManager.removeIngredientsAtRuntime(
+                VanillaTypes.ITEM_STACK,
+                List.of(
+                    new ItemStack(IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()),
+                    new ItemStack(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get()),
+                    new ItemStack(IronsSpellsCompat.REAGENT_CRIMSON_WILL.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_BLANK.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_REINFORCED.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_IMBUED.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_DEMON.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_ETHEREAL.get())
+                )
+            );
+
+            Animus.LOGGER.info("JEI: Hidden Iron's Spells-dependent items (irons_spellbooks not loaded)");
+        }
     }
 }

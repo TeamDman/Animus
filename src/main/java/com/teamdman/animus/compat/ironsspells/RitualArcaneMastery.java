@@ -179,7 +179,8 @@ public class RitualArcaneMastery extends Ritual {
 
             // Create an upgraded scroll and give it to the player
             ItemStack upgradedScroll = new ItemStack(io.redspace.ironsspellbooks.registries.ItemRegistry.SCROLL.get());
-            ISpellContainer.createScrollContainer(spell, targetLevel, upgradedScroll).save(upgradedScroll);
+            ISpellContainer scrollContainer = ISpellContainer.createScrollContainer(spell, targetLevel, upgradedScroll);
+            ISpellContainer.set(upgradedScroll, scrollContainer);
 
             // Give the upgraded scroll to the player
             if (!player.getInventory().add(upgradedScroll)) {

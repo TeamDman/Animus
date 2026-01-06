@@ -4,7 +4,7 @@ import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
-import io.redspace.ironsspellbooks.api.spells.SpellRarity;
+import io.redspace.ironsspellbooks.api.spells.ISpellContainerMutable;
 import io.redspace.ironsspellbooks.item.SpellBook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -47,7 +47,7 @@ public class ItemBloodInfusedSpellbook extends SpellBook implements IBindable {
     private static final UUID MANA_MODIFIER_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
 
     public ItemBloodInfusedSpellbook() {
-        super(5, SpellRarity.COMMON); // 5 base slots, COMMON rarity
+        super(5); // 5 base slots
     }
 
     @Override
@@ -144,8 +144,10 @@ public class ItemBloodInfusedSpellbook extends SpellBook implements IBindable {
         // Get or create the spell container and update its max count
         ISpellContainer container = ISpellContainer.getOrCreate(stack);
         if (container.getMaxSpellCount() != newSlotCount) {
-            container.setMaxSpellCount(newSlotCount);
-            container.save(stack);
+            // Create a mutable copy, update it, then save back
+            ISpellContainerMutable mutableContainer = container.mutableCopy();
+            mutableContainer.setMaxSpellCount(newSlotCount);
+            ISpellContainer.set(stack, mutableContainer.toImmutable());
         }
     }
 
