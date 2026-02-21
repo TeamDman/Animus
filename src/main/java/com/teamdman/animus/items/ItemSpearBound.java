@@ -99,6 +99,10 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
 
         // Get the soul network and consume LP
         SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        if (network == null) {
+            return false; // Player has no soul network (never used Blood Magic)
+        }
+
         SoulTicket ticket = new SoulTicket(
             Component.translatable(Constants.Localizations.Text.SPEAR_BOUND_SUCCESS),
             LP_COST
@@ -244,7 +248,14 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             return super.hurtEnemy(stack, target, attacker);
         }
 
-        // If activated, check for LP cost
+        Level level = target.level();
+
+        // LP consumption and AOE only happen server-side
+        if (level.isClientSide) {
+            return super.hurtEnemy(stack, target, attacker);
+        }
+
+        // If activated, check for LP cost (server-side only)
         if (attacker instanceof Player player) {
             if (!consumeLP(player, stack)) {
                 player.displayClientMessage(
@@ -258,12 +269,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
 
         // Call parent to apply normal attack damage to the main target
         super.hurtEnemy(stack, target, attacker);
-
-        Level level = target.level();
-
-        if (level.isClientSide) {
-            return false;
-        }
 
         double x = target.getX();
         double y = target.getY();

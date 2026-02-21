@@ -39,6 +39,8 @@ import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.potion.BloodMagicPotions;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
+import wayoftime.bloodmagic.event.SacrificeKnifeUsedEvent;
+import wayoftime.bloodmagic.event.SoulNetworkEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -1229,17 +1231,48 @@ public class AnimusEventHandler {
             default -> ((IDemonWill) BloodMagicItems.MONSTER_SOUL_RAW.get());
         };
 
+        // Apply bonus demon will attribute from player
+        double bonusWillPercent = attackingEntity.getAttributeValue(AnimusAttributes.BONUS_DEMON_WILL.get());
+        double bonusWillMultiplier = 1 + bonusWillPercent / 100.0;
+
         // Drop will items (with looting bonus like sword)
         for (int i = 0; i <= looting; i++) {
             if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
                 double dropAmount = willModifier * (soulDrop[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
                     + staticDrop[willLevel]) * killedEntity.getMaxHealth() / 20.0;
+                dropAmount *= bonusWillMultiplier;
                 ItemStack soulStack = soul.createWill(dropAmount);
                 soulList.add(soulStack);
             }
         }
 
         return soulList;
+    }
+
+    /**
+     * Self-sacrifice bonus: increase LP gained from Sacrificial Dagger based on player attribute
+     */
+    @SubscribeEvent
+    public static void onSelfSacrifice(SacrificeKnifeUsedEvent event) {
+        Player player = event.player;
+        double bonusPercent = player.getAttributeValue(AnimusAttributes.BONUS_SELF_SACRIFICE.get());
+        if (bonusPercent > 0) {
+            event.lpAdded = (int) (event.lpAdded * (1 + bonusPercent / 100.0));
+        }
+    }
+
+    /**
+     * Sigil cost reduction: reduce LP syphoned for player-initiated drains (sigils, etc.)
+     */
+    @SubscribeEvent
+    public static void onSoulNetworkSyphon(SoulNetworkEvent.Syphon.User event) {
+        Player player = event.getUser();
+        double reductionPercent = player.getAttributeValue(AnimusAttributes.SIGIL_COST_REDUCTION.get());
+        if (reductionPercent > 0) {
+            SoulTicket oldTicket = event.getTicket();
+            int reducedAmount = Math.max(1, (int) (oldTicket.getAmount() * (1 - reductionPercent / 100.0)));
+            event.setTicket(new SoulTicket(oldTicket.getDescription(), reducedAmount));
+        }
     }
 
     /**

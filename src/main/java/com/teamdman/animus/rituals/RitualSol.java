@@ -82,7 +82,7 @@ public class RitualSol extends Ritual {
         }
 
         // Get chest
-        AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
+        AreaDescriptor chestRange = mrs.getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 
@@ -111,7 +111,7 @@ public class RitualSol extends Ritual {
         ItemStack stack = handler.getStackInSlot(slot);
 
         // Find a dark spot to place the block using center-outward search
-        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor effectRange = mrs.getBlockRange(EFFECT_RANGE);
         BlockPos placePos = findDarkSpot(level, masterPos, effectRange);
 
         if (placePos == null) {

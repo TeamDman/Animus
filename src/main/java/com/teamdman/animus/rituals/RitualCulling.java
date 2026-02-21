@@ -152,7 +152,7 @@ public class RitualCulling extends Ritual {
         boolean usePlayerKill = AnimusConfig.rituals.cullingPlayerKillDrops.get() && rawWillAmount >= 1.0;
 
         // Find nearby altar
-        TileAltar tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
+        TileAltar tileAltar = AnimusUtil.getNearbyAltar(level, ritualStone.getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
         if (tileAltar == null) {
             if (AnimusConfig.rituals.cullingDebug.get()) {
                 System.out.println("Animus: [Ritual of Culling Debug]: No valid altar found within altar range for MRS at " + ritualStone.getMasterBlockPos());
@@ -161,7 +161,7 @@ public class RitualCulling extends Ritual {
         }
         altarOffsetPos = tileAltar.getBlockPos();
 
-        AreaDescriptor damageRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor damageRange = ritualStone.getBlockRange(EFFECT_RANGE);
         AABB range = damageRange.getAABB(pos);
 
         List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, range);

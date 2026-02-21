@@ -8,7 +8,9 @@ import io.redspace.ironsspellbooks.api.spells.ISpellContainerMutable;
 import io.redspace.ironsspellbooks.item.SpellBook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -348,67 +350,21 @@ public class ItemBloodInfusedSpellbook extends SpellBook implements IBindable {
     }
 
     /**
-     * Called every tick when the spellbook is equipped in a curios slot
-     * Applies the max mana modifier based on infusion tier
+     * Expose max mana bonus as a Curios attribute modifier so Iron's Spellbooks detects it properly.
+     * Curios handles adding/removing modifiers on equip/unequip automatically.
      */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        super.curioTick(slotContext, stack);
-
-        if (slotContext.entity().level().isClientSide) {
-            return;
-        }
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
+        Multimap<Attribute, AttributeModifier> modifiers = LinkedHashMultimap.create();
 
         int manaBonus = getMaxManaBonus(stack);
-        AttributeInstance manaAttribute = slotContext.entity().getAttribute(AttributeRegistry.MAX_MANA.get());
-
-        if (manaAttribute == null) {
-            return;
+        if (manaBonus > 0) {
+            modifiers.put(
+                AttributeRegistry.MAX_MANA.get(),
+                new AttributeModifier(MANA_MODIFIER_UUID, "Blood Spellbook Mana Bonus", manaBonus, AttributeModifier.Operation.ADDITION)
+            );
         }
 
-        AttributeModifier existingModifier = manaAttribute.getModifier(MANA_MODIFIER_UUID);
-
-        if (manaBonus <= 0) {
-            // Remove modifier if tier 0
-            if (existingModifier != null) {
-                manaAttribute.removeModifier(MANA_MODIFIER_UUID);
-            }
-        } else {
-            // Add or update modifier
-            if (existingModifier == null || existingModifier.getAmount() != manaBonus) {
-                if (existingModifier != null) {
-                    manaAttribute.removeModifier(MANA_MODIFIER_UUID);
-                }
-                manaAttribute.addPermanentModifier(new AttributeModifier(
-                    MANA_MODIFIER_UUID,
-                    "Blood Spellbook Mana Bonus",
-                    manaBonus,
-                    AttributeModifier.Operation.ADDITION
-                ));
-            }
-        }
-    }
-
-    /**
-     * Called when the spellbook is unequipped from a curios slot
-     * Removes the max mana modifier
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-
-        if (slotContext.entity().level().isClientSide) {
-            return;
-        }
-
-        // Only remove if we're not just swapping to another blood spellbook
-        if (newStack.getItem() instanceof ItemBloodInfusedSpellbook) {
-            return;
-        }
-
-        AttributeInstance manaAttribute = slotContext.entity().getAttribute(AttributeRegistry.MAX_MANA.get());
-        if (manaAttribute != null) {
-            manaAttribute.removeModifier(MANA_MODIFIER_UUID);
-        }
+        return modifiers;
     }
 }

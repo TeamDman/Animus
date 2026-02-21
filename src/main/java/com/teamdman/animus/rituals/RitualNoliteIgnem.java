@@ -67,7 +67,7 @@ public class RitualNoliteIgnem extends Ritual {
         int lpPerFire = AnimusConfig.rituals.noliteIgnemLPPerFire.get();
 
         // Find all fire blocks in range (respects Ritual Tinkerer modifications)
-        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor effectRange = mrs.getBlockRange(EFFECT_RANGE);
         AABB aabb = effectRange.getAABB(masterPos);
         List<BlockPos> fireBlocks = new ArrayList<>();
 

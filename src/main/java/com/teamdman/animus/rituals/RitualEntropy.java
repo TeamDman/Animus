@@ -58,7 +58,7 @@ public class RitualEntropy extends Ritual {
 
 
         // Get chest
-        AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
+        AreaDescriptor chestRange = masterRitualStone.getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 

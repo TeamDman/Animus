@@ -84,7 +84,7 @@ public class RitualSerenity extends Ritual {
         ), false);
 
         // Get the effect range (respects Ritual Tinkerer modifications)
-        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor effectRange = mrs.getBlockRange(EFFECT_RANGE);
         AABB aabb = effectRange.getAABB(masterPos);
 
         // Add to active rituals with the current AABB

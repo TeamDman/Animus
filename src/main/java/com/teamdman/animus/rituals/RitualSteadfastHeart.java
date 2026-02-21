@@ -97,7 +97,7 @@ public class RitualSteadfastHeart extends Ritual {
         Set<UUID> buffedPlayers = new HashSet<>();
 
         // Get all players in range
-        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor effectRange = mrs.getBlockRange(EFFECT_RANGE);
         AABB range = effectRange.getAABB(pos);
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, range);
 

@@ -135,7 +135,7 @@ public class RitualNaturesLeach extends Ritual {
         // If we don't have a cached altar or it's time to recheck, search for one
         if (tileAltar == null || ticksSinceAltarCheck >= ALTAR_RECHECK_INTERVAL) {
             BlockPos hintPos = cachedAltarPos != null ? cachedAltarPos : BlockPos.ZERO;
-            tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, hintPos);
+            tileAltar = AnimusUtil.getNearbyAltar(level, ritualStone.getBlockRange(ALTAR_RANGE), pos, hintPos);
 
             if (tileAltar != null) {
                 // Update cache
@@ -156,7 +156,7 @@ public class RitualNaturesLeach extends Ritual {
         }
 
         // Scan for consumable plants
-        AreaDescriptor eatRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor eatRange = ritualStone.getBlockRange(EFFECT_RANGE);
         int randFood = 1 + random.nextInt(3);
         int eaten = 0;
 

@@ -76,12 +76,12 @@ public class RitualLuna extends Ritual {
         }
 
         // Get chest position
-        AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
+        AreaDescriptor chestRange = mrs.getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 
         // Find a light-emitting block using center-outward search
-        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor effectRange = mrs.getBlockRange(EFFECT_RANGE);
         BlockPos lightPos = findLightEmittingBlock(level, masterPos, effectRange);
 
         if (lightPos == null) {

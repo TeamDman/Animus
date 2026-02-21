@@ -71,147 +71,103 @@ public class SpellCastingHandler {
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onSpellPreCast(SpellPreCastEvent event) {
-        Animus.LOGGER.info("[LP-DEBUG] === SpellPreCastEvent fired ===");
-        Animus.LOGGER.info("[LP-DEBUG] Spell ID: {}, Level: {}", event.getSpellId(), event.getSpellLevel());
-
         // Only handle players
-        if (!(event.getEntity() instanceof Player)) {
-            Animus.LOGGER.info("[LP-DEBUG] SKIP: Entity is not a player");
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
-        Animus.LOGGER.info("[LP-DEBUG] Player: {}", player.getName().getString());
 
         // Only process on server side
         if (player.level().isClientSide()) {
-            Animus.LOGGER.info("[LP-DEBUG] SKIP: Client side");
             return;
         }
-        Animus.LOGGER.info("[LP-DEBUG] Server side - proceeding");
 
         // Check if LP casting is enabled
-        boolean lpCastingEnabled = AnimusConfig.ironsSpells.enableLPCasting.get();
-        Animus.LOGGER.info("[LP-DEBUG] LP casting enabled: {}", lpCastingEnabled);
-        if (!lpCastingEnabled) {
-            Animus.LOGGER.info("[LP-DEBUG] SKIP: LP casting disabled in config");
+        if (!AnimusConfig.ironsSpells.enableLPCasting.get()) {
             return;
         }
 
         // Get the player's magic data to check mana
         MagicData magicData = MagicData.getPlayerMagicData(player);
         if (magicData == null) {
-            Animus.LOGGER.info("[LP-DEBUG] SKIP: MagicData is null");
             return;
         }
-        Animus.LOGGER.info("[LP-DEBUG] Got MagicData for player");
 
         // Get the mana cost for this spell via SpellRegistry
         AbstractSpell spell = SpellRegistry.getSpell(event.getSpellId());
         if (spell == null) {
-            Animus.LOGGER.info("[LP-DEBUG] SKIP: Spell not found in registry for ID: {}", event.getSpellId());
             return;
         }
-        Animus.LOGGER.info("[LP-DEBUG] Found spell: {}", spell.getSpellName());
         int manaCost = spell.getManaCost(event.getSpellLevel());
         int currentMana = (int) magicData.getMana();
-        Animus.LOGGER.info("[LP-DEBUG] Mana cost: {}, Current mana: {}", manaCost, currentMana);
 
         // If player has enough mana, let normal casting proceed
         if (currentMana >= manaCost) {
-            Animus.LOGGER.info("[LP-DEBUG] SKIP: Player has sufficient mana ({} >= {})", currentMana, manaCost);
             return;
         }
 
         // Player doesn't have enough mana - try LP casting
         int manaDeficit = manaCost - currentMana;
-        Animus.LOGGER.info("[LP-DEBUG] Mana deficit: {} - attempting LP casting", manaDeficit);
 
         // Check if Blood Orb is required and present
-        boolean orbRequired = AnimusConfig.ironsSpells.requireBloodOrb.get();
-        Animus.LOGGER.info("[LP-DEBUG] Blood Orb required: {}", orbRequired);
-        if (orbRequired) {
-            boolean hasOrb = hasBloodOrb(player);
-            Animus.LOGGER.info("[LP-DEBUG] Player has Blood Orb: {}", hasOrb);
-            if (!hasOrb) {
-                Animus.LOGGER.info("[LP-DEBUG] SKIP: Blood Orb required but not found");
-                return;
-            }
+        if (AnimusConfig.ironsSpells.requireBloodOrb.get() && !hasBloodOrb(player)) {
+            return;
         }
 
         // Find Blood Infused Spellbook and get the bound owner's network
         ItemStack spellbook = findBloodInfusedSpellbook(player);
-        Animus.LOGGER.info("[LP-DEBUG] Blood Infused Spellbook found in curios: {}", !spellbook.isEmpty());
         SoulNetwork network;
 
         if (!spellbook.isEmpty()) {
             Binding binding = ItemBloodInfusedSpellbook.getBindingStatic(spellbook);
-            Animus.LOGGER.info("[LP-DEBUG] Spellbook binding: {}", binding != null ? binding.getOwnerId() : "null");
             if (binding != null) {
                 UUID ownerUUID = binding.getOwnerId();
                 network = NetworkHelper.getSoulNetwork(ownerUUID);
-                Animus.LOGGER.info("[LP-DEBUG] Network from binding owner, essence: {}", network != null ? network.getCurrentEssence() : "null");
                 if (network == null) {
-                    Animus.LOGGER.info("[LP-DEBUG] SKIP: Network from binding is null");
                     return;
                 }
             } else {
-                Animus.LOGGER.info("[LP-DEBUG] No binding on spellbook, using player network");
                 network = NetworkHelper.getSoulNetwork(player);
-                Animus.LOGGER.info("[LP-DEBUG] Player network essence: {}", network != null ? network.getCurrentEssence() : "null");
                 if (network == null) {
-                    Animus.LOGGER.info("[LP-DEBUG] SKIP: Player network is null");
                     return;
                 }
             }
         } else {
-            Animus.LOGGER.info("[LP-DEBUG] No spellbook found, using player network");
             network = NetworkHelper.getSoulNetwork(player);
-            Animus.LOGGER.info("[LP-DEBUG] Player network essence: {}", network != null ? network.getCurrentEssence() : "null");
             if (network == null) {
-                Animus.LOGGER.info("[LP-DEBUG] SKIP: Player network is null");
                 return;
             }
         }
 
         // Calculate LP cost
         int lpPerMana = AnimusConfig.ironsSpells.lpPerMana.get();
-        Animus.LOGGER.info("[LP-DEBUG] LP per mana: {}", lpPerMana);
         int lpCost;
         int manaToAdd;
         boolean isHybrid;
 
         boolean allowHybrid = AnimusConfig.ironsSpells.allowHybridCasting.get();
-        Animus.LOGGER.info("[LP-DEBUG] Allow hybrid casting: {}, current mana > 0: {}", allowHybrid, currentMana > 0);
         if (allowHybrid && currentMana > 0) {
             // Hybrid casting: use available mana + LP for the rest
             manaToAdd = manaDeficit;
             lpCost = manaDeficit * lpPerMana;
             isHybrid = true;
-            Animus.LOGGER.info("[LP-DEBUG] Using HYBRID casting - mana to add: {}, LP cost: {}", manaToAdd, lpCost);
         } else {
             // Pure LP casting: use LP for entire cost
             manaToAdd = manaCost;
             lpCost = manaCost * lpPerMana;
             isHybrid = false;
-            Animus.LOGGER.info("[LP-DEBUG] Using PURE LP casting - mana to add: {}, LP cost: {}", manaToAdd, lpCost);
         }
 
         // Apply LP cost reduction from Blood Infused Spellbook
         if (!spellbook.isEmpty()) {
             double lpReduction = ItemBloodInfusedSpellbook.getLPCostReduction(spellbook);
-            Animus.LOGGER.info("[LP-DEBUG] Spellbook LP reduction: {}%", lpReduction * 100);
             if (lpReduction > 0) {
-                int oldCost = lpCost;
                 lpCost = (int) Math.max(1, lpCost * (1.0 - lpReduction));
-                Animus.LOGGER.info("[LP-DEBUG] LP cost reduced from {} to {}", oldCost, lpCost);
             }
         }
 
         // Check if player has enough LP
         int currentEssence = network.getCurrentEssence();
-        Animus.LOGGER.info("[LP-DEBUG] Current essence: {}, Required LP: {}", currentEssence, lpCost);
         if (currentEssence < lpCost) {
-            Animus.LOGGER.info("[LP-DEBUG] SKIP: Not enough LP ({} < {})", currentEssence, lpCost);
             player.displayClientMessage(
                 Component.literal("Not enough Life Points! Required: " + lpCost + " LP")
                     .withStyle(ChatFormatting.RED),
@@ -222,11 +178,9 @@ public class SpellCastingHandler {
 
         // Temporarily add mana so the spell can proceed
         magicData.setMana(currentMana + manaToAdd);
-        Animus.LOGGER.info("[LP-DEBUG] SUCCESS: Added {} temporary mana (now at {})", manaToAdd, currentMana + manaToAdd);
 
         // Store pending LP cost to consume in onSpellOnCast
         pendingLPCosts.put(player.getUUID(), new PendingLPCost(lpCost, manaToAdd, network, isHybrid));
-        Animus.LOGGER.info("[LP-DEBUG] Stored pending LP cost: {} for player {}", lpCost, player.getUUID());
 
         Animus.LOGGER.debug("Pre-cast: added {} temporary mana for player {}, pending {} LP",
             manaToAdd, player.getName().getString(), lpCost);
@@ -240,12 +194,9 @@ public class SpellCastingHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onSpellOnCast(SpellOnCastEvent event) {
         // Only handle players
-        if (!(event.getEntity() instanceof Player)) {
-            Animus.LOGGER.info("[LP-DEBUG] SKIP: Entity is not a player");
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
-        Animus.LOGGER.info("[LP-DEBUG] Player: {}", player.getName().getString());
 
         // Only process on server side
         if (player.level().isClientSide()) {
@@ -357,23 +308,16 @@ public class SpellCastingHandler {
      * @return The spellbook ItemStack, or ItemStack.EMPTY if not found
      */
     private static ItemStack findBloodInfusedSpellbook(Player player) {
-        Animus.LOGGER.info("[LP-DEBUG] findBloodInfusedSpellbook called for player: {}", player.getName().getString());
         var curiosOpt = CuriosApi.getCuriosInventory(player).resolve();
-        Animus.LOGGER.info("[LP-DEBUG] Curios inventory present: {}", curiosOpt.isPresent());
         if (curiosOpt.isPresent()) {
             var curios = curiosOpt.get();
             var handler = curios.getEquippedCurios();
-            int slots = handler.getSlots();
-            Animus.LOGGER.info("[LP-DEBUG] Checking {} curios slots", slots);
-            for (int i = 0; i < slots; i++) {
+            for (int i = 0; i < handler.getSlots(); i++) {
                 ItemStack stack = handler.getStackInSlot(i);
-                Animus.LOGGER.info("[LP-DEBUG] Slot {}: {} (empty: {})", i, stack.getItem().getClass().getSimpleName(), stack.isEmpty());
                 if (stack.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
-                    Animus.LOGGER.info("[LP-DEBUG] FOUND Blood Infused Spellbook in slot {}", i);
                     return stack;
                 }
             }
-            Animus.LOGGER.info("[LP-DEBUG] Blood Infused Spellbook NOT found in any curios slot");
         }
         return ItemStack.EMPTY;
     }

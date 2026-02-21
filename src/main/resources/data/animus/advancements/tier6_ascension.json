@@ -19,7 +19,12 @@
     "placed_altar": {
       "trigger": "minecraft:placed_block",
       "conditions": {
-        "block": "bloodmagic:altar"
+        "location": [
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "bloodmagic:altar"
+          }
+        ]
       }
     }
   },

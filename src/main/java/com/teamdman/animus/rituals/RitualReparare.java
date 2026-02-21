@@ -57,7 +57,7 @@ public class RitualReparare extends Ritual {
         }
 
         // Get chest above ritual
-        AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
+        AreaDescriptor chestRange = mrs.getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 

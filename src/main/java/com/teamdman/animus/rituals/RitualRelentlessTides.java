@@ -124,7 +124,7 @@ public class RitualRelentlessTides extends Ritual {
 
         // Find a valid placement position below the ritual stone
         // Uses ritual effect range which respects Ritual Tinkerer modifications
-        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor effectRange = mrs.getBlockRange(EFFECT_RANGE);
         AABB aabb = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(
             Math.abs(aabb.minX - masterPos.getX()),

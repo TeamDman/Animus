@@ -67,7 +67,7 @@ public class RitualUnmaking extends Ritual {
         }
 
         // Find all item entities in range
-        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor effectRange = mrs.getBlockRange(EFFECT_RANGE);
         AABB aabb = effectRange.getAABB(masterPos);
         List<ItemEntity> itemList = level.getEntitiesOfClass(ItemEntity.class, aabb);
 

@@ -108,7 +108,7 @@ public class RitualEndlessGreed extends Ritual {
         ), false);
 
         // Calculate range (respects Ritual Tinkerer modifications)
-        AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
+        AreaDescriptor effectRange = mrs.getBlockRange(EFFECT_RANGE);
         AABB range = effectRange.getAABB(masterPos);
 
         // Register this ritual as active
