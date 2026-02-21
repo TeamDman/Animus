@@ -72,9 +72,10 @@ public class SpellCastingHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onSpellPreCast(SpellPreCastEvent event) {
         // Only handle players
-        if (!(event.getEntity() instanceof Player player)) {
+        if (!(event.getEntity() instanceof Player)) {
             return;
         }
+        Player player = (Player) event.getEntity();
 
         // Only process on server side
         if (player.level().isClientSide()) {
@@ -194,9 +195,10 @@ public class SpellCastingHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onSpellOnCast(SpellOnCastEvent event) {
         // Only handle players
-        if (!(event.getEntity() instanceof Player player)) {
+        if (!(event.getEntity() instanceof Player)) {
             return;
         }
+        Player player = (Player) event.getEntity();
 
         // Only process on server side
         if (player.level().isClientSide()) {
