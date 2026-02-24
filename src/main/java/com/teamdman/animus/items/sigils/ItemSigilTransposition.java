@@ -206,8 +206,8 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
             // Check if destination is air
             if (level.isEmptyBlock(newPos)) {
-                // Consume LP
-                SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+                // Consume LP from the sigil owner's network
+                SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
                 SoulTicket ticket = new SoulTicket(
                     Component.translatable(Constants.Localizations.Text.TICKET_TRANSPOSITION),
                     getLpUsed()
@@ -321,6 +321,12 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             return super.hurtEnemy(stack, target, attacker);
         }
 
+        // Check binding - LP drains from the sigil owner's network
+        var binding = getBinding(stack);
+        if (binding == null) {
+            return super.hurtEnemy(stack, target, attacker);
+        }
+
         // Get teleposer position
         BlockPos teleposerPos = BlockPos.of(tag.getLong(TELEPOSER_KEY));
         BlockPos targetPos = teleposerPos.above(); // 1 block above teleposer
@@ -336,8 +342,8 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
             return super.hurtEnemy(stack, target, attacker);
         }
 
-        // Consume LP
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        // Consume LP from the sigil owner's network
+        SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
         SoulTicket ticket = new SoulTicket(
             Component.literal("Entity Teleportation"),
             TELEPORT_COST

@@ -92,8 +92,8 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             // Get LP cost from config
             int lpCost = AnimusConfig.sigils.freeSoulLPCost.get();
 
-            // Try to consume LP
-            SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+            // Try to consume LP from the sigil owner's network
+            SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
             SoulTicket ticket = new SoulTicket(
                 Component.translatable(Constants.Localizations.Text.TICKET_FREE_SOUL),
                 lpCost
@@ -165,9 +165,9 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             return false;
         }
 
-        // Check if player has enough LP
+        // Check if player has enough LP (drain from sigil owner's network)
         int lpCost = AnimusConfig.sigils.freeSoulLPCost.get();
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
         int currentEssence = network.getCurrentEssence();
 
         if (currentEssence < lpCost) {

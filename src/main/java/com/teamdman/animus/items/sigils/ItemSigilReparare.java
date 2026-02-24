@@ -227,8 +227,16 @@ public class ItemSigilReparare extends AnimusSigilBase {
         int lpPerDamage = AnimusConfig.sigils.reparareLPPerDamage.get();
         int lpCost = totalDamageToRepair * lpPerDamage;
 
-        // Try to consume LP from soul network
-        wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
+        // Get binding from the active sigil to drain LP from the owner's network
+        var sigil = (ItemSigilReparare) activeSigil.stack.getItem();
+        var binding = sigil.getBinding(activeSigil.stack);
+        if (binding == null) {
+            activeSigils.remove(playerId);
+            return;
+        }
+
+        // Try to consume LP from the sigil owner's soul network
+        wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(binding);
         wayoftime.bloodmagic.core.data.SoulTicket ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
             Component.translatable(Constants.Localizations.Text.TICKET_REPARARE),
             lpCost

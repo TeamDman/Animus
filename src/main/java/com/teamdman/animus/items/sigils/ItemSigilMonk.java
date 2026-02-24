@@ -99,7 +99,8 @@ public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem
     }
 
     /**
-     * Consume LP from the player's soul network for a Sigil of the Demon Monk action
+     * Consume LP from the sigil owner's soul network for a Sigil of the Demon Monk action
+     * Finds the active Monk sigil in the player's inventory to determine the binding owner.
      * @param player The player using the sigil
      * @param amount The amount of LP to consume
      * @return true if LP was successfully consumed, false if not enough LP
@@ -109,7 +110,13 @@ public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem
             return false;
         }
 
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        // Find the active Monk sigil to get its binding
+        Binding binding = findActiveBinding(player);
+        if (binding == null) {
+            return false;
+        }
+
+        SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
         if (network == null) {
             return false;
         }
@@ -124,6 +131,47 @@ public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem
         );
         network.syphon(ticket, false);
         return true;
+    }
+
+    /**
+     * Find the binding from the active Monk sigil in the player's inventory or curios
+     */
+    private static Binding findActiveBinding(Player player) {
+        // Check curios slots
+        var curiosBinding = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
+            .map(inv -> inv.findFirstCurio(stack -> {
+                if (stack.getItem() instanceof ItemSigilMonk sigil) {
+                    return sigil.getActivated(stack) && sigil.getBinding(stack) != null;
+                }
+                return false;
+            }))
+            .orElse(java.util.Optional.empty());
+
+        if (curiosBinding.isPresent()) {
+            ItemStack stack = curiosBinding.get().stack();
+            return ((ItemSigilMonk) stack.getItem()).getBinding(stack);
+        }
+
+        // Check player inventory (including Sigil of Holding)
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.getItem() instanceof ItemSigilMonk sigil
+                && sigil.getActivated(stack) && sigil.getBinding(stack) != null) {
+                return sigil.getBinding(stack);
+            }
+
+            // Check inside Sigil of Holding
+            if (stack.getItem() instanceof ItemSigilHolding) {
+                NonNullList<ItemStack> holdingInv = ItemSigilHolding.getInternalInventory(stack);
+                for (ItemStack heldStack : holdingInv) {
+                    if (heldStack.getItem() instanceof ItemSigilMonk sigil
+                        && sigil.getActivated(heldStack) && sigil.getBinding(heldStack) != null) {
+                        return sigil.getBinding(heldStack);
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override

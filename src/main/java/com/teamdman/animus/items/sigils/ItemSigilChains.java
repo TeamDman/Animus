@@ -128,8 +128,8 @@ public class ItemSigilChains extends AnimusSigilBase {
             return false;
         }
 
-        // Consume LP and check if player has enough
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        // Consume LP from the sigil owner's network
+        SoulNetwork network = NetworkHelper.getSoulNetwork(getBinding(stack));
         SoulTicket ticket = new SoulTicket(
             Component.translatable(Constants.Localizations.Text.TICKET_CHAINS),
             getLpUsed()

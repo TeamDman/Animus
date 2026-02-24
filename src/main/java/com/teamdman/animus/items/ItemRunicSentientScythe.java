@@ -6,6 +6,8 @@ import com.teamdman.animus.compat.CompatHandler;
 import com.teamdman.animus.compat.malum.SpiritHarvestHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -85,14 +87,39 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
                 BloodMagicPotions.SOUL_SNARE.get(), 100, 1));
         }
 
-        boolean result = super.hurtEnemy(stack, target, attacker);
+        return super.hurtEnemy(stack, target, attacker);
+    }
 
-        // Trigger Malum soul harvesting if available (only when target is killed)
-        if (CompatHandler.isMalumLoaded() && attacker instanceof Player player && target.isDeadOrDying()) {
-            SpiritHarvestHelper.harvestSpirits(target, player, stack);
+    /**
+     * Handle Malum's Rebound and Ascension enchantment functionality.
+     * These enchantments are applied via the malum:scythe tag, but their use() behavior
+     * lives in MalumScytheItem which we don't extend. We replicate it here via reflection.
+     */
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        if (CompatHandler.isMalumLoaded()) {
+            // Check Rebound first (same priority as MalumScytheItem)
+            int reboundLevel = SpiritHarvestHelper.getMalumEnchantmentLevel(stack,
+                "com.sammy.malum.common.enchantment.scythe.ReboundEnchantment");
+            if (reboundLevel > 0) {
+                if (SpiritHarvestHelper.tryThrowScythe(level, player, hand, stack)) {
+                    return InteractionResultHolder.success(stack);
+                }
+            }
+
+            // Then check Ascension
+            int ascensionLevel = SpiritHarvestHelper.getMalumEnchantmentLevel(stack,
+                "com.sammy.malum.common.enchantment.scythe.AscensionEnchantment");
+            if (ascensionLevel > 0) {
+                if (SpiritHarvestHelper.tryTriggerAscension(level, player, hand, stack)) {
+                    return InteractionResultHolder.success(stack);
+                }
+            }
         }
 
-        return result;
+        return super.use(level, player, hand);
     }
 
     @Override

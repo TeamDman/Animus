@@ -94,8 +94,8 @@ public class ItemSigilHeavenlyWrath extends AnimusSigilBase {
             return InteractionResultHolder.fail(stack);
         }
 
-        // Consume LP from soul network
-        wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
+        // Consume LP from the sigil owner's soul network
+        wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(binding);
         wayoftime.bloodmagic.core.data.SoulTicket ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
             net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_HEAVENLY_WRATH),
             getLpUsed()

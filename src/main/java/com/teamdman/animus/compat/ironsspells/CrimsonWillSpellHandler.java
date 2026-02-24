@@ -21,6 +21,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import wayoftime.bloodmagic.api.compat.EnumDemonWillType;
+import wayoftime.bloodmagic.core.data.Binding;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.will.PlayerDemonWillHandler;
@@ -85,11 +86,17 @@ public class CrimsonWillSpellHandler {
         // In a more complete implementation, you'd want to get the actual spell object
         int manaCost = spellLevel; // Approximation
 
+        // Get binding from the sigil to drain LP from the owner's network
+        Binding binding = ((ItemSigilCrimsonWill) activeSigil.getItem()).getBinding(activeSigil);
+        if (binding == null) {
+            return;
+        }
+
         // Calculate LP cost
         int lpCost = manaCost * AnimusConfig.ironsSpells.crimsonWillLPPerMana.get();
 
-        // Check if player has enough LP
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        // Check if sigil owner has enough LP
+        SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
         if (network.getCurrentEssence() < lpCost) {
             player.displayClientMessage(
                 Component.literal("Not enough LP! Need " + lpCost + " LP")

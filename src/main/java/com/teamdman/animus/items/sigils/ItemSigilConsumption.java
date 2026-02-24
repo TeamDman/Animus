@@ -56,8 +56,8 @@ public class ItemSigilConsumption extends AnimusSigilBase {
         ));
 
         if (result.getType() != HitResult.Type.MISS && result.getType() == HitResult.Type.BLOCK) {
-            // Consume LP from soul network
-            SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+            // Consume LP from the sigil owner's soul network
+            SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
             SoulTicket ticket = new SoulTicket(
                 Component.translatable(Constants.Localizations.Text.TICKET_CONSUMPTION),
                 getLpUsed()

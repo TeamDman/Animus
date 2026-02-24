@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.PacketDistributor;
 import wayoftime.bloodmagic.common.item.IBindable;
+import wayoftime.bloodmagic.core.data.Binding;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
@@ -199,8 +200,14 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
             return InteractionResult.FAIL;
         }
 
-        // Get the player's soul network
-        SoulNetwork network = NetworkHelper.getSoulNetwork((ServerPlayer) player);
+        // Check binding - LP drains from the sigil owner's network
+        Binding binding = getBinding(context.getItemInHand());
+        if (binding == null) {
+            return InteractionResult.FAIL;
+        }
+
+        // Get the sigil owner's soul network
+        SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
         if (network == null) {
             return InteractionResult.FAIL;
         }

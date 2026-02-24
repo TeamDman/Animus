@@ -88,8 +88,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
                     Block block = blockItem.getBlock();
                     BlockState state = block.defaultBlockState();
 
-                    // Consume LP first
-                    SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+                    // Consume LP from the sigil owner's network
+                    SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
                     SoulTicket ticket = new SoulTicket(
                         Component.translatable(Constants.Localizations.Text.TICKET_BUILDER),
                         getLpUsed()
@@ -192,8 +192,8 @@ public class ItemSigilBuilder extends ItemSigilToggleableBase {
             } while (!level.isEmptyBlock(placePos) && placePos.getY() > level.getMinBuildHeight());
 
             if (level.isEmptyBlock(placePos) && !buildStack.isEmpty()) {
-                // Consume LP first
-                SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+                // Consume LP from the sigil owner's network
+                SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
                 SoulTicket ticket = new SoulTicket(
                     Component.translatable(Constants.Localizations.Text.TICKET_BUILDER),
                     getLpUsed()

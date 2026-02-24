@@ -34,6 +34,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.common.item.IBindable;
+import wayoftime.bloodmagic.core.data.Binding;
 import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
@@ -222,8 +223,12 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             return InteractionResult.FAIL;
         }
 
-        // Get the player's soul network
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        // Get the sigil owner's soul network (LP drains from binding owner)
+        Binding binding = getBinding(stack);
+        if (binding == null) {
+            return InteractionResult.FAIL;
+        }
+        SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
         if (network == null) {
             return InteractionResult.FAIL;
         }

@@ -126,7 +126,7 @@ public class ItemSigilBoundlessNature extends AnimusSigilBase {
 
         // Try to consume LP and convert to mana
         if (!level.isClientSide) {
-            var network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
+            var network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(binding);
             var ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
                 Component.translatable("item.animus.sigil_boundless_nature"),
                 getLpUsed()

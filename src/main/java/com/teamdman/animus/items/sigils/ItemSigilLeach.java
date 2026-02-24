@@ -90,8 +90,8 @@ public class ItemSigilLeach extends ItemSigilToggleableBase {
         // Try to eat from inventory first, then from the world
         if (eatFromInventory(player) || eatFromSurroundingWorld(player, level)) {
             if (!level.isClientSide) {
-                // Consume LP
-                var network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
+                // Consume LP from the sigil owner's network
+                var network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(binding);
                 var ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
                     net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_LEACH),
                     getLpUsed()

@@ -97,8 +97,8 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             return false; // Not bound, can't consume LP
         }
 
-        // Get the soul network and consume LP
-        SoulNetwork network = NetworkHelper.getSoulNetwork(player);
+        // Get the soul network from the binding owner and consume LP
+        SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
         if (network == null) {
             return false; // Player has no soul network (never used Blood Magic)
         }

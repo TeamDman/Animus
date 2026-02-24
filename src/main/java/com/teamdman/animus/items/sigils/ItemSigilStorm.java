@@ -107,8 +107,8 @@ public class ItemSigilStorm extends AnimusSigilBase {
         if (result.getType() != HitResult.Type.MISS) {
             BlockPos pos = result.getBlockPos();
 
-            // Consume LP from soul network
-            wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
+            // Consume LP from the sigil owner's soul network
+            wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(binding);
             wayoftime.bloodmagic.core.data.SoulTicket ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
                 net.minecraft.network.chat.Component.translatable(Constants.Localizations.Text.TICKET_STORM),
                 getLpUsed()

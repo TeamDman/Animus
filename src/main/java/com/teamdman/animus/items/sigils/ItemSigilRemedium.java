@@ -161,8 +161,16 @@ public class ItemSigilRemedium extends AnimusSigilBase {
         // Calculate LP cost (50 per effect)
         int lpCost = negativeEffects.size() * 50;
 
-        // Try to consume LP from soul network
-        wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(player);
+        // Get binding from the active sigil to drain LP from the owner's network
+        var sigil = (ItemSigilRemedium) activeSigil.stack.getItem();
+        var binding = sigil.getBinding(activeSigil.stack);
+        if (binding == null) {
+            activeSigils.remove(playerId);
+            return;
+        }
+
+        // Try to consume LP from the sigil owner's soul network
+        wayoftime.bloodmagic.core.data.SoulNetwork network = wayoftime.bloodmagic.util.helper.NetworkHelper.getSoulNetwork(binding);
         wayoftime.bloodmagic.core.data.SoulTicket ticket = new wayoftime.bloodmagic.core.data.SoulTicket(
             Component.translatable(Constants.Localizations.Text.TICKET_REMEDIUM),
             lpCost
