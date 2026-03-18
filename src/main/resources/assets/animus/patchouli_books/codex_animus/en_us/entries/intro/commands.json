@@ -1,0 +1,28 @@
+{
+  "name": "guide.animus.entry.commands",
+  "icon": "bloodmagic:masterritualstone",
+  "category": "animus:intro",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Admin Commands",
+      "text": "Animus provides a set of $(animus)/animus$() admin commands for server operators (permission level 2+). These are useful for testing rituals, debugging LP issues, and managing demon will.$(br2)All commands are executed as $(item)/animus <subcommand>$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "LP Commands",
+      "text": "$(bold)/animus getlp$()$(br)Displays your current Life Essence (LP) stored in your Soul Network.$(br2)$(bold)/animus setlp <amount>$()$(br)Sets your Soul Network LP to the specified amount. Useful for testing rituals and sigils without needing to sacrifice.$(br2)Example: $(item)/animus setlp 1000000$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Demon Will Commands",
+      "text": "$(bold)/animus fillwill <type>$()$(br)Fills the current chunk with demon will of the specified type (up to 100).$(br2)Valid types: $(will)default$(), $(will)corrosive$(), $(will)destructive$(), $(will)vengeful$(), $(will)steadfast$()$(br2)Example: $(item)/animus fillwill destructive$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Gem Commands",
+      "text": "$(bold)/animus gemtype <type>$()$(br)Changes the demon will type of the tartaric gem you are holding. The gem's current will amount is preserved.$(br2)$(bold)/animus fillgem$()$(br)Fills the tartaric gem you are holding to its maximum capacity.$(br2)Both commands require you to hold a tartaric gem in your main hand."
+    }
+  ]
+}

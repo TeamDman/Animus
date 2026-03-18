@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "An imperfect ritual that reduces enchantment levels and removes the enhancement mark from items. This ritual downgrades all enchantments by one level.$(br2)$(bold)Setup:$()$(br)Place a Quartz Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 1000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect; it activates once and completes immediately. The stone can be reused."
+      "text": "An imperfect ritual that removes the $(#5500AA)Blood Enhanced$() mark from an item, returning all enchantment levels to their base values.$(br2)$(bold)Setup:$()$(br)Place a Quartz Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 1000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect; it activates once and completes immediately. The stone can be reused."
     },
     {
       "type": "patchouli:text",
       "title": "Usage",
-      "text": "$(bold)Activation:$()$(br)1. Hold the item in your mainhand$(br)2. Right-click the Imperfect Ritual Stone$(br)3. All enchantments lose 1 level$(br)4. Enhancement mark is removed$(br)5. The stone remains for reuse$(br2)$(bold)Applications:$()$(li)Reverse Enhancement ritual$(li)Downgrade enchantments$(li)Enchantments won't go below level 1$(br2)$(italic)Balance the scales of power.$()"
+      "text": "$(bold)Activation:$()$(br)1. Hold a Blood Enhanced item in your mainhand$(br)2. Right-click the Imperfect Ritual Stone$(br)3. The Blood Enhanced mark is removed$(br)4. Enchantments return to their base levels$(br)5. The stone remains for reuse$(br2)$(bold)Applications:$()$(li)Reverse the Enhancement ritual$(li)Remove the +1 level boost$(br2)$(bold)Note:$() Only works on items that have the Blood Enhanced mark. Has no effect on non-enhanced items.$(br2)$(italic)Balance the scales of power.$()"
     }
   ]
 }

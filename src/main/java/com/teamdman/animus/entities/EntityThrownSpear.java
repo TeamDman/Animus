@@ -229,12 +229,13 @@ public class EntityThrownSpear extends AbstractArrow {
             }
         }
 
-        // AOE damage on impact
-        // Activated bound spear deals more AOE damage (lightning is handled in onHit)
-        boolean isBound = "bound".equals(this.getVariant());
-        boolean isActivated = this.entityData.get(ID_ACTIVATED);
-        float aoeDamage = (isBound && isActivated) ? damage * 1.0F : damage * 0.75F;
-        dealAOEDamage(entity.getX(), entity.getY(), entity.getZ(), aoeDamage);
+        // AOE damage on impact (iron spears do not have AOE)
+        if (!"iron".equals(this.getVariant())) {
+            boolean isBound = "bound".equals(this.getVariant());
+            boolean isActivated = this.entityData.get(ID_ACTIVATED);
+            float aoeDamage = (isBound && isActivated) ? damage * 1.0F : damage * 0.75F;
+            dealAOEDamage(entity.getX(), entity.getY(), entity.getZ(), aoeDamage);
+        }
 
         this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01, -0.1, -0.01));
         this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);

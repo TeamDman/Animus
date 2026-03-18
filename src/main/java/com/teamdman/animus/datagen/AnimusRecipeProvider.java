@@ -72,13 +72,6 @@ public class AnimusRecipeProvider extends RecipeProvider implements IConditionBu
             .unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
             .save(consumer);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, AnimusItems.BLOOD_APPLE.get())
-            .requires(Items.APPLE)
-            .requires(Items.REDSTONE)
-            .requires(Items.REDSTONE)
-            .unlockedBy("has_apple", has(Items.APPLE))
-            .save(consumer);
-
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get(), 4)
             .requires(AnimusBlocks.BLOCK_BLOOD_WOOD.get())
             .unlockedBy("has_blood_wood", has(AnimusBlocks.BLOCK_BLOOD_WOOD.get()))

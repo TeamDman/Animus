@@ -14,13 +14,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
-
-import java.util.Map;
 
 /**
  * Imperfect Ritual of Reduction
@@ -51,30 +46,18 @@ public class ReductionRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        // Get enchantments
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(mainhandItem);
-        if (enchantments.isEmpty()) {
+        // Check if item has the AnimusEnhanced flag
+        CompoundTag tag = mainhandItem.getOrCreateTag();
+        if (!tag.getBoolean("AnimusEnhanced")) {
             player.displayClientMessage(
-                Component.translatable("ritual.animus.reduction.no_enchantments"),
+                Component.translatable("ritual.animus.reduction.not_enhanced"),
                 true
             );
             return false;
         }
 
-        // Downgrade all enchantments by 1 level (minimum level 1)
-        for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-            int newLevel = Math.max(1, entry.getValue() - 1);
-            enchantments.put(entry.getKey(), newLevel);
-        }
-
-        // Apply downgraded enchantments
-        EnchantmentHelper.setEnchantments(enchantments, mainhandItem);
-
-        // Remove enhanced marker if present
-        CompoundTag tag = mainhandItem.getOrCreateTag();
-        if (tag.contains("AnimusEnhanced")) {
-            tag.remove("AnimusEnhanced");
-        }
+        // Remove the enhanced flag - enchantment levels return to normal via mixin
+        tag.remove("AnimusEnhanced");
 
         // Play success sound
         level.playSound(

@@ -51,6 +51,14 @@ public abstract class ImperfectRitualRecipe implements Recipe<net.minecraft.worl
     }
 
     /**
+     * Returns the display name of the required mod, or null if no mod is required.
+     * Override in mod-dependent ritual recipes.
+     */
+    public String getRequiredMod() {
+        return null;
+    }
+
+    /**
      * Execute the ritual effect
      * @param level The world
      * @param stonePos Position of the ritual stone

@@ -14,13 +14,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import com.teamdman.animus.registry.AnimusRecipeSerializers;
-
-import java.util.Map;
 
 /**
  * Imperfect Ritual of Enhancement
@@ -61,9 +56,8 @@ public class EnhancementRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        // Get enchantments
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(mainhandItem);
-        if (enchantments.isEmpty()) {
+        // Check if item has enchantments (required for enhancement to be meaningful)
+        if (!mainhandItem.isEnchanted()) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.enhancement.no_enchantments"),
                 true
@@ -71,15 +65,7 @@ public class EnhancementRitualRecipe extends ImperfectRitualRecipe {
             return false;
         }
 
-        // Enhance all enchantments by 1 level
-        for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-            enchantments.put(entry.getKey(), entry.getValue() + 1);
-        }
-
-        // Apply enhanced enchantments
-        EnchantmentHelper.setEnchantments(enchantments, mainhandItem);
-
-        // Mark as enhanced
+        // Mark as enhanced - the +1 level boost is applied dynamically via mixin
         tag.putBoolean("AnimusEnhanced", true);
 
         // Play success sound

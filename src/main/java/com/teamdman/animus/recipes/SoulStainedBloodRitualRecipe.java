@@ -123,6 +123,11 @@ public class SoulStainedBloodRitualRecipe extends ImperfectRitualRecipe {
 
 
     @Override
+    public String getRequiredMod() {
+        return "Malum";
+    }
+
+    @Override
     public int getLpCost() {
         return AnimusConfig.imperfectRituals.soulStainedBloodCost.get();
     }

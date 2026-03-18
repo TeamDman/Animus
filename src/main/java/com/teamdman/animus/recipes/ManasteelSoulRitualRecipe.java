@@ -135,6 +135,11 @@ public class ManasteelSoulRitualRecipe extends ImperfectRitualRecipe {
 
 
     @Override
+    public String getRequiredMod() {
+        return "Botania";
+    }
+
+    @Override
     public int getLpCost() {
         return AnimusConfig.imperfectRituals.manasteelSoulCost.get();
     }

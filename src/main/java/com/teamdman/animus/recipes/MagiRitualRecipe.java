@@ -123,6 +123,11 @@ public class MagiRitualRecipe extends ImperfectRitualRecipe {
 
 
     @Override
+    public String getRequiredMod() {
+        return "Ars Nouveau";
+    }
+
+    @Override
     public int getLpCost() {
         return AnimusConfig.imperfectRituals.magiCost.get();
     }

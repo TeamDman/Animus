@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "An imperfect ritual that enhances all enchantments on an item by one level. This powerful ritual permanently marks the item, preventing it from being enhanced again.$(br2)$(bold)Setup:$()$(br)Place an Amethyst Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 5000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect; it activates once and completes immediately. The stone can be reused."
+      "text": "An imperfect ritual that marks an enchanted item as $(#5500AA)Blood Enhanced$(), boosting all enchantment levels by +1. The enhancement is applied dynamically — the item's actual enchantment data is never modified, only how it is read.$(br2)$(bold)Setup:$()$(br)Place an Amethyst Block on top of an Imperfect Ritual Stone.$(br2)$(bold)Cost:$() 5000 LP per use$(br2)$(bold)Note:$() The ritual has no persistent effect; it activates once and completes immediately. The stone can be reused."
     },
     {
       "type": "patchouli:text",
       "title": "Usage",
-      "text": "$(bold)Activation:$()$(br)1. Hold the item in your mainhand$(br)2. Right-click the Imperfect Ritual Stone$(br)3. All enchantments gain +1 level$(br)4. Item is marked as enhanced$(br)5. The stone remains for future use$(br2)$(bold)Limitations:$()$(li)Items can only be enhanced once$(li)Cannot remove enhancement mark$(li)Enhanced items cannot be processed by the Ritual of Unmaking (configurable)$(br2)$(italic)Push enchantments beyond their limits.$()"
+      "text": "$(bold)Activation:$()$(br)1. Hold an enchanted item in your mainhand$(br)2. Right-click the Imperfect Ritual Stone$(br)3. Item is marked as $(#5500AA)Blood Enhanced$()$(br)4. All enchantments display and function at +1 level$(br)5. The stone remains for future use$(br2)$(bold)Limitations:$()$(li)Items can only be enhanced once$(li)Item must have enchantments$(li)Use the Ritual of Reduction to remove$(br2)$(bold)Note:$() Stripping enchantments (e.g. grindstone) will not yield boosted levels. The enhancement mark persists and will boost any new enchantments applied.$(br2)$(italic)Push enchantments beyond their limits.$()"
     }
   ]
 }

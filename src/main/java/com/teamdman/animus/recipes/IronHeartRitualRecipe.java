@@ -123,6 +123,11 @@ public class IronHeartRitualRecipe extends ImperfectRitualRecipe {
 
 
     @Override
+    public String getRequiredMod() {
+        return "Iron's Spellbooks";
+    }
+
+    @Override
     public int getLpCost() {
         return AnimusConfig.imperfectRituals.ironHeartCost.get();
     }
