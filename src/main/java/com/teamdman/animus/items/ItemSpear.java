@@ -162,6 +162,15 @@ public class ItemSpear extends TridentItem {
         return tier;
     }
 
-    // Note: canApplyAtEnchantingTable and isBookEnchantable were removed in 1.21
-    // Enchantment compatibility is now handled through enchantment tags
+    /**
+     * Allow spears to be treated as sword-like weapons for Blood Magic anointments.
+     * This makes them pass ItemAnointmentProvider.isItemTool() check.
+     */
+    @Override
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
+        if (itemAbility == net.neoforged.neoforge.common.ItemAbilities.SWORD_DIG) {
+            return true;
+        }
+        return super.canPerformAction(stack, itemAbility);
+    }
 }

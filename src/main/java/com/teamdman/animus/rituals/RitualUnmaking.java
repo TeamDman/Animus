@@ -165,12 +165,8 @@ public class RitualUnmaking extends Ritual {
      * Checks if an item has been enhanced by the Imperfect Ritual of Enhancement
      */
     private boolean isEnhancedItem(ItemStack stack) {
-        // In 1.21+, check custom data component
-        var customData = stack.get(DataComponents.CUSTOM_DATA);
-        if (customData == null) {
-            return false;
-        }
-        return customData.copyTag().getBoolean("AnimusEnhanced");
+        Boolean enhanced = stack.get(com.teamdman.animus.registry.AnimusDataComponents.ANIMUS_ENHANCED.get());
+        return enhanced != null && enhanced;
     }
 
     /**

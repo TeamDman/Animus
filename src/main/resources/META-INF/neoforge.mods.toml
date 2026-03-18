@@ -93,4 +93,7 @@ description = '''${mod_description}'''
 # =============================================================================
 
 [[mixins]]
+config = "animus.mixins.json"
+
+[[mixins]]
 config = "animus.ironsspells.mixins.json"

@@ -42,5 +42,11 @@ public class AnimusModEventHandler {
     public static void onEntityAttributeModification(EntityAttributeModificationEvent event) {
         // Add unarmed damage attribute to players
         event.add(EntityType.PLAYER, AnimusAttributes.UNARMED_DAMAGE);
+
+        // Add Blood Magic bonus attributes to players
+        event.add(EntityType.PLAYER, AnimusAttributes.BONUS_SACRIFICE);
+        event.add(EntityType.PLAYER, AnimusAttributes.BONUS_SELF_SACRIFICE);
+        event.add(EntityType.PLAYER, AnimusAttributes.BONUS_DEMON_WILL);
+        event.add(EntityType.PLAYER, AnimusAttributes.SIGIL_COST_REDUCTION);
     }
 }

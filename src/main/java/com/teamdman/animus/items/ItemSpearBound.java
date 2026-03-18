@@ -93,8 +93,8 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             return false; // Not bound, can't consume LP
         }
 
-        // Get the soul network and consume LP
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        // Get the soul network from the binding owner (not the using player)
+        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(binding.uuid());
         SoulTicket ticket = SoulTicket.create(LP_COST);
 
         var result = network.syphonAndDamage(player, ticket);

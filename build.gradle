@@ -88,12 +88,8 @@ repositories {
 }
 
 dependencies {
-    // Neo Vitae - local build from mavenLocal or file dependency
-    // Option 1: Use local maven (run ./gradlew publishToMavenLocal in NeoVitae first)
-    // implementation "com.breakinblocks:neovitae:${neovitae_version}"
-
-    // Option 2: Use file dependency (place NeoVitae jar in libs folder)
-    implementation files('libs/neovitae-3.4.0-3-beta.jar')
+    // Neo Vitae - from local maven (run ./gradlew publishToMavenLocal in NeoVitae first)
+    implementation "com.breakinblocks.neovitae:NeoVitae:${neovitae_version}"
 
     // JEI - using CurseMaven NeoForge version (not Forge!)
     compileOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
@@ -204,6 +200,8 @@ publishing {
         }
     }
 }
+
+build.dependsOn publishToMavenLocal
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'

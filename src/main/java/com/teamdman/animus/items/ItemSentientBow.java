@@ -31,11 +31,15 @@ import java.util.function.Predicate;
  * Consumes 1 will per shot instead of arrows
  * Attunes to the demon will type in the player's gems
  * Fires spectral-like arrows that vanish after impact
- * Applies soul snare to enemies hit (for will drops on kill)
+ * Drops demon will matching the bow's attuned type on kill
  */
 public class ItemSentientBow extends BowItem {
     // Soul brackets for level progression (same as sentient spear)
     public static final double[] soulBracket = new double[]{16, 60, 200, 400, 1000};
+
+    // Will drop scaling by level (same as sentient spear)
+    public static final double[] soulDrop = new double[]{2.0, 4.0, 7.0, 10.0, 15.0};
+    public static final double[] staticDrop = new double[]{1.0, 1.0, 2.0, 3.0, 4.0};
 
     // Damage scaling by will type (base arrow damage is 2, these are bonus)
     public static final double[] defaultDamageAdded = new double[]{1.0, 2.0, 3.0, 4.0, 5.0};
@@ -83,7 +87,7 @@ public class ItemSentientBow extends BowItem {
 
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_INFO)
             .withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_SNARE)
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_WILL_DROPS)
             .withStyle(ChatFormatting.YELLOW));
     }
 

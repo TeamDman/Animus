@@ -158,6 +158,14 @@ public class EntityThrownSpear extends AbstractArrow {
         return this.spearItem.copy();
     }
 
+    /**
+     * Get the actual stored spear item (not a copy)
+     * Used for updating anointments on the item
+     */
+    public ItemStack getSpearItem() {
+        return this.spearItem;
+    }
+
     public boolean isFoil() {
         return this.entityData.get(ID_FOIL);
     }

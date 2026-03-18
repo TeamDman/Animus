@@ -4,6 +4,9 @@ import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.compat.ironsspells.ItemBloodInfusedSpellbook;
 import com.teamdman.animus.registry.AnimusBlocks;
+import com.teamdman.animus.Animus;
+import com.teamdman.animus.compat.IronsSpellsCompat;
+import com.teamdman.animus.registry.AnimusItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -11,6 +14,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -199,12 +203,12 @@ public class AnimusJEIPlugin implements IModPlugin {
                 ItemStack scrollStack = new ItemStack(ironsScroll);
 
                 // Define scroll tiers: slate name, output item name, lang key suffix
-                // Blood Magic 1.21.1 uses snake_case naming and bloodmagicnv namespace
+                // NeoVitae uses snake_case naming and neovitae namespace
                 String[][] scrollTiers = {
                     {"blank_slate", "sanguine_scroll_blank", "blank"},
                     {"reinforced_slate", "sanguine_scroll_reinforced", "reinforced"},
                     {"imbued_slate", "sanguine_scroll_imbued", "imbued"},
-                    {"demon_slate", "sanguine_scroll_demon", "demon"},
+                    {"demonic_slate", "sanguine_scroll_demon", "demon"},
                     {"ethereal_slate", "sanguine_scroll_ethereal", "ethereal"}
                 };
 
@@ -264,6 +268,44 @@ public class AnimusJEIPlugin implements IModPlugin {
                     registration.addRecipeCatalyst(new ItemStack(item), AltarInfusionCategory.RECIPE_TYPE);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        // Hide Malum-dependent items when Malum is not loaded
+        if (!ModList.get().isLoaded("malum")) {
+            var ingredientManager = jeiRuntime.getIngredientManager();
+
+            ingredientManager.removeIngredientsAtRuntime(
+                VanillaTypes.ITEM_STACK,
+                List.of(
+                    new ItemStack(AnimusItems.RUNIC_SENTIENT_SCYTHE.get()),
+                    new ItemStack(AnimusItems.HAND_OF_DEATH.get())
+                )
+            );
+
+            Animus.LOGGER.info("JEI: Hidden Malum-dependent items (Malum not loaded)");
+        }
+
+        // Hide Iron's Spells-dependent items when Iron's Spells is not loaded
+        if (!ModList.get().isLoaded("irons_spellbooks")) {
+            var ingredientManager = jeiRuntime.getIngredientManager();
+
+            ingredientManager.removeIngredientsAtRuntime(
+                VanillaTypes.ITEM_STACK,
+                List.of(
+                    new ItemStack(IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()),
+                    new ItemStack(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_BLANK.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_REINFORCED.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_IMBUED.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_DEMON.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_ETHEREAL.get())
+                )
+            );
+
+            Animus.LOGGER.info("JEI: Hidden Iron's Spells-dependent items (irons_spellbooks not loaded)");
         }
     }
 }

@@ -3,7 +3,6 @@ package com.teamdman.animus.items;
 import com.teamdman.animus.entities.EntityThrownSpear;
 import com.teamdman.animus.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -26,7 +25,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.common.effect.BMMobEffects;
+import com.breakinblocks.neovitae.common.item.BMItems;
+import com.breakinblocks.neovitae.will.IDemonWill;
 import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
 
 import java.util.List;
@@ -159,12 +159,11 @@ public class ItemSpearSentient extends ItemSpear {
             double soulsRemaining = getTotalWillOfType(player, type);
             int willLevel = getLevel(stack, soulsRemaining);
 
-            // Apply sentient effects
+            // Apply sentient effects (wither for corrosive, absorption for steadfast, etc.)
             applyEffectToEntity(type, willLevel, target, attacker);
 
-            // Apply Soul Snare effect (5 seconds, amplifier 1) for guaranteed will drops
-            target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                Holder.direct(BMMobEffects.SOUL_SNARE.get()), 100, 1));
+            // Will drops are handled by getRandomDemonWillDrop() - no Soul Snare needed
+            // This matches the behavior of Blood Magic's Sentient Sword
 
             // Drain will from soul network
             if (soulsRemaining >= 16.0) {
@@ -185,10 +184,18 @@ public class ItemSpearSentient extends ItemSpear {
                     if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
                         stack.hurtAndBreak(1, serverLevel, player, (item) -> {});
                         if (riptide == 0) {
+                            // Get will type and level before spawning
+                            EnumWillType type = getCurrentType(stack);
+                            double soulsRemaining = getTotalWillOfType(player, type);
+                            int willLevel = getLevel(stack, soulsRemaining);
+
                             // Spawn sentient spear entity
                             EntityThrownSpear thrownSpear = new EntityThrownSpear(level, player, stack);
                             // Mark it as sentient for special handling
                             thrownSpear.setVariant("sentient");
+                            // Set will type and level for will drops on kill
+                            thrownSpear.setWillType(type);
+                            thrownSpear.setWillLevel(willLevel);
                             thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
                             if (player.getAbilities().instabuild) {
                                 thrownSpear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
@@ -202,10 +209,7 @@ public class ItemSpearSentient extends ItemSpear {
                             }
 
                             // Drain will on throw from player's soul network
-                            EnumWillType type = getCurrentType(stack);
-                            double soulsRemaining = getTotalWillOfType(player, type);
                             if (soulsRemaining >= 16.0) {
-                                int willLevel = getLevel(stack, soulsRemaining);
                                 // Double drain for throwing
                                 drainWillFromPlayer(player, type, soulDrainPerSwing[Math.min(willLevel, 4)] * 2.0);
                             }
@@ -253,9 +257,46 @@ public class ItemSpearSentient extends ItemSpear {
         stack.set(AnimusDataComponents.DEMON_WILL_TYPE.get(), type.toString());
     }
 
-    public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int tier) {
-        // Sentient Spear doesn't drop will items, it drains will from the aura
-        return new java.util.ArrayList<>();
+    public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int looting) {
+        List<ItemStack> soulList = new java.util.ArrayList<>();
+
+        // Only drop from hostile mobs (same check as Sentient Sword)
+        if (killedEntity.getCommandSenderWorld().getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL
+            && !(killedEntity instanceof net.minecraft.world.entity.monster.Enemy)) {
+            return soulList;
+        }
+
+        // Slimes give reduced will (same as sword)
+        double willModifier = killedEntity instanceof net.minecraft.world.entity.monster.Slime ? 0.67 : 1;
+
+        // Get the appropriate demon will item based on current type
+        EnumWillType type = this.getCurrentType(stack);
+        IDemonWill soul = switch (type) {
+            case CORROSIVE -> ((IDemonWill) BMItems.MONSTER_SOUL_CORROSIVE.get());
+            case DESTRUCTIVE -> ((IDemonWill) BMItems.MONSTER_SOUL_DESTRUCTIVE.get());
+            case STEADFAST -> ((IDemonWill) BMItems.MONSTER_SOUL_STEADFAST.get());
+            case VENGEFUL -> ((IDemonWill) BMItems.MONSTER_SOUL_VENGEFUL.get());
+            default -> ((IDemonWill) BMItems.MONSTER_SOUL_RAW.get());
+        };
+
+        // Calculate will level for drop amounts
+        double soulsRemaining = 0;
+        if (attackingEntity instanceof Player player) {
+            soulsRemaining = getTotalWillOfType(player, type);
+        }
+        int willLevel = Math.min(getLevel(stack, soulsRemaining), 4);
+
+        // Drop will items (with looting bonus like sword)
+        for (int i = 0; i <= looting; i++) {
+            if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
+                double dropAmount = willModifier * (soulDrop[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
+                    + staticDrop[willLevel]) * killedEntity.getMaxHealth() / 20.0;
+                ItemStack soulStack = soul.createWill(dropAmount);
+                soulList.add(soulStack);
+            }
+        }
+
+        return soulList;
     }
 
     public EnumWillType getActiveDemonWillType(ItemStack stack, LivingEntity player, Entity target) {
