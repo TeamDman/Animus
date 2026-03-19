@@ -85,7 +85,7 @@ public class Animus {
 
             // Register strippable blocks (axe interaction) using reflection
             try {
-                java.lang.reflect.Field strippablesField = net.minecraft.world.item.AxeItem.class.getDeclaredField("STRIPPABLES");
+                java.lang.reflect.Field strippablesField = net.minecraftforge.fml.util.ObfuscationReflectionHelper.findField(net.minecraft.world.item.AxeItem.class, "f_40511_");
                 strippablesField.setAccessible(true);
                 @SuppressWarnings("unchecked")
                 java.util.Map<net.minecraft.world.level.block.Block, net.minecraft.world.level.block.Block> strippables =
