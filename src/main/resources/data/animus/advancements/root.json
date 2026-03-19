@@ -15,7 +15,7 @@
     "hidden": false,
     "background": "bloodmagic:textures/block/altar.png"
   },
-  "parent": "bloodmagic:main/self_sacrifice",
+  "parent": "bloodmagic:recipes/misc/sacrificial_dagger",
   "criteria": {
     "has_diviner": {
       "trigger": "minecraft:inventory_changed",
