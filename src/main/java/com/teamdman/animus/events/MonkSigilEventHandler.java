@@ -30,7 +30,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
 import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
-import com.breakinblocks.neovitae.common.effect.BMMobEffects;
+import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
 
@@ -213,7 +213,7 @@ public class MonkSigilEventHandler {
         target.knockback(knockbackStrength, dx, dz);
 
         // Apply Soul Snare effect (2 seconds, amplifier 1) for guaranteed will drops
-        target.addEffect(new MobEffectInstance(BMMobEffects.SOUL_SNARE, 40, 1));
+        target.addEffect(new MobEffectInstance(NVMobEffects.SOUL_SNARE, 40, 1));
     }
 
     /**

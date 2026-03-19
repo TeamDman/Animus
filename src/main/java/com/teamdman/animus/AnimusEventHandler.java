@@ -10,10 +10,10 @@ import com.teamdman.animus.registry.AnimusAttributes;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.util.SigilStateCleanupManager;
 import com.breakinblocks.neovitae.common.datacomponent.AnointmentHolder;
-import com.breakinblocks.neovitae.common.datacomponent.BMDataComponents;
+import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
 import com.breakinblocks.neovitae.common.event.SacrificialDaggerEvent;
-import com.breakinblocks.neovitae.common.item.BMItems;
+import com.breakinblocks.neovitae.common.item.NVItems;
 import com.breakinblocks.neovitae.api.event.SoulNetworkEvent;
 import com.breakinblocks.neovitae.will.IDemonWill;
 import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
@@ -160,7 +160,7 @@ public class AnimusEventHandler {
         }
 
         // Check if the spear has anointments
-        AnointmentHolder holder = spearStack.get(BMDataComponents.ANOINTMENT_HOLDER.get());
+        AnointmentHolder holder = spearStack.get(NVDataComponents.ANOINTMENT_HOLDER.get());
         if (holder == null || holder.isEmpty()) {
             return;
         }
@@ -204,14 +204,14 @@ public class AnimusEventHandler {
         }
 
         // Check if the spear has anointments
-        AnointmentHolder holder = spearStack.get(BMDataComponents.ANOINTMENT_HOLDER.get());
+        AnointmentHolder holder = spearStack.get(NVDataComponents.ANOINTMENT_HOLDER.get());
         if (holder == null || holder.isEmpty()) {
             return;
         }
 
         // Consume anointment durability on attack
         AnointmentHolder consumed = holder.consumeOnAttack();
-        spearStack.set(BMDataComponents.ANOINTMENT_HOLDER.get(), consumed);
+        spearStack.set(NVDataComponents.ANOINTMENT_HOLDER.get(), consumed);
     }
 
     /**
@@ -341,11 +341,11 @@ public class AnimusEventHandler {
 
         // Get the appropriate demon will item based on will type
         IDemonWill soul = switch (willType) {
-            case CORROSIVE -> ((IDemonWill) BMItems.MONSTER_SOUL_CORROSIVE.get());
-            case DESTRUCTIVE -> ((IDemonWill) BMItems.MONSTER_SOUL_DESTRUCTIVE.get());
-            case STEADFAST -> ((IDemonWill) BMItems.MONSTER_SOUL_STEADFAST.get());
-            case VENGEFUL -> ((IDemonWill) BMItems.MONSTER_SOUL_VENGEFUL.get());
-            default -> ((IDemonWill) BMItems.MONSTER_SOUL_RAW.get());
+            case CORROSIVE -> ((IDemonWill) NVItems.MONSTER_SOUL_CORROSIVE.get());
+            case DESTRUCTIVE -> ((IDemonWill) NVItems.MONSTER_SOUL_DESTRUCTIVE.get());
+            case STEADFAST -> ((IDemonWill) NVItems.MONSTER_SOUL_STEADFAST.get());
+            case VENGEFUL -> ((IDemonWill) NVItems.MONSTER_SOUL_VENGEFUL.get());
+            default -> ((IDemonWill) NVItems.MONSTER_SOUL_RAW.get());
         };
 
         // Apply bonus demon will attribute from player

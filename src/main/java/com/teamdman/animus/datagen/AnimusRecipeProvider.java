@@ -15,7 +15,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 import com.breakinblocks.neovitae.NeoVitae;
-import com.breakinblocks.neovitae.common.item.BMItems;
+import com.breakinblocks.neovitae.common.item.NVItems;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -189,7 +189,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
 
         // Sanguine Diviner - ritual diviner on T1 altar
         AltarRecipeBuilder.build(AnimusItems.SANGUINE_DIVINER.get())
-            .from(BMItems.RITUAL_DIVINER.get())
+            .from(NVItems.RITUAL_DIVINER.get())
             .minTier(1)
             .bloodNeeded(2500)
             .consumption(5)
@@ -198,7 +198,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
 
         // Key of Binding - simple key on T1 altar
         AltarRecipeBuilder.build(AnimusItems.KEY_BINDING.get())
-            .from(BMItems.SIMPLE_KEY.get())
+            .from(NVItems.SIMPLE_KEY.get())
             .minTier(1)
             .bloodNeeded(1500)
             .consumption(5)
@@ -236,8 +236,8 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .minWill(2048.0)
             .drain(1024.0)
             .requires(Items.SCULK)
-            .requires(BMItems.SLATE_ETHEREAL.get())
-            .requires(BMItems.WEAK_BLOOD_SHARD.get())
+            .requires(NVItems.SLATE_ETHEREAL.get())
+            .requires(NVItems.WEAK_BLOOD_SHARD.get())
             .requires(Items.NETHER_STAR)
             .save(output, loc("crystallized_demon_will_block"));
 
@@ -246,7 +246,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .minWill(200.0)
             .drain(100.0)
             .requires(Items.SHIELD)
-            .requires(BMItems.SOUL_GEM_PETTY.get())
+            .requires(NVItems.SOUL_GEM_PETTY.get())
             .requires(Items.DIAMOND)
             .save(output, loc("sentient_shield"));
 
@@ -255,7 +255,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .minWill(0.0)
             .drain(0.0)
             .requires(AnimusItems.SPEAR_DIAMOND.get())
-            .requires(BMItems.SOUL_GEM_PETTY.get())
+            .requires(NVItems.SOUL_GEM_PETTY.get())
             .save(output, loc("spear_sentient"));
 
         // Sentient Bow - similar to sentient sword/spear
@@ -263,7 +263,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .minWill(64.0)
             .drain(32.0)
             .requires(Items.BOW)
-            .requires(BMItems.SOUL_GEM_PETTY.get())
+            .requires(NVItems.SOUL_GEM_PETTY.get())
             .requires(Items.STRING)
             .requires(Items.STRING)
             .save(output, loc("sentient_bow"));
@@ -273,7 +273,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .minWill(256.0)
             .drain(128.0)
             .requires(AnimusItems.SENTIENT_BOW.get())
-            .requires(BMItems.VENGEFUL_CRYSTAL.get())
+            .requires(NVItems.VENGEFUL_CRYSTAL.get())
             .requires(Items.BLAZE_ROD)
             .requires(Items.NETHER_STAR)
             .save(output, loc("hellforged_bow"));
@@ -283,7 +283,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .minWill(1024.0)
             .drain(512.0)
             .requires(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
-            .requires(BMItems.VENGEFUL_CRYSTAL.get())
+            .requires(NVItems.VENGEFUL_CRYSTAL.get())
             .requires(Items.WITHER_SKELETON_SKULL)
             .requires(Items.NETHERITE_INGOT)
             .save(output, loc("hand_of_death"));
@@ -411,95 +411,95 @@ public class AnimusRecipeProvider extends RecipeProvider {
         // Sigils with reinforced slate (tier 2)
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_BUILDER.get())
             .base(AnimusItems.REAGENT_BUILDER.get())
-            .added(BMItems.SLATE_REINFORCED.get())
+            .added(NVItems.SLATE_REINFORCED.get())
             .texture(ARRAY_LAPUTA)
             .save(output, loc("array/sigil_builder"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_EQUIVALENCY.get())
             .base(AnimusItems.REAGENT_EQUIVALENCY.get())
-            .added(BMItems.SLATE_REINFORCED.get())
+            .added(NVItems.SLATE_REINFORCED.get())
             .texture(ARRAY_FURNACE)
             .save(output, loc("array/sigil_equivalency"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_LEACH.get())
             .base(AnimusItems.REAGENT_LEACH.get())
-            .added(BMItems.SLATE_REINFORCED.get())
+            .added(NVItems.SLATE_REINFORCED.get())
             .texture(ARRAY_MOBSACRIFICE)
             .save(output, loc("array/sigil_leach"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_MONK.get())
             .base(AnimusItems.REAGENT_FIST.get())
-            .added(BMItems.SLATE_REINFORCED.get())
+            .added(NVItems.SLATE_REINFORCED.get())
             .texture(ARRAY_FASTMINER)
             .save(output, loc("array/sigil_monk"));
 
         // Sigils with imbued slate (tier 3)
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_CHAINS.get())
             .base(AnimusItems.REAGENT_CHAINS.get())
-            .added(BMItems.SLATE_IMBUED.get())
+            .added(NVItems.SLATE_IMBUED.get())
             .texture(ARRAY_BINDING)
             .save(output, loc("array/sigil_chains"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_CONSUMPTION.get())
             .base(AnimusItems.REAGENT_CONSUMPTION.get())
-            .added(BMItems.SLATE_IMBUED.get())
+            .added(NVItems.SLATE_IMBUED.get())
             .texture(ARRAY_VOID)
             .save(output, loc("array/sigil_consumption"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_REMEDIUM.get())
             .base(AnimusItems.REAGENT_REMEDIUM.get())
-            .added(BMItems.SLATE_IMBUED.get())
+            .added(NVItems.SLATE_IMBUED.get())
             .texture(ARRAY_LIGHT)
             .save(output, loc("array/sigil_remedium"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_REPARARE.get())
             .base(AnimusItems.REAGENT_REPARARE.get())
-            .added(BMItems.SLATE_IMBUED.get())
+            .added(NVItems.SLATE_IMBUED.get())
             .texture(ARRAY_FASTMINER)
             .save(output, loc("array/sigil_reparare"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_STORM.get())
             .base(AnimusItems.REAGENT_STORM.get())
-            .added(BMItems.SLATE_IMBUED.get())
+            .added(NVItems.SLATE_IMBUED.get())
             .texture(ARRAY_WATER)
             .save(output, loc("array/sigil_storm"));
 
         // Sigils with demonic slate (tier 4)
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_FREE_SOUL.get())
             .base(AnimusItems.REAGENT_FREE_SOUL.get())
-            .added(BMItems.SLATE_DEMONIC.get())
+            .added(NVItems.SLATE_DEMONIC.get())
             .texture(ARRAY_TELEPORT)
             .save(output, loc("array/sigil_free_soul"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_HEAVENLY_WRATH.get())
             .base(AnimusItems.REAGENT_HEAVENLY_WRATH.get())
-            .added(BMItems.SLATE_DEMONIC.get())
+            .added(NVItems.SLATE_DEMONIC.get())
             .texture(ARRAY_LIGHTNING)
             .save(output, loc("array/sigil_heavenly_wrath"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_TEMPORAL_DOMINANCE.get())
             .base(AnimusItems.REAGENT_TEMPORAL_DOMINANCE.get())
-            .added(BMItems.SLATE_DEMONIC.get())
+            .added(NVItems.SLATE_DEMONIC.get())
             .texture(ARRAY_MOON)
             .save(output, loc("array/sigil_temporal_dominance"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_TRANSPOSITION.get())
             .base(AnimusItems.REAGENT_TRANSPOSITION.get())
-            .added(BMItems.SLATE_DEMONIC.get())
+            .added(NVItems.SLATE_DEMONIC.get())
             .texture(ARRAY_TELEPORTATION)
             .save(output, loc("array/sigil_transposition"));
 
         // Other array recipes
         AlchemyArrayRecipeBuilder.build(AnimusItems.SPEAR_BOUND.get())
             .base(AnimusItems.SPEAR_DIAMOND.get())
-            .added(BMItems.REAGENT_BINDING.get())
+            .added(NVItems.REAGENT_BINDING.get())
             .texture(ARRAY_SPIKE)
             .save(output, loc("array/spear_bound"));
 
         // Runic Sentient Scythe - created by infusing sentient scythe with a bound slate
         AlchemyArrayRecipeBuilder.build(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
-            .base(BMItems.SENTIENT_SCYTHE.get())
-            .added(BMItems.SLATE_DEMONIC.get())
+            .base(NVItems.SENTIENT_SCYTHE.get())
+            .added(NVItems.SLATE_DEMONIC.get())
             .texture(ARRAY_BINDING)
             .save(output, loc("array/runic_sentient_scythe"));
     }

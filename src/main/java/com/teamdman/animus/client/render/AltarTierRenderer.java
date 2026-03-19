@@ -32,11 +32,11 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import com.breakinblocks.neovitae.client.render.NeoVitaeRenderer;
 import com.breakinblocks.neovitae.client.render.RenderResizableCuboid;
-import com.breakinblocks.neovitae.common.block.BMBlocks;
+import com.breakinblocks.neovitae.common.block.NVBlocks;
 import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 import com.breakinblocks.neovitae.common.registry.AltarComponent;
-import com.breakinblocks.neovitae.common.structure.BMMultiblock;
-import com.breakinblocks.neovitae.common.tag.BMTags;
+import com.breakinblocks.neovitae.common.structure.NVMultiblock;
+import com.breakinblocks.neovitae.common.tag.NVTags;
 
 import java.util.List;
 
@@ -101,7 +101,7 @@ public class AltarTierRenderer {
         int nextTier = currentTier + 1;
 
         // Check if there's a next tier to show
-        if (nextTier >= BMMultiblock.TIER_LIST.length || BMMultiblock.TIER_LIST[nextTier] == null) {
+        if (nextTier >= NVMultiblock.TIER_LIST.length || NVMultiblock.TIER_LIST[nextTier] == null) {
             return;
         }
 
@@ -121,7 +121,7 @@ public class AltarTierRenderer {
         Vec3 eyePos = camera.getPosition();
         VertexConsumer buffer = buffers.getBuffer(Sheets.translucentCullBlockSheet());
 
-        List<AltarComponent> components = BMMultiblock.TIER_LIST[nextTier].components();
+        List<AltarComponent> components = NVMultiblock.TIER_LIST[nextTier].components();
 
         for (AltarComponent component : components) {
             BlockPos componentPos = altarPos.offset(component.pos());
@@ -171,17 +171,17 @@ public class AltarTierRenderer {
         ResourceLocation materialId = component.material().id();
 
         // Check for specific materials
-        if (materialId.equals(BMTags.Blocks.RUNES.location())) {
+        if (materialId.equals(NVTags.Blocks.RUNES.location())) {
             return BLANK_RUNE;
-        } else if (materialId.equals(BMTags.Blocks.PILLARS.location())) {
+        } else if (materialId.equals(NVTags.Blocks.PILLARS.location())) {
             return STONE_BRICKS;
-        } else if (materialId.equals(BMTags.Blocks.T3_CAPSTONES.location())) {
+        } else if (materialId.equals(NVTags.Blocks.T3_CAPSTONES.location())) {
             return GLOWSTONE;
-        } else if (materialId.equals(BMTags.Blocks.T4_CAPSTONES.location())) {
+        } else if (materialId.equals(NVTags.Blocks.T4_CAPSTONES.location())) {
             return BLOODSTONE;
-        } else if (materialId.equals(BMTags.Blocks.T5_CAPSTONES.location())) {
+        } else if (materialId.equals(NVTags.Blocks.T5_CAPSTONES.location())) {
             return HELLFORGED;
-        } else if (materialId.equals(BMTags.Blocks.T6_CAPSTONES.location())) {
+        } else if (materialId.equals(NVTags.Blocks.T6_CAPSTONES.location())) {
             return CRYSTALLIZED_DEMON_WILL;
         } else if (materialId.getPath().contains("bloodstone")) {
             return BLOODSTONE;
@@ -196,13 +196,13 @@ public class AltarTierRenderer {
 
         if (component.isUpgrade()) {
             return GHOST_COLOR_RUNE;
-        } else if (materialId.equals(BMTags.Blocks.PILLARS.location())) {
+        } else if (materialId.equals(NVTags.Blocks.PILLARS.location())) {
             return GHOST_COLOR_PILLAR;
-        } else if (materialId.equals(BMTags.Blocks.T3_CAPSTONES.location()) ||
-                   materialId.equals(BMTags.Blocks.T4_CAPSTONES.location()) ||
-                   materialId.equals(BMTags.Blocks.T5_CAPSTONES.location())) {
+        } else if (materialId.equals(NVTags.Blocks.T3_CAPSTONES.location()) ||
+                   materialId.equals(NVTags.Blocks.T4_CAPSTONES.location()) ||
+                   materialId.equals(NVTags.Blocks.T5_CAPSTONES.location())) {
             return GHOST_COLOR_CAP;
-        } else if (materialId.equals(BMTags.Blocks.T6_CAPSTONES.location())) {
+        } else if (materialId.equals(NVTags.Blocks.T6_CAPSTONES.location())) {
             return GHOST_COLOR_CRYSTAL;  // Purple tint for T6 crystallized demon will
         }
 

@@ -12,7 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.common.effect.BMMobEffects;
+import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.common.item.soul.SentientScytheItem;
 import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
 
@@ -45,7 +45,7 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
 
             // Apply Soul Snare effect (5 seconds, amplifier 1) for guaranteed will drops
             target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                Holder.direct(BMMobEffects.SOUL_SNARE.get()), 100, 1));
+                Holder.direct(NVMobEffects.SOUL_SNARE.get()), 100, 1));
         }
 
         boolean result = super.hurtEnemy(stack, target, attacker);

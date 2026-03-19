@@ -25,7 +25,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.common.item.BMItems;
+import com.breakinblocks.neovitae.common.item.NVItems;
 import com.breakinblocks.neovitae.will.IDemonWill;
 import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
 
@@ -272,11 +272,11 @@ public class ItemSpearSentient extends ItemSpear {
         // Get the appropriate demon will item based on current type
         EnumWillType type = this.getCurrentType(stack);
         IDemonWill soul = switch (type) {
-            case CORROSIVE -> ((IDemonWill) BMItems.MONSTER_SOUL_CORROSIVE.get());
-            case DESTRUCTIVE -> ((IDemonWill) BMItems.MONSTER_SOUL_DESTRUCTIVE.get());
-            case STEADFAST -> ((IDemonWill) BMItems.MONSTER_SOUL_STEADFAST.get());
-            case VENGEFUL -> ((IDemonWill) BMItems.MONSTER_SOUL_VENGEFUL.get());
-            default -> ((IDemonWill) BMItems.MONSTER_SOUL_RAW.get());
+            case CORROSIVE -> ((IDemonWill) NVItems.MONSTER_SOUL_CORROSIVE.get());
+            case DESTRUCTIVE -> ((IDemonWill) NVItems.MONSTER_SOUL_DESTRUCTIVE.get());
+            case STEADFAST -> ((IDemonWill) NVItems.MONSTER_SOUL_STEADFAST.get());
+            case VENGEFUL -> ((IDemonWill) NVItems.MONSTER_SOUL_VENGEFUL.get());
+            default -> ((IDemonWill) NVItems.MONSTER_SOUL_RAW.get());
         };
 
         // Calculate will level for drop amounts

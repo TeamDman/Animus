@@ -18,7 +18,7 @@ import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 import com.breakinblocks.neovitae.common.datacomponent.Binding;
 import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.common.datacomponent.BMDataComponents;
+import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
 import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.HashMap;
@@ -71,7 +71,7 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
             int lpCost = AnimusConfig.sigils.freeSoulLPCost.get();
 
             // Try to consume LP from the binding owner's network
-            Binding binding = stack.get(BMDataComponents.BINDING.get());
+            Binding binding = stack.get(NVDataComponents.BINDING.get());
             SoulNetwork network = binding != null
                 ? SoulNetworkHelper.getSoulNetwork(binding.uuid())
                 : SoulNetworkHelper.getSoulNetwork(player);
@@ -128,7 +128,7 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
 
         // Check if player has enough LP (use binding owner's network)
         int lpCost = AnimusConfig.sigils.freeSoulLPCost.get();
-        Binding binding = freeSoulStack.get(BMDataComponents.BINDING.get());
+        Binding binding = freeSoulStack.get(NVDataComponents.BINDING.get());
         SoulNetwork network = binding != null
             ? SoulNetworkHelper.getSoulNetwork(binding.uuid())
             : SoulNetworkHelper.getSoulNetwork(player);

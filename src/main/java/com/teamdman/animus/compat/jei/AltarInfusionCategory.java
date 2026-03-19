@@ -17,7 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import com.breakinblocks.neovitae.common.block.BMBlocks;
+import com.breakinblocks.neovitae.common.block.NVBlocks;
 
 /**
  * JEI Recipe Category for special Blood Altar infusions
@@ -37,7 +37,7 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
     public AltarInfusionCategory(IGuiHelper guiHelper) {
         // Use Blood Altar as the icon
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-            new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
+            new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()));
         this.title = Component.translatable("jei.animus.category.altar_infusion");
     }
 
@@ -78,7 +78,7 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
 
             // Blood Altar (center)
             builder.addSlot(RecipeIngredientRole.CATALYST, 75, 40)
-                .addItemStack(new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
+                .addItemStack(new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()));
 
             // Output slot (right)
             builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 40)
@@ -94,7 +94,7 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
 
             // Blood Altar (center)
             builder.addSlot(RecipeIngredientRole.CATALYST, 75, 40)
-                .addItemStack(new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
+                .addItemStack(new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()));
 
             // Output slot (right)
             builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 40)
@@ -119,7 +119,7 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
 
             // Blood Altar (center)
             builder.addSlot(RecipeIngredientRole.CATALYST, 75, 52)
-                .addItemStack(new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()));
+                .addItemStack(new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()));
 
             // Output slot (bottom center)
             builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 80)

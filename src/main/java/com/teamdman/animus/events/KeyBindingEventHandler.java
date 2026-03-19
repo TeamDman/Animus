@@ -12,7 +12,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import com.breakinblocks.neovitae.common.datacomponent.BMDataComponents;
+import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
 import com.breakinblocks.neovitae.common.datacomponent.Binding;
 import com.breakinblocks.neovitae.common.item.IBindable;
 
@@ -118,7 +118,7 @@ public class KeyBindingEventHandler {
             // Check if the item was just bound to this player
             if (currentBinding != null && currentBinding.uuid().equals(playerId)) {
                 // Transfer the binding to the Key's owner using DataComponents
-                mainHandStack.set(BMDataComponents.BINDING.get(), keyBinding);
+                mainHandStack.set(NVDataComponents.BINDING.get(), keyBinding);
 
                 // Notify player
                 player.displayClientMessage(

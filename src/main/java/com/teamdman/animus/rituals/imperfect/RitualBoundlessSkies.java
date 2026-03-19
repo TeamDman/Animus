@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import com.breakinblocks.neovitae.api.ritual.IImperfectRitualStone;
-import com.breakinblocks.neovitae.common.effect.BMMobEffects;
+import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.ritual.ImperfectRitual;
 
 /**
@@ -40,7 +40,7 @@ public class RitualBoundlessSkies extends ImperfectRitual {
 
         // Apply 15 minutes (18000 ticks) of Blood Magic flight effect
         player.addEffect(new MobEffectInstance(
-            BMMobEffects.FLIGHT,
+            NVMobEffects.FLIGHT,
             18000, // 15 minutes
             0,     // Level 0
             false, // Not ambient

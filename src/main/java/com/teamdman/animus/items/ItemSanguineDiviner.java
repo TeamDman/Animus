@@ -26,11 +26,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.ModList;
 import com.breakinblocks.neovitae.api.altar.rune.IAltarRuneType;
-import com.breakinblocks.neovitae.common.block.BMBlocks;
+import com.breakinblocks.neovitae.common.block.NVBlocks;
 import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
-import com.breakinblocks.neovitae.common.tag.BMTags;
+import com.breakinblocks.neovitae.common.tag.NVTags;
 import com.breakinblocks.neovitae.common.registry.AltarComponent;
-import com.breakinblocks.neovitae.common.structure.BMMultiblock;
+import com.breakinblocks.neovitae.common.structure.NVMultiblock;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 import com.breakinblocks.neovitae.ritual.Ritual;
 import com.breakinblocks.neovitae.util.AltarScanResult;
@@ -208,7 +208,7 @@ public class ItemSanguineDiviner extends Item {
                     int nextTier = currentTier + 1;
 
                     // Check if there's a next tier
-                    if (nextTier >= BMMultiblock.TIER_LIST.length || BMMultiblock.TIER_LIST[nextTier] == null) {
+                    if (nextTier >= NVMultiblock.TIER_LIST.length || NVMultiblock.TIER_LIST[nextTier] == null) {
                         break;
                     }
 
@@ -241,7 +241,7 @@ public class ItemSanguineDiviner extends Item {
                         1.0F,
                         1.0F
                     );
-                } else if (tierLevel + 1 >= BMMultiblock.TIER_LIST.length || BMMultiblock.TIER_LIST[tierLevel + 1] == null) {
+                } else if (tierLevel + 1 >= NVMultiblock.TIER_LIST.length || NVMultiblock.TIER_LIST[tierLevel + 1] == null) {
                     player.displayClientMessage(
                         Component.translatable("text.component.animus.diviner.max_tier")
                             .withStyle(ChatFormatting.GOLD),
@@ -285,7 +285,7 @@ public class ItemSanguineDiviner extends Item {
             displayAltarMultipliers(player, altar);
 
             int nextTier = tierLevel + 1;
-            if (nextTier < BMMultiblock.TIER_LIST.length && BMMultiblock.TIER_LIST[nextTier] != null) {
+            if (nextTier < NVMultiblock.TIER_LIST.length && NVMultiblock.TIER_LIST[nextTier] != null) {
                 int nextDisplayTier = nextTier + 1;
                 player.displayClientMessage(
                     Component.translatable("text.component.animus.diviner.sneak_to_build", nextDisplayTier)
@@ -327,11 +327,11 @@ public class ItemSanguineDiviner extends Item {
      * @return Number of blocks placed
      */
     private int autoPlaceUpgradeBlocks(Player player, Level level, BlockPos altarPos, int nextTier) {
-        if (nextTier >= BMMultiblock.TIER_LIST.length || BMMultiblock.TIER_LIST[nextTier] == null) {
+        if (nextTier >= NVMultiblock.TIER_LIST.length || NVMultiblock.TIER_LIST[nextTier] == null) {
             return 0;
         }
 
-        List<AltarComponent> components = BMMultiblock.TIER_LIST[nextTier].components();
+        List<AltarComponent> components = NVMultiblock.TIER_LIST[nextTier].components();
         int placedCount = 0;
         boolean isCreative = player.isCreative();
 
@@ -399,33 +399,33 @@ public class ItemSanguineDiviner extends Item {
         String path = materialId.getPath().toLowerCase();
 
         // Check for runes tag (exact match or path-based)
-        if (materialId.equals(BMTags.Blocks.RUNES.location()) || path.contains("rune")) {
-            return BMBlocks.RUNE_BLANK.block().get();
+        if (materialId.equals(NVTags.Blocks.RUNES.location()) || path.contains("rune")) {
+            return NVBlocks.RUNE_BLANK.block().get();
         }
 
         // Check for pillars tag - use stone bricks (exact match or path-based)
-        if (materialId.equals(BMTags.Blocks.PILLARS.location()) || path.contains("pillar")) {
+        if (materialId.equals(NVTags.Blocks.PILLARS.location()) || path.contains("pillar")) {
             return Blocks.STONE_BRICKS;
         }
 
         // Check for tier-specific capstones (exact match first, then path-based fallback)
         // T6 capstones - Use Animus's Crystallized Demon Will blocks
-        if (materialId.equals(BMTags.Blocks.T6_CAPSTONES.location()) ||
+        if (materialId.equals(NVTags.Blocks.T6_CAPSTONES.location()) ||
             path.contains("t6_capstone") || path.contains("tier6_capstone") || path.contains("tier_6_capstone")) {
             return AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get();
         }
         // T5 capstones
-        if (materialId.equals(BMTags.Blocks.T5_CAPSTONES.location()) ||
+        if (materialId.equals(NVTags.Blocks.T5_CAPSTONES.location()) ||
             path.contains("t5_capstone") || path.contains("tier5_capstone") || path.contains("tier_5_capstone")) {
-            return BMBlocks.HELLFORGED_BLOCK.block().get();
+            return NVBlocks.HELLFORGED_BLOCK.block().get();
         }
         // T4 capstones
-        if (materialId.equals(BMTags.Blocks.T4_CAPSTONES.location()) ||
+        if (materialId.equals(NVTags.Blocks.T4_CAPSTONES.location()) ||
             path.contains("t4_capstone") || path.contains("tier4_capstone") || path.contains("tier_4_capstone")) {
-            return BMBlocks.BLOODSTONE_BRICK.block().get();
+            return NVBlocks.BLOODSTONE_BRICK.block().get();
         }
         // T3 capstones
-        if (materialId.equals(BMTags.Blocks.T3_CAPSTONES.location()) ||
+        if (materialId.equals(NVTags.Blocks.T3_CAPSTONES.location()) ||
             path.contains("t3_capstone") || path.contains("tier3_capstone") || path.contains("tier_3_capstone")) {
             return Blocks.GLOWSTONE;
         }
@@ -436,9 +436,9 @@ public class ItemSanguineDiviner extends Item {
             if (path.contains("6")) {
                 return AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get();
             } else if (path.contains("5")) {
-                return BMBlocks.HELLFORGED_BLOCK.block().get();
+                return NVBlocks.HELLFORGED_BLOCK.block().get();
             } else if (path.contains("4")) {
-                return BMBlocks.BLOODSTONE_BRICK.block().get();
+                return NVBlocks.BLOODSTONE_BRICK.block().get();
             } else if (path.contains("3")) {
                 return Blocks.GLOWSTONE;
             }
@@ -446,12 +446,12 @@ public class ItemSanguineDiviner extends Item {
 
         // Check for bloodstone
         if (path.contains("bloodstone")) {
-            return BMBlocks.BLOODSTONE_BRICK.block().get();
+            return NVBlocks.BLOODSTONE_BRICK.block().get();
         }
 
         // Check for crystal
         if (path.contains("crystal")) {
-            return BMBlocks.CRYSTAL_CLUSTER.block().get();
+            return NVBlocks.CRYSTAL_CLUSTER.block().get();
         }
 
         // If it's a specific block (not a tag), try to get it directly

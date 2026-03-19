@@ -8,7 +8,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import com.breakinblocks.neovitae.common.effect.BMMobEffects;
+import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.api.ritual.IImperfectRitualStone;
 import com.breakinblocks.neovitae.ritual.ImperfectRitual;
 
@@ -43,7 +43,7 @@ public class RitualWarden extends ImperfectRitual {
 
         // Grant Obsidian Cloak for 15 minutes (no particles)
         player.addEffect(new MobEffectInstance(
-            BMMobEffects.OBSIDIAN_CLOAK,
+            NVMobEffects.OBSIDIAN_CLOAK,
             EFFECT_DURATION,
             0,  // Amplifier 0 = level 1
             false,  // Not ambient

@@ -88,7 +88,7 @@ public class AnimusItems {
             }
         });
 
-    // Imperfect Ritual Stone removed - use Blood Magic's native BMBlocks.IMPERFECT_RITUAL_STONE instead
+    // Imperfect Ritual Stone removed - use Blood Magic's native NVBlocks.IMPERFECT_RITUAL_STONE instead
 
     // Willful Stone blocks (all 16 colors)
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE = registerBlockItem("willful_stone", AnimusBlocks.BLOCK_WILLFUL_STONE);

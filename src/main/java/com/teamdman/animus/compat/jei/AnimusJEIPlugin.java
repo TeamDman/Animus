@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModList;
 import net.minecraft.core.registries.BuiltInRegistries;
-import com.breakinblocks.neovitae.common.block.BMBlocks;
+import com.breakinblocks.neovitae.common.block.NVBlocks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -247,7 +247,7 @@ public class AnimusJEIPlugin implements IModPlugin {
         if (ModList.get().isLoaded("irons_spellbooks")) {
             // Blood Altar is the catalyst for Altar Infusion recipes (Iron's Spells compat)
             registration.addRecipeCatalyst(
-                new ItemStack(BMBlocks.BLOOD_ALTAR.block().get()),
+                new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()),
                 AltarInfusionCategory.RECIPE_TYPE
             );
 
