@@ -127,7 +127,7 @@ public class AltarInfusionHandler {
         }
 
         // Perform infusion!
-        altar.sacrificialDaggerCall(-lpCost, false); // Negative amount to consume LP
+        altar.addSacrificeLP(-lpCost, false); // Negative amount to consume LP
         ItemBloodInfusedSpellbook.setInfusionTier(stack, nextTier);
 
         // Success message

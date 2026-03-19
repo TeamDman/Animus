@@ -116,7 +116,7 @@ public class RitualSourceVitaeum extends Ritual {
 
         // Add LP to altar using the standard method
         // The second parameter (true) makes it respect altar speed and dislocation runes
-        altar.sacrificialDaggerCall(lpToAdd, true);
+        altar.addSacrificeLP(lpToAdd, true);
     }
 
     /**

@@ -437,7 +437,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                 int capacity = altar.getMainCapacity();
                 if (currentBlood < capacity) {
                     // Add LP using the standard method
-                    altar.sacrificialDaggerCall(lifeEssence, true);
+                    altar.addSacrificeLP(lifeEssence, true);
                     return true;
                 }
             }

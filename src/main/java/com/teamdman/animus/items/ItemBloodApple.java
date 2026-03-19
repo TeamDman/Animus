@@ -66,7 +66,7 @@ public class ItemBloodApple extends Item {
 
             if (altar != null) {
                 // Altar found - add blood to altar (doubled like in original)
-                altar.sacrificialDaggerCall(bloodAmount * 2, true);
+                altar.addSacrificeLP(bloodAmount * 2, true);
                 offsetCached = altar.getBlockPos();
             } else {
                 // Check if player has a bound Key of Binding - if so, redirect LP to key owner

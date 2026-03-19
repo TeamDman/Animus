@@ -141,7 +141,7 @@ public class SanguineScrollAltarHandler {
         }
 
         // Consume LP from altar
-        altar.sacrificialDaggerCall(-totalLPCost, false);
+        altar.addSacrificeLP(-totalLPCost, false);
 
         // Create Sanguine Scroll based on slate type
         ItemStack sanguineScroll = getSanguineScrollForSlate(slateType);

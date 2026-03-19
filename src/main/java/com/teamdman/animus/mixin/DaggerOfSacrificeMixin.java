@@ -14,7 +14,7 @@ import com.breakinblocks.neovitae.common.item.DaggerOfSacrificeItem;
 
 /**
  * Mixin for NeoVitae's Dagger of Sacrifice to apply the bonus_sacrifice attribute.
- * Multiplies the LP amount passed to sacrificialDaggerCall by (1 + bonus_sacrifice/100).
+ * Multiplies the LP amount passed to addSacrificeLP by (1 + bonus_sacrifice/100).
  */
 @Mixin(DaggerOfSacrificeItem.class)
 public class DaggerOfSacrificeMixin {
@@ -31,12 +31,12 @@ public class DaggerOfSacrificeMixin {
     }
 
     /**
-     * Modify the LP amount (1st argument, index 0) passed to BloodAltarTile.sacrificialDaggerCall()
+     * Modify the LP amount (1st argument, index 0) passed to BloodAltarTile.addSacrificeLP()
      * to apply the bonus sacrifice attribute multiplier.
      */
     @ModifyArg(
         method = "hurtEnemy",
-        at = @At(value = "INVOKE", target = "Lcom/breakinblocks/neovitae/common/blockentity/BloodAltarTile;sacrificialDaggerCall(IZ)V"),
+        at = @At(value = "INVOKE", target = "Lcom/breakinblocks/neovitae/common/blockentity/BloodAltarTile;addSacrificeLP(IZ)V"),
         index = 0
     )
     private int animus$applyBonusSacrifice(int originalAmount) {

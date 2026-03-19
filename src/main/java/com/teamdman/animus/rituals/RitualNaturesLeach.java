@@ -184,7 +184,7 @@ public class RitualNaturesLeach extends Ritual {
 
         // Add blood to altar (use config value)
         int lpPerBlock = AnimusConfig.rituals.naturesLeachLpPerBlock.get();
-        tileAltar.sacrificialDaggerCall(eaten * lpPerBlock, true);
+        tileAltar.addSacrificeLP(eaten * lpPerBlock, true);
 
         // Generate corrosive demon will based on blocks consumed
         // Each consumed block generates 0.5-1.5 corrosive will

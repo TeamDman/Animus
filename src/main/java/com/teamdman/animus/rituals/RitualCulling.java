@@ -334,7 +334,7 @@ public class RitualCulling extends Ritual {
                         entityCount++;
                         // Calculate LP using entity sacrifice datamap - full kill = max health worth of damage
                         int lpPerKill = EntitySacrificeHelper.calculateLP(livingEntity, livingEntity.getMaxHealth());
-                        tileAltar.sacrificialDaggerCall(lpPerKill, true);
+                        tileAltar.addSacrificeLP(lpPerKill, true);
 
                         if (AnimusConfig.rituals.cullingDebug.get()) {
                             System.out.println("Animus: [Ritual of Culling Debug]:   LP generated: " + lpPerKill +
