@@ -189,7 +189,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         withExistingParent(name, modLoc("block/" + modelName));
     }
 
-    private void simpleItem(DeferredHolder<Item, Item> item, String texturePath) {
+    private void simpleItem(DeferredHolder<Item, ? extends Item> item, String texturePath) {
         String name = item.getId().getPath();
         withExistingParent(name, mcLoc("item/generated"))
             .texture("layer0", modLoc(texturePath));

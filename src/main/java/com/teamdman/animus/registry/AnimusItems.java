@@ -115,9 +115,7 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> FRAGMENT_HEALING = ITEMS.register("fragment_healing",
         ItemFragmentHealing::new);
 
-    // Blood Orbs
-    public static final DeferredHolder<Item, Item> BLOOD_ORB_TRANSCENDENT = ITEMS.register("blood_orb_transcendent",
-        ItemBloodOrbTranscendent::new);
+    public static final DeferredHolder<Item, ItemBloodOrbTranscendent> BLOOD_ORB_TRANSCENDENT = AnimusBloodOrbs.BLOOD_ORB_TRANSCENDENT;
 
     // Mob Soul - used by Sigil of Chains
     public static final DeferredHolder<Item, Item> MOBSOUL = ITEMS.register("mob_soul",
