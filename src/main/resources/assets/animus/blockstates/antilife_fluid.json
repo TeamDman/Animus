@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "level=0": { "model": "animus:block/antilife" },
+    "level=1": { "model": "animus:block/antilife" },
+    "level=2": { "model": "animus:block/antilife" },
+    "level=3": { "model": "animus:block/antilife" },
+    "level=4": { "model": "animus:block/antilife" },
+    "level=5": { "model": "animus:block/antilife" },
+    "level=6": { "model": "animus:block/antilife" },
+    "level=7": { "model": "animus:block/antilife" },
+    "level=8": { "model": "animus:block/antilife" },
+    "level=9": { "model": "animus:block/antilife" },
+    "level=10": { "model": "animus:block/antilife" },
+    "level=11": { "model": "animus:block/antilife" },
+    "level=12": { "model": "animus:block/antilife" },
+    "level=13": { "model": "animus:block/antilife" },
+    "level=14": { "model": "animus:block/antilife" },
+    "level=15": { "model": "animus:block/antilife" }
+  }
+}
