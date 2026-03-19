@@ -1,5 +1,5 @@
 {
-  "required": true,
+  "required": false,
   "minVersion": "0.8",
   "package": "com.teamdman.animus.mixin",
   "compatibilityLevel": "JAVA_21",
@@ -9,6 +9,6 @@
   ],
   "client": [],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }
