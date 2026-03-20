@@ -6,7 +6,7 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -263,19 +262,7 @@ public class RitualSiphon extends Ritual {
     }
 
     private void emitSmokeParticles(ServerLevel level, BlockPos pos) {
-        RandomSource random = level.getRandom();
-        for (int i = 0; i < 5; i++) {
-            double x = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.5;
-            double y = pos.getY() + 1.0;
-            double z = pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 0.5;
-            level.sendParticles(
-                ParticleTypes.SMOKE,
-                x, y, z,
-                1,
-                0.0, 0.05, 0.0,
-                0.01
-            );
-        }
+        AnimusRitualHelper.emitSmokeParticles(level, pos);
     }
 
     private void resetSearchState(BlockPos pos) {

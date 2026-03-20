@@ -4,6 +4,7 @@ import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.entities.EntityHellforgedArrow;
 import com.teamdman.animus.registry.AnimusDataComponents;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.teamdman.animus.util.DemonWillTypeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -404,14 +405,7 @@ public class ItemHellforgedBow extends BowItem {
             return false;
         }
 
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
-        if (network == null || network.getCurrentEssence() < amount) {
-            return false;
-        }
-
-        SoulTicket ticket = SoulTicket.create(amount);
-        network.syphonAndDamage(player, ticket);
-        return true;
+        return AnimusRitualHelper.drainLP(player, ownerId, amount);
     }
 
     public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity,
