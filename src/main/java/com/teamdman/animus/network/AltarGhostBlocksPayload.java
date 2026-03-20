@@ -11,9 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Payload for sending ghost block rendering data to the client
- */
 public record AltarGhostBlocksPayload(Map<BlockPos, ResourceLocation> ghostBlocks, int durationTicks) implements CustomPacketPayload {
     public static final Type<AltarGhostBlocksPayload> TYPE = new Type<>(
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "altar_ghost_blocks")

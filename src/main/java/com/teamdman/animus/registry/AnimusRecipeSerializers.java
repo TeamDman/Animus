@@ -17,5 +17,4 @@ public class AnimusRecipeSerializers {
         RECIPE_SERIALIZERS.register("key_unbinding",
             () -> new SimpleCraftingRecipeSerializer<>(KeyUnbindingRecipe::new));
 
-    // Imperfect ritual serializers removed - using Blood Magic's native ImperfectRitual system
 }

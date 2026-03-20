@@ -31,10 +31,7 @@ import java.util.function.Consumer;
 public class RitualPersistence extends Ritual {
     public static final String CHUNK_RANGE = "chunks";
 
-    // Track loaded chunks per ritual stone position
     private static final Map<BlockPos, Set<ChunkPos>> loadedChunks = new HashMap<>();
-
-    // Track if ritual was active last tick (for detecting state changes)
     private boolean wasActive = false;
 
     public RitualPersistence() {
@@ -46,7 +43,7 @@ public class RitualPersistence extends Ritual {
         );
 
         int chunkRadius = AnimusStartupConfig.ritualRanges.persistenceChunkRadius.get();
-        int blockRadius = (chunkRadius * 2 + 1) * 8; // Half of total width in blocks
+        int blockRadius = (chunkRadius * 2 + 1) * 8;
         int size = blockRadius * 2;
 
         addBlockRange(CHUNK_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-blockRadius, 0, -blockRadius), size, 1, size));
@@ -70,40 +67,28 @@ public class RitualPersistence extends Ritual {
         int currentEssence = network.getCurrentEssence();
         int refreshCost = getRefreshCost();
 
-        // Check if we have enough LP
         if (currentEssence < refreshCost) {
-            // Not enough LP - unload chunks
             unloadChunks(serverLevel, masterPos);
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        // Consume LP
         network.syphon(SoulTicket.create(refreshCost));
 
-        // Load chunks
         loadChunks(serverLevel, masterPos);
         wasActive = true;
     }
 
-    /**
-     * Load chunks in the configured radius around the ritual stone
-     * Derives radius from the Ritual Tinkerer-modifiable block range
-     */
     private void loadChunks(ServerLevel level, BlockPos masterPos) {
-        // Derive chunk radius from block range
         AreaDescriptor chunkRange = getBlockRange(CHUNK_RANGE);
         net.minecraft.world.phys.AABB rangeAABB = chunkRange.getAABB(masterPos);
         int blockRadius = (int) Math.max(Math.abs(rangeAABB.maxX - masterPos.getX()), Math.abs(rangeAABB.maxZ - masterPos.getZ()));
-        int radius = Math.max(0, (blockRadius / 16)); // Convert blocks to chunks
+        int radius = Math.max(0, (blockRadius / 16));
 
         ChunkPos centerChunk = new ChunkPos(masterPos);
         TicketController controller = AnimusModEventHandler.getTicketController();
 
-        // Get or create the set of loaded chunks for this ritual
         Set<ChunkPos> chunks = loadedChunks.computeIfAbsent(masterPos, k -> new HashSet<>());
 
-        // Calculate which chunks should be loaded
         Set<ChunkPos> chunksToLoad = new HashSet<>();
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
@@ -112,7 +97,6 @@ public class RitualPersistence extends Ritual {
             }
         }
 
-        // Add any new chunks
         for (ChunkPos chunkPos : chunksToLoad) {
             if (!chunks.contains(chunkPos)) {
                 controller.forceChunk(
@@ -127,7 +111,6 @@ public class RitualPersistence extends Ritual {
             }
         }
 
-        // Remove any chunks that are no longer in range
         chunks.removeIf(chunkPos -> {
             if (!chunksToLoad.contains(chunkPos)) {
                 controller.forceChunk(
@@ -144,9 +127,6 @@ public class RitualPersistence extends Ritual {
         });
     }
 
-    /**
-     * Unload all chunks for this ritual
-     */
     private void unloadChunks(ServerLevel level, BlockPos masterPos) {
         Set<ChunkPos> chunks = loadedChunks.get(masterPos);
         TicketController controller = AnimusModEventHandler.getTicketController();
@@ -175,27 +155,21 @@ public class RitualPersistence extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20; // 1 second
+        return 20;
     }
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Create a pattern that requires at least 2 dusk runes
-        // Using a cross pattern with dusk runes and other runes for balance
-
-        // Center cross with dusk runes (4 dusk runes total)
         addRune(components, 0, 0, -2, EnumRuneType.DUSK);
         addRune(components, 0, 0, 2, EnumRuneType.DUSK);
         addRune(components, -2, 0, 0, EnumRuneType.DUSK);
         addRune(components, 2, 0, 0, EnumRuneType.DUSK);
 
-        // Inner corners with earth runes for stability
         addRune(components, -1, 0, -1, EnumRuneType.EARTH);
         addRune(components, -1, 0, 1, EnumRuneType.EARTH);
         addRune(components, 1, 0, -1, EnumRuneType.EARTH);
         addRune(components, 1, 0, 1, EnumRuneType.EARTH);
 
-        // Outer corners with air runes for range
         addRune(components, -3, 0, -3, EnumRuneType.AIR);
         addRune(components, -3, 0, 3, EnumRuneType.AIR);
         addRune(components, 3, 0, -3, EnumRuneType.AIR);
@@ -207,9 +181,6 @@ public class RitualPersistence extends Ritual {
         return new RitualPersistence();
     }
 
-    /**
-     * Clean up all chunk loading when the ritual is removed or world unloads
-     */
     public static void cleanupAllChunks(ServerLevel level) {
         TicketController controller = AnimusModEventHandler.getTicketController();
         for (Map.Entry<BlockPos, Set<ChunkPos>> entry : loadedChunks.entrySet()) {

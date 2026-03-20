@@ -20,6 +20,6 @@ public class ArsNouveauCompatLoader {
      */
     public static void registerDeferred(IEventBus modEventBus) {
         ArsNouveauCompat.registerDeferred(modEventBus);
-        Animus.LOGGER.info("Registered Ars Nouveau compatibility deferred registries");
+        Animus.LOGGER.debug("Registered Ars Nouveau compatibility deferred registries");
     }
 }

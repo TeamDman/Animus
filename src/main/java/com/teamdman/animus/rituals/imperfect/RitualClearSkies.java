@@ -38,11 +38,9 @@ public class RitualClearSkies extends ImperfectRitual {
         }
 
         if (level instanceof ServerLevel serverLevel) {
-            // Clear the weather
             serverLevel.setWeatherParameters(6000, 0, false, false);
         }
 
-        // Play wind sound effect
         level.playSound(
             null,
             player.getX(), player.getY(), player.getZ(),

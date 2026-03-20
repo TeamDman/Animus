@@ -29,7 +29,6 @@ import java.util.function.Consumer;
 public class RitualSerenity extends Ritual {
     public static final String EFFECT_RANGE = "effect";
 
-    // Track active ritual positions and their AABBs per level
     private static final Map<Level, Map<BlockPos, AABB>> activeRituals = new HashMap<>();
 
     public RitualSerenity() {
@@ -58,7 +57,6 @@ public class RitualSerenity extends Ritual {
 
         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
-            // Remove from active list if network is gone
             removeActiveRitual(level, masterPos);
             return;
         }
@@ -66,33 +64,22 @@ public class RitualSerenity extends Ritual {
         int currentEssence = network.getCurrentEssence();
         int refreshCost = getRefreshCost();
 
-        // Check if we have enough LP
         if (currentEssence < refreshCost) {
-            // Not enough LP - remove from active list
             removeActiveRitual(level, masterPos);
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        // Consume LP
         network.syphon(SoulTicket.create(refreshCost));
 
-        // Add to active rituals with the current effect AABB
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         AABB effectAABB = effectRange.getAABB(masterPos);
         addActiveRitual(level, masterPos, effectAABB);
     }
 
-    /**
-     * Add a ritual position and its AABB to the active list
-     */
     private static void addActiveRitual(Level level, BlockPos pos, AABB aabb) {
         activeRituals.computeIfAbsent(level, k -> new HashMap<>()).put(pos.immutable(), aabb);
     }
 
-    /**
-     * Remove a ritual position from the active list
-     */
     private static void removeActiveRitual(Level level, BlockPos pos) {
         Map<BlockPos, AABB> rituals = activeRituals.get(level);
         if (rituals != null) {
@@ -103,9 +90,6 @@ public class RitualSerenity extends Ritual {
         }
     }
 
-    /**
-     * Check if a position is within range of any active Serenity ritual
-     */
     public static boolean isInSerenityZone(Level level, BlockPos spawnPos) {
         Map<BlockPos, AABB> rituals = activeRituals.get(level);
         if (rituals == null || rituals.isEmpty()) {
@@ -121,16 +105,10 @@ public class RitualSerenity extends Ritual {
         return false;
     }
 
-    /**
-     * Clean up ritual when it stops
-     */
     public void onRitualStopped(Level level, BlockPos masterPos) {
         removeActiveRitual(level, masterPos);
     }
 
-    /**
-     * Clean up all rituals for a level (when unloading)
-     */
     public static void cleanupLevel(Level level) {
         activeRituals.remove(level);
     }
@@ -142,21 +120,13 @@ public class RitualSerenity extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20; // 1 second
+        return 20;
     }
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Create a peaceful pattern with water runes (representing calm)
-        // and air runes (representing tranquility)
-
-        // Inner circle with water runes (cardinal directions)
         addParallelRunes(components, 2, 0, EnumRuneType.WATER);
-
-        // Diagonal positions with air runes
         addCornerRunes(components, 1, 0, EnumRuneType.AIR);
-
-        // Outer corners with earth runes for grounding
         addCornerRunes(components, 2, 0, EnumRuneType.EARTH);
     }
 

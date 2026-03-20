@@ -20,7 +20,6 @@ import com.breakinblocks.neovitae.ritual.ImperfectRitual;
  */
 public class RitualWarden extends ImperfectRitual {
 
-    // 15 minutes in ticks (15 * 60 * 20)
     private static final int EFFECT_DURATION = 18000;
 
     public RitualWarden() {
@@ -41,17 +40,15 @@ public class RitualWarden extends ImperfectRitual {
             return false;
         }
 
-        // Grant Obsidian Cloak for 15 minutes (no particles)
         player.addEffect(new MobEffectInstance(
             NVMobEffects.OBSIDIAN_CLOAK,
             EFFECT_DURATION,
-            0,  // Amplifier 0 = level 1
-            false,  // Not ambient
-            false,  // No particles
-            true    // Show icon
+            0,
+            false,
+            false,
+            true
         ));
 
-        // Play Warden ambient sound
         level.playSound(
             null,
             player.getX(), player.getY(), player.getZ(),

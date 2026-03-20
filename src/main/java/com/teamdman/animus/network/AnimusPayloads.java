@@ -14,14 +14,10 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-/**
- * Network handler for Animus mod packets using NeoForge 1.21 payload system
- */
 public class AnimusPayloads {
     public static void register(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(Constants.Mod.MODID);
 
-        // Server to client packets
         registrar.playToClient(
             AltarGhostBlocksPayload.TYPE,
             AltarGhostBlocksPayload.STREAM_CODEC,
@@ -40,14 +36,13 @@ public class AnimusPayloads {
             AnimusPayloads::handleAcceleratedBlocksSync
         );
 
-        // Client to server packets
         registrar.playToServer(
             SigilRadiusPayload.TYPE,
             SigilRadiusPayload.STREAM_CODEC,
             AnimusPayloads::handleSigilRadius
         );
 
-        Animus.LOGGER.info("Registered Animus network payloads");
+        Animus.LOGGER.debug("Registered Animus network payloads");
     }
 
     private static void handleAltarGhostBlocks(AltarGhostBlocksPayload payload, IPayloadContext ctx) {
@@ -73,7 +68,6 @@ public class AnimusPayloads {
         });
     }
 
-    // Helper methods for sending packets
     public static void sendToPlayer(ServerPlayer player, Object payload) {
         PacketDistributor.sendToPlayer(player, (net.minecraft.network.protocol.common.custom.CustomPacketPayload) payload);
     }

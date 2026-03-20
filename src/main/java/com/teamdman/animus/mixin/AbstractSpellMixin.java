@@ -44,7 +44,6 @@ public class AbstractSpellMixin {
         CallbackInfoReturnable<CastResult> cir
     ) {
         try {
-            // Check if LP casting is enabled
             boolean lpCastingEnabled;
             boolean requireBloodOrb = true;
             int lpPerMana = 100;
@@ -70,43 +69,34 @@ public class AbstractSpellMixin {
             int manaCost = spell.getManaCost(spellLevel);
             int currentMana = (int) magicData.getMana();
 
-            // If player already has enough mana, no need for LP
             if (currentMana >= manaCost) {
                 return;
             }
 
-            // Player doesn't have enough mana - check if we can use LP
             int manaDeficit = manaCost - currentMana;
 
-            // Check if Blood Orb is required
             if (requireBloodOrb && !hasBloodOrb(player)) {
                 return;
             }
 
-            // Get the player's soul network
             SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
             if (network == null) {
                 return;
             }
 
-            // Find Blood Infused Spellbook for LP reduction bonus
             ItemStack spellbook = findBloodInfusedSpellbook(player);
 
-            // Calculate LP cost
             int lpCost;
             int manaToAdd;
 
             if (allowHybridCasting && currentMana > 0) {
-                // Hybrid: only cover deficit
                 manaToAdd = manaDeficit;
                 lpCost = manaDeficit * lpPerMana;
             } else {
-                // Pure LP: cover full cost
                 manaToAdd = manaCost;
                 lpCost = manaCost * lpPerMana;
             }
 
-            // Apply LP reduction from spellbook
             if (!spellbook.isEmpty()) {
                 double lpReduction = ItemBloodInfusedSpellbook.getLPCostReduction(spellbook);
                 if (lpReduction > 0) {
@@ -114,36 +104,28 @@ public class AbstractSpellMixin {
                 }
             }
 
-            // Check if player has enough LP
             if (network.getCurrentEssence() < lpCost) {
                 return;
             }
 
-            // Add temporary mana to pass the check
-            // The SpellCastingHandler will handle LP consumption in SpellPreCastEvent
+            // SpellCastingHandler handles the actual LP consumption in SpellPreCastEvent
             magicData.setMana(currentMana + manaToAdd);
         } catch (Exception e) {
-            // Silently fail - don't break spell casting if mixin has issues
+            // Ignore - don't break spell casting
         }
     }
 
-    /**
-     * Find the Blood Infused Spellbook in player's hands, inventory, or curios slots
-     */
     private static ItemStack findBloodInfusedSpellbook(Player player) {
-        // Check main hand
         ItemStack mainHand = player.getMainHandItem();
         if (mainHand.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
             return mainHand;
         }
 
-        // Check off hand
         ItemStack offHand = player.getOffhandItem();
         if (offHand.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
             return offHand;
         }
 
-        // Check curios slots
         var curiosOpt = CuriosApi.getCuriosInventory(player);
         if (curiosOpt.isPresent()) {
             var curios = curiosOpt.get();
@@ -156,7 +138,6 @@ public class AbstractSpellMixin {
             }
         }
 
-        // Check main inventory
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
                 return stack;
@@ -166,32 +147,25 @@ public class AbstractSpellMixin {
         return ItemStack.EMPTY;
     }
 
-    /**
-     * Check if player has a Blood Orb in inventory or curios
-     */
     private static boolean hasBloodOrb(Player player) {
-        // Check main inventory
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof BloodOrbItem) {
                 return true;
             }
         }
 
-        // Check armor slots
         for (ItemStack stack : player.getInventory().armor) {
             if (stack.getItem() instanceof BloodOrbItem) {
                 return true;
             }
         }
 
-        // Check offhand
         for (ItemStack stack : player.getInventory().offhand) {
             if (stack.getItem() instanceof BloodOrbItem) {
                 return true;
             }
         }
 
-        // Check curios slots
         var curiosOpt = CuriosApi.getCuriosInventory(player);
         if (curiosOpt.isPresent()) {
             var curios = curiosOpt.get();

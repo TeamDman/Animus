@@ -17,12 +17,9 @@ public class Animus {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public Animus(IEventBus modEventBus, ModContainer modContainer) {
-        // Register startup config first (available during registry)
         AnimusStartupConfig.register(modContainer);
-        // Register common config
         AnimusConfig.register(modContainer);
 
-        // Register all deferred registers
         AnimusBlocks.BLOCKS.register(modEventBus);
         AnimusItems.ITEMS.register(modEventBus);
         AnimusBloodOrbs.BLOOD_ORBS.register(modEventBus);
@@ -36,28 +33,23 @@ public class Animus {
         AnimusCreativeTabs.CREATIVE_TABS.register(modEventBus);
         AnimusTreeDecoratorTypes.TREE_DECORATOR_TYPES.register(modEventBus);
         AnimusRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
-        // Imperfect ritual recipe type removed - using Blood Magic's native system
         AnimusAttributes.ATTRIBUTES.register(modEventBus);
         AnimusDataComponents.DATA_COMPONENTS.register(modEventBus);
 
-        // Register sigil effect types to Blood Magic's sigil effect registry
         AnimusSigilEffects.register(modEventBus);
 
-        // Force class loading for rituals to ensure all registrations are queued
+        // Force class loading to ensure all registrations are queued
         AnimusRituals.init();
 
-        // Register rituals to Blood Magic's registry via API registry keys
         AnimusRituals.RITUALS.register(modEventBus);
         AnimusRituals.IMPERFECT_RITUALS.register(modEventBus);
 
-        // Register compatibility module deferred registers
         CompatHandler.registerDeferredRegisters(modEventBus);
 
-        // Register event listeners
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerPayloads);
 
-        LOGGER.info("Animus mod loading...");
+        LOGGER.debug("Animus mod loading...");
     }
 
     private void registerPayloads(final RegisterPayloadHandlersEvent event) {
@@ -65,12 +57,11 @@ public class Animus {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        LOGGER.info("Animus common setup");
+        LOGGER.debug("Animus common setup");
 
-        // Initialize compatibility modules for optional mod integrations
         CompatHandler.init();
 
-        // Note: In Blood Magic 1.21.1, altar components are data-driven.
+        // Note: In NeoVitae 1.21.1, altar components are data-driven.
         // Crystallized Demon Will Block registration is handled via data/animus/data_maps/
 
         // Note: Blood orb stats are now handled via DataMaps

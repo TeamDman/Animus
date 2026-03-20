@@ -38,10 +38,9 @@ public class AnimusCreativeTabs {
             .title(Component.translatable("itemGroup." + Constants.Mod.MODID))
             .icon(() -> new ItemStack(AnimusItems.BLOOD_APPLE.get()))
             .displayItems((parameters, output) -> {
-                // Add all items to the creative tab
                 AnimusItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
 
-                // Add Iron's Spellbooks compat items if loaded (use registry lookup to avoid class loading issues)
+                // Registry lookup avoids class loading issues with optional mod classes
                 if (ModList.get().isLoaded("irons_spellbooks")) {
                     for (String itemName : IRONS_SPELLS_COMPAT_ITEMS) {
                         Item item = BuiltInRegistries.ITEM.get(
@@ -52,7 +51,6 @@ public class AnimusCreativeTabs {
                     }
                 }
 
-                // Add Ars Nouveau compat items if loaded (use registry lookup to avoid class loading issues)
                 if (ModList.get().isLoaded("ars_nouveau")) {
                     for (String itemName : ARS_NOUVEAU_COMPAT_ITEMS) {
                         Item item = BuiltInRegistries.ITEM.get(

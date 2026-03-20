@@ -10,9 +10,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
-/**
- * Client-side tooltip handler that shows "Blood Enhanced" indicator on enhanced items.
- */
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class EnhancementTooltipHandler {
 

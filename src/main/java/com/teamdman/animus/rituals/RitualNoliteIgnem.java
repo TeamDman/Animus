@@ -59,52 +59,39 @@ public class RitualNoliteIgnem extends Ritual {
             return;
         }
 
-        // Get configuration
         int lpPerFire = AnimusConfig.rituals.noliteIgnemLPPerFire.get();
 
-        // Find all fire blocks in range using the effect range
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         List<BlockPos> fireBlocks = new ArrayList<>();
 
         for (BlockPos pos : effectRange.getContainedPositions(masterPos)) {
             BlockState state = level.getBlockState(pos);
 
-            // Check if it's a fire block
             if (state.is(Blocks.FIRE) || state.is(Blocks.SOUL_FIRE)) {
                 fireBlocks.add(pos.immutable());
             }
         }
 
-        // If no fires, nothing to do
         if (fireBlocks.isEmpty()) {
             return;
         }
 
-        // Calculate total LP cost
         int totalCost = fireBlocks.size() * lpPerFire;
 
-        // Check if we have enough LP
         int currentEssence = network.getCurrentEssence();
         if (currentEssence < totalCost) {
-            // Not enough LP - only extinguish what we can afford
             int affordableFires = currentEssence / lpPerFire;
             if (affordableFires > 0) {
-                // Extinguish what we can afford
                 for (int i = 0; i < affordableFires && i < fireBlocks.size(); i++) {
                     level.removeBlock(fireBlocks.get(i), false);
                 }
 
-                // Consume available LP
                 network.syphon(SoulTicket.create(affordableFires * lpPerFire));
             }
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        // Consume LP
         network.syphon(SoulTicket.create(totalCost));
-
-        // Extinguish all fires
         for (BlockPos pos : fireBlocks) {
             level.removeBlock(pos, false);
         }
@@ -118,27 +105,21 @@ public class RitualNoliteIgnem extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20; // 1 second
+        return 20;
     }
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Create a pattern with water runes (to extinguish fire)
-        // and air runes (for range)
-
-        // Inner circle with water runes
         addRune(components, 0, 0, -2, EnumRuneType.WATER);
         addRune(components, 0, 0, 2, EnumRuneType.WATER);
         addRune(components, -2, 0, 0, EnumRuneType.WATER);
         addRune(components, 2, 0, 0, EnumRuneType.WATER);
 
-        // Middle ring with more water runes
         addRune(components, -2, 0, -2, EnumRuneType.WATER);
         addRune(components, -2, 0, 2, EnumRuneType.WATER);
         addRune(components, 2, 0, -2, EnumRuneType.WATER);
         addRune(components, 2, 0, 2, EnumRuneType.WATER);
 
-        // Outer corners with air runes for extended range
         addRune(components, -3, 0, -3, EnumRuneType.AIR);
         addRune(components, -3, 0, 3, EnumRuneType.AIR);
         addRune(components, 3, 0, -3, EnumRuneType.AIR);

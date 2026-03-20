@@ -8,9 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Configuration for Animus mod
- * Uses ModConfigSpec for 1.21.1
- *
  * Note: Config values are NOT available during DeferredRegister callbacks.
  * Ritual constructors use hardcoded defaults, which can be adjusted via
  * the ritual stone GUI at runtime.
@@ -19,7 +16,6 @@ public class AnimusConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec SPEC;
 
-    // General Configuration
     public static class General {
         public final ModConfigSpec.BooleanValue muteDragon;
         public final ModConfigSpec.BooleanValue muteWither;
@@ -49,7 +45,6 @@ public class AnimusConfig {
         }
     }
 
-    // Ritual Configuration
     public static class Rituals {
         public final ModConfigSpec.BooleanValue killBoss;
         public final ModConfigSpec.IntValue bossCost;
@@ -127,7 +122,7 @@ public class AnimusConfig {
                 .defineInRange("cullingVerticalRange", 10, 1, 64);
 
             cullingLpPerKill = builder
-                .comment("DEPRECATED - No longer used. LP values are now determined by Blood Magic's entity_sacrifice_value datamap. " +
+                .comment("DEPRECATED - No longer used. LP values are now determined by NeoVitae's entity_sacrifice_value datamap. " +
                          "Customize via datapacks at: data/<namespace>/data_maps/entity_type/entity_sacrifice_value.json")
                 .defineInRange("cullingLpPerKill", 200, 1, 10000);
 
@@ -303,7 +298,6 @@ public class AnimusConfig {
                 )
                 .defineInRange("cullingWillConsumeChance", 0.1, 0.0, 1.0);
 
-            // Ritual of Endless Greed
             builder.comment("Ritual of Endless Greed - Collects mob drops into a container").push("endlessGreed");
 
             endlessGreedRange = builder
@@ -328,7 +322,6 @@ public class AnimusConfig {
         }
     }
 
-    // Sigil Configuration
     public static class Sigils {
         public final ModConfigSpec.IntValue antiLifeConsumption;
         public final ModConfigSpec.IntValue antiLifeRange;
@@ -417,7 +410,6 @@ public class AnimusConfig {
                 .comment("Number of blocks to replace per tick with Sigil of Equivalency (lower = less lag)")
                 .defineInRange("sigilEquivalencyBlocksPerTick", 5, 1, 100);
 
-            // Sigil of the Monk
             builder.comment("Sigil of the Monk - unarmed combat enhancement").push("monk");
 
             monkUnarmedDamage = builder
@@ -441,7 +433,6 @@ public class AnimusConfig {
         }
     }
 
-    // Hurt Cooldown (iframes) Configuration
     public static class HurtCooldown {
         public final ModConfigSpec.EnumValue<Mode> mode;
         public final ModConfigSpec.BooleanValue affectBosses;
@@ -493,7 +484,6 @@ public class AnimusConfig {
         BLACKLIST
     }
 
-    // Blood Core Configuration
     public static class BloodCore {
         public final ModConfigSpec.IntValue leafRegrowthSpeed;
         public final ModConfigSpec.IntValue treeSpreadRadius;
@@ -529,7 +519,6 @@ public class AnimusConfig {
         }
     }
 
-    // Ars Nouveau Compatibility Configuration
     public static class ArsNouveau {
         public final ModConfigSpec.IntValue arcaneRuneDrainAmount;
         public final ModConfigSpec.IntValue arcaneRuneDrainInterval;
@@ -553,7 +542,6 @@ public class AnimusConfig {
                 )
                 .defineInRange("arcaneRuneDrainInterval", 200, 20, 6000);
 
-            // Living Armor Integration
             builder.comment("Living Armor Integration").push("livingArmor");
 
             enableLivingArmorXP = builder
@@ -576,7 +564,6 @@ public class AnimusConfig {
         }
     }
 
-    // Botania Integration Configuration
     public static class Botania {
         public final ModConfigSpec.IntValue LPtoManaConversionRate;
         public final ModConfigSpec.IntValue willToManaConversionRate;
@@ -613,7 +600,6 @@ public class AnimusConfig {
         }
     }
 
-    // Weapons Configuration
     public static class Weapons {
         public final ModConfigSpec.DoubleValue sentientBowWillCost;
         public final ModConfigSpec.IntValue hellforgedBowBaseLpCost;
@@ -625,7 +611,6 @@ public class AnimusConfig {
         public Weapons(ModConfigSpec.Builder builder) {
             builder.comment("Weapon Settings").push("weapons");
 
-            // Sentient Bow settings
             builder.comment("Sentient Bow - demon will powered bow").push("sentientBow");
 
             sentientBowWillCost = builder
@@ -637,7 +622,6 @@ public class AnimusConfig {
 
             builder.pop();
 
-            // Hellforged Bow settings
             builder.comment("Hellforged Bow - LP powered bow with charged shots").push("hellforgedBow");
 
             hellforgedBowBaseLpCost = builder
@@ -683,16 +667,13 @@ public class AnimusConfig {
         }
     }
 
-    // Irons Spells n Spellbooks Integration Configuration
     public static class IronsSpells {
-        // Phase 1: LP Casting
         public final ModConfigSpec.BooleanValue enableLPCasting;
         public final ModConfigSpec.IntValue lpPerMana;
         public final ModConfigSpec.BooleanValue requireBloodOrb;
         public final ModConfigSpec.BooleanValue allowHybridCasting;
         public final ModConfigSpec.BooleanValue showLPCostInTooltip;
 
-        // Phase 2: Items
         public final ModConfigSpec.BooleanValue enableBloodInfusedSpellbook;
         public final ModConfigSpec.IntValue bloodSpellbookTier1LP;
         public final ModConfigSpec.IntValue bloodSpellbookTier2LP;
@@ -709,15 +690,13 @@ public class AnimusConfig {
         public final ModConfigSpec.DoubleValue sanguineScrollDurabilityMultiplier;
         public final ModConfigSpec.BooleanValue sanguineScrollRequireBloodOrb;
 
-        // Phase 5: Living Armor Integration
         public final ModConfigSpec.BooleanValue enableLivingArmorXP;
         public final ModConfigSpec.IntValue livingArmorBaseXP;
 
         public IronsSpells(ModConfigSpec.Builder builder) {
             builder.push("ironsSpells");
 
-            // ===== Phase 1: LP Casting =====
-            builder.comment("Phase 1: LP-Powered Spell Casting").push("lpCasting");
+            builder.comment("LP-Powered Spell Casting").push("lpCasting");
 
             enableLPCasting = builder
                 .comment(
@@ -762,8 +741,7 @@ public class AnimusConfig {
 
             builder.pop();
 
-            // ===== Phase 2: Blood-Infused Spellbook =====
-            builder.comment("Phase 2: Blood-Infused Spellbook").push("bloodInfusedSpellbook");
+            builder.comment("Blood-Infused Spellbook").push("bloodInfusedSpellbook");
 
             enableBloodInfusedSpellbook = builder
                 .comment(
@@ -798,8 +776,7 @@ public class AnimusConfig {
 
             builder.pop();
 
-            // ===== Phase 2: Sigil of Crimson Will =====
-            builder.comment("Phase 2: Sigil of Crimson Will").push("sigilCrimsonWill");
+            builder.comment("Sigil of Crimson Will").push("sigilCrimsonWill");
 
             enableSigilCrimsonWill = builder
                 .comment(
@@ -818,8 +795,7 @@ public class AnimusConfig {
 
             builder.pop();
 
-            // ===== Phase 2: Sanguine Scrolls =====
-            builder.comment("Phase 2: Sanguine Scrolls").push("sanguineScrolls");
+            builder.comment("Sanguine Scrolls").push("sanguineScrolls");
 
             enableSanguineScrolls = builder
                 .comment(
@@ -855,8 +831,7 @@ public class AnimusConfig {
 
             builder.pop();
 
-            // ===== Phase 5: Living Armor Integration =====
-            builder.comment("Phase 5: Living Armor Integration").push("livingArmor");
+            builder.comment("Living Armor Integration").push("livingArmor");
 
             enableLivingArmorXP = builder
                 .comment(
@@ -879,7 +854,6 @@ public class AnimusConfig {
         }
     }
 
-    // Config instances
     public static General general;
     public static Rituals rituals;
     public static Sigils sigils;

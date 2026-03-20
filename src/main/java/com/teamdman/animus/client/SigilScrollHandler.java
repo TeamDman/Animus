@@ -16,9 +16,6 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
-/**
- * Client-side handler for mouse scroll events on sigils
- */
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class SigilScrollHandler {
 
@@ -31,7 +28,6 @@ public class SigilScrollHandler {
             return;
         }
 
-        // Check main hand
         ItemStack mainHand = player.getMainHandItem();
         if (mainHand.is(AnimusItems.SIGIL_EQUIVALENCY.get())) {
             if (handleScroll(player, mainHand, event.getScrollDeltaY(), InteractionHand.MAIN_HAND)) {
@@ -40,7 +36,6 @@ public class SigilScrollHandler {
             }
         }
 
-        // Check off hand
         ItemStack offHand = player.getOffhandItem();
         if (offHand.is(AnimusItems.SIGIL_EQUIVALENCY.get())) {
             if (handleScroll(player, offHand, event.getScrollDeltaY(), InteractionHand.OFF_HAND)) {
@@ -49,10 +44,6 @@ public class SigilScrollHandler {
         }
     }
 
-    /**
-     * Handle scroll event for Equivalency sigil radius adjustment.
-     * Returns true if scroll was handled.
-     */
     private static boolean handleScroll(Player player, ItemStack stack, double scrollDelta, InteractionHand hand) {
         int currentRadius = EquivalencySigilEffect.getRadiusStatic(stack);
         int newRadius;
@@ -64,13 +55,9 @@ public class SigilScrollHandler {
         }
 
         if (newRadius != currentRadius) {
-            // Update client-side immediately for responsiveness
             EquivalencySigilEffect.setRadius(stack, newRadius);
-
-            // Send packet to server
             AnimusPayloads.sendToServer(new SigilRadiusPayload(hand, newRadius));
 
-            // Display message
             player.displayClientMessage(
                     Component.translatable(Constants.Localizations.Text.EQUIVALENCY_RADIUS, newRadius)
                             .withStyle(ChatFormatting.AQUA),

@@ -20,18 +20,11 @@ import com.breakinblocks.neovitae.common.living.LivingHelper;
  */
 public class LivingArmorSpellHandler {
 
-    /**
-     * Register the event handler
-     */
     public static void register() {
         NeoForge.EVENT_BUS.register(new LivingArmorSpellHandler());
-        Animus.LOGGER.info("Registered Living Armor Spell Handler for Iron's Spells");
+        Animus.LOGGER.debug("Registered Living Armor Spell Handler for Iron's Spells");
     }
 
-    /**
-     * Grant Living Armor XP when player casts a spell
-     * Priority LOWEST to run after spell execution
-     */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onSpellCast(SpellOnCastEvent event) {
         if (!AnimusConfig.ironsSpells.enableLivingArmorXP.get()) {
@@ -46,19 +39,15 @@ public class LivingArmorSpellHandler {
             return;
         }
 
-        // Check if player has full Living Armor set
         if (!LivingHelper.hasFullSet(player)) {
             return;
         }
 
-        // Get spell level
         int spellLevel = event.getSpellLevel();
 
-        // Calculate XP to grant
         int baseXP = AnimusConfig.ironsSpells.livingArmorBaseXP.get();
         float xpToGrant = baseXP * spellLevel;
 
-        // Grant XP to the Arcane Channeling upgrade using the data-pack based system
         boolean success = LivingUpgradeHelper.addExperience(
             player,
             ArcaneChannelingHandler.UPGRADE_ID,

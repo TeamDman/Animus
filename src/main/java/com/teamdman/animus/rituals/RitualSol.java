@@ -35,7 +35,7 @@ import java.util.stream.IntStream;
  * Takes blocks from chest above ritual and places them in dark spots (light level < 8)
  * with solid ground below
  * Uses center-outward search algorithm to prioritize nearby positions
- * Supports Blood Magic's Sigil of Blood Light for placing blood lights without consuming the sigil
+ * Supports NeoVitae's Sigil of Blood Light for placing blood lights without consuming the sigil
  * Activation Cost: 1000 LP
  * Refresh Cost: 1 LP (regular blocks) or 1 LP (blood light)
  * Refresh Time: 5 ticks
@@ -46,7 +46,6 @@ public class RitualSol extends Ritual {
     private static final ResourceLocation BLOOD_LIGHT_SIGIL = ResourceLocation.fromNamespaceAndPath("neovitae", "bloodlightsigil");
     private static final ResourceLocation BLOOD_LIGHT_BLOCK = ResourceLocation.fromNamespaceAndPath("neovitae", "bloodlight");
 
-    // Track current search position for each ritual to resume searching where we left off
     private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
 
     public RitualSol() {
@@ -69,13 +68,11 @@ public class RitualSol extends Ritual {
             return;
         }
 
-        // Check if player has enough LP
         int currentEssence = network.getCurrentEssence();
         if (currentEssence < getRefreshCost()) {
             return;
         }
 
-        // Get chest
         AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
         BlockEntity chestTile = level.getBlockEntity(chestPos);
@@ -84,13 +81,11 @@ public class RitualSol extends Ritual {
             return;
         }
 
-        // Get item handler from chest
         IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
         if (handler == null) {
             return;
         }
 
-        // Find a non-empty slot with a valid block item
         Optional<Integer> slotOpt = IntStream.range(0, handler.getSlots())
             .filter(i -> !handler.getStackInSlot(i).isEmpty())
             .filter(i -> isOkayToUse(handler.getStackInSlot(i)))
@@ -104,7 +99,6 @@ public class RitualSol extends Ritual {
         int slot = slotOpt.get();
         ItemStack stack = handler.getStackInSlot(slot);
 
-        // Find a dark spot to place the block using center-outward search
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         BlockPos placePos = findDarkSpot(level, masterPos, effectRange);
 
@@ -112,28 +106,20 @@ public class RitualSol extends Ritual {
             return;
         }
 
-        // Get the block state to place
         BlockState stateToPlace = getStateToUse(stack);
 
-        // Place the block
         level.setBlock(placePos, stateToPlace, 3);
 
-        // Check if this is a blood light sigil (doesn't consume)
+        // Blood light sigils are not consumed when used
         boolean isBloodLightSigil = isBloodLightSigil(stack);
-
-        // Extract item from chest (unless it's the blood light sigil)
         if (!isBloodLightSigil && stack.getItem() instanceof BlockItem) {
             handler.extractItem(slot, 1, false);
         }
 
-        // Consume LP
         SoulTicket ticket = SoulTicket.create(getRefreshCost());
         network.syphon(ticket);
     }
 
-    /**
-     * Check if an item is the Blood Light sigil
-     */
     private boolean isBloodLightSigil(ItemStack stack) {
         if (stack.isEmpty()) {
             return false;
@@ -142,28 +128,19 @@ public class RitualSol extends Ritual {
         return BLOOD_LIGHT_SIGIL.equals(itemId);
     }
 
-    /**
-     * Check if an item can be used by this ritual
-     */
     private boolean isOkayToUse(ItemStack stack) {
         if (stack.isEmpty()) {
             return false;
         }
 
-        // Check for Blood Magic's Sigil of Blood Light
         if (isBloodLightSigil(stack)) {
             return true;
         }
 
-        // Check if it's a block item
         return stack.getItem() instanceof BlockItem;
     }
 
-    /**
-     * Get the block state to place
-     */
     private BlockState getStateToUse(ItemStack stack) {
-        // Check for Blood Magic's Sigil of Blood Light
         if (isBloodLightSigil(stack)) {
             Block bloodLight = BuiltInRegistries.BLOCK.getOptional(BLOOD_LIGHT_BLOCK).orElse(null);
             if (bloodLight != null && bloodLight != Blocks.AIR) {
@@ -171,7 +148,6 @@ public class RitualSol extends Ritual {
             }
         }
 
-        // Get the block from the item
         if (stack.getItem() instanceof BlockItem blockItem) {
             return blockItem.getBlock().defaultBlockState();
         }
@@ -191,23 +167,17 @@ public class RitualSol extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Air runes at corners, rising 3 layers high
         for (int layer = 0; layer < 3; layer++) {
             addCornerRunes(components, 2, layer, EnumRuneType.AIR);
         }
     }
 
-    /**
-     * Find a dark spot using center-outward search
-     * Starts from the master ritual stone and expands outward in square rings
-     */
     private BlockPos findDarkSpot(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
-        int maxChecksPerTick = 4096; // Increased for faster operation
+        int maxChecksPerTick = 4096;
         int checksThisTick = 0;
 
-        // Get bounds from the AreaDescriptor (respects Ritual Tinkerer modifications)
         net.minecraft.world.phys.AABB aabb = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(
             Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
@@ -218,41 +188,31 @@ public class RitualSol extends Ritual {
             Math.abs(aabb.maxY - masterPos.getY())
         );
 
-        // Search by expanding square rings from center outward
         for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
-            // Iterate through all positions in this radius ring
             for (int x = -radius; x <= radius && checksThisTick < maxChecksPerTick; x++) {
-                // Skip if we're not resuming from this X position
                 if (radius == state.currentRadius && x < state.currentX) continue;
 
                 for (int z = -radius; z <= radius && checksThisTick < maxChecksPerTick; z++) {
-                    // Skip if we're not resuming from this Z position
                     if (radius == state.currentRadius && x == state.currentX && z < state.currentZ) continue;
 
-                    // Only check positions on the perimeter of this radius ring
-                    // (except for radius 0, which is just the center point)
                     if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) {
                         continue;
                     }
 
-                    // Search vertically downward from this column (from ritual stone to bottom)
                     int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
                     for (int y = startY; y >= -verticalRadius && checksThisTick < maxChecksPerTick; y--) {
                         BlockPos checkPos = masterPos.offset(x, y, z);
                         checksThisTick++;
 
-                        // Update search state to resume from here next tick
                         state.currentRadius = radius;
                         state.currentX = x;
                         state.currentZ = z;
                         state.currentY = y;
 
-                        // Check if this is a valid dark spot
                         if (level.isEmptyBlock(checkPos) &&
                             level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, checkPos) < 8 &&
                             level.getBlockState(checkPos.below()).isFaceSturdy(level, checkPos.below(), Direction.UP)) {
 
-                            // Advance to next position for next search
                             state.currentY--;
                             if (state.currentY < -verticalRadius) {
                                 state.currentY = 0;
@@ -271,15 +231,12 @@ public class RitualSol extends Ritual {
                             return checkPos;
                         }
                     }
-                    // Column complete, reset Y for next column
                     state.currentY = 0;
                 }
-                // Row complete, reset Z for next row
                 state.currentZ = -radius;
             }
         }
 
-        // If we've searched the entire range, reset to start over next tick
         if (state.currentRadius > horizontalRadius) {
             searchStates.remove(masterPos);
         }
@@ -287,17 +244,11 @@ public class RitualSol extends Ritual {
         return null;
     }
 
-    /**
-     * Track the search state for each ritual to resume where it left off
-     * Searches from center outward in expanding square rings
-     * Searches downward from ritual stone (Y=0) to Y=-verticalRadius
-     * Uses sentinel values to indicate "start from beginning" for each dimension
-     */
     private static class SearchState {
-        int currentRadius = 0; // Start from center (at master ritual stone)
-        int currentX = Integer.MIN_VALUE; // Sentinel: start from beginning of X range
-        int currentZ = Integer.MIN_VALUE; // Sentinel: start from beginning of Z range
-        int currentY = Integer.MAX_VALUE; // Sentinel: start from top of Y range (searches downward)
+        int currentRadius = 0;
+        int currentX = Integer.MIN_VALUE;
+        int currentZ = Integer.MIN_VALUE;
+        int currentY = Integer.MAX_VALUE;
     }
 
     @Override

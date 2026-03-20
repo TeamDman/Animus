@@ -41,9 +41,7 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
             return InteractionResult.SUCCESS;
         }
 
-        // Check if the block entity is a Master Ritual Stone
         if (level.getBlockEntity(pos) instanceof IMasterRitualStone masterRitualStone) {
-            // Check if crystal is bound
             Binding binding = getBinding(stack);
             if (binding == null) {
                 player.displayClientMessage(
@@ -54,27 +52,23 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
                 return InteractionResult.FAIL;
             }
 
-            // Get the ritual from the master ritual stone
             com.breakinblocks.neovitae.ritual.Ritual ritual = masterRitualStone.getCurrentRitual();
             if (ritual == null) {
-                // No ritual set in this master ritual stone
                 return InteractionResult.FAIL;
             }
 
-            // Try to activate the ritual (crystal level 0 = weak)
+            // Crystal level 0 = weak tier
             boolean activated = masterRitualStone.activateRitual(ritual, player, 0);
 
             if (activated) {
-                // Ritual activated successfully - shatter the crystal
                 player.displayClientMessage(
                     Component.translatable("text.component.animus.activation_crystal.shattered")
                         .withStyle(ChatFormatting.GOLD),
                     true
                 );
-                stack.shrink(1); // Consume the crystal
+                stack.shrink(1);
                 return InteractionResult.SUCCESS;
             } else {
-                // Activation failed (not enough LP, etc.)
                 return InteractionResult.FAIL;
             }
         }
@@ -87,7 +81,6 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_INFO));
 
-        // Show owner name if bound
         Binding binding = getBinding(stack);
         if (binding != null && !binding.isEmpty()) {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.name())

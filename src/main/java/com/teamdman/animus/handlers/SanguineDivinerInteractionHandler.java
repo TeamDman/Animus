@@ -12,14 +12,14 @@ import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 
 /**
- * Prevents the Sanguine Diviner from being placed into Blood Altars or interfering with Ritual Stones
+ * Prevents the Sanguine Diviner from being placed into Blood Altars or interfering with Ritual Stones.
+ * Forces the item's useOn() to handle the interaction instead of the block's use().
  */
 @EventBusSubscriber(modid = Constants.Mod.MODID)
 public class SanguineDivinerInteractionHandler {
 
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        // Check if the player is holding the Sanguine Diviner
         if (event.getHand() != InteractionHand.MAIN_HAND) {
             return;
         }
@@ -28,11 +28,8 @@ public class SanguineDivinerInteractionHandler {
             return;
         }
 
-        // Check if the clicked block is a Blood Altar or Master Ritual Stone
         BlockEntity blockEntity = event.getLevel().getBlockEntity(event.getPos());
         if (blockEntity instanceof BloodAltarTile || blockEntity instanceof IMasterRitualStone) {
-            // Allow the item's useOn() method to handle this interaction
-            // by setting the result to ALLOW, which prevents the block's use() method from running
             event.setUseBlock(TriState.FALSE);
             event.setUseItem(TriState.TRUE);
         }

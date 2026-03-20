@@ -19,18 +19,11 @@ import com.breakinblocks.neovitae.common.living.LivingHelper;
  */
 public class LivingArmorGlyphHandler {
 
-    /**
-     * Register the event handler
-     */
     public static void register() {
         NeoForge.EVENT_BUS.register(new LivingArmorGlyphHandler());
-        Animus.LOGGER.info("Registered Living Armor Glyph Handler for Ars Nouveau");
+        Animus.LOGGER.debug("Registered Living Armor Glyph Handler for Ars Nouveau");
     }
 
-    /**
-     * Grant Living Armor XP when player casts an Ars Nouveau spell
-     * Priority LOWEST to run after spell execution
-     */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onSpellCast(SpellCastEvent event) {
         if (!AnimusConfig.arsNouveau.enableLivingArmorXP.get()) {
@@ -45,15 +38,12 @@ public class LivingArmorGlyphHandler {
             return;
         }
 
-        // Check if player has full Living Armor set
         if (!LivingHelper.hasFullSet(player)) {
             return;
         }
 
-        // Get base XP from config
         int baseXP = AnimusConfig.arsNouveau.livingArmorBaseXP.get();
 
-        // Grant XP to the Source Attunement upgrade
         boolean success = LivingUpgradeHelper.addExperience(
             player,
             SourceAttunementHandler.UPGRADE_ID,

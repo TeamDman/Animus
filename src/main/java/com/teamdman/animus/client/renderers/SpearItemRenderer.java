@@ -38,10 +38,8 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
         Minecraft mc = Minecraft.getInstance();
         
         if (displayContext == ItemDisplayContext.GUI) {
-            // For GUI, item frame, and ground display, render the 2D sprite
             renderGuiSprite(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
         } else {
-            // For all other contexts (held in hand), render the 3D model
             renderModel(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
         }
     }
@@ -53,14 +51,11 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
         
         poseStack.pushPose();
         
-        // Render using entity cutout with the texture file directly
         RenderType renderType = RenderType.entityCutout(textureLocation);
         VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
         
         Matrix4f matrix = poseStack.last().pose();
 
-        // Render a flat quad (16x16 texture mapped to 1x1 quad)
-        // UV coordinates are 0-1 for full texture
         vertexConsumer.addVertex(matrix, 0, 0, 0.5f).setColor(255, 255, 255, 255).setUv(0, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
         vertexConsumer.addVertex(matrix, 1, 0, 0.5f).setColor(255, 255, 255, 255).setUv(1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
         vertexConsumer.addVertex(matrix, 1, 1, 0.5f).setColor(255, 255, 255, 255).setUv(1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
@@ -74,11 +69,9 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
         Minecraft mc = Minecraft.getInstance();
         ItemRenderer itemRenderer = mc.getItemRenderer();
 
-        // Get the baked model directly from the model manager
         ModelResourceLocation modelLocation = getModelLocation(stack);
         BakedModel model = mc.getModelManager().getModel(modelLocation);
 
-        // Check if player is charging the spear throw
         boolean isCharging = false;
         if (mc.player != null && mc.player.isUsingItem()) {
             ItemStack usingItem = mc.player.getUseItem();
@@ -89,11 +82,9 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
 
         poseStack.pushPose();
 
-        // Apply display transforms
         model = model.applyTransform(displayContext, poseStack, false);
         poseStack.translate(-0.5, -0.5, -0.5);
 
-        // DEBUG: Apply scale to test - should make spear 2x larger
         if (displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
                         || displayContext == ItemDisplayContext.FIRST_PERSON_LEFT_HAND
                         || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND
@@ -101,17 +92,14 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
             poseStack.scale(2.0f, 2.0f, 2.0f);
         }
 
-        // Render using the standard item rendering path which properly uses the poseStack
         RenderType renderType = Sheets.cutoutBlockSheet();
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, renderType, true, stack.hasFoil());
 
-        // Render each quad from the model manually using the poseStack transform
         for (net.minecraft.core.Direction direction : net.minecraft.core.Direction.values()) {
             for (net.minecraft.client.renderer.block.model.BakedQuad quad : model.getQuads(null, direction, mc.level.random)) {
                 vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
             }
         }
-        // Also render non-directional quads
         for (net.minecraft.client.renderer.block.model.BakedQuad quad : model.getQuads(null, null, mc.level.random)) {
             vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
         }
@@ -120,7 +108,6 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
     }
 
     private ModelResourceLocation getModelLocation(ItemStack stack) {
-        // Load the _3d model variants which have the actual geometry (not builtin/entity)
         if (stack.getItem() instanceof ItemSpearSentient) {
             return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spear_sentient_3d"), "inventory");
         } else if (stack.getItem() instanceof ItemSpearBound boundSpear) {

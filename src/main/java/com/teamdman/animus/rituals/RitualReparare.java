@@ -32,7 +32,6 @@ public class RitualReparare extends Ritual {
     public RitualReparare() {
         super(Constants.Rituals.REPARARE, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.REPARARE);
 
-        // Look for chest directly above the master ritual stone
         addBlockRange(CHEST_RANGE, RitualAreaDescriptors.singleBlockAbove());
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
     }
@@ -51,7 +50,6 @@ public class RitualReparare extends Ritual {
             return;
         }
 
-        // Get chest above ritual
         AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
         BlockEntity chestTile = level.getBlockEntity(chestPos);
@@ -60,67 +58,52 @@ public class RitualReparare extends Ritual {
             return;
         }
 
-        // Get item handler from chest
         IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
         if (handler == null) {
             return;
         }
 
-        // Get config values
         int lpPerDamage = AnimusConfig.rituals.reparareRitualLPPerDamage.get();
 
-        // Track total LP cost for this cycle
         int totalLPCost = 0;
         int itemsRepaired = 0;
 
-        // Iterate through all slots and repair damaged items
         for (int slot = 0; slot < handler.getSlots(); slot++) {
             ItemStack stack = handler.getStackInSlot(slot);
 
-            // Skip empty stacks
             if (stack.isEmpty()) {
                 continue;
             }
 
-            // Skip non-damageable items
             if (!stack.isDamageableItem()) {
                 continue;
             }
 
-            // Skip items with no damage
             if (!stack.isDamaged()) {
                 continue;
             }
 
-            // Skip blacklisted items
             if (stack.is(Constants.Tags.DISALLOW_REPAIR)) {
                 continue;
             }
 
-            // Calculate how much to repair (20% of max durability)
             int maxDurability = stack.getMaxDamage();
             int repairAmount = (int) Math.ceil(maxDurability * 0.20);
             int currentDamage = stack.getDamageValue();
             int actualRepairAmount = Math.min(repairAmount, currentDamage);
 
-            // Calculate LP cost for this repair
             int lpCost = actualRepairAmount * lpPerDamage;
 
-            // Check if we have enough LP
             if (network.getCurrentEssence() < totalLPCost + lpCost) {
-                // Not enough LP for this item, skip it
                 continue;
             }
 
-            // Repair the item
             stack.setDamageValue(currentDamage - actualRepairAmount);
 
-            // Add to total LP cost
             totalLPCost += lpCost;
             itemsRepaired++;
         }
 
-        // If we repaired anything, consume the LP
         if (totalLPCost > 0 && itemsRepaired > 0) {
             SoulTicket ticket = SoulTicket.create(totalLPCost);
             network.syphon(ticket);
@@ -129,8 +112,6 @@ public class RitualReparare extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        // The actual cost is calculated dynamically based on items repaired
-        // Return 0 here since we handle LP consumption in performRitual
         return 0;
     }
 

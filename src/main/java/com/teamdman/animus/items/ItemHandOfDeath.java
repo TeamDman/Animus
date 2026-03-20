@@ -49,21 +49,18 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        // Cache soul count for damage calculation (must be done before parent call)
+        // Must cache soul count before parent call modifies will
         if (!attacker.level().isClientSide && attacker instanceof Player player) {
-            // Get total demon will from all types
             double totalWill = 0;
             for (EnumWillType type : EnumWillType.values()) {
                 totalWill += PlayerDemonWillHandler.getTotalDemonWill(type, player);
             }
             setCachedSouls(stack, totalWill);
 
-            // Apply Soul Snare effect (5 seconds, amplifier 1) for guaranteed will drops
             target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
                 Holder.direct(NVMobEffects.SOUL_SNARE.get()), 100, 1));
         }
 
-        // Call parent to apply normal sentient scythe damage and effects
         boolean result = super.hurtEnemy(stack, target, attacker);
 
         if (attacker.level().isClientSide || !(attacker instanceof Player player)) {
@@ -72,15 +69,10 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
 
         Level level = attacker.level();
 
-        // Calculate damage dealt for lifesteal
-        // We estimate it based on the weapon's attack damage
         float attackDamage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-
-        // Apply lifesteal - heal player for 20% of damage dealt (minimum 1)
         float healAmount = Math.max(1.0f, attackDamage * LIFESTEAL_PERCENT);
         player.heal(healAmount);
 
-        // Spawn healing particles around player
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(
                 ParticleTypes.HEART,
@@ -93,14 +85,12 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             );
         }
 
-        // Check if target is still alive and below execute threshold
         if (target.isAlive()) {
             float currentHealth = target.getHealth();
             float maxHealth = target.getMaxHealth();
             float healthPercent = currentHealth / maxHealth;
 
             if (healthPercent <= EXECUTE_THRESHOLD) {
-                // EXECUTE! Deal damage equal to max health (instant kill)
                 executeTarget(target, maxHealth, level, player, stack);
             }
         }
@@ -108,37 +98,30 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
         return result;
     }
 
-    /**
-     * Execute a low-health target with dramatic effects
-     */
     private void executeTarget(LivingEntity target, float maxHealth, Level level, Player executioner, ItemStack weapon) {
         if (level.isClientSide) {
             return;
         }
 
-        // Deal damage equal to max health (guaranteed kill)
         target.hurt(level.damageSources().playerAttack(executioner), maxHealth);
 
-        // Trigger Malum spirit harvest for executed targets
-        // (Parent's check ran before execute, so we need to handle it here)
+        // Parent's spirit harvest check ran before execute, so handle it here
         if (CompatHandler.isMalumLoaded() && target.isDeadOrDying()) {
             SpiritHarvestHelper.harvestSpirits(target, executioner, weapon);
         }
 
         ServerLevel serverLevel = (ServerLevel) level;
 
-        // Spawn soul speed particles (rising spiral effect)
         double targetX = target.getX();
         double targetY = target.getY();
         double targetZ = target.getZ();
 
-        // Create a spiral of soul speed particles
         for (int i = 0; i < 30; i++) {
-            double angle = (i / 30.0) * Math.PI * 4; // 2 full rotations
+            double angle = (i / 30.0) * Math.PI * 4;
             double radius = 0.5;
             double offsetX = Math.cos(angle) * radius;
             double offsetZ = Math.sin(angle) * radius;
-            double offsetY = (i / 30.0) * 2.0; // Rise 2 blocks
+            double offsetY = (i / 30.0) * 2.0;
 
             serverLevel.sendParticles(
                 ParticleTypes.SOUL,
@@ -151,7 +134,6 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             );
         }
 
-        // Additional burst of soul particles
         serverLevel.sendParticles(
             ParticleTypes.SOUL,
             targetX,
@@ -162,7 +144,6 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             0.1
         );
 
-        // Play execute sound (allay death at very low pitch and quiet volume)
         level.playSound(
             null,
             target.getX(),
@@ -170,11 +151,10 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             target.getZ(),
             SoundEvents.ALLAY_DEATH,
             SoundSource.HOSTILE,
-            0.05f, // 5% volume
-            0.01f  // 1% pitch (very deep and ominous)
+            0.05f,
+            0.01f
         );
 
-        // Display execute message to player
         if (executioner != null) {
             executioner.displayClientMessage(
                 Component.translatable("text.component.animus.hand_of_death.execute", target.getName())
@@ -186,30 +166,23 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        // Add title tooltip first
         tooltip.add(Component.translatable("tooltip.animus.hand_of_death.ultimate")
             .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
 
-        // Call parent for basic sentient scythe tooltips (includes demon will damage)
         super.appendHoverText(stack, context, tooltip, flag);
 
-        // Show Hand of Death bonus damage (not total, parent already shows will damage)
         tooltip.add(Component.literal(String.format("Hand of Death Bonus: +%.1f", BONUS_DAMAGE))
             .withStyle(ChatFormatting.RED));
 
-        // Add Hand of Death specific tooltips
         tooltip.add(Component.translatable("tooltip.animus.hand_of_death.lifesteal")
             .withStyle(ChatFormatting.GREEN));
         tooltip.add(Component.translatable("tooltip.animus.hand_of_death.execute")
             .withStyle(ChatFormatting.DARK_PURPLE));
     }
 
-    // Helper method to get damage added by demon will
-    // Uses destructive will values regardless of type (highest damage)
     private static double getDamageAdded(EnumWillType type, int level) {
         level = Math.min(level, 6);
 
-        // Use destructive will damage scaling for all types
         double[] damageAdded = new double[]{5.0, 6.5, 8.0, 9.5, 11.0, 12.5, 14.0};
         return damageAdded[level];
     }

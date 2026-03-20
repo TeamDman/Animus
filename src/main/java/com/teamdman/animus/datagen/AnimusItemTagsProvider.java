@@ -20,7 +20,6 @@ public class AnimusItemTagsProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        // Copy block tags to item tags for wood-related items
         copy(BlockTags.LOGS, ItemTags.LOGS);
         copy(BlockTags.PLANKS, ItemTags.PLANKS);
         copy(BlockTags.LEAVES, ItemTags.LEAVES);
@@ -33,7 +32,6 @@ public class AnimusItemTagsProvider extends ItemTagsProvider {
         copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
         copy(BlockTags.SLABS, ItemTags.SLABS);
 
-        // Willful stones tag
         tag(Constants.Tags.WILLFUL_STONES)
             .add(AnimusItems.BLOCK_WILLFUL_STONE.get())
             .add(AnimusItems.BLOCK_WILLFUL_STONE_WHITE.get())

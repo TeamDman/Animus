@@ -20,6 +20,6 @@ public class IronsSpellsCompatLoader {
      */
     public static void registerDeferred(IEventBus modEventBus) {
         IronsSpellsCompat.registerDeferred(modEventBus);
-        Animus.LOGGER.info("Registered Iron's Spells compatibility deferred registries");
+        Animus.LOGGER.debug("Registered Iron's Spells compatibility deferred registries");
     }
 }

@@ -36,7 +36,6 @@ import java.util.List;
  */
 public class ItemSanguineScroll extends Item {
 
-    // Slate tier determines max durability
     public enum SlateType {
         BLANK(50),
         REINFORCED(100),
@@ -68,31 +67,19 @@ public class ItemSanguineScroll extends Item {
         return slateType;
     }
 
-    /**
-     * Store spell data in the scroll using data components
-     */
     public static void setSpell(ItemStack stack, String spellId, int spellLevel) {
         stack.set(AnimusDataComponents.SPELL_ID.get(), spellId);
         stack.set(AnimusDataComponents.SPELL_LEVEL.get(), spellLevel);
     }
 
-    /**
-     * Get spell ID from scroll using data components
-     */
     public static String getSpellId(ItemStack stack) {
         return stack.getOrDefault(AnimusDataComponents.SPELL_ID.get(), "");
     }
 
-    /**
-     * Get spell level from scroll using data components
-     */
     public static int getSpellLevel(ItemStack stack) {
         return stack.getOrDefault(AnimusDataComponents.SPELL_LEVEL.get(), 0);
     }
 
-    /**
-     * Check if scroll has a spell
-     */
     public static boolean hasSpell(ItemStack stack) {
         String spellId = getSpellId(stack);
         return spellId != null && !spellId.isEmpty();
@@ -106,7 +93,6 @@ public class ItemSanguineScroll extends Item {
             return InteractionResultHolder.pass(stack);
         }
 
-        // Check if scroll has a spell
         if (!hasSpell(stack)) {
             player.displayClientMessage(
                 Component.literal("Empty Sanguine Scroll - Use at Blood Altar to infuse with a spell")
@@ -116,7 +102,6 @@ public class ItemSanguineScroll extends Item {
             return InteractionResultHolder.fail(stack);
         }
 
-        // Get spell
         String spellId = getSpellId(stack);
         int spellLevel = getSpellLevel(stack);
 
@@ -130,7 +115,6 @@ public class ItemSanguineScroll extends Item {
             return InteractionResultHolder.fail(stack);
         }
 
-        // Check cooldown
         MagicData magicData = MagicData.getPlayerMagicData(player);
         if (magicData.getPlayerCooldowns().hasCooldownsActive()) {
             player.displayClientMessage(
@@ -141,14 +125,11 @@ public class ItemSanguineScroll extends Item {
             return InteractionResultHolder.fail(stack);
         }
 
-        // Calculate LP cost (mana cost × lpPerMana × multiplier)
-        // Default: 100 × 1.5 = 150 LP per mana (50% more expensive than regular casting)
         int manaCost = spell.getManaCost(spellLevel);
         int lpPerMana = AnimusConfig.ironsSpells.lpPerMana.get();
         double multiplier = AnimusConfig.ironsSpells.sanguineScrollLPMultiplier.get();
         int lpCost = (int)(manaCost * lpPerMana * multiplier);
 
-        // Get the player's soul network and check LP
         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
         if (network.getCurrentEssence() < lpCost) {
             player.displayClientMessage(
@@ -159,24 +140,17 @@ public class ItemSanguineScroll extends Item {
             return InteractionResultHolder.fail(stack);
         }
 
-        // Consume LP (will damage player if insufficient)
         network.syphonAndDamage(player, SoulTicket.create(lpCost));
-
-        // Cast spell (1.21.1 API: needs selection key parameter)
         try {
             spell.attemptInitiateCast(stack, spellLevel, level, player, CastSource.SCROLL, true, "sanguine_scroll");
 
-            // Apply cooldown
             magicData.getPlayerCooldowns().addCooldown(spell, spell.getSpellCooldown());
-
-            // Damage scroll (1.21 API)
             if (level instanceof ServerLevel serverLevel) {
                 EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
                 stack.hurtAndBreak(1, serverLevel, player, (item) ->
                     player.onEquippedItemBroken(item, slot));
             }
 
-            // Play sound
             level.playSound(
                 null,
                 player.getX(),
@@ -223,7 +197,6 @@ public class ItemSanguineScroll extends Item {
                 tooltip.add(Component.literal("Level: " + spellLevel)
                     .withStyle(ChatFormatting.GRAY));
 
-                // Show LP cost
                 int manaCost = spell.getManaCost(spellLevel);
                 int lpPerMana = AnimusConfig.ironsSpells.lpPerMana.get();
                 double multiplier = AnimusConfig.ironsSpells.sanguineScrollLPMultiplier.get();
@@ -233,7 +206,6 @@ public class ItemSanguineScroll extends Item {
                 tooltip.add(Component.literal("Cost: " + lpCost + " LP")
                     .withStyle(ChatFormatting.RED));
 
-                // Show uses remaining
                 int damage = stack.getDamageValue();
                 int maxDamage = stack.getMaxDamage();
                 int usesRemaining = maxDamage - damage;

@@ -64,8 +64,7 @@ public class EntityThrownSpear extends AbstractArrow {
         this.entityData.set(ID_LOYALTY, (byte)loyalty);
         this.entityData.set(ID_FOIL, stack.hasFoil());
 
-        // Determine variant from item registry name and check activation state
-        String variant = "iron"; // default
+        String variant = "iron";
         boolean activated = false;
         net.minecraft.resources.ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         if (itemId != null) {
@@ -74,7 +73,6 @@ public class EntityThrownSpear extends AbstractArrow {
                 variant = "diamond";
             } else if (path.contains("bound")) {
                 variant = "bound";
-                // Check activation state from NBT
                 if (stack.getItem() instanceof com.teamdman.animus.items.ItemSpearBound boundSpear) {
                     activated = boundSpear.isActivated(stack);
                 }
@@ -84,7 +82,6 @@ public class EntityThrownSpear extends AbstractArrow {
         this.entityData.set(ID_ACTIVATED, activated);
     }
 
-    // Helper method for getting loyalty in 1.21.1
     private static int getLoyaltyLevel(Level level, ItemStack stack) {
         if (level.registryAccess() == null) return 0;
         var enchantmentRegistry = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
@@ -158,10 +155,6 @@ public class EntityThrownSpear extends AbstractArrow {
         return this.spearItem.copy();
     }
 
-    /**
-     * Get the actual stored spear item (not a copy)
-     * Used for updating anointments on the item
-     */
     public ItemStack getSpearItem() {
         return this.spearItem;
     }
@@ -202,8 +195,6 @@ public class EntityThrownSpear extends AbstractArrow {
     protected void onHit(net.minecraft.world.phys.HitResult result) {
         super.onHit(result);
 
-        // Bound spear creates visual-only lightning at any impact point (only when activated)
-        // Visual-only means no fire, no thunder sound, just the lightning effect
         boolean isBound = "bound".equals(this.getVariant());
         boolean isActivated = this.entityData.get(ID_ACTIVATED);
         if (isBound && isActivated && !this.level().isClientSide) {
@@ -212,7 +203,7 @@ public class EntityThrownSpear extends AbstractArrow {
             if (lightning != null) {
                 lightning.moveTo(result.getLocation().x, result.getLocation().y, result.getLocation().z);
                 lightning.setCause(owner instanceof net.minecraft.server.level.ServerPlayer ? (net.minecraft.server.level.ServerPlayer)owner : null);
-                lightning.setVisualOnly(true); // Visual only - no fire, no thunder
+                lightning.setVisualOnly(true);
                 this.level().addFreshEntity(lightning);
             }
         }
@@ -222,7 +213,6 @@ public class EntityThrownSpear extends AbstractArrow {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         float damage = 8.0F;
-        // In 1.21.1, getMobType() is removed - enchantment damage is handled by damage system
 
         Entity owner = this.getOwner();
         DamageSource damageSource = this.damageSources().trident(this, owner == null ? this : owner);
@@ -234,13 +224,10 @@ public class EntityThrownSpear extends AbstractArrow {
             }
 
             if (entity instanceof LivingEntity livingEntity) {
-                // In 1.21.1, enchantment post-hurt effects handled by damage system
                 this.doPostHurtEffects(livingEntity);
             }
         }
 
-        // AOE damage on impact
-        // Activated bound spear deals more AOE damage (lightning is handled in onHit)
         boolean isBound = "bound".equals(this.getVariant());
         boolean isActivated = this.entityData.get(ID_ACTIVATED);
         float aoeDamage = (isBound && isActivated) ? damage * 1.0F : damage * 0.75F;
@@ -250,9 +237,6 @@ public class EntityThrownSpear extends AbstractArrow {
         this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
     }
 
-    /**
-     * Deal AOE damage around impact point
-     */
     private void dealAOEDamage(double x, double y, double z, float damage) {
         if (this.level().isClientSide) {
             return;
@@ -274,7 +258,7 @@ public class EntityThrownSpear extends AbstractArrow {
                 continue;
             }
 
-            // Skip if entity is already the direct hit target (already took damage)
+            // Skip direct hit target (already took damage)
             double dist = target.distanceToSqr(x, y, z);
             if (dist < 1.0) {
                 continue;
@@ -282,7 +266,6 @@ public class EntityThrownSpear extends AbstractArrow {
 
             target.hurt(damageSource, damage);
 
-            // Apply sentient effects to AOE targets
             if (isSentient && willType != null && owner instanceof LivingEntity livingOwner) {
                 ItemSpearSentient.applyEffectToEntity(willType, willLevel, target, livingOwner);
             }

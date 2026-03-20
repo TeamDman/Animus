@@ -7,9 +7,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-/**
- * Payload for sending ritual code to client for clipboard copying
- */
 public record RitualCodePayload(String code) implements CustomPacketPayload {
     public static final Type<RitualCodePayload> TYPE = new Type<>(
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "ritual_code")

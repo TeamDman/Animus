@@ -18,52 +18,40 @@ public class AnimusBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        // LOGS TAG - All log variants
         this.tag(BlockTags.LOGS)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD.get())
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get());
 
-        // PLANKS TAG - All plank variants
         this.tag(BlockTags.PLANKS)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS.get());
 
-        // LEAVES TAG
         this.tag(BlockTags.LEAVES)
             .add(AnimusBlocks.BLOCK_BLOOD_LEAVES.get());
 
-        // SAPLINGS TAG
         this.tag(BlockTags.SAPLINGS)
             .add(AnimusBlocks.BLOCK_BLOOD_SAPLING.get());
 
-        // WOODEN FENCES TAG
         this.tag(BlockTags.WOODEN_FENCES)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE.get());
 
-        // FENCES TAG (for connection logic)
         this.tag(BlockTags.FENCES)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE.get());
 
-        // FENCE GATES TAG
         this.tag(BlockTags.FENCE_GATES)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE.get());
 
-        // WOODEN STAIRS TAG
         this.tag(BlockTags.WOODEN_STAIRS)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_STAIRS.get());
 
-        // STAIRS TAG
         this.tag(BlockTags.STAIRS)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_STAIRS.get());
 
-        // WOODEN SLABS TAG
         this.tag(BlockTags.WOODEN_SLABS)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB.get());
 
-        // SLABS TAG
         this.tag(BlockTags.SLABS)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB.get());
 
-        // MINEABLE WITH AXE - Wood blocks and core
         this.tag(BlockTags.MINEABLE_WITH_AXE)
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD.get())
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get())
@@ -74,11 +62,9 @@ public class AnimusBlockTagsProvider extends BlockTagsProvider {
             .add(AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE.get())
             .add(AnimusBlocks.BLOCK_BLOOD_CORE.get());
 
-        // MINEABLE WITH HOE - Leaves
         this.tag(BlockTags.MINEABLE_WITH_HOE)
             .add(AnimusBlocks.BLOCK_BLOOD_LEAVES.get());
 
-        // MINEABLE WITH PICKAXE - Stone blocks
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(AnimusBlocks.BLOCK_ANTILIFE.get())
             .add(AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get())

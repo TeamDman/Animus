@@ -26,10 +26,7 @@ import com.breakinblocks.neovitae.ritual.ImperfectRitual;
  */
 public class RitualSoulStainedBlood extends ImperfectRitual {
 
-    // 15 minutes in ticks (15 * 60 * 20)
-    private static final int EFFECT_DURATION = 18000;
-
-    // Resource locations for Malum blocks and effects
+    private static final int EFFECT_DURATION = 18000; // 15 minutes
     private static final ResourceLocation HALLOWED_GOLD_BLOCK = ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold");
     private static final ResourceLocation STONE_WARD = ResourceLocation.fromNamespaceAndPath("malum", "stone_ward");
 
@@ -54,12 +51,11 @@ public class RitualSoulStainedBlood extends ImperfectRitual {
             return false;
         }
 
-        // Get the Malum Stone Ward effect by registry lookup
         Holder<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.getHolder(STONE_WARD)
             .orElse(null);
 
         if (effect == null) {
-            // Send to chat (false) so it doesn't get overwritten by Blood Magic's action bar message
+            // Send to chat (false) so it doesn't get overwritten by NeoVitae's action bar message
             player.displayClientMessage(
                 Component.translatable("ritual.animus.soul_stained_blood.no_effect"),
                 false
@@ -67,17 +63,15 @@ public class RitualSoulStainedBlood extends ImperfectRitual {
             return false;
         }
 
-        // Grant Stone Ward for 15 minutes
         player.addEffect(new MobEffectInstance(
             effect,
             EFFECT_DURATION,
-            0,  // Amplifier 0 = level 1
-            false,  // Not ambient
-            true,   // Show particles
-            true    // Show icon
+            0,
+            false,
+            true,
+            true
         ));
 
-        // Play soul-imbued sound
         level.playSound(
             null,
             player.getX(), player.getY(), player.getZ(),

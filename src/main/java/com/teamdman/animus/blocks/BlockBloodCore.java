@@ -43,7 +43,6 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
             .strength(10.0F)
             .sound(SoundType.WOOD)
             .randomTicks()
-            // Blood core is non-flammable
         );
         this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
     }
@@ -64,16 +63,12 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
         if (!level.isClientSide) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof BlockEntityBloodCore bloodCore) {
-                // Toggle spreading
                 boolean newSpreading = !bloodCore.isSpreading();
                 bloodCore.setSpreading(newSpreading);
 
-                // Update block state to reflect active status
                 level.setBlock(pos, state.setValue(ACTIVE, newSpreading), 3);
 
-                // Send feedback to player
                 if (newSpreading) {
-                    // Play awakening sound when activating
                     level.playSound(null, pos, AnimusSounds.AWAKEN_CORE.get(),
                         SoundSource.BLOCKS, 1.0f, 1.0f);
 
@@ -96,7 +91,6 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
         return InteractionResult.PASS;
     }
 
-    // Static server ticker to avoid lambda allocation
     private static final BlockEntityTicker<BlockEntityBloodCore> SERVER_TICKER =
         (level, pos, state, blockEntity) -> blockEntity.tick();
 
@@ -107,9 +101,6 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
             createTickerHelper(type, AnimusBlockEntities.BLOOD_CORE.get(), SERVER_TICKER);
     }
 
-    /**
-     * Helper method for type-safe ticker creation
-     */
     @Nullable
     protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
         BlockEntityType<A> givenType,
@@ -119,32 +110,26 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
         return expectedType == givenType ? (BlockEntityTicker<A>) ticker : null;
     }
 
-    // BonemealableBlock implementation
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        // Can only bonemeal if active
         return state.getValue(ACTIVE);
     }
 
     @Override
     public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
-        // Always succeed if active
         return state.getValue(ACTIVE);
     }
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        // Only work if active
         if (!state.getValue(ACTIVE)) {
             return;
         }
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof BlockEntityBloodCore bloodCore) {
-            // Trigger tree spreading
             bloodCore.trySpreadBloodTree(level);
 
-            // Play enchantment table particles
             for (int i = 0; i < 15; i++) {
                 double d0 = pos.getX() + random.nextDouble();
                 double d1 = pos.getY() + random.nextDouble() + 0.5;
@@ -158,7 +143,6 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
                 );
             }
 
-            // Play magic sound
             level.playSound(
                 null,
                 pos,

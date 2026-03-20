@@ -13,24 +13,20 @@ import java.util.function.Supplier;
 
 /**
  * Registry for Animus rituals.
- * In Blood Magic 4.x for 1.21.1, rituals are registered via DeferredRegister.
+ * In NeoVitae 4.x for 1.21.1, rituals are registered via DeferredRegister.
  *
- * Note: We use Blood Magic's internal registry keys (RitualRegistry.RITUAL_REGISTRY_KEY
+ * Note: We use NeoVitae's internal registry keys (RitualRegistry.RITUAL_REGISTRY_KEY
  * and IMPERFECT_RITUAL_REGISTRY_KEY) rather than the API keys because the API keys
  * are typed for interfaces (IRitual, IImperfectRitual) while our ritual classes
  * extend the concrete implementation classes (Ritual, ImperfectRitual).
  */
 public class AnimusRituals {
 
-    // Regular rituals - using Blood Magic's internal registry key for concrete Ritual type
     public static final DeferredRegister<Ritual> RITUALS =
         DeferredRegister.create(RitualRegistry.RITUAL_REGISTRY_KEY, Constants.Mod.MODID);
 
-    // Imperfect rituals - using our own DeferredRegister with Blood Magic's internal registry key
     public static final DeferredRegister<ImperfectRitual> IMPERFECT_RITUALS =
         DeferredRegister.create(RitualRegistry.IMPERFECT_RITUAL_REGISTRY_KEY, Constants.Mod.MODID);
-
-    // === Regular Rituals ===
 
     public static final DeferredHolder<Ritual, RitualCulling> CULLING =
         RITUALS.register(Constants.Rituals.CULLING, RitualCulling::new);
@@ -80,9 +76,6 @@ public class AnimusRituals {
     public static final DeferredHolder<Ritual, RitualUnmaking> UNMAKING =
         RITUALS.register(Constants.Rituals.UNMAKING, RitualUnmaking::new);
 
-    // === Imperfect Rituals ===
-    // Registered using our own DeferredRegister rather than Blood Magic's shared one
-
     public static final DeferredHolder<ImperfectRitual, RitualHunger> IMPERFECT_HUNGER =
         registerImperfectRitual(Constants.Rituals.HUNGER, RitualHunger::new);
 
@@ -107,9 +100,6 @@ public class AnimusRituals {
     public static final DeferredHolder<ImperfectRitual, RitualWarden> IMPERFECT_WARDEN =
         registerImperfectRitual(Constants.Rituals.WARDEN, RitualWarden::new);
 
-    /**
-     * Helper method to register imperfect rituals using our own DeferredRegister
-     */
     private static <T extends ImperfectRitual> DeferredHolder<ImperfectRitual, T> registerImperfectRitual(
             String name, Supplier<T> supplier) {
         return IMPERFECT_RITUALS.register(name, supplier);

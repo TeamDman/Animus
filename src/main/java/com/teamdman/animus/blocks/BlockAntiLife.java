@@ -56,39 +56,28 @@ public class BlockAntiLife extends BaseEntityBlock {
         registerDefaultState(stateDefinition.any().setValue(DECAYING, false));
     }
 
-    /**
-     * Converts a block at the given position to antilife
-     * @param level The level
-     * @param blockPos Position of block to convert
-     * @param player Player using the sigil (for LP consumption)
-     * @return SUCCESS if converted, PASS if cannot convert
-     */
     public static InteractionResult setBlockToAntiLife(Level level, BlockPos blockPos, Player player) {
         BlockState state = level.getBlockState(blockPos);
 
-        // Don't convert blocks in the disallow_antilife tag
         if (state.is(Constants.Tags.DISALLOW_ANTILIFE)) {
             return InteractionResult.PASS;
         }
 
-        // Fire break event to check if protected (e.g., FTB Chunks)
+        // Check protection (e.g., FTB Chunks)
         BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, blockPos, state, player);
         if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
-            return InteractionResult.PASS; // Protected, cannot convert
+            return InteractionResult.PASS;
         }
 
         Block seeking = state.getBlock();
 
-        // Set to antilife
         level.setBlock(blockPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState()
             .setValue(DECAYING, false), 3);
 
-        // Configure block entity
         if (level.getBlockEntity(blockPos) instanceof BlockEntityAntiLife antilife) {
             antilife.setSeeking(seeking).setPlayer(player);
         }
 
-        // Schedule first tick
         level.scheduleTick(blockPos, AnimusBlocks.BLOCK_ANTILIFE.get(), 0);
 
         return InteractionResult.SUCCESS;
@@ -109,50 +98,39 @@ public class BlockAntiLife extends BaseEntityBlock {
         boolean decaying = state.getValue(DECAYING);
         int range = antilife.getRange();
 
-        // Get neighbors (3x3x3 cube around this block)
         List<BlockPos> neighbors = getNeighbors(pos);
 
         for (BlockPos neighborPos : neighbors) {
             BlockState neighborState = level.getBlockState(neighborPos);
 
             if (decaying) {
-                // If decaying, ALWAYS spread decay to adjacent antilife (ignore range)
                 if (neighborState.getBlock() == AnimusBlocks.BLOCK_ANTILIFE.get()) {
                     level.setBlock(neighborPos, defaultBlockState().setValue(DECAYING, true), 3);
                     level.scheduleTick(neighborPos, this, random.nextInt(10) + 10);
                     level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.01F, 0.75F);
                 }
             } else if (range > 0) {
-                // Only spread conversion if we have range remaining
-                // If not decaying, spread to matching blocks
                 if (!level.isEmptyBlock(neighborPos) && neighborState.getBlock() == antilife.getSeeking()) {
-                    // Get player - may be null if offline/dead
                     Player player = antilife.getPlayerUUID() != null ? level.getPlayerByUUID(antilife.getPlayerUUID()) : null;
 
-                    // Fire break event to check if protected (only if player is available and alive)
                     if (player != null && player.isAlive()) {
                         BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, neighborPos, neighborState, player);
                         if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
-                            continue; // Protected, skip this block
+                            continue;
                         }
                     }
-                    // If player is null/dead, skip protection check and allow spread without LP cost
 
-                    // Set neighbor to antilife
                     level.setBlock(neighborPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState()
                         .setValue(DECAYING, false), 3);
 
-                    // Configure neighbor's block entity
                     if (level.getBlockEntity(neighborPos) instanceof BlockEntityAntiLife neighborAntiLife) {
                         neighborAntiLife.setSeeking(antilife.getSeeking());
                         neighborAntiLife.setRange(range - 1);
                         neighborAntiLife.setPlayerUUID(antilife.getPlayerUUID());
                     }
 
-                    // Schedule neighbor tick
                     level.scheduleTick(neighborPos, this, random.nextInt(25));
 
-                    // Consume LP from player (only if alive to prevent crash on dead player)
                     if (player != null && player.isAlive()) {
                         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
                         SoulTicket ticket = SoulTicket.create(AnimusConfig.sigils.antiLifeConsumption.get());
@@ -164,7 +142,6 @@ public class BlockAntiLife extends BaseEntityBlock {
             }
         }
 
-        // If decaying, remove this block
         if (decaying) {
             level.removeBlock(pos, false);
         }
@@ -172,7 +149,6 @@ public class BlockAntiLife extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        // When broken, start decay on adjacent antilife
         if (!level.isClientSide && state.getBlock() != newState.getBlock()) {
             for (BlockPos neighborPos : getNeighbors(pos)) {
                 BlockState neighborState = level.getBlockState(neighborPos);
@@ -186,15 +162,12 @@ public class BlockAntiLife extends BaseEntityBlock {
         super.onRemove(state, level, pos, newState, isMoving);
     }
 
-    /**
-     * Get all neighboring positions in a 3x3x3 cube
-     */
     private List<BlockPos> getNeighbors(BlockPos pos) {
         List<BlockPos> neighbors = new ArrayList<>();
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 for (int z = -1; z <= 1; z++) {
-                    if (x == 0 && y == 0 && z == 0) continue; // Skip center
+                    if (x == 0 && y == 0 && z == 0) continue;
                     neighbors.add(pos.offset(x, y, z));
                 }
             }

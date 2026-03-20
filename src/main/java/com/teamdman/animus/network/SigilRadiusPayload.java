@@ -8,9 +8,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 
-/**
- * Payload for syncing Sigil of Equivalency radius from client to server
- */
 public record SigilRadiusPayload(InteractionHand hand, int radius) implements CustomPacketPayload {
     public static final Type<SigilRadiusPayload> TYPE = new Type<>(
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "sigil_radius")

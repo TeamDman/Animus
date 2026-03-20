@@ -45,13 +45,11 @@ import java.util.function.Consumer;
  * Refresh Cost: 75 LP per entity
  * Refresh Time: 25 ticks
  * Range: Configurable (default 10 blocks horizontal, 10 blocks vertical above AND below stone)
- * LP per Kill: Determined by Blood Magic's entity_sacrifice_value datamap (entity's full health worth)
+ * LP per Kill: Determined by NeoVitae's entity_sacrifice_value datamap (entity's full health worth)
  */
 public class RitualCulling extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
-
-    // Damage source is created per-level in 1.20.1, not static
 
     public final int maxWill = 100;
     public final Random rand = new Random();
@@ -99,7 +97,6 @@ public class RitualCulling extends Ritual {
         double zCoord = ritualStone.getMasterBlockPos().getZ();
 
         if (player != null && player.level() instanceof ServerLevel serverLevel) {
-            // Spawn lightning effect at ritual
             serverLevel.sendParticles(
                 ParticleTypes.ELECTRIC_SPARK,
                 xCoord + 0.5,
@@ -130,15 +127,13 @@ public class RitualCulling extends Ritual {
             return;
         }
 
-        // Get current destructive demon will (for boss killing)
         EnumWillType type = EnumWillType.DESTRUCTIVE;
         double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
-        // Check for raw demon will (for player-like kills)
+        // Raw demon will enables player-like kills (mob drops as if killed by player)
         double rawWillAmount = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.DEFAULT);
         boolean usePlayerKill = AnimusConfig.rituals.cullingPlayerKillDrops.get() && rawWillAmount >= 1.0;
 
-        // Find nearby altar
         BloodAltarTile tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
         if (tileAltar == null) {
             if (AnimusConfig.rituals.cullingDebug.get()) {
@@ -159,7 +154,6 @@ public class RitualCulling extends Ritual {
             System.out.println("Animus: [Ritual of Culling Debug]: Found " + list.size() + " entities in range");
         }
 
-        // Kill primed TNT if configured
         if (AnimusConfig.rituals.cullingKillsTnT.get()) {
             List<PrimedTnt> tntList = level.getEntitiesOfClass(PrimedTnt.class, range);
             for (PrimedTnt tnt : tntList) {
@@ -189,7 +183,6 @@ public class RitualCulling extends Ritual {
                     System.out.println("Animus: [Ritual of Culling Debug]:   Health: " + livingEntity.getHealth() + "/" + livingEntity.getMaxHealth());
                 }
 
-                // Skip players with more than 4 health
                 if (livingEntity instanceof Player && livingEntity.getHealth() > 4) {
                     if (AnimusConfig.rituals.cullingDebug.get()) {
                         System.out.println("Animus: [Ritual of Culling Debug]:   SKIPPED - Player with health > 4");
@@ -197,7 +190,7 @@ public class RitualCulling extends Ritual {
                     continue;
                 }
 
-                // Check for potion effects (cursed earth spawned mobs have effects)
+                // Mobs with potion effects (e.g. from cursed earth spawners) are skipped unless config allows
                 Collection<MobEffectInstance> effects = livingEntity.getActiveEffects();
 
                 if (AnimusConfig.rituals.cullingDebug.get()) {
@@ -212,8 +205,6 @@ public class RitualCulling extends Ritual {
 
                 if (effects.isEmpty() || AnimusConfig.general.canKillBuffedMobs.get()) {
                     BlockPos at = livingEntity.blockPosition();
-                    // In 1.21, canChangeDimensions() requires (Level, Level) params
-                    // Using invulnerability check and direct type checks for boss detection
                     boolean isBoss = livingEntity.isInvulnerable()
                                      || livingEntity.getType() == net.minecraft.world.entity.EntityType.WITHER
                                      || livingEntity.getType() == net.minecraft.world.entity.EntityType.ENDER_DRAGON
@@ -224,7 +215,6 @@ public class RitualCulling extends Ritual {
                         System.out.println("Animus: [Ritual of Culling Debug]:   Is invulnerable: " + livingEntity.isInvulnerable());
                     }
 
-                    // Check if entity is in the disallow_culling tag
                     if (livingEntity.getType().is(Constants.Tags.DISALLOW_CULLING)) {
                         if (AnimusConfig.rituals.cullingDebug.get()) {
                             System.out.println("Animus: [Ritual of Culling Debug]:   SKIPPED - Entity in disallow_culling tag");
@@ -232,7 +222,6 @@ public class RitualCulling extends Ritual {
                         continue;
                     }
 
-                    // Silence entity
                     livingEntity.setSilent(true);
 
                     if (AnimusConfig.rituals.cullingDebug.get()) {
@@ -241,7 +230,7 @@ public class RitualCulling extends Ritual {
 
                     float damage = Float.MAX_VALUE;
 
-                    // Special handling for bosses
+                    // Bosses require 100+ destructive demon will and extra LP to kill
                     if (AnimusConfig.rituals.killBoss.get() && isBoss && currentAmount > 99
                         && (currentEssence >= AnimusConfig.rituals.bossCost.get() + (getRefreshCost() * list.size()))) {
 
@@ -251,7 +240,6 @@ public class RitualCulling extends Ritual {
                             System.out.println("Animus: [Ritual of Culling Debug]:     Boss cost: " + AnimusConfig.rituals.bossCost.get());
                         }
 
-                        // Make boss vulnerable so it can be killed
                         livingEntity.setInvulnerable(false);
                     } else if (isBoss) {
                         if (AnimusConfig.rituals.cullingDebug.get()) {
@@ -268,20 +256,14 @@ public class RitualCulling extends Ritual {
                         System.out.println("Animus: [Ritual of Culling Debug]:   Using player kill: " + usePlayerKill);
                     }
 
-                    // Use FakePlayer for player-like kills when raw will is available
                     if (usePlayerKill && level instanceof ServerLevel serverLevel) {
                         AnimusFakePlayer fakePlayer = AnimusFakePlayer.get(serverLevel, ritualStone.getOwner(), null);
 
-                        // Give the fake player a looting sword based on will types
                         ItemStack lootingSword = AnimusFakePlayer.createLootingSword(serverLevel, pos);
                         fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, lootingSword);
-
-                        // Position fake player near the entity
                         fakePlayer.setPos(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
 
-                        // Set lastHurtByPlayer to enable player-only drops (like blaze rods)
-                        // This field is checked by loot tables to determine if player killed the mob
-                        // Using reflection since these fields are protected
+                        // Set lastHurtByPlayer so loot tables treat this as a player kill (enables player-only drops like blaze rods)
                         try {
                             java.lang.reflect.Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("lastHurtByPlayer");
                             lastHurtByPlayerField.setAccessible(true);
@@ -291,14 +273,12 @@ public class RitualCulling extends Ritual {
                             lastHurtByPlayerTimeField.setAccessible(true);
                             lastHurtByPlayerTimeField.setInt(livingEntity, 100);
                         } catch (Exception e) {
-                            // Try obfuscated field names if reflection fails
+                            // Fall back to obfuscated field names
                             try {
-                                // f_20889_ is the obfuscated name for lastHurtByPlayer in 1.20.1
                                 java.lang.reflect.Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("f_20889_");
                                 lastHurtByPlayerField.setAccessible(true);
                                 lastHurtByPlayerField.set(livingEntity, fakePlayer);
 
-                                // f_20890_ is the obfuscated name for lastHurtByPlayerTime in 1.20.1
                                 java.lang.reflect.Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("f_20890_");
                                 lastHurtByPlayerTimeField.setAccessible(true);
                                 lastHurtByPlayerTimeField.setInt(livingEntity, 100);
@@ -309,11 +289,9 @@ public class RitualCulling extends Ritual {
                             }
                         }
 
-                        // Use player attack damage source for player-only drops
                         DamageSource playerDamage = level.damageSources().playerAttack(fakePlayer);
                         result = livingEntity.hurt(playerDamage, damage);
 
-                        // Chance to consume raw will
                         if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
                             WorldDemonWillHandler.drainWillFromChunk(level, pos, EnumWillType.DEFAULT, 1.0);
                             if (AnimusConfig.rituals.cullingDebug.get()) {
@@ -332,7 +310,6 @@ public class RitualCulling extends Ritual {
 
                     if (result) {
                         entityCount++;
-                        // Calculate LP using entity sacrifice datamap - full kill = max health worth of damage
                         int lpPerKill = EntitySacrificeHelper.calculateLP(livingEntity, livingEntity.getMaxHealth());
                         tileAltar.addSacrificeLP(lpPerKill, true);
 
@@ -343,10 +320,9 @@ public class RitualCulling extends Ritual {
                         }
 
                         if (isBoss) {
-                            // Boss kill - extra LP cost
                             network.syphon(SoulTicket.create(AnimusConfig.rituals.bossCost.get()));
                         } else {
-                            // Regular mob - add to will buffer
+                            // Animals generate more will than other mobs
                             double modifier = 0.5;
                             if (livingEntity instanceof Animal) {
                                 modifier = 2.0;
@@ -354,7 +330,6 @@ public class RitualCulling extends Ritual {
                             willBuffer += modifier * Math.min(15.0, livingEntity.getMaxHealth());
                         }
 
-                        // Spawn particles
                         if (level instanceof ServerLevel serverLevel) {
                             serverLevel.sendParticles(
                                 ParticleTypes.PORTAL,
@@ -382,10 +357,9 @@ public class RitualCulling extends Ritual {
                 System.out.println("Animus: [Ritual of Culling Debug]: Finished culling loop - killed " + entityCount + " entities");
             }
 
-            // Consume LP for kills
             network.syphon(SoulTicket.create(getRefreshCost() * entityCount));
 
-            // Generate destructive demon will (3% chance per cycle)
+            // ~3% chance per cycle to generate destructive demon will
             double addAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2.0, 10));
             if (rand.nextInt(30) == 0 && addAmount > 0) {
                 WorldDemonWillHandler.addWillToChunk(level, pos, type, addAmount);

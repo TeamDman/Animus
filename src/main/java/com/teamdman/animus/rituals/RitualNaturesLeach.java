@@ -40,10 +40,9 @@ import java.util.function.Consumer;
 public class RitualNaturesLeach extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
-    public static final int ALTAR_RECHECK_INTERVAL = 100; // Recheck altar every 100 ticks (5 seconds)
+    public static final int ALTAR_RECHECK_INTERVAL = 100;
     public final int maxWill = 100;
 
-    // Altar caching for performance
     public BlockPos cachedAltarPos = null;
     public BloodAltarTile cachedAltar = null;
     public int ticksSinceAltarCheck = 0;
@@ -53,35 +52,25 @@ public class RitualNaturesLeach extends Ritual {
     public RitualNaturesLeach() {
         super(Constants.Rituals.LEACH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEACH);
 
-        // Use default range (32 blocks) - config is not available at construction time
-        // Range can be adjusted via the ritual stone GUI
         int range = 32;
-        int rangeSize = range * 2 + 4; // Convert to full size
+        int rangeSize = range * 2 + 4;
 
-        // Altar range: 32 blocks horizontally, 10 blocks down, 10 blocks up
         addBlockRange(ALTAR_RANGE, RitualAreaDescriptors.horizontalArea(32, 10));
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-range, -range, -range), rangeSize, rangeSize, rangeSize));
         setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, range + 10, range + 10, range + 10);
         setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 32, 32);
     }
 
-    /**
-     * Check if a block is blacklisted from being consumed by Nature's Leach
-     * @param block The block to check
-     * @return true if the block is in the disallow_leach tag
-     */
     public static boolean isBlacklisted(Block block) {
         return block.defaultBlockState().is(Constants.Tags.DISALLOW_LEACH);
     }
 
     public void performRitual(IMasterRitualStone ritualStone) {
         Level level = ritualStone.getWorldObj();
-        // RandomSource in 1.20.1
         net.minecraft.util.RandomSource randomSource = level.random;
         Random random = new Random(randomSource.nextLong());
         BlockPos pos = ritualStone.getMasterBlockPos();
 
-        // Get current corrosive demon will
         EnumWillType type = EnumWillType.CORROSIVE;
         will = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
@@ -97,40 +86,32 @@ public class RitualNaturesLeach extends Ritual {
         }
 
         if (currentEssence < getRefreshCost()) {
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
         network.syphon(SoulTicket.create(getRefreshCost()));
 
-        // Find nearby altar with caching for performance
         BloodAltarTile tileAltar = null;
         ticksSinceAltarCheck++;
 
-        // Check if we have a valid cached altar
         if (cachedAltar != null && cachedAltarPos != null && ticksSinceAltarCheck < ALTAR_RECHECK_INTERVAL) {
-            // Verify the cached altar is still valid
             if (level.getBlockEntity(cachedAltarPos) instanceof BloodAltarTile altar) {
                 tileAltar = altar;
             } else {
-                // Cached altar is no longer valid, clear cache
                 cachedAltar = null;
                 cachedAltarPos = null;
             }
         }
 
-        // If we don't have a cached altar or it's time to recheck, search for one
         if (tileAltar == null || ticksSinceAltarCheck >= ALTAR_RECHECK_INTERVAL) {
             BlockPos hintPos = cachedAltarPos != null ? cachedAltarPos : BlockPos.ZERO;
             tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, hintPos);
 
             if (tileAltar != null) {
-                // Update cache
                 cachedAltar = tileAltar;
                 cachedAltarPos = tileAltar.getBlockPos();
                 ticksSinceAltarCheck = 0;
             } else {
-                // No altar found, clear cache
                 cachedAltar = null;
                 cachedAltarPos = null;
                 ticksSinceAltarCheck = 0;
@@ -142,7 +123,6 @@ public class RitualNaturesLeach extends Ritual {
             return;
         }
 
-        // Scan for consumable plants
         AreaDescriptor eatRange = getBlockRange(EFFECT_RANGE);
         int randFood = 1 + random.nextInt(3);
         int eaten = 0;
@@ -158,7 +138,6 @@ public class RitualNaturesLeach extends Ritual {
             }
 
             if (random.nextInt(100) < 20 && isConsumable(eatBlock)) {
-                // Spawn particles
                 if (level instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(
                         ParticleTypes.HAPPY_VILLAGER,
@@ -173,25 +152,19 @@ public class RitualNaturesLeach extends Ritual {
                     );
                 }
 
-                // Play sound
                 level.playSound(null, eatPos, SoundEvents.CROP_BREAK, SoundSource.BLOCKS, 0.4F, 1.0F);
-
-                // Remove block
                 level.removeBlock(eatPos, false);
                 eaten++;
             }
         }
 
-        // Add blood to altar (use config value)
         int lpPerBlock = AnimusConfig.rituals.naturesLeachLpPerBlock.get();
         tileAltar.addSacrificeLP(eaten * lpPerBlock, true);
 
-        // Generate corrosive demon will based on blocks consumed
         // Each consumed block generates 0.5-1.5 corrosive will
         if (eaten > 0) {
-            double willPerBlock = 0.5 + random.nextDouble(); // 0.5-1.5 per block
+            double willPerBlock = 0.5 + random.nextDouble();
             double totalWillToAdd = eaten * willPerBlock;
-            // Cap will to max
             double currentWill = WorldDemonWillHandler.getCurrentWill(level, pos, type);
             double actualAdd = Math.min(totalWillToAdd, maxWill - currentWill);
             if (actualAdd > 0) {
@@ -207,34 +180,28 @@ public class RitualNaturesLeach extends Ritual {
 
         String blockName = block.getDescriptionId().toLowerCase();
 
-        // Skip Botania special flowers
         if (blockName.contains("specialflower") || blockName.contains("shinyflower")) {
             return false;
         }
 
-        // Check if block is blacklisted using the tag
         if (isBlacklisted(block)) {
             return false;
         }
 
-        // Check if block is a log
         if (block.defaultBlockState().is(BlockTags.LOGS)) {
             return true;
         }
 
-        // Check if block is a plant (flowers, crops, etc)
         if (block.defaultBlockState().is(BlockTags.FLOWERS) ||
             block.defaultBlockState().is(BlockTags.CROPS) ||
             block.defaultBlockState().is(BlockTags.SAPLINGS)) {
             return true;
         }
 
-        // Check if block is bonemealable (growable)
         if (block instanceof BonemealableBlock) {
             return true;
         }
 
-        // Check for common plant blocks
         if (block == Blocks.SHORT_GRASS ||
             block == Blocks.TALL_GRASS ||
             block == Blocks.FERN ||

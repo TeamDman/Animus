@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sanguine Diviner - Displays information about Blood Magic altars and rituals
+ * Sanguine Diviner - Displays information about NeoVitae altars and rituals
  * <p>
  * Features:
  * - Right-click altar to check tier and capacity
@@ -224,7 +224,7 @@ public class ItemSanguineDiviner extends Item {
                 }
 
                 if (totalPlacedCount > 0) {
-                    // Display 1-indexed tier to match Blood Magic convention
+                    // Display 1-indexed tier to match NeoVitae convention
                     int displayTier = highestTierBuilt + 1;
                     player.displayClientMessage(
                         Component.translatable("text.component.animus.diviner.placed_blocks", totalPlacedCount, totalPlacedCount == 1 ? "" : "s", displayTier)
@@ -270,7 +270,7 @@ public class ItemSanguineDiviner extends Item {
                 Component.translatable(Constants.Localizations.Text.DIVINER_ESSENCE_INFO, currentBlood, capacity), false
             );
 
-            // Show tier information (display as 1-indexed to match Blood Magic convention)
+            // Show tier information (display as 1-indexed to match NeoVitae convention)
             int displayTier = tierLevel + 1;
             player.displayClientMessage(
                 Component.translatable(Constants.Localizations.Text.DIVINER_TIER_INFO, displayTier), false

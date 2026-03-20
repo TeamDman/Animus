@@ -21,9 +21,6 @@ import org.joml.Matrix4f;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Client-side renderer for ghost blocks shown by the Sanguine Diviner
- */
 @EventBusSubscriber(value = Dist.CLIENT, modid = "animus")
 public class AltarGhostBlockRenderer {
     private static Map<BlockPos, ResourceLocation> ghostBlocks = new HashMap<>();
@@ -49,7 +46,6 @@ public class AltarGhostBlockRenderer {
             return;
         }
 
-        // Decrement timer
         remainingTicks--;
         if (remainingTicks <= 0) {
             clear();
@@ -72,7 +68,6 @@ public class AltarGhostBlockRenderer {
             BlockPos pos = entry.getKey();
             ResourceLocation blockId = entry.getValue();
 
-            // Get the block from registry
             Block block = BuiltInRegistries.BLOCK.getOptional(blockId).orElse(null);
             if (block == null || block == Blocks.AIR) {
                 continue;
@@ -80,7 +75,6 @@ public class AltarGhostBlockRenderer {
 
             BlockState state = block.defaultBlockState();
 
-            // Translate to block position relative to camera
             poseStack.pushPose();
             poseStack.translate(
                 pos.getX() - cameraPos.x,
@@ -88,7 +82,6 @@ public class AltarGhostBlockRenderer {
                 pos.getZ() - cameraPos.z
             );
 
-            // Render translucent outline box
             renderGhostBlock(poseStack, bufferSource, state);
 
             poseStack.popPose();
@@ -98,23 +91,19 @@ public class AltarGhostBlockRenderer {
     }
 
     private static void renderGhostBlock(PoseStack poseStack, MultiBufferSource bufferSource, BlockState state) {
-        // Use lines render type for wireframe
         VertexConsumer consumer = bufferSource.getBuffer(RenderType.lines());
-
         Matrix4f matrix = poseStack.last().pose();
 
-        // Define translucent ghost color (light blue)
         float r = 0.3f;
         float g = 0.7f;
         float b = 1.0f;
-        float a = 0.8f;  // 80% opacity for lines
+        float a = 0.8f;
 
-        // Calculate fade based on remaining time (fade out in last 20 ticks)
+        // Fade out in last 20 ticks
         if (remainingTicks < 20) {
             a *= (remainingTicks / 20.0f);
         }
 
-        // Render a wireframe box
         float minX = 0.0f;
         float minY = 0.0f;
         float minZ = 0.0f;
@@ -122,20 +111,16 @@ public class AltarGhostBlockRenderer {
         float maxY = 1.0f;
         float maxZ = 1.0f;
 
-        // Draw the 12 edges of the cube
-        // Bottom face edges
         addLine(consumer, matrix, minX, minY, minZ, maxX, minY, minZ, r, g, b, a);
         addLine(consumer, matrix, maxX, minY, minZ, maxX, minY, maxZ, r, g, b, a);
         addLine(consumer, matrix, maxX, minY, maxZ, minX, minY, maxZ, r, g, b, a);
         addLine(consumer, matrix, minX, minY, maxZ, minX, minY, minZ, r, g, b, a);
 
-        // Top face edges
         addLine(consumer, matrix, minX, maxY, minZ, maxX, maxY, minZ, r, g, b, a);
         addLine(consumer, matrix, maxX, maxY, minZ, maxX, maxY, maxZ, r, g, b, a);
         addLine(consumer, matrix, maxX, maxY, maxZ, minX, maxY, maxZ, r, g, b, a);
         addLine(consumer, matrix, minX, maxY, maxZ, minX, maxY, minZ, r, g, b, a);
 
-        // Vertical edges
         addLine(consumer, matrix, minX, minY, minZ, minX, maxY, minZ, r, g, b, a);
         addLine(consumer, matrix, maxX, minY, minZ, maxX, maxY, minZ, r, g, b, a);
         addLine(consumer, matrix, maxX, minY, maxZ, maxX, maxY, maxZ, r, g, b, a);
@@ -146,20 +131,17 @@ public class AltarGhostBlockRenderer {
                                 float x1, float y1, float z1,
                                 float x2, float y2, float z2,
                                 float r, float g, float b, float a) {
-        // Calculate normal for the line (direction vector)
         float dx = x2 - x1;
         float dy = y2 - y1;
         float dz = z2 - z1;
         float length = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-        // Normalize
         if (length > 0) {
             dx /= length;
             dy /= length;
             dz /= length;
         }
 
-        // Add two vertices for the line
         consumer.addVertex(matrix, x1, y1, z1).setColor(r, g, b, a).setNormal(dx, dy, dz);
         consumer.addVertex(matrix, x2, y2, z2).setColor(r, g, b, a).setNormal(dx, dy, dz);
     }

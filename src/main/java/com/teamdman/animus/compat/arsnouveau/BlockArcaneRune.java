@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
  * When no Source available:
  * - Acts as a Speed Rune but half as fast
  *
- * Note: The actual altar stat modifications are handled by Blood Magic's rune system
+ * Note: The actual altar stat modifications are handled by NeoVitae's rune system
  * through component registration. This block entity tracks the Source consumption
  * and can be queried for its current bonus state.
  */
@@ -48,7 +48,6 @@ public class BlockArcaneRune extends Block implements EntityBlock {
         return new BlockEntityArcaneRune(pos, state);
     }
 
-    // Static server ticker to avoid lambda allocation
     private static final BlockEntityTicker<BlockEntityArcaneRune> SERVER_TICKER =
         (level, pos, state, blockEntity) -> blockEntity.tick();
 
@@ -59,9 +58,6 @@ public class BlockArcaneRune extends Block implements EntityBlock {
             createTickerHelper(type, ArsNouveauCompat.ARCANE_RUNE_BE.get(), SERVER_TICKER);
     }
 
-    /**
-     * Helper method for type-safe ticker creation
-     */
     @Nullable
     protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
         BlockEntityType<A> givenType,

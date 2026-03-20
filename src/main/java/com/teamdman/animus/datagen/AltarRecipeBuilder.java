@@ -9,9 +9,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import com.breakinblocks.neovitae.common.recipe.bloodaltar.BloodAltarRecipe;
 
-/**
- * Builder for Blood Altar recipes compatible with Blood Magic NV 1.21.1
- */
 public class AltarRecipeBuilder {
     protected int minTier = 0;
     protected int totalBlood;

@@ -46,13 +46,8 @@ public class RitualSiphon extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public static final String TANK_RANGE = "tank";
 
-    // Track current search position for each ritual to resume searching where we left off
     private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
-
-    // Cache of extracted positions to skip redundant checks
     private static final Map<BlockPos, Set<BlockPos>> extractedPositionsCache = new HashMap<>();
-
-    // Amount of fluid to extract/place per operation (1 bucket = 1000mB)
     private static final int BUCKET_AMOUNT = 1000;
 
     public RitualSiphon() {
@@ -87,7 +82,6 @@ public class RitualSiphon extends Ritual {
             return;
         }
 
-        // Check for fluid tank using configurable tank range
         AreaDescriptor tankRange = getBlockRange(TANK_RANGE);
         BlockPos tankPos = tankRange.getContainedPositions(masterPos).iterator().next();
         BlockEntity tankEntity = level.getBlockEntity(tankPos);
@@ -97,7 +91,6 @@ public class RitualSiphon extends Ritual {
             return;
         }
 
-        // Get fluid handler capability with error handling
         IFluidHandler fluidHandler;
         try {
             fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, tankPos, Direction.DOWN);
@@ -106,13 +99,10 @@ public class RitualSiphon extends Ritual {
                 return;
             }
         } catch (Exception e) {
-            // Handle capability errors (e.g., when tank is removed)
             emitSmokeParticles(serverLevel, masterPos);
             return;
         }
 
-        // Find a fluid source to extract below the ritual stone (center-outward search)
-        // Derive range from Ritual Tinkerer-modifiable block range
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         net.minecraft.world.phys.AABB effectAABB = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(Math.abs(effectAABB.maxX - masterPos.getX()), Math.abs(effectAABB.maxZ - masterPos.getZ()));
@@ -120,47 +110,37 @@ public class RitualSiphon extends Ritual {
         BlockPos fluidPos = findFluidSource(serverLevel, masterPos, horizontalRadius, verticalDepth);
 
         if (fluidPos == null) {
-            // No fluid found, emit smoke
             emitSmokeParticles(serverLevel, masterPos);
             return;
         }
 
-        // Get the fluid at this position
         BlockState fluidState = level.getBlockState(fluidPos);
         FluidState fluidStateData = fluidState.getFluidState();
 
         if (fluidStateData.isEmpty() || !fluidStateData.isSource()) {
-            // Not a valid source block, try again next tick
             return;
         }
 
-        // Create fluid stack for the fluid we found
         FluidStack fluidStack = new FluidStack(fluidStateData.getType(), BUCKET_AMOUNT);
 
-        // Try to fill the tank (simulate first)
         int filled;
         try {
             filled = fluidHandler.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE);
             if (filled < BUCKET_AMOUNT) {
-                // Tank is full or doesn't accept this fluid type
                 emitSmokeParticles(serverLevel, masterPos);
                 return;
             }
         } catch (Exception e) {
-            // Handle fill errors
             emitSmokeParticles(serverLevel, masterPos);
             return;
         }
 
-        // Check if we have enough LP
         int lpCost = AnimusConfig.rituals.siphonLPPerExtraction.get();
         int currentEssence = network.getCurrentEssence();
         if (currentEssence < lpCost) {
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        // Actually fill the tank
         int actualFilled;
         try {
             actualFilled = fluidHandler.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
@@ -168,69 +148,50 @@ public class RitualSiphon extends Ritual {
                 return;
             }
         } catch (Exception e) {
-            // Handle fill errors
             return;
         }
 
-        // Replace the fluid source block with configured replacement block
         level.setBlockAndUpdate(fluidPos, getReplacementBlock());
 
-        // Add to cache to skip this position in future searches
         Set<BlockPos> extractedPositions = extractedPositionsCache.computeIfAbsent(
             masterPos.immutable(),
             k -> new java.util.HashSet<>()
         );
         extractedPositions.add(fluidPos.immutable());
 
-        // Consume LP
         network.syphon(SoulTicket.create(lpCost));
     }
 
-    /**
-     * Find a fluid source block using a DFS column-by-column search from center outward
-     * Starts directly below the master ritual stone and expands outward in square rings
-     * Searches each column vertically before moving to the next position
-     */
     private BlockPos findFluidSource(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
-        // Start position is below the master ritual stone
         BlockPos startPos = masterPos.below();
 
-        int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
+        int maxChecksPerTick = 64;
         int checksThisTick = 0;
 
-        // Search by expanding square rings from center outward
         for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
-            // Iterate through all positions in this radius ring
             for (int x = -radius; x <= radius && checksThisTick < maxChecksPerTick; x++) {
-                // Skip if we're not resuming from this X position
                 if (radius == state.currentRadius && x < state.currentX) continue;
 
                 for (int z = -radius; z <= radius && checksThisTick < maxChecksPerTick; z++) {
-                    // Skip if we're not resuming from this Z position
                     if (radius == state.currentRadius && x == state.currentX && z < state.currentZ) continue;
 
-                    // Only check positions on the perimeter of this radius ring
-                    // (except for radius 0, which is just the center point)
                     if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) {
                         continue;
                     }
 
-                    // Search vertically down this column
                     int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
                     for (int y = startY; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
                         BlockPos checkPos = startPos.offset(x, -y, z);
                         checksThisTick++;
 
-                        // Update search state to resume from here next tick
                         state.currentRadius = radius;
                         state.currentX = x;
                         state.currentZ = z;
                         state.currentY = y;
 
                         if (isFluidSource(level, checkPos, masterPos)) {
-                            // Advance to next position for next search
                             state.currentY++;
                             if (state.currentY >= verticalDepth) {
                                 state.currentY = 0;
@@ -248,15 +209,12 @@ public class RitualSiphon extends Ritual {
                             return checkPos;
                         }
                     }
-                    // Column complete, reset Y for next column
                     state.currentY = 0;
                 }
-                // Row complete, reset Z for next row
                 state.currentZ = -radius;
             }
         }
 
-        // If we've searched the entire range, reset to start over next tick
         if (state.currentRadius > horizontalRadius) {
             resetSearchState(masterPos);
         }
@@ -264,12 +222,7 @@ public class RitualSiphon extends Ritual {
         return null;
     }
 
-    /**
-     * Check if a position contains a fluid source block
-     * Uses cache to skip already-extracted positions for performance
-     */
     private boolean isFluidSource(ServerLevel level, BlockPos pos, BlockPos masterPos) {
-        // Check cache first - if we've already extracted from this position, skip it
         Set<BlockPos> extractedPositions = extractedPositionsCache.get(masterPos);
         if (extractedPositions != null && extractedPositions.contains(pos)) {
             return false;
@@ -277,20 +230,14 @@ public class RitualSiphon extends Ritual {
 
         BlockState state = level.getBlockState(pos);
 
-        // Check if it's a liquid block
         if (!(state.getBlock() instanceof LiquidBlock)) {
             return false;
         }
 
-        // Check if it's a source block (level 0)
         FluidState fluidState = state.getFluidState();
         return fluidState.isSource();
     }
 
-    /**
-     * Get the replacement block state from config
-     * Falls back to antilife block if config value is invalid
-     */
     private BlockState getReplacementBlock() {
         String blockId = AnimusConfig.rituals.siphonReplacementBlock.get();
         try {
@@ -306,22 +253,16 @@ public class RitualSiphon extends Ritual {
                 }
             }
 
-            // Log warning if block not found
             LOGGER.warn("[Siphon] Configured replacement block '{}' not found, using antilife block", blockId);
         } catch (Exception e) {
             LOGGER.warn("[Siphon] Invalid replacement block ID '{}', using antilife block: {}",
                 blockId, e.getMessage());
         }
 
-        // Fall back to antilife block
         return AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState();
     }
 
-    /**
-     * Emit smoke particles from the master ritual stone when unable to extract fluid
-     */
     private void emitSmokeParticles(ServerLevel level, BlockPos pos) {
-        // Emit smoke particles at the ritual stone
         RandomSource random = level.getRandom();
         for (int i = 0; i < 5; i++) {
             double x = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.5;
@@ -337,16 +278,10 @@ public class RitualSiphon extends Ritual {
         }
     }
 
-    /**
-     * Reset the search state for a ritual position
-     */
     private void resetSearchState(BlockPos pos) {
         searchStates.remove(pos);
     }
 
-    /**
-     * Clean up search state and cache when ritual stops
-     */
     public void onRitualStopped(Level level, BlockPos masterPos) {
         searchStates.remove(masterPos);
         extractedPositionsCache.remove(masterPos);
@@ -354,33 +289,26 @@ public class RitualSiphon extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 0; // Cost is per extraction, not a flat refresh
+        return 0;
     }
 
     @Override
     public int getRefreshTime() {
-        return 10; // 0.5 seconds
+        return 10;
     }
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Create a water-themed pattern for fluid manipulation (reverse of Relentless Tides)
-        // Water runes represent fluid control
-        // Air runes represent suction and upward flow
-
-        // Inner circle with water runes (cardinal directions)
         addRune(components, 0, 0, -2, EnumRuneType.WATER);
         addRune(components, 0, 0, 2, EnumRuneType.WATER);
         addRune(components, -2, 0, 0, EnumRuneType.WATER);
         addRune(components, 2, 0, 0, EnumRuneType.WATER);
 
-        // Middle ring with air runes (diagonals) for upward flow
         addRune(components, -2, 0, -2, EnumRuneType.EARTH);
         addRune(components, -2, 0, 2, EnumRuneType.EARTH);
         addRune(components, 2, 0, -2, EnumRuneType.EARTH);
         addRune(components, 2, 0, 2, EnumRuneType.EARTH);
 
-        // Outer ring with more water runes for extended range
         addRune(components, 0, 0, -3, EnumRuneType.WATER);
         addRune(components, 0, 0, 3, EnumRuneType.WATER);
         addRune(components, -3, 0, 0, EnumRuneType.WATER);
@@ -392,14 +320,10 @@ public class RitualSiphon extends Ritual {
         return new RitualSiphon();
     }
 
-    /**
-     * Track the search state for each ritual to resume where it left off
-     * Searches from center outward in expanding square rings
-     */
     private static class SearchState {
-        int currentRadius = 0; // Start from center (directly below ritual stone)
-        int currentX = 0; // X position within current radius ring
-        int currentZ = 0; // Z position within current radius ring
-        int currentY = 0; // Vertical position (0 = ritual stone level, increases downward)
+        int currentRadius = 0;
+        int currentX = 0;
+        int currentZ = 0;
+        int currentY = 0;
     }
 }

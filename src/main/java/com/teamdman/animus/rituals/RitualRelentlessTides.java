@@ -43,13 +43,8 @@ public class RitualRelentlessTides extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public static final String TANK_RANGE = "tank";
 
-    // Track current search position for each ritual to resume searching where we left off
     private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
-
-    // Cache of filled positions to skip redundant checks
     private static final Map<BlockPos, Set<BlockPos>> filledPositionsCache = new HashMap<>();
-
-    // Amount of fluid to extract/place per operation
     private static final int BUCKET_AMOUNT = 1000;
 
     public RitualRelentlessTides() {
@@ -84,7 +79,6 @@ public class RitualRelentlessTides extends Ritual {
             return;
         }
 
-        // Check for fluid tank using configurable tank range
         AreaDescriptor tankRange = getBlockRange(TANK_RANGE);
         BlockPos tankPos = tankRange.getContainedPositions(masterPos).iterator().next();
         BlockEntity tankEntity = level.getBlockEntity(tankPos);
@@ -94,7 +88,6 @@ public class RitualRelentlessTides extends Ritual {
             return;
         }
 
-        // Get fluid handler capability with error handling
         IFluidHandler fluidHandler;
         try {
             fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, tankPos, Direction.DOWN);
@@ -103,12 +96,10 @@ public class RitualRelentlessTides extends Ritual {
                 return;
             }
         } catch (Exception e) {
-            // Handle capability errors (in case the tank is removed)
             emitSmokeParticles(serverLevel, masterPos);
             return;
         }
 
-        // Try to extract fluid by simulation first
         FluidStack extractedFluid;
         try {
             extractedFluid = fluidHandler.drain(BUCKET_AMOUNT, IFluidHandler.FluidAction.SIMULATE);
@@ -117,13 +108,10 @@ public class RitualRelentlessTides extends Ritual {
                 return;
             }
         } catch (Exception e) {
-            // Handle any drain errors
             emitSmokeParticles(serverLevel, masterPos);
             return;
         }
 
-        // Find a valid placement position below the ritual stone
-        // Derive range from Ritual Tinkerer-modifiable block range
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         net.minecraft.world.phys.AABB effectAABB = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(Math.abs(effectAABB.maxX - masterPos.getX()), Math.abs(effectAABB.maxZ - masterPos.getZ()));
@@ -132,20 +120,16 @@ public class RitualRelentlessTides extends Ritual {
         BlockPos placementPos = findValidPlacementPosition(serverLevel, masterPos, horizontalRadius, verticalDepth, fluidToPlace);
 
         if (placementPos == null) {
-            // No valid placement found, emit smoke
             emitSmokeParticles(serverLevel, masterPos);
             return;
         }
 
-        // Check if we have enough LP
         int lpCost = AnimusConfig.rituals.relentlessTidesLPPerPlacement.get();
         int currentEssence = network.getCurrentEssence();
         if (currentEssence < lpCost) {
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        // Actually extract the fluid
         FluidStack actualExtracted;
         try {
             actualExtracted = fluidHandler.drain(BUCKET_AMOUNT, IFluidHandler.FluidAction.EXECUTE);
@@ -153,76 +137,57 @@ public class RitualRelentlessTides extends Ritual {
                 return;
             }
         } catch (Exception e) {
-            // Handle extraction errors
             return;
         }
 
-        // Place the fluid in the world
         Fluid fluid = actualExtracted.getFluid();
         Block fluidBlock = fluid.defaultFluidState().createLegacyBlock().getBlock();
 
         if (fluidBlock instanceof LiquidBlock) {
-            // Place as source block (level 0)
             BlockState fluidState = fluidBlock.defaultBlockState();
             level.setBlockAndUpdate(placementPos, fluidState);
 
-            // Add to cache to skip this position in future searches
             Set<BlockPos> filledPositions = filledPositionsCache.computeIfAbsent(
                 masterPos.immutable(),
                 k -> new java.util.HashSet<>()
             );
             filledPositions.add(placementPos.immutable());
 
-            // Consume LP
             network.syphon(SoulTicket.create(lpCost));
         }
     }
 
-    /**
-     * Find a valid position to place fluid using center-outward search
-     * Starts directly below the master ritual stone and expands outward in square rings
-     * Searches each column vertically before moving to the next position
-     */
     private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth, Fluid fluidToPlace) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
-        // Start position is below the master ritual stone
         BlockPos startPos = masterPos.below();
 
-        int maxChecksPerTick = 64; // Limit checks per tick to avoid lag
+        int maxChecksPerTick = 64;
         int checksThisTick = 0;
 
-        // Search by expanding square rings from center outward
         for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
-            // Iterate through all positions in this radius ring
             for (int x = -radius; x <= radius && checksThisTick < maxChecksPerTick; x++) {
-                // Skip if we're not resuming from this X position
                 if (radius == state.currentRadius && x < state.currentX) continue;
 
                 for (int z = -radius; z <= radius && checksThisTick < maxChecksPerTick; z++) {
-                    // Skip if we're not resuming from this Z position
                     if (radius == state.currentRadius && x == state.currentX && z < state.currentZ) continue;
 
-                    // Only check positions on the perimeter of this radius ring
-                    // (except for radius 0, which is just the center point)
+                    // Only check perimeter positions (skip interior of ring)
                     if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) {
                         continue;
                     }
 
-                    // Search vertically down this column
                     int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
                     for (int y = startY; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
                         BlockPos checkPos = startPos.offset(x, -y, z);
                         checksThisTick++;
 
-                        // Update search state to resume from here next tick
                         state.currentRadius = radius;
                         state.currentX = x;
                         state.currentZ = z;
                         state.currentY = y;
 
                         if (isValidPlacementSpot(level, checkPos, fluidToPlace, masterPos)) {
-                            // Advance to next position for next search
                             state.currentY++;
                             if (state.currentY >= verticalDepth) {
                                 state.currentY = 0;
@@ -240,15 +205,12 @@ public class RitualRelentlessTides extends Ritual {
                             return checkPos;
                         }
                     }
-                    // Column complete, reset Y for next column
                     state.currentY = 0;
                 }
-                // Row complete, reset Z for next row
                 state.currentZ = -radius;
             }
         }
 
-        // If we've searched the entire range, reset to start over next tick
         if (state.currentRadius > horizontalRadius) {
             resetSearchState(masterPos);
         }
@@ -257,9 +219,7 @@ public class RitualRelentlessTides extends Ritual {
     }
 
 
-    // Check if a position is valid for placing fluid
     private boolean isValidPlacementSpot(ServerLevel level, BlockPos pos, Fluid fluidToPlace, BlockPos masterPos) {
-        // Check cache first - skip positions we've already filled
         Set<BlockPos> filledPositions = filledPositionsCache.get(masterPos);
         if (filledPositions != null && filledPositions.contains(pos)) {
             return false;
@@ -268,22 +228,14 @@ public class RitualRelentlessTides extends Ritual {
         BlockState state = level.getBlockState(pos);
         FluidState fluidState = state.getFluidState();
 
-        // Don't place if it's already a source block of the same fluid type
         if (!fluidState.isEmpty() && fluidState.isSource() && fluidState.getType() == fluidToPlace) {
             return false;
         }
 
-        // Can place anywhere that's air, replaceable, or contains flowing fluid
-        // We don't care if there's air below - let Minecraft's fluid physics handle it
-        // Block replacement is handled by setBlockAndUpdate in performRitual
         return state.isAir() || state.canBeReplaced() || (!fluidState.isEmpty() && !fluidState.isSource());
     }
 
-    /**
-     * Emit smoke particles from the master ritual stone when unable to place fluid
-     */
     private void emitSmokeParticles(ServerLevel level, BlockPos pos) {
-        // Emit smoke particles at the ritual stone
         RandomSource random = level.getRandom();
         for (int i = 0; i < 5; i++) {
             double x = pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.5;
@@ -299,16 +251,10 @@ public class RitualRelentlessTides extends Ritual {
         }
     }
 
-    /**
-     * Reset the search state for a ritual position
-     */
     private void resetSearchState(BlockPos pos) {
         searchStates.remove(pos);
     }
 
-    /**
-     * Clean up search state and cache when ritual stops
-     */
     public void onRitualStopped(Level level, BlockPos masterPos) {
         searchStates.remove(masterPos);
         filledPositionsCache.remove(masterPos);
@@ -316,30 +262,26 @@ public class RitualRelentlessTides extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 0; // Cost is per placement, not a flat refresh
+        return 0;
     }
 
     @Override
     public int getRefreshTime() {
-        return 10; // 0.5 seconds
+        return 10;
     }
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-
-        // Inner circle with water runes (cardinal directions)
         addRune(components, 0, 0, -2, EnumRuneType.WATER);
         addRune(components, 0, 0, 2, EnumRuneType.WATER);
         addRune(components, -2, 0, 0, EnumRuneType.WATER);
         addRune(components, 2, 0, 0, EnumRuneType.WATER);
 
-        // Middle ring with air runes (diagonals) for flow
         addRune(components, -2, 0, -2, EnumRuneType.AIR);
         addRune(components, -2, 0, 2, EnumRuneType.AIR);
         addRune(components, 2, 0, -2, EnumRuneType.AIR);
         addRune(components, 2, 0, 2, EnumRuneType.AIR);
 
-        // Outer ring with more water runes for extended range
         addRune(components, 0, 0, -3, EnumRuneType.WATER);
         addRune(components, 0, 0, 3, EnumRuneType.WATER);
         addRune(components, -3, 0, 0, EnumRuneType.WATER);
@@ -351,14 +293,10 @@ public class RitualRelentlessTides extends Ritual {
         return new RitualRelentlessTides();
     }
 
-    /**
-     * Track the search state for each ritual to resume where it left off
-     * Searches from center outward in expanding square rings
-     */
     private static class SearchState {
-        int currentRadius = 0; // Start from center (directly below ritual stone)
-        int currentX = 0; // X position within current radius ring
-        int currentZ = 0; // Z position within current radius ring
-        int currentY = 0; // Vertical position (0 = ritual stone level, increases downward)
+        int currentRadius = 0;
+        int currentX = 0;
+        int currentZ = 0;
+        int currentY = 0;
     }
 }

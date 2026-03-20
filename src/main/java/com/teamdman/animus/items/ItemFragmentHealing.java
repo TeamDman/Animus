@@ -23,7 +23,7 @@ public class ItemFragmentHealing extends Item {
 
     public ItemFragmentHealing() {
         super(new Item.Properties()
-            .stacksTo(1) // Cannot stack - each fragment is a separate item
+            .stacksTo(1)
         );
     }
 
@@ -39,30 +39,19 @@ public class ItemFragmentHealing extends Item {
 
     @Override
     public boolean onDroppedByPlayer(ItemStack item, Player player) {
-        // Only allow dropping in creative mode or on death
         return player.getAbilities().instabuild;
     }
 
     @Override
     public boolean canAttackBlock(BlockState state, Level level, net.minecraft.core.BlockPos pos, Player player) {
-        // Prevent breaking blocks with this item
         return false;
     }
 
-    /**
-     * Override to prevent the item from being moved to different slots
-     * This is checked when trying to move items in inventory
-     */
     @Override
     public boolean canFitInsideContainerItems() {
-        return false; // Cannot be placed in shulker boxes or bundles
+        return false;
     }
 
-    /**
-     * Calculate healing interval based on number of fragments
-     * @param fragmentCount Number of healing fragments in inventory
-     * @return Ticks between healing
-     */
     public static int getHealingInterval(int fragmentCount) {
         if (fragmentCount <= 0) {
             return BASE_HEALING_INTERVAL;

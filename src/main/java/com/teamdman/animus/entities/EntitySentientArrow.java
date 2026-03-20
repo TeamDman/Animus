@@ -33,7 +33,6 @@ public class EntitySentientArrow extends AbstractArrow {
     private static final EntityDataAccessor<Float> ID_BONUS_DAMAGE =
         SynchedEntityData.defineId(EntitySentientArrow.class, EntityDataSerializers.FLOAT);
 
-    // Effect parameters from ItemSentientBow
     private static final int[] poisonTime = ItemSentientBow.poisonTime;
     private static final int[] poisonLevel = ItemSentientBow.poisonLevel;
     private static final int[] slowTime = ItemSentientBow.slowTime;
@@ -89,30 +88,22 @@ public class EntitySentientArrow extends AbstractArrow {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
 
-        // Calculate total damage (base arrow damage + bonus from will)
         float baseDamage = (float) this.getBaseDamage();
         float bonusDamage = this.getBonusDamage();
         float totalDamage = baseDamage + bonusDamage;
 
-        // Set the damage for the parent class to use
         this.setBaseDamage(totalDamage);
-
-        // Let the parent handle the actual damage
         super.onHitEntity(result);
 
-        // Apply effects only if the target is living
         if (entity instanceof LivingEntity target && !this.level().isClientSide) {
             Entity owner = this.getOwner();
             EnumWillType willType = this.getWillType();
             int willLevel = Math.min(this.getWillLevel(), 4);
 
-            // Will drops are handled by AnimusEventHandler.handleSentientWeaponWillDrops()
-
-            // Apply effects based on will type
+            // Will drops handled by AnimusEventHandler.handleSentientWeaponWillDrops()
             applyWillEffects(target, willType, willLevel, owner instanceof LivingEntity ? (LivingEntity) owner : null);
         }
 
-        // Vanish after hitting an entity
         if (!this.level().isClientSide) {
             this.discard();
         }
@@ -122,19 +113,14 @@ public class EntitySentientArrow extends AbstractArrow {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
 
-        // Vanish after hitting a block
         if (!this.level().isClientSide) {
             this.discard();
         }
     }
 
-    /**
-     * Apply status effects based on will type
-     */
     private void applyWillEffects(LivingEntity target, EnumWillType willType, int level, LivingEntity attacker) {
         switch (willType) {
             case CORROSIVE:
-                // Poison effect
                 target.addEffect(new MobEffectInstance(
                     MobEffects.POISON,
                     poisonTime[level],
@@ -143,46 +129,40 @@ public class EntitySentientArrow extends AbstractArrow {
                 break;
 
             case STEADFAST:
-                // Slowness effect
                 target.addEffect(new MobEffectInstance(
                     MobEffects.MOVEMENT_SLOWDOWN,
                     slowTime[level],
                     slowLevel[level]
                 ));
-                // Give attacker absorption if they hit
                 if (attacker != null) {
                     attacker.addEffect(new MobEffectInstance(
                         MobEffects.ABSORPTION,
-                        100, // 5 seconds
+                        100,
                         0
                     ));
                 }
                 break;
 
             case VENGEFUL:
-                // Speed boost to attacker
                 if (attacker != null) {
                     attacker.addEffect(new MobEffectInstance(
                         MobEffects.MOVEMENT_SPEED,
-                        100, // 5 seconds
+                        100,
                         level / 2
                     ));
                 }
                 break;
 
             case DESTRUCTIVE:
-                // Extra knockback (handled by base damage being higher)
                 break;
 
             default:
-                // Raw will - no special effects
                 break;
         }
     }
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        // Return empty since this arrow can't be picked up
         return ItemStack.EMPTY;
     }
 
@@ -190,7 +170,6 @@ public class EntitySentientArrow extends AbstractArrow {
     public void tick() {
         super.tick();
 
-        // Add spectral particles for visual effect
         if (this.level().isClientSide && this.tickCount % 2 == 0) {
             this.level().addParticle(
                 net.minecraft.core.particles.ParticleTypes.END_ROD,

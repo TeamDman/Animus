@@ -12,10 +12,6 @@ import com.teamdman.animus.items.sigils.effects.*;
 
 import java.util.function.Supplier;
 
-/**
- * Registry for Animus sigil effect types.
- * Uses Blood Magic's sigil effect type registry via the API.
- */
 public class AnimusSigilEffects {
     @SuppressWarnings("unchecked")
     public static final DeferredRegister<MapCodec<? extends ISigilEffect>> SIGIL_EFFECTS =
@@ -24,7 +20,6 @@ public class AnimusSigilEffects {
                     Constants.Mod.MODID
             );
 
-    // Register all Animus sigil effects
     public static final Supplier<MapCodec<StormSigilEffect>> STORM =
             SIGIL_EFFECTS.register("storm", () -> StormSigilEffect.CODEC);
 
@@ -64,10 +59,6 @@ public class AnimusSigilEffects {
     public static final Supplier<MapCodec<MonkSigilEffect>> MONK =
             SIGIL_EFFECTS.register("monk", () -> MonkSigilEffect.CODEC);
 
-    /**
-     * Initialize all sigil effect registrations.
-     * Call this to ensure class loading triggers registration.
-     */
     public static void init() {
         // Force access to ensure static initializers run
         var storm = STORM;

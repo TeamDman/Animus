@@ -32,9 +32,8 @@ public class BlockFluidLivingTerra extends LiquidBlock {
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         super.onPlace(state, level, pos, oldState, isMoving);
-        // Schedule delayed tick to allow flowing
         if (!level.isClientSide()) {
-            level.scheduleTick(pos, this, 20);  // 1 second delay
+            level.scheduleTick(pos, this, 20);
         }
     }
 
@@ -44,26 +43,23 @@ public class BlockFluidLivingTerra extends LiquidBlock {
 
         FluidState fluidState = state.getFluidState();
 
-        // If this is a flowing block (not source), solidify to dirt after delay
-        // Amount < 8 means it's flowing fluid, not a source block
+        // Flowing fluid (non-source) solidifies to dirt
         if (fluidState.getAmount() < 8) {
             level.setBlock(pos, Blocks.DIRT.defaultBlockState(), 3);
             return;
         }
 
-        // If the fluid level is high enough (source block with amount == 8), check for adjacent dirt
+        // Source blocks solidify when adjacent to dirt
         for (Direction face : Direction.values()) {
             BlockPos offsetPos = pos.relative(face);
             BlockState offsetState = level.getBlockState(offsetPos);
 
             if (offsetState.is(Blocks.DIRT)) {
-                // Solidify this fluid block into dirt
                 level.setBlock(pos, Blocks.DIRT.defaultBlockState(), 3);
                 return;
             }
         }
 
-        // Schedule next tick to keep checking
         level.scheduleTick(pos, this, 20);
     }
 }

@@ -16,7 +16,7 @@ import com.breakinblocks.neovitae.ritual.ImperfectRitual;
  * Imperfect Ritual of Boundless Skies
  * Requires: Ancient Debris on top of Imperfect Ritual Stone
  * Cost: 10000 LP
- * Effect: Grants 15 minutes of Blood Magic flight effect
+ * Effect: Grants 15 minutes of NeoVitae flight effect
  */
 public class RitualBoundlessSkies extends ImperfectRitual {
 
@@ -38,17 +38,15 @@ public class RitualBoundlessSkies extends ImperfectRitual {
             return false;
         }
 
-        // Apply 15 minutes (18000 ticks) of Blood Magic flight effect
         player.addEffect(new MobEffectInstance(
             NVMobEffects.FLIGHT,
-            18000, // 15 minutes
-            0,     // Level 0
-            false, // Not ambient
-            true,  // Show particles
-            true   // Show icon
+            18000,
+            0,
+            false,
+            true,
+            true
         ));
 
-        // Play success sound
         level.playSound(
             null,
             player.getX(), player.getY(), player.getZ(),

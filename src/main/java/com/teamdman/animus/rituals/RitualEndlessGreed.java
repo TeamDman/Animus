@@ -39,19 +39,12 @@ public class RitualEndlessGreed extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public static final String CHEST_RANGE = "chest";
 
-    // Track active ritual positions and their AABBs for the event handler
     private static final Map<Level, Map<BlockPos, AABB>> activeRituals = new HashMap<>();
-
-    // Cache for Tome of Peritia slot per ritual position
-    // Outer map: Level -> (RitualPos -> TomeCacheEntry)
     private static final Map<Level, Map<BlockPos, TomeCacheEntry>> tomeCache = new HashMap<>();
 
-    /**
-     * Cache entry for tome slot in a container
-     */
     private static class TomeCacheEntry {
-        int tomeSlot; // Cached slot index containing tome (-1 if none found)
-        long lastUpdateTick; // Tick when cache was last updated
+        int tomeSlot;
+        long lastUpdateTick;
 
         TomeCacheEntry(int slot, long tick) {
             this.tomeSlot = slot;
@@ -63,7 +56,7 @@ public class RitualEndlessGreed extends Ritual {
         super(
             Constants.Rituals.ENDLESS_GREED,
             0,
-            5000,  // Activation cost
+            5000,
             "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ENDLESS_GREED
         );
 
@@ -96,33 +89,21 @@ public class RitualEndlessGreed extends Ritual {
         int currentEssence = network.getCurrentEssence();
         int refreshCost = getRefreshCost();
 
-        // Check if we have enough LP
         if (currentEssence < refreshCost) {
             removeActiveRitual(level, masterPos);
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        // Consume LP
         network.syphon(SoulTicket.create(refreshCost));
 
-        // Get range from block range
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         AABB range = effectRange.getAABB(masterPos);
 
-        // Register this ritual as active
         addActiveRitual(level, masterPos, range);
-
-        // Collect any existing item entities in range (for items that might have been missed)
         collectItemsInRange(serverLevel, masterPos, range, network);
-
-        // Collect XP orbs in range (runs every 20 ticks with performRitual)
         collectXPOrbsInRange(serverLevel, masterPos, range);
     }
 
-    /**
-     * Collect any item entities currently in range
-     */
     private void collectItemsInRange(ServerLevel level, BlockPos masterPos, AABB range, SoulNetwork network) {
         List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, range);
 
@@ -137,7 +118,6 @@ public class RitualEndlessGreed extends Ritual {
         int lpPerItem = AnimusConfig.rituals.endlessGreedLPPerItem.get();
 
         for (ItemEntity itemEntity : items) {
-            // Skip items that were just spawned (give them a moment to exist)
             if (itemEntity.tickCount < 5) {
                 continue;
             }
@@ -145,38 +125,28 @@ public class RitualEndlessGreed extends Ritual {
             ItemStack stack = itemEntity.getItem().copy();
 
             if (itemHandler != null) {
-                // Try to insert into container
                 ItemStack remaining = insertItem(itemHandler, stack);
 
                 if (remaining.isEmpty()) {
-                    // All items inserted
                     itemEntity.discard();
 
-                    // Consume LP per item
                     if (lpPerItem > 0) {
                         network.syphon(SoulTicket.create(lpPerItem * stack.getCount()));
                     }
                 } else if (remaining.getCount() < stack.getCount()) {
-                    // Partial insert - update entity with remaining
                     itemEntity.setItem(remaining);
 
-                    // Consume LP for items that were inserted
                     int inserted = stack.getCount() - remaining.getCount();
                     if (lpPerItem > 0 && inserted > 0) {
                         network.syphon(SoulTicket.create(lpPerItem * inserted));
                     }
                 }
-                // If container is full (remaining == stack), leave item on ground
             } else {
-                // No container - destroy items
                 itemEntity.discard();
             }
         }
     }
 
-    /**
-     * Collect XP orbs in range and store in Tome of Peritia
-     */
     private void collectXPOrbsInRange(ServerLevel level, BlockPos masterPos, AABB range) {
         List<ExperienceOrb> xpOrbs = level.getEntitiesOfClass(ExperienceOrb.class, range);
 
@@ -188,14 +158,11 @@ public class RitualEndlessGreed extends Ritual {
         BlockPos containerPos = chestRange.getContainedPositions(masterPos).iterator().next();
         IItemHandler itemHandler = getItemHandler(level, containerPos);
 
-        // Get cached tome slot or rebuild cache
         int tomeSlot = getCachedTomeSlot(level, masterPos, itemHandler);
 
-        // Add XP to tome if found
         if (tomeSlot >= 0 && itemHandler != null && tomeSlot < itemHandler.getSlots()) {
             ItemStack stack = itemHandler.getStackInSlot(tomeSlot);
             if (stack.getItem() instanceof ExperienceTomeItem) {
-                // Calculate total XP and add to tome (unlimited capacity)
                 int totalXP = 0;
                 for (ExperienceOrb orb : xpOrbs) {
                     totalXP += orb.getValue();
@@ -203,18 +170,12 @@ public class RitualEndlessGreed extends Ritual {
                 ExperienceTomeItem.addXpToTome(stack, totalXP);
             }
         }
-        // If no tome found, XP is simply discarded
-
-        // Remove all XP orbs
+        // Remove all XP orbs (discarded if no tome found)
         for (ExperienceOrb orb : xpOrbs) {
             orb.discard();
         }
     }
 
-    /**
-     * Get cached tome slot, rebuilding cache if necessary
-     * @return slot index of first tome found, or -1 if none
-     */
     private int getCachedTomeSlot(ServerLevel level, BlockPos masterPos, IItemHandler itemHandler) {
         if (itemHandler == null) {
             return -1;
@@ -225,12 +186,11 @@ public class RitualEndlessGreed extends Ritual {
 
         long currentTick = level.getGameTime();
 
-        // Check if cache is valid (invalidate every 100 ticks or ~5 seconds to catch inventory changes)
+        // Invalidate every 100 ticks to catch inventory changes
         if (entry != null && (currentTick - entry.lastUpdateTick) < 100) {
             return entry.tomeSlot;
         }
 
-        // Rebuild cache - find first tome
         int foundSlot = -1;
         for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
             ItemStack stack = itemHandler.getStackInSlot(slot);
@@ -240,7 +200,6 @@ public class RitualEndlessGreed extends Ritual {
             }
         }
 
-        // Store in cache
         if (levelCache == null) {
             levelCache = new HashMap<>();
             tomeCache.put(level, levelCache);
@@ -250,9 +209,6 @@ public class RitualEndlessGreed extends Ritual {
         return foundSlot;
     }
 
-    /**
-     * Invalidate tome cache for a specific ritual position
-     */
     public static void invalidateTomeCache(Level level, BlockPos masterPos) {
         Map<BlockPos, TomeCacheEntry> levelCache = tomeCache.get(level);
         if (levelCache != null) {
@@ -260,18 +216,10 @@ public class RitualEndlessGreed extends Ritual {
         }
     }
 
-    /**
-     * Get the item handler for a container at the given position
-     */
     private IItemHandler getItemHandler(Level level, BlockPos pos) {
-        // NeoForge 1.21 capability API
         return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
     }
 
-    /**
-     * Try to insert an item stack into an item handler
-     * @return The remaining items that couldn't be inserted
-     */
     private ItemStack insertItem(IItemHandler handler, ItemStack stack) {
         ItemStack remaining = stack.copy();
 
@@ -282,44 +230,33 @@ public class RitualEndlessGreed extends Ritual {
         return remaining;
     }
 
-    /**
-     * Called by LivingDropsEvent to handle mob drops
-     * Returns true if the drops were handled (either collected or destroyed)
-     */
     public static boolean handleMobDrops(Level level, BlockPos deathPos, Collection<ItemEntity> drops) {
         Map<BlockPos, AABB> rituals = activeRituals.get(level);
         if (rituals == null || rituals.isEmpty()) {
             return false;
         }
 
-        // Find a ritual that contains this death position
         for (Map.Entry<BlockPos, AABB> entry : rituals.entrySet()) {
             if (entry.getValue().contains(deathPos.getX() + 0.5, deathPos.getY() + 0.5, deathPos.getZ() + 0.5)) {
                 BlockPos masterPos = entry.getKey();
                 BlockPos containerPos = masterPos.above();
 
-                // NeoForge 1.21 capability API
                 IItemHandler itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, containerPos, null);
 
                 if (itemHandler == null) {
-                    // No container found - items will be destroyed
                     return true;
                 }
 
-                // Process each drop
                 for (ItemEntity itemEntity : drops) {
                     ItemStack stack = itemEntity.getItem();
                     if (stack.isEmpty()) continue;
 
-                    // Try to insert into container
                     ItemStack toInsert = stack.copy();
                     for (int slot = 0; slot < itemHandler.getSlots() && !toInsert.isEmpty(); slot++) {
                         toInsert = itemHandler.insertItem(slot, toInsert, false);
                     }
-                    // If toInsert is not empty, container is full - remaining items are destroyed
                 }
 
-                // Return true to indicate drops were handled
                 return true;
             }
         }
@@ -327,16 +264,10 @@ public class RitualEndlessGreed extends Ritual {
         return false;
     }
 
-    /**
-     * Add a ritual position to the active list
-     */
     private static void addActiveRitual(Level level, BlockPos pos, AABB range) {
         activeRituals.computeIfAbsent(level, k -> new HashMap<>()).put(pos.immutable(), range);
     }
 
-    /**
-     * Remove a ritual position from the active list
-     */
     private static void removeActiveRitual(Level level, BlockPos pos) {
         Map<BlockPos, AABB> rituals = activeRituals.get(level);
         if (rituals != null) {
@@ -346,16 +277,12 @@ public class RitualEndlessGreed extends Ritual {
             }
         }
 
-        // Also clear tome cache for this ritual
         Map<BlockPos, TomeCacheEntry> levelCache = tomeCache.get(level);
         if (levelCache != null) {
             levelCache.remove(pos);
         }
     }
 
-    /**
-     * Check if a position is within range of any active Endless Greed ritual
-     */
     public static boolean isInGreedZone(Level level, BlockPos pos) {
         Map<BlockPos, AABB> rituals = activeRituals.get(level);
         if (rituals == null || rituals.isEmpty()) {
@@ -371,16 +298,10 @@ public class RitualEndlessGreed extends Ritual {
         return false;
     }
 
-    /**
-     * Clean up ritual when it stops
-     */
     public void onRitualStopped(Level level, BlockPos masterPos) {
         removeActiveRitual(level, masterPos);
     }
 
-    /**
-     * Clean up all rituals for a level (when unloading)
-     */
     public static void cleanupLevel(Level level) {
         activeRituals.remove(level);
         tomeCache.remove(level);
@@ -393,33 +314,26 @@ public class RitualEndlessGreed extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20; // 1 second
+        return 20;
     }
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Flat design using only basic runes (no dusk runes)
-        // A greed-themed pattern with earth (wealth) and fire (ambition)
-
-        // Inner cross with earth runes (representing wealth/treasure)
         addRune(components, 0, 0, -1, EnumRuneType.EARTH);
         addRune(components, 0, 0, 1, EnumRuneType.EARTH);
         addRune(components, -1, 0, 0, EnumRuneType.EARTH);
         addRune(components, 1, 0, 0, EnumRuneType.EARTH);
 
-        // Diagonal positions with fire runes (ambition/desire)
         addRune(components, -1, 0, -1, EnumRuneType.FIRE);
         addRune(components, -1, 0, 1, EnumRuneType.FIRE);
         addRune(components, 1, 0, -1, EnumRuneType.FIRE);
         addRune(components, 1, 0, 1, EnumRuneType.FIRE);
 
-        // Outer cardinal positions with water runes (flow of items)
         addRune(components, 0, 0, -2, EnumRuneType.WATER);
         addRune(components, 0, 0, 2, EnumRuneType.WATER);
         addRune(components, -2, 0, 0, EnumRuneType.WATER);
         addRune(components, 2, 0, 0, EnumRuneType.WATER);
 
-        // Outer corners with air runes (reaching/collecting)
         addRune(components, -2, 0, -2, EnumRuneType.AIR);
         addRune(components, -2, 0, 2, EnumRuneType.AIR);
         addRune(components, 2, 0, -2, EnumRuneType.AIR);

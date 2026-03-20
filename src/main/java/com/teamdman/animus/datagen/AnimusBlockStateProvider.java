@@ -18,19 +18,16 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        // Blood Wood Log - pillar block (rotatable) with custom texture names
         axisBlock((RotatedPillarBlock) AnimusBlocks.BLOCK_BLOOD_WOOD.get(),
             modLoc("block/blockbloodwood"),
             modLoc("block/blockbloodwood_top")
         );
 
-        // Stripped Blood Wood Log - pillar block (rotatable)
         axisBlock((RotatedPillarBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get(),
             modLoc("block/stripped_bloodwood_log"),
             modLoc("block/stripped_bloodwood_log_top")
         );
 
-        // Blood Wood Planks - simple cube all
         simpleBlock(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS.get(),
             models().cubeAll(
                 "blood_wood_planks",
@@ -38,32 +35,27 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
             )
         );
 
-        // Blood Wood Stairs - stairs block
         stairsBlock(
             (net.minecraft.world.level.block.StairBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_STAIRS.get(),
             modLoc("block/bloodwood_planks")
         );
 
-        // Blood Wood Slab - slab block
         slabBlock(
             (net.minecraft.world.level.block.SlabBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB.get(),
             modLoc("block/blood_wood_planks"),
             modLoc("block/bloodwood_planks")
         );
 
-        // Blood Wood Fence - fence block
         fenceBlock(
             (net.minecraft.world.level.block.FenceBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE.get(),
             modLoc("block/bloodwood_planks")
         );
 
-        // Blood Wood Fence Gate - fence gate block
         fenceGateBlock(
             (net.minecraft.world.level.block.FenceGateBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE.get(),
             modLoc("block/bloodwood_planks")
         );
 
-        // Blood Sapling - cross model
         simpleBlock(AnimusBlocks.BLOCK_BLOOD_SAPLING.get(),
             models().cross(
                 "blood_sapling",
@@ -71,7 +63,6 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
             ).renderType("cutout")
         );
 
-        // Blood Leaves - cube all with special texture
         simpleBlock(AnimusBlocks.BLOCK_BLOOD_LEAVES.get(),
             models().cubeAll(
                 "blood_leaves",
@@ -79,10 +70,8 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
             ).renderType("cutout_mipped")
         );
 
-        // Blood Core - special case with active state
         bloodCoreBlock(AnimusBlocks.BLOCK_BLOOD_CORE.get());
 
-        // Crystallized Demon Will Block - simple cube
         simpleBlock(AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get(),
             models().cubeAll(
                 "crystallized_demon_will_block",
@@ -90,7 +79,6 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
             )
         );
 
-        // Willful Stone blocks
         willfulStoneBlock(AnimusBlocks.BLOCK_WILLFUL_STONE.get(), "willful_stone");
         willfulStoneBlock(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get(), "willful_stone_white");
         willfulStoneBlock(AnimusBlocks.BLOCK_WILLFUL_STONE_ORANGE.get(), "willful_stone_orange");

@@ -36,11 +36,9 @@ public class RitualHunger extends ImperfectRitual {
             return false;
         }
 
-        // Set player to very hungry
         player.getFoodData().setFoodLevel(1);
         player.getFoodData().setSaturation(10.0F);
 
-        // Play sound effect
         level.playSound(
             null,
             player.getX(),

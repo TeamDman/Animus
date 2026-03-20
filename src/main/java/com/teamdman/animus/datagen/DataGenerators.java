@@ -8,10 +8,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-/**
- * Data generation for Animus mod
- * Run with: ./gradlew runData
- */
 @EventBusSubscriber(modid = Constants.Mod.MODID)
 public class DataGenerators {
 
@@ -22,15 +18,13 @@ public class DataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         var lookupProvider = event.getLookupProvider();
 
-        // Client-side data generators
         generator.addProvider(event.includeClient(), new AnimusBlockStateProvider(output, existingFileHelper));
         generator.addProvider(event.includeClient(), new AnimusItemModelProvider(output, existingFileHelper));
 
-        // Server-side data generators
         generator.addProvider(event.includeServer(), new AnimusRecipeProvider(output, lookupProvider));
         generator.addProvider(event.includeServer(), new AnimusLootTableProvider(output, lookupProvider));
 
-        // Tags - block tags must be added before item tags for proper dependency
+        // Block tags must be registered before item tags (dependency)
         var blockTagsProvider = generator.addProvider(event.includeServer(),
             new AnimusBlockTagsProvider(output, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(),

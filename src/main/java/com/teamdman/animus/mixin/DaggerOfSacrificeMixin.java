@@ -22,18 +22,11 @@ public class DaggerOfSacrificeMixin {
     @Unique
     private static final ThreadLocal<LivingEntity> animus$currentAttacker = new ThreadLocal<>();
 
-    /**
-     * Capture the attacker at the start of hurtEnemy so we can read their attribute later.
-     */
     @Inject(method = "hurtEnemy", at = @At("HEAD"))
     private void animus$captureAttacker(ItemStack stack, LivingEntity target, LivingEntity attacker, CallbackInfoReturnable<Boolean> cir) {
         animus$currentAttacker.set(attacker);
     }
 
-    /**
-     * Modify the LP amount (1st argument, index 0) passed to BloodAltarTile.addSacrificeLP()
-     * to apply the bonus sacrifice attribute multiplier.
-     */
     @ModifyArg(
         method = "hurtEnemy",
         at = @At(value = "INVOKE", target = "Lcom/breakinblocks/neovitae/common/blockentity/BloodAltarTile;addSacrificeLP(IZ)V"),

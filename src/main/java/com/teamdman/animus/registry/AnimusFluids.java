@@ -24,7 +24,6 @@ public class AnimusFluids {
     public static final DeferredRegister<Fluid> FLUIDS =
         DeferredRegister.create(Registries.FLUID, Constants.Mod.MODID);
 
-    // AntiLife Fluid Type
     public static final DeferredHolder<FluidType, FluidType> ANTILIFE_FLUID_TYPE = FLUID_TYPES.register(
         "antilife",
         () -> new FluidType(FluidType.Properties.create()
@@ -41,7 +40,6 @@ public class AnimusFluids {
         )
     );
 
-    // Living Terra Fluid Type
     public static final DeferredHolder<FluidType, FluidType> LIVING_TERRA_FLUID_TYPE = FLUID_TYPES.register(
         "living_terra",
         () -> new FluidType(FluidType.Properties.create()
@@ -58,7 +56,6 @@ public class AnimusFluids {
         )
     );
 
-    // AntiLife Fluids
     public static final DeferredHolder<Fluid, FlowingFluid> ANTILIFE_FLOWING = FLUIDS.register(
         "antilife_flowing",
         () -> new BaseFlowingFluid.Flowing(AnimusFluids.ANTILIFE_PROPERTIES)
@@ -69,7 +66,6 @@ public class AnimusFluids {
         () -> new BaseFlowingFluid.Source(AnimusFluids.ANTILIFE_PROPERTIES)
     );
 
-    // Living Terra Fluids
     public static final DeferredHolder<Fluid, FlowingFluid> LIVING_TERRA_FLOWING = FLUIDS.register(
         "living_terra_flowing",
         () -> new BaseFlowingFluid.Flowing(AnimusFluids.LIVING_TERRA_PROPERTIES)
@@ -80,7 +76,6 @@ public class AnimusFluids {
         () -> new BaseFlowingFluid.Source(AnimusFluids.LIVING_TERRA_PROPERTIES)
     );
 
-    // Fluid Properties
     public static final BaseFlowingFluid.Properties ANTILIFE_PROPERTIES = new BaseFlowingFluid.Properties(
         ANTILIFE_FLUID_TYPE,
         ANTILIFE_SOURCE,
@@ -97,18 +92,11 @@ public class AnimusFluids {
         .block(() -> (LiquidBlock) AnimusBlocks.BLOCK_FLUID_LIVING_TERRA.get())
         .bucket(() -> AnimusItems.LIVING_TERRA_BUCKET.get());
 
-    /**
-     * Register client extensions for fluid rendering.
-     * This should be called from the MOD event bus.
-     */
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerFluidType(AntiLifeFluidClientExtension.INSTANCE, ANTILIFE_FLUID_TYPE);
         event.registerFluidType(LivingTerraFluidClientExtension.INSTANCE, LIVING_TERRA_FLUID_TYPE);
     }
 
-    /**
-     * Register the client extensions listener on the mod event bus.
-     */
     public static void registerClientExtensionsListener(IEventBus modBus) {
         modBus.addListener(AnimusFluids::registerClientExtensions);
     }

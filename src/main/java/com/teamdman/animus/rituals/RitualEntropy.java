@@ -50,42 +50,35 @@ public class RitualEntropy extends Ritual {
             return;
         }
 
-        // Get chest position
         AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
 
-        // Get item handler using NeoForge capability system
         IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
         if (handler == null) {
             return;
         }
 
         if (currentEssence < getRefreshCost()) {
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        // Process items in chest - convert to 1 cobblestone each
         for (int slot = 0; slot < handler.getSlots(); slot++) {
             ItemStack stack = handler.getStackInSlot(slot);
             if (stack.isEmpty()) {
                 continue;
             }
 
-            // Skip cobblestone itself
             if (stack.is(Items.COBBLESTONE)) {
                 continue;
             }
 
-            // Extract one item and give one cobblestone
             handler.extractItem(slot, 1, false);
             ItemHandlerHelper.insertItemStacked(handler, new ItemStack(Items.COBBLESTONE, 1), false);
 
-            // Consume LP
             SoulTicket ticket = SoulTicket.create(getRefreshCost());
             network.syphon(ticket);
 
-            return; // Only process one item per tick
+            return;
         }
     }
 
@@ -101,11 +94,8 @@ public class RitualEntropy extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Inner ring (3x3 minus center)
         addCornerRunes(components, 1, 0, EnumRuneType.EARTH);
         addParallelRunes(components, 1, 0, EnumRuneType.EARTH);
-
-        // Outer corners
         addCornerRunes(components, 2, 0, EnumRuneType.EARTH);
     }
 

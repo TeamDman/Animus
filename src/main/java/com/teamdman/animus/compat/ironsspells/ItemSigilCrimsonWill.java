@@ -33,16 +33,10 @@ public class ItemSigilCrimsonWill extends AnimusSigilBase {
         super("crimson_will", 0); // No cost on toggle, only on spell cast
     }
 
-    /**
-     * Check if this sigil is active using data components (1.21 API)
-     */
     public static boolean isActive(ItemStack stack) {
         return stack.getOrDefault(AnimusDataComponents.SIGIL_ACTIVATED.get(), false);
     }
 
-    /**
-     * Set the active state of this sigil using data components (1.21 API)
-     */
     public static void setActive(ItemStack stack, boolean active) {
         stack.set(AnimusDataComponents.SIGIL_ACTIVATED.get(), active);
     }
@@ -55,17 +49,14 @@ public class ItemSigilCrimsonWill extends AnimusSigilBase {
             return InteractionResultHolder.pass(stack);
         }
 
-        // Check binding (1.21.1 API: Binding is now a record with uuid() accessor)
         var binding = getBinding(stack);
         if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
             return InteractionResultHolder.fail(stack);
         }
 
-        // Toggle active state
         boolean currentState = isActive(stack);
         setActive(stack, !currentState);
 
-        // Feedback message
         if (!currentState) {
             player.displayClientMessage(
                 Component.literal("Sigil of Crimson Will: Active")
@@ -97,8 +88,7 @@ public class ItemSigilCrimsonWill extends AnimusSigilBase {
         tooltip.add(Component.literal("  • Scales up to +50% (at 4096 demon will)")
             .withStyle(ChatFormatting.GRAY));
 
-        // Note: Client-side boost tooltip removed since DistExecutor is gone
-        // Players can see their demon will in the HUD or other means
+        // Client-side boost tooltip removed since DistExecutor is gone
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.literal("Cost per spell cast:")
@@ -123,7 +113,6 @@ public class ItemSigilCrimsonWill extends AnimusSigilBase {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-        // Show enchantment glint when active
         return isActive(stack);
     }
 }

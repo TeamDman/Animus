@@ -64,7 +64,6 @@ public class ItemHellforgedBow extends BowItem {
             .rarity(Rarity.EPIC));
     }
 
-    // Config accessors with fallbacks
     public static int getBaseLpCost() {
         try {
             return AnimusConfig.weapons.hellforgedBowBaseLpCost.get();
@@ -110,7 +109,6 @@ public class ItemHellforgedBow extends BowItem {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
-        // Show binding status
         String ownerName = getBindingOwnerName(stack);
         if (ownerName != null) {
             tooltip.add(Component.translatable("tooltip.animus.bound_to")
@@ -121,7 +119,6 @@ public class ItemHellforgedBow extends BowItem {
                 .withStyle(ChatFormatting.GRAY));
         }
 
-        // Show will type if attuned
         EnumWillType type = getCurrentType(stack);
         if (type != EnumWillType.DEFAULT) {
             tooltip.add(Component.translatable("tooltip.animus.hellforged_bow.will_type", type.name().toLowerCase())
@@ -141,8 +138,7 @@ public class ItemHellforgedBow extends BowItem {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        // Allow extended use duration for charging
-        return 72000; // Same as vanilla bow (effectively unlimited)
+        return 72000;
     }
 
     @Override
@@ -153,16 +149,12 @@ public class ItemHellforgedBow extends BowItem {
 
         int useDuration = this.getUseDuration(stack, entity) - remainingTicks;
 
-        // Server-side: drain LP after normal draw time
         if (!level.isClientSide() && useDuration > NORMAL_DRAW_TICKS && useDuration <= getMaxChargeTicks()) {
-            // Drain LP per tick during extended charge
             if (!drainLP(player, stack, getLpPerTick())) {
-                // Not enough LP, release the bow
                 player.releaseUsingItem();
             }
         }
 
-        // Visual effects when fully charged
         if (useDuration >= getMaxChargeTicks()) {
             if (level instanceof ServerLevel serverLevel) {
                 double x = player.getX();
@@ -198,7 +190,6 @@ public class ItemHellforgedBow extends BowItem {
             return;
         }
 
-        // Check binding
         UUID ownerId = getBindingOwnerId(stack);
         if (ownerId == null) {
             if (!level.isClientSide) {
@@ -218,7 +209,6 @@ public class ItemHellforgedBow extends BowItem {
             return;
         }
 
-        // Check if player has enough LP for base cost
         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
         if (network == null || network.getCurrentEssence() < getBaseLpCost()) {
             if (!level.isClientSide) {
@@ -232,38 +222,31 @@ public class ItemHellforgedBow extends BowItem {
         }
 
         if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
-            // Consume base LP cost
             SoulTicket ticket = SoulTicket.create(getBaseLpCost());
             network.syphonAndDamage(player, ticket);
 
-            // Get will type for effects
             EnumWillType willType = getCurrentType(stack);
             double willAmount = PlayerDemonWillHandler.getTotalDemonWill(willType, player);
             int willLevel = getLevel(willAmount);
 
-            // Calculate charge multiplier (0.0 to 1.0 based on charge beyond normal draw)
             float chargeMultiplier = 0.0f;
             if (useDuration > NORMAL_DRAW_TICKS) {
                 int extraChargeTicks = Math.min(useDuration - NORMAL_DRAW_TICKS, getMaxChargeTicks() - NORMAL_DRAW_TICKS);
                 chargeMultiplier = (float) extraChargeTicks / (getMaxChargeTicks() - NORMAL_DRAW_TICKS);
             }
 
-            // Calculate damage based on charge
-            double baseDamage = 2.0 + (power * 2.0); // Normal bow damage
+            double baseDamage = 2.0 + (power * 2.0);
             double chargeBonusDamage = chargeMultiplier * (getMaxArrowDamage() - baseDamage);
             double totalDamage = baseDamage + chargeBonusDamage;
 
-            // Create hellforged arrow
             EntityHellforgedArrow arrow = new EntityHellforgedArrow(level, player);
             arrow.setWillType(willType);
             arrow.setWillLevel(willLevel);
             arrow.setBaseDamage(totalDamage);
             arrow.setChargeMultiplier(chargeMultiplier);
             arrow.setExecuteThreshold(chargeMultiplier >= 1.0f ? getExecuteThreshold() : 0.0);
-            // Hellforged arrows pierce through all entities (handled in entity class)
             arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, power * 3.0F, 1.0F);
 
-            // Apply power enchantment bonus
             int powerEnchant = stack.getEnchantmentLevel(serverLevel.registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT)
                 .getOrThrow(Enchantments.POWER));
@@ -271,9 +254,6 @@ public class ItemHellforgedBow extends BowItem {
                 arrow.setBaseDamage(arrow.getBaseDamage() + (double) powerEnchant * 0.5D + 0.5D);
             }
 
-            // Note: Punch enchantment knockback is handled by vanilla arrow damage mechanics
-
-            // Apply flame enchantment
             int flameEnchant = stack.getEnchantmentLevel(serverLevel.registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT)
                 .getOrThrow(Enchantments.FLAME));
@@ -281,17 +261,14 @@ public class ItemHellforgedBow extends BowItem {
                 arrow.setRemainingFireTicks(100);
             }
 
-            // Critical hit if fully charged
             if (power >= 1.0F) {
                 arrow.setCritArrow(true);
             }
 
-            // Virtual arrows don't get picked up
             arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
 
             level.addFreshEntity(arrow);
 
-            // Play sound with pitch based on charge
             float pitch = 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + power * 0.5F;
             if (chargeMultiplier > 0.5f) {
                 pitch += chargeMultiplier * 0.3f;
@@ -299,10 +276,7 @@ public class ItemHellforgedBow extends BowItem {
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, pitch);
 
-            // Damage the bow
             stack.hurtAndBreak(1, serverLevel, player, (item) -> {});
-
-            // LP-powered self-repair: 100 LP per damage point
             tryRepairWithLP(stack, network, player);
         }
 
@@ -313,7 +287,6 @@ public class ItemHellforgedBow extends BowItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // Check binding - bind on first use
         UUID ownerId = getBindingOwnerId(stack);
         if (ownerId == null) {
             if (!level.isClientSide) {
@@ -327,7 +300,6 @@ public class ItemHellforgedBow extends BowItem {
             return InteractionResultHolder.consume(stack);
         }
 
-        // Check if player has LP to shoot
         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
         if (network == null || network.getCurrentEssence() < getBaseLpCost()) {
             if (!level.isClientSide) {
@@ -346,7 +318,6 @@ public class ItemHellforgedBow extends BowItem {
 
     @Override
     public Predicate<ItemStack> getAllSupportedProjectiles() {
-        // Hellforged bow doesn't use regular arrows
         return (stack) -> false;
     }
 
@@ -355,7 +326,6 @@ public class ItemHellforgedBow extends BowItem {
         return 15;
     }
 
-    // Binding methods using data components
     public void bindToPlayer(ItemStack stack, Player player) {
         stack.set(AnimusDataComponents.BINDING_OWNER_UUID.get(), player.getUUID().toString());
         stack.set(AnimusDataComponents.BINDING_OWNER_NAME.get(), player.getName().getString());
@@ -377,7 +347,6 @@ public class ItemHellforgedBow extends BowItem {
         return stack.get(AnimusDataComponents.BINDING_OWNER_NAME.get());
     }
 
-    // Will type management using data components
     public EnumWillType getCurrentType(ItemStack stack) {
         String typeStr = stack.get(AnimusDataComponents.DEMON_WILL_TYPE.get());
         if (typeStr != null) {
@@ -399,7 +368,6 @@ public class ItemHellforgedBow extends BowItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            // Update the will type based on the player's inventory
             EnumWillType newType = findDemonWillType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
@@ -407,10 +375,6 @@ public class ItemHellforgedBow extends BowItem {
         }
     }
 
-    /**
-     * Determines the demon will type based on will available from the player's soul network
-     * Returns the type with the highest will amount
-     */
     private static EnumWillType findDemonWillType(Player player) {
         EnumWillType highestType = EnumWillType.DEFAULT;
         double highestAmount = 0;
@@ -442,16 +406,14 @@ public class ItemHellforgedBow extends BowItem {
     private void tryRepairWithLP(ItemStack stack, SoulNetwork network, Player player) {
         int damage = stack.getDamageValue();
         if (damage <= 0) {
-            return; // No damage to repair
+            return;
         }
 
-        // Calculate how much we can repair based on available LP
         int availableLP = network.getCurrentEssence();
         int maxRepair = availableLP / LP_PER_REPAIR;
         int actualRepair = Math.min(damage, maxRepair);
 
         if (actualRepair > 0) {
-            // Consume LP and repair
             int lpCost = actualRepair * LP_PER_REPAIR;
             SoulTicket ticket = SoulTicket.create(lpCost);
             network.syphonAndDamage(player, ticket);
@@ -475,7 +437,6 @@ public class ItemHellforgedBow extends BowItem {
         return true;
     }
 
-    // IDemonWillWeapon-like methods
     public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity,
                                                    ItemStack stack, int looting) {
         return new ArrayList<>();
@@ -483,7 +444,6 @@ public class ItemHellforgedBow extends BowItem {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-        // Add enchantment glint when bound and has will type
         return super.isFoil(stack) || (getBindingOwnerId(stack) != null && getCurrentType(stack) != EnumWillType.DEFAULT);
     }
 }

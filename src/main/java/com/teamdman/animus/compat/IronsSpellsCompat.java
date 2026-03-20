@@ -24,7 +24,7 @@ import com.breakinblocks.neovitae.ritual.RitualRegistry;
 
 /**
  * Compatibility module for Irons Spells n Spellbooks
- * Handles all integration between Animus/Blood Magic and Irons Spells
+ * Handles all integration between Animus/NeoVitae and Irons Spells
  *
  * Features:
  * - LP to Mana conversion for spell casting
@@ -38,48 +38,28 @@ public class IronsSpellsCompat implements ICompatModule {
 
     private static IronsSpellsCompat INSTANCE;
 
-    // DeferredRegister for Irons Spells compatibility items
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Constants.Mod.MODID);
 
-    // DeferredRegister for Irons Spells compatibility rituals
     public static final DeferredRegister<Ritual> RITUALS =
         DeferredRegister.create(RitualRegistry.RITUAL_REGISTRY_KEY, Constants.Mod.MODID);
 
-    // DeferredRegister for Irons Spells compatibility imperfect rituals
     public static final DeferredRegister<ImperfectRitual> IMPERFECT_RITUALS =
         DeferredRegister.create(RitualRegistry.IMPERFECT_RITUAL_REGISTRY_KEY, Constants.Mod.MODID);
 
-    // ===== Rituals =====
-
-    // Ritual of Arcane Mastery - upgrades spell scrolls
     // Using lambda instead of method reference to defer class loading
     public static final DeferredHolder<Ritual, RitualArcaneMastery> ARCANE_MASTERY =
         RITUALS.register(Constants.Rituals.ARCANE_MASTERY, () -> new RitualArcaneMastery());
 
-    // ===== Imperfect Rituals =====
-
-    // Imperfect Ritual of the Iron Heart - grants Echoing Strikes effect
-    // Requires anvil on Imperfect Ritual Stone
     public static final DeferredHolder<ImperfectRitual, RitualIronHeart> IRON_HEART =
         IMPERFECT_RITUALS.register(Constants.Rituals.IRON_HEART, () -> new RitualIronHeart());
 
-    // ===== Spellbooks =====
-
-    // Blood-Infused Spellbook - upgradeable at Blood Altar
     // Using lambda instead of method reference to defer class loading
     public static final DeferredHolder<Item, ItemBloodInfusedSpellbook> BLOOD_INFUSED_SPELLBOOK =
         ITEMS.register("blood_infused_spellbook", () -> new ItemBloodInfusedSpellbook());
 
-    // ===== Sigils =====
-
-    // Sigil of Crimson Will - boosts spell power with demon will
-    // Using lambda instead of method reference to defer class loading
     public static final DeferredHolder<Item, ItemSigilCrimsonWill> SIGIL_CRIMSON_WILL =
         ITEMS.register("sigil_crimson_will", () -> new ItemSigilCrimsonWill());
 
-    // ===== Sanguine Scrolls =====
-
-    // Sanguine Scrolls - reusable spell scrolls with durability based on slate tier
     public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_BLANK =
         ITEMS.register("sanguine_scroll_blank", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.BLANK));
 
@@ -103,50 +83,36 @@ public class IronsSpellsCompat implements ICompatModule {
         return INSTANCE;
     }
 
-    /**
-     * Register the DeferredRegister to the mod event bus
-     * This must be called early, during mod construction
-     */
     public static void registerDeferred(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
         RITUALS.register(modEventBus);
         IMPERFECT_RITUALS.register(modEventBus);
-        Animus.LOGGER.info("Registered Irons Spells compatibility registries (items, rituals, imperfect rituals)");
+        Animus.LOGGER.debug("Registered Irons Spells compatibility registries (items, rituals, imperfect rituals)");
     }
 
     @Override
     public void init() {
-        Animus.LOGGER.info("Initializing Irons Spells n Spellbooks compatibility");
+        Animus.LOGGER.debug("Initializing Irons Spells n Spellbooks compatibility");
 
-        // Register Arcane Channeling Living Armor upgrade event handlers
-        // The upgrade itself is defined in data/animus/neovitae/living_upgrades/arcane_channeling.json
         ArcaneChannelingHandler.register();
-        Animus.LOGGER.info("Registered Arcane Channeling Living Armor upgrade handler");
+        Animus.LOGGER.debug("Registered Arcane Channeling Living Armor upgrade handler");
 
-        // Register Living Armor XP handler for spell casting
         LivingArmorSpellHandler.register();
-        Animus.LOGGER.info("Registered Living Armor Spell Handler");
+        Animus.LOGGER.debug("Registered Living Armor Spell Handler");
 
-        // Register LP-to-mana spell casting handler
         SpellCastingHandler.register();
-        Animus.LOGGER.info("Registered Spell Casting Handler (LP to mana)");
+        Animus.LOGGER.debug("Registered Spell Casting Handler (LP to mana)");
 
-        // Register Crimson Will spell power boost handler
         CrimsonWillSpellHandler.register();
-        Animus.LOGGER.info("Registered Crimson Will Spell Handler");
+        Animus.LOGGER.debug("Registered Crimson Will Spell Handler");
 
-        // Register Blood Altar infusion handler for spellbooks
         AltarInfusionHandler.register();
-        Animus.LOGGER.info("Registered Altar Infusion Handler (Blood-Infused Spellbooks)");
+        Animus.LOGGER.debug("Registered Altar Infusion Handler");
 
-        // Register Sanguine Scroll creation handler
         SanguineScrollAltarHandler.register();
-        Animus.LOGGER.info("Registered Sanguine Scroll Altar Handler");
+        Animus.LOGGER.debug("Registered Sanguine Scroll Altar Handler");
 
-        // Ritual of Arcane Mastery is registered via DeferredRegister (ARCANE_MASTERY above)
-        Animus.LOGGER.info("Registered Ritual of Arcane Mastery");
-
-        Animus.LOGGER.info("Irons Spells n Spellbooks compatibility initialized successfully");
+        Animus.LOGGER.debug("Irons Spells n Spellbooks compatibility initialized successfully");
     }
 
     @Override

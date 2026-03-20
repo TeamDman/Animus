@@ -51,49 +51,36 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         super(Tiers.DIAMOND);
     }
 
-    // Note: Fire resistance and durability are now set via Item.Properties in the constructor
-    // These methods are kept for documentation but don't override anything in 1.21
-
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return 0; // No durability bar
+        return 0;
     }
 
     @Override
     public boolean isDamaged(ItemStack stack) {
-        return false; // Never damaged
+        return false;
     }
 
-    /**
-     * Check if this spear is activated
-     */
     public boolean isActivated(ItemStack stack) {
         Boolean activated = stack.get(AnimusDataComponents.SPEAR_ACTIVATED.get());
         return activated != null && activated;
     }
 
-    /**
-     * Set activation state
-     */
     public void setActivated(ItemStack stack, boolean activated) {
         stack.set(AnimusDataComponents.SPEAR_ACTIVATED.get(), activated);
     }
 
-    /**
-     * Consume LP from the bound player's soul network
-     * @return true if LP was successfully consumed, false if insufficient LP
-     */
     private boolean consumeLP(Player player, ItemStack stack) {
         if (player.getAbilities().instabuild) {
-            return true; // Creative mode players don't need LP
+            return true;
         }
 
         Binding binding = getBinding(stack);
         if (binding == null) {
-            return false; // Not bound, can't consume LP
+            return false;
         }
 
-        // Get the soul network from the binding owner (not the using player)
+        // Use the binding owner's network, not the using player's
         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(binding.uuid());
         SoulTicket ticket = SoulTicket.create(LP_COST);
 
@@ -101,9 +88,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         return result.success();
     }
 
-    /**
-     * Get riptide enchantment level from the stack
-     */
     private int getRiptideLevel(ItemStack stack, Level level) {
         if (level instanceof ServerLevel serverLevel) {
             return stack.getEnchantmentLevel(serverLevel.registryAccess()
@@ -117,8 +101,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // Allow shield blocking when sneaking with a shield in the other hand
-        // This overrides the toggle mechanic
+        // Shield blocking overrides the toggle mechanic
         if (player.isShiftKeyDown()) {
             InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
             ItemStack otherStack = player.getItemInHand(otherHand);
@@ -127,13 +110,11 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             }
         }
 
-        // Sneak + right-click handling (only if not blocking with shield)
         if (player.isShiftKeyDown()) {
             if (!level.isClientSide) {
                 Binding binding = getBinding(stack);
 
                 if (binding == null) {
-                    // Not bound - bind it now
                     onBind(player, stack);
                     player.displayClientMessage(
                         Component.translatable(Constants.Localizations.Text.SPEAR_BOUND_SUCCESS)
@@ -141,7 +122,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                         true
                     );
                 } else {
-                    // Already bound - toggle activation
                     boolean wasActivated = isActivated(stack);
                     setActivated(stack, !wasActivated);
 
@@ -163,8 +143,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             return InteractionResultHolder.success(stack);
         }
 
-        // Normal right-click - throw the spear
-        // Bound spear is unbreakable, so skip durability check
         if (getRiptideLevel(stack, level) > 0 && !player.isInWaterOrRain()) {
             return InteractionResultHolder.fail(stack);
         } else {
@@ -246,12 +224,10 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        // If deactivated, just do normal single-target damage
         if (!isActivated(stack)) {
             return super.hurtEnemy(stack, target, attacker);
         }
 
-        // If activated, check for LP cost
         if (attacker instanceof Player player) {
             if (!consumeLP(player, stack)) {
                 player.displayClientMessage(
@@ -263,7 +239,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             }
         }
 
-        // Call parent to apply normal attack damage to the main target
         super.hurtEnemy(stack, target, attacker);
 
         Level level = target.level();
@@ -284,9 +259,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         return false;
     }
 
-    /**
-     * Damages all entities in range, sacrificing them to nearby altars if possible
-     */
     private boolean checkAndDamage(double x, double y, double z, Level level, LivingEntity attacker) {
         int range = 5;
         boolean hit = false;
@@ -305,26 +277,18 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                 continue;
             }
 
-            // Try to sacrifice this entity to a nearby altar (regardless of health)
-            // Skip players, non-sacrificeable entities, and entities with the disallow_sacrifice tag
             if (target.canChangeDimensions(level, level) && !(target instanceof Player)) {
-                // Check if entity is tagged as too powerful to sacrifice
                 if (target.getType().is(Constants.Tags.DISALLOW_SACRIFICE)) {
-                    // Show message to player that this enemy is too powerful
                     if (attacker instanceof Player playerAttacker) {
                         playerAttacker.displayClientMessage(
                             Component.translatable(Constants.Localizations.Text.SACRIFICE_TOO_POWERFUL),
                             true
                         );
                     }
-                    // Fall through to normal damage
                 } else {
-                    // Calculate life essence value
                     int lifeEssence = getEntitySacrificeValue(target);
 
-                    // Try to find and fill altar
                     if (lifeEssence > 0 && findAndFillAltar(level, target, lifeEssence)) {
-                        // Sacrifice successful - kill the entity outright and play effect
                         level.playSound(
                             null,
                             target.getX(),
@@ -338,12 +302,11 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                         target.setHealth(-1);
                         target.die(level.damageSources().genericKill());
                         hit = true;
-                        continue; // Skip normal damage for this entity
+                        continue;
                     }
                 }
             }
 
-            // Normal damage if sacrifice didn't happen (no altar nearby)
             boolean result = target.hurt(level.damageSources().genericKill(), damage);
             if (result) {
                 hit = true;
@@ -355,7 +318,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
 
 
     /**
-     * Calculates entity sacrifice value using Blood Magic's entity sacrifice datamap.
+     * Calculates entity sacrifice value using NeoVitae's entity sacrifice datamap.
      * Full kill = LP per damage × max health (with optional cap for bosses).
      * Values can be customized via datapacks at:
      * data/<namespace>/data_maps/entity_type/entity_sacrifice_value.json
@@ -404,7 +367,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                 .withStyle(ChatFormatting.YELLOW));
         }
 
-        // Don't call super.appendHoverText to avoid duplicate tooltips
     }
 
     @Override
@@ -412,16 +374,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         return Tiers.GOLD.getEnchantmentValue();
     }
 
-    // Note: canApplyAtEnchantingTable was removed in 1.21
-    // Enchantment compatibility is now handled through enchantment tags
-
-    /**
-     * Find a nearby Blood Altar and fill it with LP
-     * @param level The level to search in
-     * @param entity The entity being sacrificed (used for position)
-     * @param lifeEssence The amount of LP to add
-     * @return true if an altar was found and filled
-     */
     private boolean findAndFillAltar(Level level, LivingEntity entity, int lifeEssence) {
         BlockPos center = entity.blockPosition();
         int searchRadius = 8;
@@ -432,11 +384,9 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         )) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof BloodAltarTile altar) {
-                // Check if altar has space
                 int currentBlood = altar.getCurrentBlood();
                 int capacity = altar.getMainCapacity();
                 if (currentBlood < capacity) {
-                    // Add LP using the standard method
                     altar.addSacrificeLP(lifeEssence, true);
                     return true;
                 }

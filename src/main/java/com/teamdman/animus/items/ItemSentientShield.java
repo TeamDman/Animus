@@ -75,7 +75,6 @@ public class ItemSentientShield extends ShieldItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            // Update the will type based on the player's inventory
             EnumWillType newType = findDemonWillType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
@@ -83,12 +82,7 @@ public class ItemSentientShield extends ShieldItem {
         }
     }
 
-    /**
-     * Determines the demon will type based on will available from the player's soul network
-     * Returns the type with the highest will amount
-     */
     private static EnumWillType findDemonWillType(Player player) {
-        // Get will amounts from the player's soul network
         EnumWillType highestType = EnumWillType.DEFAULT;
         double highestAmount = 0;
 
@@ -103,9 +97,6 @@ public class ItemSentientShield extends ShieldItem {
         return highestType;
     }
 
-    /**
-     * Gets the total amount of will the player has of a specific type from their soul network
-     */
     private static double getTotalWillOfType(Player player, EnumWillType type) {
         return PlayerDemonWillHandler.getTotalDemonWill(type, player);
     }
@@ -114,10 +105,8 @@ public class ItemSentientShield extends ShieldItem {
         String typeStr = stack.get(AnimusDataComponents.DEMON_WILL_TYPE.get());
         if (typeStr != null && !typeStr.isEmpty()) {
             try {
-                // Case-insensitive enum parsing to handle both "DEFAULT" and "default"
                 return EnumWillType.valueOf(typeStr.toUpperCase());
             } catch (IllegalArgumentException e) {
-                // Invalid enum value - fall back to default
                 return EnumWillType.DEFAULT;
             }
         }
@@ -129,7 +118,6 @@ public class ItemSentientShield extends ShieldItem {
     }
 
     public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int tier) {
-        // Sentient Shield doesn't drop will items, it drains will from the aura
         return new java.util.ArrayList<>();
     }
 
@@ -137,16 +125,11 @@ public class ItemSentientShield extends ShieldItem {
         return getCurrentType(stack);
     }
 
-    /**
-     * Get the demon will multiplier for this shield (1.3 = 30% bonus)
-     */
+    /** 1.3 = 30% bonus will gain while equipped */
     public double getWillGainMultiplier() {
         return 1.3;
     }
 
-    /**
-     * Check if a player has a sentient shield equipped (main or offhand)
-     */
     public static boolean hasSentientShieldEquipped(LivingEntity entity) {
         if (entity == null) {
             return false;
@@ -156,9 +139,6 @@ public class ItemSentientShield extends ShieldItem {
         return mainHand.getItem() instanceof ItemSentientShield || offHand.getItem() instanceof ItemSentientShield;
     }
 
-    /**
-     * Get the sentient shield if equipped, null otherwise
-     */
     public static ItemStack getSentientShield(LivingEntity entity) {
         if (entity == null) {
             return ItemStack.EMPTY;

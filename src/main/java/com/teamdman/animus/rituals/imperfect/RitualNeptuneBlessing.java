@@ -20,7 +20,6 @@ import com.breakinblocks.neovitae.ritual.ImperfectRitual;
  */
 public class RitualNeptuneBlessing extends ImperfectRitual {
 
-    // 15 minutes in ticks (15 * 60 * 20)
     private static final int EFFECT_DURATION = 18000;
 
     public RitualNeptuneBlessing() {
@@ -41,27 +40,24 @@ public class RitualNeptuneBlessing extends ImperfectRitual {
             return false;
         }
 
-        // Grant Water Breathing for 15 minutes (no particles)
         player.addEffect(new MobEffectInstance(
             MobEffects.WATER_BREATHING,
             EFFECT_DURATION,
-            0,  // Amplifier 0 = level 1
-            false,  // Not ambient
-            false,  // No particles
-            true    // Show icon
+            0,
+            false,
+            false,
+            true
         ));
 
-        // Grant Dolphin's Grace for 15 minutes (no particles)
         player.addEffect(new MobEffectInstance(
             MobEffects.DOLPHINS_GRACE,
             EFFECT_DURATION,
-            0,  // Amplifier 0 = level 1
-            false,  // Not ambient
-            false,  // No particles
-            true    // Show icon
+            0,
+            false,
+            false,
+            true
         ));
 
-        // Play ocean ambient sound
         level.playSound(
             null,
             player.getX(), player.getY(), player.getZ(),

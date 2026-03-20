@@ -34,23 +34,16 @@ import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
  */
 public class SanguineScrollAltarHandler {
 
-    // LP costs based on spell rarity (scaled so max level 5 legendary = 80k LP)
     private static final int COMMON_LP = 2000;
     private static final int UNCOMMON_LP = 4000;
     private static final int RARE_LP = 8000;
     private static final int EPIC_LP = 12000;
     private static final int LEGENDARY_LP = 16000;
 
-    /**
-     * Register the event handler
-     */
     public static void register() {
         NeoForge.EVENT_BUS.register(SanguineScrollAltarHandler.class);
     }
 
-    /**
-     * Listen for right-click on Blood Altar
-     */
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         if (!AnimusConfig.ironsSpells.enableSanguineScrolls.get()) {
@@ -62,34 +55,28 @@ public class SanguineScrollAltarHandler {
         BlockPos pos = event.getPos();
         InteractionHand hand = event.getHand();
 
-        // Only handle main hand interactions
         if (hand != InteractionHand.MAIN_HAND) {
             return;
         }
 
-        // Server-side only
         if (level.isClientSide) {
             return;
         }
 
-        // Check if clicking on Blood Altar
         if (!(level.getBlockState(pos).getBlock() instanceof BloodAltarBlock)) {
             return;
         }
 
-        // Get altar tile entity
         BlockEntity be = level.getBlockEntity(pos);
         if (!(be instanceof BloodAltarTile altar)) {
             return;
         }
 
-        // Check main hand - must be Iron's Spells scroll
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
         if (!(mainHand.getItem() instanceof Scroll)) {
             return;
         }
 
-        // Check offhand - must be slate
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
         ItemSanguineScroll.SlateType slateType = getSlateType(offHand);
         if (slateType == null) {
@@ -101,7 +88,6 @@ public class SanguineScrollAltarHandler {
             return;
         }
 
-        // Get spell data from scroll using ISpellContainer
         SpellData spellData = ISpellContainer.get(mainHand).getSpellAtIndex(0);
         AbstractSpell spell = spellData.getSpell();
         int spellLevel = spellData.getLevel();
@@ -125,12 +111,10 @@ public class SanguineScrollAltarHandler {
             return;
         }
 
-        // Calculate LP cost based on rarity and level
         int baseCost = getLPCostForRarity(spell.getRarity(spellLevel));
         int levelMultiplier = spellLevel;
         int totalLPCost = baseCost * levelMultiplier;
 
-        // Check if altar has enough LP (1.21.1 API: use mainTank field)
         if (altar.getCurrentBlood() < totalLPCost) {
             player.displayClientMessage(
                 Component.literal("Not enough LP in altar! Need " + totalLPCost + " LP")
@@ -140,29 +124,21 @@ public class SanguineScrollAltarHandler {
             return;
         }
 
-        // Consume LP from altar
         altar.addSacrificeLP(-totalLPCost, false);
-
-        // Create Sanguine Scroll based on slate type
         ItemStack sanguineScroll = getSanguineScrollForSlate(slateType);
         if (sanguineScroll.isEmpty()) {
             Animus.LOGGER.error("Failed to create sanguine scroll for slate type: " + slateType);
             return;
         }
 
-        // Transfer spell data to Sanguine Scroll
         ItemSanguineScroll.setSpell(sanguineScroll, spellId, spellLevel);
 
-        // Consume inputs
         mainHand.shrink(1);
         offHand.shrink(1);
-
-        // Give player the Sanguine Scroll
         if (!player.getInventory().add(sanguineScroll)) {
             player.drop(sanguineScroll, false);
         }
 
-        // Feedback
         level.playSound(
             null,
             pos,
@@ -181,13 +157,9 @@ public class SanguineScrollAltarHandler {
         Animus.LOGGER.debug("Created Sanguine Scroll: {} level {} (slate: {})",
             spell.getDisplayName(null).getString(), spellLevel, slateType);
 
-        // Cancel the interaction so we don't open altar GUI
-        event.setCanceled(true);
+        event.setCanceled(true); // Prevent altar GUI from opening
     }
 
-    /**
-     * Get LP cost based on spell rarity
-     */
     private static int getLPCostForRarity(io.redspace.ironsspellbooks.api.spells.SpellRarity rarity) {
         return switch (rarity) {
             case COMMON -> COMMON_LP;
@@ -198,9 +170,6 @@ public class SanguineScrollAltarHandler {
         };
     }
 
-    /**
-     * Determine slate type from itemstack
-     */
     private static ItemSanguineScroll.SlateType getSlateType(ItemStack stack) {
         if (stack.isEmpty()) {
             return null;
@@ -208,7 +177,6 @@ public class SanguineScrollAltarHandler {
 
         String id = stack.getItem().toString();
 
-        // Check for Blood Magic 1.21.1 snake_case naming
         if (id.contains("blank_slate")) {
             return ItemSanguineScroll.SlateType.BLANK;
         } else if (id.contains("reinforced_slate")) {
@@ -224,9 +192,6 @@ public class SanguineScrollAltarHandler {
         return null;
     }
 
-    /**
-     * Get the appropriate Sanguine Scroll item for the slate type
-     */
     private static ItemStack getSanguineScrollForSlate(ItemSanguineScroll.SlateType slateType) {
         return switch (slateType) {
             case BLANK -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_BLANK.get());

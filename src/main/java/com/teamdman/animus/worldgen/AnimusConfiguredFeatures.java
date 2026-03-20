@@ -15,9 +15,6 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlac
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 
-/**
- * Configured features for Animus world generation
- */
 public class AnimusConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> BLOOD_TREE =
         registerKey("blood_tree");

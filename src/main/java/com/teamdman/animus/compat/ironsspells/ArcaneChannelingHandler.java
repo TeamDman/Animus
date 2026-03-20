@@ -28,14 +28,9 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
  */
 public class ArcaneChannelingHandler {
 
-    /**
-     * ResourceLocation for the Arcane Channeling upgrade.
-     * The upgrade is defined in data/animus/neovitae/living_upgrades/arcane_channeling.json
-     */
     public static final ResourceLocation UPGRADE_ID =
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_channeling");
 
-    // ResourceLocation for our cooldown reduction attribute modifier (replaces UUID in 1.21)
     private static final ResourceLocation COOLDOWN_MODIFIER_ID =
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_channeling_cooldown");
 
@@ -43,10 +38,6 @@ public class ArcaneChannelingHandler {
         NeoForge.EVENT_BUS.register(new ArcaneChannelingHandler());
     }
 
-    /**
-     * Calculate mana cost reduction percentage based on upgrade level
-     * Level 1: 5%, Level 2: 10%
-     */
     private double getManaCostReduction(int upgradeLevel) {
         if (upgradeLevel >= 2) {
             return 0.10; // 10% reduction
@@ -56,10 +47,6 @@ public class ArcaneChannelingHandler {
         return 0.0;
     }
 
-    /**
-     * Calculate cooldown reduction percentage based on upgrade level
-     * Level 3: 5%, Level 4: 10%
-     */
     private double getCooldownReduction(int upgradeLevel) {
         if (upgradeLevel >= 4) {
             return 0.10; // 10% reduction
@@ -69,9 +56,6 @@ public class ArcaneChannelingHandler {
         return 0.0;
     }
 
-    /**
-     * Apply mana cost reduction when a spell is cast
-     */
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onSpellCast(SpellOnCastEvent event) {
         Player player = event.getEntity();
@@ -84,7 +68,6 @@ public class ArcaneChannelingHandler {
             return;
         }
 
-        // Levels 1-2: Reduce mana cost
         double reduction = getManaCostReduction(upgradeLevel);
         if (reduction > 0) {
             int originalCost = event.getManaCost();
@@ -93,9 +76,6 @@ public class ArcaneChannelingHandler {
         }
     }
 
-    /**
-     * Grant damage resistance when starting to cast a spell (Level 5)
-     */
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onSpellPreCast(SpellPreCastEvent event) {
         Player player = event.getEntity();
@@ -105,7 +85,6 @@ public class ArcaneChannelingHandler {
 
         int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
 
-        // Level 5: Grant damage resistance when casting
         if (upgradeLevel >= 5) {
             player.addEffect(new MobEffectInstance(
                 MobEffects.DAMAGE_RESISTANCE,
@@ -118,20 +97,14 @@ public class ArcaneChannelingHandler {
         }
     }
 
-    /**
-     * Manage cooldown reduction attribute modifier based on upgrade level
-     * Runs every second to check and update the modifier as needed
-     */
     @SubscribeEvent
     public void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
 
-        // Only check every 20 ticks (1 second) to reduce overhead
         if (player.tickCount % 20 != 0) {
             return;
         }
 
-        // Only run on server side
         if (player.level().isClientSide()) {
             return;
         }
@@ -139,29 +112,23 @@ public class ArcaneChannelingHandler {
         int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         double targetReduction = getCooldownReduction(upgradeLevel);
 
-        // Get the cooldown reduction attribute
         Holder<net.minecraft.world.entity.ai.attributes.Attribute> cooldownAttr = AttributeRegistry.COOLDOWN_REDUCTION;
         AttributeInstance cooldownAttribute = player.getAttribute(cooldownAttr);
         if (cooldownAttribute == null) {
             return;
         }
 
-        // Check if we already have a modifier
         AttributeModifier existingModifier = cooldownAttribute.getModifier(COOLDOWN_MODIFIER_ID);
 
         if (targetReduction <= 0) {
-            // Remove modifier if we shouldn't have one
             if (existingModifier != null) {
                 cooldownAttribute.removeModifier(COOLDOWN_MODIFIER_ID);
             }
         } else {
-            // Add or update modifier
             if (existingModifier == null || Math.abs(existingModifier.amount() - targetReduction) > 0.001) {
-                // Remove old modifier if it exists with wrong value
                 if (existingModifier != null) {
                     cooldownAttribute.removeModifier(COOLDOWN_MODIFIER_ID);
                 }
-                // Add new modifier
                 cooldownAttribute.addPermanentModifier(new AttributeModifier(
                     COOLDOWN_MODIFIER_ID,
                     targetReduction,

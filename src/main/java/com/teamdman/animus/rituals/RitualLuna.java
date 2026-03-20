@@ -39,7 +39,6 @@ public class RitualLuna extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
 
-    // Track current search position for each ritual to resume searching where we left off
     private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
 
     public RitualLuna() {
@@ -63,18 +62,14 @@ public class RitualLuna extends Ritual {
             return;
         }
 
-        // Check if player has enough LP
         if (currentEssence < getRefreshCost()) {
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        // Get chest position
         AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 
-        // Find a light-emitting block using center-outward search
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         BlockPos lightPos = findLightEmittingBlock(level, masterPos, effectRange);
 
@@ -85,30 +80,23 @@ public class RitualLuna extends Ritual {
         BlockState state = level.getBlockState(lightPos);
         Block block = state.getBlock();
 
-        // Get the item stack for this block
         ItemStack stack = block.getCloneItemStack(level, lightPos, state);
 
-        // Try to place item in chest if we have one
         boolean shouldRemoveBlock = true;
         if (!stack.isEmpty()) {
-            // Try to insert into chest
             if (chestTile != null) {
                 IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
                 if (handler != null) {
-                    // Try to insert, if successful then we can proceed
                     ItemStack remainder = ItemHandlerHelper.insertItem(handler, stack, true);
                     if (remainder.isEmpty()) {
                         ItemHandlerHelper.insertItem(handler, stack, false);
                     } else {
-                        // Chest is full, don't remove block
                         shouldRemoveBlock = false;
                     }
                 } else {
-                    // No handler, don't remove block
                     shouldRemoveBlock = false;
                 }
             } else {
-                // No chest, drop at master ritual stone
                 net.minecraft.world.entity.item.ItemEntity itemEntity = new net.minecraft.world.entity.item.ItemEntity(
                     level,
                     masterPos.getX() + 0.5,
@@ -120,11 +108,9 @@ public class RitualLuna extends Ritual {
             }
         }
 
-        // Remove block and consume LP (even if no valid item dropped)
         if (shouldRemoveBlock) {
             level.removeBlock(lightPos, false);
 
-            // Consume LP
             SoulTicket ticket = SoulTicket.create(getRefreshCost());
             network.syphon(ticket);
         }
@@ -142,23 +128,17 @@ public class RitualLuna extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        // Earth runes at corners, rising 3 layers high
         for (int layer = 0; layer < 3; layer++) {
             addCornerRunes(components, 2, layer, EnumRuneType.EARTH);
         }
     }
 
-    /**
-     * Find a light-emitting block using breadth-first search
-     * Starts from 1 block below the master ritual stone and expands outward in all directions
-     */
     private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
         SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
 
         int maxChecksPerTick = 4096; // Increased for faster operation
         int checksThisTick = 0;
 
-        // Get bounds from the AreaDescriptor (respects Ritual Tinkerer modifications)
         net.minecraft.world.phys.AABB aabb = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(
             Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
@@ -169,11 +149,7 @@ public class RitualLuna extends Ritual {
             Math.abs(aabb.maxY - masterPos.getY())
         );
 
-        // Start position is 1 block below the ritual stone
         BlockPos startPos = masterPos.below();
-
-        // Breadth-first search: expand outward in "shells" of increasing distance
-        // We use Manhattan distance for efficiency
         for (int distance = state.currentDistance; distance <= horizontalRadius + verticalRadius && checksThisTick < maxChecksPerTick; distance++) {
             // For each distance level, check all positions at that Manhattan distance from start
             for (int x = -horizontalRadius; x <= horizontalRadius && checksThisTick < maxChecksPerTick; x++) {
@@ -188,10 +164,7 @@ public class RitualLuna extends Ritual {
                         // Skip if we're not resuming from this Y position
                         if (distance == state.currentDistance && x == state.currentX && z == state.currentZ && y > state.currentY) continue;
 
-                        // Calculate Manhattan distance from start position
                         int manhattanDist = Math.abs(x) + Math.abs(z) + Math.abs(y);
-
-                        // Only check positions at this exact distance
                         if (manhattanDist != distance) {
                             continue;
                         }
@@ -199,18 +172,15 @@ public class RitualLuna extends Ritual {
                         BlockPos checkPos = startPos.offset(x, y, z);
                         checksThisTick++;
 
-                        // Update search state to resume from here next tick
                         state.currentDistance = distance;
                         state.currentX = x;
                         state.currentZ = z;
                         state.currentY = y;
 
-                        // Check if this block emits light
                         BlockState blockState = level.getBlockState(checkPos);
                         int lightEmission = blockState.getLightEmission();
 
                         if (lightEmission > 0) {
-                            // Advance to next position for next search
                             state.currentY--;
                             if (state.currentY < -verticalRadius) {
                                 state.currentY = 0;
@@ -233,7 +203,6 @@ public class RitualLuna extends Ritual {
             }
         }
 
-        // If we've searched the entire range, reset to start over next tick
         if (state.currentDistance > horizontalRadius + verticalRadius) {
             searchStates.remove(masterPos);
         }
@@ -241,17 +210,11 @@ public class RitualLuna extends Ritual {
         return null;
     }
 
-    /**
-     * Track the search state for each ritual to resume where it left off
-     * Uses breadth-first search based on Manhattan distance from starting position
-     * Starting position is 1 block below the ritual stone
-     * Uses sentinel values to indicate "start from beginning" for each dimension
-     */
     private static class SearchState {
-        int currentDistance = 0; // Current Manhattan distance being searched
-        int currentX = Integer.MIN_VALUE; // Sentinel: start from beginning of X range
-        int currentZ = Integer.MIN_VALUE; // Sentinel: start from beginning of Z range
-        int currentY = Integer.MAX_VALUE; // Sentinel: start from top of Y range (searches downward)
+        int currentDistance = 0;
+        int currentX = Integer.MIN_VALUE;
+        int currentZ = Integer.MIN_VALUE;
+        int currentY = Integer.MAX_VALUE;
     }
 
     @Override

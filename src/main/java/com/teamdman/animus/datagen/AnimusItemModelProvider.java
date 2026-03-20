@@ -18,7 +18,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        // Block items - use parent block model
         blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD, "blood_wood");
         blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED, "blood_wood_stripped");
         blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS, "blood_wood_planks");
@@ -28,14 +27,11 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB, "blood_wood_slab");
         blockItem(AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL, "crystallized_demon_will_block");
 
-        // Fence - use fence inventory model
         withExistingParent("blood_wood_fence", mcLoc("block/fence_inventory"))
             .texture("texture", modLoc("block/bloodwood_planks"));
 
-        // Fence Gate - use block model
         blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE, "blood_wood_fence_gate");
 
-        // Willful Stone blocks
         blockItem(AnimusBlocks.BLOCK_WILLFUL_STONE, "willful_stone");
         blockItem(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE, "willful_stone_white");
         blockItem(AnimusBlocks.BLOCK_WILLFUL_STONE_ORANGE, "willful_stone_orange");
@@ -53,11 +49,9 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         blockItem(AnimusBlocks.BLOCK_WILLFUL_STONE_RED, "willful_stone_red");
         blockItem(AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK, "willful_stone_black");
 
-        // Blood Sapling - special case, uses generated item model
         withExistingParent("blood_sapling", mcLoc("item/generated"))
             .texture("layer0", modLoc("block/blockbloodsapling"));
 
-        // Simple items with textures
         simpleItem(AnimusItems.BLOOD_APPLE, "item/itembloodapple");
         simpleItem(AnimusItems.BLOOD_ORB_TRANSCENDENT, "item/blood_orb_transcendent");
         simpleItem(AnimusItems.SANGUINE_DIVINER, "item/itemsanguinediviner");
@@ -65,10 +59,8 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.ACTIVATION_CRYSTAL_FRAGILE, "item/itemactivationcrystalfragile");
         simpleItem(AnimusItems.MOBSOUL, "item/itemmobsoul");
 
-        // Key of Binding - with bound variant (uses _active texture)
         keyBindingItem(AnimusItems.KEY_BINDING);
 
-        // Reagents
         simpleItem(AnimusItems.REAGENT_BUILDER, "item/reagentbuilder");
         simpleItem(AnimusItems.REAGENT_CHAINS, "item/reagentchains");
         simpleItem(AnimusItems.REAGENT_CONSUMPTION, "item/reagentconsumption");
@@ -84,7 +76,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.REAGENT_TEMPORAL_DOMINANCE, "item/reagenttemporaldominance");
         simpleItem(AnimusItems.REAGENT_FIST, "item/reagentfist");
 
-        // Sigils - Simple (non-toggleable)
         simpleItem(AnimusItems.SIGIL_CHAINS, "item/itemsigilchains");
         simpleItem(AnimusItems.SIGIL_CONSUMPTION, "item/itemsigilconsumption");
         simpleItem(AnimusItems.SIGIL_STORM, "item/itemsigilstorm");
@@ -93,11 +84,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.SIGIL_EQUIVALENCY, "item/sigil_equivalency");
         simpleItem(AnimusItems.SIGIL_MONK, "item/sigil_monk");
 
-        // Toggleable Sigils - with activation states
-        // Different texture naming conventions:
-        // builder/transposition use _deactivated/_activated
-        // leach uses itemsigilleach_deactivated/itemsigilleach_activated
-        // remedium/reparare/heavenly_wrath use sigil_xxx/sigil_xxx_active
         toggleableSigil(AnimusItems.SIGIL_BUILDER, "sigil_builder_deactivated", "sigil_builder_activated");
         toggleableSigil(AnimusItems.SIGIL_LEACH, "itemsigilleach_deactivated", "itemsigilleach_activated");
         toggleableSigil(AnimusItems.SIGIL_TRANSPOSITION, "sigil_transposition_deactivated", "sigil_transposition_activated");
@@ -105,25 +91,19 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         toggleableSigil(AnimusItems.SIGIL_REPARARE, "sigil_reparare", "sigil_reparare_active");
         toggleableSigil(AnimusItems.SIGIL_HEAVENLY_WRATH, "sigil_heavenly_wrath", "sigil_heavenly_wrath_active");
 
-        // Fluid Buckets
         simpleItem(AnimusItems.ANTILIFE_BUCKET, "item/antilife_bucket");
         simpleItem(AnimusItems.LIVING_TERRA_BUCKET, "item/living_terra_bucket");
 
-        // Ritual Designer
         simpleItem(AnimusItems.RITUAL_DESIGNER, "item/itemritualdesigner");
 
-        // Bows - with pulling animations
         bowItem(AnimusItems.SENTIENT_BOW, "sentient_bow");
         bowItem(AnimusItems.HELLFORGED_BOW, "hellforged_bow");
 
-        // Note: Sentient Shield, Runic Sentient Scythe, and Hand of Death
-        // use manual models in resources for proper 3D rendering and display transforms
     }
 
     private void bowItem(DeferredHolder<Item, Item> item, String textureName) {
         String name = item.getId().getPath();
 
-        // Create pulling models first
         withExistingParent(name + "_pulling_0", mcLoc("item/generated"))
             .texture("layer0", modLoc("item/" + textureName + "_pulling_0"));
 
@@ -133,7 +113,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         withExistingParent(name + "_pulling_2", mcLoc("item/generated"))
             .texture("layer0", modLoc("item/" + textureName + "_pulling_2"));
 
-        // Main bow model with overrides for pulling states
         withExistingParent(name, mcLoc("item/generated"))
             .texture("layer0", modLoc("item/" + textureName))
             .override()
@@ -155,7 +134,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
     private void toggleableSigil(DeferredHolder<Item, Item> item, String deactivatedTexture, String activatedTexture) {
         String name = item.getId().getPath();
 
-        // Main model (deactivated state)
         withExistingParent(name, mcLoc("item/generated"))
             .texture("layer0", modLoc("item/" + deactivatedTexture))
             .override()
@@ -163,7 +141,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
                 .model(getBuilder(name + "_activated"))
             .end();
 
-        // Activated variant model
         withExistingParent(name + "_activated", mcLoc("item/generated"))
             .texture("layer0", modLoc("item/" + activatedTexture));
     }
@@ -171,7 +148,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
     private void keyBindingItem(DeferredHolder<Item, Item> item) {
         String name = item.getId().getPath();
 
-        // Main model (unbound state)
         withExistingParent(name, mcLoc("item/generated"))
             .texture("layer0", modLoc("item/itemkeybinding"))
             .override()
@@ -179,7 +155,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
                 .model(getBuilder(name + "_bound"))
             .end();
 
-        // Bound variant model (uses _active texture)
         withExistingParent(name + "_bound", mcLoc("item/generated"))
             .texture("layer0", modLoc("item/itemkeybinding_active"));
     }

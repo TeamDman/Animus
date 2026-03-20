@@ -10,7 +10,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class AnimusBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.createBlocks(Constants.Mod.MODID);
 
-    // Basic blocks
     public static final DeferredHolder<Block, Block> BLOCK_BLOOD_WOOD = BLOCKS.register("blood_wood",
         BlockBloodWood::new);
 
@@ -47,9 +46,8 @@ public class AnimusBlocks {
     public static final DeferredHolder<Block, Block> BLOCK_CRYSTALLIZED_DEMON_WILL = BLOCKS.register("crystallized_demon_will_block",
         BlockCrystallizedDemonWill::new);
 
-    // Imperfect Ritual Stone removed - use Blood Magic's native NVBlocks.IMPERFECT_RITUAL_STONE instead
+    // Imperfect Ritual Stone removed - use NeoVitae's native NVBlocks.IMPERFECT_RITUAL_STONE instead
 
-    // Willful Stone blocks (all 16 colors)
     public static final DeferredHolder<Block, Block> BLOCK_WILLFUL_STONE = BLOCKS.register("willful_stone",
         BlockWillfulStone::new);
     public static final DeferredHolder<Block, Block> BLOCK_WILLFUL_STONE_WHITE = BLOCKS.register("willful_stone_white",
@@ -83,7 +81,6 @@ public class AnimusBlocks {
     public static final DeferredHolder<Block, Block> BLOCK_WILLFUL_STONE_BLACK = BLOCKS.register("willful_stone_black",
         BlockWillfulStone::new);
 
-    // Fluid blocks
     public static final DeferredHolder<Block, Block> BLOCK_FLUID_ANTILIFE = BLOCKS.register("antilife_fluid",
         BlockFluidAntiLife::new);
 

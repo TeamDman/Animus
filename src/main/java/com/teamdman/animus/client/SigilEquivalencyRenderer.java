@@ -26,10 +26,6 @@ import org.joml.Matrix4f;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Client-side renderer for Sigil of Equivalency block preview
- * Shows which blocks would be replaced when looking at a block with the sigil
- */
 @EventBusSubscriber(value = Dist.CLIENT, modid = "animus")
 public class SigilEquivalencyRenderer {
 
@@ -45,7 +41,6 @@ public class SigilEquivalencyRenderer {
             return;
         }
 
-        // Check if player is holding the sigil and get the stack
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offHand = player.getOffhandItem();
         ItemStack sigilStack = null;
@@ -58,7 +53,6 @@ public class SigilEquivalencyRenderer {
             return;
         }
 
-        // Get the block the player is looking at
         HitResult hitResult = mc.hitResult;
         if (hitResult == null || hitResult.getType() != HitResult.Type.BLOCK) {
             return;
@@ -73,7 +67,6 @@ public class SigilEquivalencyRenderer {
             return;
         }
 
-        // Get radius from the item
         int radius = getRadius(sigilStack);
         net.minecraft.core.Direction clickedFace = blockHit.getDirection();
         List<BlockPos> matchingBlocks = findMatchingBlocksInRadius(level, targetPos, targetState.getBlock(), radius, clickedFace);
@@ -82,7 +75,6 @@ public class SigilEquivalencyRenderer {
             return;
         }
 
-        // Render preview
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
         Vec3 cameraPos = event.getCamera().getPosition();
@@ -109,38 +101,32 @@ public class SigilEquivalencyRenderer {
         java.util.Set<BlockPos> visited = new java.util.HashSet<>();
         java.util.Queue<BlockPos> queue = new java.util.LinkedList<>();
 
-        // Maximum blocks for a plane (square area)
         int maxBlocks = (radius * 2 + 1) * (radius * 2 + 1);
 
-        // Start flood-fill from center
         queue.add(center);
         visited.add(center);
 
-        // Determine which neighbors to use based on clicked face
         BlockPos[] neighbors;
         if (clickedFace == net.minecraft.core.Direction.UP || clickedFace == net.minecraft.core.Direction.DOWN) {
-            // Horizontal plane - only check cardinal directions on XZ plane
             neighbors = new BlockPos[] {
-                new BlockPos(1, 0, 0),   // East
-                new BlockPos(-1, 0, 0),  // West
-                new BlockPos(0, 0, 1),   // South
-                new BlockPos(0, 0, -1)   // North
+                new BlockPos(1, 0, 0),
+                new BlockPos(-1, 0, 0),
+                new BlockPos(0, 0, 1),
+                new BlockPos(0, 0, -1)
             };
         } else if (clickedFace == net.minecraft.core.Direction.NORTH || clickedFace == net.minecraft.core.Direction.SOUTH) {
-            // North/South vertical plane - check on XY plane
             neighbors = new BlockPos[] {
-                new BlockPos(1, 0, 0),   // East
-                new BlockPos(-1, 0, 0),  // West
-                new BlockPos(0, 1, 0),   // Up
-                new BlockPos(0, -1, 0)   // Down
+                new BlockPos(1, 0, 0),
+                new BlockPos(-1, 0, 0),
+                new BlockPos(0, 1, 0),
+                new BlockPos(0, -1, 0)
             };
         } else {
-            // East/West vertical plane - check on ZY plane
             neighbors = new BlockPos[] {
-                new BlockPos(0, 0, 1),   // South
-                new BlockPos(0, 0, -1),  // North
-                new BlockPos(0, 1, 0),   // Up
-                new BlockPos(0, -1, 0)   // Down
+                new BlockPos(0, 0, 1),
+                new BlockPos(0, 0, -1),
+                new BlockPos(0, 1, 0),
+                new BlockPos(0, -1, 0)
             };
         }
 
@@ -152,16 +138,13 @@ public class SigilEquivalencyRenderer {
                 continue;
             }
 
-            // Check if this block matches
             BlockState state = level.getBlockState(current);
             if (state.getBlock() == targetBlock) {
                 matches.add(current.immutable());
 
-                // Add neighbors to queue
                 for (BlockPos offset : neighbors) {
                     BlockPos neighbor = current.offset(offset.getX(), offset.getY(), offset.getZ());
 
-                    // Only process if not visited and on same plane within radius
                     if (!visited.contains(neighbor) && isOnSamePlaneAndInRadius(neighbor, center, radius, clickedFace)) {
                         visited.add(neighbor);
                         queue.add(neighbor);
@@ -178,21 +161,16 @@ public class SigilEquivalencyRenderer {
         int dy = Math.abs(pos.getY() - center.getY());
         int dz = Math.abs(pos.getZ() - center.getZ());
 
-        // Check plane constraint and 2D distance
         if (clickedFace == net.minecraft.core.Direction.UP || clickedFace == net.minecraft.core.Direction.DOWN) {
-            // Horizontal plane - must be same Y, check X and Z distance
             return pos.getY() == center.getY() && Math.max(dx, dz) <= radius;
         } else if (clickedFace == net.minecraft.core.Direction.NORTH || clickedFace == net.minecraft.core.Direction.SOUTH) {
-            // North/South plane - must be same Z, check X and Y distance
             return pos.getZ() == center.getZ() && Math.max(dx, dy) <= radius;
         } else {
-            // East/West plane - must be same X, check Y and Z distance
             return pos.getX() == center.getX() && Math.max(dy, dz) <= radius;
         }
     }
 
     private static int getRadius(ItemStack stack) {
-        // Check for custom radius in data component, fall back to config default
         Integer customRadius = stack.get(com.teamdman.animus.registry.AnimusDataComponents.EQUIVALENCY_RADIUS.get());
         if (customRadius != null && customRadius > 0) {
             return customRadius;
@@ -204,13 +182,12 @@ public class SigilEquivalencyRenderer {
         VertexConsumer consumer = bufferSource.getBuffer(RenderType.lines());
         Matrix4f matrix = poseStack.last().pose();
 
-        // Purple/magenta color for the preview
         float r = 0.8f;
         float g = 0.2f;
         float b = 0.8f;
         float a = 0.6f;
 
-        // Slightly offset the box to make it visible outside the block
+        // Offset slightly so the preview is visible on top of the existing block face
         float offset = 0.002f;
         float minX = -offset;
         float minY = -offset;
@@ -219,20 +196,16 @@ public class SigilEquivalencyRenderer {
         float maxY = 1.0f + offset;
         float maxZ = 1.0f + offset;
 
-        // Draw the 12 edges of the cube
-        // Bottom face
         addLine(consumer, matrix, minX, minY, minZ, maxX, minY, minZ, r, g, b, a);
         addLine(consumer, matrix, maxX, minY, minZ, maxX, minY, maxZ, r, g, b, a);
         addLine(consumer, matrix, maxX, minY, maxZ, minX, minY, maxZ, r, g, b, a);
         addLine(consumer, matrix, minX, minY, maxZ, minX, minY, minZ, r, g, b, a);
 
-        // Top face
         addLine(consumer, matrix, minX, maxY, minZ, maxX, maxY, minZ, r, g, b, a);
         addLine(consumer, matrix, maxX, maxY, minZ, maxX, maxY, maxZ, r, g, b, a);
         addLine(consumer, matrix, maxX, maxY, maxZ, minX, maxY, maxZ, r, g, b, a);
         addLine(consumer, matrix, minX, maxY, maxZ, minX, maxY, minZ, r, g, b, a);
 
-        // Vertical edges
         addLine(consumer, matrix, minX, minY, minZ, minX, maxY, minZ, r, g, b, a);
         addLine(consumer, matrix, maxX, minY, minZ, maxX, maxY, minZ, r, g, b, a);
         addLine(consumer, matrix, maxX, minY, maxZ, maxX, maxY, maxZ, r, g, b, a);
@@ -243,20 +216,17 @@ public class SigilEquivalencyRenderer {
                                 float x1, float y1, float z1,
                                 float x2, float y2, float z2,
                                 float r, float g, float b, float a) {
-        // Calculate normal for the line (direction vector)
         float dx = x2 - x1;
         float dy = y2 - y1;
         float dz = z2 - z1;
         float length = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-        // Normalize
         if (length > 0) {
             dx /= length;
             dy /= length;
             dz /= length;
         }
 
-        // Add two vertices for the line
         consumer.addVertex(matrix, x1, y1, z1).setColor(r, g, b, a).setNormal(dx, dy, dz);
         consumer.addVertex(matrix, x2, y2, z2).setColor(r, g, b, a).setNormal(dx, dy, dz);
     }

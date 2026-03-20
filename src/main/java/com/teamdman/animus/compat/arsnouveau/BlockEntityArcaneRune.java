@@ -29,13 +29,9 @@ import java.lang.reflect.Method;
 public class BlockEntityArcaneRune extends AbstractSourceMachine {
     private static final int MAX_SOURCE_CAPACITY = 1000;
 
-    // Timing
     private int tickCounter = 0;
-
-    // Source state
     private boolean hasSource = false;
 
-    // Cached reflection for setting max source
     private static Method setMaxSourceMethod;
     private static Field maxSourceField;
     private static boolean reflectionInitialized = false;
@@ -47,24 +43,18 @@ public class BlockEntityArcaneRune extends AbstractSourceMachine {
         setMaxSourceValue(MAX_SOURCE_CAPACITY);
     }
 
-    /**
-     * Initialize reflection for setting max source value
-     * Tries method first, then falls back to field access
-     */
     private static void initMaxSourceReflection() {
         if (reflectionInitialized) return;
         reflectionInitialized = true;
 
         try {
-            // Try to find setMaxSource method
             setMaxSourceMethod = AbstractSourceMachine.class.getMethod("setMaxSource", int.class);
             return;
         } catch (NoSuchMethodException e) {
-            // Method not found, try field access
+            // Fall back to field access
         }
 
         try {
-            // Try to find maxSource field directly
             maxSourceField = AbstractSourceMachine.class.getDeclaredField("maxSource");
             maxSourceField.setAccessible(true);
         } catch (NoSuchFieldException e) {
@@ -72,9 +62,6 @@ public class BlockEntityArcaneRune extends AbstractSourceMachine {
         }
     }
 
-    /**
-     * Set the max source value using reflection
-     */
     private void setMaxSourceValue(int value) {
         try {
             if (setMaxSourceMethod != null) {
@@ -92,27 +79,22 @@ public class BlockEntityArcaneRune extends AbstractSourceMachine {
             return;
         }
 
-        // Verify the block entity is still valid
         if (level.getBlockEntity(worldPosition) != this) {
             return;
         }
 
         tickCounter++;
 
-        // Get config values
         int drainInterval = AnimusConfig.arsNouveau.arcaneRuneDrainInterval.get();
         int drainAmount = AnimusConfig.arsNouveau.arcaneRuneDrainAmount.get();
 
-        // Consume source based on config interval
         if (tickCounter >= drainInterval) {
             tickCounter = 0;
 
             if (getSource() >= drainAmount) {
-                // Consume Source
                 removeSource(drainAmount);
                 hasSource = true;
             } else {
-                // Not enough Source
                 hasSource = false;
             }
 
@@ -120,26 +102,14 @@ public class BlockEntityArcaneRune extends AbstractSourceMachine {
         }
     }
 
-    /**
-     * Get the speed multiplier this rune provides
-     * 1.20 when source available (20% faster than speed rune)
-     * 0.675 when no source (67.5% speed)
-     */
     public float getSpeedMultiplier() {
         return hasSource ? 1.20f : 0.675f;
     }
 
-    /**
-     * Check if this rune provides dislocation bonus
-     * Only when source is available
-     */
     public boolean providesDislocationBonus() {
         return hasSource;
     }
 
-    /**
-     * Get whether this rune currently has source
-     */
     public boolean hasSource() {
         return hasSource;
     }

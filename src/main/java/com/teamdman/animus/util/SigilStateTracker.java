@@ -27,69 +27,28 @@ public class SigilStateTracker {
     private final String name;
     private final Map<UUID, Long> lastExecutionTimes = new ConcurrentHashMap<>();
 
-    /**
-     * Create a new tracker with the given name (for debugging purposes).
-     *
-     * @param name Identifier for this tracker (e.g., sigil name)
-     */
     public SigilStateTracker(String name) {
         this.name = name;
-        // Register with cleanup manager
         SigilStateCleanupManager.register(this);
     }
 
-    /**
-     * Get the tracker name.
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Check if enough time has passed since last execution for this player.
-     *
-     * @param playerId The player's UUID
-     * @param currentTime Current game time (level.getGameTime())
-     * @param interval Minimum ticks between executions
-     * @return true if ready to execute (first time or interval elapsed)
-     */
     public boolean isReady(UUID playerId, long currentTime, int interval) {
         Long lastTime = lastExecutionTimes.get(playerId);
         return lastTime == null || currentTime - lastTime >= interval;
     }
 
-    /**
-     * Check if ready using a config-provided interval.
-     *
-     * @param playerId The player's UUID
-     * @param currentTime Current game time
-     * @param intervalSupplier Supplier for the interval (e.g., config value)
-     * @return true if ready to execute
-     */
     public boolean isReady(UUID playerId, long currentTime, java.util.function.IntSupplier intervalSupplier) {
         return isReady(playerId, currentTime, intervalSupplier.getAsInt());
     }
 
-    /**
-     * Update the last execution time for a player.
-     * Call this after successfully performing the sigil effect.
-     *
-     * @param playerId The player's UUID
-     * @param currentTime Current game time
-     */
     public void updateTime(UUID playerId, long currentTime) {
         lastExecutionTimes.put(playerId, currentTime);
     }
 
-    /**
-     * Convenience method to check readiness and update time atomically.
-     * Returns true and updates time if ready, returns false if not ready.
-     *
-     * @param playerId The player's UUID
-     * @param currentTime Current game time
-     * @param interval Minimum ticks between executions
-     * @return true if effect should execute (time was updated)
-     */
     public boolean checkAndUpdate(UUID playerId, long currentTime, int interval) {
         if (isReady(playerId, currentTime, interval)) {
             updateTime(playerId, currentTime);
@@ -98,24 +57,10 @@ public class SigilStateTracker {
         return false;
     }
 
-    /**
-     * Get the last execution time for a player.
-     *
-     * @param playerId The player's UUID
-     * @return Last execution time, or null if never executed
-     */
     public Long getLastTime(UUID playerId) {
         return lastExecutionTimes.get(playerId);
     }
 
-    /**
-     * Get ticks remaining until next execution is ready.
-     *
-     * @param playerId The player's UUID
-     * @param currentTime Current game time
-     * @param interval Minimum ticks between executions
-     * @return Ticks remaining, or 0 if ready now
-     */
     public long getTicksRemaining(UUID playerId, long currentTime, int interval) {
         Long lastTime = lastExecutionTimes.get(playerId);
         if (lastTime == null) {
@@ -125,27 +70,14 @@ public class SigilStateTracker {
         return Math.max(0, interval - elapsed);
     }
 
-    /**
-     * Clean up tracking data for a player.
-     * Called automatically by SigilStateCleanupManager on logout.
-     *
-     * @param playerId The player's UUID
-     */
     public void cleanup(UUID playerId) {
         lastExecutionTimes.remove(playerId);
     }
 
-    /**
-     * Clear all tracking data.
-     * Useful for server shutdown or dimension unload.
-     */
     public void clearAll() {
         lastExecutionTimes.clear();
     }
 
-    /**
-     * Get the number of tracked players.
-     */
     public int getTrackedCount() {
         return lastExecutionTimes.size();
     }

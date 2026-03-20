@@ -39,7 +39,6 @@ public class EntityHellforgedArrow extends AbstractArrow {
     private static final EntityDataAccessor<Float> ID_EXECUTE_THRESHOLD =
         SynchedEntityData.defineId(EntityHellforgedArrow.class, EntityDataSerializers.FLOAT);
 
-    // Effect durations (in ticks)
     private static final int[] poisonTime = {40, 60, 100, 140, 200};
     private static final int[] poisonLevel = {0, 0, 1, 1, 2};
     private static final int[] slowTime = {60, 100, 140, 180, 240};
@@ -116,19 +115,15 @@ public class EntityHellforgedArrow extends AbstractArrow {
             float targetMaxHealth = target.getMaxHealth();
             float targetCurrentHealth = target.getHealth();
 
-            // Check for execute condition (only at full charge with threshold > 0)
             boolean shouldExecute = executeThreshold > 0
                 && targetCurrentHealth <= (targetMaxHealth * executeThreshold)
                 && chargeMultiplier >= 1.0f;
 
-            // Store original damage before potential execute modification
             double originalDamage = this.getBaseDamage();
 
             if (shouldExecute) {
-                // Execute! Deal massive damage to instantly kill
-                this.setBaseDamage(targetMaxHealth * 2); // Overkill to ensure death
+                this.setBaseDamage(targetMaxHealth * 2);
 
-                // Play execute sound
                 this.level().playSound(
                     null,
                     this.getX(),
@@ -140,13 +135,11 @@ public class EntityHellforgedArrow extends AbstractArrow {
                     0.8f // Slightly lower pitch for the bow execute
                 );
 
-                // Spawn hellfire particles
                 if (this.level() instanceof ServerLevel serverLevel) {
                     double x = target.getX();
                     double y = target.getY() + target.getBbHeight() / 2.0;
                     double z = target.getZ();
 
-                    // Soul fire particles
                     serverLevel.sendParticles(
                         ParticleTypes.SOUL_FIRE_FLAME,
                         x, y, z,
@@ -154,7 +147,6 @@ public class EntityHellforgedArrow extends AbstractArrow {
                         0.5, 0.5, 0.5,
                         0.1
                     );
-                    // Soul particles
                     serverLevel.sendParticles(
                         ParticleTypes.SOUL,
                         x, y, z,
@@ -165,18 +157,15 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 }
             }
 
-            // Call super to handle damage and piercing logic (uses setPierceLevel from bow)
             super.onHitEntity(result);
 
-            // Restore original damage for subsequent pierces (if execute was used)
+            // Restore original damage for subsequent pierces after execute
             if (shouldExecute) {
                 this.setBaseDamage(originalDamage);
             }
 
-            // Apply effects based on will type
             applyWillEffects(target, willType, willLevel, owner instanceof LivingEntity ? (LivingEntity) owner : null, chargeMultiplier);
         } else {
-            // Non-living entity or client side - let super handle it
             super.onHitEntity(result);
         }
     }
@@ -185,30 +174,22 @@ public class EntityHellforgedArrow extends AbstractArrow {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
 
-        // Vanish after hitting a block
         if (!this.level().isClientSide) {
             this.discard();
         }
     }
 
-    /**
-     * Apply status effects based on will type
-     * Effects are enhanced based on charge level
-     */
     private void applyWillEffects(LivingEntity target, EnumWillType willType, int level,
                                    LivingEntity attacker, float chargeMultiplier) {
-        // Enhance duration based on charge (up to 50% longer at full charge)
         float durationMultiplier = 1.0f + (chargeMultiplier * 0.5f);
 
         switch (willType) {
             case CORROSIVE:
-                // Poison + Wither at high charge
                 target.addEffect(new MobEffectInstance(
                     MobEffects.POISON,
                     (int)(poisonTime[level] * durationMultiplier),
                     poisonLevel[level]
                 ));
-                // Add wither at higher charge levels
                 if (chargeMultiplier >= 0.5f) {
                     target.addEffect(new MobEffectInstance(
                         MobEffects.WITHER,
@@ -219,13 +200,11 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 break;
 
             case STEADFAST:
-                // Slowness + Mining Fatigue
                 target.addEffect(new MobEffectInstance(
                     MobEffects.MOVEMENT_SLOWDOWN,
                     (int)(slowTime[level] * durationMultiplier),
                     slowLevel[level]
                 ));
-                // Add mining fatigue at higher charge
                 if (chargeMultiplier >= 0.5f) {
                     target.addEffect(new MobEffectInstance(
                         MobEffects.DIG_SLOWDOWN,
@@ -233,7 +212,6 @@ public class EntityHellforgedArrow extends AbstractArrow {
                         level / 2
                     ));
                 }
-                // Give attacker absorption + resistance
                 if (attacker != null) {
                     attacker.addEffect(new MobEffectInstance(
                         MobEffects.ABSORPTION,
@@ -251,13 +229,11 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 break;
 
             case VENGEFUL:
-                // Weakness to target
                 target.addEffect(new MobEffectInstance(
                     MobEffects.WEAKNESS,
                     (int)(100 * durationMultiplier),
                     level / 2
                 ));
-                // Speed + Strength boost to attacker
                 if (attacker != null) {
                     attacker.addEffect(new MobEffectInstance(
                         MobEffects.MOVEMENT_SPEED,
@@ -275,9 +251,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 break;
 
             case DESTRUCTIVE:
-                // Fire aspect + extra knockback (fire handled by default bow mechanics)
                 target.setRemainingFireTicks((int)(60 * durationMultiplier) + level * 20);
-                // Glowing effect to show marked for death
                 if (chargeMultiplier >= 0.5f) {
                     target.addEffect(new MobEffectInstance(
                         MobEffects.GLOWING,
@@ -288,7 +262,6 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 break;
 
             default:
-                // Raw will - balanced effects, glowing to mark targets
                 target.addEffect(new MobEffectInstance(
                     MobEffects.GLOWING,
                     (int)(60 * durationMultiplier),
@@ -300,7 +273,6 @@ public class EntityHellforgedArrow extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        // Return empty since this arrow can't be picked up
         return ItemStack.EMPTY;
     }
 
@@ -308,11 +280,9 @@ public class EntityHellforgedArrow extends AbstractArrow {
     public void tick() {
         super.tick();
 
-        // Add hellfire particles for visual effect
         if (this.level().isClientSide && this.tickCount % 2 == 0) {
             float charge = this.getChargeMultiplier();
 
-            // Base particles - flame
             this.level().addParticle(
                 ParticleTypes.FLAME,
                 this.getX() + (this.random.nextDouble() - 0.5) * 0.2,
@@ -321,7 +291,6 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 0, 0, 0
             );
 
-            // At higher charge levels, add soul fire particles
             if (charge >= 0.5f && this.tickCount % 4 == 0) {
                 this.level().addParticle(
                     ParticleTypes.SOUL_FIRE_FLAME,
@@ -332,7 +301,6 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 );
             }
 
-            // At full charge, add end rod particles for "execute ready" visual
             if (charge >= 1.0f && this.tickCount % 3 == 0) {
                 this.level().addParticle(
                     ParticleTypes.END_ROD,

@@ -40,7 +40,6 @@ public class RitualPeacefulBeckoning extends Ritual {
     public RitualPeacefulBeckoning() {
         super(Constants.Rituals.PEACEFUL_BECKONING, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PEACEFUL_BECKONING);
 
-        // Default spawn range: 8x8 area, 1 block above ritual stone
         addBlockRange(SPAWN_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-4, 1, -4), 9, 3, 9));
         setMaximumVolumeAndDistanceOfRange(SPAWN_RANGE, 0, 15, 10);
     }
@@ -56,14 +55,11 @@ public class RitualPeacefulBeckoning extends Ritual {
 
             targets = new ArrayList<>();
 
-            // Get all entity types from registry
             for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
-                // Skip null types
                 if (entityType == null) {
                     continue;
                 }
 
-                // Only include peaceful mobs (not monsters, not misc)
                 MobCategory category = entityType.getCategory();
                 if (category == MobCategory.CREATURE || category == MobCategory.AMBIENT || category == MobCategory.WATER_CREATURE || category == MobCategory.WATER_AMBIENT) {
                     targets.add(entityType);
@@ -88,7 +84,6 @@ public class RitualPeacefulBeckoning extends Ritual {
             return;
         }
 
-        // Rebuild list if empty or invalid
         if (targets == null || targets.isEmpty()) {
             if (!rebuildList(mrs)) {
                 mrs.stopRitual(Ritual.BreakType.DEACTIVATE);
@@ -96,16 +91,13 @@ public class RitualPeacefulBeckoning extends Ritual {
             }
         }
 
-        // Pick a random entity type
         EntityType<?> entityType = targets.get(level.random.nextInt(targets.size()));
 
-        // Create entity
         Entity mob = entityType.create(level);
         if (mob == null) {
             return;
         }
 
-        // Find a random position within the spawn range
         AreaDescriptor spawnRange = getBlockRange(SPAWN_RANGE);
         net.minecraft.world.phys.AABB spawnAABB = spawnRange.getAABB(masterPos);
 
@@ -113,7 +105,6 @@ public class RitualPeacefulBeckoning extends Ritual {
         double y = spawnAABB.minY;
         double z = spawnAABB.minZ + level.random.nextDouble() * (spawnAABB.maxZ - spawnAABB.minZ);
 
-        // Try to find a valid spawn position (max 16 attempts)
         for (int i = 0; i < 16; i++) {
             mob.setPos(x, y, z);
             BlockPos mobPos = mob.blockPosition();
@@ -126,10 +117,7 @@ public class RitualPeacefulBeckoning extends Ritual {
             }
         }
 
-        // Spawn the entity
         level.addFreshEntity(mob);
-
-        // Play sound
         level.playSound(
             null,
             mob.blockPosition(),
@@ -139,7 +127,6 @@ public class RitualPeacefulBeckoning extends Ritual {
             1.0F
         );
 
-        // Consume LP
         SoulTicket ticket = SoulTicket.create(getRefreshCost());
         network.syphon(ticket);
     }

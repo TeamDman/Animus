@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * Base class for Animus sigils
  * <p>
- * Extends Blood Magic's ItemSigilBase which provides:
+ * Extends NeoVitae's ItemSigilBase which provides:
  * - IBindable interface (player binding system)
  * - ISigil interface (sigil functionality)
  * - LP cost management
@@ -28,14 +28,6 @@ import java.util.Objects;
 public abstract class AnimusSigilBase extends ItemSigilBase {
     protected final String name;
 
-    /**
-     * Creates a new sigil with the specified name and LP cost
-     *
-     * @param name The internal name of the sigil (used for identification)
-     * @param lpUsed The LP cost to activate this sigil
-     * @throws NullPointerException if name is null
-     * @throws IllegalArgumentException if lpUsed is negative
-     */
     public AnimusSigilBase(@NotNull String name, int lpUsed) {
         super(name, lpUsed);
         this.name = Objects.requireNonNull(name, "Sigil name cannot be null");
@@ -44,11 +36,6 @@ public abstract class AnimusSigilBase extends ItemSigilBase {
         }
     }
 
-    /**
-     * Get the internal name of this sigil
-     *
-     * @return The sigil's identifier name
-     */
     @NotNull
     public String getSigilName() {
         return name;
@@ -56,13 +43,10 @@ public abstract class AnimusSigilBase extends ItemSigilBase {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        // DON'T call super.appendHoverText() - Blood Magic's ItemSigilBase adds bloodmagic namespace tooltips
-        // We handle all tooltips in the individual sigil classes using the animus namespace
+        // Don't call super - NeoVitae's ItemSigilBase adds bloodmagic namespace tooltips
 
-        // Add binding owner information
         Binding binding = getBinding(stack);
         if (binding != null && !binding.isEmpty()) {
-            // Use the name stored in the binding record
             String ownerName = binding.name();
             if (ownerName == null || ownerName.isEmpty()) {
                 ownerName = "Unknown";

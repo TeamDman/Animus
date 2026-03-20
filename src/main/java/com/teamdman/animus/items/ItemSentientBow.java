@@ -57,9 +57,6 @@ public class ItemSentientBow extends BowItem {
     // Default will cost per shot (used before config loads)
     public static final double DEFAULT_WILL_COST = 1.0;
 
-    /**
-     * Gets the will cost per shot from config
-     */
     public static double getWillCostPerShot() {
         try {
             return AnimusConfig.weapons.sentientBowWillCost.get();
@@ -117,13 +114,10 @@ public class ItemSentientBow extends BowItem {
             return;
         }
 
-        // Get will type and amount
         EnumWillType type = getCurrentType(stack);
         double soulsRemaining = getTotalWillOfType(player, type);
 
-        // Check if player has enough will
         if (soulsRemaining < getWillCostPerShot()) {
-            // Send "out of will" message
             if (!level.isClientSide) {
                 player.displayClientMessage(
                     Component.translatable("message.animus.sentient_bow.out_of_will")
@@ -142,21 +136,17 @@ public class ItemSentientBow extends BowItem {
         }
 
         if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
-            // Consume will
             drainWillFromPlayer(player, type, getWillCostPerShot());
 
-            // Calculate damage based on will level
             int willLevel = getLevel(stack, soulsRemaining);
             double bonusDamage = getDamageAdded(type, willLevel);
 
-            // Create sentient arrow
             EntitySentientArrow arrow = new EntitySentientArrow(level, player);
             arrow.setWillType(type);
             arrow.setWillLevel(willLevel);
             arrow.setBonusDamage(bonusDamage);
             arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, power * 3.0F, 1.0F);
 
-            // Apply power enchantment bonus
             int powerEnchant = stack.getEnchantmentLevel(serverLevel.registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT)
                 .getOrThrow(Enchantments.POWER));
@@ -164,9 +154,6 @@ public class ItemSentientBow extends BowItem {
                 arrow.setBaseDamage(arrow.getBaseDamage() + (double) powerEnchant * 0.5D + 0.5D);
             }
 
-            // Note: Punch enchantment knockback is handled by vanilla arrow damage mechanics
-
-            // Apply flame enchantment
             int flameEnchant = stack.getEnchantmentLevel(serverLevel.registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT)
                 .getOrThrow(Enchantments.FLAME));
@@ -174,12 +161,10 @@ public class ItemSentientBow extends BowItem {
                 arrow.setRemainingFireTicks(100);
             }
 
-            // Critical hit if fully charged
             if (power >= 1.0F) {
                 arrow.setCritArrow(true);
             }
 
-            // Virtual arrows don't get picked up
             arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
 
             level.addFreshEntity(arrow);
@@ -187,7 +172,6 @@ public class ItemSentientBow extends BowItem {
                 SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F,
                 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + power * 0.5F);
 
-            // Damage the bow
             stack.hurtAndBreak(1, serverLevel, player, (item) -> {});
         }
 
@@ -196,7 +180,6 @@ public class ItemSentientBow extends BowItem {
 
     @Override
     public Predicate<ItemStack> getAllSupportedProjectiles() {
-        // Sentient bow doesn't need arrows
         return (stack) -> false;
     }
 
@@ -205,7 +188,6 @@ public class ItemSentientBow extends BowItem {
         return 15;
     }
 
-    // Will type management using data components
     public EnumWillType getCurrentType(ItemStack stack) {
         String typeStr = stack.get(AnimusDataComponents.DEMON_WILL_TYPE.get());
         if (typeStr != null) {
@@ -227,7 +209,6 @@ public class ItemSentientBow extends BowItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            // Update the will type based on the player's inventory
             EnumWillType newType = findDemonWillType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
@@ -235,10 +216,6 @@ public class ItemSentientBow extends BowItem {
         }
     }
 
-    /**
-     * Determines the demon will type based on will available from the player's soul network
-     * Returns the type with the highest will amount
-     */
     private static EnumWillType findDemonWillType(Player player) {
         EnumWillType highestType = EnumWillType.DEFAULT;
         double highestAmount = 0;
@@ -254,21 +231,14 @@ public class ItemSentientBow extends BowItem {
         return highestType;
     }
 
-    /**
-     * Gets the total amount of will the player has of a specific type
-     */
     private static double getTotalWillOfType(Player player, EnumWillType type) {
         return PlayerDemonWillHandler.getTotalDemonWill(type, player);
     }
 
-    /**
-     * Drains will from the player's inventory
-     */
     private static void drainWillFromPlayer(Player player, EnumWillType type, double amount) {
         PlayerDemonWillHandler.consumeDemonWill(type, player, amount);
     }
 
-    // IDemonWillWeapon-like methods
     public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity,
                                                    ItemStack stack, int looting) {
         return new ArrayList<>();
@@ -276,7 +246,6 @@ public class ItemSentientBow extends BowItem {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-        // Add enchantment glint when attuned to non-default will type
         return super.isFoil(stack) || getCurrentType(stack) != EnumWillType.DEFAULT;
     }
 }

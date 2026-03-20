@@ -47,7 +47,6 @@ import java.util.List;
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class AltarTierRenderer {
 
-    // Texture resource locations for different block types
     private static final ResourceLocation BLANK_RUNE = ResourceLocation.fromNamespaceAndPath("neovitae", "block/rune_blank");
     private static final ResourceLocation STONE_BRICKS = ResourceLocation.withDefaultNamespace("block/stone_bricks");
     private static final ResourceLocation GLOWSTONE = ResourceLocation.withDefaultNamespace("block/glowstone");
@@ -55,11 +54,10 @@ public class AltarTierRenderer {
     private static final ResourceLocation HELLFORGED = ResourceLocation.fromNamespaceAndPath("neovitae", "block/hellforged_block");
     private static final ResourceLocation CRYSTALLIZED_DEMON_WILL = ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "block/crystallized_demon_will_block");
 
-    // Ghost effect colors - translucent with different tints
-    private static final int GHOST_COLOR_RUNE = 0xAAFF6666;      // Red tint for runes
-    private static final int GHOST_COLOR_PILLAR = 0xAA66FF66;   // Green tint for pillars
-    private static final int GHOST_COLOR_CAP = 0xAA6666FF;      // Blue tint for caps
-    private static final int GHOST_COLOR_CRYSTAL = 0xAAFF66FF;  // Purple tint for crystals
+    private static final int GHOST_COLOR_RUNE = 0xAAFF6666;
+    private static final int GHOST_COLOR_PILLAR = 0xAA66FF66;
+    private static final int GHOST_COLOR_CAP = 0xAA6666FF;
+    private static final int GHOST_COLOR_CRYSTAL = 0xAAFF66FF;
     private static final int FULL_BRIGHT = 0x00F000F0;
 
     @SubscribeEvent
@@ -74,7 +72,6 @@ public class AltarTierRenderer {
 
         Level level = player.level();
 
-        // Check if player is holding Sanguine Diviner
         ItemStack heldItem = player.getMainHandItem();
         if (!heldItem.is(AnimusItems.SANGUINE_DIVINER.get())) {
             heldItem = player.getOffhandItem();
@@ -83,7 +80,6 @@ public class AltarTierRenderer {
             }
         }
 
-        // Check if player is looking at a Blood Altar
         HitResult hitResult = mc.hitResult;
         if (hitResult == null || hitResult.getType() != HitResult.Type.BLOCK) {
             return;
@@ -100,12 +96,10 @@ public class AltarTierRenderer {
         int currentTier = altar.getTier();
         int nextTier = currentTier + 1;
 
-        // Check if there's a next tier to show
         if (nextTier >= NVMultiblock.TIER_LIST.length || NVMultiblock.TIER_LIST[nextTier] == null) {
             return;
         }
 
-        // Get buffer source and render
         MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
         PoseStack poseStack = event.getPoseStack();
 
@@ -126,10 +120,8 @@ public class AltarTierRenderer {
         for (AltarComponent component : components) {
             BlockPos componentPos = altarPos.offset(component.pos());
 
-            // Only render if the position is air or replaceable
             BlockState existingState = level.getBlockState(componentPos);
             if (!existingState.isAir() && !existingState.canBeReplaced()) {
-                // Check if the block is already valid for this component
                 if (isValidBlock(component, existingState, level)) {
                     continue;
                 }
@@ -170,7 +162,6 @@ public class AltarTierRenderer {
     private static ResourceLocation getComponentTexture(AltarComponent component) {
         ResourceLocation materialId = component.material().id();
 
-        // Check for specific materials
         if (materialId.equals(NVTags.Blocks.RUNES.location())) {
             return BLANK_RUNE;
         } else if (materialId.equals(NVTags.Blocks.PILLARS.location())) {
@@ -187,7 +178,6 @@ public class AltarTierRenderer {
             return BLOODSTONE;
         }
 
-        // Default to stone bricks
         return STONE_BRICKS;
     }
 
@@ -203,7 +193,7 @@ public class AltarTierRenderer {
                    materialId.equals(NVTags.Blocks.T5_CAPSTONES.location())) {
             return GHOST_COLOR_CAP;
         } else if (materialId.equals(NVTags.Blocks.T6_CAPSTONES.location())) {
-            return GHOST_COLOR_CRYSTAL;  // Purple tint for T6 crystallized demon will
+            return GHOST_COLOR_CRYSTAL;
         }
 
         return GHOST_COLOR_PILLAR;

@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Builder for Soul Forge (Hellfire Forge) recipes compatible with Blood Magic NV 1.21.1
- */
 public class SoulForgeRecipeBuilder {
     public static final int MAX_INGREDIENTS = 4;
 

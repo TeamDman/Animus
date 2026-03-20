@@ -15,26 +15,19 @@ import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
 import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
 
 /**
- * Event handler for Sentient Shield blocking effects
- * When a player blocks with a sentient shield, applies effects based on will type
+ * Applies will-type-based effects when a player blocks with a sentient shield.
  */
 @EventBusSubscriber(modid = Constants.Mod.MODID)
 public class SentientShieldEventHandler {
 
-    private static final int EFFECT_DURATION = 100; // 5 seconds in ticks
+    private static final int EFFECT_DURATION = 100; // 5 seconds
 
-    /**
-     * Sentient Shield blocking effects
-     * When a player blocks an attack with a sentient shield, apply effects based on will type
-     */
     @SubscribeEvent
     public static void onLivingAttack(LivingIncomingDamageEvent event) {
-        // Only handle players on server side
         if (!(event.getEntity() instanceof Player player) || player.level().isClientSide()) {
             return;
         }
 
-        // Check if player is blocking and has a sentient shield
         if (!player.isBlocking()) {
             return;
         }
@@ -44,56 +37,50 @@ public class SentientShieldEventHandler {
             return;
         }
 
-        // Get the attacker
         Entity attacker = event.getSource().getEntity();
         if (!(attacker instanceof LivingEntity livingAttacker)) {
             return;
         }
 
-        // Get the will type and amount
         EnumWillType willType = sentientShield.getCurrentType(shield);
         double willAmount = WorldDemonWillHandler.getCurrentWill(
             player.level(), player.blockPosition(), willType
         );
 
-        // Need at least some will to trigger effects
         if (willAmount < 10.0) {
             return;
         }
 
-        // Apply effects based on will type
         switch (willType) {
-            case DEFAULT -> // Raw will - Strength 2 to player
+            case DEFAULT ->
                 player.addEffect(new MobEffectInstance(
                     MobEffects.DAMAGE_BOOST,
                     EFFECT_DURATION,
-                    1 // Level 2 (0-indexed)
+                    1
                 ));
 
-            case STEADFAST -> // Resistance 2 to player
+            case STEADFAST ->
                 player.addEffect(new MobEffectInstance(
                     MobEffects.DAMAGE_RESISTANCE,
                     EFFECT_DURATION,
-                    1 // Level 2
+                    1
                 ));
 
-            case CORROSIVE -> // Poison to attacker
+            case CORROSIVE ->
                 livingAttacker.addEffect(new MobEffectInstance(
                     MobEffects.POISON,
                     EFFECT_DURATION,
-                    1 // Level 2
+                    1
                 ));
 
             case VENGEFUL -> {
-                // 30% damage reflection + weakness to attacker
                 float reflectedDamage = event.getAmount() * 0.3f;
                 livingAttacker.hurt(player.damageSources().thorns(player), reflectedDamage);
 
-                // Apply weakness
                 livingAttacker.addEffect(new MobEffectInstance(
                     MobEffects.WEAKNESS,
                     EFFECT_DURATION,
-                    0 // Level 1
+                    0
                 ));
             }
         }

@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Key of Binding - A crafting component used in Animus recipes
- * This item can be bound to a player through Blood Magic's binding system
+ * This item can be bound to a player through NeoVitae's binding system
  * Can be equipped in the curio "key" slot for passive functionality
  */
 public class ItemKeyBinding extends Item implements IBindable, ICurioItem {
@@ -27,14 +27,13 @@ public class ItemKeyBinding extends Item implements IBindable, ICurioItem {
 
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true; // Allow equipping directly from right-click
+        return true;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.KEY));
 
-        // Show owner name if bound
         Binding binding = getBinding(stack);
         if (binding != null && !binding.isEmpty()) {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.name()));

@@ -13,9 +13,6 @@ import net.minecraft.world.level.Level;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Payload for syncing accelerated blocks from server to client for rendering
- */
 public record AcceleratedBlocksSyncPayload(Map<BlockPos, AccelerationEntry> acceleratedBlocks) implements CustomPacketPayload {
     public static final Type<AcceleratedBlocksSyncPayload> TYPE = new Type<>(
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "accelerated_blocks_sync")
@@ -55,9 +52,6 @@ public record AcceleratedBlocksSyncPayload(Map<BlockPos, AccelerationEntry> acce
         return TYPE;
     }
 
-    /**
-     * Convert to the format used by AcceleratedBlocksClientData
-     */
     public Map<BlockPos, AccelerationData> toDataMap() {
         Map<BlockPos, AccelerationData> result = new HashMap<>();
         for (Map.Entry<BlockPos, AccelerationEntry> entry : acceleratedBlocks.entrySet()) {
@@ -67,18 +61,12 @@ public record AcceleratedBlocksSyncPayload(Map<BlockPos, AccelerationEntry> acce
         return result;
     }
 
-    /**
-     * Data record for serializing acceleration state
-     */
     public record AccelerationEntry(int level, long expiryTime, ResourceKey<Level> dimension) {
         public int getSpeedMultiplier() {
             return 1 << level;
         }
     }
 
-    /**
-     * Data record for client-side acceleration data
-     */
     public record AccelerationData(int level, long expiryTime, ResourceKey<Level> dimension) {
         public int getSpeedMultiplier() {
             return 1 << level;

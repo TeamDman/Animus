@@ -17,10 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-/**
- * Renderer for thrown spear entities
- * Renders the spear using the item's 3D model
- */
 @OnlyIn(Dist.CLIENT)
 public class ThrownSpearRenderer extends EntityRenderer<EntityThrownSpear> {
     private static final ResourceLocation SPEAR_IRON_TEXTURE =
@@ -34,16 +30,14 @@ public class ThrownSpearRenderer extends EntityRenderer<EntityThrownSpear> {
     public void render(EntityThrownSpear entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
 
-        // Get the correct item stack based on variant
         ItemStack spearStack = getSpearStack(entity.getVariant());
 
-        // Rotate to match entity yaw (horizontal direction) - adding 90 instead of subtracting to flip it
+        // +90 instead of -90 to flip the model to face forward
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) + 90.0F));
 
-        // Rotate to match entity pitch (vertical angle) - adding extra 15 degrees to point tip down
+        // +105 instead of +90 to tilt the tip slightly downward
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 105.0F));
 
-        // Render the spear item model
         Minecraft.getInstance().getItemRenderer().renderStatic(
             spearStack,
             ItemDisplayContext.GROUND,
@@ -59,9 +53,6 @@ public class ThrownSpearRenderer extends EntityRenderer<EntityThrownSpear> {
         super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 
-    /**
-     * Get the appropriate spear ItemStack based on variant
-     */
     private ItemStack getSpearStack(String variant) {
         return switch (variant) {
             case "diamond" -> new ItemStack(AnimusItems.SPEAR_DIAMOND.get());
@@ -73,7 +64,7 @@ public class ThrownSpearRenderer extends EntityRenderer<EntityThrownSpear> {
 
     @Override
     public ResourceLocation getTextureLocation(EntityThrownSpear entity) {
-        // This is still needed for the entity renderer system but won't be used since we render the item
+        // Required by EntityRenderer but unused since we render the item model directly
         return SPEAR_IRON_TEXTURE;
     }
 }

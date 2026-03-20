@@ -32,20 +32,12 @@ import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
  */
 public class AltarInfusionHandler {
 
-    /**
-     * Register the event handler
-     */
     public static void register() {
         NeoForge.EVENT_BUS.register(AltarInfusionHandler.class);
     }
 
-    /**
-     * Handle right-click on Blood Altar with Blood-Infused Spellbook
-     * Upgrades the spellbook to the next tier if requirements are met.
-     */
     @SubscribeEvent
     public static void onAltarRightClick(PlayerInteractEvent.RightClickBlock event) {
-        // Only server-side
         if (event.getLevel().isClientSide()) {
             return;
         }
@@ -56,12 +48,10 @@ public class AltarInfusionHandler {
         InteractionHand hand = event.getHand();
         ItemStack stack = player.getItemInHand(hand);
 
-        // Only handle Blood-Infused Spellbook upgrades
         if (!(stack.getItem() instanceof ItemBloodInfusedSpellbook)) {
             return;
         }
 
-        // Get altar tile entity
         if (!(level.getBlockEntity(pos) instanceof BloodAltarTile altar)) {
             return;
         }
@@ -69,21 +59,16 @@ public class AltarInfusionHandler {
         handleSpellbookUpgrade(event, player, level, pos, hand, stack, altar);
     }
 
-    /**
-     * Handle spellbook upgrade - increase tier of Blood-Infused Spellbook
-     */
     private static void handleSpellbookUpgrade(PlayerInteractEvent.RightClickBlock event, Player player,
             Level level, BlockPos pos, InteractionHand hand, ItemStack stack, BloodAltarTile altar) {
 
-        // Check if spellbook can be upgraded
         if (!ItemBloodInfusedSpellbook.canUpgrade(stack)) {
             player.displayClientMessage(
                 Component.literal("This spellbook is already at maximum infusion!")
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            // Force sync the held item to prevent client desync
-            player.setItemInHand(hand, stack);
+            player.setItemInHand(hand, stack); // Force sync to prevent client desync
             event.setCanceled(true);
             event.setUseBlock(TriState.FALSE);
             event.setUseItem(TriState.FALSE);
@@ -94,7 +79,6 @@ public class AltarInfusionHandler {
         int nextTier = currentTier + 1;
         int lpCost = ItemBloodInfusedSpellbook.getUpgradeCost(stack);
 
-        // Check if altar has enough LP
         int altarLP = altar.getCurrentBlood();
         if (altarLP < lpCost) {
             player.displayClientMessage(
@@ -102,15 +86,12 @@ public class AltarInfusionHandler {
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            // Force sync the held item to prevent client desync
-            player.setItemInHand(hand, stack);
+            player.setItemInHand(hand, stack); // Force sync to prevent client desync
             event.setCanceled(true);
             event.setUseBlock(TriState.FALSE);
             event.setUseItem(TriState.FALSE);
             return;
         }
-
-        // Check if player has required Blood Orb tier
         int requiredOrbTier = getRequiredOrbTier(nextTier);
         if (!hasBloodOrbOfTier(player, requiredOrbTier)) {
             player.displayClientMessage(
@@ -118,29 +99,23 @@ public class AltarInfusionHandler {
                     .withStyle(ChatFormatting.RED),
                 true
             );
-            // Force sync the held item to prevent client desync
-            player.setItemInHand(hand, stack);
+            player.setItemInHand(hand, stack); // Force sync to prevent client desync
             event.setCanceled(true);
             event.setUseBlock(TriState.FALSE);
             event.setUseItem(TriState.FALSE);
             return;
         }
 
-        // Perform infusion!
-        altar.addSacrificeLP(-lpCost, false); // Negative amount to consume LP
+        altar.addSacrificeLP(-lpCost, false);
         ItemBloodInfusedSpellbook.setInfusionTier(stack, nextTier);
 
-        // Success message
         player.displayClientMessage(
             Component.literal("Spellbook infused to Tier " + nextTier + "!")
                 .withStyle(ChatFormatting.GOLD),
             true
         );
 
-        // Spawn effects
         spawnInfusionEffects(level, pos, nextTier);
-
-        // Play sound
         level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
 
         Animus.LOGGER.info("Player {} infused spellbook to tier {} for {} LP",
@@ -151,16 +126,10 @@ public class AltarInfusionHandler {
         event.setUseItem(TriState.FALSE);
     }
 
-    /**
-     * Get required Blood Orb tier for infusion tier
-     */
     private static int getRequiredOrbTier(int infusionTier) {
-        return infusionTier; // Tier 1 needs orb tier 1, etc.
+        return infusionTier;
     }
 
-    /**
-     * Get Blood Orb name for display
-     */
     private static String getOrbName(int tier) {
         return switch (tier) {
             case 1 -> "Weak Blood Orb";
@@ -173,11 +142,7 @@ public class AltarInfusionHandler {
         };
     }
 
-    /**
-     * Check if player has Blood Orb of required tier or higher
-     */
     private static boolean hasBloodOrbOfTier(Player player, int requiredTier) {
-        // Check inventory for Blood Orb (1.21.1 API: getOrbTier instead of getOrb().getTier())
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof BloodOrbItem orb) {
                 int orbTier = orb.getOrbTier(stack);
@@ -187,7 +152,6 @@ public class AltarInfusionHandler {
             }
         }
 
-        // Check armor slots
         for (ItemStack stack : player.getInventory().armor) {
             if (stack.getItem() instanceof BloodOrbItem orb) {
                 int orbTier = orb.getOrbTier(stack);
@@ -197,7 +161,6 @@ public class AltarInfusionHandler {
             }
         }
 
-        // Check offhand
         for (ItemStack stack : player.getInventory().offhand) {
             if (stack.getItem() instanceof BloodOrbItem orb) {
                 int orbTier = orb.getOrbTier(stack);
@@ -210,23 +173,17 @@ public class AltarInfusionHandler {
         return false;
     }
 
-    /**
-     * Spawn particle effects for infusion
-     */
     private static void spawnInfusionEffects(Level level, BlockPos pos, int tier) {
         if (!(level instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        // Spawn particles above altar
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 1.5;
         double z = pos.getZ() + 0.5;
 
-        // Number of particles based on tier
         int particleCount = 10 + (tier * 5);
 
-        // Crimson spore particles (blood-like)
         for (int i = 0; i < particleCount; i++) {
             double offsetX = (serverLevel.random.nextDouble() - 0.5) * 2;
             double offsetY = serverLevel.random.nextDouble();
@@ -243,7 +200,6 @@ public class AltarInfusionHandler {
             );
         }
 
-        // Portal particles for magical effect
         for (int i = 0; i < particleCount / 2; i++) {
             double offsetX = (serverLevel.random.nextDouble() - 0.5) * 1.5;
             double offsetY = serverLevel.random.nextDouble() * 0.5;
@@ -260,7 +216,6 @@ public class AltarInfusionHandler {
             );
         }
 
-        // Enchant particles at higher tiers
         if (tier >= 4) {
             for (int i = 0; i < 20; i++) {
                 double angle = (Math.PI * 2 * i) / 20;

@@ -60,11 +60,9 @@ public class ItemSpear extends TridentItem {
                 int riptide = getRiptideLevel(stack, level);
                 if (riptide <= 0 || player.isInWaterOrRain()) {
                     if (!level.isClientSide) {
-                        // Use the new hurtAndBreak signature for 1.21
                         stack.hurtAndBreak(1, (ServerLevel) level, player, (item) ->
                             player.onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
                         if (riptide == 0) {
-                            // Spawn our custom spear entity instead of vanilla trident
                             EntityThrownSpear thrownSpear = new EntityThrownSpear(level, player, stack);
                             thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
                             if (player.getAbilities().instabuild) {
@@ -72,7 +70,6 @@ public class ItemSpear extends TridentItem {
                             }
 
                             level.addFreshEntity(thrownSpear);
-                            // Use .value() for Holder<SoundEvent>
                             level.playSound(null, thrownSpear.getX(), thrownSpear.getY(), thrownSpear.getZ(),
                                 SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
                             if (!player.getAbilities().instabuild) {
@@ -94,7 +91,6 @@ public class ItemSpear extends TridentItem {
                         ySpeed = ySpeed * (multiplier / length);
                         zSpeed = zSpeed * (multiplier / length);
                         player.push((double)xSpeed, (double)ySpeed, (double)zSpeed);
-                        // Updated signature for 1.21: startAutoSpinAttack(int ticks, float damage, ItemStack stack)
                         player.startAutoSpinAttack(20, 8.0F + (float)riptide * 2.0F, stack);
                         if (player.onGround()) {
                             player.move(net.minecraft.world.entity.MoverType.SELF, new net.minecraft.world.phys.Vec3(0.0, 1.2, 0.0));
@@ -109,10 +105,6 @@ public class ItemSpear extends TridentItem {
         }
     }
 
-    /**
-     * Get riptide enchantment level from the stack
-     * In 1.21, enchantment access changed
-     */
     private int getRiptideLevel(ItemStack stack, Level level) {
         if (level instanceof ServerLevel serverLevel) {
             return stack.getEnchantmentLevel(serverLevel.registryAccess()
@@ -126,7 +118,6 @@ public class ItemSpear extends TridentItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // Allow shield blocking when sneaking with a shield in the other hand
         if (player.isShiftKeyDown()) {
             InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
             ItemStack otherStack = player.getItemInHand(otherHand);
@@ -155,15 +146,12 @@ public class ItemSpear extends TridentItem {
         return 72000;
     }
 
-    /**
-     * Get the tier of this spear
-     */
     public Tier getTier() {
         return tier;
     }
 
     /**
-     * Allow spears to be treated as sword-like weapons for Blood Magic anointments.
+     * Allow spears to be treated as sword-like weapons for NeoVitae anointments.
      * This makes them pass ItemAnointmentProvider.isItemTool() check.
      */
     @Override

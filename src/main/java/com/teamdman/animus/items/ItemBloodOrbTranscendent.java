@@ -20,7 +20,6 @@ import java.util.List;
 public class ItemBloodOrbTranscendent extends BloodOrbItem {
 
     public ItemBloodOrbTranscendent() {
-        // In Blood Magic 1.21.1, orb stats come from DataMaps, not constructor args
         super();
     }
 

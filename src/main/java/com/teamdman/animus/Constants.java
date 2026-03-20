@@ -68,7 +68,6 @@ public class Constants {
             public static final String EQUIVALENCY_STARTED = "text.component.animus.equivalency.started";
             public static final String EQUIVALENCY_RADIUS = "text.component.animus.equivalency.radius";
 
-            // Free Soul Sigil
             public static final String FREE_SOUL_ALREADY_SPECTATOR = "text.component.animus.free_soul.already_spectator";
             public static final String FREE_SOUL_NO_LP = "text.component.animus.free_soul.no_lp";
             public static final String FREE_SOUL_ACTIVATED = "text.component.animus.free_soul.activated";
@@ -77,49 +76,40 @@ public class Constants {
             public static final String FREE_SOUL_RETURNING = "text.component.animus.free_soul.returning";
             public static final String FREE_SOUL_EXPIRED = "text.component.animus.free_soul.expired";
 
-            // Remedium Sigil
             public static final String REMEDIUM_ACTIVATED = "text.component.animus.remedium.activated";
             public static final String REMEDIUM_DEACTIVATED = "text.component.animus.remedium.deactivated";
             public static final String REMEDIUM_NO_LP = "text.component.animus.remedium.no_lp";
 
-            // Reparare Sigil
             public static final String REPARARE_ACTIVATED = "text.component.animus.reparare.activated";
             public static final String REPARARE_DEACTIVATED = "text.component.animus.reparare.deactivated";
             public static final String REPARARE_NO_LP = "text.component.animus.reparare.no_lp";
 
-            // Key of Binding
             public static final String KEY_CANNOT_BIND_KEY = "text.component.animus.key.cannot_bind_key";
             public static final String KEY_ITEM_BOUND = "text.component.animus.key.item_bound";
 
-            // Blood Core
             public static final String BLOOD_CORE_SPREADING_ENABLED = "text.component.animus.blood_core.spreading_enabled";
             public static final String BLOOD_CORE_SPREADING_DISABLED = "text.component.animus.blood_core.spreading_disabled";
 
-            // Bound Spear
             public static final String SPEAR_BOUND_SUCCESS = "text.component.animus.spear.bound_success";
             public static final String SPEAR_ACTIVATED = "text.component.animus.spear.activated";
             public static final String SPEAR_DEACTIVATED = "text.component.animus.spear.deactivated";
             public static final String SPEAR_NO_LP_THROW = "text.component.animus.spear.no_lp_throw";
             public static final String SPEAR_NO_LP_ATTACK = "text.component.animus.spear.no_lp_attack";
 
-            // Sanguine Diviner
             public static final String DIVINER_ALTAR_INFO = "text.component.animus.diviner.altar_info";
             public static final String DIVINER_ESSENCE_INFO = "text.component.animus.diviner.essence_info";
             public static final String DIVINER_TIER_INFO = "text.component.animus.diviner.tier_info";
 
-            // Temporal Dominance Sigil
             public static final String TEMPORAL_NO_TILE = "text.component.animus.temporal.no_tile";
             public static final String TEMPORAL_DISALLOWED = "text.component.animus.temporal.disallowed";
             public static final String TEMPORAL_GAG_ACTIVE = "text.component.animus.temporal.gag_active";
             public static final String TEMPORAL_NO_LP = "text.component.animus.temporal.no_lp";
             public static final String TEMPORAL_ACTIVATED = "text.component.animus.temporal.activated";
 
-            // Sigil of the Monk
             public static final String TICKET_MONK = "text.component.animus.ticket.monk";
             public static final String TICKET_MONK_EXECUTE = "text.component.animus.ticket.monk_execute";
             public static final String MONK_NO_LP = "text.component.animus.monk.no_lp";
 
-            // Ritual of Endless Greed
             public static final String TICKET_ENDLESS_GREED = "text.component.animus.ticket.endless_greed";
         }
 
@@ -182,7 +172,6 @@ public class Constants {
             public static final String ACTIVATION_CRYSTAL_INFO = "tooltip.animus.activation_crystal.info";
             public static final String ACTIVATION_CRYSTAL_WARNING = "tooltip.animus.activation_crystal.warning";
 
-            // Bound Spear Tooltips
             public static final String SPEAR_BOUND_TO = "tooltip.animus.spear_bound.bound_to";
             public static final String SPEAR_STATUS_ACTIVATED = "tooltip.animus.spear_bound.status_activated";
             public static final String SPEAR_COST = "tooltip.animus.spear_bound.cost";
@@ -192,12 +181,10 @@ public class Constants {
             public static final String SPEAR_UNBOUND = "tooltip.animus.spear_bound.unbound";
             public static final String SPEAR_BIND = "tooltip.animus.spear_bound.bind";
 
-            // Sentient Spear Tooltips
             public static final String SPEAR_SENTIENT_FLAVOUR = "tooltip.animus.spear_sentient.flavour";
             public static final String SPEAR_SENTIENT_INFO = "tooltip.animus.spear_sentient.info";
             public static final String SPEAR_SENTIENT_AOE = "tooltip.animus.spear_sentient.aoe";
 
-            // Sentient Shield Tooltips
             public static final String SENTIENT_SHIELD_FLAVOUR = "tooltip.animus.sentient_shield.flavour";
             public static final String SENTIENT_SHIELD_EFFECTS = "tooltip.animus.sentient_shield.effects";
             public static final String SENTIENT_SHIELD_RAW = "tooltip.animus.sentient_shield.raw";
@@ -206,22 +193,18 @@ public class Constants {
             public static final String SENTIENT_SHIELD_VENGEFUL = "tooltip.animus.sentient_shield.vengeful";
             public static final String SENTIENT_SHIELD_WILL_BONUS = "tooltip.animus.sentient_shield.will_bonus";
 
-            // Key of Binding Tooltips
             public static final String KEY_HOLD_OFFHAND = "tooltip.animus.key.hold_offhand";
             public static final String KEY_UNBOUND = "tooltip.animus.key.unbound";
             public static final String KEY_CURIO = "tooltip.animus.key.curio";
 
-            // Generic Binding Tooltips
             public static final String BOUND_TO = "tooltip.animus.bound_to";
             public static final String NOT_BOUND = "tooltip.animus.not_bound";
             public static final String UNBOUND_BIND = "tooltip.animus.unbound_bind";
 
-            // Crystallized Demon Will Block Tooltips
             public static final String CRYSTALLIZED_DEMON_WILL_FLAVOUR = "tooltip.animus.crystallized_demon_will.flavour";
             public static final String CRYSTALLIZED_DEMON_WILL_INFO = "tooltip.animus.crystallized_demon_will.info";
             public static final String CRYSTALLIZED_DEMON_WILL_ALTAR = "tooltip.animus.crystallized_demon_will.altar";
 
-            // Free Soul Sigil Tooltips
             public static final String SIGIL_FREE_SOUL_FLAVOUR = "tooltip.animus.sigil.free_soul.flavour";
             public static final String SIGIL_FREE_SOUL_INFO = "tooltip.animus.sigil.free_soul.info";
             public static final String SIGIL_FREE_SOUL_COST = "tooltip.animus.sigil.free_soul.cost";
@@ -230,7 +213,6 @@ public class Constants {
             public static final String SIGIL_FREE_SOUL_COOLDOWN = "tooltip.animus.sigil.free_soul.cooldown";
             public static final String SIGIL_FREE_SOUL_COOLDOWN_REMAINING = "tooltip.animus.sigil.free_soul.cooldown_remaining";
 
-            // Temporal Dominance Sigil Tooltips
             public static final String TEMPORAL_DOMINANCE_1 = "tooltip.animus.sigil.temporal_dominance.1";
             public static final String TEMPORAL_DOMINANCE_2 = "tooltip.animus.sigil.temporal_dominance.2";
             public static final String TEMPORAL_DOMINANCE_3 = "tooltip.animus.sigil.temporal_dominance.3";
@@ -239,7 +221,6 @@ public class Constants {
             public static final String EQUIVALENCY_2 = "tooltip.animus.sigil.equivalency.2";
             public static final String EQUIVALENCY_SELECTED = "tooltip.animus.sigil.equivalency.selected";
 
-            // Sigil of the Demon Monk Tooltips
             public static final String SIGIL_MONK_FLAVOUR = "tooltip.animus.sigil.monk.flavour";
             public static final String SIGIL_MONK_INFO = "tooltip.animus.sigil.monk.info";
             public static final String SIGIL_MONK_DAMAGE = "tooltip.animus.sigil.monk.damage";
@@ -252,12 +233,10 @@ public class Constants {
             public static final String SIGIL_MONK_ACTIVE = "tooltip.animus.sigil.monk.active";
             public static final String SIGIL_MONK_INACTIVE = "tooltip.animus.sigil.monk.inactive";
 
-            // Sentient Bow Tooltips
             public static final String SENTIENT_BOW_FLAVOUR = "tooltip.animus.sentient_bow.flavour";
             public static final String SENTIENT_BOW_INFO = "tooltip.animus.sentient_bow.info";
             public static final String SENTIENT_BOW_WILL_DROPS = "tooltip.animus.sentient_bow.will_drops";
 
-            // Hellforged Bow Tooltips
             public static final String HELLFORGED_BOW_FLAVOUR = "tooltip.animus.hellforged_bow.flavour";
             public static final String HELLFORGED_BOW_INFO = "tooltip.animus.hellforged_bow.info";
             public static final String HELLFORGED_BOW_LP_COST = "tooltip.animus.hellforged_bow.lp_cost";
@@ -397,7 +376,6 @@ public class Constants {
         public static final String ARCANE_MASTERY = "ritual_arcane_mastery";
         public static final String ENDLESS_GREED = "ritual_endless_greed";
 
-        // Imperfect Rituals
         public static final String ENHANCEMENT = "ritual_enhancement";
         public static final String REDUCTION = "ritual_reduction";
         public static final String BOUNDLESS_SKIES = "ritual_boundless_skies";
@@ -405,7 +383,6 @@ public class Constants {
         public static final String NEPTUNE_BLESSING = "ritual_neptune_blessing";
         public static final String WARDEN = "ritual_warden";
 
-        // Compat Imperfect Rituals
         public static final String MAGI = "ritual_magi";                         // Ars Nouveau
         public static final String IRON_HEART = "ritual_iron_heart";             // Iron's Spells
         public static final String SOUL_STAINED_BLOOD = "ritual_soul_stained_blood"; // Malum

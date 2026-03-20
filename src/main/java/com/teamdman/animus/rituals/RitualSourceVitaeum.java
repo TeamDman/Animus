@@ -16,9 +16,9 @@ import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 import java.util.function.Consumer;
 
 /**
- * Ritual of Source Vitaeum - Converts Ars Nouveau Source into Blood Magic LP
+ * Ritual of Source Vitaeum - Converts Ars Nouveau Source into NeoVitae LP
  *
- * This ritual creates a bridge between Ars Nouveau's Source system and Blood Magic's LP system,
+ * This ritual creates a bridge between Ars Nouveau's Source system and NeoVitae's LP system,
  * allowing hybrid players to convert excess Source into LP at a configurable exchange rate.
  *
  * Features:
@@ -54,74 +54,56 @@ public class RitualSourceVitaeum extends Ritual {
             return;
         }
 
-        // Check if Ars Nouveau is loaded
         if (!CompatHandler.isArsNouveauLoaded()) {
-            // Ritual is inactive without Ars Nouveau
             return;
         }
 
-        // Find nearby Blood Altar
         int altarSearchRadius = AnimusConfig.rituals.sourceVitaeumAltarRange.get();
         BloodAltarTile altar = findNearbyAltar(serverLevel, masterPos, altarSearchRadius);
 
         if (altar == null) {
-            // No altar found, ritual cannot function
             return;
         }
 
-        // Count nearby Master Ritual Stones for penalty calculation
         int penaltyRadius = AnimusConfig.rituals.sourceVitaeumPenaltyRadius.get();
         int nearbyRituals = countNearbyMasterRitualStones(serverLevel, altar.getBlockPos(), penaltyRadius);
 
-        // Calculate conversion rate with penalty
-        // Base rate is 10:1, each nearby ritual doubles the cost (20:1, 40:1, etc.)
+        // Each nearby ritual stone doubles the conversion cost
         int baseConversion = AnimusConfig.rituals.sourceVitaeumBaseConversion.get();
         int conversionRate = baseConversion * (int)Math.pow(2, nearbyRituals);
 
-        // Amount of Source to attempt to drain per cycle
         int sourcePerCycle = AnimusConfig.rituals.sourceVitaeumSourcePerCycle.get();
 
-        // Find Source Jars and drain them
         int sourceDrained = SourceJarHelper.drainSourceFromJarAbove(serverLevel, masterPos, sourcePerCycle);
 
         if (sourceDrained <= 0) {
-            // No Source available to convert
             return;
         }
 
-        // Calculate LP to add based on Source drained and conversion rate
         int lpToAdd = sourceDrained / conversionRate;
 
         if (lpToAdd <= 0) {
-            // Not enough Source for even 1 LP
             return;
         }
 
-        // Check altar capacity (don't exceed max capacity)
         int currentBlood = altar.getCurrentBlood();
         int maxBlood = altar.getMainCapacity();
         int availableSpace = maxBlood - currentBlood;
 
         if (availableSpace <= 0) {
-            // Altar is full
             return;
         }
 
-        // Don't overflow the altar
         lpToAdd = Math.min(lpToAdd, availableSpace);
 
         if (lpToAdd <= 0) {
             return;
         }
 
-        // Add LP to altar using the standard method
-        // The second parameter (true) makes it respect altar speed and dislocation runes
+        // Second param (true) makes it respect altar speed and dislocation runes
         altar.addSacrificeLP(lpToAdd, true);
     }
 
-    /**
-     * Find a Blood Altar within the specified radius
-     */
     private BloodAltarTile findNearbyAltar(ServerLevel level, BlockPos center, int radius) {
         for (BlockPos pos : BlockPos.betweenClosed(
             center.offset(-radius, -radius, -radius),
@@ -135,9 +117,6 @@ public class RitualSourceVitaeum extends Ritual {
         return null;
     }
 
-    /**
-     * Count Master Ritual Stones within radius of the altar (excluding this ritual)
-     */
     private int countNearbyMasterRitualStones(ServerLevel level, BlockPos altarPos, int radius) {
         int count = 0;
         for (BlockPos pos : BlockPos.betweenClosed(
@@ -149,19 +128,16 @@ public class RitualSourceVitaeum extends Ritual {
                 count++;
             }
         }
-        // Subtract 1 because we count ourselves
         return Math.max(0, count - 1);
     }
 
     @Override
     public int getRefreshCost() {
-        return 0; // No LP cost, conversion happens via Source drain
+        return 0;
     }
 
     @Override
     public int getRefreshTime() {
-        // Base time is 40 ticks (2 seconds)
-        // This will be modified by altar speed runes automatically
         return 40;
     }
 

@@ -24,24 +24,16 @@ import java.util.List;
 public class AnimusItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.createItems(Constants.Mod.MODID);
 
-    /**
-     * Helper method to register a BlockItem for a given block
-     */
     private static DeferredHolder<Item, Item> registerBlockItem(String name, DeferredHolder<Block, ? extends Block> block) {
         return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    /**
-     * Helper method to register a SigilItem for a given sigil type.
-     * The sigil type is loaded from data/animus/neovitae/sigil_type/{path}.json
-     */
     private static DeferredHolder<Item, Item> registerSigil(String name, String sigilTypePath) {
         return ITEMS.register(name, () -> new SigilItem(
                 SigilTypeRegistry.key(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, sigilTypePath))
         ));
     }
 
-    // Block Items
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_WOOD = registerBlockItem("blood_wood", AnimusBlocks.BLOCK_BLOOD_WOOD);
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_WOOD_STRIPPED = registerBlockItem("blood_wood_stripped", AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED);
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_WOOD_PLANKS = registerBlockItem("blood_wood_planks", AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS);
@@ -50,7 +42,6 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_WOOD_FENCE = registerBlockItem("blood_wood_fence", AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE);
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_WOOD_FENCE_GATE = registerBlockItem("blood_wood_fence_gate", AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE);
 
-    // Blood Sapling - with tooltip
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_SAPLING = ITEMS.register("blood_sapling",
         () -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_SAPLING.get(), new Item.Properties()) {
             @Override
@@ -61,7 +52,6 @@ public class AnimusItems {
             }
         });
 
-    // Blood Core - with tooltip
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_CORE = ITEMS.register("blood_core",
         () -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_CORE.get(), new Item.Properties()) {
             @Override
@@ -76,7 +66,6 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_LEAVES = registerBlockItem("blood_leaves", AnimusBlocks.BLOCK_BLOOD_LEAVES);
     public static final DeferredHolder<Item, Item> BLOCK_ANTILIFE = registerBlockItem("antilife", AnimusBlocks.BLOCK_ANTILIFE);
 
-    // Crystallized Demon Will Block - with tooltip
     public static final DeferredHolder<Item, Item> BLOCK_CRYSTALLIZED_DEMON_WILL = ITEMS.register("crystallized_demon_will_block",
         () -> new BlockItem(AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get(), new Item.Properties()) {
             @Override
@@ -88,9 +77,8 @@ public class AnimusItems {
             }
         });
 
-    // Imperfect Ritual Stone removed - use Blood Magic's native NVBlocks.IMPERFECT_RITUAL_STONE instead
+    // Imperfect Ritual Stone removed - use NeoVitae's native NVBlocks.IMPERFECT_RITUAL_STONE instead
 
-    // Willful Stone blocks (all 16 colors)
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE = registerBlockItem("willful_stone", AnimusBlocks.BLOCK_WILLFUL_STONE);
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE_WHITE = registerBlockItem("willful_stone_white", AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE);
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE_ORANGE = registerBlockItem("willful_stone_orange", AnimusBlocks.BLOCK_WILLFUL_STONE_ORANGE);
@@ -108,7 +96,6 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE_RED = registerBlockItem("willful_stone_red", AnimusBlocks.BLOCK_WILLFUL_STONE_RED);
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE_BLACK = registerBlockItem("willful_stone_black", AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK);
 
-    // Regular Items
     public static final DeferredHolder<Item, Item> BLOOD_APPLE = ITEMS.register("blood_apple",
         ItemBloodApple::new);
 
@@ -117,11 +104,9 @@ public class AnimusItems {
 
     public static final DeferredHolder<Item, ItemBloodOrbTranscendent> BLOOD_ORB_TRANSCENDENT = AnimusBloodOrbs.BLOOD_ORB_TRANSCENDENT;
 
-    // Mob Soul - used by Sigil of Chains
     public static final DeferredHolder<Item, Item> MOBSOUL = ITEMS.register("mob_soul",
         com.teamdman.animus.items.ItemMobSoul::new);
 
-    // Reagents - used to craft sigils via Alchemy Arrays
     public static final DeferredHolder<Item, Item> REAGENT_BUILDER = ITEMS.register("reagentbuilder",
         ItemReagent::new);
 
@@ -164,8 +149,6 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> REAGENT_FIST = ITEMS.register("reagentfist",
         ItemReagent::new);
 
-    // Sigils - using Blood Magic's data-driven sigil system
-    // Sigil types are loaded from data/animus/neovitae/sigil_type/{path}.json
     public static final DeferredHolder<Item, Item> SIGIL_BUILDER = registerSigil("sigil_builder", "builder");
     public static final DeferredHolder<Item, Item> SIGIL_CHAINS = registerSigil("sigil_chains", "chains");
     public static final DeferredHolder<Item, Item> SIGIL_CONSUMPTION = registerSigil("sigil_consumption", "consumption");
@@ -183,7 +166,6 @@ public class AnimusItems {
     // TODO: ItemSigilBoundlessNature needs to be ported from 1.20.1
     // public static final DeferredHolder<Item, Item> SIGIL_BOUNDLESS_NATURE = registerSigil("sigil_boundless_nature", "boundless_nature");
 
-    // Tools & Weapons
     public static final DeferredHolder<Item, Item> SPEAR_IRON = ITEMS.register("spear_iron",
         () -> new ItemSpear(Tiers.IRON));
 
@@ -199,36 +181,30 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> SENTIENT_SHIELD = ITEMS.register("sentient_shield",
         ItemSentientShield::new);
 
-    // Bows
     public static final DeferredHolder<Item, Item> SENTIENT_BOW = ITEMS.register("sentient_bow",
         ItemSentientBow::new);
 
     public static final DeferredHolder<Item, Item> HELLFORGED_BOW = ITEMS.register("hellforged_bow",
         ItemHellforgedBow::new);
 
-    // Runic Sentient Scythe - enhanced scythe with Malum integration
     public static final DeferredHolder<Item, Item> RUNIC_SENTIENT_SCYTHE = ITEMS.register("runic_sentient_scythe",
         ItemRunicSentientScythe::new);
 
-    // Hand of Death - ultimate sentient scythe with lifesteal and execute
     public static final DeferredHolder<Item, Item> HAND_OF_DEATH = ITEMS.register("hand_of_death",
         ItemHandOfDeath::new);
 
-    // Crafting Components
     public static final DeferredHolder<Item, Item> KEY_BINDING = ITEMS.register("key_binding",
         ItemKeyBinding::new);
 
     public static final DeferredHolder<Item, Item> ACTIVATION_CRYSTAL_FRAGILE = ITEMS.register("activation_crystal_fragile",
         ItemActivationCrystalFragile::new);
 
-    // Utilities
     public static final DeferredHolder<Item, Item> SANGUINE_DIVINER = ITEMS.register("sanguine_diviner",
         ItemSanguineDiviner::new);
 
     public static final DeferredHolder<Item, Item> RITUAL_DESIGNER = ITEMS.register("ritual_designer",
         ItemRitualDesigner::new);
 
-    // Fluid Buckets
     public static final DeferredHolder<Item, Item> ANTILIFE_BUCKET = ITEMS.register("antilife_bucket",
         () -> new BucketItem(
             AnimusFluids.ANTILIFE_SOURCE.get(),

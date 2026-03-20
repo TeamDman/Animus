@@ -51,8 +51,6 @@ public class RitualSteadfastHeart extends Ritual {
     public RitualSteadfastHeart() {
         super(Constants.Rituals.STEADFAST, 0, 20000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.STEADFAST);
 
-        // Use default range (128 blocks) - config is not available at construction time
-        // Range can be adjusted via the ritual stone GUI
         int range = 128;
         int halfRange = range / 2;
         addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.symmetricCube(halfRange));
@@ -85,14 +83,11 @@ public class RitualSteadfastHeart extends Ritual {
 
         BlockPos pos = mrs.getMasterBlockPos();
 
-        // Get current steadfast demon will
         EnumWillType type = EnumWillType.STEADFAST;
         double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
 
-        // Track players who have been buffed to avoid duplicates
         Set<UUID> buffedPlayers = new HashSet<>();
 
-        // Get all players in range
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         AABB range = effectRange.getAABB(pos);
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, range);
@@ -100,9 +95,7 @@ public class RitualSteadfastHeart extends Ritual {
         int entityCount = 0;
         Holder<net.minecraft.world.effect.MobEffect> absorbEffect = MobEffects.ABSORPTION;
 
-        // Buff nearby players
         for (LivingEntity entity : entities) {
-            // Only affect real players
             if (!(entity instanceof Player) || entity instanceof FakePlayer) {
                 continue;
             }
@@ -110,7 +103,6 @@ public class RitualSteadfastHeart extends Ritual {
             Player player = (Player) entity;
             UUID playerUUID = player.getUUID();
 
-            // Skip if already buffed
             if (buffedPlayers.contains(playerUUID)) {
                 continue;
             }
@@ -120,14 +112,13 @@ public class RitualSteadfastHeart extends Ritual {
             entityCount++;
         }
 
-        // Check for chest above ritual stone with bound blood orbs
+        // Buff remote players via bound blood orbs in chest above ritual
         BlockPos chestPos = pos.above();
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 
         if (chestTile != null) {
             IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
             if (handler != null) {
-                // Scan chest for bound blood orbs
                 for (int slot = 0; slot < handler.getSlots(); slot++) {
                     ItemStack stack = handler.getStackInSlot(slot);
 
@@ -135,7 +126,6 @@ public class RitualSteadfastHeart extends Ritual {
                         continue;
                     }
 
-                    // Get the player UUID bound to this orb
                     IBindable bindable = (IBindable) stack.getItem();
                     Binding binding = bindable.getBinding(stack);
                     if (binding == null) {
@@ -147,18 +137,15 @@ public class RitualSteadfastHeart extends Ritual {
                         continue;
                     }
 
-                    // Skip if this player was already buffed
                     if (buffedPlayers.contains(orbOwner)) {
                         continue;
                     }
 
-                    // Check if player is online
                     ServerPlayer targetPlayer = level.getServer().getPlayerList().getPlayer(orbOwner);
                     if (targetPlayer == null || targetPlayer instanceof FakePlayer) {
                         continue;
                     }
 
-                    // Apply buff remotely
                     applyAbsorptionBuff(targetPlayer, absorbEffect);
                     buffedPlayers.add(orbOwner);
                     entityCount++;
@@ -166,22 +153,16 @@ public class RitualSteadfastHeart extends Ritual {
             }
         }
 
-        // Consume LP based on number of players affected
         SoulTicket ticket = SoulTicket.create(getRefreshCost() * entityCount);
         network.syphon(ticket);
 
-        // Generate steadfast demon will
         double addAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2.0, 10));
         if (addAmount > 0) {
             WorldDemonWillHandler.addWillToChunk(level, pos, type, addAmount);
         }
     }
 
-    /**
-     * Apply absorption buff to a player
-     */
     private void applyAbsorptionBuff(Player player, Holder<net.minecraft.world.effect.MobEffect> absorbEffect) {
-        // Get existing absorption effect
         MobEffectInstance existingEffect = player.getEffect(absorbEffect);
         int currentDuration = 0;
 
@@ -190,12 +171,11 @@ public class RitualSteadfastHeart extends Ritual {
             player.removeEffect(absorbEffect);
         }
 
-        // Calculate new duration and amplifier
+        // Duration and amplifier scale up with continued exposure
         int newDuration = Math.min(((currentDuration + 800) * 2), 30000);
         int maxAmplifier = AnimusConfig.rituals.steadfastHeartMaxAmplifier.get();
         int amplifier = Math.min((5 * (1 + (newDuration + 60)) / 36000), maxAmplifier);
 
-        // Apply new absorption effect
         player.addEffect(new MobEffectInstance(
             absorbEffect,
             newDuration,

@@ -20,8 +20,7 @@ import com.breakinblocks.neovitae.ritual.ImperfectRitual;
  */
 public class RitualMagi extends ImperfectRitual {
 
-    // 15 minutes in ticks (15 * 60 * 20)
-    private static final int EFFECT_DURATION = 18000;
+    private static final int EFFECT_DURATION = 18000; // 15 minutes
 
     public RitualMagi() {
         super(
@@ -41,17 +40,15 @@ public class RitualMagi extends ImperfectRitual {
             return false;
         }
 
-        // Grant Mana Regen III for 15 minutes
         player.addEffect(new MobEffectInstance(
             ModPotions.MANA_REGEN_EFFECT,
             EFFECT_DURATION,
-            2,  // Amplifier 2 = level 3
-            false,  // Not ambient
-            true,   // Show particles
-            true    // Show icon
+            2,
+            false,
+            true,
+            true
         ));
 
-        // Play mystical sound
         level.playSound(
             null,
             player.getX(), player.getY(), player.getZ(),

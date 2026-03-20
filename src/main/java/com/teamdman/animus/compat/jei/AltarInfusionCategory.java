@@ -35,7 +35,6 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
     private final Component title;
 
     public AltarInfusionCategory(IGuiHelper guiHelper) {
-        // Use Blood Altar as the icon
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
             new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()));
         this.title = Component.translatable("jei.animus.category.altar_infusion");
@@ -69,59 +68,35 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AltarInfusionDisplay recipe, IFocusGroup focuses) {
         if (recipe.isSpellbookType()) {
-            // Spellbook infusion layout:
-            // [Input] -> [Altar] -> [Output]
-
-            // Input slot (left)
             builder.addSlot(RecipeIngredientRole.INPUT, 20, 40)
                 .addItemStack(recipe.getAltarInput());
 
-            // Blood Altar (center)
             builder.addSlot(RecipeIngredientRole.CATALYST, 75, 40)
                 .addItemStack(new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()));
 
-            // Output slot (right)
             builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 40)
                 .addItemStacks(recipe.getOutputs());
 
         } else if (recipe.isSpellbookUpgradeType()) {
-            // Spellbook upgrade layout: same as spellbook but shows tier info
-            // [Input] -> [Altar] -> [Output]
-
-            // Input slot (left)
             builder.addSlot(RecipeIngredientRole.INPUT, 20, 40)
                 .addItemStack(recipe.getAltarInput());
 
-            // Blood Altar (center)
             builder.addSlot(RecipeIngredientRole.CATALYST, 75, 40)
                 .addItemStack(new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()));
 
-            // Output slot (right)
             builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 40)
                 .addItemStacks(recipe.getOutputs());
 
         } else if (recipe.isSanguineScrollType()) {
-            // Sanguine Scroll layout:
-            // [Title]
-            // [Main Hand]     [Offhand]
-            //        \         /
-            //         [Altar]
-            //            |
-            //        [Output]
-
-            // Main hand input (top left) - the Iron's Spells scroll
             builder.addSlot(RecipeIngredientRole.INPUT, 35, 28)
                 .addItemStack(recipe.getMainHandInput());
 
-            // Offhand input (top right) - the slate
             builder.addSlot(RecipeIngredientRole.INPUT, 115, 28)
                 .addItemStack(recipe.getOffHandInput());
 
-            // Blood Altar (center)
             builder.addSlot(RecipeIngredientRole.CATALYST, 75, 52)
                 .addItemStack(new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()));
 
-            // Output slot (bottom center)
             builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 80)
                 .addItemStacks(recipe.getOutputs());
         }
@@ -131,68 +106,51 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
     public void draw(AltarInfusionDisplay recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         Font font = Minecraft.getInstance().font;
 
-        // Draw title
         String titleStr = recipe.getTitle().getString();
         int titleWidth = font.width(titleStr);
         guiGraphics.drawString(font, titleStr, (WIDTH - titleWidth) / 2, 2, 0x8B0000, false);
 
         if (recipe.isSpellbookType()) {
-            // Draw arrows for spellbook layout
             guiGraphics.drawString(font, "→", 45, 43, 0x404040, false);
             guiGraphics.drawString(font, "→", 105, 43, 0x404040, false);
 
-            // Draw LP cost below altar
             String lpText = String.format("%,d LP", recipe.getLpCost());
             int lpWidth = font.width(lpText);
             guiGraphics.drawString(font, lpText, (WIDTH - lpWidth) / 2, 60, 0xAA0000, false);
 
-            // Draw description at bottom
             drawWrappedText(guiGraphics, font, recipe.getDescription().getString(), 5, 75, 160, 0x606060);
 
         } else if (recipe.isSpellbookUpgradeType()) {
-            // Draw arrows for upgrade layout
             guiGraphics.drawString(font, "→", 45, 43, 0x404040, false);
             guiGraphics.drawString(font, "→", 105, 43, 0x404040, false);
 
-            // Draw tier subtitle under title
             String subtitle = "Tier " + recipe.getFromTier() + " → Tier " + recipe.getToTier();
             int subtitleWidth = font.width(subtitle);
             guiGraphics.drawString(font, subtitle, (WIDTH - subtitleWidth) / 2, 14, 0x8B0000, false);
 
-            // Draw LP cost below altar
             String lpText = String.format("%,d LP", recipe.getLpCost());
             int lpWidth = font.width(lpText);
             guiGraphics.drawString(font, lpText, (WIDTH - lpWidth) / 2, 60, 0xAA0000, false);
 
-            // Draw orb requirement
             String orbReq = "Requires: " + recipe.getRequiredOrb();
             int orbWidth = font.width(orbReq);
             guiGraphics.drawString(font, orbReq, (WIDTH - orbWidth) / 2, 72, 0x606060, false);
 
-            // Draw description at bottom
             drawWrappedText(guiGraphics, font, recipe.getDescription().getString(), 5, 85, 160, 0x606060);
 
         } else if (recipe.isSanguineScrollType()) {
-            // Draw hand labels (below title, above item slots)
             guiGraphics.drawString(font, "Main Hand", 23, 16, 0x404040, false);
             guiGraphics.drawString(font, "Offhand", 107, 16, 0x404040, false);
 
-            // Draw converging arrows (below the input slots at y=28+16=44)
             guiGraphics.drawString(font, "↘", 55, 46, 0x404040, false);
             guiGraphics.drawString(font, "↙", 105, 46, 0x404040, false);
-
-            // Draw arrow from altar to output (altar at y=52+16=68)
             guiGraphics.drawString(font, "↓", 80, 70, 0x404040, false);
 
-            // Draw LP cost on the side (next to altar at y=52)
             String lpText = String.format("%,d LP*", recipe.getLpCost());
             guiGraphics.drawString(font, lpText, 5, 56, 0xAA0000, false);
         }
     }
 
-    /**
-     * Draw text with simple word wrapping
-     */
     private void drawWrappedText(GuiGraphics guiGraphics, Font font, String text, int x, int y, int maxWidth, int color) {
         String[] words = text.split(" ");
         StringBuilder currentLine = new StringBuilder();
@@ -214,11 +172,9 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
                 currentLine.append(word);
             }
 
-            // Limit lines
             if (yOffset > y + lineHeight * 2) break;
         }
 
-        // Draw remaining text
         if (currentLine.length() > 0 && yOffset <= y + lineHeight * 2) {
             guiGraphics.drawString(font, currentLine.toString(), x, yOffset, color, false);
         }

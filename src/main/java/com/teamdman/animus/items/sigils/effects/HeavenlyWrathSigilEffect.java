@@ -156,7 +156,7 @@ public record HeavenlyWrathSigilEffect() implements ISigilEffect {
         // Remove levitation
         entity.removeEffect(MobEffects.LEVITATION);
 
-        // Apply Blood Magic's heavy_heart effect to prevent flight
+        // Apply NeoVitae's heavy_heart effect to prevent flight
         ResourceLocation heavyHeartRL = ResourceLocation.fromNamespaceAndPath("neovitae", "heavy_heart");
         var heavyHeartOpt = BuiltInRegistries.MOB_EFFECT.getOptional(heavyHeartRL);
         if (heavyHeartOpt.isPresent()) {

@@ -23,10 +23,6 @@ import net.neoforged.neoforge.common.NeoForge;
  */
 public class SourceAttunementHandler {
 
-    /**
-     * ResourceLocation for the Source Attunement upgrade.
-     * The upgrade is defined in data/animus/neovitae/living_upgrades/source_attunement.json
-     */
     public static final ResourceLocation UPGRADE_ID =
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "source_attunement");
 
@@ -34,10 +30,6 @@ public class SourceAttunementHandler {
         NeoForge.EVENT_BUS.register(new SourceAttunementHandler());
     }
 
-    /**
-     * Modify spell damage based on upgrade level
-     * Each level adds +5% spell damage (Level 1: +5%, Level 2: +10%, ..., Level 5: +25%)
-     */
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onSpellDamage(SpellDamageEvent event) {
         if (!(event.caster instanceof Player player)) {
@@ -49,17 +41,11 @@ public class SourceAttunementHandler {
             return;
         }
 
-        // Apply damage boost: 5% per level
         double damageBoost = 0.05 * upgradeLevel;
         float newDamage = event.damage * (1.0f + (float) damageBoost);
         event.damage = newDamage;
     }
 
-    /**
-     * Handle effects when spell is cast
-     * Level 4: Grant Mana Regeneration for 4 seconds
-     * Level 5: Spell Damage buff (amplifier 2) for 5 seconds
-     */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onSpellCast(SpellCastEvent event) {
         if (!(event.getEntity() instanceof Player player)) {
@@ -71,7 +57,6 @@ public class SourceAttunementHandler {
             return;
         }
 
-        // Level 4: Grant Mana Regeneration on cast for 4 seconds
         if (upgradeLevel >= 4) {
             player.addEffect(new MobEffectInstance(
                 ModPotions.MANA_REGEN_EFFECT,
@@ -83,7 +68,6 @@ public class SourceAttunementHandler {
             ));
         }
 
-        // Level 5: Grant Spell Damage buff (amplifier 2) for 5 seconds
         if (upgradeLevel >= 5) {
             player.addEffect(new MobEffectInstance(
                 ModPotions.SPELL_DAMAGE_EFFECT,

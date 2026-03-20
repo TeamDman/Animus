@@ -22,14 +22,9 @@ public class MalumCompat implements ICompatModule {
 
     private static MalumCompat INSTANCE;
 
-    // DeferredRegister for Malum compatibility imperfect rituals
     public static final DeferredRegister<ImperfectRitual> IMPERFECT_RITUALS =
         DeferredRegister.create(RitualRegistry.IMPERFECT_RITUAL_REGISTRY_KEY, Constants.Mod.MODID);
 
-    // ===== Imperfect Rituals =====
-
-    // Imperfect Ritual of the Soul-Stained Blood - grants Sacrificial Empowerment effect
-    // Requires Block of Hallowed Gold on Imperfect Ritual Stone
     public static final DeferredHolder<ImperfectRitual, RitualSoulStainedBlood> SOUL_STAINED_BLOOD =
         IMPERFECT_RITUALS.register(Constants.Rituals.SOUL_STAINED_BLOOD, () -> new RitualSoulStainedBlood());
 
@@ -41,23 +36,19 @@ public class MalumCompat implements ICompatModule {
         return INSTANCE;
     }
 
-    /**
-     * Register the DeferredRegisters to the mod event bus
-     * This must be called early, during mod construction
-     */
     public static void registerDeferred(IEventBus modEventBus) {
         IMPERFECT_RITUALS.register(modEventBus);
-        Animus.LOGGER.info("Registered Malum compatibility registries (imperfect rituals)");
+        Animus.LOGGER.debug("Registered Malum compatibility registries (imperfect rituals)");
     }
 
     @Override
     public void init() {
-        Animus.LOGGER.info("Initializing Malum compatibility");
+        Animus.LOGGER.debug("Initializing Malum compatibility");
 
         // Malum integration is passive - no event listeners needed
         // Integration happens through direct API calls from weapon items
 
-        Animus.LOGGER.info("Malum compatibility initialized successfully");
+        Animus.LOGGER.debug("Malum compatibility initialized successfully");
     }
 
     @Override

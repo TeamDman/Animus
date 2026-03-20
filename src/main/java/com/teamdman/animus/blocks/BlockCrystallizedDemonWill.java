@@ -16,10 +16,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * Acts as a valid CRYSTAL component for altar structures
  */
 public class BlockCrystallizedDemonWill extends Block {
-    // Slightly smaller than a full block for visual appeal
     private static final VoxelShape SHAPE = Shapes.or(
-        Block.box(2, 0, 2, 14, 12, 14),  // Main pillar body
-        Block.box(0, 12, 0, 16, 16, 16)   // Top cap
+        Block.box(2, 0, 2, 14, 12, 14),
+        Block.box(0, 12, 0, 16, 16, 16)
     );
 
     public BlockCrystallizedDemonWill() {

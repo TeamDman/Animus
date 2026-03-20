@@ -159,13 +159,9 @@ public class ItemSpearSentient extends ItemSpear {
             double soulsRemaining = getTotalWillOfType(player, type);
             int willLevel = getLevel(stack, soulsRemaining);
 
-            // Apply sentient effects (wither for corrosive, absorption for steadfast, etc.)
-            applyEffectToEntity(type, willLevel, target, attacker);
+                applyEffectToEntity(type, willLevel, target, attacker);
 
-            // Will drops are handled by getRandomDemonWillDrop() - no Soul Snare needed
-            // This matches the behavior of Blood Magic's Sentient Sword
-
-            // Drain will from soul network
+            // Will drops handled by getRandomDemonWillDrop()
             if (soulsRemaining >= 16.0) {
                 drainWillFromPlayer(player, type, soulDrainPerSwing[Math.min(willLevel, 4)]);
             }
@@ -191,9 +187,7 @@ public class ItemSpearSentient extends ItemSpear {
 
                             // Spawn sentient spear entity
                             EntityThrownSpear thrownSpear = new EntityThrownSpear(level, player, stack);
-                            // Mark it as sentient for special handling
                             thrownSpear.setVariant("sentient");
-                            // Set will type and level for will drops on kill
                             thrownSpear.setWillType(type);
                             thrownSpear.setWillLevel(willLevel);
                             thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
@@ -208,9 +202,8 @@ public class ItemSpearSentient extends ItemSpear {
                                 player.getInventory().removeItem(stack);
                             }
 
-                            // Drain will on throw from player's soul network
                             if (soulsRemaining >= 16.0) {
-                                // Double drain for throwing
+                                // Double will drain for throwing vs melee
                                 drainWillFromPlayer(player, type, soulDrainPerSwing[Math.min(willLevel, 4)] * 2.0);
                             }
                         }
@@ -226,9 +219,6 @@ public class ItemSpearSentient extends ItemSpear {
         }
     }
 
-    /**
-     * Get riptide enchantment level from the stack
-     */
     private int getRiptideLevel(ItemStack stack, Level level) {
         if (level instanceof ServerLevel serverLevel) {
             return stack.getEnchantmentLevel(serverLevel.registryAccess()
@@ -237,9 +227,6 @@ public class ItemSpearSentient extends ItemSpear {
         }
         return 0;
     }
-
-    // Note: In 1.21, attribute modifiers are handled via data components (ATTRIBUTE_MODIFIERS)
-    // The base spear provides standard weapon modifiers, will bonuses scale damage at runtime
 
     public EnumWillType getCurrentType(ItemStack stack) {
         String typeStr = stack.get(AnimusDataComponents.DEMON_WILL_TYPE.get());
@@ -260,16 +247,13 @@ public class ItemSpearSentient extends ItemSpear {
     public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int looting) {
         List<ItemStack> soulList = new java.util.ArrayList<>();
 
-        // Only drop from hostile mobs (same check as Sentient Sword)
         if (killedEntity.getCommandSenderWorld().getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL
             && !(killedEntity instanceof net.minecraft.world.entity.monster.Enemy)) {
             return soulList;
         }
 
-        // Slimes give reduced will (same as sword)
         double willModifier = killedEntity instanceof net.minecraft.world.entity.monster.Slime ? 0.67 : 1;
 
-        // Get the appropriate demon will item based on current type
         EnumWillType type = this.getCurrentType(stack);
         IDemonWill soul = switch (type) {
             case CORROSIVE -> ((IDemonWill) NVItems.MONSTER_SOUL_CORROSIVE.get());
@@ -279,14 +263,12 @@ public class ItemSpearSentient extends ItemSpear {
             default -> ((IDemonWill) NVItems.MONSTER_SOUL_RAW.get());
         };
 
-        // Calculate will level for drop amounts
         double soulsRemaining = 0;
         if (attackingEntity instanceof Player player) {
             soulsRemaining = getTotalWillOfType(player, type);
         }
         int willLevel = Math.min(getLevel(stack, soulsRemaining), 4);
 
-        // Drop will items (with looting bonus like sword)
         for (int i = 0; i <= looting; i++) {
             if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
                 double dropAmount = willModifier * (soulDrop[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
@@ -303,15 +285,11 @@ public class ItemSpearSentient extends ItemSpear {
         return getCurrentType(stack);
     }
 
-    // Note: canApplyAtEnchantingTable was removed in 1.21
-    // Enchantment compatibility is now handled through enchantment tags
-
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            // Update the will type based on the player's inventory
             EnumWillType newType = findDemonWillType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
@@ -319,12 +297,7 @@ public class ItemSpearSentient extends ItemSpear {
         }
     }
 
-    /**
-     * Determines the demon will type based on will available from the player's soul network
-     * Returns the type with the highest will amount
-     */
     private static EnumWillType findDemonWillType(Player player) {
-        // Get will amounts from the player's soul network
         EnumWillType highestType = EnumWillType.DEFAULT;
         double highestAmount = 0;
 
@@ -339,16 +312,10 @@ public class ItemSpearSentient extends ItemSpear {
         return highestType;
     }
 
-    /**
-     * Gets the total amount of will the player has of a specific type from their soul network
-     */
     private static double getTotalWillOfType(Player player, EnumWillType type) {
         return PlayerDemonWillHandler.getTotalDemonWill(type, player);
     }
 
-    /**
-     * Drains will from the player's soul network
-     */
     private static void drainWillFromPlayer(Player player, EnumWillType type, double amount) {
         PlayerDemonWillHandler.consumeDemonWill(type, player, amount);
     }

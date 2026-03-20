@@ -20,7 +20,6 @@ import com.breakinblocks.neovitae.common.item.NVItems;
 import java.util.concurrent.CompletableFuture;
 
 public class AnimusRecipeProvider extends RecipeProvider {
-    // Common array textures
     private static final ResourceLocation ARRAY_GROWTH = NeoVitae.rl("textures/models/alchemyarrays/growthsigil.png");
     private static final ResourceLocation ARRAY_LAPUTA = NeoVitae.rl("textures/models/alchemyarrays/shardoflaputa.png");
     private static final ResourceLocation ARRAY_BINDING = NeoVitae.rl("textures/models/alchemyarrays/bindingarray.png");
@@ -51,7 +50,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
     }
 
     private void buildCraftingRecipes(RecipeOutput output) {
-        // Spears
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AnimusItems.SPEAR_IRON.get())
             .pattern(" a ")
             .pattern("a a")
@@ -70,25 +68,19 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
             .save(output);
 
-        // Blood Apple - no crafting recipe, obtained from Blood Leaves loot table
-
-        // Blood Wood Planks from Blood Wood
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get(), 4)
             .requires(AnimusBlocks.BLOCK_BLOOD_WOOD.get())
             .unlockedBy("has_blood_wood", has(AnimusBlocks.BLOCK_BLOOD_WOOD.get()))
             .save(output);
 
-        // Blood Wood Planks from Stripped Blood Wood
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get(), 4)
             .requires(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get())
             .unlockedBy("has_stripped_blood_wood", has(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get()))
             .save(output, loc("blood_wood_planks_from_stripped"));
 
-        // Key Binding unbind special recipe
         SpecialRecipeBuilder.special(KeyUnbindingRecipe::new)
             .save(output, loc("key_binding_unbind").toString());
 
-        // Blood wood building blocks
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_FENCE.get(), 3)
             .pattern("#S#")
             .pattern("#S#")
@@ -119,7 +111,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .unlockedBy("has_blood_wood_planks", has(AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get()))
             .save(output);
 
-        // Willful stone dyeing recipes - shaped 8 around dye
         willfulStoneDyeRecipe(output, Tags.Items.DYES_GRAY, AnimusItems.BLOCK_WILLFUL_STONE.get(), "willful_stone_gray_dyeing");
         willfulStoneDyeRecipe(output, Tags.Items.DYES_WHITE, AnimusItems.BLOCK_WILLFUL_STONE_WHITE.get(), "willful_stone_white_dyeing");
         willfulStoneDyeRecipe(output, Tags.Items.DYES_ORANGE, AnimusItems.BLOCK_WILLFUL_STONE_ORANGE.get(), "willful_stone_orange_dyeing");
@@ -139,7 +130,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
     }
 
     private void willfulStoneDyeRecipe(RecipeOutput output, net.minecraft.tags.TagKey<net.minecraft.world.item.Item> dye, ItemLike result, String name) {
-        // 8 willful stones surrounding a dye = 8 colored willful stones
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 8)
             .pattern("SSS")
             .pattern("SDS")
@@ -151,7 +141,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
     }
 
     private void buildAltarRecipes(RecipeOutput output) {
-        // Fragile Activation Crystal - clay ball on T2 altar
         AltarRecipeBuilder.build(AnimusItems.ACTIVATION_CRYSTAL_FRAGILE.get())
             .from(Items.CLAY_BALL)
             .minTier(2)
@@ -160,7 +149,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .drain(5)
             .save(output, loc("activation_crystal_fragile"));
 
-        // Transcendent Blood Orb - crystallized demon will on T6 altar (tier index 5 = tier 6)
         AltarRecipeBuilder.build(AnimusItems.BLOOD_ORB_TRANSCENDENT.get())
             .from(AnimusItems.BLOCK_CRYSTALLIZED_DEMON_WILL.get())
             .minTier(5)
@@ -169,7 +157,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .drain(10)
             .save(output, loc("blood_orb_transcendent"));
 
-        // Blood Sapling - any sapling on T0 altar
         AltarRecipeBuilder.build(AnimusItems.BLOCK_BLOOD_SAPLING.get())
             .from(ItemTags.SAPLINGS)
             .minTier(0)
@@ -178,7 +165,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .drain(5)
             .save(output, loc("blood_sapling"));
 
-        // Healing Fragment - prismarine shard on T1 altar
         AltarRecipeBuilder.build(AnimusItems.FRAGMENT_HEALING.get())
             .from(Items.PRISMARINE_SHARD)
             .minTier(1)
@@ -187,7 +173,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .drain(5)
             .save(output, loc("fragment_healing"));
 
-        // Sanguine Diviner - ritual diviner on T1 altar
         AltarRecipeBuilder.build(AnimusItems.SANGUINE_DIVINER.get())
             .from(NVItems.RITUAL_DIVINER.get())
             .minTier(1)
@@ -196,7 +181,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .drain(1)
             .save(output, loc("sanguine_diviner"));
 
-        // Key of Binding - simple key on T1 altar
         AltarRecipeBuilder.build(AnimusItems.KEY_BINDING.get())
             .from(NVItems.SIMPLE_KEY.get())
             .minTier(1)
@@ -207,7 +191,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
     }
 
     private void buildAlchemyTableRecipes(RecipeOutput output) {
-        // Reagent of the Fist - crafted in Alchemy Table
         AlchemyTableRecipeBuilder.build(AnimusItems.REAGENT_FIST.get())
             .syphon(500)
             .ticks(100)
@@ -218,7 +201,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .input(Items.IRON_AXE)
             .save(output, loc("alchemytable/reagentfist"));
 
-        // Living Terra Bucket - earth-infused fluid that solidifies into terrain
         AlchemyTableRecipeBuilder.build(AnimusItems.LIVING_TERRA_BUCKET.get())
             .syphon(1000)
             .ticks(200)
@@ -231,7 +213,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
     }
 
     private void buildSoulForgeRecipes(RecipeOutput output) {
-        // Crystallized Demon Will Block
         SoulForgeRecipeBuilder.build(AnimusItems.BLOCK_CRYSTALLIZED_DEMON_WILL.get())
             .minWill(2048.0)
             .drain(1024.0)
@@ -241,7 +222,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .requires(Items.NETHER_STAR)
             .save(output, loc("crystallized_demon_will_block"));
 
-        // Sentient Shield
         SoulForgeRecipeBuilder.build(AnimusItems.SENTIENT_SHIELD.get())
             .minWill(200.0)
             .drain(100.0)
@@ -250,7 +230,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .requires(Items.DIAMOND)
             .save(output, loc("sentient_shield"));
 
-        // Sentient Spear
         SoulForgeRecipeBuilder.build(AnimusItems.SPEAR_SENTIENT.get())
             .minWill(0.0)
             .drain(0.0)
@@ -258,7 +237,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .requires(NVItems.SOUL_GEM_PETTY.get())
             .save(output, loc("spear_sentient"));
 
-        // Sentient Bow - similar to sentient sword/spear
         SoulForgeRecipeBuilder.build(AnimusItems.SENTIENT_BOW.get())
             .minWill(64.0)
             .drain(32.0)
@@ -268,7 +246,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .requires(Items.STRING)
             .save(output, loc("sentient_bow"));
 
-        // Hellforged Bow - more powerful, requires higher will
         SoulForgeRecipeBuilder.build(AnimusItems.HELLFORGED_BOW.get())
             .minWill(256.0)
             .drain(128.0)
@@ -278,7 +255,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .requires(Items.NETHER_STAR)
             .save(output, loc("hellforged_bow"));
 
-        // Hand of Death - ultimate scythe, requires high demon will
         SoulForgeRecipeBuilder.build(AnimusItems.HAND_OF_DEATH.get())
             .minWill(1024.0)
             .drain(512.0)
@@ -288,7 +264,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .requires(Items.NETHERITE_INGOT)
             .save(output, loc("hand_of_death"));
 
-        // Reagents
         SoulForgeRecipeBuilder.build(AnimusItems.REAGENT_BOUNDLESS_NATURE.get())
             .minWill(128.0)
             .drain(64.0)
@@ -408,7 +383,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
     }
 
     private void buildArrayRecipes(RecipeOutput output) {
-        // Sigils with reinforced slate (tier 2)
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_BUILDER.get())
             .base(AnimusItems.REAGENT_BUILDER.get())
             .added(NVItems.SLATE_REINFORCED.get())
@@ -433,7 +407,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .texture(ARRAY_FASTMINER)
             .save(output, loc("array/sigil_monk"));
 
-        // Sigils with imbued slate (tier 3)
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_CHAINS.get())
             .base(AnimusItems.REAGENT_CHAINS.get())
             .added(NVItems.SLATE_IMBUED.get())
@@ -464,7 +437,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .texture(ARRAY_WATER)
             .save(output, loc("array/sigil_storm"));
 
-        // Sigils with demonic slate (tier 4)
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_FREE_SOUL.get())
             .base(AnimusItems.REAGENT_FREE_SOUL.get())
             .added(NVItems.SLATE_DEMONIC.get())
@@ -489,14 +461,12 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .texture(ARRAY_TELEPORTATION)
             .save(output, loc("array/sigil_transposition"));
 
-        // Other array recipes
         AlchemyArrayRecipeBuilder.build(AnimusItems.SPEAR_BOUND.get())
             .base(AnimusItems.SPEAR_DIAMOND.get())
             .added(NVItems.REAGENT_BINDING.get())
             .texture(ARRAY_SPIKE)
             .save(output, loc("array/spear_bound"));
 
-        // Runic Sentient Scythe - created by infusing sentient scythe with a bound slate
         AlchemyArrayRecipeBuilder.build(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
             .base(NVItems.SENTIENT_SCYTHE.get())
             .added(NVItems.SLATE_DEMONIC.get())

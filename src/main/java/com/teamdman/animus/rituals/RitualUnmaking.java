@@ -58,11 +58,9 @@ public class RitualUnmaking extends Ritual {
         }
 
         if (currentEssence < getRefreshCost()) {
-            // Note: causeNausea removed in BM 4.0
             return;
         }
 
-        // Find all item entities in range
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         AABB aabb = effectRange.getAABB(masterPos);
         List<ItemEntity> itemList = level.getEntitiesOfClass(ItemEntity.class, aabb);
@@ -71,7 +69,6 @@ public class RitualUnmaking extends Ritual {
             return;
         }
 
-        // Find books
         Optional<ItemEntity> booksOpt = itemList.stream()
             .filter(e -> !e.isRemoved())
             .filter(e -> e.getItem().is(Items.BOOK))
@@ -83,17 +80,14 @@ public class RitualUnmaking extends Ritual {
 
         ItemEntity books = booksOpt.get();
 
-        // Process enchanted items
         for (ItemEntity itemEntity : itemList) {
             ItemStack stack = itemEntity.getItem();
 
-            // Skip items enhanced by the Imperfect Ritual of Enhancement if config is enabled
             if (AnimusConfig.rituals.unmakingDisallowEnhanced.get() && isEnhancedItem(stack)) {
                 continue;
             }
 
             if (stack.is(Items.ENCHANTED_BOOK)) {
-                // Handle enchanted books - split enchantments using 1.21 API
                 ItemEnchantments enchants = stack.get(DataComponents.STORED_ENCHANTMENTS);
                 if (enchants == null || enchants.isEmpty()) {
                     continue;
@@ -107,11 +101,9 @@ public class RitualUnmaking extends Ritual {
 
                     int enchLvl = enchants.getLevel(enchHolder);
 
-                    // Create two enchanted books with reduced level
                     int newLevel = enchLvl > 2 ? enchLvl - 1 : 1;
                     ItemStack enchBook = createEnchantedBook(level, enchHolder, newLevel);
 
-                    // Spawn two copies
                     level.addFreshEntity(new ItemEntity(level, masterPos.getX() + 0.5, masterPos.getY() + 1, masterPos.getZ() + 0.5, enchBook.copy()));
                     level.addFreshEntity(new ItemEntity(level, masterPos.getX() + 0.5, masterPos.getY() + 1, masterPos.getZ() + 0.5, enchBook));
 
@@ -126,7 +118,6 @@ public class RitualUnmaking extends Ritual {
                 }
 
             } else if (stack.isEnchanted()) {
-                // Handle regular enchanted items using 1.21 API
                 ItemEnchantments enchantments = stack.get(DataComponents.ENCHANTMENTS);
                 if (enchantments == null || enchantments.isEmpty()) {
                     continue;
@@ -139,16 +130,12 @@ public class RitualUnmaking extends Ritual {
 
                     int enchLevel = enchantments.getLevel(enchHolder);
 
-                    // Create enchanted book
                     ItemStack enchBook = createEnchantedBook(level, enchHolder, enchLevel);
-
-                    // Spawn the book
                     level.addFreshEntity(new ItemEntity(level, masterPos.getX() + 0.5, masterPos.getY() + 1, masterPos.getZ() + 0.5, enchBook));
 
                     books.getItem().shrink(1);
                 }
 
-                // Clear enchantments from item using 1.21 API
                 stack.set(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
 
                 level.playSound(null, masterPos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.5F, 1.0F);
@@ -156,26 +143,18 @@ public class RitualUnmaking extends Ritual {
             }
         }
 
-        // Consume LP
         SoulTicket ticket = SoulTicket.create(getRefreshCost());
         network.syphon(ticket);
     }
 
-    /**
-     * Checks if an item has been enhanced by the Imperfect Ritual of Enhancement
-     */
     private boolean isEnhancedItem(ItemStack stack) {
         Boolean enhanced = stack.get(com.teamdman.animus.registry.AnimusDataComponents.ANIMUS_ENHANCED.get());
         return enhanced != null && enhanced;
     }
 
-    /**
-     * Creates an enchanted book with a specific enchantment using 1.21 API
-     */
     private ItemStack createEnchantedBook(Level level, Holder<Enchantment> enchantment, int enchLevel) {
         ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
 
-        // Use EnchantmentHelper to set stored enchantments on the book
         ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
         mutable.set(enchantment, enchLevel);
         book.set(DataComponents.STORED_ENCHANTMENTS, mutable.toImmutable());

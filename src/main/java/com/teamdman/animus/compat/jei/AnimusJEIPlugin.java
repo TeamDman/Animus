@@ -32,7 +32,7 @@ import java.util.List;
  * JEI Plugin for Animus mod
  * Shows item info and Iron's Spells altar infusion recipes
  *
- * Note: Imperfect Ritual JEI integration is handled by Blood Magic itself.
+ * Note: Imperfect Ritual JEI integration is handled by NeoVitae itself.
  */
 @JeiPlugin
 public class AnimusJEIPlugin implements IModPlugin {
@@ -46,7 +46,6 @@ public class AnimusJEIPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
 
-        // Register the Altar Infusion category (for Iron's Spells compat)
         if (ModList.get().isLoaded("irons_spellbooks")) {
             registration.addRecipeCategories(new AltarInfusionCategory(guiHelper));
         }
@@ -54,7 +53,6 @@ public class AnimusJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        // Add info for AntiLife Bucket - explains the lightning transformation
         registration.addIngredientInfo(
             Arrays.asList(
                 new ItemStack(com.teamdman.animus.registry.AnimusItems.ANTILIFE_BUCKET.get())
@@ -63,7 +61,6 @@ public class AnimusJEIPlugin implements IModPlugin {
             Component.translatable("jei.animus.antilife.info")
         );
 
-        // Add info for Living Terra Bucket - explains the terrain-creating fluid
         registration.addIngredientInfo(
             Arrays.asList(
                 new ItemStack(com.teamdman.animus.registry.AnimusItems.LIVING_TERRA_BUCKET.get())
@@ -72,7 +69,6 @@ public class AnimusJEIPlugin implements IModPlugin {
             Component.translatable("jei.animus.living_terra.info")
         );
 
-        // Add info for Blood Apple - obtained from blood tree leaves
         registration.addIngredientInfo(
             Arrays.asList(
                 new ItemStack(com.teamdman.animus.registry.AnimusItems.BLOOD_APPLE.get())
@@ -81,7 +77,6 @@ public class AnimusJEIPlugin implements IModPlugin {
             Component.translatable("jei.animus.blood_apple.info")
         );
 
-        // Add info for AntiLife block
         registration.addIngredientInfo(
             Arrays.asList(
                 new ItemStack(AnimusBlocks.BLOCK_ANTILIFE.get())
@@ -90,19 +85,14 @@ public class AnimusJEIPlugin implements IModPlugin {
             Component.translatable("jei.animus.antilife_block.info")
         );
 
-        // Sanguine Scrolls and Blood-Infused Spellbook JEI (requires Iron's Spells)
         if (ModList.get().isLoaded("irons_spellbooks")) {
             registerSanguineScrollsJEI(registration);
             registerAltarInfusionRecipes(registration);
         }
     }
 
-    /**
-     * Register JEI info for Sanguine Scrolls
-     */
     private void registerSanguineScrollsJEI(IRecipeRegistration registration) {
         try {
-            // Get scroll items from registry to avoid class loading issues
             List<ItemStack> scrollStacks = new ArrayList<>();
             String[] scrollNames = {
                 "sanguine_scroll_blank",
@@ -131,9 +121,6 @@ public class AnimusJEIPlugin implements IModPlugin {
         }
     }
 
-    /**
-     * Helper to get an Animus item from the registry by name
-     */
     private Item getAnimusItem(String name) {
         return BuiltInRegistries.ITEM.get(
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, name));
@@ -152,18 +139,16 @@ public class AnimusJEIPlugin implements IModPlugin {
         try {
             List<AltarInfusionDisplay> displays = new ArrayList<>();
 
-            // Blood-Infused Spellbook tier upgrades (right-click on altar)
-            // Initial infusion is now a data-driven recipe shown in Blood Magic's JEI
+            // Tier upgrades only; initial infusion is a data-driven recipe in NeoVitae's JEI
             Item bloodInfusedSpellbook = getAnimusItem("blood_infused_spellbook");
             if (bloodInfusedSpellbook != null && bloodInfusedSpellbook != Items.AIR) {
 
-                // Upgrade tiers: Tier 1->2, 2->3, 3->4, 4->5, 5->6
                 String[] orbNames = {
-                    "Apprentice Blood Orb",    // Tier 1 -> 2
-                    "Magician's Blood Orb",    // Tier 2 -> 3
-                    "Master Blood Orb",        // Tier 3 -> 4
-                    "Archmage's Blood Orb",    // Tier 4 -> 5
-                    "Transcendent Blood Orb"   // Tier 5 -> 6
+                    "Apprentice Blood Orb",
+                    "Magician's Blood Orb",
+                    "Master Blood Orb",
+                    "Archmage's Blood Orb",
+                    "Transcendent Blood Orb"
                 };
 
                 int[] lpCosts = {
@@ -195,15 +180,12 @@ public class AnimusJEIPlugin implements IModPlugin {
             }
 
             // Sanguine Scroll recipes - one per slate tier
-            // Get the generic scroll item from Iron's Spells
             Item ironsScroll = BuiltInRegistries.ITEM.get(
                 ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "scroll"));
 
             if (ironsScroll != null && ironsScroll != Items.AIR) {
                 ItemStack scrollStack = new ItemStack(ironsScroll);
 
-                // Define scroll tiers: slate name, output item name, lang key suffix
-                // NeoVitae uses snake_case naming and neovitae namespace
                 String[][] scrollTiers = {
                     {"blank_slate", "sanguine_scroll_blank", "blank"},
                     {"reinforced_slate", "sanguine_scroll_reinforced", "reinforced"},
@@ -231,7 +213,6 @@ public class AnimusJEIPlugin implements IModPlugin {
                 }
             }
 
-            // Register all displays
             if (!displays.isEmpty()) {
                 registration.addRecipes(AltarInfusionCategory.RECIPE_TYPE, displays);
             }
@@ -243,15 +224,12 @@ public class AnimusJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        // Iron's Spells Altar Infusion catalysts
         if (ModList.get().isLoaded("irons_spellbooks")) {
-            // Blood Altar is the catalyst for Altar Infusion recipes (Iron's Spells compat)
             registration.addRecipeCatalyst(
                 new ItemStack(NVBlocks.BLOOD_ALTAR.block().get()),
                 AltarInfusionCategory.RECIPE_TYPE
             );
 
-            // Register output items as catalysts so clicking them shows how to craft them
             // Use registry lookup to avoid class loading issues with IronsSpellsCompat
             String[] animusItems = {
                 "blood_infused_spellbook",
@@ -273,7 +251,6 @@ public class AnimusJEIPlugin implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-        // Hide Malum-dependent items when Malum is not loaded
         if (!ModList.get().isLoaded("malum")) {
             var ingredientManager = jeiRuntime.getIngredientManager();
 
@@ -285,10 +262,9 @@ public class AnimusJEIPlugin implements IModPlugin {
                 )
             );
 
-            Animus.LOGGER.info("JEI: Hidden Malum-dependent items (Malum not loaded)");
+            Animus.LOGGER.debug("JEI: Hidden Malum-dependent items (Malum not loaded)");
         }
 
-        // Hide Iron's Spells-dependent items when Iron's Spells is not loaded
         if (!ModList.get().isLoaded("irons_spellbooks")) {
             var ingredientManager = jeiRuntime.getIngredientManager();
 
@@ -305,7 +281,7 @@ public class AnimusJEIPlugin implements IModPlugin {
                 )
             );
 
-            Animus.LOGGER.info("JEI: Hidden Iron's Spells-dependent items (irons_spellbooks not loaded)");
+            Animus.LOGGER.debug("JEI: Hidden Iron's Spells-dependent items (irons_spellbooks not loaded)");
         }
     }
 }

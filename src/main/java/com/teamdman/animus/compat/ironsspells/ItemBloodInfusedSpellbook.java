@@ -21,7 +21,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import java.util.List;
 
 /**
- * Blood-Infused Spellbook - Enhanced spellbook powered by Blood Magic
+ * Blood-Infused Spellbook - Enhanced spellbook powered by NeoVitae
  *
  * Infusion Tiers and Bonuses:
  * - All tiers: +50 max mana per tier (up to +300)
@@ -60,10 +60,6 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         return 12; // Maximum at tier 6
     }
 
-    /**
-     * Calculate slots for a given tier
-     * Scaling: 5 → 6 → 7 → 8 → 10 → 11 → 12
-     */
     private static int calculateSlots(int tier) {
         return switch (tier) {
             case 0 -> 5;
@@ -77,16 +73,10 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         };
     }
 
-    /**
-     * Get max spell slots based on infusion tier
-     */
     public static int getMaxSpellSlots(ItemStack stack) {
         return calculateSlots(getInfusionTier(stack));
     }
 
-    /**
-     * Get LP cost reduction percentage (0.0 to 1.0)
-     */
     public static double getLPCostReduction(ItemStack stack) {
         int tier = getInfusionTier(stack);
 
@@ -98,49 +88,30 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         };
     }
 
-    /**
-     * Get lifesteal percentage (0.0 to 1.0)
-     */
     public static double getLifesteal(ItemStack stack) {
         int tier = getInfusionTier(stack);
         return tier >= 6 ? 0.05 : 0.0; // 5% lifesteal at tier 6
     }
 
-    /**
-     * Get max mana bonus based on infusion tier (+50 per tier)
-     */
     public static int getMaxManaBonus(ItemStack stack) {
         int tier = getInfusionTier(stack);
         return tier * 50; // +50 per tier, up to +300 at tier 6
     }
 
-    /**
-     * Get max mana bonus for a specific tier
-     */
     public static int getMaxManaBonusForTier(int tier) {
         return tier * 50;
     }
 
-    /**
-     * Get the infusion tier of this spellbook using data components
-     */
     public static int getInfusionTier(ItemStack stack) {
         return stack.getOrDefault(AnimusDataComponents.INFUSION_TIER.get(), 0);
     }
 
-    /**
-     * Set the infusion tier of this spellbook using data components
-     * Also updates the SpellContainer's max spell count to match
-     */
     public static void setInfusionTier(ItemStack stack, int tier) {
         tier = Math.max(0, Math.min(6, tier));
         stack.set(AnimusDataComponents.INFUSION_TIER.get(), tier);
         updateSpellContainerSlots(stack, tier);
     }
 
-    /**
-     * Update the SpellContainer's max spell count based on infusion tier
-     */
     public static void updateSpellContainerSlots(ItemStack stack, int tier) {
         int newSlotCount = calculateSlots(tier);
         ISpellContainer container = ISpellContainer.getOrCreate(stack);
@@ -151,16 +122,10 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         }
     }
 
-    /**
-     * Check if this spellbook can be upgraded to the next tier
-     */
     public static boolean canUpgrade(ItemStack stack) {
         return getInfusionTier(stack) < 6;
     }
 
-    /**
-     * Get the LP cost to upgrade to the next tier
-     */
     public static int getUpgradeCost(ItemStack stack) {
         int currentTier = getInfusionTier(stack);
         int nextTier = currentTier + 1;
@@ -184,7 +149,6 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
 
         if (tier > 0) {
             tooltip.add(Component.literal(""));
-            // Show current tier with max tier for reference
             tooltip.add(Component.literal("Blood Infusion: Tier " + tier + "/6")
                 .withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
 
@@ -192,7 +156,6 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
             tooltip.add(Component.literal("Current Bonuses:")
                 .withStyle(ChatFormatting.GOLD));
 
-            // Show current bonuses
             tooltip.add(Component.literal("  Spell Slots: " + getMaxSpellSlots(stack))
                 .withStyle(ChatFormatting.GRAY));
 
@@ -214,7 +177,6 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
                     .withStyle(ChatFormatting.GREEN));
             }
 
-            // Show next tier info if upgradeable
             if (canUpgrade(stack)) {
                 tooltip.add(Component.literal(""));
                 tooltip.add(Component.literal("Next Tier Bonus:")
@@ -259,9 +221,6 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         }
     }
 
-    /**
-     * Get the bonus description for a given tier
-     */
     private static String getNextTierBonus(int tier) {
         int slots = calculateSlots(tier);
         int mana = getMaxManaBonusForTier(tier);
@@ -275,9 +234,6 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         };
     }
 
-    /**
-     * Get the required orb name for a given tier
-     */
     private static String getOrbNameForTier(int tier) {
         return switch (tier) {
             case 1 -> "Weak Blood Orb";
@@ -292,14 +248,9 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-        // Add enchantment glint if infused
         return getInfusionTier(stack) > 0;
     }
 
-    /**
-     * Called every tick when the spellbook is equipped in a curios slot
-     * Applies the max mana modifier based on infusion tier
-     */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         super.curioTick(slotContext, stack);
@@ -318,7 +269,6 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         AttributeModifier existingModifier = manaAttribute.getModifier(MANA_MODIFIER_ID);
 
         if (manaBonus <= 0) {
-            // Remove modifier if tier 0
             if (existingModifier != null) {
                 manaAttribute.removeModifier(MANA_MODIFIER_ID);
             }
@@ -337,10 +287,6 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         }
     }
 
-    /**
-     * Called when the spellbook is unequipped from a curios slot
-     * Removes the max mana modifier
-     */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);

@@ -32,85 +32,63 @@ import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
  */
 public class SpellCastingHandler {
 
-    /**
-     * Register the event handler
-     */
     public static void register() {
         NeoForge.EVENT_BUS.register(new SpellCastingHandler());
-        Animus.LOGGER.info("Registered Spell Casting Handler for Iron's Spells");
+        Animus.LOGGER.debug("Registered Spell Casting Handler for Iron's Spells");
     }
 
-    /**
-     * Handle spell pre-cast event to enable LP consumption
-     * Priority: HIGH to run before Irons Spells' own validation
-     */
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onSpellPreCast(SpellPreCastEvent event) {
-        // Only process on server side
         if (event.getEntity().level().isClientSide()) {
             return;
         }
 
-        // Only handle players
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
 
-        // Check if LP casting is enabled
         if (!AnimusConfig.ironsSpells.enableLPCasting.get()) {
             return;
         }
 
-        // Get the player's magic data to check mana
         MagicData magicData = MagicData.getPlayerMagicData(player);
         if (magicData == null) {
             return;
         }
 
-        // Calculate mana cost for this spell
-        int manaCost = event.getSpellLevel(); // Base cost is spell level (this might need adjustment based on actual spell cost)
+        int manaCost = event.getSpellLevel(); // Approximation based on spell level
         int currentMana = (int) magicData.getMana();
 
-        // If player has enough mana, let normal casting proceed
         if (currentMana >= manaCost) {
             return;
         }
 
-        // Player doesn't have enough mana - try LP casting
         int manaDeficit = manaCost - currentMana;
 
-        // Check if Blood Orb is required and present
         if (AnimusConfig.ironsSpells.requireBloodOrb.get()) {
             if (!hasBloodOrb(player)) {
-                // No Blood Orb and it's required - let the spell fail normally
                 return;
             }
         }
 
-        // Get player's soul network
         SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
         if (network == null) {
             return;
         }
 
-        // Calculate LP cost
         int lpPerMana = AnimusConfig.ironsSpells.lpPerMana.get();
         int lpCost;
         int manaToConsume;
 
         if (AnimusConfig.ironsSpells.allowHybridCasting.get() && currentMana > 0) {
-            // Hybrid casting: use available mana + LP for the rest
             manaToConsume = currentMana;
             lpCost = manaDeficit * lpPerMana;
         } else {
-            // Pure LP casting: use LP for entire cost
             manaToConsume = 0;
             lpCost = manaCost * lpPerMana;
         }
 
-        // Check if player has enough LP
         if (network.getCurrentEssence() < lpCost) {
-            // Not enough LP - send message and cancel
             player.displayClientMessage(
                 Component.literal("Not enough Life Points! Required: " + lpCost + " LP")
                     .withStyle(ChatFormatting.RED),
@@ -120,12 +98,10 @@ public class SpellCastingHandler {
             return;
         }
 
-        // Consume LP from soul network using factory method
         SoulTicket ticket = SoulTicket.create(lpCost);
 
         var syphonResult = network.syphonAndDamage(player, ticket);
         if (!syphonResult.success()) {
-            // Failed to consume LP
             player.displayClientMessage(
                 Component.literal("Failed to consume Life Points!")
                     .withStyle(ChatFormatting.RED),
@@ -135,51 +111,37 @@ public class SpellCastingHandler {
             return;
         }
 
-        // Successfully consumed LP!
-        // If using hybrid casting, consume the available mana
         if (manaToConsume > 0) {
             magicData.setMana((int) (magicData.getMana() - manaToConsume));
         }
 
-        // Spawn visual and audio feedback
         spawnLPCastFeedback(player, manaToConsume > 0);
 
-        // Log success
         Animus.LOGGER.debug("Player {} cast spell using {} LP{}",
             player.getName().getString(),
             lpCost,
             manaToConsume > 0 ? " (+ " + manaToConsume + " mana)" : ""
         );
 
-        // Don't cancel the event - allow the spell to cast normally
-        // The mana cost has effectively been paid via LP
+        // Don't cancel - mana cost was paid via LP, let the spell cast
     }
 
-    /**
-     * Spawn visual and audio feedback when LP is consumed for spell casting
-     * @param player The player casting the spell
-     * @param isHybrid Whether this was hybrid casting (mana + LP)
-     */
     private void spawnLPCastFeedback(Player player, boolean isHybrid) {
         if (!(player.level() instanceof ServerLevel serverLevel)) {
             return;
         }
 
-        // Spawn red particles around the player to indicate LP consumption
-        // Use crimson spore particles for a blood-like effect
         double x = player.getX();
         double y = player.getY() + player.getEyeHeight() * 0.5;
         double z = player.getZ();
 
-        // Spawn particles in a small ring around player
-        int particleCount = isHybrid ? 8 : 15; // Fewer particles for hybrid casting
+        int particleCount = isHybrid ? 8 : 15;
         for (int i = 0; i < particleCount; i++) {
             double angle = (Math.PI * 2 * i) / particleCount;
             double radius = 0.5;
             double offsetX = Math.cos(angle) * radius;
             double offsetZ = Math.sin(angle) * radius;
 
-            // Crimson spore particles (red, blood-like)
             serverLevel.sendParticles(
                 ParticleTypes.CRIMSON_SPORE,
                 x + offsetX,
@@ -193,7 +155,6 @@ public class SpellCastingHandler {
             );
         }
 
-        // Add a few soul particles for magic effect (subtle)
         for (int i = 0; i < 3; i++) {
             serverLevel.sendParticles(
                 ParticleTypes.SOUL,
@@ -208,28 +169,21 @@ public class SpellCastingHandler {
             );
         }
 
-        // Play a subtle sound effect
-        // Use experience orb pickup sound at very low volume (0.15) for a magical "whoosh"
         serverLevel.playSound(
-            null, // null means all players near the location can hear it
+            null,
             player.blockPosition(),
             SoundEvents.EXPERIENCE_ORB_PICKUP,
             SoundSource.PLAYERS,
-            0.15F, // Very low volume as requested
-            0.8F + player.getRandom().nextFloat() * 0.4F // Pitch between 0.8 and 1.2
+            0.15F,
+            0.8F + player.getRandom().nextFloat() * 0.4F
         );
     }
 
-    /**
-     * Check if player has a Blood Orb in inventory or curios slots
-     */
     private boolean hasBloodOrb(Player player) {
-        // Check main inventory, armor, and offhand using helper
         if (InventorySearchHelper.hasItem(player, stack -> stack.getItem() instanceof BloodOrbItem)) {
             return true;
         }
 
-        // Check Curios slots
         return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
             .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof BloodOrbItem).isPresent())
             .orElse(false);

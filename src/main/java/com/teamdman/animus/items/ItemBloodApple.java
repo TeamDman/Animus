@@ -28,9 +28,6 @@ import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Blood Apple - food item that provides blood to the player or nearby altar
- */
 public class ItemBloodApple extends Item {
     private static final FoodProperties FOOD_PROPERTIES = new FoodProperties.Builder()
         .nutrition(3)
@@ -59,25 +56,21 @@ public class ItemBloodApple extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (!level.isClientSide && entity instanceof Player player) {
-            // Search for nearby altar in range
             BloodAltarTile altar = AnimusUtil.getNearbyAltar(level, altarRange, entity.blockPosition(), offsetCached);
 
             int bloodAmount = AnimusConfig.general.bloodPerApple.get();
 
             if (altar != null) {
-                // Altar found - add blood to altar (doubled like in original)
+                // Doubled like in original Blood Magic
                 altar.addSacrificeLP(bloodAmount * 2, true);
                 offsetCached = altar.getBlockPos();
             } else {
-                // Check if player has a bound Key of Binding - if so, redirect LP to key owner
                 UUID targetOwner = findBoundKeyOwner(player);
 
                 SoulNetwork network;
                 if (targetOwner != null) {
-                    // Redirect LP to the Key of Binding owner's network
                     network = SoulNetworkHelper.getSoulNetwork(targetOwner);
                 } else {
-                    // No key found - add blood to player's own soul network
                     network = SoulNetworkHelper.getSoulNetwork(player);
                 }
 
@@ -88,18 +81,12 @@ public class ItemBloodApple extends Item {
         return super.finishUsingItem(stack, level, entity);
     }
 
-    /**
-     * Finds a bound Key of Binding in the player's inventory or Curios slots
-     * @return The owner UUID of the bound key, or null if no bound key found
-     */
     private UUID findBoundKeyOwner(Player player) {
-        // Check main inventory, armor, and offhand using helper
         var fromInventory = InventorySearchHelper.findFirst(player, stack -> getKeyBindingOwner(stack) != null);
         if (fromInventory.isPresent()) {
             return getKeyBindingOwner(fromInventory.get());
         }
 
-        // Check curios slots
         var curiosOpt = CuriosApi.getCuriosInventory(player);
         if (curiosOpt.isPresent()) {
             var curios = curiosOpt.get();
@@ -116,21 +103,15 @@ public class ItemBloodApple extends Item {
         return null;
     }
 
-    /**
-     * Gets the owner UUID from a Key of Binding, if the stack is a bound key
-     * @return The owner UUID, or null if not a bound Key of Binding
-     */
     private UUID getKeyBindingOwner(ItemStack stack) {
         if (stack.isEmpty()) {
             return null;
         }
 
-        // Check if it's a Key of Binding item
         if (stack.getItem() != AnimusItems.KEY_BINDING.get()) {
             return null;
         }
 
-        // Check if bound using Blood Magic's binding system
         if (stack.getItem() instanceof IBindable bindable) {
             Binding binding = bindable.getBinding(stack);
             if (binding != null && !binding.isEmpty()) {

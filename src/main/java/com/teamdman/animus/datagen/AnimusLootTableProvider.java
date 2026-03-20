@@ -47,32 +47,18 @@ public class AnimusLootTableProvider extends LootTableProvider {
 
         @Override
         protected void generate() {
-            // Blood Wood - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD.get());
-
-            // Stripped Blood Wood - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get());
-
-            // Blood Wood Planks - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_PLANKS.get());
-
-            // Blood Wood Stairs - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_STAIRS.get());
 
-            // Blood Wood Slab - special slab loot table
             this.add(AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB.get(),
                 block -> createSlabItemTable(AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB.get()));
 
-            // Blood Wood Fence - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE.get());
-
-            // Blood Wood Fence Gate - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE.get());
-
-            // Blood Sapling - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_BLOOD_SAPLING.get());
 
-            // Blood Core - drops blood wood, or itself with silk touch
             this.add(AnimusBlocks.BLOCK_BLOOD_CORE.get(),
                 block -> createSingleItemTableWithSilkTouch(
                     block,
@@ -80,10 +66,8 @@ public class AnimusLootTableProvider extends LootTableProvider {
                 )
             );
 
-            // Crystallized Demon Will Block - drops itself
             this.dropSelf(AnimusBlocks.BLOCK_CRYSTALLIZED_DEMON_WILL.get());
 
-            // Willful Stone blocks - all drop themselves
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE.get());
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get());
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_ORANGE.get());
@@ -101,7 +85,6 @@ public class AnimusLootTableProvider extends LootTableProvider {
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get());
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get());
 
-            // Blood Leaves - complex drops like oak leaves
             HolderLookup.RegistryLookup<Enchantment> enchantmentLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
             this.add(AnimusBlocks.BLOCK_BLOOD_LEAVES.get(), block ->
@@ -130,8 +113,7 @@ public class AnimusLootTableProvider extends LootTableProvider {
             );
         }
 
-        // Helper to get the "no shears or silk touch" condition
-        // Constructs the condition manually since parent class constants aren't accessible
+        // Parent class constants for this condition aren't accessible, so we construct it manually
         private LootItemCondition.Builder noShearsOrSilkTouch() {
             HolderLookup.RegistryLookup<Enchantment> enchantmentLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
             return InvertedLootItemCondition.invert(
@@ -152,7 +134,6 @@ public class AnimusLootTableProvider extends LootTableProvider {
 
         @Override
         protected Iterable<Block> getKnownBlocks() {
-            // Return all registered blocks from AnimusBlocks, excluding fluid blocks and blocks with noLootTable
             return AnimusBlocks.BLOCKS.getEntries().stream()
                 .filter(entry -> entry != AnimusBlocks.BLOCK_FLUID_ANTILIFE
                     && entry != AnimusBlocks.BLOCK_FLUID_LIVING_TERRA

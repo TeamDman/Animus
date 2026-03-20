@@ -36,7 +36,6 @@ public class ItemMobSoul extends Item {
 
         ItemStack stack = context.getItemInHand();
 
-        // Get entity type from data component
         String entityName = stack.get(AnimusDataComponents.SOUL_ENTITY_NAME.get());
         if (entityName == null) {
             return InteractionResult.FAIL;
@@ -49,31 +48,25 @@ public class ItemMobSoul extends Item {
 
         EntityType<?> entityType = entityTypeOpt.get();
 
-        // Get spawn position (on top of clicked block)
         BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
 
-        // Create entity
         Entity entity = entityType.create(level);
         if (entity == null) {
             return InteractionResult.FAIL;
         }
 
-        // Load entity data from data component
         CompoundTag entityData = stack.get(AnimusDataComponents.SOUL_DATA.get());
         if (entityData != null) {
             entity.load(entityData);
         }
 
-        // Set position
         entity.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
             entity.getYRot(), entity.getXRot());
 
-        // Spawn entity
         if (!level.addFreshEntity(entity)) {
             return InteractionResult.FAIL;
         }
 
-        // Trigger spawn event for mobs (in 1.21, finalizeSpawn no longer takes NBT parameter)
         if (entity instanceof net.minecraft.world.entity.Mob mob) {
             mob.finalizeSpawn(
                 (net.minecraft.server.level.ServerLevel) level,
@@ -83,7 +76,6 @@ public class ItemMobSoul extends Item {
             );
         }
 
-        // Consume the item
         stack.shrink(1);
 
         return InteractionResult.CONSUME;
@@ -91,7 +83,6 @@ public class ItemMobSoul extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        // Show entity type
         String entityName = stack.get(AnimusDataComponents.SOUL_ENTITY_NAME.get());
         if (entityName != null) {
             EntityType.byString(entityName).ifPresent(entityType -> {
@@ -101,7 +92,6 @@ public class ItemMobSoul extends Item {
             });
         }
 
-        // Show custom name if present
         String soulName = stack.get(AnimusDataComponents.SOUL_NAME.get());
         if (soulName != null) {
             tooltip.add(Component.literal(soulName));

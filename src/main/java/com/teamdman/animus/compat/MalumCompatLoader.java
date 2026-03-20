@@ -20,6 +20,6 @@ public class MalumCompatLoader {
      */
     public static void registerDeferred(IEventBus modEventBus) {
         MalumCompat.registerDeferred(modEventBus);
-        Animus.LOGGER.info("Registered Malum compatibility deferred registries");
+        Animus.LOGGER.debug("Registered Malum compatibility deferred registries");
     }
 }

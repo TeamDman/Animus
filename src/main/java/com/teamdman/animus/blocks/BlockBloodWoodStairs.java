@@ -3,9 +3,6 @@ package com.teamdman.animus.blocks;
 import com.teamdman.animus.registry.AnimusBlocks;
 import net.minecraft.world.level.block.StairBlock;
 
-/**
- * Blood Wood Stairs block
- */
 public class BlockBloodWoodStairs extends StairBlock {
     public BlockBloodWoodStairs() {
         super(

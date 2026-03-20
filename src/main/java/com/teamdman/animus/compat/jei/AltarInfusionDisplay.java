@@ -5,10 +5,6 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-/**
- * Display wrapper for special altar infusion recipes in JEI
- * Used for Blood-Infused Spellbook and Sanguine Scrolls
- */
 public class AltarInfusionDisplay {
 
     public enum InfusionType {
@@ -26,14 +22,10 @@ public class AltarInfusionDisplay {
     private final Component title;
     private final Component description;
 
-    // Upgrade tier metadata (for SPELLBOOK_UPGRADE type)
     private final int fromTier;
     private final int toTier;
     private final String requiredOrb;
 
-    /**
-     * Constructor for SPELLBOOK type (initial altar infusion)
-     */
     public static AltarInfusionDisplay createSpellbookInfusion(
             ItemStack input, ItemStack output, int lpCost,
             Component title, Component description) {
@@ -50,9 +42,6 @@ public class AltarInfusionDisplay {
         );
     }
 
-    /**
-     * Constructor for SANGUINE_SCROLL type (main hand + offhand interaction)
-     */
     public static AltarInfusionDisplay createSanguineScrollInfusion(
             ItemStack scrollInput, ItemStack slateInput, List<ItemStack> outputs,
             int lpCost, Component title, Component description) {
@@ -69,9 +58,6 @@ public class AltarInfusionDisplay {
         );
     }
 
-    /**
-     * Constructor for SPELLBOOK_UPGRADE type (upgrade tier N to tier N+1)
-     */
     public static AltarInfusionDisplay createSpellbookUpgrade(
             ItemStack input, ItemStack output, int lpCost,
             int fromTier, int toTier, String requiredOrb,

@@ -37,10 +37,8 @@ public class RitualRegression extends ImperfectRitual {
             return false;
         }
 
-        // Check if player is holding an item
         ItemStack heldItem = player.getMainHandItem();
         if (heldItem.isEmpty()) {
-            // Send message to player
             player.displayClientMessage(
                 Component.translatable("text.component.holdingitem"),
                 false
@@ -48,8 +46,6 @@ public class RitualRegression extends ImperfectRitual {
             return false;
         }
 
-        // Remove repair cost from item using DataComponents (1.21 API)
-        // Setting repair cost to 0 effectively removes the anvil penalty
         heldItem.set(DataComponents.REPAIR_COST, 0);
 
         return true;

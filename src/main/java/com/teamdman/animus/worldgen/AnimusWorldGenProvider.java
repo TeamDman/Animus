@@ -10,9 +10,6 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Data provider for Animus world generation features
- */
 public class AnimusWorldGenProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
         .add(Registries.CONFIGURED_FEATURE, AnimusConfiguredFeatures::bootstrap);

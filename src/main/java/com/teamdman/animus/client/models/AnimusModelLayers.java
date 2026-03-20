@@ -6,9 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-/**
- * Defines custom model layers for Animus entities
- */
 @OnlyIn(Dist.CLIENT)
 public class AnimusModelLayers {
     public static final ModelLayerLocation PILUM = new ModelLayerLocation(

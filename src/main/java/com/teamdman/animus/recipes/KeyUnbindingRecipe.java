@@ -38,20 +38,16 @@ public class KeyUnbindingRecipe extends CustomRecipe {
             }
         }
 
-        // Match if there's exactly one Key of Binding and nothing else
         return keyCount == 1 && otherCount == 0;
     }
 
     @Override
     public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
-        // Find the Key of Binding in the grid
         for (int i = 0; i < input.size(); i++) {
             ItemStack stack = input.getItem(i);
 
             if (stack.getItem() == AnimusItems.KEY_BINDING.get()) {
-                // Create a new stack without data components (unbound)
                 ItemStack result = new ItemStack(AnimusItems.KEY_BINDING.get());
-                // Don't copy components - this removes the binding
                 return result;
             }
         }
@@ -61,7 +57,6 @@ public class KeyUnbindingRecipe extends CustomRecipe {
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {
-        // Can be crafted in any crafting grid (even 2x2)
         return width * height >= 1;
     }
 

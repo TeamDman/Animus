@@ -8,9 +8,6 @@ import net.minecraft.world.level.ItemLike;
 import com.breakinblocks.neovitae.NeoVitae;
 import com.breakinblocks.neovitae.common.recipe.alchemyarray.AlchemyArrayRecipe;
 
-/**
- * Builder for Alchemy Array recipes compatible with Blood Magic NV 1.21.1
- */
 public class AlchemyArrayRecipeBuilder {
     private final ItemStack output;
     private Ingredient baseInput;

@@ -46,7 +46,6 @@ public class RitualArcaneMastery extends Ritual {
 
     private static final int SEARCH_RANGE = 5;
 
-    // Base LP costs by spell rarity
     private static final int COMMON_LP = 5000;
     private static final int UNCOMMON_LP = 10000;
     private static final int RARE_LP = 25000;
@@ -71,7 +70,6 @@ public class RitualArcaneMastery extends Ritual {
             return;
         }
 
-        // Get owner
         ServerPlayer owner = (ServerPlayer) level.getPlayerByUUID(mrs.getOwner());
         if (owner == null) {
             return;
@@ -82,7 +80,6 @@ public class RitualArcaneMastery extends Ritual {
             return;
         }
 
-        // Search for chests in range
         for (BlockPos pos : BlockPos.betweenClosed(
             masterPos.offset(-SEARCH_RANGE, -SEARCH_RANGE, -SEARCH_RANGE),
             masterPos.offset(SEARCH_RANGE, SEARCH_RANGE, SEARCH_RANGE)
@@ -92,21 +89,14 @@ public class RitualArcaneMastery extends Ritual {
                 continue;
             }
 
-            // Check chest for spell scrolls
             if (processChest(chest, owner, network, serverLevel, masterPos)) {
-                // Successfully processed a scroll, stop for this tick
                 return;
             }
         }
 
-        // No scrolls found, emit smoke
         emitSmokeParticles(serverLevel, masterPos);
     }
 
-    /**
-     * Process a chest looking for spell scrolls
-     * Returns true if a scroll was successfully processed
-     */
     private boolean processChest(Container chest, ServerPlayer player, SoulNetwork network,
                                  ServerLevel level, BlockPos ritualPos) {
         for (int i = 0; i < chest.getContainerSize(); i++) {
@@ -116,7 +106,6 @@ public class RitualArcaneMastery extends Ritual {
                 continue;
             }
 
-            // Found a scroll, try to process it using ISpellContainer
             ISpellContainer container = ISpellContainer.get(stack);
             if (container == null || container.isEmpty()) {
                 continue;
@@ -139,21 +128,15 @@ public class RitualArcaneMastery extends Ritual {
                 continue;
             }
 
-            // Determine target level for the upgraded scroll
-            // Ritual upgrades the scroll by +1 level (up to max level)
             int maxLevel = spell.getMaxLevel();
             int targetLevel = Math.min(scrollLevel + 1, maxLevel);
 
-            // If already at max level, skip this scroll
             if (scrollLevel >= maxLevel) {
                 continue;
             }
 
-            // Calculate LP cost (ensure non-zero by using max with baseCost)
             int baseCost = getLPCostForRarity(spell.getRarity(targetLevel));
-            int totalCost = Math.max(baseCost, baseCost * scrollLevel); // Cost scales with current scroll level
-
-            // Check if player has enough LP
+            int totalCost = Math.max(baseCost, baseCost * scrollLevel);
             if (network.getCurrentEssence() < totalCost) {
                 player.displayClientMessage(
                     Component.literal("Not enough LP! Need " + totalCost + " LP")
@@ -163,23 +146,16 @@ public class RitualArcaneMastery extends Ritual {
                 return false;
             }
 
-            // Consume LP using factory method
             network.syphon(SoulTicket.create(totalCost));
-
-            // Create an upgraded scroll and give it to the player
             ItemStack upgradedScroll = new ItemStack(io.redspace.ironsspellbooks.registries.ItemRegistry.SCROLL.get());
             ISpellContainer.createScrollContainer(spell, targetLevel, upgradedScroll);
 
-            // Give the upgraded scroll to the player
             if (!player.getInventory().add(upgradedScroll)) {
                 player.drop(upgradedScroll, false);
             }
 
-            // Remove original scroll from chest
             stack.shrink(1);
             chest.setItem(i, stack);
-
-            // Feedback
             player.displayClientMessage(
                 Component.literal("Upgraded: ")
                     .withStyle(ChatFormatting.GOLD)
@@ -188,7 +164,6 @@ public class RitualArcaneMastery extends Ritual {
                 false
             );
 
-            // Visual and audio effects
             spawnSuccessParticles(level, ritualPos);
             level.playSound(
                 null,
@@ -211,9 +186,6 @@ public class RitualArcaneMastery extends Ritual {
         return false;
     }
 
-    /**
-     * Get LP cost based on spell rarity
-     */
     private int getLPCostForRarity(io.redspace.ironsspellbooks.api.spells.SpellRarity rarity) {
         return switch (rarity) {
             case COMMON -> COMMON_LP;
@@ -224,9 +196,6 @@ public class RitualArcaneMastery extends Ritual {
         };
     }
 
-    /**
-     * Emit smoke particles when no scrolls are found
-     */
     private void emitSmokeParticles(ServerLevel level, BlockPos pos) {
         for (int i = 0; i < 3; i++) {
             double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.5;
@@ -242,11 +211,7 @@ public class RitualArcaneMastery extends Ritual {
         }
     }
 
-    /**
-     * Spawn success particles when spell is upgraded
-     */
     private void spawnSuccessParticles(ServerLevel level, BlockPos pos) {
-        // Enchantment glyphs
         for (int i = 0; i < 20; i++) {
             double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 2;
             double y = pos.getY() + 0.5 + level.random.nextDouble() * 2;
@@ -260,7 +225,6 @@ public class RitualArcaneMastery extends Ritual {
             );
         }
 
-        // Soul particles for demonic flavor
         for (int i = 0; i < 10; i++) {
             double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5);
             double y = pos.getY() + 0.5 + level.random.nextDouble();

@@ -28,24 +28,13 @@ public class AnimusFakePlayer extends FakePlayer {
         super(level, profile);
     }
 
-    /**
-     * Get or create a FakePlayer for the given owner
-     * Uses caching to avoid creating new FakePlayers constantly
-     *
-     * @param level The server level
-     * @param ownerUUID The owner's UUID (ritual owner)
-     * @param ownerName The owner's name (can be null, will use "RitualOwner" as default)
-     * @return A FakePlayer instance
-     */
     public static AnimusFakePlayer get(ServerLevel level, UUID ownerUUID, @Nullable String ownerName) {
         AnimusFakePlayer cached = CACHED_PLAYER != null ? CACHED_PLAYER.get() : null;
 
-        // Reuse cached player if same level and owner
         if (cached != null && cached.level() == level && cached.getUUID().equals(ownerUUID)) {
             return cached;
         }
 
-        // Create new FakePlayer with owner's UUID
         String name = ownerName != null ? ownerName : "RitualOwner";
         GameProfile profile = new GameProfile(ownerUUID, name);
         AnimusFakePlayer player = new AnimusFakePlayer(level, profile);
@@ -55,19 +44,13 @@ public class AnimusFakePlayer extends FakePlayer {
     }
 
     /**
-     * Create a fake netherite sword with looting enchantment based on demon will levels
-     * Each will type (corrosive, destructive, vengeful, steadfast) with >10 will adds +1 looting
-     *
-     * @param level The server level
-     * @param pos Position to check for demon will (usually ritual position)
-     * @return ItemStack of netherite sword with appropriate looting level
+     * Each will type with >10 will adds +1 looting level to the sword.
      */
     public static ItemStack createLootingSword(ServerLevel level, net.minecraft.core.BlockPos pos) {
         ItemStack sword = new ItemStack(Items.NETHERITE_SWORD);
 
         int lootingLevel = 0;
 
-        // Check each will type - each with >10 will adds +1 looting
         double corrosiveWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.CORROSIVE);
         double destructiveWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.DESTRUCTIVE);
         double vengefulWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.VENGEFUL);
@@ -79,7 +62,6 @@ public class AnimusFakePlayer extends FakePlayer {
         if (steadfastWill > 10) lootingLevel++;
 
         if (lootingLevel > 0) {
-            // In 1.21, enchantments need to be looked up from the registry
             final int finalLootingLevel = lootingLevel;
             var enchantRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
             enchantRegistry.get(Enchantments.LOOTING).ifPresent(holder ->
@@ -90,13 +72,9 @@ public class AnimusFakePlayer extends FakePlayer {
         return sword;
     }
 
-    /**
-     * Check if thorns damage should be blocked
-     * We override hurt to prevent thorns damage from reflecting back
-     */
+    // Block all damage to prevent thorns/damage reflection
     @Override
     public boolean hurt(net.minecraft.world.damagesource.DamageSource source, float amount) {
-        // Block all damage to the fake player (prevents thorns, etc.)
         return false;
     }
 }

@@ -8,9 +8,6 @@ import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
 
 import java.util.List;
 
-/**
- * Client-only helper for Sigil of Crimson Will tooltip.
- */
 public class CrimsonWillSigilClientHelper {
 
     public static void addCurrentBoostTooltip(List<Component> tooltip) {

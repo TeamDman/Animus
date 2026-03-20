@@ -9,7 +9,7 @@ import com.breakinblocks.neovitae.api.event.AltarRuneEvent;
 import java.util.List;
 
 /**
- * Event handler for Arcane Rune integration with Blood Magic's altar rune system.
+ * Event handler for Arcane Rune integration with NeoVitae's altar rune system.
  *
  * The Arcane Rune provides dynamic bonuses based on Ars Nouveau Source availability:
  *
@@ -38,27 +38,13 @@ public class ArcaneRuneEventHandler {
 
     private ArcaneRuneEventHandler() {}
 
-    /**
-     * Register this event handler with the NeoForge event bus
-     */
     public static void register() {
         NeoForge.EVENT_BUS.register(INSTANCE);
-        Animus.LOGGER.info("Registered Arcane Rune event handler for Blood Magic altar integration");
+        Animus.LOGGER.debug("Registered Arcane Rune event handler for NeoVitae altar integration");
     }
 
-    /**
-     * Handle the CalculateStats event to apply Arcane Rune bonuses.
-     *
-     * This event fires after all runes have been gathered and the base modifiers
-     * have been calculated. We can modify the AltarRuneModifiers here to apply
-     * our dynamic bonuses based on Source availability.
-     *
-     * Uses Blood Magic's new API that exposes rune block entities directly,
-     * eliminating the need to rescan the altar structure.
-     */
     @SubscribeEvent
     public void onCalculateStats(AltarRuneEvent.CalculateStats event) {
-        // Blood Magic already scanned the altar - just filter the results!
         List<BlockEntityArcaneRune> arcaneRunes = event.getRuneBlockEntities(BlockEntityArcaneRune.class);
 
         if (arcaneRunes.isEmpty()) {
@@ -78,20 +64,13 @@ public class ArcaneRuneEventHandler {
             }
         }
 
-        // Apply speed bonuses/penalties
-        // Note: Blood Magic already applied +20% per Arcane Rune from the registry.
-        // We need to adjust from that base.
-
+        // NeoVitae already applied +20% per rune from the registry; adjust from that base
         if (poweredCount > 0) {
-            // Powered runes: Add +15% speed on top of base +20% = +35% total
             modifiers.addConsumptionMod(SPEED_ADJUSTMENT_WITH_SOURCE * poweredCount);
-            // Add dislocation bonus (35% per rune)
             modifiers.multiplyDislocationMod(1.0f + (DISLOCATION_BONUS_WITH_SOURCE * poweredCount));
         }
 
         if (unpoweredCount > 0) {
-            // Unpowered runes: We want -15% speed instead of +20% (base)
-            // Subtract 35% from base to get -15% total
             modifiers.addConsumptionMod(SPEED_ADJUSTMENT_NO_SOURCE * unpoweredCount);
         }
 

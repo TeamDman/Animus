@@ -12,9 +12,6 @@ import com.breakinblocks.neovitae.common.recipe.alchemytable.AlchemyTableRecipe;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Builder for Alchemy Table recipes compatible with Blood Magic NV 1.21.1
- */
 public class AlchemyTableRecipeBuilder {
     public static final int MAX_INPUTS = AlchemyTableRecipe.MAX_INPUTS;
 

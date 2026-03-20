@@ -5,16 +5,12 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 
 /**
- * Startup Configuration for Animus mod
- * These values are loaded immediately when the mod loads and are available during registry.
- * Changes require a game restart to take effect.
- * Use this for values needed during mod registration (e.g., ritual area ranges).
+ * Values loaded at startup - available during registry, requires restart to change.
  */
 public class AnimusStartupConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec SPEC;
 
-    // Ritual Area Ranges - needed during ritual registration
     public static class RitualRanges {
         public final ModConfigSpec.IntValue cullingHorizontalRange;
         public final ModConfigSpec.IntValue cullingVerticalRange;
@@ -34,7 +30,6 @@ public class AnimusStartupConfig {
                 "Can be adjusted via ritual stone GUI at runtime.",
                 "Requires game restart to take effect.").push("ritualRanges");
 
-            // Ritual of Culling
             builder.push("culling");
             cullingHorizontalRange = builder
                 .comment("Horizontal range in blocks for Ritual of Culling effect area")
@@ -44,7 +39,6 @@ public class AnimusStartupConfig {
                 .defineInRange("verticalRange", 10, 1, 64);
             builder.pop();
 
-            // Ritual of Endless Greed
             builder.push("endlessGreed");
             endlessGreedHorizontalRange = builder
                 .comment("Horizontal range in blocks for Ritual of Endless Greed effect area")
@@ -54,21 +48,18 @@ public class AnimusStartupConfig {
                 .defineInRange("verticalRange", 5, 1, 32);
             builder.pop();
 
-            // Ritual of Serenity
             builder.push("serenity");
             serenityRadius = builder
                 .comment("Radius in blocks for Ritual of Serenity spawn prevention")
                 .defineInRange("radius", 48, 1, 256);
             builder.pop();
 
-            // Ritual of Nolite Ignem
             builder.push("noliteIgnem");
             noliteIgnemRadius = builder
                 .comment("Radius in blocks for Ritual of Nolite Ignem fire extinguishing")
                 .defineInRange("radius", 64, 1, 256);
             builder.pop();
 
-            // Ritual of Relentless Tides
             builder.push("relentlessTides");
             relentlessTidesRange = builder
                 .comment("Horizontal radius in blocks for Ritual of Relentless Tides fluid placement")
@@ -78,7 +69,6 @@ public class AnimusStartupConfig {
                 .defineInRange("verticalDepth", 128, 1, 256);
             builder.pop();
 
-            // Ritual of Siphon
             builder.push("siphon");
             siphonRange = builder
                 .comment("Horizontal radius in blocks for Ritual of Siphon fluid extraction")
@@ -88,7 +78,6 @@ public class AnimusStartupConfig {
                 .defineInRange("verticalDepth", 128, 1, 256);
             builder.pop();
 
-            // Ritual of Persistence
             builder.push("persistence");
             persistenceChunkRadius = builder
                 .comment("Chunk radius for Ritual of Persistence chunk loading (in chunks, not blocks)")

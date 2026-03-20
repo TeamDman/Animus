@@ -42,10 +42,8 @@ public class RitualReduction extends ImperfectRitual {
             return false;
         }
 
-        // Check if player is holding an item in mainhand
         ItemStack mainhandItem = player.getMainHandItem();
         if (mainhandItem.isEmpty()) {
-            // Send to chat (false) so it doesn't get overwritten by Blood Magic's action bar message
             player.displayClientMessage(
                 Component.translatable("ritual.animus.reduction.no_item"),
                 false
@@ -53,10 +51,8 @@ public class RitualReduction extends ImperfectRitual {
             return false;
         }
 
-        // Get enchantments using 1.21 API
         ItemEnchantments enchantments = mainhandItem.get(DataComponents.ENCHANTMENTS);
         if (enchantments == null || enchantments.isEmpty()) {
-            // Send to chat (false) so it doesn't get overwritten by Blood Magic's action bar message
             player.displayClientMessage(
                 Component.translatable("ritual.animus.reduction.no_enchantments"),
                 false
@@ -64,7 +60,6 @@ public class RitualReduction extends ImperfectRitual {
             return false;
         }
 
-        // Downgrade all enchantments by 1 level (minimum level 1)
         ItemEnchantments.Mutable mutableEnchantments = new ItemEnchantments.Mutable(enchantments);
         for (Holder<Enchantment> enchantment : enchantments.keySet()) {
             int currentLevel = enchantments.getLevel(enchantment);
@@ -72,13 +67,9 @@ public class RitualReduction extends ImperfectRitual {
             mutableEnchantments.set(enchantment, newLevel);
         }
 
-        // Apply downgraded enchantments
         mainhandItem.set(DataComponents.ENCHANTMENTS, mutableEnchantments.toImmutable());
-
-        // Remove enhanced marker if present
         mainhandItem.remove(AnimusDataComponents.ANIMUS_ENHANCED.get());
 
-        // Play success sound
         level.playSound(
             null,
             player.getX(), player.getY(), player.getZ(),

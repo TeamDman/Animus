@@ -38,15 +38,12 @@ public class RitualEnhancement extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        // Server-side only - Blood Magic handles client check in performRitual
         if (level.isClientSide) {
             return false;
         }
 
-        // Check if player is holding an item in mainhand
         ItemStack mainhandItem = player.getMainHandItem();
         if (mainhandItem.isEmpty()) {
-            // Send to chat (false) so it doesn't get overwritten by Blood Magic's action bar message
             player.displayClientMessage(
                 Component.translatable("ritual.animus.enhancement.no_item"),
                 false
@@ -54,7 +51,6 @@ public class RitualEnhancement extends ImperfectRitual {
             return false;
         }
 
-        // Check if item has already been enhanced using data component
         Boolean enhanced = mainhandItem.get(AnimusDataComponents.ANIMUS_ENHANCED.get());
         if (enhanced != null && enhanced) {
             player.displayClientMessage(
@@ -64,7 +60,6 @@ public class RitualEnhancement extends ImperfectRitual {
             return false;
         }
 
-        // Get enchantments using 1.21 API
         ItemEnchantments enchantments = mainhandItem.get(DataComponents.ENCHANTMENTS);
         if (enchantments == null || enchantments.isEmpty()) {
             player.displayClientMessage(
@@ -74,20 +69,15 @@ public class RitualEnhancement extends ImperfectRitual {
             return false;
         }
 
-        // Build new enchantments with +1 level each
         ItemEnchantments.Mutable mutableEnchantments = new ItemEnchantments.Mutable(enchantments);
         for (Holder<Enchantment> enchantment : enchantments.keySet()) {
             int currentLevel = enchantments.getLevel(enchantment);
             mutableEnchantments.set(enchantment, currentLevel + 1);
         }
 
-        // Apply enhanced enchantments
         mainhandItem.set(DataComponents.ENCHANTMENTS, mutableEnchantments.toImmutable());
-
-        // Mark as enhanced
         mainhandItem.set(AnimusDataComponents.ANIMUS_ENHANCED.get(), true);
 
-        // Play success sound
         level.playSound(
             null,
             player.getX(), player.getY(), player.getZ(),
