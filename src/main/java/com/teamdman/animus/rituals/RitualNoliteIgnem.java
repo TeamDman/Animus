@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
@@ -54,7 +54,7 @@ public class RitualNoliteIgnem extends Ritual {
             return;
         }
 
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = AnimusRitualHelper.getOwnerNetwork(mrs);
         if (network == null) {
             return;
         }

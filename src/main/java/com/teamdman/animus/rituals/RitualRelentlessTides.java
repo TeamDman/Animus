@@ -20,7 +20,7 @@ import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
@@ -74,7 +74,7 @@ public class RitualRelentlessTides extends Ritual {
             return;
         }
 
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = AnimusRitualHelper.getOwnerNetwork(mrs);
         if (network == null) {
             return;
         }

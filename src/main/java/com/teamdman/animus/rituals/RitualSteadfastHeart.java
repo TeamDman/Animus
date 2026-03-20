@@ -15,13 +15,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.items.IItemHandler;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
 import com.breakinblocks.neovitae.common.item.IBindable;
 import com.breakinblocks.neovitae.common.item.BloodOrbItem;
 import com.breakinblocks.neovitae.common.datacomponent.Binding;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
@@ -71,7 +71,7 @@ public class RitualSteadfastHeart extends Ritual {
 
     @Override
     public void performRitual(IMasterRitualStone mrs) {
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = AnimusRitualHelper.getOwnerNetwork(mrs);
         if (network == null) {
             return;
         }
@@ -118,7 +118,7 @@ public class RitualSteadfastHeart extends Ritual {
         BlockEntity chestTile = level.getBlockEntity(chestPos);
 
         if (chestTile != null) {
-            IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
+            IItemHandler handler = AnimusRitualHelper.getItemHandler(level, chestPos);
             if (handler != null) {
                 for (int slot = 0; slot < handler.getSlots(); slot++) {
                     ItemStack stack = handler.getStackInSlot(slot);

@@ -17,7 +17,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
@@ -49,7 +49,7 @@ public class RitualUnmaking extends Ritual {
     @Override
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = AnimusRitualHelper.getOwnerNetwork(mrs);
         int currentEssence = network.getCurrentEssence();
         BlockPos masterPos = mrs.getMasterBlockPos();
 

@@ -7,9 +7,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
@@ -39,7 +38,7 @@ public class RitualReparare extends Ritual {
     @Override
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = AnimusRitualHelper.getOwnerNetwork(mrs);
         BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {
@@ -58,7 +57,7 @@ public class RitualReparare extends Ritual {
             return;
         }
 
-        IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
+        IItemHandler handler = AnimusRitualHelper.getItemHandler(level, chestPos);
         if (handler == null) {
             return;
         }

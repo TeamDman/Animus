@@ -6,10 +6,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
@@ -38,7 +37,7 @@ public class RitualEntropy extends Ritual {
     @Override
     public void performRitual(IMasterRitualStone masterRitualStone) {
         Level level = masterRitualStone.getWorldObj();
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(masterRitualStone.getOwner());
+        ISoulNetwork network = AnimusRitualHelper.getOwnerNetwork(masterRitualStone);
         if (network == null) {
             return;
         }
@@ -53,7 +52,7 @@ public class RitualEntropy extends Ritual {
         AreaDescriptor chestRange = getBlockRange(CHEST_RANGE);
         BlockPos chestPos = chestRange.getContainedPositions(masterPos).get(0);
 
-        IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
+        IItemHandler handler = AnimusRitualHelper.getItemHandler(level, chestPos);
         if (handler == null) {
             return;
         }

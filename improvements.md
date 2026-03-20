@@ -15,8 +15,8 @@ Before implementing any item, consider whether it should be exposed as a public 
 
 ## Phase 2 — Medium Effort
 
-- [ ] **2.1** Extract soul network getter convenience method for 15 rituals
-- [ ] **2.2** Extract item handler capability lookup helper for 6 rituals
+- [x] **2.1** Extract `AnimusRitualHelper.getOwnerNetwork()` — updated 15 rituals
+- [x] **2.2** Extract `AnimusRitualHelper.getItemHandler()` — updated 6 rituals
 - [ ] **2.3** DRY up `InventorySearchHelper` triple-loop into `forEachInventoryItem()`
 - [ ] **2.4** Extract `RitualZoneTracker<T>` for RitualEndlessGreed and RitualSerenity
 - [ ] **2.5** Extract shared particle/sound helpers for RitualSiphon and RitualRelentlessTides

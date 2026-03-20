@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
@@ -75,7 +76,7 @@ public class RitualNaturesLeach extends Ritual {
         EnumWillType type = EnumWillType.CORROSIVE;
         will = willHandler.getCurrentWill(level, pos, type);
 
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(ritualStone.getOwner());
+        ISoulNetwork network = AnimusRitualHelper.getOwnerNetwork(ritualStone);
         if (network == null) {
             return;
         }

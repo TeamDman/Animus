@@ -12,10 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import com.breakinblocks.neovitae.common.item.ExperienceTomeItem;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
@@ -80,7 +79,7 @@ public class RitualEndlessGreed extends Ritual {
             return;
         }
 
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = AnimusRitualHelper.getOwnerNetwork(mrs);
         if (network == null) {
             removeActiveRitual(level, masterPos);
             return;
@@ -217,7 +216,7 @@ public class RitualEndlessGreed extends Ritual {
     }
 
     private IItemHandler getItemHandler(Level level, BlockPos pos) {
-        return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+        return AnimusRitualHelper.getItemHandler(level, pos);
     }
 
     private ItemStack insertItem(IItemHandler handler, ItemStack stack) {
@@ -241,7 +240,7 @@ public class RitualEndlessGreed extends Ritual {
                 BlockPos masterPos = entry.getKey();
                 BlockPos containerPos = masterPos.above();
 
-                IItemHandler itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, containerPos, null);
+                IItemHandler itemHandler = AnimusRitualHelper.getItemHandler(level, containerPos);
 
                 if (itemHandler == null) {
                     return true;

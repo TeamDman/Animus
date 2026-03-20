@@ -9,12 +9,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.teamdman.animus.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
@@ -54,7 +53,7 @@ public class RitualLuna extends Ritual {
     @Override
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
-        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = AnimusRitualHelper.getOwnerNetwork(mrs);
         int currentEssence = network.getCurrentEssence();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
@@ -85,7 +84,7 @@ public class RitualLuna extends Ritual {
         boolean shouldRemoveBlock = true;
         if (!stack.isEmpty()) {
             if (chestTile != null) {
-                IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, null);
+                IItemHandler handler = AnimusRitualHelper.getItemHandler(level, chestPos);
                 if (handler != null) {
                     ItemStack remainder = ItemHandlerHelper.insertItem(handler, stack, true);
                     if (remainder.isEmpty()) {
