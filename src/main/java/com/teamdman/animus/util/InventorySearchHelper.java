@@ -9,6 +9,7 @@ import com.breakinblocks.neovitae.common.item.IActivatable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public final class InventorySearchHelper {
@@ -17,29 +18,33 @@ public final class InventorySearchHelper {
     }
 
     /**
+     * Iterates all non-empty items across main inventory, armor, and offhand.
+     */
+    private static void forEachItem(Player player, Consumer<ItemStack> consumer) {
+        Inventory inv = player.getInventory();
+        for (ItemStack stack : inv.items) {
+            if (!stack.isEmpty()) consumer.accept(stack);
+        }
+        for (ItemStack stack : inv.armor) {
+            if (!stack.isEmpty()) consumer.accept(stack);
+        }
+        for (ItemStack stack : inv.offhand) {
+            if (!stack.isEmpty()) consumer.accept(stack);
+        }
+    }
+
+    /**
      * Searches main inventory, armor slots, and offhand.
      */
     public static Optional<ItemStack> findFirst(Player player, Predicate<ItemStack> predicate) {
         Inventory inv = player.getInventory();
-
-        for (ItemStack stack : inv.items) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                return Optional.of(stack);
+        for (List<ItemStack> list : List.of(inv.items, inv.armor, inv.offhand)) {
+            for (ItemStack stack : list) {
+                if (!stack.isEmpty() && predicate.test(stack)) {
+                    return Optional.of(stack);
+                }
             }
         }
-
-        for (ItemStack stack : inv.armor) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                return Optional.of(stack);
-            }
-        }
-
-        for (ItemStack stack : inv.offhand) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                return Optional.of(stack);
-            }
-        }
-
         return Optional.empty();
     }
 
@@ -66,53 +71,23 @@ public final class InventorySearchHelper {
     }
 
     public static int countItems(Player player, Predicate<ItemStack> predicate) {
-        Inventory inv = player.getInventory();
-        int count = 0;
-
-        for (ItemStack stack : inv.items) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                count += stack.getCount();
+        int[] count = {0};
+        forEachItem(player, stack -> {
+            if (predicate.test(stack)) {
+                count[0] += stack.getCount();
             }
-        }
-
-        for (ItemStack stack : inv.armor) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                count += stack.getCount();
-            }
-        }
-
-        for (ItemStack stack : inv.offhand) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                count += stack.getCount();
-            }
-        }
-
-        return count;
+        });
+        return count[0];
     }
 
     public static int countStacks(Player player, Predicate<ItemStack> predicate) {
-        Inventory inv = player.getInventory();
-        int count = 0;
-
-        for (ItemStack stack : inv.items) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                count++;
+        int[] count = {0};
+        forEachItem(player, stack -> {
+            if (predicate.test(stack)) {
+                count[0]++;
             }
-        }
-
-        for (ItemStack stack : inv.armor) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                count++;
-            }
-        }
-
-        for (ItemStack stack : inv.offhand) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                count++;
-            }
-        }
-
-        return count;
+        });
+        return count[0];
     }
 
     public static int countStacks(Player player, Item item) {
@@ -120,27 +95,12 @@ public final class InventorySearchHelper {
     }
 
     public static List<ItemStack> findAll(Player player, Predicate<ItemStack> predicate) {
-        Inventory inv = player.getInventory();
         List<ItemStack> results = new ArrayList<>();
-
-        for (ItemStack stack : inv.items) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
+        forEachItem(player, stack -> {
+            if (predicate.test(stack)) {
                 results.add(stack);
             }
-        }
-
-        for (ItemStack stack : inv.armor) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                results.add(stack);
-            }
-        }
-
-        for (ItemStack stack : inv.offhand) {
-            if (!stack.isEmpty() && predicate.test(stack)) {
-                results.add(stack);
-            }
-        }
-
+        });
         return results;
     }
 

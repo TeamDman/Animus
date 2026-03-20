@@ -20,6 +20,8 @@ import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
 
+import com.teamdman.animus.util.RitualZoneTracker;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -38,7 +40,7 @@ public class RitualEndlessGreed extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public static final String CHEST_RANGE = "chest";
 
-    private static final Map<Level, Map<BlockPos, AABB>> activeRituals = new HashMap<>();
+    private static final RitualZoneTracker ZONE_TRACKER = new RitualZoneTracker();
     private static final Map<Level, Map<BlockPos, TomeCacheEntry>> tomeCache = new HashMap<>();
 
     private static class TomeCacheEntry {
@@ -230,7 +232,7 @@ public class RitualEndlessGreed extends Ritual {
     }
 
     public static boolean handleMobDrops(Level level, BlockPos deathPos, Collection<ItemEntity> drops) {
-        Map<BlockPos, AABB> rituals = activeRituals.get(level);
+        Map<BlockPos, AABB> rituals = ZONE_TRACKER.getZones(level);
         if (rituals == null || rituals.isEmpty()) {
             return false;
         }
@@ -264,17 +266,11 @@ public class RitualEndlessGreed extends Ritual {
     }
 
     private static void addActiveRitual(Level level, BlockPos pos, AABB range) {
-        activeRituals.computeIfAbsent(level, k -> new HashMap<>()).put(pos.immutable(), range);
+        ZONE_TRACKER.add(level, pos, range);
     }
 
     private static void removeActiveRitual(Level level, BlockPos pos) {
-        Map<BlockPos, AABB> rituals = activeRituals.get(level);
-        if (rituals != null) {
-            rituals.remove(pos);
-            if (rituals.isEmpty()) {
-                activeRituals.remove(level);
-            }
-        }
+        ZONE_TRACKER.remove(level, pos);
 
         Map<BlockPos, TomeCacheEntry> levelCache = tomeCache.get(level);
         if (levelCache != null) {
@@ -283,18 +279,7 @@ public class RitualEndlessGreed extends Ritual {
     }
 
     public static boolean isInGreedZone(Level level, BlockPos pos) {
-        Map<BlockPos, AABB> rituals = activeRituals.get(level);
-        if (rituals == null || rituals.isEmpty()) {
-            return false;
-        }
-
-        for (AABB range : rituals.values()) {
-            if (range.contains(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)) {
-                return true;
-            }
-        }
-
-        return false;
+        return ZONE_TRACKER.isInZone(level, pos);
     }
 
     public void onRitualStopped(Level level, BlockPos masterPos) {
@@ -302,7 +287,7 @@ public class RitualEndlessGreed extends Ritual {
     }
 
     public static void cleanupLevel(Level level) {
-        activeRituals.remove(level);
+        ZONE_TRACKER.cleanupLevel(level);
         tomeCache.remove(level);
     }
 

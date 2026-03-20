@@ -17,8 +17,8 @@ Before implementing any item, consider whether it should be exposed as a public 
 
 - [x] **2.1** Extract `AnimusRitualHelper.getOwnerNetwork()` — updated 15 rituals
 - [x] **2.2** Extract `AnimusRitualHelper.getItemHandler()` — updated 6 rituals
-- [ ] **2.3** DRY up `InventorySearchHelper` triple-loop into `forEachInventoryItem()`
-- [ ] **2.4** Extract `RitualZoneTracker<T>` for RitualEndlessGreed and RitualSerenity
+- [x] **2.3** DRY up `InventorySearchHelper` — extracted `forEachItem()` helper, eliminated 4 triple-loops
+- [x] **2.4** Extract `RitualZoneTracker` — consolidated zone tracking from RitualEndlessGreed and RitualSerenity
 - [ ] **2.5** Extract shared particle/sound helpers for RitualSiphon and RitualRelentlessTides
 - [ ] **2.6** Extract `LPHelper.consumeLP()` for ItemSpearBound and ItemHellforgedBow
 

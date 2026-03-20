@@ -15,6 +15,8 @@ import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
 import net.minecraft.world.phys.AABB;
 
+import com.teamdman.animus.util.RitualZoneTracker;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -29,7 +31,7 @@ import java.util.function.Consumer;
 public class RitualSerenity extends Ritual {
     public static final String EFFECT_RANGE = "effect";
 
-    private static final Map<Level, Map<BlockPos, AABB>> activeRituals = new HashMap<>();
+    private static final RitualZoneTracker ZONE_TRACKER = new RitualZoneTracker();
 
     public RitualSerenity() {
         super(
@@ -77,32 +79,15 @@ public class RitualSerenity extends Ritual {
     }
 
     private static void addActiveRitual(Level level, BlockPos pos, AABB aabb) {
-        activeRituals.computeIfAbsent(level, k -> new HashMap<>()).put(pos.immutable(), aabb);
+        ZONE_TRACKER.add(level, pos, aabb);
     }
 
     private static void removeActiveRitual(Level level, BlockPos pos) {
-        Map<BlockPos, AABB> rituals = activeRituals.get(level);
-        if (rituals != null) {
-            rituals.remove(pos);
-            if (rituals.isEmpty()) {
-                activeRituals.remove(level);
-            }
-        }
+        ZONE_TRACKER.remove(level, pos);
     }
 
     public static boolean isInSerenityZone(Level level, BlockPos spawnPos) {
-        Map<BlockPos, AABB> rituals = activeRituals.get(level);
-        if (rituals == null || rituals.isEmpty()) {
-            return false;
-        }
-
-        for (AABB aabb : rituals.values()) {
-            if (aabb.contains(spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5)) {
-                return true;
-            }
-        }
-
-        return false;
+        return ZONE_TRACKER.isInZone(level, spawnPos);
     }
 
     public void onRitualStopped(Level level, BlockPos masterPos) {
@@ -110,7 +95,7 @@ public class RitualSerenity extends Ritual {
     }
 
     public static void cleanupLevel(Level level) {
-        activeRituals.remove(level);
+        ZONE_TRACKER.cleanupLevel(level);
     }
 
     @Override
