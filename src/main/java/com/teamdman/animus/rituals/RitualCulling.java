@@ -4,24 +4,16 @@ import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.AnimusStartupConfig;
 import com.teamdman.animus.Constants;
-import com.teamdman.animus.util.AnimusFakePlayer;
 import com.teamdman.animus.util.AnimusUtil;
+import com.teamdman.animus.util.CullingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.item.PrimedTnt;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
@@ -157,16 +149,7 @@ public class RitualCulling extends Ritual {
             Animus.LOGGER.debug("[Ritual of Culling Debug]: Found {} entities in range", list.size());
         }
 
-        if (AnimusConfig.rituals.cullingKillsTnT.get()) {
-            List<PrimedTnt> tntList = level.getEntitiesOfClass(PrimedTnt.class, range);
-            for (PrimedTnt tnt : tntList) {
-                tnt.setFuse(1000);
-                tnt.discard();
-                if (AnimusConfig.rituals.cullingDebug.get()) {
-                    Animus.LOGGER.debug("[Ritual of Culling Debug]: Found TNT entity, killing");
-                }
-            }
-        }
+        CullingHelper.removePrimedTnt(level, range);
 
         int entityCount = 0;
 
@@ -180,176 +163,57 @@ public class RitualCulling extends Ritual {
             }
 
             for (LivingEntity livingEntity : list) {
-                if (AnimusConfig.rituals.cullingDebug.get()) {
-                    Animus.LOGGER.debug("[Ritual of Culling Debug]: Processing entity: {} at {} (Type: {})", livingEntity.getName().getString(), livingEntity.blockPosition(), livingEntity.getType());
-                    Animus.LOGGER.debug("[Ritual of Culling Debug]:   Health: {}/{}", livingEntity.getHealth(), livingEntity.getMaxHealth());
-                }
+                CullingHelper.debugLogEntityProcessing(livingEntity);
 
-                if (livingEntity instanceof Player && livingEntity.getHealth() > 4) {
-                    if (AnimusConfig.rituals.cullingDebug.get()) {
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   SKIPPED - Player with health > 4");
-                    }
+                if (CullingHelper.shouldSkipEntity(livingEntity)) {
                     continue;
                 }
 
-                // Mobs with potion effects (e.g. from cursed earth spawners) are skipped unless config allows
-                Collection<MobEffectInstance> effects = livingEntity.getActiveEffects();
+                BlockPos at = livingEntity.blockPosition();
+                boolean isBoss = CullingHelper.isBoss(livingEntity);
+                float damage = Float.MAX_VALUE;
 
-                if (AnimusConfig.rituals.cullingDebug.get()) {
-                    Animus.LOGGER.debug("[Ritual of Culling Debug]:   Active effects: {}", effects.size());
-                    if (!effects.isEmpty()) {
-                        for (MobEffectInstance effect : effects) {
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:     - {}", effect.getEffect().value().getDescriptionId());
-                        }
-                    }
-                    Animus.LOGGER.debug("[Ritual of Culling Debug]:   canKillBuffedMobs config: {}", AnimusConfig.general.canKillBuffedMobs.get());
+                CullingHelper.debugLogKillAttempt(livingEntity, isBoss, damage, usePlayerKill);
+
+                livingEntity.setSilent(true);
+
+                // Bosses require 100+ destructive demon will and extra LP to kill
+                if (isBoss) {
+                    int requiredEssence = AnimusConfig.rituals.bossCost.get() + (getRefreshCost() * list.size());
+                    CullingHelper.tryMakeBossVulnerable(livingEntity, currentAmount, currentEssence, requiredEssence);
                 }
 
-                if (effects.isEmpty() || AnimusConfig.general.canKillBuffedMobs.get()) {
-                    BlockPos at = livingEntity.blockPosition();
-                    boolean isBoss = livingEntity.isInvulnerable()
-                                     || livingEntity.getType() == net.minecraft.world.entity.EntityType.WITHER
-                                     || livingEntity.getType() == net.minecraft.world.entity.EntityType.ENDER_DRAGON
-                                     || livingEntity.getType().is(net.minecraft.tags.EntityTypeTags.RAIDERS);
+                if (usePlayerKill && level instanceof ServerLevel serverLevel) {
+                    result = CullingHelper.applyPlayerKillDamage(livingEntity, serverLevel, ritualStone.getOwner(), pos, damage);
 
-                    if (AnimusConfig.rituals.cullingDebug.get()) {
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   Is boss: {}", isBoss);
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   Is invulnerable: {}", livingEntity.isInvulnerable());
-                    }
-
-                    if (livingEntity.getType().is(Constants.Tags.DISALLOW_CULLING)) {
+                    if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
+                        willHandler.drainWill(level, pos, EnumWillType.DEFAULT, 1.0);
                         if (AnimusConfig.rituals.cullingDebug.get()) {
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:   SKIPPED - Entity in disallow_culling tag");
+                            Animus.LOGGER.debug("[Ritual of Culling Debug]:   Consumed 1 raw demon will");
                         }
-                        continue;
-                    }
-
-                    livingEntity.setSilent(true);
-
-                    if (AnimusConfig.rituals.cullingDebug.get()) {
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   ATTEMPTING TO KILL entity");
-                    }
-
-                    float damage = Float.MAX_VALUE;
-
-                    // Bosses require 100+ destructive demon will and extra LP to kill
-                    if (AnimusConfig.rituals.killBoss.get() && isBoss && currentAmount > 99
-                        && (currentEssence >= AnimusConfig.rituals.bossCost.get() + (getRefreshCost() * list.size()))) {
-
-                        if (AnimusConfig.rituals.cullingDebug.get()) {
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:   Boss kill conditions met - making vulnerable");
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:     Current demon will: {}", currentAmount);
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:     Boss cost: {}", AnimusConfig.rituals.bossCost.get());
-                        }
-
-                        livingEntity.setInvulnerable(false);
-                    } else if (isBoss) {
-                        if (AnimusConfig.rituals.cullingDebug.get()) {
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:   Boss kill conditions NOT met:");
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:     killBoss config: {}", AnimusConfig.rituals.killBoss.get());
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:     Current demon will: {} (need > 99)", currentAmount);
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:     Current essence: {}", currentEssence);
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:     Required essence: {}", (AnimusConfig.rituals.bossCost.get() + (getRefreshCost() * list.size())));
-                        }
-                    }
-
-                    if (AnimusConfig.rituals.cullingDebug.get()) {
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   Applying damage: {}", damage);
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   Using player kill: {}", usePlayerKill);
-                    }
-
-                    if (usePlayerKill && level instanceof ServerLevel serverLevel) {
-                        AnimusFakePlayer fakePlayer = AnimusFakePlayer.get(serverLevel, ritualStone.getOwner(), null);
-
-                        ItemStack lootingSword = AnimusFakePlayer.createLootingSword(serverLevel, pos);
-                        fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, lootingSword);
-                        fakePlayer.setPos(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
-
-                        // Set lastHurtByPlayer so loot tables treat this as a player kill (enables player-only drops like blaze rods)
-                        try {
-                            java.lang.reflect.Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("lastHurtByPlayer");
-                            lastHurtByPlayerField.setAccessible(true);
-                            lastHurtByPlayerField.set(livingEntity, fakePlayer);
-
-                            java.lang.reflect.Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("lastHurtByPlayerTime");
-                            lastHurtByPlayerTimeField.setAccessible(true);
-                            lastHurtByPlayerTimeField.setInt(livingEntity, 100);
-                        } catch (Exception e) {
-                            // Fall back to obfuscated field names
-                            try {
-                                java.lang.reflect.Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("f_20889_");
-                                lastHurtByPlayerField.setAccessible(true);
-                                lastHurtByPlayerField.set(livingEntity, fakePlayer);
-
-                                java.lang.reflect.Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("f_20890_");
-                                lastHurtByPlayerTimeField.setAccessible(true);
-                                lastHurtByPlayerTimeField.setInt(livingEntity, 100);
-                            } catch (Exception e2) {
-                                if (AnimusConfig.rituals.cullingDebug.get()) {
-                                    Animus.LOGGER.debug("[Ritual of Culling Debug]: Failed to set lastHurtByPlayer fields: {}", e2.getMessage());
-                                }
-                            }
-                        }
-
-                        DamageSource playerDamage = level.damageSources().playerAttack(fakePlayer);
-                        result = livingEntity.hurt(playerDamage, damage);
-
-                        if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
-                            willHandler.drainWill(level, pos, EnumWillType.DEFAULT, 1.0);
-                            if (AnimusConfig.rituals.cullingDebug.get()) {
-                                Animus.LOGGER.debug("[Ritual of Culling Debug]:   Consumed 1 raw demon will");
-                            }
-                        }
-                    } else {
-                        result = livingEntity.hurt(level.damageSources().genericKill(), damage);
-                    }
-
-                    if (AnimusConfig.rituals.cullingDebug.get()) {
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   Damage result: {}", result);
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   Entity alive after damage: {}", livingEntity.isAlive());
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   Entity removed: {}", livingEntity.isRemoved());
-                    }
-
-                    if (result) {
-                        entityCount++;
-                        int lpPerKill = EntitySacrificeHelper.calculateLP(livingEntity, livingEntity.getMaxHealth());
-                        tileAltar.addSacrificeLP(lpPerKill, true);
-
-                        if (AnimusConfig.rituals.cullingDebug.get()) {
-                            Animus.LOGGER.debug("[Ritual of Culling Debug]:   LP generated: {} (LP/dmg: {}, maxHP: {})", lpPerKill, EntitySacrificeHelper.getLpPerDamage(livingEntity), livingEntity.getMaxHealth());
-                        }
-
-                        if (isBoss) {
-                            network.syphon(SoulTicket.create(AnimusConfig.rituals.bossCost.get()));
-                        } else {
-                            // Animals generate more will than other mobs
-                            double modifier = 0.5;
-                            if (livingEntity instanceof Animal) {
-                                modifier = 2.0;
-                            }
-                            willBuffer += modifier * Math.min(15.0, livingEntity.getMaxHealth());
-                        }
-
-                        if (level instanceof ServerLevel serverLevel) {
-                            serverLevel.sendParticles(
-                                ParticleTypes.PORTAL,
-                                at.getX() + 0.5,
-                                at.getY() + 0.5,
-                                at.getZ() + 0.5,
-                                rand.nextInt(4),
-                                (rand.nextDouble() - 0.5D) * 2.0D,
-                                rand.nextDouble(),
-                                (rand.nextDouble() - 0.5D) * 2.0D,
-                                0.1
-                            );
-                        }
-
-                        level.playSound(null, at, SoundEvents.SOUL_ESCAPE.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
                 } else {
+                    result = livingEntity.hurt(level.damageSources().genericKill(), damage);
+                }
+
+                CullingHelper.debugLogKillResult(livingEntity, result);
+
+                if (result) {
+                    entityCount++;
+                    int lpPerKill = EntitySacrificeHelper.calculateLP(livingEntity, livingEntity.getMaxHealth());
+                    tileAltar.addSacrificeLP(lpPerKill, true);
+
                     if (AnimusConfig.rituals.cullingDebug.get()) {
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   SKIPPED - Entity has potion effects and canKillBuffedMobs is false");
+                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   LP generated: {} (LP/dmg: {}, maxHP: {})", lpPerKill, EntitySacrificeHelper.getLpPerDamage(livingEntity), livingEntity.getMaxHealth());
                     }
+
+                    if (isBoss) {
+                        network.syphon(SoulTicket.create(AnimusConfig.rituals.bossCost.get()));
+                    } else {
+                        willBuffer += CullingHelper.calculateWillGain(livingEntity);
+                    }
+
+                    CullingHelper.spawnKillEffects(level, at, rand);
                 }
             }
 

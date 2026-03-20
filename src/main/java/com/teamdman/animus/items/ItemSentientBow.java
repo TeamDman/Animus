@@ -4,6 +4,7 @@ import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.entities.EntitySentientArrow;
 import com.teamdman.animus.util.DemonWillTypeHelper;
+import com.teamdman.animus.util.WillWeaponStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -33,13 +34,6 @@ import java.util.function.Predicate;
  * Drops demon will matching the bow's attuned type on kill
  */
 public class ItemSentientBow extends BowItem {
-    // Soul brackets for level progression (same as sentient spear)
-    public static final double[] soulBracket = new double[]{16, 60, 200, 400, 1000};
-
-    // Will drop scaling by level (same as sentient spear)
-    public static final double[] soulDrop = new double[]{2.0, 4.0, 7.0, 10.0, 15.0};
-    public static final double[] staticDrop = new double[]{1.0, 1.0, 2.0, 3.0, 4.0};
-
     // Damage scaling by will type (base arrow damage is 2, these are bonus)
     public static final double[] defaultDamageAdded = new double[]{1.0, 2.0, 3.0, 4.0, 5.0};
     public static final double[] corrosiveDamageAdded = new double[]{1.5, 2.5, 3.5, 5.0, 6.0};
@@ -47,9 +41,8 @@ public class ItemSentientBow extends BowItem {
     public static final double[] vengefulDamageAdded = new double[]{1.0, 1.5, 2.5, 3.5, 4.5};
     public static final double[] steadfastDamageAdded = new double[]{0.5, 1.0, 2.0, 3.0, 4.0};
 
-    // Effect durations (in ticks)
+    // Effect durations (in ticks) - poisonTime differs from spear, so kept here
     public static final int[] poisonTime = new int[]{40, 60, 100, 140, 200};
-    public static final int[] poisonLevel = new int[]{0, 0, 1, 1, 2};
     public static final int[] slowTime = new int[]{60, 100, 140, 180, 240};
     public static final int[] slowLevel = new int[]{0, 1, 1, 2, 2};
 
@@ -88,12 +81,7 @@ public class ItemSentientBow extends BowItem {
     }
 
     public static int getLevel(ItemStack stack, double soulsRemaining) {
-        for (int i = 0; i < soulBracket.length; i++) {
-            if (soulsRemaining < soulBracket[i]) {
-                return i;
-            }
-        }
-        return soulBracket.length;
+        return WillWeaponStats.getLevel(soulsRemaining);
     }
 
     public static double getDamageAdded(EnumWillType type, int level) {

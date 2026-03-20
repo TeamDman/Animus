@@ -6,6 +6,7 @@ import com.teamdman.animus.entities.EntityHellforgedArrow;
 import com.teamdman.animus.registry.AnimusDataComponents;
 import com.teamdman.animus.util.AnimusRitualHelper;
 import com.teamdman.animus.util.DemonWillTypeHelper;
+import com.teamdman.animus.util.WillWeaponStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -44,9 +45,6 @@ import java.util.function.Predicate;
  * - Piercing arrows that go through all targets
  */
 public class ItemHellforgedBow extends BowItem {
-    // Soul brackets for will level progression (same as sentient weapons)
-    public static final double[] soulBracket = new double[]{16, 60, 200, 400, 1000};
-
     // Normal bow draw time in ticks (~20 ticks for full power)
     public static final int NORMAL_DRAW_TICKS = 20;
 
@@ -369,12 +367,7 @@ public class ItemHellforgedBow extends BowItem {
     }
 
     public static int getLevel(double willAmount) {
-        for (int i = 0; i < soulBracket.length; i++) {
-            if (willAmount < soulBracket[i]) {
-                return i;
-            }
-        }
-        return soulBracket.length;
+        return WillWeaponStats.getLevel(willAmount);
     }
 
     /**

@@ -9,6 +9,7 @@ import com.teamdman.animus.items.sigils.effects.FreeSoulSigilEffect;
 import com.teamdman.animus.registry.AnimusAttributes;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.util.SigilStateCleanupManager;
+import com.teamdman.animus.util.WillWeaponStats;
 import com.breakinblocks.neovitae.common.datacomponent.AnointmentHolder;
 import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
@@ -202,7 +203,7 @@ public class AnimusEventHandler {
 
                 List<ItemStack> willDrops = generateSentientWillDrops(
                     killedEntity, player, willType, willLevel, looting,
-                    ItemSpearSentient.soulDrop, ItemSpearSentient.staticDrop
+                    WillWeaponStats.SOUL_DROP, WillWeaponStats.STATIC_DROP
                 );
 
                 addWillDropsToPlayerOrWorld(player, killedEntity, willDrops, event.getDrops());
@@ -218,7 +219,7 @@ public class AnimusEventHandler {
 
                 List<ItemStack> willDrops = generateSentientWillDrops(
                     killedEntity, player, willType, willLevel, looting,
-                    ItemSentientBow.soulDrop, ItemSentientBow.staticDrop
+                    WillWeaponStats.SOUL_DROP, WillWeaponStats.STATIC_DROP
                 );
 
                 addWillDropsToPlayerOrWorld(player, killedEntity, willDrops, event.getDrops());

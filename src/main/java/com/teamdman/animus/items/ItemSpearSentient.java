@@ -2,6 +2,7 @@ package com.teamdman.animus.items;
 
 import com.teamdman.animus.entities.EntityThrownSpear;
 import com.teamdman.animus.util.DemonWillTypeHelper;
+import com.teamdman.animus.util.WillWeaponStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -36,31 +37,25 @@ import java.util.List;
  * Applies AOE damage with sentient effects when thrown
  */
 public class ItemSpearSentient extends ItemSpear {
-    // Soul brackets for level progression (simplified from sword's 7 levels to 5)
-    public static final double[] soulBracket = new double[]{16, 60, 200, 400, 1000};
-
-    // Damage scaling by will type
+    // Damage scaling by will type (differs from bow, kept here)
     public static final double[] corrosiveDamageAdded = new double[]{1.0, 1.5, 2.5, 3.5, 5.0};
     public static final double[] destructiveDamageAdded = new double[]{1.5, 2.5, 3.5, 5.0, 7.0};
     public static final double[] vengefulDamageAdded = new double[]{0.5, 1.0, 2.0, 3.0, 4.0};
     public static final double[] steadfastDamageAdded = new double[]{0.5, 1.0, 2.0, 3.0, 4.0};
 
-    // Attack speed modifiers
+    // Attack speed modifiers (spear-specific)
     public static final double[] vengefulAttackSpeed = new double[]{-2.0, -1.8, -1.6, -1.4, -1.2};
     public static final double[] destructiveAttackSpeed = new double[]{-2.6, -2.7, -2.8, -2.9, -3.0};
 
-    // Movement speed for vengeful
+    // Movement speed for vengeful (spear-specific)
     public static final double[] movementSpeed = new double[]{0.05, 0.1, 0.15, 0.2, 0.3};
 
-    // Effect durations and levels
+    // Effect durations - poisonTime differs from bow, so kept here
     public static final int[] poisonTime = new int[]{50, 80, 120, 160, 200};
-    public static final int[] poisonLevel = new int[]{0, 0, 1, 1, 2};
     public static final int[] absorptionTime = new int[]{300, 400, 500, 600, 800};
 
-    // Soul drain and drop
+    // Soul drain per melee swing (spear-specific)
     public static final double[] soulDrainPerSwing = new double[]{0.05, 0.1, 0.2, 0.4, 0.75};
-    public static final double[] soulDrop = new double[]{2.0, 4.0, 7.0, 10.0, 15.0};
-    public static final double[] staticDrop = new double[]{1.0, 1.0, 2.0, 3.0, 4.0};
 
     public ItemSpearSentient() {
         super(Tiers.DIAMOND);
@@ -85,12 +80,7 @@ public class ItemSpearSentient extends ItemSpear {
     }
 
     public static int getLevel(ItemStack stack, double soulsRemaining) {
-        for (int i = 0; i < soulBracket.length; i++) {
-            if (soulsRemaining < soulBracket[i]) {
-                return i;
-            }
-        }
-        return soulBracket.length;
+        return WillWeaponStats.getLevel(soulsRemaining);
     }
 
     public static double getDamageAdded(EnumWillType type, int level) {
@@ -123,7 +113,7 @@ public class ItemSpearSentient extends ItemSpear {
                     target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
                         net.minecraft.world.effect.MobEffects.WITHER,
                         poisonTime[level],
-                        poisonLevel[level]
+                        WillWeaponStats.POISON_LEVEL[level]
                     ));
                 }
                 break;
@@ -262,8 +252,8 @@ public class ItemSpearSentient extends ItemSpear {
 
         for (int i = 0; i <= looting; i++) {
             if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
-                double dropAmount = willModifier * (soulDrop[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
-                    + staticDrop[willLevel]) * killedEntity.getMaxHealth() / 20.0;
+                double dropAmount = willModifier * (WillWeaponStats.SOUL_DROP[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
+                    + WillWeaponStats.STATIC_DROP[willLevel]) * killedEntity.getMaxHealth() / 20.0;
                 ItemStack soulStack = soul.createWill(dropAmount);
                 soulList.add(soulStack);
             }

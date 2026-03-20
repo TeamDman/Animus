@@ -1,6 +1,7 @@
 package com.teamdman.animus.entities;
 
 import com.teamdman.animus.items.ItemSentientBow;
+import com.teamdman.animus.util.WillWeaponStats;
 import com.teamdman.animus.registry.AnimusEntityTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -34,7 +35,7 @@ public class EntitySentientArrow extends AbstractArrow {
         SynchedEntityData.defineId(EntitySentientArrow.class, EntityDataSerializers.FLOAT);
 
     private static final int[] poisonTime = ItemSentientBow.poisonTime;
-    private static final int[] poisonLevel = ItemSentientBow.poisonLevel;
+    private static final int[] poisonLevel = WillWeaponStats.POISON_LEVEL;
     private static final int[] slowTime = ItemSentientBow.slowTime;
     private static final int[] slowLevel = ItemSentientBow.slowLevel;
 
