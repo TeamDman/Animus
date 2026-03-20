@@ -1,5 +1,6 @@
 package com.teamdman.animus.rituals;
 
+import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
@@ -51,7 +52,7 @@ public class RitualPeacefulBeckoning extends Ritual {
 
     private boolean rebuildList(IMasterRitualStone mrs) {
         try {
-            System.out.println("Rebuilding Ritual of Peaceful Beckoning entity list. [" + mrs.getMasterBlockPos().toString() + "]");
+            Animus.LOGGER.debug("Rebuilding Ritual of Peaceful Beckoning entity list. [{}]", mrs.getMasterBlockPos());
 
             targets = new ArrayList<>();
 
@@ -69,7 +70,7 @@ public class RitualPeacefulBeckoning extends Ritual {
             return !targets.isEmpty();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Peaceful Beckoning ritual creation failed.");
+            Animus.LOGGER.debug("Peaceful Beckoning ritual creation failed.");
             return false;
         }
     }

@@ -45,7 +45,7 @@ public class SigilScrollHandler {
     }
 
     private static boolean handleScroll(Player player, ItemStack stack, double scrollDelta, InteractionHand hand) {
-        int currentRadius = EquivalencySigilEffect.getRadiusStatic(stack);
+        int currentRadius = EquivalencySigilEffect.getRadius(stack);
         int newRadius;
 
         if (scrollDelta > 0) {

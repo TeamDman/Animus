@@ -4,6 +4,7 @@ import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.entities.EntityHellforgedArrow;
 import com.teamdman.animus.registry.AnimusDataComponents;
+import com.teamdman.animus.util.DemonWillTypeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -25,7 +26,6 @@ import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.api.will.IPlayerDemonWillHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -348,19 +348,11 @@ public class ItemHellforgedBow extends BowItem {
     }
 
     public EnumWillType getCurrentType(ItemStack stack) {
-        String typeStr = stack.get(AnimusDataComponents.DEMON_WILL_TYPE.get());
-        if (typeStr != null) {
-            try {
-                return EnumWillType.valueOf(typeStr);
-            } catch (IllegalArgumentException e) {
-                return EnumWillType.DEFAULT;
-            }
-        }
-        return EnumWillType.DEFAULT;
+        return DemonWillTypeHelper.getCurrentType(stack);
     }
 
     public void setCurrentType(ItemStack stack, EnumWillType type) {
-        stack.set(AnimusDataComponents.DEMON_WILL_TYPE.get(), type.toString());
+        DemonWillTypeHelper.setCurrentType(stack, type);
     }
 
     @Override
@@ -368,27 +360,11 @@ public class ItemHellforgedBow extends BowItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            EnumWillType newType = findDemonWillType(player);
+            EnumWillType newType = DemonWillTypeHelper.findDemonWillType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
             }
         }
-    }
-
-    private static EnumWillType findDemonWillType(Player player) {
-        IPlayerDemonWillHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
-        EnumWillType highestType = EnumWillType.DEFAULT;
-        double highestAmount = 0;
-
-        for (EnumWillType type : EnumWillType.values()) {
-            double amount = playerWill.getTotalDemonWill(type, player);
-            if (type != EnumWillType.DEFAULT && amount > highestAmount) {
-                highestType = type;
-                highestAmount = amount;
-            }
-        }
-
-        return highestType;
     }
 
     public static int getLevel(double willAmount) {

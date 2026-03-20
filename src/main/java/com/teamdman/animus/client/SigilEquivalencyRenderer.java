@@ -23,10 +23,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.joml.Matrix4f;
 
+import com.teamdman.animus.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = "animus")
+@EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class SigilEquivalencyRenderer {
 
     @SubscribeEvent

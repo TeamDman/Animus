@@ -1,5 +1,6 @@
 package com.teamdman.animus;
 
+import com.teamdman.animus.Animus;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
@@ -103,6 +104,6 @@ public class AnimusStartupConfig {
 
     public static void register(ModContainer container) {
         container.registerConfig(ModConfig.Type.STARTUP, SPEC, "animus-startup.toml");
-        System.out.println("Animus: Registered startup config");
+        Animus.LOGGER.debug("Registered startup config");
     }
 }

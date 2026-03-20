@@ -444,7 +444,7 @@ public record EquivalencySigilEffect() implements ISigilEffect {
     }
 
     // Radius data component methods
-    private int getRadius(ItemStack stack) {
+    public static int getRadius(ItemStack stack) {
         Integer radiusVal = stack.get(AnimusDataComponents.EQUIVALENCY_RADIUS.get());
         int radius;
         if (radiusVal == null) {
@@ -462,21 +462,6 @@ public record EquivalencySigilEffect() implements ISigilEffect {
     public static void setRadius(ItemStack stack, int radius) {
         radius = Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
         stack.set(AnimusDataComponents.EQUIVALENCY_RADIUS.get(), radius);
-    }
-
-    /**
-     * Get the radius from an Equivalency sigil.
-     * Public for use by scroll event handler.
-     */
-    public static int getRadiusStatic(ItemStack stack) {
-        Integer radiusVal = stack.get(AnimusDataComponents.EQUIVALENCY_RADIUS.get());
-        int radius;
-        if (radiusVal == null) {
-            radius = AnimusConfig.sigils.sigilEquivalencyRadius.get();
-        } else {
-            radius = radiusVal;
-        }
-        return Math.max(MIN_RADIUS, Math.min(MAX_RADIUS, radius));
     }
 
     /**

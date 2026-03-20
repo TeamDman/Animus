@@ -3,7 +3,7 @@ package com.teamdman.animus.items;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import com.teamdman.animus.entities.EntitySentientArrow;
-import com.teamdman.animus.registry.AnimusDataComponents;
+import com.teamdman.animus.util.DemonWillTypeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -20,8 +20,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.will.IPlayerDemonWillHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -190,19 +188,11 @@ public class ItemSentientBow extends BowItem {
     }
 
     public EnumWillType getCurrentType(ItemStack stack) {
-        String typeStr = stack.get(AnimusDataComponents.DEMON_WILL_TYPE.get());
-        if (typeStr != null) {
-            try {
-                return EnumWillType.valueOf(typeStr);
-            } catch (IllegalArgumentException e) {
-                return EnumWillType.DEFAULT;
-            }
-        }
-        return EnumWillType.DEFAULT;
+        return DemonWillTypeHelper.getCurrentType(stack);
     }
 
     public void setCurrentType(ItemStack stack, EnumWillType type) {
-        stack.set(AnimusDataComponents.DEMON_WILL_TYPE.get(), type.toString());
+        DemonWillTypeHelper.setCurrentType(stack, type);
     }
 
     @Override
@@ -210,35 +200,19 @@ public class ItemSentientBow extends BowItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            EnumWillType newType = findDemonWillType(player);
+            EnumWillType newType = DemonWillTypeHelper.findDemonWillType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
             }
         }
     }
 
-    private static EnumWillType findDemonWillType(Player player) {
-        IPlayerDemonWillHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
-        EnumWillType highestType = EnumWillType.DEFAULT;
-        double highestAmount = 0;
-
-        for (EnumWillType type : EnumWillType.values()) {
-            double amount = playerWill.getTotalDemonWill(type, player);
-            if (type != EnumWillType.DEFAULT && amount > highestAmount) {
-                highestType = type;
-                highestAmount = amount;
-            }
-        }
-
-        return highestType;
-    }
-
     private static double getTotalWillOfType(Player player, EnumWillType type) {
-        return NeoVitaeAPI.getInstance().getPlayerWillHandler().getTotalDemonWill(type, player);
+        return DemonWillTypeHelper.getTotalWillOfType(player, type);
     }
 
     private static void drainWillFromPlayer(Player player, EnumWillType type, double amount) {
-        NeoVitaeAPI.getInstance().getPlayerWillHandler().consumeDemonWill(type, player, amount);
+        DemonWillTypeHelper.drainWillFromPlayer(player, type, amount);
     }
 
     public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity,

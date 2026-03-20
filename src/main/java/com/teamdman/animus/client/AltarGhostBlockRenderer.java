@@ -18,10 +18,12 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.minecraft.core.registries.BuiltInRegistries;
 import org.joml.Matrix4f;
 
+import com.teamdman.animus.Constants;
+
 import java.util.HashMap;
 import java.util.Map;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = "animus")
+@EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class AltarGhostBlockRenderer {
     private static Map<BlockPos, ResourceLocation> ghostBlocks = new HashMap<>();
     private static int remainingTicks = 0;

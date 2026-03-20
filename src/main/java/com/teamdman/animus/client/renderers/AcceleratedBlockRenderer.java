@@ -18,10 +18,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.joml.Matrix4f;
 
+import com.teamdman.animus.Constants;
+
 import java.awt.Color;
 import java.util.Map;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = "animus")
+@EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class AcceleratedBlockRenderer {
     private static final int RENDER_DISTANCE = 32;
 
