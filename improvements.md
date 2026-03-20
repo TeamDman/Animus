@@ -24,7 +24,7 @@ Before implementing any item, consider whether it should be exposed as a public 
 
 ## Phase 3 — Larger Refactors
 
-- [ ] **3.1** Extract `CenterOutwardSearcher` generic utility for RitualSol, RitualLuna, RitualSiphon, RitualRelentlessTides
+- [x] **3.1** Extract `ChebyshevSearcher` generic utility — migrated all 4 search rituals (Sol, Luna, Siphon, RelentlessTides)
 - [ ] **3.2** Consolidate `WillWeaponStats` config class for ItemSentientBow, ItemSpearSentient, ItemHellforgedBow
 - [ ] **3.3** Break up `RitualCulling` (425 lines) — extract entity filtering and fake player logic
 

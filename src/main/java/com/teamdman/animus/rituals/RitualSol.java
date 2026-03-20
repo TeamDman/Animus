@@ -17,14 +17,13 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.registries.BuiltInRegistries;
 import com.teamdman.animus.util.AnimusRitualHelper;
+import com.teamdman.animus.util.ChebyshevSearcher;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
@@ -45,7 +44,7 @@ public class RitualSol extends Ritual {
     private static final ResourceLocation BLOOD_LIGHT_SIGIL = ResourceLocation.fromNamespaceAndPath("neovitae", "bloodlightsigil");
     private static final ResourceLocation BLOOD_LIGHT_BLOCK = ResourceLocation.fromNamespaceAndPath("neovitae", "bloodlight");
 
-    private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
+    private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
 
     public RitualSol() {
         super(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL);
@@ -172,11 +171,6 @@ public class RitualSol extends Ritual {
     }
 
     private BlockPos findDarkSpot(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
-        SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
-
-        int maxChecksPerTick = 4096;
-        int checksThisTick = 0;
-
         net.minecraft.world.phys.AABB aabb = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(
             Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
@@ -187,67 +181,17 @@ public class RitualSol extends Ritual {
             Math.abs(aabb.maxY - masterPos.getY())
         );
 
-        for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
-            for (int x = -radius; x <= radius && checksThisTick < maxChecksPerTick; x++) {
-                if (radius == state.currentRadius && x < state.currentX) continue;
-
-                for (int z = -radius; z <= radius && checksThisTick < maxChecksPerTick; z++) {
-                    if (radius == state.currentRadius && x == state.currentX && z < state.currentZ) continue;
-
-                    if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) {
-                        continue;
-                    }
-
-                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
-                    for (int y = startY; y >= -verticalRadius && checksThisTick < maxChecksPerTick; y--) {
-                        BlockPos checkPos = masterPos.offset(x, y, z);
-                        checksThisTick++;
-
-                        state.currentRadius = radius;
-                        state.currentX = x;
-                        state.currentZ = z;
-                        state.currentY = y;
-
-                        if (level.isEmptyBlock(checkPos) &&
-                            level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, checkPos) < 8 &&
-                            level.getBlockState(checkPos.below()).isFaceSturdy(level, checkPos.below(), Direction.UP)) {
-
-                            state.currentY--;
-                            if (state.currentY < -verticalRadius) {
-                                state.currentY = 0;
-                                state.currentZ++;
-                                if (state.currentZ > radius) {
-                                    state.currentZ = -radius;
-                                    state.currentX++;
-                                    if (state.currentX > radius) {
-                                        state.currentX = -radius;
-                                        state.currentZ = -radius;
-                                        state.currentY = 0;
-                                        state.currentRadius++;
-                                    }
-                                }
-                            }
-                            return checkPos;
-                        }
-                    }
-                    state.currentY = 0;
-                }
-                state.currentZ = -radius;
-            }
-        }
-
-        if (state.currentRadius > horizontalRadius) {
-            searchStates.remove(masterPos);
-        }
-
-        return null;
-    }
-
-    private static class SearchState {
-        int currentRadius = 0;
-        int currentX = Integer.MIN_VALUE;
-        int currentZ = Integer.MIN_VALUE;
-        int currentY = Integer.MAX_VALUE;
+        return SEARCHER.search(
+            masterPos,
+            masterPos,
+            horizontalRadius,
+            verticalRadius,
+            true,
+            4096,
+            checkPos -> level.isEmptyBlock(checkPos)
+                && level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, checkPos) < 8
+                && level.getBlockState(checkPos.below()).isFaceSturdy(level, checkPos.below(), Direction.UP)
+        );
     }
 
     @Override

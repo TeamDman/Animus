@@ -20,8 +20,8 @@ import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.teamdman.animus.util.ChebyshevSearcher;
+
 import java.util.function.Consumer;
 
 /**
@@ -38,7 +38,7 @@ public class RitualLuna extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
 
-    private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
+    private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
 
     public RitualLuna() {
         super(Constants.Rituals.LUNA, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LUNA);
@@ -133,11 +133,6 @@ public class RitualLuna extends Ritual {
     }
 
     private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
-        SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
-
-        int maxChecksPerTick = 4096; // Increased for faster operation
-        int checksThisTick = 0;
-
         net.minecraft.world.phys.AABB aabb = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(
             Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
@@ -148,72 +143,9 @@ public class RitualLuna extends Ritual {
             Math.abs(aabb.maxY - masterPos.getY())
         );
 
-        BlockPos startPos = masterPos.below();
-        for (int distance = state.currentDistance; distance <= horizontalRadius + verticalRadius && checksThisTick < maxChecksPerTick; distance++) {
-            // For each distance level, check all positions at that Manhattan distance from start
-            for (int x = -horizontalRadius; x <= horizontalRadius && checksThisTick < maxChecksPerTick; x++) {
-                // Skip if we're not resuming from this X position
-                if (distance == state.currentDistance && x < state.currentX) continue;
-
-                for (int z = -horizontalRadius; z <= horizontalRadius && checksThisTick < maxChecksPerTick; z++) {
-                    // Skip if we're not resuming from this Z position
-                    if (distance == state.currentDistance && x == state.currentX && z < state.currentZ) continue;
-
-                    for (int y = 0; y >= -verticalRadius && checksThisTick < maxChecksPerTick; y--) {
-                        // Skip if we're not resuming from this Y position
-                        if (distance == state.currentDistance && x == state.currentX && z == state.currentZ && y > state.currentY) continue;
-
-                        int manhattanDist = Math.abs(x) + Math.abs(z) + Math.abs(y);
-                        if (manhattanDist != distance) {
-                            continue;
-                        }
-
-                        BlockPos checkPos = startPos.offset(x, y, z);
-                        checksThisTick++;
-
-                        state.currentDistance = distance;
-                        state.currentX = x;
-                        state.currentZ = z;
-                        state.currentY = y;
-
-                        BlockState blockState = level.getBlockState(checkPos);
-                        int lightEmission = blockState.getLightEmission();
-
-                        if (lightEmission > 0) {
-                            state.currentY--;
-                            if (state.currentY < -verticalRadius) {
-                                state.currentY = 0;
-                                state.currentZ++;
-                                if (state.currentZ > horizontalRadius) {
-                                    state.currentZ = -horizontalRadius;
-                                    state.currentX++;
-                                    if (state.currentX > horizontalRadius) {
-                                        state.currentDistance++;
-                                        state.currentX = -horizontalRadius;
-                                        state.currentZ = -horizontalRadius;
-                                        state.currentY = 0;
-                                    }
-                                }
-                            }
-                            return checkPos;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (state.currentDistance > horizontalRadius + verticalRadius) {
-            searchStates.remove(masterPos);
-        }
-
-        return null;
-    }
-
-    private static class SearchState {
-        int currentDistance = 0;
-        int currentX = Integer.MIN_VALUE;
-        int currentZ = Integer.MIN_VALUE;
-        int currentY = Integer.MAX_VALUE;
+        return SEARCHER.search(masterPos, masterPos.below(), horizontalRadius, verticalRadius,
+                true, 4096,
+                checkPos -> level.getBlockState(checkPos).getLightEmission() > 0);
     }
 
     @Override

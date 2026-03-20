@@ -19,6 +19,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import com.teamdman.animus.util.AnimusRitualHelper;
+import com.teamdman.animus.util.ChebyshevSearcher;
 import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
@@ -41,7 +42,7 @@ public class RitualRelentlessTides extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public static final String TANK_RANGE = "tank";
 
-    private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
+    private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
     private static final Map<BlockPos, Set<BlockPos>> filledPositionsCache = new HashMap<>();
     private static final int BUCKET_AMOUNT = 1000;
 
@@ -156,64 +157,15 @@ public class RitualRelentlessTides extends Ritual {
     }
 
     private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth, Fluid fluidToPlace) {
-        SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
-
-        BlockPos startPos = masterPos.below();
-
-        int maxChecksPerTick = 64;
-        int checksThisTick = 0;
-
-        for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
-            for (int x = -radius; x <= radius && checksThisTick < maxChecksPerTick; x++) {
-                if (radius == state.currentRadius && x < state.currentX) continue;
-
-                for (int z = -radius; z <= radius && checksThisTick < maxChecksPerTick; z++) {
-                    if (radius == state.currentRadius && x == state.currentX && z < state.currentZ) continue;
-
-                    // Only check perimeter positions (skip interior of ring)
-                    if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) {
-                        continue;
-                    }
-
-                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
-                    for (int y = startY; y < verticalDepth && checksThisTick < maxChecksPerTick; y++) {
-                        BlockPos checkPos = startPos.offset(x, -y, z);
-                        checksThisTick++;
-
-                        state.currentRadius = radius;
-                        state.currentX = x;
-                        state.currentZ = z;
-                        state.currentY = y;
-
-                        if (isValidPlacementSpot(level, checkPos, fluidToPlace, masterPos)) {
-                            state.currentY++;
-                            if (state.currentY >= verticalDepth) {
-                                state.currentY = 0;
-                                state.currentZ++;
-                                if (state.currentZ > radius) {
-                                    state.currentZ = -radius;
-                                    state.currentX++;
-                                    if (state.currentX > radius) {
-                                        state.currentX = -radius;
-                                        state.currentZ = -radius;
-                                        state.currentRadius++;
-                                    }
-                                }
-                            }
-                            return checkPos;
-                        }
-                    }
-                    state.currentY = 0;
-                }
-                state.currentZ = -radius;
-            }
-        }
-
-        if (state.currentRadius > horizontalRadius) {
-            resetSearchState(masterPos);
-        }
-
-        return null;
+        return SEARCHER.search(
+            masterPos,
+            masterPos.below(),
+            horizontalRadius,
+            verticalDepth,
+            true,
+            64,
+            checkPos -> isValidPlacementSpot(level, checkPos, fluidToPlace, masterPos)
+        );
     }
 
 
@@ -238,11 +190,11 @@ public class RitualRelentlessTides extends Ritual {
     }
 
     private void resetSearchState(BlockPos pos) {
-        searchStates.remove(pos);
+        SEARCHER.reset(pos);
     }
 
     public void onRitualStopped(Level level, BlockPos masterPos) {
-        searchStates.remove(masterPos);
+        SEARCHER.reset(masterPos);
         filledPositionsCache.remove(masterPos);
     }
 
@@ -279,10 +231,4 @@ public class RitualRelentlessTides extends Ritual {
         return new RitualRelentlessTides();
     }
 
-    private static class SearchState {
-        int currentRadius = 0;
-        int currentX = 0;
-        int currentZ = 0;
-        int currentY = 0;
-    }
 }
