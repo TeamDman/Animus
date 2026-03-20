@@ -15,11 +15,11 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import com.breakinblocks.neovitae.common.item.ExperienceTomeItem;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -80,7 +80,7 @@ public class RitualEndlessGreed extends Ritual {
             return;
         }
 
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
         if (network == null) {
             removeActiveRitual(level, masterPos);
             return;
@@ -104,7 +104,7 @@ public class RitualEndlessGreed extends Ritual {
         collectXPOrbsInRange(serverLevel, masterPos, range);
     }
 
-    private void collectItemsInRange(ServerLevel level, BlockPos masterPos, AABB range, SoulNetwork network) {
+    private void collectItemsInRange(ServerLevel level, BlockPos masterPos, AABB range, ISoulNetwork network) {
         List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, range);
 
         if (items.isEmpty()) {

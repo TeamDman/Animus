@@ -22,10 +22,10 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
+import com.breakinblocks.neovitae.api.will.IPlayerDemonWillHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -209,7 +209,7 @@ public class ItemHellforgedBow extends BowItem {
             return;
         }
 
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network == null || network.getCurrentEssence() < getBaseLpCost()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
@@ -226,7 +226,7 @@ public class ItemHellforgedBow extends BowItem {
             network.syphonAndDamage(player, ticket);
 
             EnumWillType willType = getCurrentType(stack);
-            double willAmount = PlayerDemonWillHandler.getTotalDemonWill(willType, player);
+            double willAmount = NeoVitaeAPI.getInstance().getPlayerWillHandler().getTotalDemonWill(willType, player);
             int willLevel = getLevel(willAmount);
 
             float chargeMultiplier = 0.0f;
@@ -300,7 +300,7 @@ public class ItemHellforgedBow extends BowItem {
             return InteractionResultHolder.consume(stack);
         }
 
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network == null || network.getCurrentEssence() < getBaseLpCost()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
@@ -376,11 +376,12 @@ public class ItemHellforgedBow extends BowItem {
     }
 
     private static EnumWillType findDemonWillType(Player player) {
+        IPlayerDemonWillHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
         EnumWillType highestType = EnumWillType.DEFAULT;
         double highestAmount = 0;
 
         for (EnumWillType type : EnumWillType.values()) {
-            double amount = PlayerDemonWillHandler.getTotalDemonWill(type, player);
+            double amount = playerWill.getTotalDemonWill(type, player);
             if (type != EnumWillType.DEFAULT && amount > highestAmount) {
                 highestType = type;
                 highestAmount = amount;
@@ -403,7 +404,7 @@ public class ItemHellforgedBow extends BowItem {
      * Attempts to repair the bow using LP from the soul network
      * Costs 100 LP per damage point repaired
      */
-    private void tryRepairWithLP(ItemStack stack, SoulNetwork network, Player player) {
+    private void tryRepairWithLP(ItemStack stack, ISoulNetwork network, Player player) {
         int damage = stack.getDamageValue();
         if (damage <= 0) {
             return;
@@ -427,7 +428,7 @@ public class ItemHellforgedBow extends BowItem {
             return false;
         }
 
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network == null || network.getCurrentEssence() < amount) {
             return false;
         }

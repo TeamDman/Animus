@@ -20,7 +20,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.will.IPlayerDemonWillHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -217,11 +218,12 @@ public class ItemSentientBow extends BowItem {
     }
 
     private static EnumWillType findDemonWillType(Player player) {
+        IPlayerDemonWillHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
         EnumWillType highestType = EnumWillType.DEFAULT;
         double highestAmount = 0;
 
         for (EnumWillType type : EnumWillType.values()) {
-            double amount = PlayerDemonWillHandler.getTotalDemonWill(type, player);
+            double amount = playerWill.getTotalDemonWill(type, player);
             if (type != EnumWillType.DEFAULT && amount > highestAmount) {
                 highestType = type;
                 highestAmount = amount;
@@ -232,11 +234,11 @@ public class ItemSentientBow extends BowItem {
     }
 
     private static double getTotalWillOfType(Player player, EnumWillType type) {
-        return PlayerDemonWillHandler.getTotalDemonWill(type, player);
+        return NeoVitaeAPI.getInstance().getPlayerWillHandler().getTotalDemonWill(type, player);
     }
 
     private static void drainWillFromPlayer(Player player, EnumWillType type, double amount) {
-        PlayerDemonWillHandler.consumeDemonWill(type, player, amount);
+        NeoVitaeAPI.getInstance().getPlayerWillHandler().consumeDemonWill(type, player, amount);
     }
 
     public List<ItemStack> getRandomDemonWillDrop(LivingEntity killedEntity, LivingEntity attackingEntity,

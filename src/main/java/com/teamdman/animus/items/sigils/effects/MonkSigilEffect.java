@@ -8,9 +8,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 /**
  * Sigil of the Monk - A toggleable sigil that enhances unarmed combat.
@@ -70,7 +70,7 @@ public record MonkSigilEffect() implements ISigilEffect {
             return false;
         }
 
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network == null) {
             return false;
         }

@@ -28,11 +28,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import com.breakinblocks.neovitae.common.item.IBindable;
 import com.breakinblocks.neovitae.common.datacomponent.Binding;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
+import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.common.datamap.EntitySacrificeHelper;
 import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
-import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.List;
 
@@ -81,7 +81,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         }
 
         // Use the binding owner's network, not the using player's
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(binding.uuid());
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(binding.uuid());
         SoulTicket ticket = SoulTicket.create(LP_COST);
 
         var result = network.syphonAndDamage(player, ticket);

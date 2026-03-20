@@ -25,14 +25,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
 import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
+import com.breakinblocks.neovitae.api.will.IDemonWillHandler;
 import com.breakinblocks.neovitae.common.datamap.EntitySacrificeHelper;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -114,7 +114,7 @@ public class RitualCulling extends Ritual {
 
     @Override
     public void performRitual(IMasterRitualStone ritualStone) {
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(ritualStone.getOwner());
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(ritualStone.getOwner());
         if (network == null) {
             return;
         }
@@ -127,11 +127,12 @@ public class RitualCulling extends Ritual {
             return;
         }
 
+        IDemonWillHandler willHandler = NeoVitaeAPI.getInstance().getDemonWillHandler();
         EnumWillType type = EnumWillType.DESTRUCTIVE;
-        double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+        double currentAmount = willHandler.getCurrentWill(level, pos, type);
 
         // Raw demon will enables player-like kills (mob drops as if killed by player)
-        double rawWillAmount = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.DEFAULT);
+        double rawWillAmount = willHandler.getCurrentWill(level, pos, EnumWillType.DEFAULT);
         boolean usePlayerKill = AnimusConfig.rituals.cullingPlayerKillDrops.get() && rawWillAmount >= 1.0;
 
         BloodAltarTile tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
@@ -293,7 +294,7 @@ public class RitualCulling extends Ritual {
                         result = livingEntity.hurt(playerDamage, damage);
 
                         if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
-                            WorldDemonWillHandler.drainWillFromChunk(level, pos, EnumWillType.DEFAULT, 1.0);
+                            willHandler.drainWill(level, pos, EnumWillType.DEFAULT, 1.0);
                             if (AnimusConfig.rituals.cullingDebug.get()) {
                                 System.out.println("Animus: [Ritual of Culling Debug]:   Consumed 1 raw demon will");
                             }
@@ -362,7 +363,7 @@ public class RitualCulling extends Ritual {
             // ~3% chance per cycle to generate destructive demon will
             double addAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2.0, 10));
             if (rand.nextInt(30) == 0 && addAmount > 0) {
-                WorldDemonWillHandler.addWillToChunk(level, pos, type, addAmount);
+                willHandler.addWill(level, pos, type, addAmount);
             }
         }
     }

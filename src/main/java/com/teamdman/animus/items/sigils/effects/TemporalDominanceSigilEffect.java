@@ -23,9 +23,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -113,7 +113,7 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
         }
 
         // Get the player's soul network
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork((ServerPlayer) player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network == null) {
             return false;
         }

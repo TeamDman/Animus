@@ -14,7 +14,8 @@ import net.minecraft.world.item.TooltipFlag;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.common.item.soul.SentientScytheItem;
-import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.will.IPlayerDemonWillHandler;
 
 import java.util.List;
 
@@ -36,9 +37,10 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         // Must cache soul count before parent call modifies will
         if (!attacker.level().isClientSide && attacker instanceof Player player) {
+            IPlayerDemonWillHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
             double totalWill = 0;
             for (EnumWillType type : EnumWillType.values()) {
-                totalWill += PlayerDemonWillHandler.getTotalDemonWill(type, player);
+                totalWill += playerWill.getTotalDemonWill(type, player);
             }
             stack.set(AnimusDataComponents.CACHED_SOULS.get(), totalWill);
 

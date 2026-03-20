@@ -16,7 +16,8 @@ import com.breakinblocks.neovitae.common.event.SacrificialDaggerEvent;
 import com.breakinblocks.neovitae.common.item.NVItems;
 import com.breakinblocks.neovitae.api.event.SoulNetworkEvent;
 import com.breakinblocks.neovitae.will.IDemonWill;
-import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.will.IPlayerDemonWillHandler;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -306,8 +307,9 @@ public class AnimusEventHandler {
             return;
         }
 
+        IPlayerDemonWillHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
         for (ItemStack willStack : willDrops) {
-            ItemStack remainder = PlayerDemonWillHandler.addDemonWill(player, willStack);
+            ItemStack remainder = playerWill.addDemonWill(player, willStack);
 
             if (!remainder.isEmpty()) {
                 EnumWillType pickupType = ((IDemonWill) remainder.getItem()).getType(remainder);

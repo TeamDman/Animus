@@ -4,7 +4,6 @@ import com.teamdman.animus.items.ItemSpear;
 import com.teamdman.animus.items.ItemSpearSentient;
 import com.teamdman.animus.registry.AnimusEntityTypes;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

@@ -25,9 +25,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +132,7 @@ public class BlockAntiLife extends BaseEntityBlock {
                     level.scheduleTick(neighborPos, this, random.nextInt(25));
 
                     if (player != null && player.isAlive()) {
-                        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+                        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
                         SoulTicket ticket = SoulTicket.create(AnimusConfig.sigils.antiLifeConsumption.get());
                         network.syphonAndDamage(player, ticket);
                     }

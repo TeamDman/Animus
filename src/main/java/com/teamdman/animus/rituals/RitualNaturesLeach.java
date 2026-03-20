@@ -16,13 +16,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
+import com.breakinblocks.neovitae.api.will.IDemonWillHandler;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -71,10 +71,11 @@ public class RitualNaturesLeach extends Ritual {
         Random random = new Random(randomSource.nextLong());
         BlockPos pos = ritualStone.getMasterBlockPos();
 
+        IDemonWillHandler willHandler = NeoVitaeAPI.getInstance().getDemonWillHandler();
         EnumWillType type = EnumWillType.CORROSIVE;
-        will = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+        will = willHandler.getCurrentWill(level, pos, type);
 
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(ritualStone.getOwner());
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(ritualStone.getOwner());
         if (network == null) {
             return;
         }
@@ -165,10 +166,10 @@ public class RitualNaturesLeach extends Ritual {
         if (eaten > 0) {
             double willPerBlock = 0.5 + random.nextDouble();
             double totalWillToAdd = eaten * willPerBlock;
-            double currentWill = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+            double currentWill = willHandler.getCurrentWill(level, pos, type);
             double actualAdd = Math.min(totalWillToAdd, maxWill - currentWill);
             if (actualAdd > 0) {
-                WorldDemonWillHandler.addWillToChunk(level, pos, type, actualAdd);
+                willHandler.addWill(level, pos, type, actualAdd);
             }
         }
     }

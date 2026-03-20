@@ -19,9 +19,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.List;
 
@@ -130,7 +130,7 @@ public class ItemSanguineScroll extends Item {
         double multiplier = AnimusConfig.ironsSpells.sanguineScrollLPMultiplier.get();
         int lpCost = (int)(manaCost * lpPerMana * multiplier);
 
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network.getCurrentEssence() < lpCost) {
             player.displayClientMessage(
                 Component.literal("Not enough LP! Need " + lpCost + " LP")

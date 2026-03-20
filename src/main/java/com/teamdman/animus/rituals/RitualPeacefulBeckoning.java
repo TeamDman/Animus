@@ -12,14 +12,14 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.registries.BuiltInRegistries;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 import com.breakinblocks.neovitae.ritual.Ritual;
 import com.breakinblocks.neovitae.ritual.RitualComponent;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +77,7 @@ public class RitualPeacefulBeckoning extends Ritual {
     @Override
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
         BlockPos masterPos = mrs.getMasterBlockPos();
 
         if (level.isClientSide) {

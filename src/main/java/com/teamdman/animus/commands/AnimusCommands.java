@@ -8,10 +8,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.teamdman.animus.Constants;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.will.IDemonWillGem;
-import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -60,7 +59,7 @@ public class AnimusCommands {
 
     private static int getLP(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network == null) {
             context.getSource().sendFailure(Component.literal("Could not access soul network"));
             return 0;
@@ -74,7 +73,7 @@ public class AnimusCommands {
     private static int setLP(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         int amount = IntegerArgumentType.getInteger(context, "amount");
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network == null) {
             context.getSource().sendFailure(Component.literal("Could not access soul network"));
             return 0;
@@ -96,7 +95,7 @@ public class AnimusCommands {
                     + ". Valid types: default, corrosive, destructive, vengeful, steadfast"));
             return 0;
         }
-        WorldDemonWillHandler.fillWillToAmount(
+        NeoVitaeAPI.getInstance().getDemonWillHandler().fillWillToAmount(
                 player.serverLevel(), player.blockPosition(), type, 100.0);
         String displayName = type.name().toLowerCase(Locale.ROOT);
         context.getSource().sendSuccess(() -> Component.translatable(

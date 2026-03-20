@@ -22,13 +22,13 @@ import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
 import com.breakinblocks.neovitae.common.item.IBindable;
 import com.breakinblocks.neovitae.common.item.BloodOrbItem;
 import com.breakinblocks.neovitae.common.datacomponent.Binding;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
+import com.breakinblocks.neovitae.api.will.IDemonWillHandler;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -71,7 +71,7 @@ public class RitualSteadfastHeart extends Ritual {
 
     @Override
     public void performRitual(IMasterRitualStone mrs) {
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
         if (network == null) {
             return;
         }
@@ -83,8 +83,9 @@ public class RitualSteadfastHeart extends Ritual {
 
         BlockPos pos = mrs.getMasterBlockPos();
 
+        IDemonWillHandler willHandler = NeoVitaeAPI.getInstance().getDemonWillHandler();
         EnumWillType type = EnumWillType.STEADFAST;
-        double currentAmount = WorldDemonWillHandler.getCurrentWill(level, pos, type);
+        double currentAmount = willHandler.getCurrentWill(level, pos, type);
 
         Set<UUID> buffedPlayers = new HashSet<>();
 
@@ -158,7 +159,7 @@ public class RitualSteadfastHeart extends Ritual {
 
         double addAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2.0, 10));
         if (addAmount > 0) {
-            WorldDemonWillHandler.addWillToChunk(level, pos, type, addAmount);
+            willHandler.addWill(level, pos, type, addAmount);
         }
     }
 

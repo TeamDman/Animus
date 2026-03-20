@@ -12,7 +12,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 
 /**
  * Applies will-type-based effects when a player blocks with a sentient shield.
@@ -43,7 +43,7 @@ public class SentientShieldEventHandler {
         }
 
         EnumWillType willType = sentientShield.getCurrentType(shield);
-        double willAmount = WorldDemonWillHandler.getCurrentWill(
+        double willAmount = NeoVitaeAPI.getInstance().getDemonWillHandler().getCurrentWill(
             player.level(), player.blockPosition(), willType
         );
 

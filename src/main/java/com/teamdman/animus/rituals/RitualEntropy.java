@@ -9,12 +9,12 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.function.Consumer;
 
@@ -38,7 +38,7 @@ public class RitualEntropy extends Ritual {
     @Override
     public void performRitual(IMasterRitualStone masterRitualStone) {
         Level level = masterRitualStone.getWorldObj();
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(masterRitualStone.getOwner());
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(masterRitualStone.getOwner());
         if (network == null) {
             return;
         }

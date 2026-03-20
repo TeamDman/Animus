@@ -20,10 +20,10 @@ import top.theillusivec4.curios.api.CuriosApi;
 import com.breakinblocks.neovitae.common.item.IBindable;
 import com.breakinblocks.neovitae.common.blockentity.BloodAltarTile;
 import com.breakinblocks.neovitae.common.datacomponent.Binding;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.List;
 import java.util.UUID;
@@ -67,11 +67,11 @@ public class ItemBloodApple extends Item {
             } else {
                 UUID targetOwner = findBoundKeyOwner(player);
 
-                SoulNetwork network;
+                ISoulNetwork network;
                 if (targetOwner != null) {
-                    network = SoulNetworkHelper.getSoulNetwork(targetOwner);
+                    network = NeoVitaeAPI.getInstance().getSoulNetwork(targetOwner);
                 } else {
-                    network = SoulNetworkHelper.getSoulNetwork(player);
+                    network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
                 }
 
                 network.add(SoulTicket.create(bloodAmount), 10000);

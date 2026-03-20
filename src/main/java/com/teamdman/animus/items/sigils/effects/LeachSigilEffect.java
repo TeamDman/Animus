@@ -17,7 +17,8 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.will.IDemonWillHandler;
 
 import java.util.Optional;
 
@@ -144,11 +145,12 @@ public record LeachSigilEffect() implements ISigilEffect {
             // Generate corrosive demon will
             if (!level.isClientSide) {
                 double willToAdd = 0.3 + level.random.nextDouble() * 0.5;
-                double currentWill = WorldDemonWillHandler.getCurrentWill(level, player.blockPosition(), EnumWillType.CORROSIVE);
+                IDemonWillHandler willHandler = NeoVitaeAPI.getInstance().getDemonWillHandler();
+                double currentWill = willHandler.getCurrentWill(level, player.blockPosition(), EnumWillType.CORROSIVE);
                 double maxWill = 100;
                 double actualAdd = Math.min(willToAdd, maxWill - currentWill);
                 if (actualAdd > 0) {
-                    WorldDemonWillHandler.addWillToChunk(
+                    willHandler.addWill(
                             level,
                             player.blockPosition(),
                             EnumWillType.CORROSIVE,

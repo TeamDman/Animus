@@ -4,7 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class CrimsonWillSigilClientHelper {
         var player = Minecraft.getInstance().player;
         if (player == null) return;
 
-        double currentWill = PlayerDemonWillHandler.getTotalDemonWill(EnumWillType.DEFAULT, player);
+        double currentWill = NeoVitaeAPI.getInstance().getPlayerWillHandler().getTotalDemonWill(EnumWillType.DEFAULT, player);
         double willMultiplier = Math.min(currentWill / 4096.0, 1.0);
         double willBonus = 0.20 * willMultiplier;
         double totalBonus = 0.30 + willBonus;

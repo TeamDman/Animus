@@ -27,9 +27,9 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -185,7 +185,7 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         }
 
         // Get the player's soul network
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network == null) {
             return false;
         }

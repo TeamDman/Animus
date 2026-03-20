@@ -8,7 +8,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.will.IDemonWillHandler;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
@@ -51,10 +52,11 @@ public class AnimusFakePlayer extends FakePlayer {
 
         int lootingLevel = 0;
 
-        double corrosiveWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.CORROSIVE);
-        double destructiveWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.DESTRUCTIVE);
-        double vengefulWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.VENGEFUL);
-        double steadfastWill = WorldDemonWillHandler.getCurrentWill(level, pos, EnumWillType.STEADFAST);
+        IDemonWillHandler willHandler = NeoVitaeAPI.getInstance().getDemonWillHandler();
+        double corrosiveWill = willHandler.getCurrentWill(level, pos, EnumWillType.CORROSIVE);
+        double destructiveWill = willHandler.getCurrentWill(level, pos, EnumWillType.DESTRUCTIVE);
+        double vengefulWill = willHandler.getCurrentWill(level, pos, EnumWillType.VENGEFUL);
+        double steadfastWill = willHandler.getCurrentWill(level, pos, EnumWillType.STEADFAST);
 
         if (corrosiveWill > 10) lootingLevel++;
         if (destructiveWill > 10) lootingLevel++;

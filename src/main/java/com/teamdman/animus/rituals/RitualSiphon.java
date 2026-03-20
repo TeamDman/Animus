@@ -20,11 +20,11 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.*;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -77,7 +77,7 @@ public class RitualSiphon extends Ritual {
             return;
         }
 
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
         if (network == null) {
             return;
         }

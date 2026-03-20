@@ -14,7 +14,8 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.will.WorldDemonWillHandler;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.will.IDemonWillHandler;
 
 /**
  * Block Entity for Blood Core
@@ -42,7 +43,8 @@ public class BlockEntityBloodCore extends BlockEntity {
 
         delayCounter--;
         if (delayCounter <= 0) {
-            double corrosiveWill = WorldDemonWillHandler.getCurrentWill(level, worldPosition, EnumWillType.CORROSIVE);
+            IDemonWillHandler willHandler = NeoVitaeAPI.getInstance().getDemonWillHandler();
+            double corrosiveWill = willHandler.getCurrentWill(level, worldPosition, EnumWillType.CORROSIVE);
 
             int baseTimer = AnimusConfig.bloodCore.treeSpreadInterval.get();
             // More corrosive will = slower growth (up to 2x slower at 100+ will)
@@ -176,7 +178,7 @@ public class BlockEntityBloodCore extends BlockEntity {
                         }
                     }
 
-                    WorldDemonWillHandler.drainWillFromChunk(level, worldPosition, EnumWillType.CORROSIVE, 5.0);
+                    NeoVitaeAPI.getInstance().getDemonWillHandler().drainWill(level, worldPosition, EnumWillType.CORROSIVE, 5.0);
 
                     break;
                 }

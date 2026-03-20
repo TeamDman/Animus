@@ -29,10 +29,10 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
-import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
+import com.breakinblocks.neovitae.api.will.IPlayerDemonWillHandler;
 
 @EventBusSubscriber(modid = Constants.Mod.MODID)
 public class MonkSigilEventHandler {
@@ -154,7 +154,7 @@ public class MonkSigilEventHandler {
                     );
                 }
 
-                SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+                ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
                 if (network != null) {
                     network.add(SoulTicket.create(LP_REWARD_PER_EXECUTE), LP_REWARD_PER_EXECUTE);
                 }
@@ -381,14 +381,16 @@ public class MonkSigilEventHandler {
     }
 
     private static double getTotalDemonWill(Player player) {
+        IPlayerDemonWillHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
         double total = 0;
         for (EnumWillType type : EnumWillType.values()) {
-            total += PlayerDemonWillHandler.getTotalDemonWill(type, player);
+            total += playerWill.getTotalDemonWill(type, player);
         }
         return total;
     }
 
     private static void consumeDemonWill(Player player, double amount) {
+        IPlayerDemonWillHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
         double remaining = amount;
 
         // Prefer raw will first, then other types
@@ -403,10 +405,10 @@ public class MonkSigilEventHandler {
         for (EnumWillType type : preferredOrder) {
             if (remaining <= 0) break;
 
-            double available = PlayerDemonWillHandler.getTotalDemonWill(type, player);
+            double available = playerWill.getTotalDemonWill(type, player);
             if (available > 0) {
                 double toConsume = Math.min(remaining, available);
-                PlayerDemonWillHandler.consumeDemonWill(type, player, toConsume);
+                playerWill.consumeDemonWill(type, player, toConsume);
                 remaining -= toConsume;
             }
         }

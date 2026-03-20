@@ -29,10 +29,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
-import com.breakinblocks.neovitae.will.PlayerDemonWillHandler;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
+import com.breakinblocks.neovitae.api.will.IPlayerDemonWillHandler;
 
 /**
  * Handles spell power boosting for Sigil of Crimson Will
@@ -81,7 +81,7 @@ public class CrimsonWillSpellHandler {
         int manaCost = spellLevel; // Approximation of mana cost
 
         int lpCost = manaCost * AnimusConfig.ironsSpells.crimsonWillLPPerMana.get();
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         if (network == null || network.getCurrentEssence() < lpCost) {
             player.displayClientMessage(
                 Component.literal("Not enough LP! Need " + lpCost + " LP")
@@ -91,7 +91,8 @@ public class CrimsonWillSpellHandler {
             return;
         }
 
-        double currentWill = PlayerDemonWillHandler.getTotalDemonWill(EnumWillType.DEFAULT, player);
+        IPlayerDemonWillHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
+        double currentWill = playerWill.getTotalDemonWill(EnumWillType.DEFAULT, player);
 
         // Sigil works at 0 will (just with lower bonus)
         double willMultiplier = Math.min(currentWill / MAX_WILL_AMOUNT, 1.0);
@@ -103,7 +104,7 @@ public class CrimsonWillSpellHandler {
 
         network.syphon(SoulTicket.create(lpCost));
         if (currentWill >= WILL_CONSUMED_PER_CAST) {
-            PlayerDemonWillHandler.consumeDemonWill(EnumWillType.DEFAULT, player, WILL_CONSUMED_PER_CAST);
+            playerWill.consumeDemonWill(EnumWillType.DEFAULT, player, WILL_CONSUMED_PER_CAST);
         }
 
         if (player.level() instanceof ServerLevel serverLevel) {

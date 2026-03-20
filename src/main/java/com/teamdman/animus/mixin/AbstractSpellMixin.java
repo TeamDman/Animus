@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.theillusivec4.curios.api.CuriosApi;
 import com.breakinblocks.neovitae.common.item.BloodOrbItem;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 
 /**
  * Mixin for Iron's Spells AbstractSpell to enable LP-powered spell casting.
@@ -79,7 +79,7 @@ public class AbstractSpellMixin {
                 return;
             }
 
-            SoulNetwork network = SoulNetworkHelper.getSoulNetwork(player);
+            ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
             if (network == null) {
                 return;
             }

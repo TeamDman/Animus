@@ -19,10 +19,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.ritual.*;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.function.Consumer;
 
@@ -75,7 +75,7 @@ public class RitualArcaneMastery extends Ritual {
             return;
         }
 
-        SoulNetwork network = SoulNetworkHelper.getSoulNetwork(mrs.getOwner());
+        ISoulNetwork network = NeoVitaeAPI.getInstance().getSoulNetwork(mrs.getOwner());
         if (network == null) {
             return;
         }
@@ -97,7 +97,7 @@ public class RitualArcaneMastery extends Ritual {
         emitSmokeParticles(serverLevel, masterPos);
     }
 
-    private boolean processChest(Container chest, ServerPlayer player, SoulNetwork network,
+    private boolean processChest(Container chest, ServerPlayer player, ISoulNetwork network,
                                  ServerLevel level, BlockPos ritualPos) {
         for (int i = 0; i < chest.getContainerSize(); i++) {
             ItemStack stack = chest.getItem(i);

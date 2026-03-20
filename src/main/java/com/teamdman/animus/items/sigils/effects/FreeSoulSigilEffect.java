@@ -16,10 +16,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 import com.breakinblocks.neovitae.common.datacomponent.Binding;
-import com.breakinblocks.neovitae.common.datacomponent.SoulNetwork;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.ISoulNetwork;
 import com.breakinblocks.neovitae.api.soul.SoulTicket;
 import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
-import com.breakinblocks.neovitae.util.helper.SoulNetworkHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,9 +72,9 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
 
             // Try to consume LP from the binding owner's network
             Binding binding = stack.get(NVDataComponents.BINDING.get());
-            SoulNetwork network = binding != null
-                ? SoulNetworkHelper.getSoulNetwork(binding.uuid())
-                : SoulNetworkHelper.getSoulNetwork(player);
+            ISoulNetwork network = binding != null
+                ? NeoVitaeAPI.getInstance().getSoulNetwork(binding.uuid())
+                : NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
             SoulTicket ticket = SoulTicket.create(lpCost);
 
             var syphonResult = network.syphonAndDamage(player, ticket);
@@ -129,9 +129,9 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
         // Check if player has enough LP (use binding owner's network)
         int lpCost = AnimusConfig.sigils.freeSoulLPCost.get();
         Binding binding = freeSoulStack.get(NVDataComponents.BINDING.get());
-        SoulNetwork network = binding != null
-            ? SoulNetworkHelper.getSoulNetwork(binding.uuid())
-            : SoulNetworkHelper.getSoulNetwork(player);
+        ISoulNetwork network = binding != null
+            ? NeoVitaeAPI.getInstance().getSoulNetwork(binding.uuid())
+            : NeoVitaeAPI.getInstance().getSoulNetwork(player.getUUID());
         int currentEssence = network.getCurrentEssence();
 
         if (currentEssence < lpCost) {
