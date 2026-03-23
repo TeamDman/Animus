@@ -5,7 +5,7 @@ plugins {
     id 'net.neoforged.moddev' version '2.0.42-beta'
 }
 
-version = mod_version
+version = "${minecraft_version}-${mod_version}"
 group = mod_group_id
 
 base {
@@ -84,12 +84,14 @@ repositories {
         name = "KosmX"
         url = "https://maven.kosmx.dev/"
     }
-    mavenLocal()
+    maven {
+        name = "BreakInBlocks"
+        url = "https://maven.breakinblocks.com/releases"
+    }
 }
 
 dependencies {
-    // Neo Vitae - from local maven (run ./gradlew publishToMavenLocal in NeoVitae first)
-    implementation "com.breakinblocks.neovitae:NeoVitae:${neovitae_version}"
+    implementation "com.breakinblocks.neovitae:neovitae:${neovitae_version}"
 
     // JEI - using CurseMaven NeoForge version (not Forge!)
     compileOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
@@ -196,12 +198,17 @@ publishing {
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            name = "BreakInBlocks"
+            url = version.toString().endsWith("-SNAPSHOT") ?
+                "https://maven.breakinblocks.com/snapshots" :
+                "https://maven.breakinblocks.com/releases"
+            credentials {
+                username = System.getenv("MAVEN_USER") ?: ""
+                password = System.getenv("MAVEN_TOKEN") ?: ""
+            }
         }
     }
 }
-
-build.dependsOn publishToMavenLocal
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
