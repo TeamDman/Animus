@@ -5,7 +5,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
-version = mod_version
+version = "${minecraft_version}-${mod_version}"
 group = mod_group_id
 
 base {
@@ -107,7 +107,6 @@ repositories {
         name = "KosmX"
         url = "https://maven.kosmx.dev/"
     }
-    mavenLocal()
 }
 
 dependencies {
@@ -236,7 +235,14 @@ publishing {
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            name = "BreakInBlocks"
+            url = version.toString().endsWith("-SNAPSHOT") ?
+                "https://maven.breakinblocks.com/snapshots" :
+                "https://maven.breakinblocks.com/releases"
+            credentials {
+                username = System.getenv("MAVEN_USER") ?: ""
+                password = System.getenv("MAVEN_TOKEN") ?: ""
+            }
         }
     }
 }
