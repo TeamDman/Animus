@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/TeamDman/Animus/1.20.1/src/main/resources/assets/animus/textures/misc/animus_512px.png" alt="Animus Logo" width="256"/>
+  <img src="https://raw.githubusercontent.com/TeamDman/Animus/1.21.1-neovitae/src/main/resources/assets/animus/textures/misc/animus_512px.png" alt="Animus Logo" width="256"/>
 </p>
 
 
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <strong>A comprehensive addon for <a href="https://github.com/WayofTime/BloodMagic/">Blood Magic</a></strong><br/>
+  <strong>A comprehensive addon for <a href="https://github.com/BreakInBlocks/NeoVitae/">NeoVitae</a> (formerly Blood Magic)</strong><br/>
   Expanding the dark arts with new sigils, rituals, weapons, and cross-mod compatibility
 </p>
 
@@ -17,7 +17,7 @@
 
 ## What is Animus?
 
-Animus extends Blood Magic with dozens of new features, powerful sigils, unique rituals new sentient and bound weapons as well as deep integration with other magic mods. Mmanipulate time, corrupt the world with AntiLife, or cast spells using Life Essence instead of Iron's Spells mana, Animus has something for you.
+Animus extends NeoVitae (formerly Blood Magic) with dozens of new features, powerful sigils, unique rituals, new sentient and bound weapons, as well as deep integration with other magic mods. Manipulate time, corrupt the world with AntiLife, or cast spells using Life Essence instead of Iron's Spells mana, Animus has something for you.
 
 ---
 
@@ -131,8 +131,8 @@ Animus provides deep integration with popular magic mods:
 
 ## Installation
 
-1. Install [Minecraft Forge](https://files.minecraftforge.net/) for 1.20.1
-2. Install [Blood Magic](https://www.curseforge.com/minecraft/mc-mods/blood-magic) 3.3.5+
+1. Install [NeoForge](https://neoforged.net/) for 1.21.1
+2. Install [NeoVitae](https://www.curseforge.com/minecraft/mc-mods/neovitae) 3.4.0+
 3. Download Animus from [CurseForge](https://minecraft.curseforge.com/projects/animus)
 4. Place in your `mods` folder
 
@@ -154,7 +154,7 @@ Animus includes a comprehensive **Codex Animus** guidebook. Craft it to learn ab
 ## Credits
 
 - **Original Author:** TeamDman & Saereth
-- **Special Thanks:** ProfHugo for the NoDamI (No Damage Immunity) implementation and AWayOfTime for Bloodmagic
+- **Special Thanks:** ProfHugo for the NoDamI (No Damage Immunity) implementation and AWayOfTime for NeoVitae (Blood Magic)
 
 ---
 
@@ -162,7 +162,7 @@ Animus includes a comprehensive **Codex Animus** guidebook. Craft it to learn ab
 
 - [CurseForge](https://minecraft.curseforge.com/projects/animus) - Downloads & Feature Overview
 - [GitHub](https://github.com/TeamDman/Animus) - Source Code & Issues
-- [Blood Magic](https://github.com/WayofTime/BloodMagic/) - Base Mod
+- [NeoVitae](https://github.com/BreakInBlocks/NeoVitae/) - Base Mod (formerly Blood Magic)
 
 ---
 
