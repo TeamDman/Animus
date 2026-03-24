@@ -1,6 +1,7 @@
 package com.teamdman.animus.datagen;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.worldgen.AnimusWorldGenProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -29,5 +30,7 @@ public class DataGenerators {
             new AnimusBlockTagsProvider(output, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(),
             new AnimusItemTagsProvider(output, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+
+        generator.addProvider(event.includeServer(), new AnimusWorldGenProvider(output, lookupProvider));
     }
 }
