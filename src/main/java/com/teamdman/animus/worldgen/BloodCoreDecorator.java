@@ -7,8 +7,8 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 
 public class BloodCoreDecorator extends TreeDecorator {
-    public static final MapCodec<BloodCoreDecorator> CODEC = MapCodec.unit(BloodCoreDecorator.INSTANCE);
     public static final BloodCoreDecorator INSTANCE = new BloodCoreDecorator();
+    public static final MapCodec<BloodCoreDecorator> CODEC = MapCodec.unit(BloodCoreDecorator.INSTANCE);
 
     @Override
     protected TreeDecoratorType<?> type() {
