@@ -91,6 +91,6 @@ public class SoulForgeRecipeBuilder {
             throw new IllegalStateException("ForgeRecipe must have at least one ingredient");
         }
         ForgeRecipe recipe = new ForgeRecipe(minWill, drainedWill, ingredients, result, willType);
-        output.accept(id.withPrefix("soul_forge/"), recipe, null);
+        output.accept(id.withPrefix("hellfire_forge/"), recipe, null);
     }
 }

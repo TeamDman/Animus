@@ -93,6 +93,10 @@ repositories {
 dependencies {
     implementation "com.breakinblocks.neovitae:neovitae:${neovitae_version}"
 
+    // Modonomicon - required by NeoVitae at runtime
+    compileOnly "curse.maven:modonomicon-538392:7771524"
+    runtimeOnly "curse.maven:modonomicon-538392:7771524"
+
     // JEI - using CurseMaven NeoForge version (not Forge!)
     compileOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
     runtimeOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
