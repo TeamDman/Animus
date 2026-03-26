@@ -28,9 +28,5 @@ public class AnimusModEventHandler {
     @SubscribeEvent
     public static void onEntityAttributeModification(EntityAttributeModificationEvent event) {
         event.add(EntityType.PLAYER, AnimusAttributes.UNARMED_DAMAGE);
-        event.add(EntityType.PLAYER, AnimusAttributes.BONUS_SACRIFICE);
-        event.add(EntityType.PLAYER, AnimusAttributes.BONUS_SELF_SACRIFICE);
-        event.add(EntityType.PLAYER, AnimusAttributes.BONUS_DEMON_WILL);
-        event.add(EntityType.PLAYER, AnimusAttributes.SIGIL_COST_REDUCTION);
     }
 }

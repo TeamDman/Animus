@@ -4,9 +4,7 @@
   "package": "com.teamdman.animus.mixin",
   "compatibilityLevel": "JAVA_21",
   "refmap": "animus.refmap.json",
-  "mixins": [
-    "DaggerOfSacrificeMixin"
-  ],
+  "mixins": [],
   "client": [],
   "injectors": {
     "defaultRequire": 0

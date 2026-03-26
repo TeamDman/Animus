@@ -6,16 +6,13 @@ import com.teamdman.animus.events.FragmentHealingEventHandler;
 import com.teamdman.animus.items.ItemSentientBow;
 import com.teamdman.animus.items.ItemSpearSentient;
 import com.teamdman.animus.items.sigils.effects.FreeSoulSigilEffect;
-import com.teamdman.animus.registry.AnimusAttributes;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.util.SigilStateCleanupManager;
 import com.teamdman.animus.util.WillWeaponStats;
 import com.breakinblocks.neovitae.common.datacomponent.AnointmentHolder;
 import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
 import com.breakinblocks.neovitae.common.datacomponent.EnumWillType;
-import com.breakinblocks.neovitae.common.event.SacrificialDaggerEvent;
 import com.breakinblocks.neovitae.common.item.NVItems;
-import com.breakinblocks.neovitae.api.event.SoulNetworkEvent;
 import com.breakinblocks.neovitae.will.IDemonWill;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.will.IPlayerDemonWillHandler;
@@ -279,14 +276,10 @@ public class AnimusEventHandler {
             default -> ((IDemonWill) NVItems.MONSTER_SOUL_RAW.get());
         };
 
-        double bonusWillPercent = attackingEntity.getAttributeValue(AnimusAttributes.BONUS_DEMON_WILL);
-        double bonusWillMultiplier = 1 + bonusWillPercent / 100.0;
-
         for (int i = 0; i <= looting; i++) {
             if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
                 double dropAmount = willModifier * (soulDrop[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
                     + staticDrop[willLevel]) * killedEntity.getMaxHealth() / 20.0;
-                dropAmount *= bonusWillMultiplier;
                 ItemStack soulStack = soul.createWill(dropAmount);
                 soulList.add(soulStack);
             }
@@ -329,27 +322,4 @@ public class AnimusEventHandler {
         player.inventoryMenu.broadcastChanges();
     }
 
-    @SubscribeEvent
-    public static void onSelfSacrifice(SacrificialDaggerEvent event) {
-        Player player = event.player;
-        double bonusPercent = player.getAttributeValue(AnimusAttributes.BONUS_SELF_SACRIFICE);
-        if (bonusPercent > 0) {
-            event.lpAdded = (int) (event.lpAdded * (1 + bonusPercent / 100.0));
-        }
-    }
-
-    @SubscribeEvent
-    public static void onSoulNetworkSyphon(SoulNetworkEvent.PreSyphon event) {
-        net.minecraft.server.MinecraftServer server = net.neoforged.neoforge.server.ServerLifecycleHooks.getCurrentServer();
-        if (server == null) return;
-
-        Player player = server.getPlayerList().getPlayer(event.getOwnerId());
-        if (player == null) return;
-
-        double reductionPercent = player.getAttributeValue(AnimusAttributes.SIGIL_COST_REDUCTION);
-        if (reductionPercent > 0) {
-            int reducedAmount = Math.max(1, (int) (event.getModifiedAmount() * (1 - reductionPercent / 100.0)));
-            event.setModifiedAmount(reducedAmount);
-        }
-    }
 }
