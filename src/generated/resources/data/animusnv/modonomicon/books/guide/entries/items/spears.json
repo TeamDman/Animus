@@ -1,0 +1,72 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "items",
+  "description": "book.animusnv.guide.items.spears.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:spear_bound"
+  },
+  "name": "book.animusnv.guide.items.spears.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.spears.intro.text",
+      "title": "book.animusnv.guide.items.spears.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.spears.iron.text",
+      "title": "book.animusnv.guide.items.spears.iron.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.spears.diamond.text",
+      "title": "book.animusnv.guide.items.spears.diamond.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.spears.bound.text",
+      "title": "book.animusnv.guide.items.spears.bound.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.spears.bound_active.text",
+      "title": "book.animusnv.guide.items.spears.bound_active.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 5,
+  "x": -1,
+  "y": 1
+}

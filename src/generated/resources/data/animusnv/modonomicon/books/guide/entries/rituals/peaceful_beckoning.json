@@ -1,0 +1,39 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "rituals",
+  "description": "book.animusnv.guide.rituals.peaceful_beckoning.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:wheat"
+  },
+  "name": "book.animusnv.guide.rituals.peaceful_beckoning.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.peaceful_beckoning.intro.text",
+      "title": "book.animusnv.guide.rituals.peaceful_beckoning.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.peaceful_beckoning.costs.text",
+      "title": "book.animusnv.guide.rituals.peaceful_beckoning.costs.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 0,
+  "x": -7,
+  "y": -2
+}

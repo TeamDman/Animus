@@ -1,0 +1,14 @@
+{
+  "type": "neovitae:array",
+  "addedinput": {
+    "item": "neovitae:reinforced_slate"
+  },
+  "baseinput": {
+    "item": "animusnv:reagentbuilder"
+  },
+  "output": {
+    "count": 1,
+    "id": "animusnv:sigil_builder"
+  },
+  "texture": "neovitae:textures/models/alchemyarrays/shardoflaputa.png"
+}

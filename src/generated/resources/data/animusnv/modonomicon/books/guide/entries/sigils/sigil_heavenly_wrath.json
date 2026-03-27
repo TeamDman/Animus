@@ -1,0 +1,50 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "sigils",
+  "description": "book.animusnv.guide.sigils.sigil_heavenly_wrath.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:sigil_heavenly_wrath"
+  },
+  "name": "book.animusnv.guide.sigils.sigil_heavenly_wrath.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_heavenly_wrath.intro.text",
+      "title": "book.animusnv.guide.sigils.sigil_heavenly_wrath.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_heavenly_wrath.mechanics.text",
+      "title": "book.animusnv.guide.sigils.sigil_heavenly_wrath.mechanics.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_heavenly_wrath.scaling.text",
+      "title": "book.animusnv.guide.sigils.sigil_heavenly_wrath.scaling.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 6,
+  "x": -2,
+  "y": 0
+}

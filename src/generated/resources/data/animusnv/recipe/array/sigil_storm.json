@@ -1,0 +1,14 @@
+{
+  "type": "neovitae:array",
+  "addedinput": {
+    "item": "neovitae:imbued_slate"
+  },
+  "baseinput": {
+    "item": "animusnv:reagentstorm"
+  },
+  "output": {
+    "count": 1,
+    "id": "animusnv:sigil_storm"
+  },
+  "texture": "neovitae:textures/models/alchemyarrays/watersigil.png"
+}

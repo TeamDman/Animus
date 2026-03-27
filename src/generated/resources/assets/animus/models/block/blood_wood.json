@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "animus:block/blockbloodwood_top",
-    "side": "animus:block/blockbloodwood"
-  }
-}

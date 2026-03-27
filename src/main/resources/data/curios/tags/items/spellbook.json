@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     {
-      "id": "animus:blood_infused_spellbook",
+      "id": "animusnv:blood_infused_spellbook",
       "required": false
     }
   ]

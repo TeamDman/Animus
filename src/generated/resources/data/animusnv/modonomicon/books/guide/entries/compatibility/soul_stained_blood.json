@@ -1,0 +1,39 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "description": "book.animusnv.guide.compatibility.soul_stained_blood.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:sculk"
+  },
+  "name": "book.animusnv.guide.compatibility.soul_stained_blood.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.soul_stained_blood.intro.text",
+      "title": "book.animusnv.guide.compatibility.soul_stained_blood.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.soul_stained_blood.effects.text",
+      "title": "book.animusnv.guide.compatibility.soul_stained_blood.effects.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 14,
+  "x": 1,
+  "y": 1
+}

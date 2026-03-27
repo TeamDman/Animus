@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "irons_spellbooks"
+    }
+  ],
+  "type": "neovitae:ara_vitae_recipe",
+  "input": {
+    "item": "irons_spellbooks:iron_spell_book"
+  },
+  "output": {
+    "count": 1,
+    "id": "animusnv:blood_infused_spellbook",
+    "components": {
+      "animusnv:infusion_tier": 1
+    }
+  },
+  "minTier": 0,
+  "bloodNeeded": 5000,
+  "craftSpeed": 20,
+  "drainSpeed": 20,
+  "copyInputComponents": true
+}

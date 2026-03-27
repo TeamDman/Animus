@@ -1,0 +1,44 @@
+{
+  "naturesleach": {
+    "subtitle": "animus.subtitle.naturesleach",
+    "sounds": [
+      "animusnv:naturesleach"
+    ]
+  },
+  "awaken_core": {
+    "subtitle": "animus.subtitle.awaken_core",
+    "sounds": [
+      "animusnv:awaken_core"
+    ]
+  },
+  "ghostly": {
+    "subtitle": "animus.subtitle.ghostly",
+    "sounds": [
+      "animusnv:ghostly"
+    ]
+  },
+  "vengefulspiritambient": {
+    "subtitle": "animus.subtitle.vengefulspiritambient",
+    "sounds": [
+      "animusnv:vengefulspiritambient"
+    ]
+  },
+  "fungal_slurp": {
+    "subtitle": "animus.subtitle.fungal_slurp",
+    "sounds": [
+      "animusnv:fungal_slurp"
+    ]
+  },
+  "ninja_time": {
+    "subtitle": "animus.subtitle.ninja_time",
+    "sounds": [
+      "animusnv:ninja_time"
+    ]
+  },
+  "execute": {
+    "subtitle": "animus.subtitle.execute",
+    "sounds": [
+      "animusnv:execute"
+    ]
+  }
+}

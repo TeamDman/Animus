@@ -1,0 +1,50 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "sigils",
+  "description": "book.animusnv.guide.sigils.sigil_leach.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:sigil_leach"
+  },
+  "name": "book.animusnv.guide.sigils.sigil_leach.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_leach.intro.text",
+      "title": "book.animusnv.guide.sigils.sigil_leach.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_leach.usage.text",
+      "title": "book.animusnv.guide.sigils.sigil_leach.usage.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_leach.details.text",
+      "title": "book.animusnv.guide.sigils.sigil_leach.details.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 7,
+  "x": 0,
+  "y": 0
+}

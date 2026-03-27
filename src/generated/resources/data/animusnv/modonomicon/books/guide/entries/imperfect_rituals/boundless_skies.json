@@ -1,0 +1,39 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "imperfect_rituals",
+  "description": "book.animusnv.guide.imperfect_rituals.boundless_skies.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:ancient_debris"
+  },
+  "name": "book.animusnv.guide.imperfect_rituals.boundless_skies.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.imperfect_rituals.boundless_skies.intro.text",
+      "title": "book.animusnv.guide.imperfect_rituals.boundless_skies.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.imperfect_rituals.boundless_skies.effects.text",
+      "title": "book.animusnv.guide.imperfect_rituals.boundless_skies.effects.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 0,
+  "x": -3,
+  "y": -1
+}

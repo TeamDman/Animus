@@ -1,0 +1,14 @@
+{
+  "type": "neovitae:array",
+  "addedinput": {
+    "item": "neovitae:demonic_slate"
+  },
+  "baseinput": {
+    "item": "animusnv:reagenttransposition"
+  },
+  "output": {
+    "count": 1,
+    "id": "animusnv:sigil_transposition"
+  },
+  "texture": "neovitae:textures/models/alchemyarrays/teleportation.png"
+}

@@ -1,7 +1,0 @@
-{
-  "lp_cost_air": 100,
-  "lp_cost_block": 100,
-  "effect": {
-    "type": "animus:builder"
-  }
-}

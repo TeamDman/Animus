@@ -1,0 +1,14 @@
+{
+  "type": "neovitae:ara_vitae_recipe",
+  "bloodNeeded": 1500,
+  "craftSpeed": 5,
+  "drainSpeed": 5,
+  "input": {
+    "item": "neovitae:simple_key"
+  },
+  "minTier": 1,
+  "output": {
+    "count": 1,
+    "id": "animusnv:key_binding"
+  }
+}

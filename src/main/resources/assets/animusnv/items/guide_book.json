@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "modonomicon:is_book_open",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "animusnv:item/guide_book_open"
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "animusnv:item/guide_book"
+    }
+  }
+}

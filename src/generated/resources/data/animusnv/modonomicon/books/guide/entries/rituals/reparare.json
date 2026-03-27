@@ -1,0 +1,50 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "rituals",
+  "description": "book.animusnv.guide.rituals.reparare.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:anvil"
+  },
+  "name": "book.animusnv.guide.rituals.reparare.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.reparare.intro.text",
+      "title": "book.animusnv.guide.rituals.reparare.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.reparare.mechanics.text",
+      "title": "book.animusnv.guide.rituals.reparare.mechanics.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.reparare.setup.text",
+      "title": "book.animusnv.guide.rituals.reparare.setup.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 10,
+  "x": 1,
+  "y": 0
+}

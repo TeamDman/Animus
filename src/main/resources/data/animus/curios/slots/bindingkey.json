@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "icon": "animus:slot/bindingkey_slot",
-  "add_cosmetic": false,
-  "use_native_gui": true,
-  "render_toggle": true,
-  "drop_rule": "ALWAYS_KEEP",
-  "order": 100
-}

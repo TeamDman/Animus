@@ -1,0 +1,61 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "rituals",
+  "description": "book.animusnv.guide.rituals.culling.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:wither_skeleton_skull"
+  },
+  "name": "book.animusnv.guide.rituals.culling.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.culling.intro.text",
+      "title": "book.animusnv.guide.rituals.culling.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.culling.costs.text",
+      "title": "book.animusnv.guide.rituals.culling.costs.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.culling.boss.text",
+      "title": "book.animusnv.guide.rituals.culling.boss.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.culling.will.text",
+      "title": "book.animusnv.guide.rituals.culling.will.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 12,
+  "x": -7,
+  "y": 2
+}

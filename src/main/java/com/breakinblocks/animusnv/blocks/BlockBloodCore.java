@@ -1,0 +1,156 @@
+package com.breakinblocks.animusnv.blocks;
+
+import com.breakinblocks.animusnv.Constants;
+import com.breakinblocks.animusnv.blockentities.BlockEntityBloodCore;
+import com.breakinblocks.animusnv.registry.AnimusBlockEntities;
+import com.breakinblocks.animusnv.registry.AnimusSounds;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
+
+/**
+ * Blood Core block - has a tile entity for special functionality
+ * Shows different texture when active (spreading enabled)
+ * Can be bonemealed to trigger sapling spreading if active
+ */
+public class BlockBloodCore extends Block implements EntityBlock, BonemealableBlock {
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+
+    public BlockBloodCore() {
+        super(BlockBehaviour.Properties.of()
+            .strength(10.0F)
+            .sound(SoundType.WOOD)
+            .randomTicks()
+        );
+        this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(ACTIVE);
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BlockEntityBloodCore(pos, state);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        if (!level.isClientSide) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof BlockEntityBloodCore bloodCore) {
+                boolean newSpreading = !bloodCore.isSpreading();
+                bloodCore.setSpreading(newSpreading);
+
+                level.setBlock(pos, state.setValue(ACTIVE, newSpreading), 3);
+
+                if (newSpreading) {
+                    level.playSound(null, pos, AnimusSounds.AWAKEN_CORE.get(),
+                        SoundSource.BLOCKS, 1.0f, 1.0f);
+
+                    player.displayClientMessage(
+                        Component.translatable(Constants.Localizations.Text.BLOOD_CORE_SPREADING_ENABLED)
+                            .withStyle(ChatFormatting.DARK_RED),
+                        true
+                    );
+                } else {
+                    player.displayClientMessage(
+                        Component.translatable(Constants.Localizations.Text.BLOOD_CORE_SPREADING_DISABLED)
+                            .withStyle(ChatFormatting.GRAY),
+                        true
+                    );
+                }
+
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    private static final BlockEntityTicker<BlockEntityBloodCore> SERVER_TICKER =
+        (level, pos, state, blockEntity) -> blockEntity.tick();
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return level.isClientSide ? null :
+            createTickerHelper(type, AnimusBlockEntities.BLOOD_CORE.get(), SERVER_TICKER);
+    }
+
+    @Nullable
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
+        BlockEntityType<A> givenType,
+        BlockEntityType<E> expectedType,
+        BlockEntityTicker<? super E> ticker
+    ) {
+        return expectedType == givenType ? (BlockEntityTicker<A>) ticker : null;
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return state.getValue(ACTIVE);
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+        return state.getValue(ACTIVE);
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        if (!state.getValue(ACTIVE)) {
+            return;
+        }
+
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof BlockEntityBloodCore bloodCore) {
+            bloodCore.trySpreadBloodTree(level);
+
+            for (int i = 0; i < 15; i++) {
+                double d0 = pos.getX() + random.nextDouble();
+                double d1 = pos.getY() + random.nextDouble() + 0.5;
+                double d2 = pos.getZ() + random.nextDouble();
+                level.sendParticles(
+                    ParticleTypes.ENCHANT,
+                    d0, d1, d2,
+                    1,
+                    0.0, 0.1, 0.0,
+                    0.5
+                );
+            }
+
+            level.playSound(
+                null,
+                pos,
+                SoundEvents.ENCHANTMENT_TABLE_USE,
+                SoundSource.BLOCKS,
+                1.0F,
+                1.0F + random.nextFloat() * 0.4F
+            );
+        }
+    }
+}

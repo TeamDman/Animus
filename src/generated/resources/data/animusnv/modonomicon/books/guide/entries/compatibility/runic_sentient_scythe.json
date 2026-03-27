@@ -1,0 +1,61 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "description": "book.animusnv.guide.compatibility.runic_sentient_scythe.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:runic_sentient_scythe"
+  },
+  "name": "book.animusnv.guide.compatibility.runic_sentient_scythe.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.runic_sentient_scythe.intro.text",
+      "title": "book.animusnv.guide.compatibility.runic_sentient_scythe.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.runic_sentient_scythe.speed.text",
+      "title": "book.animusnv.guide.compatibility.runic_sentient_scythe.speed.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.runic_sentient_scythe.harvesting.text",
+      "title": "book.animusnv.guide.compatibility.runic_sentient_scythe.harvesting.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.runic_sentient_scythe.crafting.text",
+      "title": "book.animusnv.guide.compatibility.runic_sentient_scythe.crafting.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 12,
+  "x": -3,
+  "y": 1
+}

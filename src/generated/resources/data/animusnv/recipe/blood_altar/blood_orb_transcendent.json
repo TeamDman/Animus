@@ -1,0 +1,14 @@
+{
+  "type": "neovitae:ara_vitae_recipe",
+  "bloodNeeded": 80000,
+  "craftSpeed": 10,
+  "drainSpeed": 10,
+  "input": {
+    "item": "animusnv:crystallized_spiritus_block"
+  },
+  "minTier": 5,
+  "output": {
+    "count": 1,
+    "id": "animusnv:blood_orb_transcendent"
+  }
+}

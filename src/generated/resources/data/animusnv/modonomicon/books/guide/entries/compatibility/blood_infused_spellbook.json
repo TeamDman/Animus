@@ -1,0 +1,72 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "description": "book.animusnv.guide.compatibility.blood_infused_spellbook.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:enchanted_book"
+  },
+  "name": "book.animusnv.guide.compatibility.blood_infused_spellbook.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.blood_infused_spellbook.intro.text",
+      "title": "book.animusnv.guide.compatibility.blood_infused_spellbook.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.blood_infused_spellbook.creation.text",
+      "title": "book.animusnv.guide.compatibility.blood_infused_spellbook.creation.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.blood_infused_spellbook.tiers_low.text",
+      "title": "book.animusnv.guide.compatibility.blood_infused_spellbook.tiers_low.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.blood_infused_spellbook.tiers_high.text",
+      "title": "book.animusnv.guide.compatibility.blood_infused_spellbook.tiers_high.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.blood_infused_spellbook.upgrading.text",
+      "title": "book.animusnv.guide.compatibility.blood_infused_spellbook.upgrading.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 3,
+  "x": 3,
+  "y": -2
+}

@@ -1,0 +1,62 @@
+package com.breakinblocks.animusnv.datagen.book.rituals;
+
+import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
+import com.klikli_dev.modonomicon.api.datagen.EntryBackground;
+import com.klikli_dev.modonomicon.api.datagen.EntryProvider;
+import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.world.item.Items;
+
+public class PeacefulBeckoningEntry extends EntryProvider {
+
+    public PeacefulBeckoningEntry(CategoryProviderBase parent) {
+        super(parent);
+    }
+
+    @Override
+    protected void generatePages() {
+        this.page("intro", () -> BookTextPageModel.create()
+                .withTitle(this.context().pageTitle())
+                .withText(this.context().pageText()));
+        this.pageTitle("Ritual of Peaceful Beckoning");
+        this.pageText("You call forth peaceful creatures from the ether. The [#](4A0080)Ritual of Peaceful Beckoning[#]() spawns passive mobs in the area around the [#](8B0000)Master Ritual Stone[#](), perfect for populating farms or filling the world with life."
+                + "\\\n\\\nConstruct this circle using a [#](8B0000)Ritual Diviner[#]().");
+
+        this.page("costs", () -> BookTextPageModel.create()
+                .withTitle(this.context().pageTitle())
+                .withText(this.context().pageText()));
+        this.pageTitle("Costs and Details");
+        this.pageText("[#](B8860B)Activation:[#]() 5,000 EV"
+                + "\\\n[#](B8860B)Refresh:[#]() 1,000 EV (configurable)"
+                + "\\\n[#](B8860B)Refresh Time:[#]() 400 ticks (20 seconds)"
+                + "\\\n\\\nSpawns peaceful mobs randomly within a 4-8 block radius of the ritual stone."
+                + "\\\n\\\n[#](B8860B)Mob Types:[#]() All peaceful creatures: Creature, Ambient, Water Creature, and Water Ambient categories."
+                + "\\\n\\\n[#](2E8B57)Useful for repopulating areas after a catastrophe or seeding a new animal farm without hunting.[#]()");
+    }
+
+    @Override
+    protected String entryName() {
+        return "Ritual of Peaceful Beckoning";
+    }
+
+    @Override
+    protected String entryDescription() {
+        return "Spawns passive mobs around the ritual stone.";
+    }
+
+    @Override
+    protected Pair<Integer, Integer> entryBackground() {
+        return EntryBackground.DEFAULT;
+    }
+
+    @Override
+    protected BookIconModel entryIcon() {
+        return BookIconModel.create(Items.WHEAT);
+    }
+
+    @Override
+    protected String entryId() {
+        return "peaceful_beckoning";
+    }
+}

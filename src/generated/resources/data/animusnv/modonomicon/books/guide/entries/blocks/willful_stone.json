@@ -1,0 +1,50 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "blocks",
+  "description": "book.animusnv.guide.blocks.willful_stone.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:willful_stone"
+  },
+  "name": "book.animusnv.guide.blocks.willful_stone.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.blocks.willful_stone.intro.text",
+      "title": "book.animusnv.guide.blocks.willful_stone.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.blocks.willful_stone.crafting.text",
+      "title": "book.animusnv.guide.blocks.willful_stone.crafting.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.blocks.willful_stone.dyeing.text",
+      "title": "book.animusnv.guide.blocks.willful_stone.dyeing.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 4,
+  "x": -1,
+  "y": 0
+}

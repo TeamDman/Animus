@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "animusnv:block/bloodwood_planks"
+  }
+}

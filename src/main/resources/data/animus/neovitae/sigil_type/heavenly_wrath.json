@@ -1,7 +1,0 @@
-{
-  "lp_cost_air": 1000,
-  "lp_cost_entity": 1000,
-  "effect": {
-    "type": "animus:heavenly_wrath"
-  }
-}

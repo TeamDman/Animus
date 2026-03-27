@@ -1,0 +1,39 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "items",
+  "description": "book.animusnv.guide.items.mob_soul.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:mob_soul"
+  },
+  "name": "book.animusnv.guide.items.mob_soul.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.mob_soul.intro.text",
+      "title": "book.animusnv.guide.items.mob_soul.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.mob_soul.usage.text",
+      "title": "book.animusnv.guide.items.mob_soul.usage.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 2,
+  "x": 1,
+  "y": -1
+}

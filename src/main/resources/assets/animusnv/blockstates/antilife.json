@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "decaying=true": {
+      "model": "animusnv:block/antilife"
+    },
+    "decaying=false": {
+      "model": "animusnv:block/antilife"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "rituals",
+  "description": "book.animusnv.guide.rituals.steadfast_heart.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:golden_apple"
+  },
+  "name": "book.animusnv.guide.rituals.steadfast_heart.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.steadfast_heart.intro.text",
+      "title": "book.animusnv.guide.rituals.steadfast_heart.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.steadfast_heart.costs.text",
+      "title": "book.animusnv.guide.rituals.steadfast_heart.costs.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.steadfast_heart.remote.text",
+      "title": "book.animusnv.guide.rituals.steadfast_heart.remote.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.steadfast_heart.scaling.text",
+      "title": "book.animusnv.guide.rituals.steadfast_heart.scaling.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 5,
+  "x": 3,
+  "y": -2
+}

@@ -1,0 +1,39 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "imperfect_rituals",
+  "description": "book.animusnv.guide.imperfect_rituals.reduction.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:quartz_block"
+  },
+  "name": "book.animusnv.guide.imperfect_rituals.reduction.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.imperfect_rituals.reduction.intro.text",
+      "title": "book.animusnv.guide.imperfect_rituals.reduction.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.imperfect_rituals.reduction.usage.text",
+      "title": "book.animusnv.guide.imperfect_rituals.reduction.usage.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 5,
+  "x": -1,
+  "y": 0
+}

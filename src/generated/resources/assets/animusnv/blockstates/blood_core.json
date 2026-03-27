@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "animusnv:block/blood_core"
+    },
+    "active=true": {
+      "model": "animusnv:block/blood_core_active"
+    }
+  }
+}

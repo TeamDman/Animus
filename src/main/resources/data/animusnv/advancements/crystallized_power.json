@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "animusnv:crystallized_spiritus_block"
+    },
+    "title": {
+      "translate": "advancement.animus.crystallized_power.title"
+    },
+    "description": {
+      "translate": "advancement.animus.crystallized_power.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animusnv:willful_ascension",
+  "criteria": {
+    "has_crystallized_will": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["animusnv:crystallized_spiritus_block"]
+          }
+        ]
+      }
+    }
+  }
+}

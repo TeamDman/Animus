@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "a": {
+      "tag": "c:ingots/iron"
+    },
+    "b": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    " a ",
+    "a a",
+    "  b"
+  ],
+  "result": {
+    "count": 1,
+    "id": "animusnv:spear_iron"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "description": "book.animusnv.guide.compatibility.iron_heart.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:iron_block"
+  },
+  "name": "book.animusnv.guide.compatibility.iron_heart.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.iron_heart.intro.text",
+      "title": "book.animusnv.guide.compatibility.iron_heart.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.iron_heart.effects.text",
+      "title": "book.animusnv.guide.compatibility.iron_heart.effects.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 8,
+  "x": -3,
+  "y": 0
+}

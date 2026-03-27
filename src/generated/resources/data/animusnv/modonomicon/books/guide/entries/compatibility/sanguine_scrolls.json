@@ -1,0 +1,72 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "description": "book.animusnv.guide.compatibility.sanguine_scrolls.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:paper"
+  },
+  "name": "book.animusnv.guide.compatibility.sanguine_scrolls.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.sanguine_scrolls.intro.text",
+      "title": "book.animusnv.guide.compatibility.sanguine_scrolls.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.sanguine_scrolls.creation.text",
+      "title": "book.animusnv.guide.compatibility.sanguine_scrolls.creation.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.sanguine_scrolls.tiers.text",
+      "title": "book.animusnv.guide.compatibility.sanguine_scrolls.tiers.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.sanguine_scrolls.costs.text",
+      "title": "book.animusnv.guide.compatibility.sanguine_scrolls.costs.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.sanguine_scrolls.strategy.text",
+      "title": "book.animusnv.guide.compatibility.sanguine_scrolls.strategy.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 6,
+  "x": 1,
+  "y": -1
+}

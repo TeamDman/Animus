@@ -1,0 +1,61 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "items",
+  "description": "book.animusnv.guide.items.key_binding.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:key_binding"
+  },
+  "name": "book.animusnv.guide.items.key_binding.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.key_binding.intro.text",
+      "title": "book.animusnv.guide.items.key_binding.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.key_binding.sharing.text",
+      "title": "book.animusnv.guide.items.key_binding.sharing.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.key_binding.usage.text",
+      "title": "book.animusnv.guide.items.key_binding.usage.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.key_binding.strategy.text",
+      "title": "book.animusnv.guide.items.key_binding.strategy.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 3,
+  "x": 3,
+  "y": -1
+}

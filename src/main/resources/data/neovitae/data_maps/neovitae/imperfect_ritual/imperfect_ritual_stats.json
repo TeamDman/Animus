@@ -1,66 +1,66 @@
 {
   "values": {
-    "animus:ritual_hunger": {
+    "animusnv:ritual_hunger": {
       "activation_cost": 500,
       "block": "minecraft:bone_block",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_regression": {
+    "animusnv:ritual_regression": {
       "activation_cost": 3000,
       "block": "minecraft:bookshelf",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_enhancement": {
+    "animusnv:ritual_enhancement": {
       "activation_cost": 5000,
       "block": "minecraft:amethyst_block",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_reduction": {
+    "animusnv:ritual_reduction": {
       "activation_cost": 1000,
       "block": "minecraft:quartz_block",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_boundless_skies": {
+    "animusnv:ritual_boundless_skies": {
       "activation_cost": 10000,
       "block": "minecraft:ancient_debris",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_clear_skies": {
+    "animusnv:ritual_clear_skies": {
       "activation_cost": 1000,
       "block": "minecraft:glowstone",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_neptune_blessing": {
+    "animusnv:ritual_neptune_blessing": {
       "activation_cost": 2000,
       "block": "minecraft:prismarine",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_warden": {
+    "animusnv:ritual_warden": {
       "activation_cost": 3000,
       "block": "minecraft:sculk",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_magi": {
+    "animusnv:ritual_magi": {
       "activation_cost": 2500,
       "block": "ars_nouveau:source_gem_block",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_iron_heart": {
+    "animusnv:ritual_iron_heart": {
       "activation_cost": 2500,
       "block": "irons_spellbooks:arcane_anvil",
       "consume_block": false,
       "lightning_effect": true
     },
-    "animus:ritual_soul_stained_blood": {
+    "animusnv:ritual_soul_stained_blood": {
       "activation_cost": 3000,
       "block": "malum:block_of_hallowed_gold",
       "consume_block": false,

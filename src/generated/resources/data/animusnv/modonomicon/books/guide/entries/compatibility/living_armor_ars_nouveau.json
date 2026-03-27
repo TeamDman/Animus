@@ -1,0 +1,72 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "description": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:diamond_chestplate"
+  },
+  "name": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.intro.text",
+      "title": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.xp.text",
+      "title": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.xp.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.levels_low.text",
+      "title": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.levels_low.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.details.text",
+      "title": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.details.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.synergies.text",
+      "title": "book.animusnv.guide.compatibility.living_armor_ars_nouveau.synergies.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 1,
+  "x": -1,
+  "y": -2
+}

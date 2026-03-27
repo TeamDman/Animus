@@ -1,0 +1,6 @@
+{
+  "lp_cost_block": 200,
+  "effect": {
+    "type": "animusnv:consumption"
+  }
+}

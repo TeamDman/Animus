@@ -1,0 +1,12 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.breakinblocks.animusnv.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "animusnv.refmap.json",
+  "mixins": [],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

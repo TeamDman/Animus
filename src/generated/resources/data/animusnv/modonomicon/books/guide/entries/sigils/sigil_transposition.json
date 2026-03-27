@@ -1,0 +1,61 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "sigils",
+  "description": "book.animusnv.guide.sigils.sigil_transposition.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:sigil_transposition"
+  },
+  "name": "book.animusnv.guide.sigils.sigil_transposition.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_transposition.intro.text",
+      "title": "book.animusnv.guide.sigils.sigil_transposition.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_transposition.block_mode.text",
+      "title": "book.animusnv.guide.sigils.sigil_transposition.block_mode.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_transposition.entity_mode.text",
+      "title": "book.animusnv.guide.sigils.sigil_transposition.entity_mode.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_transposition.restrictions.text",
+      "title": "book.animusnv.guide.sigils.sigil_transposition.restrictions.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 13,
+  "x": 2,
+  "y": 2
+}

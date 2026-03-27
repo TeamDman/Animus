@@ -1,0 +1,21 @@
+package com.breakinblocks.animusnv.client.renderers;
+
+import com.breakinblocks.animusnv.Constants;
+import net.minecraft.client.renderer.entity.ArrowRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+
+public class AnimusArrowRenderer<T extends AbstractArrow> extends ArrowRenderer<T> {
+    private static final ResourceLocation SPECTRAL_ARROW_LOCATION =
+        ResourceLocation.withDefaultNamespace("textures/entity/projectiles/spectral_arrow.png");
+
+    public AnimusArrowRenderer(EntityRendererProvider.Context context) {
+        super(context);
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(T entity) {
+        return SPECTRAL_ARROW_LOCATION;
+    }
+}

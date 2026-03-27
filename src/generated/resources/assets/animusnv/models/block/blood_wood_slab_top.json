@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "animusnv:block/bloodwood_planks",
+    "side": "animusnv:block/bloodwood_planks",
+    "top": "animusnv:block/bloodwood_planks"
+  }
+}

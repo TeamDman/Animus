@@ -1,0 +1,14 @@
+{
+  "type": "neovitae:array",
+  "addedinput": {
+    "item": "neovitae:demonic_slate"
+  },
+  "baseinput": {
+    "item": "animusnv:reagenttemporaldominance"
+  },
+  "output": {
+    "count": 1,
+    "id": "animusnv:sigil_temporal_dominance"
+  },
+  "texture": "neovitae:textures/models/alchemyarrays/moonarray.png"
+}

@@ -1,0 +1,7 @@
+{
+  "lp_cost_air": 0,
+  "lp_cost_block": 0,
+  "effect": {
+    "type": "animusnv:equivalency"
+  }
+}

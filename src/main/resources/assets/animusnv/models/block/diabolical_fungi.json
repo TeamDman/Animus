@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "animusnv:block/diabolical_fungi"
+  }
+}

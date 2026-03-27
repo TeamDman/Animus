@@ -1,0 +1,14 @@
+{
+  "type": "neovitae:array",
+  "addedinput": {
+    "item": "neovitae:imbued_slate"
+  },
+  "baseinput": {
+    "item": "animusnv:reagentreparare"
+  },
+  "output": {
+    "count": 1,
+    "id": "animusnv:sigil_reparare"
+  },
+  "texture": "neovitae:textures/models/alchemyarrays/fastminersigil.png"
+}

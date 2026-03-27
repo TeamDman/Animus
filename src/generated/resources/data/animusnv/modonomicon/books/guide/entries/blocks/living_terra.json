@@ -1,0 +1,50 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "blocks",
+  "description": "book.animusnv.guide.blocks.living_terra.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:living_terra_bucket"
+  },
+  "name": "book.animusnv.guide.blocks.living_terra.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.blocks.living_terra.intro.text",
+      "title": "book.animusnv.guide.blocks.living_terra.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.blocks.living_terra.properties.text",
+      "title": "book.animusnv.guide.blocks.living_terra.properties.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.blocks.living_terra.applications.text",
+      "title": "book.animusnv.guide.blocks.living_terra.applications.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 3,
+  "x": 1,
+  "y": -1
+}

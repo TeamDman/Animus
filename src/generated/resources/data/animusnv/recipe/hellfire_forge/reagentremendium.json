@@ -1,0 +1,23 @@
+{
+  "type": "neovitae:hellfire_forge",
+  "drain": 64.0,
+  "inputs": [
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:golden_apple"
+    },
+    {
+      "item": "minecraft:glistering_melon_slice"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    }
+  ],
+  "minDrain": 128.0,
+  "output": {
+    "count": 1,
+    "id": "animusnv:reagentremendium"
+  }
+}

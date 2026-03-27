@@ -1,0 +1,89 @@
+package com.breakinblocks.animusnv.rituals.imperfect;
+
+import com.breakinblocks.animusnv.Constants;
+import com.breakinblocks.animusnv.registry.AnimusDataComponents;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import com.breakinblocks.neovitae.api.ritual.IImperfectRitualStone;
+import com.breakinblocks.neovitae.ritual.ImperfectRitual;
+
+/**
+ * Imperfect Ritual of Reduction
+ * Requires: Quartz Block on top of Imperfect Ritual Stone
+ * Cost: 1000 EV
+ * Effect: Removes enhancement record and downgrades all enchantments by 1 level (min level 1)
+ */
+public class RitualReduction extends ImperfectRitual {
+
+    public RitualReduction() {
+        super(
+            Constants.Rituals.REDUCTION,
+            state -> state.is(Blocks.QUARTZ_BLOCK),
+            1000,
+            true,
+            "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.REDUCTION
+        );
+    }
+
+    @Override
+    public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
+        Level level = ritualStone.getRitualWorld();
+
+        if (level.isClientSide) {
+            return false;
+        }
+
+        ItemStack mainhandItem = player.getMainHandItem();
+        if (mainhandItem.isEmpty()) {
+            player.displayClientMessage(
+                Component.translatable("ritual.animusnv.reduction.no_item"),
+                false
+            );
+            return false;
+        }
+
+        ItemEnchantments enchantments = mainhandItem.get(DataComponents.ENCHANTMENTS);
+        if (enchantments == null || enchantments.isEmpty()) {
+            player.displayClientMessage(
+                Component.translatable("ritual.animusnv.reduction.no_enchantments"),
+                false
+            );
+            return false;
+        }
+
+        ItemEnchantments.Mutable mutableEnchantments = new ItemEnchantments.Mutable(enchantments);
+        for (Holder<Enchantment> enchantment : enchantments.keySet()) {
+            int currentLevel = enchantments.getLevel(enchantment);
+            int newLevel = Math.max(1, currentLevel - 1);
+            mutableEnchantments.set(enchantment, newLevel);
+        }
+
+        mainhandItem.set(DataComponents.ENCHANTMENTS, mutableEnchantments.toImmutable());
+        mainhandItem.remove(AnimusDataComponents.ANIMUS_ENHANCED.get());
+
+        level.playSound(
+            null,
+            player.getX(), player.getY(), player.getZ(),
+            SoundEvents.GRINDSTONE_USE,
+            SoundSource.BLOCKS,
+            1.0F,
+            0.8F
+        );
+
+        player.displayClientMessage(
+            Component.translatable("ritual.animusnv.reduction.success"),
+            true
+        );
+
+        return true;
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "neovitae:hellfire_forge",
+  "drain": 25.0,
+  "inputs": [
+    {
+      "tag": "c:stones"
+    },
+    {
+      "tag": "c:stones"
+    },
+    {
+      "item": "neovitae:reinforced_slate"
+    },
+    {
+      "tag": "c:dusts/redstone"
+    }
+  ],
+  "minDrain": 50.0,
+  "output": {
+    "count": 4,
+    "id": "animusnv:willful_stone"
+  }
+}

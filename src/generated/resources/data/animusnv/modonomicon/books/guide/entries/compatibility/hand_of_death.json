@@ -1,0 +1,72 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "description": "book.animusnv.guide.compatibility.hand_of_death.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:hand_of_death"
+  },
+  "name": "book.animusnv.guide.compatibility.hand_of_death.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.hand_of_death.intro.text",
+      "title": "book.animusnv.guide.compatibility.hand_of_death.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.hand_of_death.lifesteal.text",
+      "title": "book.animusnv.guide.compatibility.hand_of_death.lifesteal.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.hand_of_death.execute.text",
+      "title": "book.animusnv.guide.compatibility.hand_of_death.execute.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.hand_of_death.inherited.text",
+      "title": "book.animusnv.guide.compatibility.hand_of_death.inherited.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.hand_of_death.crafting.text",
+      "title": "book.animusnv.guide.compatibility.hand_of_death.crafting.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 13,
+  "x": -1,
+  "y": 1
+}

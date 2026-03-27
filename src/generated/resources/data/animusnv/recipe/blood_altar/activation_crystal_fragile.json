@@ -1,0 +1,14 @@
+{
+  "type": "neovitae:ara_vitae_recipe",
+  "bloodNeeded": 5000,
+  "craftSpeed": 5,
+  "drainSpeed": 5,
+  "input": {
+    "item": "minecraft:clay_ball"
+  },
+  "minTier": 2,
+  "output": {
+    "count": 1,
+    "id": "animusnv:activation_crystal_fragile"
+  }
+}

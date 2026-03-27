@@ -1,0 +1,72 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "description": "book.animusnv.guide.compatibility.rune_unleashed_nature.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:oak_sapling"
+  },
+  "name": "book.animusnv.guide.compatibility.rune_unleashed_nature.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.rune_unleashed_nature.intro.text",
+      "title": "book.animusnv.guide.compatibility.rune_unleashed_nature.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.rune_unleashed_nature.crafting.text",
+      "title": "book.animusnv.guide.compatibility.rune_unleashed_nature.crafting.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.rune_unleashed_nature.passive.text",
+      "title": "book.animusnv.guide.compatibility.rune_unleashed_nature.passive.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.rune_unleashed_nature.charged.text",
+      "title": "book.animusnv.guide.compatibility.rune_unleashed_nature.charged.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.rune_unleashed_nature.charging.text",
+      "title": "book.animusnv.guide.compatibility.rune_unleashed_nature.charging.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 9,
+  "x": -1,
+  "y": 0
+}

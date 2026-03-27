@@ -1,0 +1,50 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "rituals",
+  "description": "book.animusnv.guide.rituals.relentless_tides.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:water_bucket"
+  },
+  "name": "book.animusnv.guide.rituals.relentless_tides.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.relentless_tides.intro.text",
+      "title": "book.animusnv.guide.rituals.relentless_tides.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.relentless_tides.setup.text",
+      "title": "book.animusnv.guide.rituals.relentless_tides.setup.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.rituals.relentless_tides.behavior.text",
+      "title": "book.animusnv.guide.rituals.relentless_tides.behavior.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 9,
+  "x": -1,
+  "y": 0
+}

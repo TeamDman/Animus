@@ -1,0 +1,20 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "irons_spellbooks"
+    }
+  ],
+  "type": "neovitae:array",
+  "baseinput": {
+    "item": "animusnv:reagentfist"
+  },
+  "addedinput": {
+    "item": "neovitae:imbued_slate"
+  },
+  "output": {
+    "count": 1,
+    "id": "animusnv:sigil_crimson_will"
+  },
+  "texture": "neovitae:textures/models/alchemyarrays/sigil.png"
+}

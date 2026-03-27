@@ -1,0 +1,50 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "items",
+  "description": "book.animusnv.guide.items.sentient_shield.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "animusnv:sentient_shield"
+  },
+  "name": "book.animusnv.guide.items.sentient_shield.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.sentient_shield.intro.text",
+      "title": "book.animusnv.guide.items.sentient_shield.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.sentient_shield.will_effects.text",
+      "title": "book.animusnv.guide.items.sentient_shield.will_effects.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.items.sentient_shield.will_bonus.text",
+      "title": "book.animusnv.guide.items.sentient_shield.will_bonus.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 6,
+  "x": 1,
+  "y": 1
+}

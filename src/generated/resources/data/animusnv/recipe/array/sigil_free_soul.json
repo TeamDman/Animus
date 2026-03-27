@@ -1,0 +1,14 @@
+{
+  "type": "neovitae:array",
+  "addedinput": {
+    "item": "neovitae:demonic_slate"
+  },
+  "baseinput": {
+    "item": "animusnv:reagentfreesoul"
+  },
+  "output": {
+    "count": 1,
+    "id": "animusnv:sigil_free_soul"
+  },
+  "texture": "neovitae:textures/models/alchemyarrays/teleportationarray.png"
+}
