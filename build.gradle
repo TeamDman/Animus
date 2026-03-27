@@ -43,118 +43,57 @@ neoForge {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    maven { name = "Progwml6"; url = "https://dvs1.progwml6.com/files/maven/" }
+    maven { name = "BlameJared"; url = "https://maven.blamejared.com" }
+    maven { name = "Thehippomaster"; url = "https://maven.theillusivec4.top/" }
+    maven { name = "GeckoLib"; url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" }
+    maven { name = "KosmX"; url = "https://maven.kosmx.dev/" }
+    maven { name = "BreakInBlocks"; url = "https://maven.breakinblocks.com/releases" }
     maven {
-        // JEI
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        // Curios
-        name = "Thehippomaster"
-        url = "https://maven.theillusivec4.top/"
-    }
-    maven {
-        // Patchouli
-        name = "BlameJared"
-        url = "https://maven.blamejared.com"
-    }
-    maven {
-        // CurseForge Maven (for optional compat mods)
         name = "CurseForge"
         url = "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
+        content { includeGroup "curse.maven" }
     }
     maven {
-        // Modrinth Maven (for optional compat mods)
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
-        content {
-            includeGroup "maven.modrinth"
-        }
-    }
-    maven {
-        // Geckolib
-        name = "GeckoLib"
-        url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
-    }
-    maven {
-        // PlayerAnimator
-        name = "KosmX"
-        url = "https://maven.kosmx.dev/"
-    }
-    maven {
-        name = "BreakInBlocks"
-        url = "https://maven.breakinblocks.com/releases"
+        content { includeGroup "maven.modrinth" }
     }
 }
 
 dependencies {
     implementation "com.breakinblocks.neovitae:neovitae:${neovitae_version}"
 
-    // Modonomicon - required by NeoVitae at runtime
     compileOnly "curse.maven:modonomicon-538392:7771524"
     runtimeOnly "curse.maven:modonomicon-538392:7771524"
 
-    // JEI - using CurseMaven NeoForge version (not Forge!)
     compileOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
     runtimeOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
 
-    // Curios - for bauble integration
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
-    // Patchouli - for documentation books
-    compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}:api"
-    runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
-
-    // ============================================================================
-    // Library Dependencies (required by compat mods)
-    // ============================================================================
-
-    // GeckoLib - required by Ars Nouveau, Iron's Spells
     compileOnly "curse.maven:geckolib-388172:${geckolib_cursemaven_id}"
     runtimeOnly "curse.maven:geckolib-388172:${geckolib_cursemaven_id}"
 
-    // PlayerAnimator - required by Iron's Spells
-    // Downloaded from Modrinth (2.0.1+1.21.1 required by Iron's Spells)
     compileOnly files('libs/player-animation-lib-2.0.1+1.21.1.jar')
     runtimeOnly files('libs/player-animation-lib-2.0.1+1.21.1.jar')
 
-    // Lodestone - required by Malum
     compileOnly "curse.maven:lodestone-616457:${lodestone_cursemaven_id}"
     runtimeOnly "curse.maven:lodestone-616457:${lodestone_cursemaven_id}"
 
-    // Modopedia - required by Blood Magic for in-game documentation
-    // Downloaded from Modrinth since Maven resolution was problematic
     compileOnly files('libs/modopedia-1.1.5-neoforge.jar')
     runtimeOnly files('libs/modopedia-1.1.5-neoforge.jar')
 
-    // ============================================================================
-    // Optional Compat Dependencies
-    // ============================================================================
-    // These dependencies are runtimeOnly, meaning they're available in dev/datagen
-    // but NOT packaged in the production jar. Production users must install the
-    // compat mods themselves. Runtime detection via ModList.get().isLoaded() handles
-    // graceful degradation when mods are missing.
-    // ============================================================================
-
-    // Ars Nouveau
     compileOnly "curse.maven:ars-nouveau-401955:${arsnouveau_cursemaven_id}"
     runtimeOnly "curse.maven:ars-nouveau-401955:${arsnouveau_cursemaven_id}"
 
-    // Iron's Spells n Spellbooks
     compileOnly "curse.maven:irons-spells-n-spellbooks-855414:${ironsspells_cursemaven_id}"
     runtimeOnly "curse.maven:irons-spells-n-spellbooks-855414:${ironsspells_cursemaven_id}"
 
-    // Malum
     compileOnly "curse.maven:malum-484064:${malum_cursemaven_id}"
     runtimeOnly "curse.maven:malum-484064:${malum_cursemaven_id}"
 
-    // Note: Botania not yet ported to 1.21.1 - compat remains disabled
-
-    // Jade - for in-game block/entity information HUD
     runtimeOnly "curse.maven:jade-324717:${jade_cursemaven_id}"
 }
 
