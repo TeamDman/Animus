@@ -1,0 +1,15 @@
+{
+  "values": [
+    "animusnv:antilife",
+    "animusnv:crystallized_spiritus_block",
+    "animusnv:willful_stone",
+    {
+      "id": "animusnv:arcane_rune",
+      "required": false
+    },
+    {
+      "id": "animusnv:rune_unleashed_nature",
+      "required": false
+    }
+  ]
+}

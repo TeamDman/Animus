@@ -87,6 +87,6 @@ public class AltarRecipeBuilder {
             throw new IllegalStateException("AltarRecipe requires bloodNeeded > 0");
         }
         AraVitaeRecipe recipe = new AraVitaeRecipe(input, result, minTier, totalBlood, craftingSpeed, drainSpeed, copyInputComponents);
-        output.accept(id.withPrefix("blood_altar/"), recipe, null);
+        output.accept(id.withPrefix("ara_vitae/"), recipe, null);
     }
 }

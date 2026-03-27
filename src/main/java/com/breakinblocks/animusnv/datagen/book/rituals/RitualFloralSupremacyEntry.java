@@ -1,4 +1,4 @@
-package com.breakinblocks.animusnv.datagen.book.compatibility;
+package com.breakinblocks.animusnv.datagen.book.rituals;
 
 import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.EntryBackground;

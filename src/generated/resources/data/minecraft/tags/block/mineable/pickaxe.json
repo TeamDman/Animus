@@ -17,6 +17,14 @@
     "animusnv:willful_stone_brown",
     "animusnv:willful_stone_green",
     "animusnv:willful_stone_red",
-    "animusnv:willful_stone_black"
+    "animusnv:willful_stone_black",
+    {
+      "id": "animusnv:arcane_rune",
+      "required": false
+    },
+    {
+      "id": "animusnv:rune_unleashed_nature",
+      "required": false
+    }
   ]
 }

@@ -4,6 +4,7 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -83,6 +84,15 @@ public class AnimusBlockTagsProvider extends BlockTagsProvider {
             .add(AnimusBlocks.BLOCK_WILLFUL_STONE_BROWN.get())
             .add(AnimusBlocks.BLOCK_WILLFUL_STONE_GREEN.get())
             .add(AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get())
-            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get());
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get())
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_rune"))
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "rune_unleashed_nature"));
+
+        this.tag(BlockTags.NEEDS_STONE_TOOL)
+            .add(AnimusBlocks.BLOCK_ANTILIFE.get())
+            .add(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get())
+            .add(AnimusBlocks.BLOCK_WILLFUL_STONE.get())
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_rune"))
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "rune_unleashed_nature"));
     }
 }

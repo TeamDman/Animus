@@ -10,6 +10,28 @@
   "name": "book.animusnv.guide.sigils.sigil_transposition.name",
   "pages": [
     {
+      "type": "neovitae:hellfire_forge_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "animusnv:hellfire_forge/reagenttransposition",
+      "text": "",
+      "title1": "",
+      "title2": ""
+    },
+    {
+      "type": "neovitae:alchemy_array_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "animusnv:array/sigil_transposition",
+      "text": "",
+      "title1": "",
+      "title2": ""
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {

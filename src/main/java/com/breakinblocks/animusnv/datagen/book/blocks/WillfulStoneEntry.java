@@ -5,8 +5,10 @@ import com.klikli_dev.modonomicon.api.datagen.EntryBackground;
 import com.klikli_dev.modonomicon.api.datagen.EntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import com.breakinblocks.animusnv.datagen.book.page.BookHellfireForgeRecipePageModel;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.resources.ResourceLocation;
 
 public class WillfulStoneEntry extends EntryProvider {
 
@@ -16,6 +18,9 @@ public class WillfulStoneEntry extends EntryProvider {
 
     @Override
     protected void generatePages() {
+        this.page("recipe", () -> BookHellfireForgeRecipePageModel.create()
+                .withRecipeId1(ResourceLocation.fromNamespaceAndPath("animusnv", "hellfire_forge/willful_stone")));
+
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
@@ -23,7 +28,11 @@ public class WillfulStoneEntry extends EntryProvider {
         this.pageText("Stone saturated with [#](4A0080)Spiritus[#]() takes on a strange, "
                 + "almost luminous quality, as though the demonic energy has fused with the mineral itself. "
                 + "[#](8B0000)Willful Stone[#]() is a decorative building material prized by "
-                + "Vitaemancers who wish their sanctums to reflect the power within.");
+                + "Vitaemancers who wish their sanctums to reflect the power within.\\\n\\\n"
+                + "[#](4A0080)Once placed, Willful Stone can only be broken by the Vitaemancer who laid it. "
+                + "Others who attempt to mine it will find it unyielding. To grant an ally access, "
+                + "craft a [#](8B0000)Key of Binding[#]() and bind it to yourself, then share "
+                + "the key with your trusted companion.[#]()");
 
         this.page("crafting", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())

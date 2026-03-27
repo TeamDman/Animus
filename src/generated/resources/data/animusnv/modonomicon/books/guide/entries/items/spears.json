@@ -10,6 +10,28 @@
   "name": "book.animusnv.guide.items.spears.name",
   "pages": [
     {
+      "type": "neovitae:alchemy_array_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "animusnv:array/spear_bound",
+      "text": "",
+      "title1": "",
+      "title2": ""
+    },
+    {
+      "type": "neovitae:hellfire_forge_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "animusnv:hellfire_forge/spear_sentient",
+      "text": "",
+      "title1": "",
+      "title2": ""
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {
@@ -68,5 +90,5 @@
   "show_when_any_parent_unlocked": false,
   "sort_number": 5,
   "x": -1,
-  "y": 1
+  "y": 0
 }

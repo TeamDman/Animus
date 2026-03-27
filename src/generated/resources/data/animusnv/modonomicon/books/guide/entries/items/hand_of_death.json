@@ -1,23 +1,34 @@
 {
   "background_u_index": 0,
   "background_v_index": 0,
-  "category": "compatibility",
-  "description": "book.animusnv.guide.compatibility.hand_of_death.description",
+  "category": "items",
+  "description": "book.animusnv.guide.items.hand_of_death.description",
   "hide_while_locked": false,
   "icon": {
     "item": "animusnv:hand_of_death"
   },
-  "name": "book.animusnv.guide.compatibility.hand_of_death.name",
+  "name": "book.animusnv.guide.items.hand_of_death.name",
   "pages": [
     {
+      "type": "neovitae:hellfire_forge_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "animusnv:hellfire_forge/hand_of_death",
+      "text": "",
+      "title1": "",
+      "title2": ""
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.hand_of_death.intro.text",
-      "title": "book.animusnv.guide.compatibility.hand_of_death.intro.title",
+      "text": "book.animusnv.guide.items.hand_of_death.intro.text",
+      "title": "book.animusnv.guide.items.hand_of_death.intro.title",
       "use_markdown_in_title": false
     },
     {
@@ -27,8 +38,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.hand_of_death.lifesteal.text",
-      "title": "book.animusnv.guide.compatibility.hand_of_death.lifesteal.title",
+      "text": "book.animusnv.guide.items.hand_of_death.lifesteal.text",
+      "title": "book.animusnv.guide.items.hand_of_death.lifesteal.title",
       "use_markdown_in_title": false
     },
     {
@@ -38,8 +49,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.hand_of_death.execute.text",
-      "title": "book.animusnv.guide.compatibility.hand_of_death.execute.title",
+      "text": "book.animusnv.guide.items.hand_of_death.execute.text",
+      "title": "book.animusnv.guide.items.hand_of_death.execute.title",
       "use_markdown_in_title": false
     },
     {
@@ -49,8 +60,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.hand_of_death.inherited.text",
-      "title": "book.animusnv.guide.compatibility.hand_of_death.inherited.title",
+      "text": "book.animusnv.guide.items.hand_of_death.inherited.text",
+      "title": "book.animusnv.guide.items.hand_of_death.inherited.title",
       "use_markdown_in_title": false
     },
     {
@@ -60,13 +71,13 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.hand_of_death.crafting.text",
-      "title": "book.animusnv.guide.compatibility.hand_of_death.crafting.title",
+      "text": "book.animusnv.guide.items.hand_of_death.crafting.text",
+      "title": "book.animusnv.guide.items.hand_of_death.crafting.title",
       "use_markdown_in_title": false
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "sort_number": 13,
-  "x": -1,
-  "y": 1
+  "sort_number": 10,
+  "x": 1,
+  "y": 2
 }

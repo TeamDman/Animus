@@ -1,13 +1,13 @@
 {
   "background_u_index": 0,
   "background_v_index": 0,
-  "category": "compatibility",
-  "description": "book.animusnv.guide.compatibility.ritual_arcane_mastery.description",
+  "category": "items",
+  "description": "book.animusnv.guide.items.living_armor_ars_nouveau.description",
   "hide_while_locked": false,
   "icon": {
-    "item": "minecraft:enchanted_book"
+    "item": "minecraft:diamond_chestplate"
   },
-  "name": "book.animusnv.guide.compatibility.ritual_arcane_mastery.name",
+  "name": "book.animusnv.guide.items.living_armor_ars_nouveau.name",
   "pages": [
     {
       "type": "modonomicon:text",
@@ -16,8 +16,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.ritual_arcane_mastery.intro.text",
-      "title": "book.animusnv.guide.compatibility.ritual_arcane_mastery.intro.title",
+      "text": "book.animusnv.guide.items.living_armor_ars_nouveau.intro.text",
+      "title": "book.animusnv.guide.items.living_armor_ars_nouveau.intro.title",
       "use_markdown_in_title": false
     },
     {
@@ -27,8 +27,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.ritual_arcane_mastery.mechanics.text",
-      "title": "book.animusnv.guide.compatibility.ritual_arcane_mastery.mechanics.title",
+      "text": "book.animusnv.guide.items.living_armor_ars_nouveau.xp.text",
+      "title": "book.animusnv.guide.items.living_armor_ars_nouveau.xp.title",
       "use_markdown_in_title": false
     },
     {
@@ -38,8 +38,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.ritual_arcane_mastery.costs.text",
-      "title": "book.animusnv.guide.compatibility.ritual_arcane_mastery.costs.title",
+      "text": "book.animusnv.guide.items.living_armor_ars_nouveau.levels_low.text",
+      "title": "book.animusnv.guide.items.living_armor_ars_nouveau.levels_low.title",
       "use_markdown_in_title": false
     },
     {
@@ -49,8 +49,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.ritual_arcane_mastery.setup.text",
-      "title": "book.animusnv.guide.compatibility.ritual_arcane_mastery.setup.title",
+      "text": "book.animusnv.guide.items.living_armor_ars_nouveau.details.text",
+      "title": "book.animusnv.guide.items.living_armor_ars_nouveau.details.title",
       "use_markdown_in_title": false
     },
     {
@@ -60,13 +60,13 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.ritual_arcane_mastery.tips.text",
-      "title": "book.animusnv.guide.compatibility.ritual_arcane_mastery.tips.title",
+      "text": "book.animusnv.guide.items.living_armor_ars_nouveau.synergies.text",
+      "title": "book.animusnv.guide.items.living_armor_ars_nouveau.synergies.title",
       "use_markdown_in_title": false
     }
   ],
   "show_when_any_parent_unlocked": false,
-  "sort_number": 5,
-  "x": -1,
-  "y": -1
+  "sort_number": 7,
+  "x": 3,
+  "y": 0
 }

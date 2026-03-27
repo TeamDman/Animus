@@ -34,12 +34,19 @@ public class AnimusBookProvider extends SingleBookSubProvider {
         this.add(new CompatCategory(this).generate());
     }
 
+    private static ResourceLocation rl(String path) {
+        return ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, path);
+    }
+
     @Override
     protected BookModel additionalSetup(BookModel book) {
         return super.additionalSetup(book)
                 .withGenerateBookItem(false)
-                .withCustomBookItem(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "guide_book"))
+                .withCustomBookItem(rl("guide_book"))
                 .withModel(ResourceLocation.fromNamespaceAndPath("modonomicon", "modonomicon_red"))
+                .withBookContentTexture(rl("textures/gui/book_content.png"))
+                .withFrameTexture(rl("textures/gui/book_frame.png"))
+                .withBookOverviewTexture(rl("textures/gui/book_overview.png"))
                 .withCreativeTab(ResourceLocation.fromNamespaceAndPath("neovitae", "main"));
     }
 

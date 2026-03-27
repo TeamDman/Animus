@@ -48,13 +48,12 @@ public class WelcomeEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Organization");
         this.pageText("The Codex Animus is organized into chapters:\n\n"
-                + "- [#](8B0000)Sigils[#](): Portable tools of Vitaemancy\n\n"
+                + "- [#](8B0000)Blocks[#](): Unique materials, fluids, and flora\n\n"
+                + "- [#](8B0000)Items[#](): Weapons, tools, and implements\n\n"
+                + "- [#](8B0000)Sigils[#](): Portable instruments of Vitaemancy\n\n"
                 + "- [#](8B0000)Rituals[#](): Ceremonial workings of power\n\n"
-                + "- [#](8B0000)Items & Tools[#](): Weapons and implements\n\n"
-                + "- [#](8B0000)Corruption & Fluids[#](): Dark matter and essences\n\n"
-                + "- [#](8B0000)Blood Trees[#](): Living wood born of sacrifice\n\n"
-                + "- [#](8B0000)Compatibility[#](): Bridges to foreign magics\\\n\\\n"
-                + "Use the index or search function to locate specific topics.");
+                + "- [#](8B0000)Imperfect Rituals[#](): Simpler rites for a single stone\n\n"
+                + "- [#](8B0000)Compatibility[#](): Bridges to foreign magics");
     }
 
     @Override

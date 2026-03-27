@@ -18,7 +18,7 @@ public class RitualsCategory extends CategoryProvider {
                 "____________________",
                 "__g_h_i_j_k_l______",
                 "____________________",
-                "__m_n_o____________"
+                "__m_n_o_p_q________"
         };
     }
 
@@ -39,10 +39,13 @@ public class RitualsCategory extends CategoryProvider {
         var reparare = this.add(new ReparareEntry(this).generate('k'));
         var endlessGreed = this.add(new EndlessGreedEntry(this).generate('l'));
 
+        var ritualArcaneMastery = this.add(new RitualArcaneMasteryEntry(this).generate('m'));
+        var ritualFloralSupremacy = this.add(new RitualFloralSupremacyEntry(this).generate('n'));
+
         // Dusk rituals (uses dusk stones)
-        var culling = this.add(new CullingEntry(this).generate('m'));
-        var persistence = this.add(new PersistenceEntry(this).generate('n'));
-        var unmaking = this.add(new UnmakingEntry(this).generate('o'));
+        var culling = this.add(new CullingEntry(this).generate('o'));
+        var persistence = this.add(new PersistenceEntry(this).generate('p'));
+        var unmaking = this.add(new UnmakingEntry(this).generate('q'));
     }
 
     @Override

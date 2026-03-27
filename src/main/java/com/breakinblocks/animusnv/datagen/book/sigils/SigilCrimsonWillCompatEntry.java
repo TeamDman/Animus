@@ -1,4 +1,4 @@
-package com.breakinblocks.animusnv.datagen.book.compatibility;
+package com.breakinblocks.animusnv.datagen.book.sigils;
 
 import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.EntryBackground;
@@ -93,6 +93,6 @@ public class SigilCrimsonWillCompatEntry extends EntryProvider {
 
     @Override
     protected String entryId() {
-        return "sigil_crimson_will";
+        return "sigil_crimson_will_compat";
     }
 }

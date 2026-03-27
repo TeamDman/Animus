@@ -5,8 +5,10 @@ import com.klikli_dev.modonomicon.api.datagen.EntryBackground;
 import com.klikli_dev.modonomicon.api.datagen.EntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import com.breakinblocks.animusnv.datagen.book.page.BookHellfireForgeRecipePageModel;
 import com.mojang.datafixers.util.Pair;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
+import net.minecraft.resources.ResourceLocation;
 
 public class CrystallizedSpiritusBlockEntry extends EntryProvider {
 
@@ -16,6 +18,9 @@ public class CrystallizedSpiritusBlockEntry extends EntryProvider {
 
     @Override
     protected void generatePages() {
+        this.page("recipe", () -> BookHellfireForgeRecipePageModel.create()
+                .withRecipeId1(ResourceLocation.fromNamespaceAndPath("animusnv", "hellfire_forge/crystallized_spiritus_block")));
+
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
