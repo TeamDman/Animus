@@ -13,6 +13,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -93,6 +95,27 @@ public class ItemSentientBow extends BowItem {
             case STEADFAST -> steadfastDamageAdded[level];
             default -> defaultDamageAdded[level];
         };
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        SpiritusType type = getCurrentType(stack);
+        double soulsRemaining = getTotalWillOfType(player, type);
+        if (!player.getAbilities().instabuild && soulsRemaining < getWillCostPerShot()) {
+            if (!level.isClientSide) {
+                player.displayClientMessage(
+                    Component.translatable("message.animus.sentient_bow.out_of_will")
+                        .withStyle(ChatFormatting.RED),
+                    true
+                );
+            }
+            return InteractionResultHolder.fail(stack);
+        }
+
+        player.startUsingItem(hand);
+        return InteractionResultHolder.consume(stack);
     }
 
     @Override

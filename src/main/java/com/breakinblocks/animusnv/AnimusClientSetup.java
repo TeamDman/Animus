@@ -49,6 +49,9 @@ public class AnimusClientSetup {
             registerSpearThrowingProperty(AnimusItems.SPEAR_BOUND.get());
             registerSpearThrowingProperty(AnimusItems.SPEAR_SENTIENT.get());
 
+            registerBowPullProperties(AnimusItems.SENTIENT_BOW.get());
+            registerBowPullProperties(AnimusItems.HELLFORGED_BOW.get());
+
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 registerCrimsonWillSigilProperty();
             }
@@ -138,6 +141,24 @@ public class AnimusClientSetup {
                     return 1.0F;
                 }
                 return 0.0F;
+            }
+        );
+    }
+
+    private static void registerBowPullProperties(net.minecraft.world.item.Item item) {
+        ItemProperties.register(item,
+            ResourceLocation.withDefaultNamespace("pull"),
+            (stack, level, entity, seed) -> {
+                if (entity == null || entity.getUseItem() != stack) {
+                    return 0.0F;
+                }
+                return (float)(stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
+            }
+        );
+        ItemProperties.register(item,
+            ResourceLocation.withDefaultNamespace("pulling"),
+            (stack, level, entity, seed) -> {
+                return entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
             }
         );
     }
