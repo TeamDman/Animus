@@ -50,7 +50,7 @@ public class ItemSigilCrimsonWill extends AnimusSigilBase {
         }
 
         var binding = getBinding(stack);
-        if (binding == null || binding.isEmpty() || !binding.uuid().equals(player.getUUID())) {
+        if (!isBindingOwner(binding, player)) {
             return InteractionResultHolder.fail(stack);
         }
 

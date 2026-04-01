@@ -59,6 +59,16 @@ repositories {
         url = "https://api.modrinth.com/maven"
         content { includeGroup "maven.modrinth" }
     }
+    maven {
+        name = "FTB Maven"
+        url = "https://maven.ftb.dev/releases"
+        content { includeGroup "dev.ftb.mods" }
+    }
+    maven {
+        name = "Architectury Maven"
+        url = "https://maven.architectury.dev/"
+        content { includeGroup "dev.architectury" }
+    }
 }
 
 dependencies {
@@ -95,6 +105,11 @@ dependencies {
     runtimeOnly "curse.maven:malum-484064:${malum_cursemaven_id}"
 
     runtimeOnly "curse.maven:jade-324717:${jade_cursemaven_id}"
+
+    // FTB Teams - soft dependency for team binding support (not required at runtime)
+    compileOnly "dev.ftb.mods:ftb-teams-neoforge:2101.1.9"
+    compileOnly "dev.ftb.mods:ftb-library-neoforge:2101.1.6"
+    compileOnly "dev.architectury:architectury-neoforge:13.0.8"
 }
 
 tasks.named('processResources', ProcessResources).configure {
