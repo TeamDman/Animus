@@ -2,6 +2,7 @@ package com.breakinblocks.animusnv.rituals;
 
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
+import com.breakinblocks.animusnv.blocks.BlockBloodCore;
 import com.breakinblocks.animusnv.util.AnimusUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -190,7 +191,8 @@ public class RitualNaturesLeach extends Ritual {
             return false;
         }
 
-        if (block.defaultBlockState().is(BlockTags.LOGS)) {
+        if (block.defaultBlockState().is(BlockTags.LOGS) ||
+            block.defaultBlockState().is(BlockTags.LEAVES)) {
             return true;
         }
 
@@ -200,7 +202,7 @@ public class RitualNaturesLeach extends Ritual {
             return true;
         }
 
-        if (block instanceof BonemealableBlock) {
+        if (block instanceof BonemealableBlock && !(block instanceof BlockBloodCore)) {
             return true;
         }
 
