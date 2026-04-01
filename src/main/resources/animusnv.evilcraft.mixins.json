@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.breakinblocks.animusnv.mixin.evilcraft",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "animusnv.refmap.json",
+  "plugin": "com.breakinblocks.animusnv.mixin.EvilCraftMixinPlugin",
+  "mixins": [
+    "BlockEntityBloodInfuserMixin",
+    "BlockEntityBloodStainFluidHandlerMixin",
+    "BlockEntityPurifierMixin",
+    "BlockEntitySanguinaryPedestalMixin",
+    "BlockSpikedPlateMixin",
+    "ItemBloodContainerMixin",
+    "ItemBloodExtractorMixin",
+    "ItemCondensedBloodMixin",
+    "LootModifierInjectBroomMixin",
+    "RecipeBloodExtractorCombinationMixin",
+    "SanguinaryEnvironmentalAccumulatorMixin",
+    "SlotFluidContainerMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

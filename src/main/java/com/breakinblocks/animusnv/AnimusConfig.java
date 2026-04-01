@@ -854,6 +854,36 @@ public class AnimusConfig {
         }
     }
 
+    public static class EvilCraft {
+        public final ModConfigSpec.BooleanValue enableBloodUnification;
+        public final ModConfigSpec.DoubleValue conversionRatio;
+
+        public EvilCraft(ModConfigSpec.Builder builder) {
+            builder.comment("EvilCraft Integration - requires EvilCraft to be installed").push("evilcraft");
+
+            enableBloodUnification = builder
+                .comment(
+                    "Enable blood unification between EvilCraft and NeoVitae",
+                    "When enabled, EvilCraft machines will accept NeoVitae's Essentia Vitae as blood",
+                    "Essentia Vitae can be piped into EvilCraft machines and used interchangeably with EvilCraft blood",
+                    "Default: false"
+                )
+                .define("enableBloodUnification", false);
+
+            conversionRatio = builder
+                .comment(
+                    "Conversion ratio from Essentia Vitae to EvilCraft blood",
+                    "1.0 means 1:1 conversion (1 mB Essentia Vitae = 1 mB EvilCraft blood)",
+                    "Values above 1.0 mean Essentia Vitae is worth more blood",
+                    "Values below 1.0 mean Essentia Vitae is worth less blood",
+                    "Default: 1.0"
+                )
+                .defineInRange("conversionRatio", 1.0, 0.01, 100.0);
+
+            builder.pop();
+        }
+    }
+
     public static General general;
     public static Rituals rituals;
     public static Sigils sigils;
@@ -863,6 +893,7 @@ public class AnimusConfig {
     public static Botania botania;
     public static Weapons weapons;
     public static IronsSpells ironsSpells;
+    public static EvilCraft evilcraft;
 
     static {
         BUILDER.comment("Animus Configuration").push("animusnv");
@@ -876,6 +907,7 @@ public class AnimusConfig {
         botania = new Botania(BUILDER);
         weapons = new Weapons(BUILDER);
         ironsSpells = new IronsSpells(BUILDER);
+        evilcraft = new EvilCraft(BUILDER);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

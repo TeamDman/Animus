@@ -88,6 +88,13 @@ description = '''${mod_description}'''
     ordering = "AFTER"
     side = "BOTH"
 
+[[dependencies.animusnv]]
+    modId = "evilcraft"
+    type = "optional"
+    versionRange = "*"
+    ordering = "AFTER"
+    side = "BOTH"
+
 # =============================================================================
 # Mixins
 # =============================================================================
@@ -97,3 +104,6 @@ config = "animusnv.mixins.json"
 
 [[mixins]]
 config = "animusnv.ironsspells.mixins.json"
+
+[[mixins]]
+config = "animusnv.evilcraft.mixins.json"
