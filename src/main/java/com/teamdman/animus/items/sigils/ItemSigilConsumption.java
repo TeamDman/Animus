@@ -38,7 +38,7 @@ public class ItemSigilConsumption extends AnimusSigilBase {
 
         // Check if sigil is bound to a player
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (!isBindingOwner(binding, player)) {
             return InteractionResultHolder.fail(stack);
         }
 

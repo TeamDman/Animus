@@ -50,7 +50,7 @@ public class ItemSigilChains extends AnimusSigilBase {
 
         // Check if sigil is bound to the player
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (!isBindingOwner(binding, player)) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -76,7 +76,7 @@ public class ItemSigilChains extends AnimusSigilBase {
 
         // Check if sigil is bound to the player
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (!isBindingOwner(binding, player)) {
             return InteractionResult.FAIL;
         }
 

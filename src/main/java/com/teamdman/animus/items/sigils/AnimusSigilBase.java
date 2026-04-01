@@ -1,11 +1,15 @@
 package com.teamdman.animus.items.sigils;
 
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.compat.teams.FTBTeamsBindingHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import wayoftime.bloodmagic.common.item.sigil.ItemSigilBase;
 import wayoftime.bloodmagic.core.data.Binding;
@@ -51,6 +55,28 @@ public abstract class AnimusSigilBase extends ItemSigilBase {
     @NotNull
     public String getSigilName() {
         return name;
+    }
+
+    /**
+     * Check if the given binding belongs to the player, either directly (player UUID match)
+     * or via team membership (binding owner is a team UUID and the player is on that team).
+     *
+     * @param binding The binding to check (may be null)
+     * @param player The player attempting to use the item
+     * @return true if the player owns the binding or is on the bound team
+     */
+    protected static boolean isBindingOwner(Binding binding, Player player) {
+        if (binding == null) return false;
+        if (binding.getOwnerId().equals(player.getUUID())) return true;
+        // Check if the binding is a team binding and the player is on that team
+        if (player instanceof ServerPlayer serverPlayer && ModList.get().isLoaded("ftbteams")) {
+            try {
+                return FTBTeamsBindingHelper.isPlayerOnTeam(serverPlayer, binding.getOwnerId());
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -61,7 +61,7 @@ public class ItemSigilMonk extends ItemSigilToggleableBase implements ICurioItem
 
         // Check binding
         Binding binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (!isBindingOwner(binding, player)) {
             return InteractionResultHolder.fail(stack);
         }
 

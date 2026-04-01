@@ -57,7 +57,7 @@ public class ItemSigilReparare extends AnimusSigilBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (!isBindingOwner(binding, player)) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal("Sigil is not bound to you!")
                     .withStyle(net.minecraft.ChatFormatting.RED),

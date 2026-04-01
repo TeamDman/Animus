@@ -103,6 +103,22 @@ repositories {
         url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
     }
     maven {
+        // FTB Teams (soft dependency for team binding support)
+        name = "FTB Maven"
+        url = "https://maven.ftb.dev/releases"
+        content {
+            includeGroup "dev.ftb.mods"
+        }
+    }
+    maven {
+        // Architectury (required by FTB mods)
+        name = "Architectury Maven"
+        url = "https://maven.architectury.dev/"
+        content {
+            includeGroup "dev.architectury"
+        }
+    }
+    maven {
         // PlayerAnimator
         name = "KosmX"
         url = "https://maven.kosmx.dev/"
@@ -176,6 +192,11 @@ dependencies {
     // Runtime detection via ModList.get().isLoaded("irons_spellbooks") handles graceful degradation
     compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:7402504")
     runtimeOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:7402504")
+
+    // FTB Teams - soft dependency for team binding support (not required at runtime)
+    compileOnly fg.deobf("dev.ftb.mods:ftb-teams-forge:2001.3.1")
+    compileOnly fg.deobf("dev.ftb.mods:ftb-library-forge:2001.2.12")
+    compileOnly fg.deobf("dev.architectury:architectury-forge:9.0.8")
 
     // The One Probe - for debugging in dev environment only (not required in production)
     runtimeOnly fg.deobf("curse.maven:the-one-probe-245211:6106996")

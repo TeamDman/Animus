@@ -120,7 +120,7 @@ public class ItemSigilTransposition extends ItemSigilToggleableBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (!isBindingOwner(binding, player)) {
             return InteractionResult.FAIL;
         }
 

@@ -74,7 +74,7 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
 
         // Check binding
         var binding = getBinding(stack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (!isBindingOwner(binding, player)) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -144,7 +144,7 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
         // Check if sigil is bound to player
         ItemSigilFreeSoul sigil = (ItemSigilFreeSoul) freeSoulStack.getItem();
         var binding = sigil.getBinding(freeSoulStack);
-        if (binding == null || !binding.getOwnerId().equals(player.getUUID())) {
+        if (!isBindingOwner(binding, player)) {
             return false;
         }
 
