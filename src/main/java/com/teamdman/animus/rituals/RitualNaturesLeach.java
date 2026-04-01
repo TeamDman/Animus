@@ -2,6 +2,7 @@ package com.teamdman.animus.rituals;
 
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.blocks.BlockBloodCore;
 import com.teamdman.animus.util.AnimusUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -228,8 +229,9 @@ public class RitualNaturesLeach extends Ritual {
             return false;
         }
 
-        // Check if block is a log
-        if (block.defaultBlockState().is(BlockTags.LOGS)) {
+        // Check if block is a log or leaves
+        if (block.defaultBlockState().is(BlockTags.LOGS) ||
+            block.defaultBlockState().is(BlockTags.LEAVES)) {
             return true;
         }
 
@@ -240,8 +242,8 @@ public class RitualNaturesLeach extends Ritual {
             return true;
         }
 
-        // Check if block is bonemealable (growable)
-        if (block instanceof BonemealableBlock) {
+        // Check if block is bonemealable (growable), but not blood cores
+        if (block instanceof BonemealableBlock && !(block instanceof BlockBloodCore)) {
             return true;
         }
 
