@@ -110,6 +110,12 @@ dependencies {
     compileOnly "dev.ftb.mods:ftb-teams-neoforge:2101.1.9"
     compileOnly "dev.ftb.mods:ftb-library-neoforge:2101.1.6"
     compileOnly "dev.architectury:architectury-neoforge:13.0.8"
+
+    compileOnly "curse.maven:cyclops-core-232758:${cyclopscore_cursemaven_id}"
+    runtimeOnly "curse.maven:cyclops-core-232758:${cyclopscore_cursemaven_id}"
+
+    compileOnly "curse.maven:evilcraft-74610:${evilcraft_cursemaven_id}"
+    runtimeOnly "curse.maven:evilcraft-74610:${evilcraft_cursemaven_id}"
 }
 
 tasks.named('processResources', ProcessResources).configure {
