@@ -339,7 +339,7 @@ public class AnimusEventHandler {
      * When a player has a bound Key of Binding in their offhand and binds an item,
      * the item gets bound to the Key's owner instead of the player
      */
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public static void onItemRightClick(PlayerInteractEvent.RightClickItem event) {
         // Only run on server side
         if (event.getLevel().isClientSide()) {
@@ -426,8 +426,10 @@ public class AnimusEventHandler {
         if (mainHandStack.getItem() instanceof IBindable bindable) {
             Binding currentBinding = bindable.getBinding(mainHandStack);
 
-            // Check if the item was just bound to this player
-            if (currentBinding != null && currentBinding.getOwnerId().equals(playerId)) {
+            // Check if the item was just bound (it was confirmed unbound when the Key was used).
+            // Don't compare owner UUIDs - the item may have been team-bound by another mod
+            // (e.g. bloodmagicteams), in which case the owner is a team UUID, not the player's.
+            if (currentBinding != null) {
                 // Transfer the binding to the Key's owner
                 mainHandStack.getOrCreateTag().put("binding", keyBinding.serializeNBT());
 
