@@ -67,7 +67,35 @@ public class BlockEntityBloodCore extends BlockEntity {
             leafRegrowthCounter--;
             if (leafRegrowthCounter <= 0) {
                 leafRegrowthCounter = AnimusConfig.bloodCore.leafRegrowthSpeed.get();
+                tryRegrowTrunk((ServerLevel) level);
                 tryRegrowLeaves((ServerLevel) level);
+            }
+        }
+    }
+
+    /**
+     * Attempts to regrow missing blood wood logs in the trunk below the core.
+     * Scans straight down and fills air gaps with blood wood.
+     */
+    private void tryRegrowTrunk(ServerLevel level) {
+        RandomSource random = level.getRandom();
+        int maxHeight = 8;
+
+        for (int dy = 1; dy <= maxHeight; dy++) {
+            BlockPos checkPos = worldPosition.below(dy);
+            BlockState state = level.getBlockState(checkPos);
+
+            if (state.is(AnimusBlocks.BLOCK_BLOOD_WOOD.get())) {
+                continue;
+            }
+
+            if (state.isAir() || state.is(AnimusBlocks.BLOCK_BLOOD_LEAVES.get())) {
+                if (random.nextFloat() < 0.3f) {
+                    level.setBlock(checkPos, AnimusBlocks.BLOCK_BLOOD_WOOD.get().defaultBlockState(), 3);
+                    return;
+                }
+            } else {
+                break;
             }
         }
     }
