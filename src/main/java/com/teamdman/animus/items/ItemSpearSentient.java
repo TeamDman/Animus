@@ -77,7 +77,7 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
             .withStyle(ChatFormatting.AQUA));
 
         if (level != null && level.isClientSide) {
-            Player player = level.getNearestPlayer(0, 0, 0, Double.MAX_VALUE, false);
+            Player player = net.minecraft.client.Minecraft.getInstance().player;
             if (player != null) {
                 double soulsRemaining = getTotalWillOfType(player, type);
                 int willLevel = getLevel(stack, soulsRemaining);
@@ -354,23 +354,11 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
     }
 
     /**
-     * Determines the demon will type based on will available from the player's soul network
-     * Returns the type with the highest will amount
+     * Determines the demon will type based on will available from the player's inventory.
+     * Uses Blood Magic's own method to find the type with the highest will amount.
      */
     private static EnumDemonWillType findDemonWillType(Player player) {
-        // Get will amounts from the player's soul network
-        EnumDemonWillType highestType = EnumDemonWillType.DEFAULT;
-        double highestAmount = 0;
-
-        for (EnumDemonWillType type : EnumDemonWillType.values()) {
-            double amount = PlayerDemonWillHandler.getTotalDemonWill(type, player);
-            if (type != EnumDemonWillType.DEFAULT && amount > highestAmount) {
-                highestType = type;
-                highestAmount = amount;
-            }
-        }
-
-        return highestType;
+        return PlayerDemonWillHandler.getLargestWillType(player);
     }
 
     /**
