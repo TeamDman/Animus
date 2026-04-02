@@ -23,7 +23,6 @@ public class CompatHandler {
         COMPAT_MODULES.put("irons_spellbooks", () -> new IronsSpellsCompat());
         COMPAT_MODULES.put("ars_nouveau", () -> new ArsNouveauCompat());
         COMPAT_MODULES.put("malum", () -> new MalumCompat());
-        COMPAT_MODULES.put("evilcraft", () -> new EvilCraftCompat());
         // Botania not available for 1.21.1 yet
         // COMPAT_MODULES.put("botania", () -> new BotaniaCompat());
     }
@@ -97,7 +96,4 @@ public class CompatHandler {
         return isModuleLoaded("botania");
     }
 
-    public static boolean isEvilCraftLoaded() {
-        return isModuleLoaded("evilcraft");
-    }
 }
