@@ -77,7 +77,7 @@ public class ItemSpearSentient extends ItemSpear implements IDemonWillWeapon {
             .withStyle(ChatFormatting.AQUA));
 
         if (level != null && level.isClientSide) {
-            Player player = net.minecraft.client.Minecraft.getInstance().player;
+            Player player = level.getNearestPlayer(0, 0, 0, Double.MAX_VALUE, false);
             if (player != null) {
                 double soulsRemaining = getTotalWillOfType(player, type);
                 int willLevel = getLevel(stack, soulsRemaining);
