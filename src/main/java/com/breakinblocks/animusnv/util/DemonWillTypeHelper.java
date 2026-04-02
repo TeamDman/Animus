@@ -19,23 +19,11 @@ public final class DemonWillTypeHelper {
     }
 
     /**
-     * Finds the Spiritus type with the highest amount in the player's inventory,
-     * excluding DEFAULT. Returns DEFAULT if the player has no non-default will.
+     * Finds the Spiritus type with the highest amount in the player's inventory.
+     * Delegates to NeoVitae's own method which correctly includes DEFAULT in the comparison.
      */
     public static SpiritusType findDemonWillType(Player player) {
-        IPlayerSpiritusHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
-        SpiritusType highestType = SpiritusType.DEFAULT;
-        double highestAmount = 0;
-
-        for (SpiritusType type : SpiritusType.values()) {
-            double amount = playerWill.getTotalSpiritus(type, player);
-            if (type != SpiritusType.DEFAULT && amount > highestAmount) {
-                highestType = type;
-                highestAmount = amount;
-            }
-        }
-
-        return highestType;
+        return NeoVitaeAPI.getInstance().getPlayerWillHandler().getLargestSpiritusType(player);
     }
 
     /**
