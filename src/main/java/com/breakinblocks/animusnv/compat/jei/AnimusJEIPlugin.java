@@ -144,11 +144,11 @@ public class AnimusJEIPlugin implements IModPlugin {
             if (bloodInfusedSpellbook != null && bloodInfusedSpellbook != Items.AIR) {
 
                 String[] orbNames = {
-                    "Apprentice Blood Orb",
-                    "Magician's Blood Orb",
-                    "Master Blood Orb",
-                    "Archmage's Blood Orb",
-                    "Transcendent Blood Orb"
+                    "Apprentice Orb of Vitae",
+                    "Magician's Orb of Vitae",
+                    "Master Orb of Vitae",
+                    "Archmage's Orb of Vitae",
+                    "Transcendent Orb of Vitae"
                 };
 
                 int[] evCosts = {

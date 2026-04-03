@@ -26,7 +26,7 @@ public class SentientShieldEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Sentient Shield");
         this.pageText("A demonic shield infused with [#](4A0080)Spiritus[#](), forged in the "
-                + "[#](8B0000)Hellfire Forge[#](). It boasts 4x the durability of a normal shield "
+                + "[#](8B0000)Tabula Vitae[#](). It boasts 4x the durability of a normal shield "
                 + "(1,344 vs 336) and grants special effects when blocking based on the type of "
                 + "Spiritus available to you.");
 

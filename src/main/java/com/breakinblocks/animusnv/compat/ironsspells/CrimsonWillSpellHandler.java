@@ -80,8 +80,8 @@ public class CrimsonWillSpellHandler {
         int spellLevel = event.getSpellLevel();
         int manaCost = spellLevel; // Approximation of mana cost
 
-        int evCost = manaCost * AnimusConfig.ironsSpells.crimsonWillLPPerMana.get();
-        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+        int evCost = manaCost * AnimusConfig.ironsSpells.crimsonWillEVPerMana.get();
+        IAnima network = com.breakinblocks.animusnv.util.AnimusRitualHelper.getNetworkForBoundItem(player, activeSigil);
         if (network == null || network.getCurrentEV() < evCost) {
             player.displayClientMessage(
                 Component.literal("Not enough EV! Need " + evCost + " EV")
@@ -197,8 +197,13 @@ public class CrimsonWillSpellHandler {
     }
 
     private ItemStack findActiveSigil(Player player) {
-        java.util.function.Predicate<ItemStack> isActiveCrimsonWill = stack ->
-            stack.getItem() instanceof ItemSigilCrimsonWill && ItemSigilCrimsonWill.isActive(stack);
+        java.util.function.Predicate<ItemStack> isActiveCrimsonWill = stack -> {
+            if (!stack.is(com.breakinblocks.animusnv.compat.IronsSpellsCompat.SIGIL_CRIMSON_WILL.get())) return false;
+            if (stack.getItem() instanceof com.breakinblocks.neovitae.common.item.IActivatable activatable) {
+                return activatable.getActivated(stack);
+            }
+            return false;
+        };
 
         var fromInventory = InventorySearchHelper.findFirst(player, isActiveCrimsonWill);
         if (fromInventory.isPresent()) {

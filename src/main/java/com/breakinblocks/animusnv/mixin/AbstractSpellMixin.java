@@ -36,7 +36,7 @@ public class AbstractSpellMixin {
         method = "canBeCastedBy",
         at = @At("HEAD")
     )
-    private void animus$addTemporaryManaForLPCasting(
+    private void animus$addTemporaryManaForEVCasting(
         int spellLevel,
         CastSource castSource,
         MagicData magicData,
@@ -44,24 +44,24 @@ public class AbstractSpellMixin {
         CallbackInfoReturnable<CastResult> cir
     ) {
         try {
-            boolean lpCastingEnabled;
+            boolean evCastingEnabled;
             boolean requireBloodOrb = true;
             int evPerMana = 100;
             boolean allowHybridCasting = true;
             try {
                 if (AnimusConfig.ironsSpells != null) {
-                    lpCastingEnabled = AnimusConfig.ironsSpells.enableLPCasting.get();
+                    evCastingEnabled = AnimusConfig.ironsSpells.enableEVCasting.get();
                     requireBloodOrb = AnimusConfig.ironsSpells.requireBloodOrb.get();
                     evPerMana = AnimusConfig.ironsSpells.evPerMana.get();
                     allowHybridCasting = AnimusConfig.ironsSpells.allowHybridCasting.get();
                 } else {
-                    lpCastingEnabled = true;
+                    evCastingEnabled = true;
                 }
             } catch (Exception e) {
-                lpCastingEnabled = true;
+                evCastingEnabled = true;
             }
 
-            if (!lpCastingEnabled) {
+            if (!evCastingEnabled) {
                 return;
             }
 
@@ -75,11 +75,15 @@ public class AbstractSpellMixin {
 
             int manaDeficit = manaCost - currentMana;
 
-            if (requireBloodOrb && !hasBloodOrb(player)) {
+            ItemStack orbStack = findOrbOfVitae(player);
+            if (requireBloodOrb && orbStack.isEmpty()) {
                 return;
             }
 
-            IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+            // Use the orb's binding for network lookup (respects team bindings)
+            IAnima network = !orbStack.isEmpty()
+                ? com.breakinblocks.animusnv.util.AnimusRitualHelper.getNetworkForBoundItem(player, orbStack)
+                : NeoVitaeAPI.getInstance().getAnima(player.getUUID());
             if (network == null) {
                 return;
             }
@@ -98,9 +102,9 @@ public class AbstractSpellMixin {
             }
 
             if (!spellbook.isEmpty()) {
-                double lpReduction = ItemBloodInfusedSpellbook.getEVCostReduction(spellbook);
-                if (lpReduction > 0) {
-                    evCost = (int) Math.max(1, evCost * (1.0 - lpReduction));
+                double evReduction = ItemBloodInfusedSpellbook.getEVCostReduction(spellbook);
+                if (evReduction > 0) {
+                    evCost = (int) Math.max(1, evCost * (1.0 - evReduction));
                 }
             }
 
@@ -147,22 +151,22 @@ public class AbstractSpellMixin {
         return ItemStack.EMPTY;
     }
 
-    private static boolean hasBloodOrb(Player player) {
+    private static ItemStack findOrbOfVitae(Player player) {
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof BloodOrbItem) {
-                return true;
+                return stack;
             }
         }
 
         for (ItemStack stack : player.getInventory().armor) {
             if (stack.getItem() instanceof BloodOrbItem) {
-                return true;
+                return stack;
             }
         }
 
         for (ItemStack stack : player.getInventory().offhand) {
             if (stack.getItem() instanceof BloodOrbItem) {
-                return true;
+                return stack;
             }
         }
 
@@ -173,11 +177,11 @@ public class AbstractSpellMixin {
             for (int i = 0; i < handler.getSlots(); i++) {
                 ItemStack stack = handler.getStackInSlot(i);
                 if (stack.getItem() instanceof BloodOrbItem) {
-                    return true;
+                    return stack;
                 }
             }
         }
 
-        return false;
+        return ItemStack.EMPTY;
     }
 }

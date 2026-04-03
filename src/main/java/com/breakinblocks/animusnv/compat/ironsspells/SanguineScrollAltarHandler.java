@@ -34,11 +34,11 @@ import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
  */
 public class SanguineScrollAltarHandler {
 
-    private static final int COMMON_LP = 2000;
-    private static final int UNCOMMON_LP = 4000;
-    private static final int RARE_LP = 8000;
-    private static final int EPIC_LP = 12000;
-    private static final int LEGENDARY_LP = 16000;
+    private static final int COMMON_EV = 2000;
+    private static final int UNCOMMON_EV = 4000;
+    private static final int RARE_EV = 8000;
+    private static final int EPIC_EV = 12000;
+    private static final int LEGENDARY_EV = 16000;
 
     public static void register() {
         NeoForge.EVENT_BUS.register(SanguineScrollAltarHandler.class);
@@ -162,11 +162,11 @@ public class SanguineScrollAltarHandler {
 
     private static int getEVCostForRarity(io.redspace.ironsspellbooks.api.spells.SpellRarity rarity) {
         return switch (rarity) {
-            case COMMON -> COMMON_LP;
-            case UNCOMMON -> UNCOMMON_LP;
-            case RARE -> RARE_LP;
-            case EPIC -> EPIC_LP;
-            case LEGENDARY -> LEGENDARY_LP;
+            case COMMON -> COMMON_EV;
+            case UNCOMMON -> UNCOMMON_EV;
+            case RARE -> RARE_EV;
+            case EPIC -> EPIC_EV;
+            case LEGENDARY -> LEGENDARY_EV;
         };
     }
 

@@ -114,9 +114,9 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
             guiGraphics.drawString(font, "→", 45, 43, 0x404040, false);
             guiGraphics.drawString(font, "→", 105, 43, 0x404040, false);
 
-            String lpText = String.format("%,d EV", recipe.getLpCost());
-            int lpWidth = font.width(lpText);
-            guiGraphics.drawString(font, lpText, (WIDTH - lpWidth) / 2, 60, 0xAA0000, false);
+            String evText = String.format("%,d EV", recipe.getEvCost());
+            int evWidth = font.width(evText);
+            guiGraphics.drawString(font, evText, (WIDTH - evWidth) / 2, 60, 0xAA0000, false);
 
             drawWrappedText(guiGraphics, font, recipe.getDescription().getString(), 5, 75, 160, 0x606060);
 
@@ -128,9 +128,9 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
             int subtitleWidth = font.width(subtitle);
             guiGraphics.drawString(font, subtitle, (WIDTH - subtitleWidth) / 2, 14, 0x8B0000, false);
 
-            String lpText = String.format("%,d EV", recipe.getLpCost());
-            int lpWidth = font.width(lpText);
-            guiGraphics.drawString(font, lpText, (WIDTH - lpWidth) / 2, 60, 0xAA0000, false);
+            String evText = String.format("%,d EV", recipe.getEvCost());
+            int evWidth = font.width(evText);
+            guiGraphics.drawString(font, evText, (WIDTH - evWidth) / 2, 60, 0xAA0000, false);
 
             String orbReq = "Requires: " + recipe.getRequiredOrb();
             int orbWidth = font.width(orbReq);
@@ -146,8 +146,8 @@ public class AltarInfusionCategory implements IRecipeCategory<AltarInfusionDispl
             guiGraphics.drawString(font, "↙", 105, 46, 0x404040, false);
             guiGraphics.drawString(font, "↓", 80, 70, 0x404040, false);
 
-            String lpText = String.format("%,d EV*", recipe.getLpCost());
-            guiGraphics.drawString(font, lpText, 5, 56, 0xAA0000, false);
+            String evText = String.format("%,d EV*", recipe.getEvCost());
+            guiGraphics.drawString(font, evText, 5, 56, 0xAA0000, false);
         }
     }
 

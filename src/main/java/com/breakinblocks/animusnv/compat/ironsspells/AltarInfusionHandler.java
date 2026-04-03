@@ -28,7 +28,7 @@ import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
  * to preserve spell data from the original spellbook.
  *
  * This handler only manages tier upgrades (1->2, 2->3, etc.) which require
- * checking Blood Orb tiers and tier-specific EV costs.
+ * checking Orb of Vitae tiers and tier-specific EV costs.
  */
 public class AltarInfusionHandler {
 
@@ -79,10 +79,10 @@ public class AltarInfusionHandler {
         int nextTier = currentTier + 1;
         int evCost = ItemBloodInfusedSpellbook.getUpgradeCost(stack);
 
-        int altarLP = altar.getCurrentBlood();
-        if (altarLP < evCost) {
+        int altarEV = altar.getCurrentBlood();
+        if (altarEV < evCost) {
             player.displayClientMessage(
-                Component.literal("Altar needs " + evCost + " EV (has " + altarLP + " EV)")
+                Component.literal("Altar needs " + evCost + " EV (has " + altarEV + " EV)")
                     .withStyle(ChatFormatting.RED),
                 true
             );
@@ -132,13 +132,13 @@ public class AltarInfusionHandler {
 
     private static String getOrbName(int tier) {
         return switch (tier) {
-            case 1 -> "Weak Blood Orb";
-            case 2 -> "Apprentice Blood Orb";
-            case 3 -> "Magician's Blood Orb";
-            case 4 -> "Master Blood Orb";
-            case 5 -> "Archmage's Blood Orb";
-            case 6 -> "Transcendent Blood Orb";
-            default -> "Blood Orb";
+            case 1 -> "Weak Orb of Vitae";
+            case 2 -> "Apprentice Orb of Vitae";
+            case 3 -> "Magician's Orb of Vitae";
+            case 4 -> "Master Orb of Vitae";
+            case 5 -> "Archmage's Orb of Vitae";
+            case 6 -> "Transcendent Orb of Vitae";
+            default -> "Orb of Vitae";
         };
     }
 

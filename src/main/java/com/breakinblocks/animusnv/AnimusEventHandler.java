@@ -12,7 +12,6 @@ import com.breakinblocks.animusnv.util.WillWeaponStats;
 import com.breakinblocks.neovitae.common.datacomponent.AnointmentHolder;
 import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
-import com.breakinblocks.neovitae.common.item.NVItems;
 import com.breakinblocks.neovitae.will.ISpiritus;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.will.IPlayerSpiritusHandler;
@@ -268,13 +267,7 @@ public class AnimusEventHandler {
 
         double willModifier = killedEntity instanceof net.minecraft.world.entity.monster.Slime ? 0.67 : 1;
 
-        ISpiritus soul = switch (willType) {
-            case CORROSIVE -> ((ISpiritus) NVItems.MONSTER_SOUL_CORROSIVE.get());
-            case DESTRUCTIVE -> ((ISpiritus) NVItems.MONSTER_SOUL_DESTRUCTIVE.get());
-            case STEADFAST -> ((ISpiritus) NVItems.MONSTER_SOUL_STEADFAST.get());
-            case VENGEFUL -> ((ISpiritus) NVItems.MONSTER_SOUL_VENGEFUL.get());
-            default -> ((ISpiritus) NVItems.MONSTER_SOUL_RAW.get());
-        };
+        ISpiritus soul = WillWeaponStats.getSoulItem(willType);
 
         for (int i = 0; i <= looting; i++) {
             if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {

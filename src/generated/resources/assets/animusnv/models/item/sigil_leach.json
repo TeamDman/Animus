@@ -9,6 +9,6 @@
     }
   ],
   "textures": {
-    "layer0": "animusnv:item/itemsigilleach_deactivated"
+    "layer0": "animusnv:item/sigil_leach_deactivated"
   }
 }

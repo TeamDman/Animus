@@ -47,7 +47,7 @@ public class SpellCastingHandler {
             return;
         }
 
-        if (!AnimusConfig.ironsSpells.enableLPCasting.get()) {
+        if (!AnimusConfig.ironsSpells.enableEVCasting.get()) {
             return;
         }
 
@@ -65,13 +65,17 @@ public class SpellCastingHandler {
 
         int manaDeficit = manaCost - currentMana;
 
+        ItemStack orbStack = findBloodOrb(player);
         if (AnimusConfig.ironsSpells.requireBloodOrb.get()) {
-            if (!hasBloodOrb(player)) {
+            if (orbStack == null) {
                 return;
             }
         }
 
-        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+        // Use the blood orb's binding for network lookup (respects team bindings)
+        IAnima network = orbStack != null
+            ? com.breakinblocks.animusnv.util.AnimusRitualHelper.getNetworkForBoundItem(player, orbStack)
+            : NeoVitaeAPI.getInstance().getAnima(player.getUUID());
         if (network == null) {
             return;
         }
@@ -115,7 +119,7 @@ public class SpellCastingHandler {
             magicData.setMana((int) (magicData.getMana() - manaToConsume));
         }
 
-        spawnLPCastFeedback(player, manaToConsume > 0);
+        spawnEVCastFeedback(player, manaToConsume > 0);
 
         Animus.LOGGER.debug("Player {} cast spell using {} EV{}",
             player.getName().getString(),
@@ -126,7 +130,7 @@ public class SpellCastingHandler {
         // Don't cancel - mana cost was paid via EV, let the spell cast
     }
 
-    private void spawnLPCastFeedback(Player player, boolean isHybrid) {
+    private void spawnEVCastFeedback(Player player, boolean isHybrid) {
         if (!(player.level() instanceof ServerLevel serverLevel)) {
             return;
         }
@@ -179,13 +183,17 @@ public class SpellCastingHandler {
         );
     }
 
-    private boolean hasBloodOrb(Player player) {
-        if (InventorySearchHelper.hasItem(player, stack -> stack.getItem() instanceof BloodOrbItem)) {
-            return true;
+    @javax.annotation.Nullable
+    private ItemStack findBloodOrb(Player player) {
+        var fromInventory = InventorySearchHelper.findFirst(player, stack -> stack.getItem() instanceof BloodOrbItem);
+        if (fromInventory.isPresent()) {
+            return fromInventory.get();
         }
 
-        return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
-            .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof BloodOrbItem).isPresent())
-            .orElse(false);
+        var curiosResult = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
+            .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof BloodOrbItem))
+            .orElse(java.util.Optional.empty());
+
+        return curiosResult.map(r -> r.stack()).orElse(null);
     }
 }

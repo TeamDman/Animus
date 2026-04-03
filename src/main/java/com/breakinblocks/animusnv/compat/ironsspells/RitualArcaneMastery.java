@@ -46,11 +46,11 @@ public class RitualArcaneMastery extends Ritual {
 
     private static final int SEARCH_RANGE = 5;
 
-    private static final int COMMON_LP = 5000;
-    private static final int UNCOMMON_LP = 10000;
-    private static final int RARE_LP = 25000;
-    private static final int EPIC_LP = 50000;
-    private static final int LEGENDARY_LP = 100000;
+    private static final int COMMON_EV = 5000;
+    private static final int UNCOMMON_EV = 10000;
+    private static final int RARE_EV = 25000;
+    private static final int EPIC_EV = 50000;
+    private static final int LEGENDARY_EV = 100000;
 
     public RitualArcaneMastery() {
         super(
@@ -188,11 +188,11 @@ public class RitualArcaneMastery extends Ritual {
 
     private int getEVCostForRarity(io.redspace.ironsspellbooks.api.spells.SpellRarity rarity) {
         return switch (rarity) {
-            case COMMON -> COMMON_LP;
-            case UNCOMMON -> UNCOMMON_LP;
-            case RARE -> RARE_LP;
-            case EPIC -> EPIC_LP;
-            case LEGENDARY -> LEGENDARY_LP;
+            case COMMON -> COMMON_EV;
+            case UNCOMMON -> UNCOMMON_EV;
+            case RARE -> RARE_EV;
+            case EPIC -> EPIC_EV;
+            case LEGENDARY -> LEGENDARY_EV;
         };
     }
 

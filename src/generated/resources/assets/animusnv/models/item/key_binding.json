@@ -9,6 +9,6 @@
     }
   ],
   "textures": {
-    "layer0": "animusnv:item/itemkeybinding"
+    "layer0": "animusnv:item/key_binding"
   }
 }

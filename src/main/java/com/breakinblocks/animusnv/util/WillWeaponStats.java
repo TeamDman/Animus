@@ -1,10 +1,9 @@
 package com.breakinblocks.animusnv.util;
 
-/**
- * Shared stat arrays for demon-will powered weapons.
- * Arrays that are identical across multiple sentient weapon classes
- * are centralized here to avoid duplication.
- */
+import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
+import com.breakinblocks.neovitae.common.item.NVItems;
+import com.breakinblocks.neovitae.will.ISpiritus;
+
 public final class WillWeaponStats {
     private WillWeaponStats() {}
 
@@ -34,5 +33,18 @@ public final class WillWeaponStats {
             }
         }
         return SOUL_BRACKET.length;
+    }
+
+    /**
+     * Maps a SpiritusType to the corresponding monster soul item.
+     */
+    public static ISpiritus getSoulItem(SpiritusType type) {
+        return switch (type) {
+            case CORROSIVE -> (ISpiritus) NVItems.MONSTER_SOUL_CORROSIVE.get();
+            case DESTRUCTIVE -> (ISpiritus) NVItems.MONSTER_SOUL_DESTRUCTIVE.get();
+            case STEADFAST -> (ISpiritus) NVItems.MONSTER_SOUL_STEADFAST.get();
+            case VENGEFUL -> (ISpiritus) NVItems.MONSTER_SOUL_VENGEFUL.get();
+            default -> (ISpiritus) NVItems.MONSTER_SOUL_RAW.get();
+        };
     }
 }

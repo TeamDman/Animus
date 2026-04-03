@@ -31,7 +31,7 @@ public class SigilBuilderEntry extends EntryProvider {
         this.pageTitle("Sigil of the Fast Builder");
         this.pageText("You craft this sigil within an [#](8B0000)Alchemy Array[#]() by combining a "
                 + "[#](8B0000)Reagent: Builder[#]() with a [#](B8860B)Reinforced Slate[#](). The reagent "
-                + "must first be forged in the [#](8B0000)Hellfire Forge[#]().\\\n\\\n"
+                + "must first be forged in the [#](8B0000)Tabula Vitae[#]().\\\n\\\n"
                 + "When the array completes its working, the [#](8B0000)Sigil of the Fast Builder[#]() "
                 + "emerges, a tool for those who would reshape the world at unnatural speed.");
 

@@ -12,15 +12,9 @@ import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 
 import java.util.List;
 
-/**
- * Sigil of Reparare - repairs damaged items in inventory and equipped slots.
- * While active, repairs damaged items periodically.
- * Respects the animus:disallow_repair tag.
- */
 public record RepareSigilEffect() implements ISigilEffect {
     public static final MapCodec<RepareSigilEffect> CODEC = MapCodec.unit(RepareSigilEffect::new);
 
-    // Track last repair tick per player (auto-registered for cleanup)
     private static final SigilStateTracker TRACKER = new SigilStateTracker("reparare");
 
     @Override
@@ -46,18 +40,13 @@ public record RepareSigilEffect() implements ISigilEffect {
             return;
         }
 
-        // Collect all repairable items using InventorySearchHelper
         List<ItemStack> repairableItems = InventorySearchHelper.findAll(player, RepareSigilEffect::canRepair);
 
         if (repairableItems.isEmpty()) {
             return;
         }
 
-        // Calculate repairs
         int maxRepairPerItem = AnimusConfig.sigils.reparareRepairAmount.get();
-
-        // Apply repairs
-        // Note: EV cost is handled by the sigil system based on sigil_type JSON
         for (ItemStack repairStack : repairableItems) {
             int damage = repairStack.getDamageValue();
             int toRepair = Math.min(damage, maxRepairPerItem);
@@ -69,31 +58,10 @@ public record RepareSigilEffect() implements ISigilEffect {
         TRACKER.updateTime(player.getUUID(), currentTime);
     }
 
-    /**
-     * Check if an item can be repaired.
-     */
     private static boolean canRepair(ItemStack stack) {
-        if (stack.isEmpty()) {
-            return false;
-        }
-
-        // Check if item has durability
-        if (!stack.isDamageableItem()) {
-            return false;
-        }
-
-        // Check if item is damaged
-        if (stack.getDamageValue() <= 0) {
-            return false;
-        }
-
-        // Check if item is blacklisted
-        if (stack.is(Constants.Tags.DISALLOW_REPAIR)) {
-            return false;
-        }
-
-        return true;
+        return !stack.isEmpty()
+            && stack.isDamageableItem()
+            && stack.getDamageValue() > 0
+            && !stack.is(Constants.Tags.DISALLOW_REPAIR);
     }
-
-    // Cleanup is handled automatically by SigilStateCleanupManager via TRACKER registration
 }

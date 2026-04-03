@@ -27,9 +27,9 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -184,8 +184,7 @@ public record EquivalencySigilEffect() implements ISigilEffect {
             return false;
         }
 
-        // Get the player's Anima
-        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+        IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, stack);
         if (network == null) {
             return false;
         }
@@ -233,7 +232,7 @@ public record EquivalencySigilEffect() implements ISigilEffect {
 
         if (network.getCurrentEV() < totalEV) {
             player.displayClientMessage(
-                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_LP, totalEV)
+                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_EV, totalEV)
                             .withStyle(ChatFormatting.RED),
                     true
             );

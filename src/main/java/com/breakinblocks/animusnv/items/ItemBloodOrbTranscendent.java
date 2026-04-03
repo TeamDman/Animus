@@ -11,7 +11,7 @@ import com.breakinblocks.neovitae.common.item.BloodOrbItem;
 import java.util.List;
 
 /**
- * Transcendent Blood Orb - Tier 6 Blood Orb
+ * Transcendent Orb of Vitae - Tier 6 Orb of Vitae
  * Holds 30,000,000 EV
  * Crafted in a Tier 6 altar with Crystallized Spiritus Block
  *

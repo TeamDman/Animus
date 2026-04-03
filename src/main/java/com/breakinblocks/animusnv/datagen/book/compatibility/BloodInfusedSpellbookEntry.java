@@ -65,7 +65,7 @@ public class BloodInfusedSpellbookEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Upgrading");
         this.pageText("To upgrade your spellbook to the next tier:\n\n"
-                + "- Place the required Blood Orb tier (or higher) in the altar\n\n"
+                + "- Place the required Orb of Vitae tier (or higher) in the altar\n\n"
                 + "- Ensure the altar has enough EV\n\n"
                 + "- Right-click the altar while holding your Blood-Infused Spellbook\\\n\\\n"
                 + "The spellbook's tooltip shows your current tier, bonuses, and the "

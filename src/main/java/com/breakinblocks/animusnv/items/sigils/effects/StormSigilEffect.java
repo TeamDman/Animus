@@ -29,15 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Sigil of the Storm - summons lightning at the target position.
- * When targeting water, spawns fish from the fishing loot table.
- * When raining, deals area damage to nearby entities.
- */
 public record StormSigilEffect() implements ISigilEffect {
     public static final MapCodec<StormSigilEffect> CODEC = MapCodec.unit(StormSigilEffect::new);
 
-    // Track pending fish spawns - list of (level, pos, playerUUID, tickToSpawn)
     private static final List<PendingFishSpawn> pendingSpawns = new ArrayList<>();
 
     private static class PendingFishSpawn {
@@ -128,9 +122,6 @@ public record StormSigilEffect() implements ISigilEffect {
         return true;
     }
 
-    /**
-     * Process pending fish spawns - should be called from a tick event.
-     */
     public static void tickPendingSpawns(ServerLevel level) {
         if (pendingSpawns.isEmpty()) {
             return;
@@ -149,9 +140,6 @@ public record StormSigilEffect() implements ISigilEffect {
         }
     }
 
-    /**
-     * Spawns fishing loot at the target position.
-     */
     private static void spawnFishingLoot(ServerLevel level, BlockPos pos, Player player) {
         ResourceLocation fishingLootTable = ResourceLocation.fromNamespaceAndPath("minecraft", "gameplay/fishing");
         LootTable lootTable = level.getServer().reloadableRegistries()

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "animusnv:item/itemfragmenthealing"
+    "layer0": "animusnv:item/fragment_healing"
   }
 }

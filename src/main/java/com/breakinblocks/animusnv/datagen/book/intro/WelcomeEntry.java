@@ -37,9 +37,9 @@ public class WelcomeEntry extends EntryProvider {
         this.pageText("This tome assumes you have mastered the basics of Vitaemancy. "
                 + "You should be familiar with:\n\n"
                 + "- The [#](8B0000)Ara Vitae[#]() and Essentia Vitae\n\n"
-                + "- [#](8B0000)Blood Orbs[#]() and Anima binding\n\n"
+                + "- [#](8B0000)Orbs of Vitae[#]() and Anima binding\n\n"
                 + "- Basic [#](8B0000)Rituals[#]() and Ritual Stones\n\n"
-                + "- [#](4A0080)Spiritus[#]() and demonic will\\\n\\\n"
+                + "- [#](4A0080)Spiritus[#]() and the Spiritus system\\\n\\\n"
                 + "If you are new to Vitaemancy, consult the [#](8B0000)Scriptura Vitae[#]() first. "
                 + "The knowledge within this codex builds upon that foundation.");
 

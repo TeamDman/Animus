@@ -5,7 +5,7 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.entities.EntityHellforgedArrow;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
-import com.breakinblocks.animusnv.util.DemonWillTypeHelper;
+import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
 import com.breakinblocks.animusnv.util.WillWeaponStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -49,12 +49,12 @@ public class ItemHellforgedBow extends BowItem {
     public static final int NORMAL_DRAW_TICKS = 20;
 
     // Default config values (used before config loads)
-    public static final int DEFAULT_BASE_LP_COST = 5;
-    public static final int DEFAULT_LP_PER_TICK = 50;
+    public static final int DEFAULT_BASE_EV_COST = 5;
+    public static final int DEFAULT_EV_PER_TICK = 50;
     public static final int DEFAULT_MAX_CHARGE_TICKS = 70;
     public static final double DEFAULT_MAX_DAMAGE = 40.0;
     public static final double DEFAULT_EXECUTE_THRESHOLD = 0.15;
-    public static final int LP_PER_REPAIR = 100;
+    public static final int EV_PER_REPAIR = 100;
 
     public ItemHellforgedBow() {
         super(new Item.Properties()
@@ -63,19 +63,19 @@ public class ItemHellforgedBow extends BowItem {
             .rarity(Rarity.EPIC));
     }
 
-    public static int getBaseLpCost() {
+    public static int getBaseEvCost() {
         try {
             return AnimusConfig.weapons.hellforgedBowBaseLpCost.get();
         } catch (IllegalStateException e) {
-            return DEFAULT_BASE_LP_COST;
+            return DEFAULT_BASE_EV_COST;
         }
     }
 
-    public static int getLpPerTick() {
+    public static int getEvPerTick() {
         try {
             return AnimusConfig.weapons.hellforgedBowLpPerTick.get();
         } catch (IllegalStateException e) {
-            return DEFAULT_LP_PER_TICK;
+            return DEFAULT_EV_PER_TICK;
         }
     }
 
@@ -126,7 +126,7 @@ public class ItemHellforgedBow extends BowItem {
 
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_INFO)
             .withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_LP_COST, getBaseLpCost())
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_EV_COST, getBaseEvCost())
             .withStyle(ChatFormatting.DARK_RED));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_CHARGE)
             .withStyle(ChatFormatting.GOLD));
@@ -149,7 +149,7 @@ public class ItemHellforgedBow extends BowItem {
         int useDuration = this.getUseDuration(stack, entity) - remainingTicks;
 
         if (!level.isClientSide() && useDuration > NORMAL_DRAW_TICKS && useDuration <= getMaxChargeTicks()) {
-            if (!drainLP(player, stack, getLpPerTick())) {
+            if (!drainEV(player, stack, getEvPerTick())) {
                 player.releaseUsingItem();
             }
         }
@@ -208,11 +208,11 @@ public class ItemHellforgedBow extends BowItem {
             return;
         }
 
-        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
-        if (network == null || network.getCurrentEV() < getBaseLpCost()) {
+        IAnima network = getNetworkForBinding(player, stack);
+        if (network == null || network.getCurrentEV() < getBaseEvCost()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
-                    Component.translatable("message.animus.hellforged_bow.out_of_lp")
+                    Component.translatable("message.animus.hellforged_bow.out_of_ev")
                         .withStyle(ChatFormatting.RED),
                     true
                 );
@@ -221,7 +221,7 @@ public class ItemHellforgedBow extends BowItem {
         }
 
         if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
-            AnimaTicket ticket = AnimaTicket.create(getBaseLpCost());
+            AnimaTicket ticket = AnimaTicket.create(getBaseEvCost());
             network.syphonAndDamage(player, ticket);
 
             SpiritusType willType = getCurrentType(stack);
@@ -276,7 +276,7 @@ public class ItemHellforgedBow extends BowItem {
                 SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, pitch);
 
             stack.hurtAndBreak(1, serverLevel, player, (item) -> {});
-            tryRepairWithLP(stack, network, player);
+            tryRepairWithEV(stack, network, player);
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
@@ -299,11 +299,11 @@ public class ItemHellforgedBow extends BowItem {
             return InteractionResultHolder.consume(stack);
         }
 
-        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
-        if (network == null || network.getCurrentEV() < getBaseLpCost()) {
+        IAnima network = getNetworkForBinding(player, stack);
+        if (network == null || network.getCurrentEV() < getBaseEvCost()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
-                    Component.translatable("message.animus.hellforged_bow.out_of_lp")
+                    Component.translatable("message.animus.hellforged_bow.out_of_ev")
                         .withStyle(ChatFormatting.RED),
                     true
                 );
@@ -347,11 +347,11 @@ public class ItemHellforgedBow extends BowItem {
     }
 
     public SpiritusType getCurrentType(ItemStack stack) {
-        return DemonWillTypeHelper.getCurrentType(stack);
+        return SpiritusTypeHelper.getCurrentType(stack);
     }
 
     public void setCurrentType(ItemStack stack, SpiritusType type) {
-        DemonWillTypeHelper.setCurrentType(stack, type);
+        SpiritusTypeHelper.setCurrentType(stack, type);
     }
 
     @Override
@@ -359,7 +359,7 @@ public class ItemHellforgedBow extends BowItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            SpiritusType newType = DemonWillTypeHelper.findDemonWillType(player);
+            SpiritusType newType = SpiritusTypeHelper.findSpiritusType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
             }
@@ -370,35 +370,39 @@ public class ItemHellforgedBow extends BowItem {
         return WillWeaponStats.getLevel(willAmount);
     }
 
-    /**
-     * Attempts to repair the bow using EV from the Anima
-     * Costs 100 EV per damage point repaired
-     */
-    private void tryRepairWithLP(ItemStack stack, IAnima network, Player player) {
+    private IAnima getNetworkForBinding(Player player, ItemStack stack) {
+        UUID ownerId = getBindingOwnerId(stack);
+        if (ownerId == null) {
+            return null;
+        }
+        return NeoVitaeAPI.getInstance().getAnima(ownerId);
+    }
+
+    private void tryRepairWithEV(ItemStack stack, IAnima network, Player player) {
         int damage = stack.getDamageValue();
         if (damage <= 0) {
             return;
         }
 
-        int availableLP = network.getCurrentEV();
-        int maxRepair = availableLP / LP_PER_REPAIR;
+        int availableEV = network.getCurrentEV();
+        int maxRepair = availableEV / EV_PER_REPAIR;
         int actualRepair = Math.min(damage, maxRepair);
 
         if (actualRepair > 0) {
-            int evCost = actualRepair * LP_PER_REPAIR;
+            int evCost = actualRepair * EV_PER_REPAIR;
             AnimaTicket ticket = AnimaTicket.create(evCost);
             network.syphonAndDamage(player, ticket);
             stack.setDamageValue(damage - actualRepair);
         }
     }
 
-    private boolean drainLP(Player player, ItemStack stack, int amount) {
+    private boolean drainEV(Player player, ItemStack stack, int amount) {
         UUID ownerId = getBindingOwnerId(stack);
         if (ownerId == null) {
             return false;
         }
 
-        return AnimusRitualHelper.drainLP(player, ownerId, amount);
+        return AnimusRitualHelper.drainEV(player, ownerId, amount);
     }
 
     public List<ItemStack> getRandomSpiritusDrop(LivingEntity killedEntity, LivingEntity attackingEntity,

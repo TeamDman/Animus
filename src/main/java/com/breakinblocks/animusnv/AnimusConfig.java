@@ -339,7 +339,7 @@ public class AnimusConfig {
         public final ModConfigSpec.IntValue sigilEquivalencyEVCost;
         public final ModConfigSpec.IntValue sigilEquivalencyBlocksPerTick;
         public final ModConfigSpec.DoubleValue monkUnarmedDamage;
-        public final ModConfigSpec.IntValue monkLPPerSecond;
+        public final ModConfigSpec.IntValue monkEVPerSecond;
 
         public Sigils(ModConfigSpec.Builder builder) {
             builder.push("sigils");
@@ -420,7 +420,7 @@ public class AnimusConfig {
                 )
                 .defineInRange("unarmedDamage", 10.0, 0.0, 100.0);
 
-            monkLPPerSecond = builder
+            monkEVPerSecond = builder
                 .comment(
                     "EV cost per second while Sigil of the Monk is active",
                     "Default: 100 (5 EV per tick × 20 ticks)",
@@ -565,14 +565,14 @@ public class AnimusConfig {
     }
 
     public static class Botania {
-        public final ModConfigSpec.IntValue LPtoManaConversionRate;
+        public final ModConfigSpec.IntValue EVtoManaConversionRate;
         public final ModConfigSpec.IntValue willToManaConversionRate;
         public final ModConfigSpec.IntValue unleashedNatureManaDrain;
 
         public Botania(ModConfigSpec.Builder builder) {
             builder.push("botania");
 
-            LPtoManaConversionRate = builder
+            EVtoManaConversionRate = builder
                 .comment(
                     "EV to Mana conversion rate",
                     "Used by Sigil of Boundless Nature and other EV-to-mana items",
@@ -668,7 +668,7 @@ public class AnimusConfig {
     }
 
     public static class IronsSpells {
-        public final ModConfigSpec.BooleanValue enableLPCasting;
+        public final ModConfigSpec.BooleanValue enableEVCasting;
         public final ModConfigSpec.IntValue evPerMana;
         public final ModConfigSpec.BooleanValue requireBloodOrb;
         public final ModConfigSpec.BooleanValue allowHybridCasting;
@@ -683,10 +683,10 @@ public class AnimusConfig {
         public final ModConfigSpec.IntValue bloodSpellbookTier6EV;
 
         public final ModConfigSpec.BooleanValue enableSigilCrimsonWill;
-        public final ModConfigSpec.IntValue crimsonWillLPPerMana;
+        public final ModConfigSpec.IntValue crimsonWillEVPerMana;
 
         public final ModConfigSpec.BooleanValue enableSanguineScrolls;
-        public final ModConfigSpec.DoubleValue sanguineScrollLPMultiplier;
+        public final ModConfigSpec.DoubleValue sanguineScrollEVMultiplier;
         public final ModConfigSpec.DoubleValue sanguineScrollDurabilityMultiplier;
         public final ModConfigSpec.BooleanValue sanguineScrollRequireBloodOrb;
 
@@ -698,7 +698,7 @@ public class AnimusConfig {
 
             builder.comment("EV-Powered Spell Casting").push("evCasting");
 
-            enableLPCasting = builder
+            enableEVCasting = builder
                 .comment(
                     "Enable EV-powered spell casting",
                     "When enabled, spells can consume EV instead of mana",
@@ -785,7 +785,7 @@ public class AnimusConfig {
                 )
                 .define("enabled", true);
 
-            crimsonWillLPPerMana = builder
+            crimsonWillEVPerMana = builder
                 .comment(
                     "EV cost per mana point when empowering spells with Crimson Will",
                     "This is in addition to normal spell costs",
@@ -804,7 +804,7 @@ public class AnimusConfig {
                 )
                 .define("enabled", true);
 
-            sanguineScrollLPMultiplier = builder
+            sanguineScrollEVMultiplier = builder
                 .comment(
                     "EV cost multiplier for Sanguine Scrolls",
                     "Multiplied with spell mana cost and evPerMana",

@@ -49,7 +49,7 @@ public class ItemBloodApple extends Item {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_FLAVOUR));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_INFO));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_LP));
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_EV));
         super.appendHoverText(stack, context, tooltip, flag);
     }
 

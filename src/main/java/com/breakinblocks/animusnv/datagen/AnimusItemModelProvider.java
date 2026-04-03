@@ -52,12 +52,12 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         withExistingParent("blood_sapling", mcLoc("item/generated"))
             .texture("layer0", modLoc("block/blockbloodsapling"));
 
-        simpleItem(AnimusItems.BLOOD_APPLE, "item/itembloodapple");
+        simpleItem(AnimusItems.BLOOD_APPLE, "item/blood_apple");
         simpleItem(AnimusItems.BLOOD_ORB_TRANSCENDENT, "item/blood_orb_transcendent");
-        simpleItem(AnimusItems.SANGUINE_DIVINER, "item/itemsanguinediviner");
-        simpleItem(AnimusItems.FRAGMENT_HEALING, "item/itemfragmenthealing");
-        simpleItem(AnimusItems.ACTIVATION_CRYSTAL_FRAGILE, "item/itemactivationcrystalfragile");
-        simpleItem(AnimusItems.MOBSOUL, "item/itemmobsoul");
+        simpleItem(AnimusItems.SANGUINE_DIVINER, "item/sanguine_diviner");
+        simpleItem(AnimusItems.FRAGMENT_HEALING, "item/fragment_healing");
+        simpleItem(AnimusItems.ACTIVATION_CRYSTAL_FRAGILE, "item/activation_crystal_fragile");
+        simpleItem(AnimusItems.MOBSOUL, "item/mob_soul");
 
         keyBindingItem(AnimusItems.KEY_BINDING);
 
@@ -76,16 +76,16 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.REAGENT_TEMPORAL_DOMINANCE, "item/reagenttemporaldominance");
         simpleItem(AnimusItems.REAGENT_FIST, "item/reagentfist");
 
-        simpleItem(AnimusItems.SIGIL_CHAINS, "item/itemsigilchains");
-        simpleItem(AnimusItems.SIGIL_CONSUMPTION, "item/itemsigilconsumption");
-        simpleItem(AnimusItems.SIGIL_STORM, "item/itemsigilstorm");
+        simpleItem(AnimusItems.SIGIL_CHAINS, "item/sigil_chains");
+        simpleItem(AnimusItems.SIGIL_CONSUMPTION, "item/sigil_consumption");
+        simpleItem(AnimusItems.SIGIL_STORM, "item/sigil_storm");
         simpleItem(AnimusItems.SIGIL_FREE_SOUL, "item/sigil_free_soul");
         simpleItem(AnimusItems.SIGIL_TEMPORAL_DOMINANCE, "item/sigil_temporal_dominance");
         simpleItem(AnimusItems.SIGIL_EQUIVALENCY, "item/sigil_equivalency");
         simpleItem(AnimusItems.SIGIL_MONK, "item/sigil_monk");
 
         toggleableSigil(AnimusItems.SIGIL_BUILDER, "sigil_builder_deactivated", "sigil_builder_activated");
-        toggleableSigil(AnimusItems.SIGIL_LEACH, "itemsigilleach_deactivated", "itemsigilleach_activated");
+        toggleableSigil(AnimusItems.SIGIL_LEACH, "sigil_leach_deactivated", "sigil_leach_activated");
         toggleableSigil(AnimusItems.SIGIL_TRANSPOSITION, "sigil_transposition_deactivated", "sigil_transposition_activated");
         toggleableSigil(AnimusItems.SIGIL_REMEDIUM, "sigil_remedium", "sigil_remedium_active");
         toggleableSigil(AnimusItems.SIGIL_REPARARE, "sigil_reparare", "sigil_reparare_active");
@@ -94,7 +94,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.ANTILIFE_BUCKET, "item/antilife_bucket");
         simpleItem(AnimusItems.LIVING_TERRA_BUCKET, "item/living_terra_bucket");
 
-        simpleItem(AnimusItems.RITUAL_DESIGNER, "item/itemritualdesigner");
+        simpleItem(AnimusItems.RITUAL_DESIGNER, "item/ritual_designer");
 
         bowItem(AnimusItems.SENTIENT_BOW, "sentient_bow");
         bowItem(AnimusItems.HELLFORGED_BOW, "hellforged_bow");
@@ -149,14 +149,14 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         String name = item.getId().getPath();
 
         withExistingParent(name, mcLoc("item/generated"))
-            .texture("layer0", modLoc("item/itemkeybinding"))
+            .texture("layer0", modLoc("item/key_binding"))
             .override()
                 .predicate(modLoc("bound"), 1.0F)
                 .model(getBuilder(name + "_bound"))
             .end();
 
         withExistingParent(name + "_bound", mcLoc("item/generated"))
-            .texture("layer0", modLoc("item/itemkeybinding_active"));
+            .texture("layer0", modLoc("item/key_binding_active"));
     }
 
     private void blockItem(DeferredHolder<Block, Block> block, String modelName) {

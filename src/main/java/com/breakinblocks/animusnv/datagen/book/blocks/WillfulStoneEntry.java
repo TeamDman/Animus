@@ -38,7 +38,7 @@ public class WillfulStoneEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Forging");
-        this.pageText("The base [#](8B0000)Willful Stone[#]() is forged in the [#](8B0000)Hellfire Forge[#]() "
+        this.pageText("The base [#](8B0000)Willful Stone[#]() is forged in the [#](8B0000)Tabula Vitae[#]() "
                 + "from stone, a [#](8B0000)Reinforced Slate[#](), and redstone dust. "
                 + "The Forge yields [#](B8860B)4 blocks[#]() per craft.\\\n\\\n"
                 + "[#](2E8B57)Search for Willful Stone in JEI to see the exact recipe.[#]()");

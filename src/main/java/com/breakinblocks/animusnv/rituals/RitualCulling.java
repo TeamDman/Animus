@@ -204,7 +204,7 @@ public class RitualCulling extends Ritual {
                     tileAltar.addSacrificeEV(evPerKill, true);
 
                     if (AnimusConfig.rituals.cullingDebug.get()) {
-                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   EV generated: {} (LP/dmg: {}, maxHP: {})", evPerKill, EntitySacrificeHelper.getEvPerDamage(livingEntity), livingEntity.getMaxHealth());
+                        Animus.LOGGER.debug("[Ritual of Culling Debug]:   EV generated: {} (EV/dmg: {}, maxHP: {})", evPerKill, EntitySacrificeHelper.getEvPerDamage(livingEntity), livingEntity.getMaxHealth());
                     }
 
                     if (isBoss) {

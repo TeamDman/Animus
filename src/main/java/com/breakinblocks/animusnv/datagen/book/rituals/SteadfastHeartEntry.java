@@ -20,7 +20,7 @@ public class SteadfastHeartEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Ritual of the Steadfast Heart");
-        this.pageText("Fortify your allies. The [#](4A0080)Ritual of the Steadfast Heart[#]() grants increasingly powerful [#](4A0080)Absorption[#]() effects to all nearby players, providing extra health that regenerates over time. It can also buff players remotely through bound blood orbs."
+        this.pageText("Fortify your allies. The [#](4A0080)Ritual of the Steadfast Heart[#]() grants increasingly powerful [#](4A0080)Absorption[#]() effects to all nearby players, providing extra health that regenerates over time. It can also buff players remotely through bound orbs of vitae."
                 + "\\\n\\\nConstruct this circle using a [#](8B0000)Ritual Diviner[#]().");
 
         this.page("costs", () -> BookTextPageModel.create()
@@ -37,10 +37,10 @@ public class SteadfastHeartEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Remote Buffing");
-        this.pageText("Place a chest directly above the [#](8B0000)Master Ritual Stone[#]() and fill it with bound blood orbs of any tier."
+        this.pageText("Place a chest directly above the [#](8B0000)Master Ritual Stone[#]() and fill it with bound orbs of vitae of any tier."
                 + "\\\n\\\nThe ritual will buff the bound player regardless of their location, even across dimensions, as long as they are online."
                 + "\n\n- Each player is only buffed once per cycle"
-                + "\n\n- Works with any tier blood orb"
+                + "\n\n- Works with any tier orb of vitae"
                 + "\n\n- EV cost applies per player buffed");
 
         this.page("scaling", () -> BookTextPageModel.create()
@@ -61,7 +61,7 @@ public class SteadfastHeartEntry extends EntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "Grants scaling Absorption to nearby players, with remote buffing via blood orbs.";
+        return "Grants scaling Absorption to nearby players, with remote buffing via orbs of vitae.";
     }
 
     @Override

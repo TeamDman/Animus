@@ -3,7 +3,7 @@ package com.breakinblocks.animusnv.items;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.entities.EntitySentientArrow;
-import com.breakinblocks.animusnv.util.DemonWillTypeHelper;
+import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
 import com.breakinblocks.animusnv.util.WillWeaponStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -102,7 +102,7 @@ public class ItemSentientBow extends BowItem {
         ItemStack stack = player.getItemInHand(hand);
 
         SpiritusType type = getCurrentType(stack);
-        double soulsRemaining = getTotalWillOfType(player, type);
+        double soulsRemaining = getTotalSpiritusOfType(player, type);
         if (!player.getAbilities().instabuild && soulsRemaining < getWillCostPerShot()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
@@ -125,7 +125,7 @@ public class ItemSentientBow extends BowItem {
         }
 
         SpiritusType type = getCurrentType(stack);
-        double soulsRemaining = getTotalWillOfType(player, type);
+        double soulsRemaining = getTotalSpiritusOfType(player, type);
 
         if (soulsRemaining < getWillCostPerShot()) {
             if (!level.isClientSide) {
@@ -146,7 +146,7 @@ public class ItemSentientBow extends BowItem {
         }
 
         if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
-            drainWillFromPlayer(player, type, getWillCostPerShot());
+            drainSpiritusFromPlayer(player, type, getWillCostPerShot());
 
             int willLevel = getLevel(stack, soulsRemaining);
             double bonusDamage = getDamageAdded(type, willLevel);
@@ -199,11 +199,11 @@ public class ItemSentientBow extends BowItem {
     }
 
     public SpiritusType getCurrentType(ItemStack stack) {
-        return DemonWillTypeHelper.getCurrentType(stack);
+        return SpiritusTypeHelper.getCurrentType(stack);
     }
 
     public void setCurrentType(ItemStack stack, SpiritusType type) {
-        DemonWillTypeHelper.setCurrentType(stack, type);
+        SpiritusTypeHelper.setCurrentType(stack, type);
     }
 
     @Override
@@ -211,19 +211,19 @@ public class ItemSentientBow extends BowItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            SpiritusType newType = DemonWillTypeHelper.findDemonWillType(player);
+            SpiritusType newType = SpiritusTypeHelper.findSpiritusType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
             }
         }
     }
 
-    private static double getTotalWillOfType(Player player, SpiritusType type) {
-        return DemonWillTypeHelper.getTotalWillOfType(player, type);
+    private static double getTotalSpiritusOfType(Player player, SpiritusType type) {
+        return SpiritusTypeHelper.getTotalSpiritusOfType(player, type);
     }
 
-    private static void drainWillFromPlayer(Player player, SpiritusType type, double amount) {
-        DemonWillTypeHelper.drainWillFromPlayer(player, type, amount);
+    private static void drainSpiritusFromPlayer(Player player, SpiritusType type, double amount) {
+        SpiritusTypeHelper.drainSpiritusFromPlayer(player, type, amount);
     }
 
     public List<ItemStack> getRandomSpiritusDrop(LivingEntity killedEntity, LivingEntity attackingEntity,

@@ -5,12 +5,15 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
+import com.breakinblocks.neovitae.common.datacomponent.Binding;
+import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 
 import javax.annotation.Nullable;
@@ -20,18 +23,22 @@ public final class AnimusRitualHelper {
 
     private AnimusRitualHelper() {}
 
-    /**
-     * Gets the Anima for a ritual's owner. Returns null if the network
-     * doesn't exist (e.g., server not available, owner never logged in).
-     */
     @Nullable
     public static IAnima getOwnerNetwork(IMasterRitualStone mrs) {
         return NeoVitaeAPI.getInstance().getAnima(mrs.getOwner());
     }
 
     /**
-     * Gets the item handler capability at the given position, or null if none exists.
+     * Gets the Anima for a bound item, respecting team bindings.
+     * Falls back to player's personal network if item has no binding.
      */
+    @Nullable
+    public static IAnima getNetworkForBoundItem(Player player, ItemStack stack) {
+        Binding binding = stack.get(NVDataComponents.BINDING.get());
+        UUID owner = (binding != null && !binding.isEmpty()) ? binding.uuid() : player.getUUID();
+        return NeoVitaeAPI.getInstance().getAnima(owner);
+    }
+
     @Nullable
     public static IItemHandler getItemHandler(Level level, BlockPos pos) {
         return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
@@ -54,11 +61,23 @@ public final class AnimusRitualHelper {
     }
 
     /**
-     * Attempts to drain EV from a player's Anima.
+     * Attempts to drain EV from a network owner's Anima.
      * @return true if the EV was successfully drained
      */
-    public static boolean drainLP(Player player, UUID networkOwner, int amount) {
+    public static boolean drainEV(Player player, UUID networkOwner, int amount) {
         IAnima network = NeoVitaeAPI.getInstance().getAnima(networkOwner);
+        if (network == null || network.getCurrentEV() < amount) {
+            return false;
+        }
+        return network.syphonAndDamage(player, AnimaTicket.create(amount)).success();
+    }
+
+    /**
+     * Attempts to drain EV from a bound item's network, respecting team bindings.
+     * @return true if the EV was successfully drained
+     */
+    public static boolean drainEVForBoundItem(Player player, ItemStack stack, int amount) {
+        IAnima network = getNetworkForBoundItem(player, stack);
         if (network == null || network.getCurrentEV() < amount) {
             return false;
         }

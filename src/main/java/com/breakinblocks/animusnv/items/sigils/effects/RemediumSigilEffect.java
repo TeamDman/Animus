@@ -13,17 +13,11 @@ import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Sigil of Remedium - continuously cleanses negative status effects.
- * While active, removes all negative effects once per second (20 ticks).
- * EV cost is determined by the sigil_type JSON (cost per tick when active).
- */
 public record RemediumSigilEffect() implements ISigilEffect {
     public static final MapCodec<RemediumSigilEffect> CODEC = MapCodec.unit(RemediumSigilEffect::new);
 
-    // Track last cleanse tick per player (auto-registered for cleanup)
     private static final SigilStateTracker TRACKER = new SigilStateTracker("remedium");
-    private static final int CLEANSE_INTERVAL = 20; // 1 second
+    private static final int CLEANSE_INTERVAL = 20;
 
     @Override
     public MapCodec<? extends ISigilEffect> codec() {
@@ -47,7 +41,6 @@ public record RemediumSigilEffect() implements ISigilEffect {
             return;
         }
 
-        // Collect all negative effects
         List<Holder<MobEffect>> negativeEffects = new ArrayList<>();
         for (MobEffectInstance effectInstance : player.getActiveEffects()) {
             Holder<MobEffect> effect = effectInstance.getEffect();
@@ -56,13 +49,10 @@ public record RemediumSigilEffect() implements ISigilEffect {
             }
         }
 
-        // If no negative effects, nothing to do
         if (negativeEffects.isEmpty()) {
             return;
         }
 
-        // Remove all negative effects
-        // Note: EV cost is handled by the sigil system based on sigil_type JSON
         for (Holder<MobEffect> effect : negativeEffects) {
             player.removeEffect(effect);
         }
@@ -70,5 +60,4 @@ public record RemediumSigilEffect() implements ISigilEffect {
         TRACKER.updateTime(player.getUUID(), currentTime);
     }
 
-    // Cleanup is handled automatically by SigilStateCleanupManager via TRACKER registration
 }

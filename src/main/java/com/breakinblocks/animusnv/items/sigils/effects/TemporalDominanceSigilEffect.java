@@ -23,9 +23,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -56,7 +56,7 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
     // Maximum acceleration level (32x speed = 2^5)
     private static final int MAX_LEVEL = 5;
     // Base EV cost for first activation
-    private static final int BASE_LP_COST = 1000;
+    private static final int BASE_EV_COST = 1000;
     // Duration in ticks (30 seconds = 600 ticks)
     private static final int DURATION_TICKS = 600;
     // Refresh cost when at max level
@@ -112,8 +112,7 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
             return false;
         }
 
-        // Get the player's Anima
-        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+        IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, stack);
         if (network == null) {
             return false;
         }
@@ -126,7 +125,7 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
         if (state == null) {
             // First activation
             newLevel = 1;
-            evCost = BASE_LP_COST;
+            evCost = BASE_EV_COST;
         } else if (state.level >= MAX_LEVEL) {
             // Already at max level, just refresh timer
             newLevel = MAX_LEVEL;
@@ -134,14 +133,14 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
         } else {
             // Increase level
             newLevel = state.level + 1;
-            evCost = BASE_LP_COST * (1 << (newLevel - 1)); // 1000 * 2^(level-1)
+            evCost = BASE_EV_COST * (1 << (newLevel - 1)); // 1000 * 2^(level-1)
         }
 
         // Check if player has enough EV
         int currentEV = network.getCurrentEV();
         if (currentEV < evCost) {
             player.displayClientMessage(
-                    Component.translatable(Constants.Localizations.Text.TEMPORAL_NO_LP, evCost)
+                    Component.translatable(Constants.Localizations.Text.TEMPORAL_NO_EV, evCost)
                             .withStyle(ChatFormatting.RED),
                     true
             );

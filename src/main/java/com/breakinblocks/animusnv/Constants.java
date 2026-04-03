@@ -64,12 +64,12 @@ public class Constants {
             public static final String EQUIVALENCY_ADDED = "text.component.animusnv.equivalency.added";
             public static final String EQUIVALENCY_NO_SELECTION = "text.component.animusnv.equivalency.no_selection";
             public static final String EQUIVALENCY_NO_MATCHES = "text.component.animusnv.equivalency.no_matches";
-            public static final String EQUIVALENCY_NO_LP = "text.component.animusnv.equivalency.no_lp";
+            public static final String EQUIVALENCY_NO_EV = "text.component.animusnv.equivalency.no_ev";
             public static final String EQUIVALENCY_STARTED = "text.component.animusnv.equivalency.started";
             public static final String EQUIVALENCY_RADIUS = "text.component.animusnv.equivalency.radius";
 
             public static final String FREE_SOUL_ALREADY_SPECTATOR = "text.component.animusnv.free_soul.already_spectator";
-            public static final String FREE_SOUL_NO_LP = "text.component.animusnv.free_soul.no_lp";
+            public static final String FREE_SOUL_NO_EV = "text.component.animusnv.free_soul.no_ev";
             public static final String FREE_SOUL_ACTIVATED = "text.component.animusnv.free_soul.activated";
             public static final String FREE_SOUL_SAVED = "text.component.animusnv.free_soul.saved";
             public static final String FREE_SOUL_ON_COOLDOWN = "text.component.animusnv.free_soul.on_cooldown";
@@ -78,11 +78,11 @@ public class Constants {
 
             public static final String REMEDIUM_ACTIVATED = "text.component.animusnv.remedium.activated";
             public static final String REMEDIUM_DEACTIVATED = "text.component.animusnv.remedium.deactivated";
-            public static final String REMEDIUM_NO_LP = "text.component.animusnv.remedium.no_lp";
+            public static final String REMEDIUM_NO_EV = "text.component.animusnv.remedium.no_ev";
 
             public static final String REPARARE_ACTIVATED = "text.component.animusnv.reparare.activated";
             public static final String REPARARE_DEACTIVATED = "text.component.animusnv.reparare.deactivated";
-            public static final String REPARARE_NO_LP = "text.component.animusnv.reparare.no_lp";
+            public static final String REPARARE_NO_EV = "text.component.animusnv.reparare.no_ev";
 
             public static final String KEY_CANNOT_BIND_KEY = "text.component.animusnv.key.cannot_bind_key";
             public static final String KEY_ITEM_BOUND = "text.component.animusnv.key.item_bound";
@@ -93,8 +93,8 @@ public class Constants {
             public static final String SPEAR_BOUND_SUCCESS = "text.component.animusnv.spear.bound_success";
             public static final String SPEAR_ACTIVATED = "text.component.animusnv.spear.activated";
             public static final String SPEAR_DEACTIVATED = "text.component.animusnv.spear.deactivated";
-            public static final String SPEAR_NO_LP_THROW = "text.component.animusnv.spear.no_lp_throw";
-            public static final String SPEAR_NO_LP_ATTACK = "text.component.animusnv.spear.no_lp_attack";
+            public static final String SPEAR_NO_EV_THROW = "text.component.animusnv.spear.no_ev_throw";
+            public static final String SPEAR_NO_EV_ATTACK = "text.component.animusnv.spear.no_ev_attack";
 
             public static final String DIVINER_ALTAR_INFO = "text.component.animusnv.diviner.altar_info";
             public static final String DIVINER_ESSENCE_INFO = "text.component.animusnv.diviner.essence_info";
@@ -103,12 +103,12 @@ public class Constants {
             public static final String TEMPORAL_NO_TILE = "text.component.animusnv.temporal.no_tile";
             public static final String TEMPORAL_DISALLOWED = "text.component.animusnv.temporal.disallowed";
             public static final String TEMPORAL_GAG_ACTIVE = "text.component.animusnv.temporal.gag_active";
-            public static final String TEMPORAL_NO_LP = "text.component.animusnv.temporal.no_lp";
+            public static final String TEMPORAL_NO_EV = "text.component.animusnv.temporal.no_ev";
             public static final String TEMPORAL_ACTIVATED = "text.component.animusnv.temporal.activated";
 
             public static final String TICKET_MONK = "text.component.animusnv.ticket.monk";
             public static final String TICKET_MONK_EXECUTE = "text.component.animusnv.ticket.monk_execute";
-            public static final String MONK_NO_LP = "text.component.animusnv.monk.no_lp";
+            public static final String MONK_NO_EV = "text.component.animusnv.monk.no_ev";
 
             public static final String TICKET_ENDLESS_GREED = "text.component.animusnv.ticket.endless_greed";
         }
@@ -156,7 +156,7 @@ public class Constants {
             public static final String SIGIL_TRANSPOSITION_STORED = "tooltip.animusnv.sigil.transposition.stored";
             public static final String BLOOD_APPLE_FLAVOUR = "tooltip.animusnv.blood_apple.flavour";
             public static final String BLOOD_APPLE_INFO = "tooltip.animusnv.blood_apple.info";
-            public static final String BLOOD_APPLE_LP = "tooltip.animusnv.blood_apple.lp";
+            public static final String BLOOD_APPLE_EV = "tooltip.animusnv.blood_apple.ev";
             public static final String BLOOD_SAPLING_FLAVOUR = "tooltip.animusnv.blood_sapling.flavour";
             public static final String BLOOD_SAPLING_INFO = "tooltip.animusnv.blood_sapling.info";
             public static final String BLOOD_ORB_TRANSCENDENT_FLAVOUR = "tooltip.animusnv.blood_orb_transcendent.flavour";
@@ -239,7 +239,7 @@ public class Constants {
 
             public static final String HELLFORGED_BOW_FLAVOUR = "tooltip.animusnv.hellforged_bow.flavour";
             public static final String HELLFORGED_BOW_INFO = "tooltip.animusnv.hellforged_bow.info";
-            public static final String HELLFORGED_BOW_LP_COST = "tooltip.animusnv.hellforged_bow.lp_cost";
+            public static final String HELLFORGED_BOW_EV_COST = "tooltip.animusnv.hellforged_bow.ev_cost";
             public static final String HELLFORGED_BOW_CHARGE = "tooltip.animusnv.hellforged_bow.charge";
             public static final String HELLFORGED_BOW_EXECUTE = "tooltip.animusnv.hellforged_bow.execute";
         }

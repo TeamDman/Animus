@@ -1,7 +1,7 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.entities.EntityThrownSpear;
-import com.breakinblocks.animusnv.util.DemonWillTypeHelper;
+import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
 import com.breakinblocks.animusnv.util.WillWeaponStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
@@ -145,14 +145,14 @@ public class ItemSpearSentient extends ItemSpear {
         if (attacker instanceof Player player) {
             Level level = player.level();
             SpiritusType type = getCurrentType(stack);
-            double soulsRemaining = getTotalWillOfType(player, type);
+            double soulsRemaining = getTotalSpiritusOfType(player, type);
             int willLevel = getLevel(stack, soulsRemaining);
 
                 applyEffectToEntity(type, willLevel, target, attacker);
 
             // Will drops handled by getRandomSpiritusDrop()
             if (soulsRemaining >= 16.0) {
-                drainWillFromPlayer(player, type, soulDrainPerSwing[Math.min(willLevel, 4)]);
+                drainSpiritusFromPlayer(player, type, soulDrainPerSwing[Math.min(willLevel, 4)]);
             }
         }
 
@@ -171,7 +171,7 @@ public class ItemSpearSentient extends ItemSpear {
                         if (riptide == 0) {
                             // Get will type and level before spawning
                             SpiritusType type = getCurrentType(stack);
-                            double soulsRemaining = getTotalWillOfType(player, type);
+                            double soulsRemaining = getTotalSpiritusOfType(player, type);
                             int willLevel = getLevel(stack, soulsRemaining);
 
                             // Spawn sentient spear entity
@@ -193,7 +193,7 @@ public class ItemSpearSentient extends ItemSpear {
 
                             if (soulsRemaining >= 16.0) {
                                 // Double will drain for throwing vs melee
-                                drainWillFromPlayer(player, type, soulDrainPerSwing[Math.min(willLevel, 4)] * 2.0);
+                                drainSpiritusFromPlayer(player, type, soulDrainPerSwing[Math.min(willLevel, 4)] * 2.0);
                             }
                         }
                     }
@@ -218,11 +218,11 @@ public class ItemSpearSentient extends ItemSpear {
     }
 
     public SpiritusType getCurrentType(ItemStack stack) {
-        return DemonWillTypeHelper.getCurrentType(stack);
+        return SpiritusTypeHelper.getCurrentType(stack);
     }
 
     public void setCurrentType(ItemStack stack, SpiritusType type) {
-        DemonWillTypeHelper.setCurrentType(stack, type);
+        SpiritusTypeHelper.setCurrentType(stack, type);
     }
 
     public List<ItemStack> getRandomSpiritusDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int looting) {
@@ -246,7 +246,7 @@ public class ItemSpearSentient extends ItemSpear {
 
         double soulsRemaining = 0;
         if (attackingEntity instanceof Player player) {
-            soulsRemaining = getTotalWillOfType(player, type);
+            soulsRemaining = getTotalSpiritusOfType(player, type);
         }
         int willLevel = Math.min(getLevel(stack, soulsRemaining), 4);
 
@@ -262,7 +262,7 @@ public class ItemSpearSentient extends ItemSpear {
         return soulList;
     }
 
-    public SpiritusType getActiveDemonWillType(ItemStack stack, LivingEntity player, Entity target) {
+    public SpiritusType getActiveSpiritusType(ItemStack stack, LivingEntity player, Entity target) {
         return getCurrentType(stack);
     }
 
@@ -271,18 +271,18 @@ public class ItemSpearSentient extends ItemSpear {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            SpiritusType newType = DemonWillTypeHelper.findDemonWillType(player);
+            SpiritusType newType = SpiritusTypeHelper.findSpiritusType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
             }
         }
     }
 
-    private static double getTotalWillOfType(Player player, SpiritusType type) {
-        return DemonWillTypeHelper.getTotalWillOfType(player, type);
+    private static double getTotalSpiritusOfType(Player player, SpiritusType type) {
+        return SpiritusTypeHelper.getTotalSpiritusOfType(player, type);
     }
 
-    private static void drainWillFromPlayer(Player player, SpiritusType type, double amount) {
-        DemonWillTypeHelper.drainWillFromPlayer(player, type, amount);
+    private static void drainSpiritusFromPlayer(Player player, SpiritusType type, double amount) {
+        SpiritusTypeHelper.drainSpiritusFromPlayer(player, type, amount);
     }
 }

@@ -7,7 +7,9 @@ import com.breakinblocks.animusnv.compat.ironsspells.ArcaneChannelingHandler;
 import com.breakinblocks.animusnv.compat.ironsspells.CrimsonWillSpellHandler;
 import com.breakinblocks.animusnv.compat.ironsspells.ItemBloodInfusedSpellbook;
 import com.breakinblocks.animusnv.compat.ironsspells.ItemSanguineScroll;
-import com.breakinblocks.animusnv.compat.ironsspells.ItemSigilCrimsonWill;
+import com.breakinblocks.neovitae.common.item.sigil.SigilItem;
+import com.breakinblocks.neovitae.registry.SigilTypeRegistry;
+import net.minecraft.resources.ResourceLocation;
 import com.breakinblocks.animusnv.compat.ironsspells.LivingArmorSpellHandler;
 import com.breakinblocks.animusnv.compat.ironsspells.RitualArcaneMastery;
 import com.breakinblocks.animusnv.compat.ironsspells.RitualIronHeart;
@@ -57,8 +59,10 @@ public class IronsSpellsCompat implements ICompatModule {
     public static final DeferredHolder<Item, ItemBloodInfusedSpellbook> BLOOD_INFUSED_SPELLBOOK =
         ITEMS.register("blood_infused_spellbook", () -> new ItemBloodInfusedSpellbook());
 
-    public static final DeferredHolder<Item, ItemSigilCrimsonWill> SIGIL_CRIMSON_WILL =
-        ITEMS.register("sigil_crimson_will", () -> new ItemSigilCrimsonWill());
+    public static final DeferredHolder<Item, SigilItem> SIGIL_CRIMSON_WILL =
+        ITEMS.register("sigil_crimson_will", () -> new SigilItem(
+            SigilTypeRegistry.key(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "crimson_will"))
+        ));
 
     public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_BLANK =
         ITEMS.register("sanguine_scroll_blank", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.BLANK));

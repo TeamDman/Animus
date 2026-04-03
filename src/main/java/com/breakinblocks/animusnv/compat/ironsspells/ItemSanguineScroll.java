@@ -127,11 +127,11 @@ public class ItemSanguineScroll extends Item {
 
         int manaCost = spell.getManaCost(spellLevel);
         int evPerMana = AnimusConfig.ironsSpells.evPerMana.get();
-        double multiplier = AnimusConfig.ironsSpells.sanguineScrollLPMultiplier.get();
+        double multiplier = AnimusConfig.ironsSpells.sanguineScrollEVMultiplier.get();
         int evCost = (int)(manaCost * evPerMana * multiplier);
 
-        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
-        if (network.getCurrentEV() < evCost) {
+        IAnima network = com.breakinblocks.animusnv.util.AnimusRitualHelper.getNetworkForBoundItem(player, stack);
+        if (network == null || network.getCurrentEV() < evCost) {
             player.displayClientMessage(
                 Component.literal("Not enough EV! Need " + evCost + " EV")
                     .withStyle(ChatFormatting.RED),
@@ -199,7 +199,7 @@ public class ItemSanguineScroll extends Item {
 
                 int manaCost = spell.getManaCost(spellLevel);
                 int evPerMana = AnimusConfig.ironsSpells.evPerMana.get();
-                double multiplier = AnimusConfig.ironsSpells.sanguineScrollLPMultiplier.get();
+                double multiplier = AnimusConfig.ironsSpells.sanguineScrollEVMultiplier.get();
                 int evCost = (int)(manaCost * evPerMana * multiplier);
 
                 tooltip.add(Component.literal(""));

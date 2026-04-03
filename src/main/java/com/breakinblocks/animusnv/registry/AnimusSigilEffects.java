@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import com.breakinblocks.neovitae.api.registry.NeoVitaeRegistries;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 import com.breakinblocks.animusnv.Constants;
+import com.breakinblocks.animusnv.compat.ironsspells.CrimsonWillSigilEffect;
 import com.breakinblocks.animusnv.items.sigils.effects.*;
 
 import java.util.function.Supplier;
@@ -59,6 +60,9 @@ public class AnimusSigilEffects {
     public static final Supplier<MapCodec<MonkSigilEffect>> MONK =
             SIGIL_EFFECTS.register("monk", () -> MonkSigilEffect.CODEC);
 
+    public static final Supplier<MapCodec<CrimsonWillSigilEffect>> CRIMSON_WILL =
+            SIGIL_EFFECTS.register("crimson_will", () -> CrimsonWillSigilEffect.CODEC);
+
     public static void init() {
         // Force access to ensure static initializers run
         var storm = STORM;
@@ -74,6 +78,7 @@ public class AnimusSigilEffects {
         var temporalDominance = TEMPORAL_DOMINANCE;
         var equivalency = EQUIVALENCY;
         var monk = MONK;
+        var crimsonWill = CRIMSON_WILL;
     }
 
     public static void register(IEventBus modEventBus) {

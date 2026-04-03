@@ -44,10 +44,10 @@ public class AnimusCommands {
                 Commands.literal("animusnv")
                         .requires(source -> source.hasPermission(2))
                         .then(Commands.literal("getlp")
-                                .executes(AnimusCommands::getLP))
+                                .executes(AnimusCommands::getEV))
                         .then(Commands.literal("setlp")
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                                        .executes(AnimusCommands::setLP)))
+                                        .executes(AnimusCommands::setEV)))
                         .then(Commands.literal("fillwill")
                                 .then(Commands.argument("type", StringArgumentType.word())
                                         .suggests(WILL_TYPE_SUGGESTIONS)
@@ -57,7 +57,7 @@ public class AnimusCommands {
         );
     }
 
-    private static int getLP(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private static int getEV(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
         if (network == null) {
@@ -70,7 +70,7 @@ public class AnimusCommands {
         return 1;
     }
 
-    private static int setLP(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private static int setEV(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         int amount = IntegerArgumentType.getInteger(context, "amount");
         IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());

@@ -24,14 +24,9 @@ import java.util.Optional;
 
 import static com.breakinblocks.animusnv.rituals.RitualNaturesLeach.isConsumable;
 
-/**
- * Sigil of Nature's Leach - consumes plants and organic matter to restore hunger.
- * When activated, automatically consumes consumable blocks from inventory or nearby world.
- */
 public record LeachSigilEffect() implements ISigilEffect {
     public static final MapCodec<LeachSigilEffect> CODEC = MapCodec.unit(LeachSigilEffect::new);
 
-    // Cached area descriptor
     private static AreaDescriptor cachedEatRange;
     private static int cachedConfigRange = -1;
 
@@ -66,9 +61,6 @@ public record LeachSigilEffect() implements ISigilEffect {
         }
     }
 
-    /**
-     * Get or create the area descriptor based on current config value.
-     */
     private static AreaDescriptor getEatRange() {
         int configRange = AnimusConfig.sigils.leachRange.get();
         if (cachedEatRange == null || cachedConfigRange != configRange) {

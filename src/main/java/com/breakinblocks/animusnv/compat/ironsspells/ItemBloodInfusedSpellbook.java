@@ -32,7 +32,7 @@ import java.util.List;
  * - Tier 5: 11 spell slots, -20% EV cost reduction
  * - Tier 6: 12 spell slots, -20% EV cost reduction, +5% lifesteal
  *
- * Infused at Ara Vitae using Blood Orbs
+ * Infused at Ara Vitae using Orbs of Vitae
  */
 public class ItemBloodInfusedSpellbook extends SpellBook {
 
@@ -236,13 +236,13 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
 
     private static String getOrbNameForTier(int tier) {
         return switch (tier) {
-            case 1 -> "Weak Blood Orb";
-            case 2 -> "Apprentice Blood Orb";
-            case 3 -> "Magician's Blood Orb";
-            case 4 -> "Master Blood Orb";
-            case 5 -> "Archmage's Blood Orb";
-            case 6 -> "Transcendent Blood Orb";
-            default -> "Blood Orb";
+            case 1 -> "Weak Orb of Vitae";
+            case 2 -> "Apprentice Orb of Vitae";
+            case 3 -> "Magician's Orb of Vitae";
+            case 4 -> "Master Orb of Vitae";
+            case 5 -> "Archmage's Orb of Vitae";
+            case 6 -> "Transcendent Orb of Vitae";
+            default -> "Orb of Vitae";
         };
     }
 

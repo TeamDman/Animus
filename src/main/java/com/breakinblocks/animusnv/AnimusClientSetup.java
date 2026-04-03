@@ -55,27 +55,20 @@ public class AnimusClientSetup {
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 registerCrimsonWillSigilProperty();
             }
+
         });
     }
 
     /**
-     * Uses registry lookup to avoid class loading issues with IronsSpellsCompat
+     * Uses registry lookup to avoid class loading issues with IronsSpellsCompat.
+     * Registers the standard toggleable sigil property using IActivatable.
      */
     private static void registerCrimsonWillSigilProperty() {
         try {
             Item sigilCrimsonWill = BuiltInRegistries.ITEM.get(
                 ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "sigil_crimson_will"));
             if (sigilCrimsonWill != null && sigilCrimsonWill != Items.AIR) {
-                ItemProperties.register(sigilCrimsonWill,
-                    ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "active"),
-                    (stack, level, entity, seed) -> {
-                        var customData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
-                        if (customData != null && customData.copyTag().getBoolean("Active")) {
-                            return 1.0F;
-                        }
-                        return 0.0F;
-                    }
-                );
+                registerToggleableSigilProperty(sigilCrimsonWill);
             }
         } catch (Exception e) {
             // Item not registered yet or compat not loaded

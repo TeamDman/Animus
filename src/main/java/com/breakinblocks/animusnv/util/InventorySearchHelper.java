@@ -61,13 +61,21 @@ public final class InventorySearchHelper {
     }
 
     public static boolean hasActiveItem(Player player, Item item) {
-        return findFirst(player, stack -> {
-            if (!stack.is(item)) return false;
+        return findActiveSigil(player, item).isPresent();
+    }
+
+    /**
+     * Finds an active (toggled-on) sigil of the given type in the player's inventory.
+     * Searches main inventory and offhand.
+     */
+    public static Optional<ItemStack> findActiveSigil(Player player, Item sigilItem) {
+        return findFirstUsable(player, stack -> {
+            if (!stack.is(sigilItem)) return false;
             if (stack.getItem() instanceof IActivatable activatable) {
                 return activatable.getActivated(stack);
             }
             return false;
-        }).isPresent();
+        });
     }
 
     public static int countItems(Player player, Predicate<ItemStack> predicate) {

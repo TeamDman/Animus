@@ -112,7 +112,7 @@ public class AltarInfusionDisplay {
         return outputs;
     }
 
-    public int getLpCost() {
+    public int getEvCost() {
         return evCost;
     }
 

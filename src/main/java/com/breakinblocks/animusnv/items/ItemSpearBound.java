@@ -45,7 +45,7 @@ import java.util.List;
  * Sneak + Right-Click: Bind (if unbound) or toggle active/deactivated (if bound)
  */
 public class ItemSpearBound extends ItemSpear implements IBindable {
-    private static final int LP_COST = 50;
+    private static final int EV_COST = 50;
 
     public ItemSpearBound() {
         super(Tiers.DIAMOND);
@@ -70,7 +70,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         stack.set(AnimusDataComponents.SPEAR_ACTIVATED.get(), activated);
     }
 
-    private boolean consumeLP(Player player, ItemStack stack) {
+    private boolean consumeEV(Player player, ItemStack stack) {
         if (player.getAbilities().instabuild) {
             return true;
         }
@@ -82,7 +82,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
 
         // Use the binding owner's network, not the using player's
         IAnima network = NeoVitaeAPI.getInstance().getAnima(binding.uuid());
-        AnimaTicket ticket = AnimaTicket.create(LP_COST);
+        AnimaTicket ticket = AnimaTicket.create(EV_COST);
 
         var result = network.syphonAndDamage(player, ticket);
         return result.success();
@@ -159,9 +159,9 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                 int riptide = getRiptideLevel(stack, level);
 
                 // If activated, check for EV cost (server-side only)
-                if (isActivated(stack) && !level.isClientSide && !consumeLP(player, stack)) {
+                if (isActivated(stack) && !level.isClientSide && !consumeEV(player, stack)) {
                     player.displayClientMessage(
-                        Component.translatable(Constants.Localizations.Text.SPEAR_NO_LP_THROW)
+                        Component.translatable(Constants.Localizations.Text.SPEAR_NO_EV_THROW)
                             .withStyle(ChatFormatting.RED),
                         true
                     );
@@ -229,9 +229,9 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         }
 
         if (attacker instanceof Player player) {
-            if (!consumeLP(player, stack)) {
+            if (!consumeEV(player, stack)) {
                 player.displayClientMessage(
-                    Component.translatable(Constants.Localizations.Text.SPEAR_NO_LP_ATTACK)
+                    Component.translatable(Constants.Localizations.Text.SPEAR_NO_EV_ATTACK)
                         .withStyle(ChatFormatting.RED),
                     true
                 );
@@ -325,14 +325,14 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
      */
     private int getEntitySacrificeValue(LivingEntity entity) {
         // Use the datamap to calculate full sacrifice value (kill = max health worth of damage)
-        int lpValue = EntitySacrificeHelper.calculateLP(entity, entity.getMaxHealth());
+        int evValue = EntitySacrificeHelper.calculateLP(entity, entity.getMaxHealth());
 
         // Baby entities give half value
         if (entity.isBaby()) {
-            lpValue /= 2;
+            evValue /= 2;
         }
 
-        return Math.max(lpValue, 50); // Minimum 50 EV
+        return Math.max(evValue, 50); // Minimum 50 EV
     }
 
     @Override

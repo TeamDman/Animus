@@ -1,7 +1,7 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.Constants;
-import com.breakinblocks.animusnv.util.DemonWillTypeHelper;
+import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -74,7 +74,7 @@ public class ItemSentientShield extends ShieldItem {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
         if (entity instanceof Player player) {
-            SpiritusType newType = DemonWillTypeHelper.findDemonWillType(player);
+            SpiritusType newType = SpiritusTypeHelper.findSpiritusType(player);
             if (newType != getCurrentType(stack)) {
                 setCurrentType(stack, newType);
             }
@@ -82,18 +82,18 @@ public class ItemSentientShield extends ShieldItem {
     }
 
     public SpiritusType getCurrentType(ItemStack stack) {
-        return DemonWillTypeHelper.getCurrentType(stack);
+        return SpiritusTypeHelper.getCurrentType(stack);
     }
 
     public void setCurrentType(ItemStack stack, SpiritusType type) {
-        DemonWillTypeHelper.setCurrentType(stack, type);
+        SpiritusTypeHelper.setCurrentType(stack, type);
     }
 
     public List<ItemStack> getRandomSpiritusDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int tier) {
         return new java.util.ArrayList<>();
     }
 
-    public SpiritusType getActiveDemonWillType(ItemStack stack, LivingEntity player, Entity target) {
+    public SpiritusType getActiveSpiritusType(ItemStack stack, LivingEntity player, Entity target) {
         return getCurrentType(stack);
     }
 

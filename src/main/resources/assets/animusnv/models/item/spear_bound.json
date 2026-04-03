@@ -2,7 +2,7 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"9": "animusnv:item/itemspearbound_deactivated"
+		"9": "animusnv:item/spear_bound_deactivated"
 	},
 	"elements": [
 		{

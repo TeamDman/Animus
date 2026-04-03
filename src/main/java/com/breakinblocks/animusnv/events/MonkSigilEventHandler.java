@@ -31,6 +31,8 @@ import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
+import javax.annotation.Nullable;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.api.will.IPlayerSpiritusHandler;
 
@@ -42,32 +44,21 @@ public class MonkSigilEventHandler {
     private static final double MIN_EXECUTE_PERCENT = 0.01; // 1%
     private static final double MAX_EXECUTE_PERCENT = 0.15; // 15%
     private static final double WILL_COST_PER_EXECUTE = 5.0;
-    private static final int LP_REWARD_PER_EXECUTE = 200;
-    private static final int LP_COST_PER_ACTION = 5;
+    private static final int EV_REWARD_PER_EXECUTE = 200;
+    private static final int EV_COST_PER_ACTION = 5;
 
     // Netherite pickaxe base (9.0) + Efficiency V (level^2 + 1 = 26) = 35.0
     private static final float MONK_MINING_SPEED = 35.0f;
 
     public static boolean hasActiveMonkSigil(Player player) {
-        for (ItemStack stack : player.getInventory().items) {
-            if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_MONK.get())) {
-                if (stack.getItem() instanceof com.breakinblocks.neovitae.common.item.IActivatable activatable) {
-                    if (activatable.getActivated(stack)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        for (ItemStack stack : player.getInventory().offhand) {
-            if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_MONK.get())) {
-                if (stack.getItem() instanceof com.breakinblocks.neovitae.common.item.IActivatable activatable) {
-                    if (activatable.getActivated(stack)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return findActiveMonkSigil(player) != null;
+    }
+
+    @Nullable
+    public static ItemStack findActiveMonkSigil(Player player) {
+        return com.breakinblocks.animusnv.util.InventorySearchHelper
+            .findActiveSigil(player, AnimusItems.SIGIL_MONK.get())
+            .orElse(null);
     }
 
     @SubscribeEvent
@@ -90,7 +81,8 @@ public class MonkSigilEventHandler {
             return;
         }
 
-        if (!hasActiveMonkSigil(player)) {
+        ItemStack monkSigil = findActiveMonkSigil(player);
+        if (monkSigil == null) {
             return;
         }
 
@@ -105,7 +97,6 @@ public class MonkSigilEventHandler {
 
         double totalWill = getTotalSpiritus(player);
 
-        // Execute scales linearly: 1% at 1 will to 15% at 4096 will
         double executePercent = 0;
         float willBonusDamage = 0;
 
@@ -122,9 +113,8 @@ public class MonkSigilEventHandler {
         float healthAfterAttack = target.getHealth() - totalDamage;
         float executeThreshold = (float) (targetMaxHealth * executePercent);
 
-        MonkSigilEffect.consumeLP(player, LP_COST_PER_ACTION);
+        MonkSigilEffect.consumeEV(player, monkSigil, EV_COST_PER_ACTION);
 
-        // Execute: if target would survive but be below threshold, finish them off
         if (executePercent > 0 && healthAfterAttack > 0 && healthAfterAttack < executeThreshold) {
             if (totalWill >= WILL_COST_PER_EXECUTE) {
                 consumeSpiritus(player, WILL_COST_PER_EXECUTE);
@@ -148,15 +138,16 @@ public class MonkSigilEventHandler {
                     serverLevel.sendParticles(
                         ParticleTypes.SOUL,
                         x, y, z,
-                        20, // count
-                        0.5, 0.5, 0.5, // spread
-                        0.1 // speed
+                        20,
+                        0.5, 0.5, 0.5,
+                        0.1
                     );
                 }
 
-                IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+                // Reward EV to the sigil's bound network
+                IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, monkSigil);
                 if (network != null) {
-                    network.add(AnimaTicket.create(LP_REWARD_PER_EXECUTE), LP_REWARD_PER_EXECUTE);
+                    network.add(AnimaTicket.create(EV_REWARD_PER_EXECUTE), EV_REWARD_PER_EXECUTE);
                 }
             }
         }
@@ -196,7 +187,8 @@ public class MonkSigilEventHandler {
             return;
         }
 
-        if (!hasActiveMonkSigil(player)) {
+        ItemStack monkSigil = findActiveMonkSigil(player);
+        if (monkSigil == null) {
             return;
         }
 
@@ -249,22 +241,22 @@ public class MonkSigilEventHandler {
                     player.getX(),
                     player.getY() + player.getBbHeight() / 2.0,
                     player.getZ(),
-                    15, // count
-                    0.4, 0.4, 0.4, // spread
-                    0.05 // speed
+                    15,
+                    0.4, 0.4, 0.4,
+                    0.05
                 );
                 serverLevel.sendParticles(
                     ParticleTypes.POOF,
                     player.getX(),
                     player.getY() + player.getBbHeight() / 2.0,
                     player.getZ(),
-                    10, // count
-                    0.3, 0.3, 0.3, // spread
-                    0.02 // speed
+                    10,
+                    0.3, 0.3, 0.3,
+                    0.02
                 );
             }
 
-            MonkSigilEffect.consumeLP(player, 50);
+            MonkSigilEffect.consumeEV(player, monkSigil, 50);
         }
     }
 
@@ -282,12 +274,13 @@ public class MonkSigilEventHandler {
             return;
         }
 
-        if (!hasActiveMonkSigil(player)) {
+        ItemStack monkSigil = findActiveMonkSigil(player);
+        if (monkSigil == null) {
             return;
         }
 
         event.setCanceled(true);
-        MonkSigilEffect.consumeLP(player, 25);
+        MonkSigilEffect.consumeEV(player, monkSigil, 25);
         if (player.level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(
                 ParticleTypes.CLOUD,
@@ -373,11 +366,12 @@ public class MonkSigilEventHandler {
             return;
         }
 
-        if (!hasActiveMonkSigil(player)) {
+        ItemStack monkSigil = findActiveMonkSigil(player);
+        if (monkSigil == null) {
             return;
         }
 
-        MonkSigilEffect.consumeLP(player, LP_COST_PER_ACTION);
+        MonkSigilEffect.consumeEV(player, monkSigil, EV_COST_PER_ACTION);
     }
 
     private static double getTotalSpiritus(Player player) {
