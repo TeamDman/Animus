@@ -6,8 +6,11 @@ import com.breakinblocks.animusnv.registry.*;
 import com.breakinblocks.animusnv.worldgen.AnimusTreeDecoratorTypes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,12 +51,27 @@ public class Animus {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerPayloads);
+        modEventBus.addListener(this::registerCapabilities);
 
         LOGGER.debug("Animus mod loading...");
     }
 
     private void registerPayloads(final RegisterPayloadHandlersEvent event) {
         AnimusPayloads.register(event);
+    }
+
+    private void registerCapabilities(final RegisterCapabilitiesEvent event) {
+        if (ModList.get().isLoaded("evilcraft")) {
+            registerEvilCraftCapabilities(event);
+        }
+    }
+
+    private void registerEvilCraftCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+            Capabilities.FluidHandler.BLOCK,
+            com.breakinblocks.animusnv.compat.EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(),
+            (be, direction) -> be.getBloodTank()
+        );
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

@@ -89,6 +89,18 @@ public class AnimusJEIPlugin implements IModPlugin {
             registerSanguineScrollsJEI(registration);
             registerAltarInfusionRecipes(registration);
         }
+
+        if (ModList.get().isLoaded("evilcraft")) {
+            Item rectifier = BuiltInRegistries.ITEM.get(
+                ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "sanguine_rectifier"));
+            if (rectifier != null && rectifier != Items.AIR) {
+                registration.addIngredientInfo(
+                    Arrays.asList(new ItemStack(rectifier)),
+                    VanillaTypes.ITEM_STACK,
+                    Component.translatable("jei.animusnv.sanguine_rectifier.info")
+                );
+            }
+        }
     }
 
     private void registerSanguineScrollsJEI(IRecipeRegistration registration) {

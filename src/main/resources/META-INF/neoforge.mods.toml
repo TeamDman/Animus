@@ -88,6 +88,12 @@ description = '''${mod_description}'''
     ordering = "AFTER"
     side = "BOTH"
 
+[[dependencies.animusnv]]
+    modId = "evilcraft"
+    type = "optional"
+    versionRange = "*"
+    ordering = "AFTER"
+    side = "BOTH"
 
 # =============================================================================
 # Mixins

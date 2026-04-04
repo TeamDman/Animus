@@ -67,6 +67,10 @@ public class AnimusLootTableProvider extends LootTableProvider {
             );
 
             this.dropSelf(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get());
+            // EvilCraft compat block (registered in EvilCraftCompat)
+            if (net.neoforged.fml.ModList.get().isLoaded("evilcraft")) {
+                this.dropSelf(com.breakinblocks.animusnv.compat.EvilCraftCompat.SANGUINE_RECTIFIER.get());
+            }
 
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE.get());
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get());
@@ -134,12 +138,21 @@ public class AnimusLootTableProvider extends LootTableProvider {
 
         @Override
         protected Iterable<Block> getKnownBlocks() {
-            return AnimusBlocks.BLOCKS.getEntries().stream()
+            var blocks = new java.util.ArrayList<Block>();
+            AnimusBlocks.BLOCKS.getEntries().stream()
                 .filter(entry -> entry != AnimusBlocks.BLOCK_FLUID_ANTILIFE
                     && entry != AnimusBlocks.BLOCK_FLUID_LIVING_TERRA
-                    && entry != AnimusBlocks.BLOCK_ANTILIFE) // BLOCK_ANTILIFE has noLootTable flag
+                    && entry != AnimusBlocks.BLOCK_ANTILIFE)
                 .map(DeferredHolder::get)
-                .collect(Collectors.toList());
+                .forEach(blocks::add);
+
+            if (net.neoforged.fml.ModList.get().isLoaded("evilcraft")) {
+                com.breakinblocks.animusnv.compat.EvilCraftCompat.BLOCKS.getEntries().stream()
+                    .map(DeferredHolder::get)
+                    .forEach(blocks::add);
+            }
+
+            return blocks;
         }
     }
 }

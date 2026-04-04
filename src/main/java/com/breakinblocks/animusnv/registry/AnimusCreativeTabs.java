@@ -33,6 +33,11 @@ public class AnimusCreativeTabs {
         "arcane_rune"
     };
 
+    // EvilCraft compat item names
+    private static final String[] EVILCRAFT_COMPAT_ITEMS = {
+        "sanguine_rectifier"
+    };
+
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ANIMUS_TAB = CREATIVE_TABS.register("animusnv_tab",
         () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + Constants.Mod.MODID))
@@ -53,6 +58,16 @@ public class AnimusCreativeTabs {
 
                 if (ModList.get().isLoaded("ars_nouveau")) {
                     for (String itemName : ARS_NOUVEAU_COMPAT_ITEMS) {
+                        Item item = BuiltInRegistries.ITEM.get(
+                            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
+                        if (item != null && item != Items.AIR) {
+                            output.accept(new ItemStack(item));
+                        }
+                    }
+                }
+
+                if (ModList.get().isLoaded("evilcraft")) {
+                    for (String itemName : EVILCRAFT_COMPAT_ITEMS) {
                         Item item = BuiltInRegistries.ITEM.get(
                             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
                         if (item != null && item != Items.AIR) {

@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "evilcraft"
+    }
+  ],
+  "type": "neovitae:hellfire_forge",
+  "minDrain": 32.0,
+  "drain": 5.0,
+  "inputs": [
+    {
+      "item": "minecraft:cauldron"
+    },
+    {
+      "item": "evilcraft:dark_gem"
+    },
+    {
+      "item": "neovitae:imbued_slate"
+    },
+    {
+      "item": "neovitae:blood_stained_glass"
+    }
+  ],
+  "output": {
+    "id": "animusnv:sanguine_rectifier",
+    "count": 1
+  }
+}

@@ -79,6 +79,11 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
             )
         );
 
+        if (net.neoforged.fml.ModList.get().isLoaded("evilcraft")) {
+            simpleBlock(com.breakinblocks.animusnv.compat.EvilCraftCompat.SANGUINE_RECTIFIER.get(),
+                models().getExistingFile(modLoc("block/block_sanguine_rectifier")));
+        }
+
         willfulStoneBlock(AnimusBlocks.BLOCK_WILLFUL_STONE.get(), "willful_stone");
         willfulStoneBlock(AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get(), "willful_stone_white");
         willfulStoneBlock(AnimusBlocks.BLOCK_WILLFUL_STONE_ORANGE.get(), "willful_stone_orange");

@@ -15,7 +15,8 @@ public class CompatCategory extends CategoryProvider {
     protected String[] generateEntryMap() {
         return new String[]{
                 "__a_b_c_d__",
-                "__e_f_g_h__"
+                "__e_f_g_h__",
+                "__i________"
         };
     }
 
@@ -33,6 +34,8 @@ public class CompatCategory extends CategoryProvider {
         var manasteelSoul = this.add(new ManasteelSoulEntry(this).generate('g'));
         // Malum
         var soulStainedBlood = this.add(new SoulStainedBloodEntry(this).generate('h'));
+        // EvilCraft
+        var sanguineRectifier = this.add(new SanguineRectifierEntry(this).generate('i'));
     }
 
     @Override

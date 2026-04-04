@@ -424,15 +424,14 @@ public class ItemSanguineDiviner extends Item {
             path.contains("t4_capstone") || path.contains("tier4_capstone") || path.contains("tier_4_capstone")) {
             return NVBlocks.BLOODSTONE_BRICK.block().get();
         }
-        // T3 capstones
+        // T3 capstones - bloodstained glass
         if (materialId.equals(NVTags.Blocks.T3_CAPSTONES.location()) ||
             path.contains("t3_capstone") || path.contains("tier3_capstone") || path.contains("tier_3_capstone")) {
-            return Blocks.GLOWSTONE;
+            return getBloodStainedGlass(level);
         }
 
         // Generic capstone fallback - check tier number in path
         if (path.contains("capstone")) {
-            // Try to extract tier number
             if (path.contains("6")) {
                 return AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get();
             } else if (path.contains("5")) {
@@ -440,7 +439,7 @@ public class ItemSanguineDiviner extends Item {
             } else if (path.contains("4")) {
                 return NVBlocks.BLOODSTONE_BRICK.block().get();
             } else if (path.contains("3")) {
-                return Blocks.GLOWSTONE;
+                return getBloodStainedGlass(level);
             }
         }
 
@@ -590,6 +589,17 @@ public class ItemSanguineDiviner extends Item {
     /**
      * Formats a rune name for display (e.g., "self_sacrifice" -> "Self Sacrifice").
      */
+    /**
+     * Gets bloodstained glass from NeoVitae's registry, falling back to glass if unavailable.
+     */
+    private Block getBloodStainedGlass(Level level) {
+        Block block = level.registryAccess()
+                .registryOrThrow(Registries.BLOCK)
+                .get(ResourceKey.create(Registries.BLOCK,
+                    ResourceLocation.fromNamespaceAndPath("neovitae", "blood_stained_glass")));
+        return block != null ? block : Blocks.GLASS;
+    }
+
     private String formatRuneName(String runeName) {
         String[] words = runeName.split("_");
         StringBuilder result = new StringBuilder();

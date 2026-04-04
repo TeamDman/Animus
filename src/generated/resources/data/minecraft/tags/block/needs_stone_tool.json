@@ -10,6 +10,10 @@
     {
       "id": "animusnv:rune_unleashed_nature",
       "required": false
+    },
+    {
+      "id": "animusnv:sanguine_rectifier",
+      "required": false
     }
   ]
 }

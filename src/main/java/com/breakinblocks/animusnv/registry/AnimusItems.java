@@ -81,6 +81,8 @@ public class AnimusItems {
 
     // Imperfect Ritual Stone removed - use NeoVitae's native NVBlocks.IMPERFECT_RITUAL_STONE instead
 
+    // Sanguine Rectifier moved to EvilCraftCompat (only exists when EvilCraft is loaded)
+
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE = registerBlockItem("willful_stone", AnimusBlocks.BLOCK_WILLFUL_STONE);
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE_WHITE = registerBlockItem("willful_stone_white", AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE);
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE_ORANGE = registerBlockItem("willful_stone_orange", AnimusBlocks.BLOCK_WILLFUL_STONE_ORANGE);

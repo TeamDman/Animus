@@ -81,6 +81,17 @@ public class AnimusClientSetup {
 
         event.registerEntityRenderer(AnimusEntityTypes.SENTIENT_ARROW.get(), AnimusArrowRenderer::new);
         event.registerEntityRenderer(AnimusEntityTypes.HELLFORGED_ARROW.get(), AnimusArrowRenderer::new);
+
+        if (ModList.get().isLoaded("evilcraft")) {
+            registerEvilCraftRenderers(event);
+        }
+    }
+
+    private static void registerEvilCraftRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(
+            com.breakinblocks.animusnv.compat.EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(),
+            com.breakinblocks.animusnv.compat.evilcraft.SanguineRectifierRenderer::new
+        );
     }
 
     @SubscribeEvent

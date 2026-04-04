@@ -854,6 +854,35 @@ public class AnimusConfig {
         }
     }
 
+    public static class SanguineRectifier {
+        public final ModConfigSpec.IntValue evPerBlood;
+        public final ModConfigSpec.IntValue baseTransferRate;
+        public final ModConfigSpec.IntValue tankCapacity;
+        public final ModConfigSpec.IntValue searchRange;
+
+        public SanguineRectifier(ModConfigSpec.Builder builder) {
+            builder.comment("Sanguine Rectifier (EvilCraft Compat)").push("sanguineRectifier");
+
+            evPerBlood = builder
+                .comment("EV consumed per 1mB of EvilCraft blood produced. Set to 0 to disable EV-to-Blood conversion.")
+                .defineInRange("evPerBlood", 1, 0, 100);
+
+            baseTransferRate = builder
+                .comment("Base transfer rate in mB/tick (scales with altar speed runes)")
+                .defineInRange("baseTransferRate", 100, 1, 10000);
+
+            tankCapacity = builder
+                .comment("Internal blood tank capacity in mB")
+                .defineInRange("tankCapacity", 16000, 1000, 256000);
+
+            searchRange = builder
+                .comment("Altar search range in blocks (cube radius)")
+                .defineInRange("searchRange", 10, 3, 32);
+
+            builder.pop();
+        }
+    }
+
     public static General general;
     public static Rituals rituals;
     public static Sigils sigils;
@@ -863,6 +892,7 @@ public class AnimusConfig {
     public static Botania botania;
     public static Weapons weapons;
     public static IronsSpells ironsSpells;
+    public static SanguineRectifier sanguineRectifier;
 
     static {
         BUILDER.comment("Animus Configuration").push("animusnv");
@@ -876,6 +906,7 @@ public class AnimusConfig {
         botania = new Botania(BUILDER);
         weapons = new Weapons(BUILDER);
         ironsSpells = new IronsSpells(BUILDER);
+        sanguineRectifier = new SanguineRectifier(BUILDER);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

@@ -79,6 +79,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("block.animusnv.blood_wood_stairs", "Blood Wood Stairs");
         add("block.animusnv.blood_wood_stripped", "Stripped Blood Wood Log");
         add("block.animusnv.crystallized_spiritus_block", "Crystallized Spiritus Block");
+        add("block.animusnv.sanguine_rectifier", "Sanguine Rectifier");
         add("block.animusnv.diabolical_fungi", "Diabolical Fungi");
         add("block.animusnv.imperfect_ritual_stone", "Imperfect Ritual Stone");
         add("block.animusnv.rune_unleashed_nature", "Rune of Unleashed Nature");
@@ -510,6 +511,12 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("text.component.animusnv.temporal.activated", "Temporal acceleration set to %sx speed for %s seconds");
         add("text.component.animusnv.temporal.disallowed", "This block cannot be accelerated");
         add("text.component.animusnv.temporal.gag_active", "This block is already being accelerated");
+        add("text.component.animusnv.rectifier.linked", "Linked to Ara Vitae at: %s, %s, %s");
+        add("text.component.animusnv.rectifier.no_altar", "No Ara Vitae found nearby");
+        add("text.component.animusnv.rectifier.orb_placed", "Orb of Vitae placed");
+        add("text.component.animusnv.rectifier.orb_removed", "Orb of Vitae removed");
+        add("text.component.animusnv.rectifier.orb_not_bound", "Orb of Vitae must be bound first");
+
         add("text.component.animusnv.temporal.no_ev", "Not enough EV! Requires %s EV");
         add("text.component.animusnv.temporal.no_tile", "No block entity at target location");
         add("text.component.animusnv.ticket.antilife", "AntiLife");
@@ -579,6 +586,16 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.crystallized_spiritus.flavour", "Demon will crystallized into solid form");
         add("tooltip.animusnv.crystallized_spiritus.info", "Required component for Tier 6 Ara Vitaes");
         add("tooltip.animusnv.currentOwner", "Owner: %s");
+
+        add("tooltip.animusnv.sanguine_rectifier.desc", "Converts Essentia Vitae to EvilCraft Blood and vice versa");
+        add("tooltip.animusnv.sanguine_rectifier.ev_to_blood", "EV \u2192 Blood: Drains from bound Orb, fills adjacent tanks");
+        add("tooltip.animusnv.sanguine_rectifier.blood_to_altar", "Blood \u2192 Altar: Pipe blood in, transfers to linked Ara Vitae");
+        add("tooltip.animusnv.sanguine_rectifier.rate", "Transfer rate scales with altar speed runes");
+        add("tooltip.animusnv.sanguine_rectifier.ev_disabled", "EV to Blood conversion is disabled by server config");
+
+        add("jei.animusnv.sanguine_rectifier.info", "The Sanguine Rectifier bridges NeoVitae and EvilCraft. Place near an Ara Vitae and insert a bound Orb of Vitae. It converts EV from the bound network into EvilCraft blood, filling adjacent fluid tanks. It can also accept piped EvilCraft blood and transfer it into the linked altar. Transfer rates scale with the altar's speed runes.");
+
+        add("guide.animusnv.entry.sanguine_rectifier", "Sanguine Rectifier");
         add("tooltip.animusnv.diabolical_fungi.conversion", "1 will = 50 mana (configurable), bonus for variety");
         add("tooltip.animusnv.diabolical_fungi.flavour", "Devil's Tooth Mushroom - Feeds on Spiritus");
         add("tooltip.animusnv.diabolical_fungi.info", "Consumes Spiritus from the chunk to generate mana");

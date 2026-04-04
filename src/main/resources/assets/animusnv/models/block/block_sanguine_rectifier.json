@@ -1,0 +1,10 @@
+{
+  "parent": "block/block",
+  "loader": "neoforge:obj",
+  "flip_v": true,
+  "model": "animusnv:models/block/block_sanguine_rectifier.obj",
+  "textures": {
+    "None": "animusnv:block/sanguine_rectifier",
+    "particle": "#None"
+  }
+}

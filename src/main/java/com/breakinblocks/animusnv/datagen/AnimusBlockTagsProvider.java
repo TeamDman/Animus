@@ -86,13 +86,15 @@ public class AnimusBlockTagsProvider extends BlockTagsProvider {
             .add(AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get())
             .add(AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get())
             .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_rune"))
-            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "rune_unleashed_nature"));
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "rune_unleashed_nature"))
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "sanguine_rectifier"));
 
         this.tag(BlockTags.NEEDS_STONE_TOOL)
             .add(AnimusBlocks.BLOCK_ANTILIFE.get())
             .add(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get())
             .add(AnimusBlocks.BLOCK_WILLFUL_STONE.get())
             .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_rune"))
-            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "rune_unleashed_nature"));
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "rune_unleashed_nature"))
+            .addOptional(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "sanguine_rectifier"));
     }
 }
