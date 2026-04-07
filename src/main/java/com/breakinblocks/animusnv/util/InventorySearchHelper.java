@@ -1,10 +1,12 @@
 package com.breakinblocks.animusnv.util;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import com.breakinblocks.neovitae.common.item.IActivatable;
+import com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +129,7 @@ public final class InventorySearchHelper {
 
     /**
      * Searches main inventory and offhand only (excludes armor).
+     * Also searches inside Sigil of Holding containers.
      */
     public static Optional<ItemStack> findFirstUsable(Player player, Predicate<ItemStack> predicate) {
         Inventory inv = player.getInventory();
@@ -135,11 +138,28 @@ public final class InventorySearchHelper {
             if (!stack.isEmpty() && predicate.test(stack)) {
                 return Optional.of(stack);
             }
+            // Check inside Sigil of Holding
+            if (!stack.isEmpty() && stack.getItem() instanceof ItemSigilHolding) {
+                NonNullList<ItemStack> holdingInv = ItemSigilHolding.getInternalInventory(stack);
+                for (ItemStack heldStack : holdingInv) {
+                    if (!heldStack.isEmpty() && predicate.test(heldStack)) {
+                        return Optional.of(heldStack);
+                    }
+                }
+            }
         }
 
         for (ItemStack stack : inv.offhand) {
             if (!stack.isEmpty() && predicate.test(stack)) {
                 return Optional.of(stack);
+            }
+            if (!stack.isEmpty() && stack.getItem() instanceof ItemSigilHolding) {
+                NonNullList<ItemStack> holdingInv = ItemSigilHolding.getInternalInventory(stack);
+                for (ItemStack heldStack : holdingInv) {
+                    if (!heldStack.isEmpty() && predicate.test(heldStack)) {
+                        return Optional.of(heldStack);
+                    }
+                }
             }
         }
 

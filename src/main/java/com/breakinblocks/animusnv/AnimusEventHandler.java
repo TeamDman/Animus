@@ -92,10 +92,27 @@ public class AnimusEventHandler {
             if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
                 return stack;
             }
+            // Check inside Sigil of Holding
+            if (!stack.isEmpty() && stack.getItem() instanceof com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding) {
+                var holdingInv = com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding.getInternalInventory(stack);
+                for (ItemStack heldStack : holdingInv) {
+                    if (!heldStack.isEmpty() && heldStack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
+                        return heldStack;
+                    }
+                }
+            }
         }
         for (ItemStack stack : player.getInventory().offhand) {
             if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
                 return stack;
+            }
+            if (!stack.isEmpty() && stack.getItem() instanceof com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding) {
+                var holdingInv = com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding.getInternalInventory(stack);
+                for (ItemStack heldStack : holdingInv) {
+                    if (!heldStack.isEmpty() && heldStack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
+                        return heldStack;
+                    }
+                }
             }
         }
         return ItemStack.EMPTY;
