@@ -20,6 +20,9 @@ import wayoftime.bloodmagic.core.data.SoulNetwork;
 import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
+import net.minecraft.core.NonNullList;
+import wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding;
+
 import java.util.*;
 
 /**
@@ -128,12 +131,22 @@ public class ItemSigilFreeSoul extends AnimusSigilBase {
             return false;
         }
 
-        // Find Free Soul sigil in inventory
+        // Find Free Soul sigil in inventory (including inside Sigil of Holding)
         ItemStack freeSoulStack = null;
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof ItemSigilFreeSoul) {
                 freeSoulStack = stack;
                 break;
+            }
+            if (stack.getItem() instanceof ItemSigilHolding) {
+                NonNullList<ItemStack> holdingInv = ItemSigilHolding.getInternalInventory(stack);
+                for (ItemStack heldStack : holdingInv) {
+                    if (heldStack.getItem() instanceof ItemSigilFreeSoul) {
+                        freeSoulStack = heldStack;
+                        break;
+                    }
+                }
+                if (freeSoulStack != null) break;
             }
         }
 

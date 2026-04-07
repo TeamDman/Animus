@@ -13,6 +13,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
+import net.minecraft.core.NonNullList;
+import wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding;
+
 import java.util.*;
 
 /**
@@ -118,13 +121,23 @@ public class ItemSigilRemedium extends AnimusSigilBase {
             return;
         }
 
-        // Verify the player still has the active sigil
+        // Verify the player still has the active sigil (including inside Sigil of Holding)
         boolean hasActiveSigil = false;
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof ItemSigilRemedium && isActive(stack)) {
                 hasActiveSigil = true;
                 activeSigil.stack.getOrCreateTag().putBoolean("Active", true); // Ensure sync
                 break;
+            }
+            if (stack.getItem() instanceof ItemSigilHolding) {
+                NonNullList<ItemStack> holdingInv = ItemSigilHolding.getInternalInventory(stack);
+                for (ItemStack heldStack : holdingInv) {
+                    if (heldStack.getItem() instanceof ItemSigilRemedium && isActive(heldStack)) {
+                        hasActiveSigil = true;
+                        break;
+                    }
+                }
+                if (hasActiveSigil) break;
             }
         }
 

@@ -12,6 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
+import net.minecraft.core.NonNullList;
+import wayoftime.bloodmagic.common.item.sigil.ItemSigilHolding;
+
 import java.util.*;
 
 /**
@@ -127,12 +130,23 @@ public class ItemSigilReparare extends AnimusSigilBase {
         boolean hasActiveSigil = false;
         ItemStack currentActiveSigil = null;
 
-        // Check main inventory and hotbar
+        // Check main inventory and hotbar (including inside Sigil of Holding)
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof ItemSigilReparare && isActive(stack)) {
                 hasActiveSigil = true;
                 currentActiveSigil = stack;
                 break;
+            }
+            if (stack.getItem() instanceof ItemSigilHolding) {
+                NonNullList<ItemStack> holdingInv = ItemSigilHolding.getInternalInventory(stack);
+                for (ItemStack heldStack : holdingInv) {
+                    if (heldStack.getItem() instanceof ItemSigilReparare && isActive(heldStack)) {
+                        hasActiveSigil = true;
+                        currentActiveSigil = heldStack;
+                        break;
+                    }
+                }
+                if (hasActiveSigil) break;
             }
         }
 
@@ -147,13 +161,24 @@ public class ItemSigilReparare extends AnimusSigilBase {
             }
         }
 
-        // Check offhand if not found
+        // Check offhand if not found (including inside Sigil of Holding)
         if (!hasActiveSigil) {
             for (ItemStack stack : player.getInventory().offhand) {
                 if (stack.getItem() instanceof ItemSigilReparare && isActive(stack)) {
                     hasActiveSigil = true;
                     currentActiveSigil = stack;
                     break;
+                }
+                if (stack.getItem() instanceof ItemSigilHolding) {
+                    NonNullList<ItemStack> holdingInv = ItemSigilHolding.getInternalInventory(stack);
+                    for (ItemStack heldStack : holdingInv) {
+                        if (heldStack.getItem() instanceof ItemSigilReparare && isActive(heldStack)) {
+                            hasActiveSigil = true;
+                            currentActiveSigil = heldStack;
+                            break;
+                        }
+                    }
+                    if (hasActiveSigil) break;
                 }
             }
         }
