@@ -5,7 +5,12 @@ import com.google.common.collect.Multimap;
 import com.teamdman.animus.compat.CompatHandler;
 import com.teamdman.animus.compat.malum.SpiritHarvestHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -85,6 +90,11 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
             // Apply Soul Snare effect (5 seconds, amplifier 1) for guaranteed will drops
             target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
                 BloodMagicPotions.SOUL_SNARE.get(), 100, 1));
+
+            // Spawn swing particle and sound effect
+            if (attacker.level() instanceof ServerLevel serverLevel) {
+                spawnSwingEffect(serverLevel, attacker, target);
+            }
         }
 
         return super.hurtEnemy(stack, target, attacker);
@@ -120,6 +130,60 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
         }
 
         return super.use(level, player, hand);
+    }
+
+    /**
+     * Spawn scythe swing particle and sound effects on hit.
+     * Produces an arc of soul fire particles in front of the attacker.
+     * Override in subclasses for different visual themes.
+     */
+    protected void spawnSwingEffect(ServerLevel serverLevel, LivingEntity attacker, LivingEntity target) {
+        // Play sweep sound at lower pitch for heavy scythe feel
+        serverLevel.playSound(
+            null,
+            attacker.getX(), attacker.getY(), attacker.getZ(),
+            SoundEvents.PLAYER_ATTACK_SWEEP,
+            SoundSource.PLAYERS,
+            1.0f, 0.6f
+        );
+
+        // Compute player-relative directions
+        float yawRad = attacker.getYRot() * Mth.DEG_TO_RAD;
+        double forwardX = -Mth.sin(yawRad);
+        double forwardZ = Mth.cos(yawRad);
+        double rightX = -Mth.cos(yawRad);
+        double rightZ = -Mth.sin(yawRad);
+
+        double centerX = attacker.getX();
+        double centerY = attacker.getY() + attacker.getBbHeight() * 0.5;
+        double centerZ = attacker.getZ();
+        double radius = 1.8;
+
+        int particleCount = 16;
+        float arcSpanRad = 150f * Mth.DEG_TO_RAD; // 150 degree arc
+
+        for (int i = 0; i < particleCount; i++) {
+            float progress = (float) i / (particleCount - 1);
+            float angle = -arcSpanRad / 2 + arcSpanRad * progress;
+
+            // Direction combining forward and sideways components
+            double dirX = forwardX * Mth.cos(angle) + rightX * Mth.sin(angle);
+            double dirZ = forwardZ * Mth.cos(angle) + rightZ * Mth.sin(angle);
+
+            double px = centerX + dirX * radius;
+            double pz = centerZ + dirZ * radius;
+
+            // Arc upward in the middle for a curved slash shape
+            double heightOffset = Mth.sin(progress * (float) Math.PI) * 0.4;
+
+            serverLevel.sendParticles(
+                ParticleTypes.SOUL_FIRE_FLAME,
+                px, centerY + heightOffset, pz,
+                1,
+                0.0, 0.0, 0.0,
+                0.01
+            );
+        }
     }
 
     @Override
