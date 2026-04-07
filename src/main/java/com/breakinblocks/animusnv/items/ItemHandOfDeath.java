@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -163,6 +164,72 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
                     .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD),
                 true
             );
+        }
+    }
+
+    @Override
+    protected void spawnSwingEffect(ServerLevel serverLevel, LivingEntity attacker, LivingEntity target) {
+        // Deeper, more ominous sweep sound
+        serverLevel.playSound(
+            null,
+            attacker.getX(), attacker.getY(), attacker.getZ(),
+            SoundEvents.PLAYER_ATTACK_SWEEP,
+            SoundSource.PLAYERS,
+            1.0f, 0.4f
+        );
+        // Layered soul escape sound for death theme
+        serverLevel.playSound(
+            null,
+            attacker.getX(), attacker.getY(), attacker.getZ(),
+            SoundEvents.SOUL_ESCAPE,
+            SoundSource.PLAYERS,
+            0.5f, 0.8f
+        );
+
+        float yawRad = attacker.getYRot() * Mth.DEG_TO_RAD;
+        double forwardX = -Mth.sin(yawRad);
+        double forwardZ = Mth.cos(yawRad);
+        double rightX = -Mth.cos(yawRad);
+        double rightZ = -Mth.sin(yawRad);
+
+        double centerX = attacker.getX();
+        double centerY = attacker.getY() + attacker.getBbHeight() * 0.5;
+        double centerZ = attacker.getZ();
+        double radius = 2.0;
+
+        int particleCount = 20;
+        float arcSpanRad = 160f * Mth.DEG_TO_RAD;
+
+        for (int i = 0; i < particleCount; i++) {
+            float progress = (float) i / (particleCount - 1);
+            float angle = -arcSpanRad / 2 + arcSpanRad * progress;
+
+            double dirX = forwardX * Mth.cos(angle) + rightX * Mth.sin(angle);
+            double dirZ = forwardZ * Mth.cos(angle) + rightZ * Mth.sin(angle);
+
+            double px = centerX + dirX * radius;
+            double pz = centerZ + dirZ * radius;
+            double heightOffset = Mth.sin(progress * (float) Math.PI) * 0.5;
+
+            // Primary soul particles (larger, floaty)
+            serverLevel.sendParticles(
+                ParticleTypes.SOUL,
+                px, centerY + heightOffset, pz,
+                1,
+                0.0, 0.0, 0.0,
+                0.02
+            );
+
+            // Secondary soul fire flame particles for density (every other)
+            if (i % 2 == 0) {
+                serverLevel.sendParticles(
+                    ParticleTypes.SOUL_FIRE_FLAME,
+                    px, centerY + heightOffset, pz,
+                    1,
+                    0.05, 0.05, 0.05,
+                    0.01
+                );
+            }
         }
     }
 
