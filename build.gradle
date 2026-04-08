@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'me.modmuss50.mod-publish-plugin' version '0.5.1'
 }
 
 version = "${minecraft_version}-${mod_version}"
@@ -265,6 +266,40 @@ publishing {
                 password = System.getenv("MAVEN_TOKEN") ?: ""
             }
         }
+    }
+}
+
+// Mod publishing to CurseForge, Modrinth, and GitHub
+publishMods {
+    file = jar.archiveFile
+    def changelogFile = file("metadata/changelogs/${mod_version}.md")
+    changelog = changelogFile.exists() ? changelogFile.text : "Release ${version}"
+    type = STABLE
+    modLoaders.add("forge")
+
+    curseforge {
+        projectId = "229664"
+        projectSlug = "animus"
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        requires("blood-magic")
+        optional("jei", "curios", "patchouli")
+    }
+
+    modrinth {
+        projectId = "tL9SPLdV"
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        requires("blood-magic")
+        optional("jei", "curios", "patchouli")
+    }
+}
+
+// Include Maven publish when running publishMods
+tasks.named('publishMods') {
+    def mavenUser = providers.environmentVariable("MAVEN_USER")
+    if (mavenUser.isPresent()) {
+        dependsOn 'publishMavenJavaPublicationToBreakInBlocksRepository'
     }
 }
 
