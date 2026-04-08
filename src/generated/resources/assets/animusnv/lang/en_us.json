@@ -1207,6 +1207,7 @@
   "tooltip.animusnv.runic_sentient_scythe.malum": "Harvests souls for Malum's spirit system",
   "tooltip.animusnv.sanguine_rectifier.blood_to_altar": "Blood → Altar: Pipe blood in, transfers to linked Ara Vitae",
   "tooltip.animusnv.sanguine_rectifier.desc": "Converts Essentia Vitae to EvilCraft Blood and vice versa",
+  "tooltip.animusnv.sanguine_rectifier.ev_disabled": "EV to Blood conversion is disabled by server config",
   "tooltip.animusnv.sanguine_rectifier.ev_to_blood": "EV → Blood: Drains from bound Orb, fills adjacent tanks",
   "tooltip.animusnv.sanguine_rectifier.rate": "Transfer rate scales with altar speed runes",
   "tooltip.animusnv.sentient_bow.damage_bonus": "+%s Arrow Damage",
