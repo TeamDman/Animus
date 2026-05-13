@@ -178,7 +178,7 @@ public class EntityThrownSpear extends AbstractArrow {
         try {
             return SpiritusType.valueOf(this.entityData.get(ID_WILL_TYPE));
         } catch (IllegalArgumentException e) {
-            return SpiritusType.DEFAULT;
+            return SpiritusType.RAW;
         }
     }
 

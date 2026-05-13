@@ -52,28 +52,28 @@ public class SentientShieldEventHandler {
         }
 
         switch (willType) {
-            case DEFAULT ->
+            case RAW ->
                 player.addEffect(new MobEffectInstance(
                     MobEffects.DAMAGE_BOOST,
                     EFFECT_DURATION,
                     1
                 ));
 
-            case STEADFAST ->
+            case INVICTUS ->
                 player.addEffect(new MobEffectInstance(
                     MobEffects.DAMAGE_RESISTANCE,
                     EFFECT_DURATION,
                     1
                 ));
 
-            case CORROSIVE ->
+            case RUINA ->
                 livingAttacker.addEffect(new MobEffectInstance(
                     MobEffects.POISON,
                     EFFECT_DURATION,
                     1
                 ));
 
-            case VENGEFUL -> {
+            case VINDICTA -> {
                 float reflectedDamage = event.getAmount() * 0.3f;
                 livingAttacker.hurt(player.damageSources().thorns(player), reflectedDamage);
 

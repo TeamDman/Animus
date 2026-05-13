@@ -4,7 +4,7 @@ import com.hollingsworth.arsnouveau.api.event.SpellCastEvent;
 import com.hollingsworth.arsnouveau.api.event.SpellDamageEvent;
 import com.hollingsworth.arsnouveau.setup.registry.ModPotions;
 import com.breakinblocks.animusnv.Constants;
-import com.breakinblocks.animusnv.compat.LivingUpgradeHelper;
+import com.breakinblocks.animusnv.compat.SentientUpgradeHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
@@ -13,7 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
 /**
- * Source Attunement - Living Armor upgrade tree for Ars Nouveau spellcasters
+ * Source Attunement - Sentient Armor upgrade tree for Ars Nouveau spellcasters
  *
  * Level 1: +5% spell damage
  * Level 2: +10% spell damage (total)
@@ -36,7 +36,7 @@ public class SourceAttunementHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
+        int upgradeLevel = SentientUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         if (upgradeLevel <= 0) {
             return;
         }
@@ -52,7 +52,7 @@ public class SourceAttunementHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
+        int upgradeLevel = SentientUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         if (upgradeLevel <= 0) {
             return;
         }

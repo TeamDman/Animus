@@ -1,7 +1,7 @@
 package com.breakinblocks.animusnv.compat.ironsspells;
 
 import com.breakinblocks.animusnv.Constants;
-import com.breakinblocks.animusnv.compat.LivingUpgradeHelper;
+import com.breakinblocks.animusnv.compat.SentientUpgradeHelper;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
@@ -18,7 +18,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
- * Arcane Channeling - Living Armor upgrade tree for Iron's Spells casters
+ * Arcane Channeling - Sentient Armor upgrade tree for Iron's Spells casters
  *
  * Level 1: 5% mana cost reduction
  * Level 2: 10% mana cost reduction (total)
@@ -63,7 +63,7 @@ public class ArcaneChannelingHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
+        int upgradeLevel = SentientUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         if (upgradeLevel <= 0) {
             return;
         }
@@ -83,7 +83,7 @@ public class ArcaneChannelingHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
+        int upgradeLevel = SentientUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
 
         if (upgradeLevel >= 5) {
             player.addEffect(new MobEffectInstance(
@@ -109,7 +109,7 @@ public class ArcaneChannelingHandler {
             return;
         }
 
-        int upgradeLevel = LivingUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
+        int upgradeLevel = SentientUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         double targetReduction = getCooldownReduction(upgradeLevel);
 
         Holder<net.minecraft.world.entity.ai.attributes.Attribute> cooldownAttr = AttributeRegistry.COOLDOWN_REDUCTION;

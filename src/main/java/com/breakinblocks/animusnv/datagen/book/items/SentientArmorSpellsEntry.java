@@ -8,9 +8,9 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.item.Items;
 
-public class LivingArmorSpellsEntry extends EntryProvider {
+public class SentientArmorSpellsEntry extends EntryProvider {
 
-    public LivingArmorSpellsEntry(CategoryProviderBase parent) {
+    public SentientArmorSpellsEntry(CategoryProviderBase parent) {
         super(parent);
     }
 
@@ -19,19 +19,19 @@ public class LivingArmorSpellsEntry extends EntryProvider {
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Living Armor: Arcane Channeling");
-        this.pageText("Living Armor evolves with you, and now it can grow stronger through "
-                + "spellcasting. Every spell you cast grants experience to your Living "
+        this.pageTitle("Sentient Armor: Arcane Channeling");
+        this.pageText("Sentient Armor evolves with you, and now it can grow stronger through "
+                + "spellcasting. Every spell you cast grants experience to your Sentient "
                 + "Armor, unlocking the [#](8B0000)Arcane Channeling[#]() upgrade path for "
                 + "Iron's Spellbooks practitioners.\\\n\\\n"
-                + "[#](4A0080)Wear Living Armor while casting spells. The armor learns from "
+                + "[#](4A0080)Wear Sentient Armor while casting spells. The armor learns from "
                 + "your magical prowess and adapts accordingly.[#]()");
 
         this.page("xp", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("XP from Spellcasting");
-        this.pageText("Every spell you cast grants XP to your Living Armor:\\\n\\\n"
+        this.pageText("Every spell you cast grants XP to your Sentient Armor:\\\n\\\n"
                 + "Base XP (10) x Spell Level x Rarity Multiplier\\\n\\\n"
                 + "Rarity Multipliers:\n\n"
                 + "- Common: x1.0\n\n"
@@ -81,12 +81,12 @@ public class LivingArmorSpellsEntry extends EntryProvider {
 
     @Override
     protected String entryName() {
-        return "Living Armor: Arcane Channeling";
+        return "Sentient Armor: Arcane Channeling";
     }
 
     @Override
     protected String entryDescription() {
-        return "Living Armor evolves through Iron's Spells casting. Requires Iron's Spells.";
+        return "Sentient Armor evolves through Iron's Spells casting. Requires Iron's Spells.";
     }
 
     @Override

@@ -31,8 +31,8 @@ public class ItemsCategory extends CategoryProvider {
         var activationCrystal = this.add(new ActivationCrystalFragileEntry(this).generate('e'));
         var spears = this.add(new SpearsEntry(this).generate('f'));
         var sentientShield = this.add(new SentientShieldEntry(this).generate('g'));
-        var livingArmorArs = this.add(new LivingArmorArsNouveauEntry(this).generate('h'));
-        var livingArmorSpells = this.add(new LivingArmorSpellsEntry(this).generate('i'));
+        var sentientArmorArs = this.add(new SentientArmorArsNouveauEntry(this).generate('h'));
+        var sentientArmorSpells = this.add(new SentientArmorSpellsEntry(this).generate('i'));
         var runicSentientScythe = this.add(new RunicSentientScytheEntry(this).generate('j'));
         var handOfDeath = this.add(new HandOfDeathEntry(this).generate('k'));
     }

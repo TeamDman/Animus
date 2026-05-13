@@ -119,7 +119,7 @@ public class ItemHellforgedBow extends BowItem {
         }
 
         SpiritusType type = getCurrentType(stack);
-        if (type != SpiritusType.DEFAULT) {
+        if (type != SpiritusType.RAW) {
             tooltip.add(Component.translatable("tooltip.animusnv.hellforged_bow.will_type", type.name().toLowerCase())
                 .withStyle(ChatFormatting.DARK_PURPLE));
         }
@@ -412,6 +412,6 @@ public class ItemHellforgedBow extends BowItem {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-        return super.isFoil(stack) || (getBindingOwnerId(stack) != null && getCurrentType(stack) != SpiritusType.DEFAULT);
+        return super.isFoil(stack) || (getBindingOwnerId(stack) != null && getCurrentType(stack) != SpiritusType.RAW);
     }
 }

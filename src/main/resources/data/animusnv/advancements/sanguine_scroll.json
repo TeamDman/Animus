@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "animusnv:sanguine_scroll_demon"
+      "item": "animusnv:sanguine_scroll_spiritus"
     },
     "title": {
       "translate": "advancement.animus.sanguine_scroll.title"
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": ["animusnv:sanguine_scroll_blank"]
+            "items": ["animusnv:sanguine_scroll_rasa"]
           }
         ]
       }
@@ -31,7 +31,7 @@
       "conditions": {
         "items": [
           {
-            "items": ["animusnv:sanguine_scroll_reinforced"]
+            "items": ["animusnv:sanguine_scroll_robur"]
           }
         ]
       }
@@ -41,7 +41,7 @@
       "conditions": {
         "items": [
           {
-            "items": ["animusnv:sanguine_scroll_imbued"]
+            "items": ["animusnv:sanguine_scroll_animata"]
           }
         ]
       }
@@ -51,7 +51,7 @@
       "conditions": {
         "items": [
           {
-            "items": ["animusnv:sanguine_scroll_demon"]
+            "items": ["animusnv:sanguine_scroll_spiritus"]
           }
         ]
       }
@@ -61,7 +61,7 @@
       "conditions": {
         "items": [
           {
-            "items": ["animusnv:sanguine_scroll_ethereal"]
+            "items": ["animusnv:sanguine_scroll_aetherea"]
           }
         ]
       }

@@ -290,7 +290,7 @@ public class AnimusEventHandler {
             if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
                 double dropAmount = willModifier * (soulDrop[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
                     + staticDrop[willLevel]) * killedEntity.getMaxHealth() / 20.0;
-                ItemStack soulStack = soul.createWill(dropAmount);
+                ItemStack soulStack = soul.createSpiritus(dropAmount);
                 soulList.add(soulStack);
             }
         }
@@ -317,7 +317,7 @@ public class AnimusEventHandler {
 
             if (!remainder.isEmpty()) {
                 SpiritusType pickupType = ((ISpiritus) remainder.getItem()).getType(remainder);
-                if (((ISpiritus) remainder.getItem()).getWill(pickupType, remainder) >= 0.0001) {
+                if (((ISpiritus) remainder.getItem()).getSpiritus(pickupType, remainder) >= 0.0001) {
                     existingDrops.add(new ItemEntity(
                         killedEntity.getCommandSenderWorld(),
                         killedEntity.getX(),

@@ -122,11 +122,11 @@ public class RitualCulling extends Ritual {
         }
 
         ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
-        SpiritusType type = SpiritusType.DESTRUCTIVE;
+        SpiritusType type = SpiritusType.NIHILUM;
         double currentAmount = willHandler.getCurrentWill(level, pos, type);
 
         // Raw Spiritus enables player-like kills (mob drops as if killed by player)
-        double rawWillAmount = willHandler.getCurrentWill(level, pos, SpiritusType.DEFAULT);
+        double rawWillAmount = willHandler.getCurrentWill(level, pos, SpiritusType.RAW);
         boolean usePlayerKill = AnimusConfig.rituals.cullingPlayerKillDrops.get() && rawWillAmount >= 1.0;
 
         AraVitaeTile tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
@@ -187,7 +187,7 @@ public class RitualCulling extends Ritual {
                     result = CullingHelper.applyPlayerKillDamage(livingEntity, serverLevel, ritualStone.getOwner(), pos, damage);
 
                     if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
-                        willHandler.drainWill(level, pos, SpiritusType.DEFAULT, 1.0);
+                        willHandler.drainSpiritus(level, pos, SpiritusType.RAW, 1.0);
                         if (AnimusConfig.rituals.cullingDebug.get()) {
                             Animus.LOGGER.debug("[Ritual of Culling Debug]:   Consumed 1 raw Spiritus");
                         }
@@ -226,7 +226,7 @@ public class RitualCulling extends Ritual {
             // ~3% chance per cycle to generate destructive Spiritus
             double addAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2.0, 10));
             if (rand.nextInt(30) == 0 && addAmount > 0) {
-                willHandler.addWill(level, pos, type, addAmount);
+                willHandler.addSpiritus(level, pos, type, addAmount);
             }
         }
     }

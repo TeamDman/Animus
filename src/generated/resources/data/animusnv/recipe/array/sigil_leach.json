@@ -1,7 +1,7 @@
 {
   "type": "neovitae:array",
   "addedinput": {
-    "item": "neovitae:reinforced_slate"
+    "item": "neovitae:tabula_robur"
   },
   "baseinput": {
     "item": "animusnv:reagentleach"

@@ -29,7 +29,7 @@ public class NaturesLeachEntry extends EntryProvider {
         this.pageTitle("Costs and Details");
         this.pageText("[#](B8860B)Activation:[#]() 3,000 EV"
                 + "\\\n[#](B8860B)Refresh:[#]() 10 EV"
-                + "\\\n[#](B8860B)Refresh Time:[#]() 80 ticks (configurable); faster with less [#](4A0080)Corrosive Spiritus[#]()"
+                + "\\\n[#](B8860B)Refresh Time:[#]() 80 ticks (configurable); faster with less [#](4A0080)Spiritus Ruina[#]()"
                 + "\\\n\\\n[#](B8860B)Effect Range:[#]() 32 blocks radius (configurable)"
                 + "\\\n[#](B8860B)Altar Range:[#]() 32 blocks horizontal, 10 blocks vertical"
                 + "\\\n\\\nConsumes 1-3 plants per cycle, generating 50 EV (configurable) per plant consumed. The altar location is cached for performance.");
@@ -38,10 +38,10 @@ public class NaturesLeachEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Spiritus Generation");
-        this.pageText("This ritual generates [#](4A0080)Corrosive Spiritus[#]() as it consumes plants."
+        this.pageText("This ritual generates [#](4A0080)Spiritus Ruina[#]() as it consumes plants."
                 + "\n\n- 0.5 to 1.5 [#](4A0080)Spiritus[#]() per plant consumed"
                 + "\n\n- Maximum of 100 [#](4A0080)Spiritus[#]() in the area"
-                + "\\\n\\\nNote that more [#](4A0080)Corrosive Spiritus[#]() in the area slows the ritual. Clear the [#](4A0080)Spiritus[#]() periodically to maintain peak efficiency."
+                + "\\\n\\\nNote that more [#](4A0080)Spiritus Ruina[#]() in the area slows the ritual. Clear the [#](4A0080)Spiritus[#]() periodically to maintain peak efficiency."
                 + "\\\n\\\n[#](2E8B57)Pair with an automated tree farm for a reliable, passive source of EV.[#]()");
     }
 

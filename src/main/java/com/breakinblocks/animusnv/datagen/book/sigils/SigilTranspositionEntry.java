@@ -30,7 +30,7 @@ public class SigilTranspositionEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Sigil of Transposition");
         this.pageText("Forged in an [#](8B0000)Alchemy Array[#]() from a [#](8B0000)Reagent: Transposition[#]() "
-                + "and a [#](B8860B)Demon Slate[#](), this sigil moves blocks through space without "
+                + "and a [#](B8860B)Tabula Spiritus[#](), this sigil moves blocks through space without "
                 + "breaking them, and transports entities to bound Teleposers.");
 
         this.page("block_mode", () -> BookTextPageModel.create()

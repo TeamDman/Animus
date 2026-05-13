@@ -113,8 +113,8 @@ public class AnimusCommands {
 
         // Fill all will types to max
         for (SpiritusType type : SpiritusType.values()) {
-            int maxWill = gem.getMaxWill(type, stack);
-            gem.setWill(type, stack, maxWill);
+            int maxWill = gem.getMaxSpiritus(type, stack);
+            gem.setSpiritus(type, stack, maxWill);
         }
 
         context.getSource().sendSuccess(() -> Component.translatable(

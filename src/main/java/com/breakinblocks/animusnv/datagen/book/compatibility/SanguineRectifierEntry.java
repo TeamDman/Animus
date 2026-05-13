@@ -53,7 +53,7 @@ public class SanguineRectifierEntry extends EntryProvider {
                 + "The conversion ratio between EV and Blood is 1:1 by default. "
                 + "All rates are configurable.\\\n\\\n"
                 + "[#](2E8B57)Crafted in the Tabula Vitae from a Cauldron, Dark Gem, "
-                + "Imbued Slate, and Bloodstained Glass.[#]()");
+                + "Tabula Animata, and Bloodstained Glass.[#]()");
     }
 
     @Override

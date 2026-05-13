@@ -25,7 +25,7 @@ public class LivingTerraEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Living Terra");
-        this.pageText("A mystical fluid infused with life essence. [#](8B0000)Living Terra[#]() "
+        this.pageText("A mystical fluid infused with Essentia Vitae. [#](8B0000)Living Terra[#]() "
                 + "is a rare liquid created through specialized processes, radiating with "
                 + "vital energy.\\\n\\\n"
                 + "[#](4A0080)Where AntiLife carries the negation of existence, Living Terra "

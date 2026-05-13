@@ -29,7 +29,7 @@ public class SigilCrimsonWillEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Sigil of Crimson Will");
         this.pageText("Crafted in an [#](8B0000)Alchemy Array[#]() by combining a "
-                + "[#](8B0000)Reagent: Crimson Will[#]() with a [#](B8860B)Reinforced Slate[#](), this "
+                + "[#](8B0000)Reagent: Crimson Will[#]() with a [#](B8860B)Tabula Robur[#](), this "
                 + "sigil taps into the raw power of [#](4A0080)Crimson Will[#](). Its potency is tied "
                 + "to the depth of your connection to Vitaemancy.");
 

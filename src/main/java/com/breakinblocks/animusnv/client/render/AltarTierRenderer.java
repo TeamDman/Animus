@@ -135,7 +135,7 @@ public class AltarTierRenderer {
 
             poseStack.translate(minX, minY, minZ);
 
-            ResourceLocation textureRL = getComponentTexture(component);
+            ResourceLocation textureRL = getComponentTexture(component, level);
             int color = getComponentColor(component);
             NeoVitaeRenderer.Model3D model = getBlockModel(textureRL);
 
@@ -159,43 +159,51 @@ public class AltarTierRenderer {
         }
     }
 
-    private static ResourceLocation getComponentTexture(AltarComponent component) {
-        ResourceLocation materialId = component.material().id();
+    /**
+     * Picks a texture to use for the holographic ghost of an altar component slot.
+     *
+     * Animus retains explicit textures for the vanilla NV capstone/structural tags so the
+     * preview looks familiar in the default layout. For any other component (pack-custom
+     * tags, exact-block references), the texture is derived from the first datapack-valid
+     * block's particle icon — see {@link NVMultiblock#getDisplayStates}.
+     */
+    private static ResourceLocation getComponentTexture(AltarComponent component, Level level) {
+        if (component.material().tag()) {
+            ResourceLocation tagId = component.material().id();
+            if (tagId.equals(NVTags.Blocks.RUNES.location())) return BLANK_RUNE;
+            if (tagId.equals(NVTags.Blocks.PILLARS.location())) return STONE_BRICKS;
+            if (tagId.equals(NVTags.Blocks.T3_CAPSTONES.location())) return GLOWSTONE;
+            if (tagId.equals(NVTags.Blocks.T4_CAPSTONES.location())) return BLOODSTONE;
+            if (tagId.equals(NVTags.Blocks.T5_CAPSTONES.location())) return HELLFORGED;
+            if (tagId.equals(NVTags.Blocks.T6_CAPSTONES.location())) return CRYSTALLIZED_SPIRITUS;
+        }
 
-        if (materialId.equals(NVTags.Blocks.RUNES.location())) {
-            return BLANK_RUNE;
-        } else if (materialId.equals(NVTags.Blocks.PILLARS.location())) {
-            return STONE_BRICKS;
-        } else if (materialId.equals(NVTags.Blocks.T3_CAPSTONES.location())) {
-            return GLOWSTONE;
-        } else if (materialId.equals(NVTags.Blocks.T4_CAPSTONES.location())) {
-            return BLOODSTONE;
-        } else if (materialId.equals(NVTags.Blocks.T5_CAPSTONES.location())) {
-            return HELLFORGED;
-        } else if (materialId.equals(NVTags.Blocks.T6_CAPSTONES.location())) {
-            return CRYSTALLIZED_SPIRITUS;
-        } else if (materialId.getPath().contains("bloodstone")) {
-            return BLOODSTONE;
+        List<BlockState> displayStates = NVMultiblock.getDisplayStates(component, level.registryAccess());
+        if (!displayStates.isEmpty()) {
+            BlockState state = displayStates.get(0);
+            TextureAtlasSprite particle = Minecraft.getInstance()
+                    .getBlockRenderer()
+                    .getBlockModel(state)
+                    .getParticleIcon();
+            return particle.contents().name();
         }
 
         return STONE_BRICKS;
     }
 
     private static int getComponentColor(AltarComponent component) {
-        ResourceLocation materialId = component.material().id();
-
+        if (component.material().tag()) {
+            ResourceLocation tagId = component.material().id();
+            if (tagId.equals(NVTags.Blocks.T6_CAPSTONES.location())) return GHOST_COLOR_CRYSTAL;
+            if (tagId.equals(NVTags.Blocks.T3_CAPSTONES.location())
+                    || tagId.equals(NVTags.Blocks.T4_CAPSTONES.location())
+                    || tagId.equals(NVTags.Blocks.T5_CAPSTONES.location())) {
+                return GHOST_COLOR_CAP;
+            }
+        }
         if (component.isUpgrade()) {
             return GHOST_COLOR_RUNE;
-        } else if (materialId.equals(NVTags.Blocks.PILLARS.location())) {
-            return GHOST_COLOR_PILLAR;
-        } else if (materialId.equals(NVTags.Blocks.T3_CAPSTONES.location()) ||
-                   materialId.equals(NVTags.Blocks.T4_CAPSTONES.location()) ||
-                   materialId.equals(NVTags.Blocks.T5_CAPSTONES.location())) {
-            return GHOST_COLOR_CAP;
-        } else if (materialId.equals(NVTags.Blocks.T6_CAPSTONES.location())) {
-            return GHOST_COLOR_CRYSTAL;
         }
-
         return GHOST_COLOR_PILLAR;
     }
 

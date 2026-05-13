@@ -4,15 +4,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.living.ILivingArmorManager;
+import com.breakinblocks.neovitae.api.sentient.ISentientArmorManager;
 
 /**
- * Wraps NeoVitae's Living Armor API for use by compat modules.
+ * Wraps NeoVitae's Sentient Armor API for use by compat modules.
  */
-public class LivingUpgradeHelper {
+public class SentientUpgradeHelper {
 
-    private static ILivingArmorManager getManager() {
-        return NeoVitaeAPI.getInstance().getLivingArmorManager();
+    private static ISentientArmorManager getManager() {
+        return NeoVitaeAPI.getInstance().getSentientArmorManager();
     }
 
     public static boolean hasFullSet(Player player) {

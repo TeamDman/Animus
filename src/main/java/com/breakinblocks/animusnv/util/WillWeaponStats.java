@@ -40,10 +40,10 @@ public final class WillWeaponStats {
      */
     public static ISpiritus getSoulItem(SpiritusType type) {
         return switch (type) {
-            case CORROSIVE -> (ISpiritus) NVItems.MONSTER_SOUL_CORROSIVE.get();
-            case DESTRUCTIVE -> (ISpiritus) NVItems.MONSTER_SOUL_DESTRUCTIVE.get();
-            case STEADFAST -> (ISpiritus) NVItems.MONSTER_SOUL_STEADFAST.get();
-            case VENGEFUL -> (ISpiritus) NVItems.MONSTER_SOUL_VENGEFUL.get();
+            case RUINA -> (ISpiritus) NVItems.MONSTER_SOUL_RUINA.get();
+            case NIHILUM -> (ISpiritus) NVItems.MONSTER_SOUL_NIHILUM.get();
+            case INVICTUS -> (ISpiritus) NVItems.MONSTER_SOUL_INVICTUS.get();
+            case VINDICTA -> (ISpiritus) NVItems.MONSTER_SOUL_VINDICTA.get();
             default -> (ISpiritus) NVItems.MONSTER_SOUL_RAW.get();
         };
     }

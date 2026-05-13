@@ -49,6 +49,12 @@ repositories {
     maven { name = "GeckoLib"; url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" }
     maven { name = "KosmX"; url = "https://maven.kosmx.dev/" }
     maven { name = "BreakInBlocks"; url = "https://maven.breakinblocks.com/releases" }
+    maven { name = "BreakInBlocksSnapshots"; url = "https://maven.breakinblocks.com/snapshots" }
+    maven {
+        name = "KliKli"
+        url = "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
+        content { includeGroup "com.klikli_dev" }
+    }
     maven {
         name = "CurseForge"
         url = "https://cursemaven.com"

@@ -53,10 +53,10 @@ public class AnimusFakePlayer extends FakePlayer {
         int lootingLevel = 0;
 
         ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
-        double corrosiveWill = willHandler.getCurrentWill(level, pos, SpiritusType.CORROSIVE);
-        double destructiveWill = willHandler.getCurrentWill(level, pos, SpiritusType.DESTRUCTIVE);
-        double vengefulWill = willHandler.getCurrentWill(level, pos, SpiritusType.VENGEFUL);
-        double steadfastWill = willHandler.getCurrentWill(level, pos, SpiritusType.STEADFAST);
+        double corrosiveWill = willHandler.getCurrentWill(level, pos, SpiritusType.RUINA);
+        double destructiveWill = willHandler.getCurrentWill(level, pos, SpiritusType.NIHILUM);
+        double vengefulWill = willHandler.getCurrentWill(level, pos, SpiritusType.VINDICTA);
+        double steadfastWill = willHandler.getCurrentWill(level, pos, SpiritusType.INVICTUS);
 
         if (corrosiveWill > 10) lootingLevel++;
         if (destructiveWill > 10) lootingLevel++;

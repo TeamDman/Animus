@@ -30,7 +30,7 @@ public class SigilStormEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Sigil of the Storm");
         this.pageText("Forged in an [#](8B0000)Alchemy Array[#]() from a [#](8B0000)Reagent: Storm[#]() "
-                + "and a [#](B8860B)Reinforced Slate[#](), this sigil harnesses the fury of the heavens. "
+                + "and a [#](B8860B)Tabula Robur[#](), this sigil harnesses the fury of the heavens. "
                 + "Right-click to call down lightning at a targeted location up to 64 blocks away, at "
                 + "a cost of [#](4A0080)500 EV[#]() per strike.");
 

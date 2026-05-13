@@ -5,7 +5,7 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.compat.arsnouveau.ArcaneRuneEventHandler;
 import com.breakinblocks.animusnv.compat.arsnouveau.BlockArcaneRune;
 import com.breakinblocks.animusnv.compat.arsnouveau.BlockEntityArcaneRune;
-import com.breakinblocks.animusnv.compat.arsnouveau.LivingArmorGlyphHandler;
+import com.breakinblocks.animusnv.compat.arsnouveau.SentientArmorGlyphHandler;
 import com.breakinblocks.animusnv.compat.arsnouveau.RitualMagi;
 import com.breakinblocks.animusnv.compat.arsnouveau.SourceAttunementHandler;
 import net.minecraft.core.registries.Registries;
@@ -24,10 +24,10 @@ import com.breakinblocks.neovitae.ritual.RitualRegistry;
 
 /**
  * Compatibility module for Ars Nouveau
- * Handles Living Armor integration with Ars Nouveau spell system
+ * Handles Sentient Armor integration with Ars Nouveau spell system
  *
  * Features:
- * - Living Armor gains XP from casting glyphs
+ * - Sentient Armor gains XP from casting glyphs
  * - Source Attunement upgrade tree for Ars Nouveau spellcasters
  * - Arcane Rune block that consumes Source for altar bonuses
  */
@@ -83,10 +83,10 @@ public class ArsNouveauCompat implements ICompatModule {
         Animus.LOGGER.debug("Initializing Ars Nouveau compatibility");
 
         SourceAttunementHandler.register();
-        Animus.LOGGER.debug("Registered Source Attunement Living Armor upgrade handler");
+        Animus.LOGGER.debug("Registered Source Attunement Sentient Armor upgrade handler");
 
-        LivingArmorGlyphHandler.register();
-        Animus.LOGGER.debug("Registered Living Armor Glyph Handler");
+        SentientArmorGlyphHandler.register();
+        Animus.LOGGER.debug("Registered Sentient Armor Glyph Handler");
 
         ArcaneRuneEventHandler.register();
         Animus.LOGGER.debug("Registered Arcane Rune event handler");

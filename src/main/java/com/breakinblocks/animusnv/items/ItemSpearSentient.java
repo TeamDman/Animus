@@ -67,7 +67,7 @@ public class ItemSpearSentient extends ItemSpear {
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
         SpiritusType type = getCurrentType(stack);
-        String displayType = type == SpiritusType.DEFAULT ? "raw" : type.name().toLowerCase();
+        String displayType = type == SpiritusType.RAW ? "raw" : type.name().toLowerCase();
         tooltip.add(Component.translatable("tooltip.animusnv.spear_sentient.will_type", displayType)
             .withStyle(ChatFormatting.AQUA));
 
@@ -86,9 +86,9 @@ public class ItemSpearSentient extends ItemSpear {
     public static double getDamageAdded(SpiritusType type, int level) {
         level = Math.min(level, 4);
         return switch (type) {
-            case DESTRUCTIVE -> destructiveDamageAdded[level];
-            case VENGEFUL -> vengefulDamageAdded[level];
-            case STEADFAST -> steadfastDamageAdded[level];
+            case NIHILUM -> destructiveDamageAdded[level];
+            case VINDICTA -> vengefulDamageAdded[level];
+            case INVICTUS -> steadfastDamageAdded[level];
             default -> corrosiveDamageAdded[level];
         };
     }
@@ -96,8 +96,8 @@ public class ItemSpearSentient extends ItemSpear {
     public static double getAttackSpeed(SpiritusType type, int level) {
         level = Math.min(level, 4);
         return switch (type) {
-            case DESTRUCTIVE -> destructiveAttackSpeed[level];
-            case VENGEFUL -> vengefulAttackSpeed[level];
+            case NIHILUM -> destructiveAttackSpeed[level];
+            case VINDICTA -> vengefulAttackSpeed[level];
             default -> -2.4;
         };
     }
@@ -106,8 +106,8 @@ public class ItemSpearSentient extends ItemSpear {
         level = Math.min(level, 4);
 
         switch (type) {
-            case CORROSIVE:
-            case DEFAULT:
+            case RUINA:
+            case RAW:
                 // Apply wither effect
                 if (poisonTime[level] > 0) {
                     target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
@@ -118,7 +118,7 @@ public class ItemSpearSentient extends ItemSpear {
                 }
                 break;
 
-            case STEADFAST:
+            case INVICTUS:
                 // Apply absorption to attacker instead of target
                 if (attacker != null && absorptionTime[level] > 0) {
                     float currentAbsorption = attacker.getAbsorptionAmount();
@@ -133,8 +133,8 @@ public class ItemSpearSentient extends ItemSpear {
                 }
                 break;
 
-            case DESTRUCTIVE:
-            case VENGEFUL:
+            case NIHILUM:
+            case VINDICTA:
                 // No special effects for these types
                 break;
         }
@@ -237,10 +237,10 @@ public class ItemSpearSentient extends ItemSpear {
 
         SpiritusType type = this.getCurrentType(stack);
         ISpiritus soul = switch (type) {
-            case CORROSIVE -> ((ISpiritus) NVItems.MONSTER_SOUL_CORROSIVE.get());
-            case DESTRUCTIVE -> ((ISpiritus) NVItems.MONSTER_SOUL_DESTRUCTIVE.get());
-            case STEADFAST -> ((ISpiritus) NVItems.MONSTER_SOUL_STEADFAST.get());
-            case VENGEFUL -> ((ISpiritus) NVItems.MONSTER_SOUL_VENGEFUL.get());
+            case RUINA -> ((ISpiritus) NVItems.MONSTER_SOUL_RUINA.get());
+            case NIHILUM -> ((ISpiritus) NVItems.MONSTER_SOUL_NIHILUM.get());
+            case INVICTUS -> ((ISpiritus) NVItems.MONSTER_SOUL_INVICTUS.get());
+            case VINDICTA -> ((ISpiritus) NVItems.MONSTER_SOUL_VINDICTA.get());
             default -> ((ISpiritus) NVItems.MONSTER_SOUL_RAW.get());
         };
 
@@ -254,7 +254,7 @@ public class ItemSpearSentient extends ItemSpear {
             if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
                 double dropAmount = willModifier * (WillWeaponStats.SOUL_DROP[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
                     + WillWeaponStats.STATIC_DROP[willLevel]) * killedEntity.getMaxHealth() / 20.0;
-                ItemStack soulStack = soul.createWill(dropAmount);
+                ItemStack soulStack = soul.createSpiritus(dropAmount);
                 soulList.add(soulStack);
             }
         }

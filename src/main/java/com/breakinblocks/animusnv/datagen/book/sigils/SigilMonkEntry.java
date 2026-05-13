@@ -32,7 +32,7 @@ public class SigilMonkEntry extends EntryProvider {
         this.pageText("A curio sigil that channels demonic power into devastating unarmed combat. "
                 + "You master the way of the fist, empowered by [#](4A0080)Spiritus[#](). Craft the "
                 + "[#](8B0000)Reagent of the Fist[#]() in a Tabula Vitae, then combine it with a "
-                + "[#](B8860B)Reinforced Slate[#]() in an Alchemy Array.");
+                + "[#](B8860B)Tabula Robur[#]() in an Alchemy Array.");
 
         this.page("abilities", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
@@ -73,9 +73,9 @@ public class SigilMonkEntry extends EntryProvider {
         this.pageTitle("Spiritus Scaling");
         this.pageText("Your unarmed attacks deal [#](4A0080)bonus damage[#]() equal to a percentage "
                 + "of the target's maximum health, scaling with [#](4A0080)Spiritus[#]():\n\n"
-                + "- [#](B8860B)1 Will:[#]() +1%% max HP damage\n\n"
-                + "- [#](B8860B)4,096 Will:[#]() +15%% max HP damage\\\n\\\n"
-                + "All will types (Raw, Corrosive, etc.) are combined for this calculation.");
+                + "- [#](B8860B)1 Spiritus:[#]() +1%% max HP damage\n\n"
+                + "- [#](B8860B)4,096 Spiritus:[#]() +15%% max HP damage\\\n\\\n"
+                + "All Spiritus types (Raw, Ruina, etc.) are combined for this calculation.");
 
         this.page("execute", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
@@ -85,8 +85,8 @@ public class SigilMonkEntry extends EntryProvider {
                 + "bonus damage percentage), you perform an [#](8B0000)Execute[#]():\n\n"
                 + "- Instant kill\n\n"
                 + "- +200 EV added to your Anima\n\n"
-                + "- -5 Will consumed from inventory\\\n\\\n"
-                + "Requires at least 5 will to trigger. A burst of soul particles marks the kill.");
+                + "- -5 Spiritus consumed from inventory\\\n\\\n"
+                + "Requires at least 5 Spiritus to trigger. A burst of soul particles marks the kill.");
     }
 
     @Override

@@ -1,7 +1,7 @@
 {
   "type": "neovitae:array",
   "addedinput": {
-    "item": "neovitae:imbued_slate"
+    "item": "neovitae:tabula_animata"
   },
   "baseinput": {
     "item": "animusnv:reagentconsumption"

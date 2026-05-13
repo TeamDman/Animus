@@ -92,7 +92,7 @@ public class CrimsonWillSpellHandler {
         }
 
         IPlayerSpiritusHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
-        double currentWill = playerWill.getTotalSpiritus(SpiritusType.DEFAULT, player);
+        double currentWill = playerWill.getTotalSpiritus(SpiritusType.RAW, player);
 
         // Sigil works at 0 will (just with lower bonus)
         double willMultiplier = Math.min(currentWill / MAX_WILL_AMOUNT, 1.0);
@@ -104,7 +104,7 @@ public class CrimsonWillSpellHandler {
 
         network.syphon(AnimaTicket.create(evCost));
         if (currentWill >= WILL_CONSUMED_PER_CAST) {
-            playerWill.consumeSpiritus(SpiritusType.DEFAULT, player, WILL_CONSUMED_PER_CAST);
+            playerWill.consumeSpiritus(SpiritusType.RAW, player, WILL_CONSUMED_PER_CAST);
         }
 
         if (player.level() instanceof ServerLevel serverLevel) {

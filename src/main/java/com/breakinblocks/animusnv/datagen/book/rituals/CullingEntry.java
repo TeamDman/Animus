@@ -40,8 +40,8 @@ public class CullingEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Boss Killing");
-        this.pageText("With sufficient [#](4A0080)Destructive Spiritus[#](), even boss entities bow to the culling."
-                + "\n\n- Requires 99+ [#](4A0080)Destructive Spiritus[#]() in the area"
+        this.pageText("With sufficient [#](4A0080)Spiritus Nihilum[#](), even boss entities bow to the culling."
+                + "\n\n- Requires 99+ [#](4A0080)Spiritus Nihilum[#]() in the area"
                 + "\n\n- Incurs additional EV cost (configurable)"
                 + "\n\n- Makes otherwise-invulnerable bosses vulnerable"
                 + "\\\n\\\nEntities tagged [#](8B0000)animus:disallow_culling[#]() are protected from this ritual regardless of [#](4A0080)Spiritus[#]() levels.");
@@ -50,7 +50,7 @@ public class CullingEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Spiritus and TNT");
-        this.pageText("The ritual generates [#](4A0080)Destructive Spiritus[#]() from kills at a 3%% chance per cycle, up to 100 [#](4A0080)Spiritus[#]() in the area."
+        this.pageText("The ritual generates [#](4A0080)Spiritus Nihilum[#]() from kills at a 3%% chance per cycle, up to 100 [#](4A0080)Spiritus[#]() in the area."
                 + "\\\n\\\nIf configured, the ritual can also destroy [#](8B0000)Primed TNT[#]() entities, making it a potent defensive measure against explosive threats.");
     }
 

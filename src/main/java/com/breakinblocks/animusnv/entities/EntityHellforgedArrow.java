@@ -59,7 +59,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(ID_WILL_TYPE, SpiritusType.DEFAULT.toString());
+        builder.define(ID_WILL_TYPE, SpiritusType.RAW.toString());
         builder.define(ID_WILL_LEVEL, 0);
         builder.define(ID_CHARGE_MULTIPLIER, 0.0F);
         builder.define(ID_EXECUTE_THRESHOLD, 0.0F);
@@ -73,7 +73,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
         try {
             return SpiritusType.valueOf(this.entityData.get(ID_WILL_TYPE).toUpperCase());
         } catch (IllegalArgumentException e) {
-            return SpiritusType.DEFAULT;
+            return SpiritusType.RAW;
         }
     }
 
@@ -184,7 +184,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
         float durationMultiplier = 1.0f + (chargeMultiplier * 0.5f);
 
         switch (willType) {
-            case CORROSIVE:
+            case RUINA:
                 target.addEffect(new MobEffectInstance(
                     MobEffects.POISON,
                     (int)(poisonTime[level] * durationMultiplier),
@@ -199,7 +199,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 }
                 break;
 
-            case STEADFAST:
+            case INVICTUS:
                 target.addEffect(new MobEffectInstance(
                     MobEffects.MOVEMENT_SLOWDOWN,
                     (int)(slowTime[level] * durationMultiplier),
@@ -228,7 +228,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 }
                 break;
 
-            case VENGEFUL:
+            case VINDICTA:
                 target.addEffect(new MobEffectInstance(
                     MobEffects.WEAKNESS,
                     (int)(100 * durationMultiplier),
@@ -250,7 +250,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 }
                 break;
 
-            case DESTRUCTIVE:
+            case NIHILUM:
                 target.setRemainingFireTicks((int)(60 * durationMultiplier) + level * 20);
                 if (chargeMultiplier >= 0.5f) {
                     target.addEffect(new MobEffectInstance(

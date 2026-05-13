@@ -177,16 +177,16 @@ public class SanguineScrollAltarHandler {
 
         String id = stack.getItem().toString();
 
-        if (id.contains("blank_slate")) {
-            return ItemSanguineScroll.SlateType.BLANK;
-        } else if (id.contains("reinforced_slate")) {
-            return ItemSanguineScroll.SlateType.REINFORCED;
-        } else if (id.contains("imbued_slate")) {
-            return ItemSanguineScroll.SlateType.IMBUED;
-        } else if (id.contains("demon_slate")) {
-            return ItemSanguineScroll.SlateType.DEMON;
-        } else if (id.contains("ethereal_slate")) {
-            return ItemSanguineScroll.SlateType.ETHEREAL;
+        if (id.contains("tabula_rasa")) {
+            return ItemSanguineScroll.SlateType.RASA;
+        } else if (id.contains("tabula_robur")) {
+            return ItemSanguineScroll.SlateType.ROBUR;
+        } else if (id.contains("tabula_animata")) {
+            return ItemSanguineScroll.SlateType.ANIMATA;
+        } else if (id.contains("tabula_spiritus")) {
+            return ItemSanguineScroll.SlateType.SPIRITUS;
+        } else if (id.contains("tabula_aetherea")) {
+            return ItemSanguineScroll.SlateType.AETHEREA;
         }
 
         return null;
@@ -194,11 +194,11 @@ public class SanguineScrollAltarHandler {
 
     private static ItemStack getSanguineScrollForSlate(ItemSanguineScroll.SlateType slateType) {
         return switch (slateType) {
-            case BLANK -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_BLANK.get());
-            case REINFORCED -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_REINFORCED.get());
-            case IMBUED -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_IMBUED.get());
-            case DEMON -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_DEMON.get());
-            case ETHEREAL -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_ETHEREAL.get());
+            case RASA -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_RASA.get());
+            case ROBUR -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_ROBUR.get());
+            case ANIMATA -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_ANIMATA.get());
+            case SPIRITUS -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_SPIRITUS.get());
+            case AETHEREA -> new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_AETHEREA.get());
         };
     }
 }

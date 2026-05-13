@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "animusnv:item/sanguine_scroll_ethereal"
+    "layer0": "animusnv:item/sanguine_scroll_aetherea"
   }
 }

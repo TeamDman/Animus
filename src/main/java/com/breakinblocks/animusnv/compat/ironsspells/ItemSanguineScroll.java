@@ -37,11 +37,11 @@ import java.util.List;
 public class ItemSanguineScroll extends Item {
 
     public enum SlateType {
-        BLANK(50),
-        REINFORCED(100),
-        IMBUED(200),
-        DEMON(400),
-        ETHEREAL(600);
+        RASA(50),
+        ROBUR(100),
+        ANIMATA(200),
+        SPIRITUS(400),
+        AETHEREA(600);
 
         private final int durability;
 

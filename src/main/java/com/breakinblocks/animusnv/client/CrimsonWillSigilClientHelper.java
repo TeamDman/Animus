@@ -14,7 +14,7 @@ public class CrimsonWillSigilClientHelper {
         var player = Minecraft.getInstance().player;
         if (player == null) return;
 
-        double currentWill = NeoVitaeAPI.getInstance().getPlayerWillHandler().getTotalSpiritus(SpiritusType.DEFAULT, player);
+        double currentWill = NeoVitaeAPI.getInstance().getPlayerWillHandler().getTotalSpiritus(SpiritusType.RAW, player);
         double willMultiplier = Math.min(currentWill / 4096.0, 1.0);
         double willBonus = 0.20 * willMultiplier;
         double totalBonus = 0.30 + willBonus;

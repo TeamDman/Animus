@@ -36,7 +36,7 @@ public class ItemSentientShield extends ShieldItem {
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
         SpiritusType type = getCurrentType(stack);
-        String displayType = type == SpiritusType.DEFAULT ? "raw" : type.name().toLowerCase();
+        String displayType = type == SpiritusType.RAW ? "raw" : type.name().toLowerCase();
         tooltip.add(Component.translatable("tooltip.animusnv.sentient_shield.will_type", displayType)
             .withStyle(ChatFormatting.AQUA));
 
@@ -44,19 +44,19 @@ public class ItemSentientShield extends ShieldItem {
 
         // Show only the relevant effect for the current will type
         switch (type) {
-            case DEFAULT:
+            case RAW:
                 tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_RAW)
                     .withStyle(ChatFormatting.GOLD));
                 break;
-            case STEADFAST:
+            case INVICTUS:
                 tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_STEADFAST)
                     .withStyle(ChatFormatting.GOLD));
                 break;
-            case CORROSIVE:
+            case RUINA:
                 tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_CORROSIVE)
                     .withStyle(ChatFormatting.GOLD));
                 break;
-            case VENGEFUL:
+            case VINDICTA:
                 tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_VENGEFUL)
                     .withStyle(ChatFormatting.GOLD));
                 break;

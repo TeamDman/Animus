@@ -219,7 +219,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .drain(25.0)
             .requires(Tags.Items.STONES)
             .requires(Tags.Items.STONES)
-            .requires(NVItems.SLATE_REINFORCED.get())
+            .requires(NVItems.TABULA_ROBUR.get())
             .requires(Tags.Items.DUSTS_REDSTONE)
             .save(output, loc("willful_stone"));
 
@@ -227,7 +227,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .minWill(2048.0)
             .drain(1024.0)
             .requires(Items.SCULK)
-            .requires(NVItems.SLATE_ETHEREAL.get())
+            .requires(NVItems.TABULA_AETHEREA.get())
             .requires(NVItems.WEAK_BLOOD_SHARD.get())
             .requires(Items.NETHER_STAR)
             .save(output, loc("crystallized_spiritus_block"));
@@ -260,7 +260,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .minWill(256.0)
             .drain(128.0)
             .requires(AnimusItems.SENTIENT_BOW.get())
-            .requires(NVItems.VENGEFUL_CRYSTAL.get())
+            .requires(NVItems.SPIRITUS_VINDICTA_CRYSTAL_ITEM.get())
             .requires(Items.BLAZE_ROD)
             .requires(Items.NETHER_STAR)
             .save(output, loc("hellforged_bow"));
@@ -269,7 +269,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .minWill(1024.0)
             .drain(512.0)
             .requires(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
-            .requires(NVItems.VENGEFUL_CRYSTAL.get())
+            .requires(NVItems.SPIRITUS_VINDICTA_CRYSTAL_ITEM.get())
             .requires(Items.WITHER_SKELETON_SKULL)
             .requires(Items.NETHERITE_INGOT)
             .save(output, loc("hand_of_death"));
@@ -395,79 +395,79 @@ public class AnimusRecipeProvider extends RecipeProvider {
     private void buildArrayRecipes(RecipeOutput output) {
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_BUILDER.get())
             .base(AnimusItems.REAGENT_BUILDER.get())
-            .added(NVItems.SLATE_REINFORCED.get())
+            .added(NVItems.TABULA_ROBUR.get())
             .texture(ARRAY_LAPUTA)
             .save(output, loc("array/sigil_builder"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_EQUIVALENCY.get())
             .base(AnimusItems.REAGENT_EQUIVALENCY.get())
-            .added(NVItems.SLATE_REINFORCED.get())
+            .added(NVItems.TABULA_ROBUR.get())
             .texture(ARRAY_FURNACE)
             .save(output, loc("array/sigil_equivalency"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_LEACH.get())
             .base(AnimusItems.REAGENT_LEACH.get())
-            .added(NVItems.SLATE_REINFORCED.get())
+            .added(NVItems.TABULA_ROBUR.get())
             .texture(ARRAY_MOBSACRIFICE)
             .save(output, loc("array/sigil_leach"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_MONK.get())
             .base(AnimusItems.REAGENT_FIST.get())
-            .added(NVItems.SLATE_REINFORCED.get())
+            .added(NVItems.TABULA_ROBUR.get())
             .texture(ARRAY_FASTMINER)
             .save(output, loc("array/sigil_monk"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_CHAINS.get())
             .base(AnimusItems.REAGENT_CHAINS.get())
-            .added(NVItems.SLATE_IMBUED.get())
+            .added(NVItems.TABULA_ANIMATA.get())
             .texture(ARRAY_BINDING)
             .save(output, loc("array/sigil_chains"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_CONSUMPTION.get())
             .base(AnimusItems.REAGENT_CONSUMPTION.get())
-            .added(NVItems.SLATE_IMBUED.get())
+            .added(NVItems.TABULA_ANIMATA.get())
             .texture(ARRAY_VOID)
             .save(output, loc("array/sigil_consumption"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_REMEDIUM.get())
             .base(AnimusItems.REAGENT_REMEDIUM.get())
-            .added(NVItems.SLATE_IMBUED.get())
+            .added(NVItems.TABULA_ANIMATA.get())
             .texture(ARRAY_LIGHT)
             .save(output, loc("array/sigil_remedium"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_REPARARE.get())
             .base(AnimusItems.REAGENT_REPARARE.get())
-            .added(NVItems.SLATE_IMBUED.get())
+            .added(NVItems.TABULA_ANIMATA.get())
             .texture(ARRAY_FASTMINER)
             .save(output, loc("array/sigil_reparare"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_STORM.get())
             .base(AnimusItems.REAGENT_STORM.get())
-            .added(NVItems.SLATE_IMBUED.get())
+            .added(NVItems.TABULA_ANIMATA.get())
             .texture(ARRAY_WATER)
             .save(output, loc("array/sigil_storm"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_FREE_SOUL.get())
             .base(AnimusItems.REAGENT_FREE_SOUL.get())
-            .added(NVItems.SLATE_DEMONIC.get())
+            .added(NVItems.TABULA_SPIRITUS.get())
             .texture(ARRAY_TELEPORT)
             .save(output, loc("array/sigil_free_soul"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_HEAVENLY_WRATH.get())
             .base(AnimusItems.REAGENT_HEAVENLY_WRATH.get())
-            .added(NVItems.SLATE_DEMONIC.get())
+            .added(NVItems.TABULA_SPIRITUS.get())
             .texture(ARRAY_LIGHTNING)
             .save(output, loc("array/sigil_heavenly_wrath"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_TEMPORAL_DOMINANCE.get())
             .base(AnimusItems.REAGENT_TEMPORAL_DOMINANCE.get())
-            .added(NVItems.SLATE_DEMONIC.get())
+            .added(NVItems.TABULA_SPIRITUS.get())
             .texture(ARRAY_MOON)
             .save(output, loc("array/sigil_temporal_dominance"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_TRANSPOSITION.get())
             .base(AnimusItems.REAGENT_TRANSPOSITION.get())
-            .added(NVItems.SLATE_DEMONIC.get())
+            .added(NVItems.TABULA_SPIRITUS.get())
             .texture(ARRAY_TELEPORTATION)
             .save(output, loc("array/sigil_transposition"));
 
@@ -479,7 +479,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
             .base(NVItems.SENTIENT_SCYTHE.get())
-            .added(NVItems.SLATE_DEMONIC.get())
+            .added(NVItems.TABULA_SPIRITUS.get())
             .texture(ARRAY_BINDING)
             .save(output, loc("array/runic_sentient_scythe"));
     }

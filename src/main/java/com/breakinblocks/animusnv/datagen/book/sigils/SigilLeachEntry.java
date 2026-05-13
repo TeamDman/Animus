@@ -30,7 +30,7 @@ public class SigilLeachEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Sigil of Nature's Leach");
         this.pageText("Forged in an [#](8B0000)Alchemy Array[#]() from a [#](8B0000)Reagent: Leach[#]() "
-                + "and a [#](B8860B)Reinforced Slate[#](), this toggleable sigil drains the life from "
+                + "and a [#](B8860B)Tabula Robur[#](), this toggleable sigil drains the life from "
                 + "nature itself to sustain your hunger. The green world withers so that you might thrive.");
 
         this.page("usage", () -> BookTextPageModel.create()
@@ -49,7 +49,7 @@ public class SigilLeachEntry extends EntryProvider {
         this.pageTitle("Consumable Blocks");
         this.pageText("The sigil devours logs, leaves, saplings, flowers, crops, grass, kelp, seagrass, "
                 + "vines, and most bonemealable plants.\\\n\\\n"
-                + "Each block consumed generates [#](4A0080)Corrosive Spiritus[#]() (0.3-0.8 per block) "
+                + "Each block consumed generates [#](4A0080)Spiritus Ruina[#]() (0.3-0.8 per block) "
                 + "in the local chunk.\\\n\\\n"
                 + "[#](2E8B57)The hungry mage need never farm again.[#]()");
     }

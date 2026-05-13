@@ -44,7 +44,7 @@ public class BlockEntityBloodCore extends BlockEntity {
         delayCounter--;
         if (delayCounter <= 0) {
             ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
-            double corrosiveWill = willHandler.getCurrentWill(level, worldPosition, SpiritusType.CORROSIVE);
+            double corrosiveWill = willHandler.getCurrentWill(level, worldPosition, SpiritusType.RUINA);
 
             int baseTimer = AnimusConfig.bloodCore.treeSpreadInterval.get();
             // More corrosive will = slower growth (up to 2x slower at 100+ will)
@@ -206,7 +206,7 @@ public class BlockEntityBloodCore extends BlockEntity {
                         }
                     }
 
-                    NeoVitaeAPI.getInstance().getSpiritusHandler().drainWill(level, worldPosition, SpiritusType.CORROSIVE, 5.0);
+                    NeoVitaeAPI.getInstance().getSpiritusHandler().drainSpiritus(level, worldPosition, SpiritusType.RUINA, 5.0);
 
                     break;
                 }

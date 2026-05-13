@@ -51,7 +51,7 @@ public class SteadfastHeartEntry extends EntryProvider {
                 + "\n\n- Duration increases each cycle"
                 + "\n\n- Max duration: 30,000 ticks"
                 + "\n\n- Max amplifier: 4 (10 absorption hearts, configurable)"
-                + "\\\n\\\nThe ritual also generates [#](4A0080)Steadfast Spiritus[#]() up to a maximum of 100 in the area.");
+                + "\\\n\\\nThe ritual also generates [#](4A0080)Spiritus Invictus[#]() up to a maximum of 100 in the area.");
     }
 
     @Override

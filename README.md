@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/TeamDman/Animus/1.21.1-neovitae/src/main/resources/assets/animus/textures/misc/animus_512px.png" alt="Animus Logo" width="256"/>
+  <img src="https://raw.githubusercontent.com/TeamDman/Animus/1.21.1-neovitae/src/main/resources/assets/animusnv/textures/misc/animus_512px.png" alt="Animus Logo" width="256"/>
 </p>
 
 
@@ -17,7 +17,16 @@
 
 ## What is Animus?
 
-Animus extends NeoVitae (formerly Blood Magic) with dozens of new features, powerful sigils, unique rituals, new sentient and bound weapons, as well as deep integration with other magic mods. Manipulate time, corrupt the world with AntiLife, or cast spells using Life Essence instead of Iron's Spells mana, Animus has something for you.
+Animus extends NeoVitae (formerly Blood Magic) with dozens of new features, powerful sigils, unique rituals, new sentient and bound weapons, as well as deep integration with other magic mods. Manipulate time, corrupt the world with AntiLife, or cast spells using Essentia Vitae instead of Iron's Spells mana — Animus has something for you.
+
+> **Terminology note (NeoVitae 1.21.1+):** What was once *Blood Magic* now uses Latinate naming.
+> - **Anima** — your personal life-pool (formerly "Soul Network")
+> - **Essentia Vitae** (EV) — the fluid your Anima holds (formerly "LP" / "Life Essence")
+> - **Ara Vitae** — the altar (formerly "Blood Altar")
+> - **Spiritus** — the aspected essence harvested from souls (formerly "Demon Will"); aspects are **Raw**, **Ruina**, **Nihilum**, **Vindicta**, **Invictus**
+> - **Tabula** slate progression — Rasa, Robur, Animata, Spiritus, Aetherea (formerly Blank → Reinforced → Imbued → Demonic → Ethereal Slate)
+> - **Sentient Armor** — the upgradable armor set (formerly "Living Armor")
+> - **Spiritus Gem** — gem that stores Spiritus (formerly "Tartaric Gem")
 
 ---
 
@@ -25,7 +34,7 @@ Animus extends NeoVitae (formerly Blood Magic) with dozens of new features, powe
 
 ### Sigils
 
-Portable tools powered by your Soul Network:
+Portable tools powered by your Anima:
 
 | Sigil | Description |
 |-------|-------------|
@@ -46,9 +55,9 @@ Portable tools powered by your Soul Network:
 
 Powerful ceremonial magic for automation and world manipulation:
 
-- **Ritual of Sol / Luna** - Place or Remove lighting and a massive area
+- **Ritual of Sol / Luna** - Place or remove lighting in a massive area
 - **Ritual of Persistence** - Keep chunks loaded
-- **Ritual of Culling** - Automated mob killing with LP generation
+- **Ritual of Culling** - Automated mob killing with EV generation
 - **Ritual of Entropy** - Converts any items inserted into cobblestone
 - **Ritual of Unmaking** - Disenchants items and puts their enchantments onto books
 - **Ritual of Peaceful Beckoning** - Spawn passive animals
@@ -74,25 +83,25 @@ Quick, single-use rituals activated by placing blocks on an Imperfect Ritual Sto
 
 ### Weapons & Tools
 
-- **Iron & Diamond Spears** - Throwable Spears with retrievable mechanics
-- **Bound Spear** - Soul-bound weapon that returns to you and strikes in an area
-- **Sentient Spear** - Scales with demon will, applies AoE effects based on will type
-- **Sentient Shield** - Blocking grants buffs based on demon will type, +30% will gain
-- **Sanguine Diviner** - Diagnose altar issues, show ritual info, auto-place upgrades
+- **Iron & Diamond Spears** - Throwable spears with retrievable mechanics
+- **Bound Spear** - Anima-bound weapon that returns to you and strikes in an area
+- **Sentient Spear** - Scales with Spiritus, applies AoE effects based on the aspect (Ruina, Nihilum, Vindicta, Invictus)
+- **Sentient Shield** - Blocking grants buffs based on Spiritus aspect, +30% Spiritus gain
+- **Sanguine Diviner** - Diagnose Ara Vitae issues, show ritual info, auto-place upgrades
 
-### Tier 6 Blood Altar
+### Tier 6 Ara Vitae
 
 Ascend beyond the base game with:
 
-- **Crystallized Demon Will Blocks** - New altar component enabling Tier 6 Altars!
+- **Crystallized Spiritus Blocks** - New altar component enabling Tier 6 Ara Vitae!
 - **Willful Stone** - Decorative building blocks in 16 colors that are completely unbreakable to anyone but the owner
-- **Transcendent Blood Orb** - Massive LP storage for the ultimate blood mage
+- **Transcendent Blood Orb** - Massive EV storage for the ultimate blood mage
 
 ### Corruption & Fluids
 
-- **AntiLife** - Corrupting fluid created by lightning striking Life Essence. Spreads and converts blocks.
+- **AntiLife** - Corrupting fluid created by lightning striking Essentia Vitae. Spreads and converts blocks.
 - **Living Terra** - Fluid that enriches the land
-- **Blood Trees** - Grow living wood from blood-infused saplings, the apples replenish hunger and LP
+- **Blood Trees** - Grow living wood from blood-infused saplings; the apples replenish hunger and EV
 
 ---
 
@@ -102,25 +111,25 @@ Animus provides deep integration with popular magic mods:
 
 ### Iron's Spellbooks
 
-- **LP Casting** - Cast any spell using Life Essence instead of mana from Iron's Spells
-- **Blood-Infused Spellbook** - Reduced mana costs, LP regeneration
-- **Sanguine Scrolls** - Reusable spell scrolls powered by LP (5 tiers based on slates)
-- **Sigil of Crimson Will** - Boost spell damage with demon will
-- **Living Armor Integration** - Gain armor XP from spellcasting, unlock Arcane Channeling upgrades
+- **EV Casting** - Cast any spell using Essentia Vitae instead of mana from Iron's Spells
+- **Blood-Infused Spellbook** - Reduced mana costs, EV regeneration
+- **Sanguine Scrolls** - Reusable spell scrolls powered by EV (5 tiers based on Tabula slates)
+- **Sigil of Crimson Will** - Boost spell damage with Spiritus
+- **Sentient Armor Integration** - Gain armor XP from spellcasting, unlock Arcane Channeling upgrades
 - **Ritual of Arcane Mastery** - Upgrade spell scrolls to higher levels
 
 ### Botania
 
-- **Sigil of Boundless Nature** - LP-powered mana tablet for Botania tools
+- **Sigil of Boundless Nature** - EV-powered mana tablet for Botania tools
 - **Rune of Unleashed Nature** - Hybrid altar rune that uses Botania mana
-- **Diabolical Fungi** - Mushroom that converts demon will to mana at a very high rate
-- **Ritual of Floral Supremacy** - Doubles the output of all Mana producing flowers and mana spreaders in the area
+- **Diabolical Fungi** - Mushroom that converts Spiritus to mana at a very high rate
+- **Ritual of Floral Supremacy** - Doubles the output of all mana-producing flowers and mana spreaders in the area
 
 ### Ars Nouveau
 
 - **Arcane Rune** - Altar rune powered by Source
-- **Ritual of Source Vitaeum** - Converts LP into Source
-- **Living Armor Source Attunement** - Spell damage bonuses from wearing Living Armor
+- **Ritual of Source Vitaeum** - Converts EV into Source
+- **Sentient Armor Source Attunement** - Spell damage bonuses from wearing Sentient Armor
 
 ### Malum
 
@@ -132,7 +141,7 @@ Animus provides deep integration with popular magic mods:
 ## Installation
 
 1. Install [NeoForge](https://neoforged.net/) for 1.21.1
-2. Install [NeoVitae](https://www.curseforge.com/minecraft/mc-mods/neovitae) 3.4.0+
+2. Install [NeoVitae](https://www.curseforge.com/minecraft/mc-mods/neovitae) — Animus tracks the latest snapshot
 3. Download Animus from [CurseForge](https://minecraft.curseforge.com/projects/animus)
 4. Place in your `mods` folder
 

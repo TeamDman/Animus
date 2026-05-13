@@ -2,32 +2,32 @@ package com.breakinblocks.animusnv.compat.ironsspells;
 
 import com.breakinblocks.animusnv.Animus;
 import com.breakinblocks.animusnv.AnimusConfig;
-import com.breakinblocks.animusnv.compat.LivingUpgradeHelper;
+import com.breakinblocks.animusnv.compat.SentientUpgradeHelper;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import com.breakinblocks.neovitae.common.living.LivingHelper;
+import com.breakinblocks.neovitae.common.sentient.SentientHelper;
 
 /**
- * Handles Living Armor integration with Iron's Spells
+ * Handles Sentient Armor integration with Iron's Spells
  *
  * Features:
- * - Grants Living Armor XP when spells are cast
+ * - Grants Sentient Armor XP when spells are cast
  * - XP scales with spell level
  * - XP is granted to the Arcane Channeling upgrade tree
  */
-public class LivingArmorSpellHandler {
+public class SentientArmorSpellHandler {
 
     public static void register() {
-        NeoForge.EVENT_BUS.register(new LivingArmorSpellHandler());
-        Animus.LOGGER.debug("Registered Living Armor Spell Handler for Iron's Spells");
+        NeoForge.EVENT_BUS.register(new SentientArmorSpellHandler());
+        Animus.LOGGER.debug("Registered Sentient Armor Spell Handler for Iron's Spells");
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onSpellCast(SpellOnCastEvent event) {
-        if (!AnimusConfig.ironsSpells.enableLivingArmorXP.get()) {
+        if (!AnimusConfig.ironsSpells.enableSentientArmorXP.get()) {
             return;
         }
 
@@ -39,23 +39,23 @@ public class LivingArmorSpellHandler {
             return;
         }
 
-        if (!LivingHelper.hasFullSet(player)) {
+        if (!SentientHelper.hasFullSet(player)) {
             return;
         }
 
         int spellLevel = event.getSpellLevel();
 
-        int baseXP = AnimusConfig.ironsSpells.livingArmorBaseXP.get();
+        int baseXP = AnimusConfig.ironsSpells.sentientArmorBaseXP.get();
         float xpToGrant = baseXP * spellLevel;
 
-        boolean success = LivingUpgradeHelper.addExperience(
+        boolean success = SentientUpgradeHelper.addExperience(
             player,
             ArcaneChannelingHandler.UPGRADE_ID,
             xpToGrant
         );
 
         if (success) {
-            Animus.LOGGER.debug("Granted {} XP to Living Armor (Arcane Channeling) for casting spell (level {})",
+            Animus.LOGGER.debug("Granted {} XP to Sentient Armor (Arcane Channeling) for casting spell (level {})",
                 xpToGrant, spellLevel);
         }
     }

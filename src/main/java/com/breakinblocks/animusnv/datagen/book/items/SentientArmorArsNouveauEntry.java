@@ -8,9 +8,9 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.item.Items;
 
-public class LivingArmorArsNouveauEntry extends EntryProvider {
+public class SentientArmorArsNouveauEntry extends EntryProvider {
 
-    public LivingArmorArsNouveauEntry(CategoryProviderBase parent) {
+    public SentientArmorArsNouveauEntry(CategoryProviderBase parent) {
         super(parent);
     }
 
@@ -19,12 +19,12 @@ public class LivingArmorArsNouveauEntry extends EntryProvider {
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Living Armor: Source Attunement");
-        this.pageText("Living Armor adapts to your magical practices. When you cast Ars Nouveau "
+        this.pageTitle("Sentient Armor: Source Attunement");
+        this.pageText("Sentient Armor adapts to your magical practices. When you cast Ars Nouveau "
                 + "glyph-based magic, your armor learns and evolves, unlocking the "
                 + "[#](8B0000)Source Attunement[#]() upgrade path designed for source-wielding "
                 + "mages.\\\n\\\n"
-                + "[#](4A0080)Cast Ars Nouveau spells while wearing Living Armor to gain "
+                + "[#](4A0080)Cast Ars Nouveau spells while wearing Sentient Armor to gain "
                 + "experience. The armor attunes to the flow of Source energy, growing "
                 + "stronger with each glyph you cast.[#]()");
 
@@ -32,7 +32,7 @@ public class LivingArmorArsNouveauEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("XP from Glyphs");
-        this.pageText("Every Ars Nouveau spell you cast grants XP to your Living Armor "
+        this.pageText("Every Ars Nouveau spell you cast grants XP to your Sentient Armor "
                 + "based on its complexity:\\\n\\\n"
                 + "Base XP (5) x Number of Glyphs\\\n\\\n"
                 + "[#](2E8B57)Example: A spell with 6 glyphs grants 5 x 6 = 30 XP[#]()\\\n\\\n"
@@ -76,18 +76,18 @@ public class LivingArmorArsNouveauEntry extends EntryProvider {
                 + "- Create longer, more complex spells\n\n"
                 + "- Cast frequently while exploring\n\n"
                 + "- Each glyph counts toward XP\\\n\\\n"
-                + "[#](2E8B57)XP is only granted while wearing Living Armor. "
+                + "[#](2E8B57)XP is only granted while wearing Sentient Armor. "
                 + "Requires Ars Nouveau to be installed.[#]()");
     }
 
     @Override
     protected String entryName() {
-        return "Living Armor: Source Attunement";
+        return "Sentient Armor: Source Attunement";
     }
 
     @Override
     protected String entryDescription() {
-        return "Living Armor evolves through Ars Nouveau spellcasting. Requires Ars Nouveau.";
+        return "Sentient Armor evolves through Ars Nouveau spellcasting. Requires Ars Nouveau.";
     }
 
     @Override

@@ -30,7 +30,7 @@ public class SigilConsumptionEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Sigil of Consumption");
         this.pageText("Forged in an [#](8B0000)Alchemy Array[#]() from a [#](8B0000)Reagent: Consumption[#]() "
-                + "and an [#](B8860B)Imbued Slate[#](), this dire sigil corrupts the world itself. "
+                + "and a [#](B8860B)Tabula Animata[#](), this dire sigil corrupts the world itself. "
                 + "Right-click to convert nearby blocks into [#](8B0000)AntiLife[#](), a spreading, "
                 + "devouring substance that consumes all it touches.");
 

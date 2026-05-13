@@ -74,7 +74,7 @@ public class RitualNaturesLeach extends Ritual {
         BlockPos pos = ritualStone.getMasterBlockPos();
 
         ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
-        SpiritusType type = SpiritusType.CORROSIVE;
+        SpiritusType type = SpiritusType.RUINA;
         will = willHandler.getCurrentWill(level, pos, type);
 
         IAnima network = AnimusRitualHelper.getOwnerNetwork(ritualStone);
@@ -171,7 +171,7 @@ public class RitualNaturesLeach extends Ritual {
             double currentWill = willHandler.getCurrentWill(level, pos, type);
             double actualAdd = Math.min(totalWillToAdd, maxWill - currentWill);
             if (actualAdd > 0) {
-                willHandler.addWill(level, pos, type, actualAdd);
+                willHandler.addSpiritus(level, pos, type, actualAdd);
             }
         }
     }

@@ -50,7 +50,7 @@ public class CrystallizedSpiritusBlockEntry extends EntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "Solidified demonic will, used as a CRYSTAL component for Tier 6 altars.";
+        return "Solidified Spiritus, used as a CRYSTAL component for Tier 6 altars.";
     }
 
     @Override

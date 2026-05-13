@@ -138,14 +138,14 @@ public record LeachSigilEffect() implements ISigilEffect {
             if (!level.isClientSide) {
                 double willToAdd = 0.3 + level.random.nextDouble() * 0.5;
                 ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
-                double currentWill = willHandler.getCurrentWill(level, player.blockPosition(), SpiritusType.CORROSIVE);
+                double currentWill = willHandler.getCurrentWill(level, player.blockPosition(), SpiritusType.RUINA);
                 double maxWill = 100;
                 double actualAdd = Math.min(willToAdd, maxWill - currentWill);
                 if (actualAdd > 0) {
-                    willHandler.addWill(
+                    willHandler.addSpiritus(
                             level,
                             player.blockPosition(),
-                            SpiritusType.CORROSIVE,
+                            SpiritusType.RUINA,
                             actualAdd
                     );
                 }

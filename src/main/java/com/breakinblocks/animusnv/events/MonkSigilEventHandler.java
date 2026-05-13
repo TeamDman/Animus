@@ -389,11 +389,11 @@ public class MonkSigilEventHandler {
 
         // Prefer Raw Spiritus first, then other types
         SpiritusType[] preferredOrder = {
-            SpiritusType.DEFAULT,
-            SpiritusType.VENGEFUL,
-            SpiritusType.STEADFAST,
-            SpiritusType.CORROSIVE,
-            SpiritusType.DESTRUCTIVE
+            SpiritusType.RAW,
+            SpiritusType.VINDICTA,
+            SpiritusType.INVICTUS,
+            SpiritusType.RUINA,
+            SpiritusType.NIHILUM
         };
 
         for (SpiritusType type : preferredOrder) {

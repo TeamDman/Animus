@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "neovitae:blood_altar"
+      "item": "neovitae:ara_vitae"
     },
     "title": {
       "translate": "advancement.animus.tier6_ascension.title"
@@ -19,7 +19,7 @@
     "placed_altar": {
       "trigger": "minecraft:placed_block",
       "conditions": {
-        "block": "neovitae:blood_altar"
+        "block": "neovitae:ara_vitae"
       }
     }
   },

@@ -39,7 +39,7 @@ public class ArcaneRuneEntry extends EntryProvider {
                 + "other rune. It stores up to 1000 Source internally and can receive "
                 + "Source via Ars Nouveau's dominion wand linking system.\\\n\\\n"
                 + "Crafted using a [#](8B0000)Blank Rune[#]() at the center, any Stone in "
-                + "corners, [#](8B0000)Blank Slate[#]() top and bottom, and "
+                + "corners, [#](8B0000)Tabula Rasa[#]() top and bottom, and "
                 + "[#](8B0000)Source Gems[#]() on the sides.");
 
         this.page("linking", () -> BookTextPageModel.create()

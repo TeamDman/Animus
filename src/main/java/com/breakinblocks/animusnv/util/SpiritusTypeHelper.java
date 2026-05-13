@@ -21,10 +21,10 @@ public final class SpiritusTypeHelper {
             try {
                 return SpiritusType.valueOf(typeStr.toUpperCase());
             } catch (IllegalArgumentException e) {
-                return SpiritusType.DEFAULT;
+                return SpiritusType.RAW;
             }
         }
-        return SpiritusType.DEFAULT;
+        return SpiritusType.RAW;
     }
 
     public static void setCurrentType(ItemStack stack, SpiritusType type) {

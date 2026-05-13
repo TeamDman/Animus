@@ -44,11 +44,11 @@ public class SanguineScrollsEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Slate Tiers");
         this.pageText("Different slate types produce scrolls with varying durability:\n\n"
-                + "- [#](B8860B)Blank Slate:[#]() 50 uses\n\n"
-                + "- [#](B8860B)Reinforced Slate:[#]() 100 uses\n\n"
-                + "- [#](B8860B)Imbued Slate:[#]() 200 uses\n\n"
-                + "- [#](B8860B)Demon Slate:[#]() 400 uses\n\n"
-                + "- [#](B8860B)Ethereal Slate:[#]() 600 uses\\\n\\\n"
+                + "- [#](B8860B)Tabula Rasa:[#]() 50 uses\n\n"
+                + "- [#](B8860B)Tabula Robur:[#]() 100 uses\n\n"
+                + "- [#](B8860B)Tabula Animata:[#]() 200 uses\n\n"
+                + "- [#](B8860B)Tabula Spiritus:[#]() 400 uses\n\n"
+                + "- [#](B8860B)Tabula Aetherea:[#]() 600 uses\\\n\\\n"
                 + "Choose based on how frequently you intend to use the spell.");
 
         this.page("costs", () -> BookTextPageModel.create()

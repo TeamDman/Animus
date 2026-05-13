@@ -33,18 +33,18 @@ public class SentientShieldEntry extends EntryProvider {
         this.page("will_effects", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Will Effects");
+        this.pageTitle("Spiritus Effects");
         this.pageText("The shield automatically detects your highest [#](4A0080)Spiritus[#]() "
                 + "type and adapts:\n\n"
                 + "- [#](8B0000)Raw Spiritus:[#]() Standard blocking\n\n"
-                + "- [#](4A0080)Steadfast:[#]() Increased knockback resistance\n\n"
-                + "- [#](2E8B57)Corrosive:[#]() Attackers take damage\n\n"
-                + "- [#](B8860B)Vengeful:[#]() Reflect damage back at attackers");
+                + "- [#](4A0080)Invictus:[#]() Increased knockback resistance\n\n"
+                + "- [#](2E8B57)Ruina:[#]() Attackers take damage\n\n"
+                + "- [#](B8860B)Vindicta:[#]() Reflect damage back at attackers");
 
         this.page("will_bonus", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Will Gain Bonus");
+        this.pageTitle("Spiritus Gain Bonus");
         this.pageText("While equipped in your main or offhand, the Sentient Shield increases the "
                 + "amount of [#](4A0080)Spiritus[#]() you gain from all sources by "
                 + "[#](2E8B57)+30%%[#]().\\\n\\\n"
@@ -58,7 +58,7 @@ public class SentientShieldEntry extends EntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "A demonic shield with 4x durability and will-aspected blocking effects.";
+        return "A demonic shield with 4x durability and Spiritus-aspected blocking effects.";
     }
 
     @Override

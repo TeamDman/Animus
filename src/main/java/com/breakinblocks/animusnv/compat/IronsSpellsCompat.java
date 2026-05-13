@@ -10,7 +10,7 @@ import com.breakinblocks.animusnv.compat.ironsspells.ItemSanguineScroll;
 import com.breakinblocks.neovitae.common.item.sigil.SigilItem;
 import com.breakinblocks.neovitae.registry.SigilTypeRegistry;
 import net.minecraft.resources.ResourceLocation;
-import com.breakinblocks.animusnv.compat.ironsspells.LivingArmorSpellHandler;
+import com.breakinblocks.animusnv.compat.ironsspells.SentientArmorSpellHandler;
 import com.breakinblocks.animusnv.compat.ironsspells.RitualArcaneMastery;
 import com.breakinblocks.animusnv.compat.ironsspells.RitualIronHeart;
 import com.breakinblocks.animusnv.compat.ironsspells.SanguineScrollAltarHandler;
@@ -34,7 +34,7 @@ import com.breakinblocks.neovitae.ritual.RitualRegistry;
  * - Sigil of Crimson Will (Spiritus spell boost)
  * - Sanguine Scrolls (reusable spell scrolls)
  * - Ritual of Arcane Mastery (upgrades spell scrolls)
- * - Living Armor spell integration (Arcane Channeling upgrade)
+ * - Sentient Armor spell integration (Arcane Channeling upgrade)
  */
 public class IronsSpellsCompat implements ICompatModule {
 
@@ -64,20 +64,20 @@ public class IronsSpellsCompat implements ICompatModule {
             SigilTypeRegistry.key(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "crimson_will"))
         ));
 
-    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_BLANK =
-        ITEMS.register("sanguine_scroll_blank", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.BLANK));
+    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_RASA =
+        ITEMS.register("sanguine_scroll_rasa", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.RASA));
 
-    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_REINFORCED =
-        ITEMS.register("sanguine_scroll_reinforced", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.REINFORCED));
+    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_ROBUR =
+        ITEMS.register("sanguine_scroll_robur", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.ROBUR));
 
-    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_IMBUED =
-        ITEMS.register("sanguine_scroll_imbued", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.IMBUED));
+    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_ANIMATA =
+        ITEMS.register("sanguine_scroll_animata", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.ANIMATA));
 
-    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_DEMON =
-        ITEMS.register("sanguine_scroll_demon", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.DEMON));
+    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_SPIRITUS =
+        ITEMS.register("sanguine_scroll_spiritus", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.SPIRITUS));
 
-    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_ETHEREAL =
-        ITEMS.register("sanguine_scroll_ethereal", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.ETHEREAL));
+    public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_AETHEREA =
+        ITEMS.register("sanguine_scroll_aetherea", () -> new ItemSanguineScroll(ItemSanguineScroll.SlateType.AETHEREA));
 
     public IronsSpellsCompat() {
         INSTANCE = this;
@@ -99,10 +99,10 @@ public class IronsSpellsCompat implements ICompatModule {
         Animus.LOGGER.debug("Initializing Irons Spells n Spellbooks compatibility");
 
         ArcaneChannelingHandler.register();
-        Animus.LOGGER.debug("Registered Arcane Channeling Living Armor upgrade handler");
+        Animus.LOGGER.debug("Registered Arcane Channeling Sentient Armor upgrade handler");
 
-        LivingArmorSpellHandler.register();
-        Animus.LOGGER.debug("Registered Living Armor Spell Handler");
+        SentientArmorSpellHandler.register();
+        Animus.LOGGER.debug("Registered Sentient Armor Spell Handler");
 
         SpellCastingHandler.register();
         Animus.LOGGER.debug("Registered Spell Casting Handler (EV to mana)");

@@ -30,7 +30,7 @@ public class SigilChainsEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Sigil of the Phantom Chain");
         this.pageText("Forged in an [#](8B0000)Alchemy Array[#]() from a [#](8B0000)Reagent: Chains[#]() "
-                + "and an [#](B8860B)Imbued Slate[#](), this sigil captures the essence of living creatures. "
+                + "and a [#](B8860B)Tabula Animata[#](), this sigil captures the essence of living creatures. "
                 + "It binds entities into [#](8B0000)Mob Soul[#]() items, preserving their form and state "
                 + "for later release.");
 

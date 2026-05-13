@@ -84,7 +84,7 @@ public class RitualSteadfastHeart extends Ritual {
         BlockPos pos = mrs.getMasterBlockPos();
 
         ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
-        SpiritusType type = SpiritusType.STEADFAST;
+        SpiritusType type = SpiritusType.INVICTUS;
         double currentAmount = willHandler.getCurrentWill(level, pos, type);
 
         Set<UUID> buffedPlayers = new HashSet<>();
@@ -159,7 +159,7 @@ public class RitualSteadfastHeart extends Ritual {
 
         double addAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2.0, 10));
         if (addAmount > 0) {
-            willHandler.addWill(level, pos, type, addAmount);
+            willHandler.addSpiritus(level, pos, type, addAmount);
         }
     }
 

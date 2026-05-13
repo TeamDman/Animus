@@ -21,11 +21,11 @@ public class AnimusCreativeTabs {
     private static final String[] IRONS_SPELLS_COMPAT_ITEMS = {
         "blood_infused_spellbook",
         "sigil_crimson_will",
-        "sanguine_scroll_blank",
-        "sanguine_scroll_reinforced",
-        "sanguine_scroll_imbued",
-        "sanguine_scroll_demon",
-        "sanguine_scroll_ethereal"
+        "sanguine_scroll_rasa",
+        "sanguine_scroll_robur",
+        "sanguine_scroll_animata",
+        "sanguine_scroll_spiritus",
+        "sanguine_scroll_aetherea"
     };
 
     // Ars Nouveau compat item names - looked up from registry to avoid class loading issues

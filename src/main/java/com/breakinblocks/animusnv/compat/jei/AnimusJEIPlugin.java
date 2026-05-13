@@ -107,11 +107,11 @@ public class AnimusJEIPlugin implements IModPlugin {
         try {
             List<ItemStack> scrollStacks = new ArrayList<>();
             String[] scrollNames = {
-                "sanguine_scroll_blank",
-                "sanguine_scroll_reinforced",
-                "sanguine_scroll_imbued",
-                "sanguine_scroll_demon",
-                "sanguine_scroll_ethereal"
+                "sanguine_scroll_rasa",
+                "sanguine_scroll_robur",
+                "sanguine_scroll_animata",
+                "sanguine_scroll_spiritus",
+                "sanguine_scroll_aetherea"
             };
             for (String name : scrollNames) {
                 Item item = BuiltInRegistries.ITEM.get(
@@ -199,11 +199,11 @@ public class AnimusJEIPlugin implements IModPlugin {
                 ItemStack scrollStack = new ItemStack(ironsScroll);
 
                 String[][] scrollTiers = {
-                    {"blank_slate", "sanguine_scroll_blank", "blank"},
-                    {"reinforced_slate", "sanguine_scroll_reinforced", "reinforced"},
-                    {"imbued_slate", "sanguine_scroll_imbued", "imbued"},
-                    {"demonic_slate", "sanguine_scroll_demon", "demon"},
-                    {"ethereal_slate", "sanguine_scroll_ethereal", "ethereal"}
+                    {"tabula_rasa", "sanguine_scroll_rasa", "rasa"},
+                    {"tabula_robur", "sanguine_scroll_robur", "robur"},
+                    {"tabula_animata", "sanguine_scroll_animata", "animata"},
+                    {"tabula_spiritus", "sanguine_scroll_spiritus", "spiritus"},
+                    {"tabula_aetherea", "sanguine_scroll_aetherea", "aetherea"}
                 };
 
                 for (String[] tier : scrollTiers) {
@@ -245,11 +245,11 @@ public class AnimusJEIPlugin implements IModPlugin {
             // Use registry lookup to avoid class loading issues with IronsSpellsCompat
             String[] animusItems = {
                 "blood_infused_spellbook",
-                "sanguine_scroll_blank",
-                "sanguine_scroll_reinforced",
-                "sanguine_scroll_imbued",
-                "sanguine_scroll_demon",
-                "sanguine_scroll_ethereal"
+                "sanguine_scroll_rasa",
+                "sanguine_scroll_robur",
+                "sanguine_scroll_animata",
+                "sanguine_scroll_spiritus",
+                "sanguine_scroll_aetherea"
             };
             for (String itemName : animusItems) {
                 Item item = BuiltInRegistries.ITEM.get(
@@ -285,11 +285,11 @@ public class AnimusJEIPlugin implements IModPlugin {
                 List.of(
                     new ItemStack(IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()),
                     new ItemStack(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_BLANK.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_REINFORCED.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_IMBUED.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_DEMON.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_ETHEREAL.get())
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_RASA.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_ROBUR.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_ANIMATA.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_SPIRITUS.get()),
+                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_AETHEREA.get())
                 )
             );
 

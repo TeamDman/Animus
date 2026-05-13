@@ -392,78 +392,44 @@ public class ItemSanguineDiviner extends Item {
     }
 
     /**
-     * Gets a default block to place for an altar component in creative mode.
+     * Picks a block to place for an altar component slot in creative mode.
+     *
+     * Datapack-driven: queries NeoVitae's {@link NVMultiblock#getDisplayStates} as the authoritative
+     * list of valid blocks for the component. Animus only retains explicit preferences for the
+     * well-known capstone/structural tags so the visual identity of its T3-T6 Ara Vitaes is
+     * preserved when packs use the vanilla layout; if a pack reassigns those tags or defines a
+     * brand-new tier, the preference falls through to whatever the datapack says is valid.
      */
     private Block getDefaultBlockForComponent(AltarComponent component, Level level) {
-        ResourceLocation materialId = component.material().id();
-        String path = materialId.getPath().toLowerCase();
-
-        // Check for runes tag (exact match or path-based)
-        if (materialId.equals(NVTags.Blocks.RUNES.location()) || path.contains("rune")) {
-            return NVBlocks.RUNE_BLANK.block().get();
-        }
-
-        // Check for pillars tag - use stone bricks (exact match or path-based)
-        if (materialId.equals(NVTags.Blocks.PILLARS.location()) || path.contains("pillar")) {
-            return Blocks.STONE_BRICKS;
-        }
-
-        // Check for tier-specific capstones (exact match first, then path-based fallback)
-        // T6 capstones - Use Animus's Crystallized Spiritus blocks
-        if (materialId.equals(NVTags.Blocks.T6_CAPSTONES.location()) ||
-            path.contains("t6_capstone") || path.contains("tier6_capstone") || path.contains("tier_6_capstone")) {
-            return AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get();
-        }
-        // T5 capstones
-        if (materialId.equals(NVTags.Blocks.T5_CAPSTONES.location()) ||
-            path.contains("t5_capstone") || path.contains("tier5_capstone") || path.contains("tier_5_capstone")) {
-            return NVBlocks.HELLFORGED_BLOCK.block().get();
-        }
-        // T4 capstones
-        if (materialId.equals(NVTags.Blocks.T4_CAPSTONES.location()) ||
-            path.contains("t4_capstone") || path.contains("tier4_capstone") || path.contains("tier_4_capstone")) {
-            return NVBlocks.BLOODSTONE_BRICK.block().get();
-        }
-        // T3 capstones - bloodstained glass
-        if (materialId.equals(NVTags.Blocks.T3_CAPSTONES.location()) ||
-            path.contains("t3_capstone") || path.contains("tier3_capstone") || path.contains("tier_3_capstone")) {
-            return getBloodStainedGlass(level);
-        }
-
-        // Generic capstone fallback - check tier number in path
-        if (path.contains("capstone")) {
-            if (path.contains("6")) {
-                return AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get();
-            } else if (path.contains("5")) {
-                return NVBlocks.HELLFORGED_BLOCK.block().get();
-            } else if (path.contains("4")) {
-                return NVBlocks.BLOODSTONE_BRICK.block().get();
-            } else if (path.contains("3")) {
-                return getBloodStainedGlass(level);
+        // Animus-preferred blocks for the vanilla NV capstone tags — only honoured if the
+        // datapack still considers them valid for this slot.
+        Block preferred = null;
+        if (component.material().tag()) {
+            ResourceLocation tagId = component.material().id();
+            if (tagId.equals(NVTags.Blocks.T6_CAPSTONES.location())) {
+                preferred = AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get();
+            } else if (tagId.equals(NVTags.Blocks.T5_CAPSTONES.location())) {
+                preferred = NVBlocks.HELLFORGED_BLOCK.block().get();
+            } else if (tagId.equals(NVTags.Blocks.T4_CAPSTONES.location())) {
+                preferred = NVBlocks.BLOODSTONE_BRICK.block().get();
+            } else if (tagId.equals(NVTags.Blocks.T3_CAPSTONES.location())) {
+                preferred = getBloodStainedGlass(level);
+            } else if (tagId.equals(NVTags.Blocks.RUNES.location())) {
+                preferred = NVBlocks.RUNE_BLANK.block().get();
+            } else if (tagId.equals(NVTags.Blocks.PILLARS.location())) {
+                preferred = Blocks.STONE_BRICKS;
             }
         }
-
-        // Check for bloodstone
-        if (path.contains("bloodstone")) {
-            return NVBlocks.BLOODSTONE_BRICK.block().get();
+        if (preferred != null && isValidBlockForComponent(component, preferred.defaultBlockState(), level)) {
+            return preferred;
         }
 
-        // Check for crystal
-        if (path.contains("crystal")) {
-            return NVBlocks.CRYSTAL_CLUSTER.block().get();
+        // Datapack-resolved fallback — works for arbitrary pack-defined tags and exact blocks.
+        List<BlockState> displayStates = NVMultiblock.getDisplayStates(component, level.registryAccess());
+        if (!displayStates.isEmpty()) {
+            return displayStates.get(0).getBlock();
         }
 
-        // If it's a specific block (not a tag), try to get it directly
-        if (!component.material().tag()) {
-            Block block = level.registryAccess()
-                    .registryOrThrow(Registries.BLOCK)
-                    .get(ResourceKey.create(Registries.BLOCK, materialId));
-            if (block != null) {
-                return block;
-            }
-        }
-
-        // Default fallback to stone bricks
         return Blocks.STONE_BRICKS;
     }
 

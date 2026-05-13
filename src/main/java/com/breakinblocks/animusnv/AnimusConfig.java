@@ -522,8 +522,8 @@ public class AnimusConfig {
     public static class ArsNouveau {
         public final ModConfigSpec.IntValue arcaneRuneDrainAmount;
         public final ModConfigSpec.IntValue arcaneRuneDrainInterval;
-        public final ModConfigSpec.BooleanValue enableLivingArmorXP;
-        public final ModConfigSpec.IntValue livingArmorBaseXP;
+        public final ModConfigSpec.BooleanValue enableSentientArmorXP;
+        public final ModConfigSpec.IntValue sentientArmorBaseXP;
 
         public ArsNouveau(ModConfigSpec.Builder builder) {
             builder.push("arsNouveau");
@@ -542,18 +542,18 @@ public class AnimusConfig {
                 )
                 .defineInRange("arcaneRuneDrainInterval", 200, 20, 6000);
 
-            builder.comment("Living Armor Integration").push("livingArmor");
+            builder.comment("Sentient Armor Integration").push("sentientArmor");
 
-            enableLivingArmorXP = builder
+            enableSentientArmorXP = builder
                 .comment(
-                    "Enable Living Armor XP gain from Ars Nouveau spell casting",
+                    "Enable Sentient Armor XP gain from Ars Nouveau spell casting",
                     "Default: true"
                 )
                 .define("enabled", true);
 
-            livingArmorBaseXP = builder
+            sentientArmorBaseXP = builder
                 .comment(
-                    "Base XP granted to Living Armor per glyph cast",
+                    "Base XP granted to Sentient Armor per glyph cast",
                     "Actual XP = base × number of glyphs in spell",
                     "Default: 5"
                 )
@@ -690,8 +690,8 @@ public class AnimusConfig {
         public final ModConfigSpec.DoubleValue sanguineScrollDurabilityMultiplier;
         public final ModConfigSpec.BooleanValue sanguineScrollRequireBloodOrb;
 
-        public final ModConfigSpec.BooleanValue enableLivingArmorXP;
-        public final ModConfigSpec.IntValue livingArmorBaseXP;
+        public final ModConfigSpec.BooleanValue enableSentientArmorXP;
+        public final ModConfigSpec.IntValue sentientArmorBaseXP;
 
         public IronsSpells(ModConfigSpec.Builder builder) {
             builder.push("ironsSpells");
@@ -831,18 +831,18 @@ public class AnimusConfig {
 
             builder.pop();
 
-            builder.comment("Living Armor Integration").push("livingArmor");
+            builder.comment("Sentient Armor Integration").push("sentientArmor");
 
-            enableLivingArmorXP = builder
+            enableSentientArmorXP = builder
                 .comment(
-                    "Enable Living Armor XP gain from spell casting",
+                    "Enable Sentient Armor XP gain from spell casting",
                     "Default: true"
                 )
                 .define("enabled", true);
 
-            livingArmorBaseXP = builder
+            sentientArmorBaseXP = builder
                 .comment(
-                    "Base XP granted to Living Armor per spell cast",
+                    "Base XP granted to Sentient Armor per spell cast",
                     "Actual XP = base × spell level × rarity multiplier",
                     "Rarity multipliers: Common=1.0, Uncommon=1.5, Rare=2.0, Epic=3.0, Legendary=5.0",
                     "Default: 10"

@@ -72,7 +72,7 @@ public class ItemSentientBow extends BowItem {
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
         SpiritusType type = getCurrentType(stack);
-        String displayType = type == SpiritusType.DEFAULT ? "raw" : type.name().toLowerCase();
+        String displayType = type == SpiritusType.RAW ? "raw" : type.name().toLowerCase();
         tooltip.add(Component.translatable("tooltip.animusnv.sentient_bow.will_type", displayType)
             .withStyle(ChatFormatting.AQUA));
 
@@ -89,10 +89,10 @@ public class ItemSentientBow extends BowItem {
     public static double getDamageAdded(SpiritusType type, int level) {
         level = Math.min(level, 4);
         return switch (type) {
-            case CORROSIVE -> corrosiveDamageAdded[level];
-            case DESTRUCTIVE -> destructiveDamageAdded[level];
-            case VENGEFUL -> vengefulDamageAdded[level];
-            case STEADFAST -> steadfastDamageAdded[level];
+            case RUINA -> corrosiveDamageAdded[level];
+            case NIHILUM -> destructiveDamageAdded[level];
+            case VINDICTA -> vengefulDamageAdded[level];
+            case INVICTUS -> steadfastDamageAdded[level];
             default -> defaultDamageAdded[level];
         };
     }
@@ -233,6 +233,6 @@ public class ItemSentientBow extends BowItem {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-        return super.isFoil(stack) || getCurrentType(stack) != SpiritusType.DEFAULT;
+        return super.isFoil(stack) || getCurrentType(stack) != SpiritusType.RAW;
     }
 }
