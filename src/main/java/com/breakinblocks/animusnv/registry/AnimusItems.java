@@ -206,9 +206,6 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> SANGUINE_DIVINER = ITEMS.register("sanguine_diviner",
         ItemSanguineDiviner::new);
 
-    public static final DeferredHolder<Item, Item> RITUAL_DESIGNER = ITEMS.register("ritual_designer",
-        ItemRitualDesigner::new);
-
     public static final DeferredHolder<Item, Item> ANTILIFE_BUCKET = ITEMS.register("antilife_bucket",
         () -> new BucketItem(
             AnimusFluids.ANTILIFE_SOURCE.get(),

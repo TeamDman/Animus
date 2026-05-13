@@ -4,7 +4,6 @@ import com.breakinblocks.animusnv.Animus;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.client.AcceleratedBlocksClientData;
 import com.breakinblocks.animusnv.client.AltarGhostBlockRenderer;
-import com.breakinblocks.animusnv.client.ClipboardClientHelper;
 import com.breakinblocks.animusnv.items.sigils.effects.EquivalencySigilEffect;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,12 +24,6 @@ public class AnimusPayloads {
         );
 
         registrar.playToClient(
-            RitualCodePayload.TYPE,
-            RitualCodePayload.STREAM_CODEC,
-            AnimusPayloads::handleRitualCode
-        );
-
-        registrar.playToClient(
             AcceleratedBlocksSyncPayload.TYPE,
             AcceleratedBlocksSyncPayload.STREAM_CODEC,
             AnimusPayloads::handleAcceleratedBlocksSync
@@ -47,10 +40,6 @@ public class AnimusPayloads {
 
     private static void handleAltarGhostBlocks(AltarGhostBlocksPayload payload, IPayloadContext ctx) {
         ctx.enqueueWork(() -> AltarGhostBlockRenderer.setGhostBlocks(payload.ghostBlocks(), payload.durationTicks()));
-    }
-
-    private static void handleRitualCode(RitualCodePayload payload, IPayloadContext ctx) {
-        ctx.enqueueWork(() -> ClipboardClientHelper.setClipboard(payload.code()));
     }
 
     private static void handleAcceleratedBlocksSync(AcceleratedBlocksSyncPayload payload, IPayloadContext ctx) {

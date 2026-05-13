@@ -39,14 +39,6 @@ public class AnimusDataComponents {
         DATA_COMPONENTS.registerComponentType("soul_name", builder ->
             builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> RITUAL_CORNER1 =
-        DATA_COMPONENTS.registerComponentType("ritual_corner1", builder ->
-            builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
-
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> RITUAL_CORNER2 =
-        DATA_COMPONENTS.registerComponentType("ritual_corner2", builder ->
-            builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC));
-
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> SPIRITUS_TYPE =
         DATA_COMPONENTS.registerComponentType("demon_will_type", builder ->
             builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));

@@ -94,8 +94,6 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.ANTILIFE_BUCKET, "item/antilife_bucket");
         simpleItem(AnimusItems.LIVING_TERRA_BUCKET, "item/living_terra_bucket");
 
-        simpleItem(AnimusItems.RITUAL_DESIGNER, "item/ritual_designer");
-
         bowItem(AnimusItems.SENTIENT_BOW, "sentient_bow");
         bowItem(AnimusItems.HELLFORGED_BOW, "hellforged_bow");
 

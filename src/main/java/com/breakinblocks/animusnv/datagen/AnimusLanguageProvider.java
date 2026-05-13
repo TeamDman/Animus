@@ -231,7 +231,6 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("item.animusnv.reagentstorm", "Reagent: Storm");
         add("item.animusnv.reagenttemporaldominance", "Reagent: Temporal Dominance");
         add("item.animusnv.reagenttransposition", "Reagent: Transposition");
-        add("item.animusnv.ritual_designer", "Ritual Designer");
         add("item.animusnv.runic_sentient_scythe", "Runic Sentient Scythe");
         add("item.animusnv.sanguine_diviner", "Sanguine Diviner");
         add("item.animusnv.sanguine_scroll_blank", "Sanguine Scroll (Blank)");
