@@ -10,6 +10,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -130,7 +132,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
         willfulStoneDyeRecipe(output, Tags.Items.DYES_BLACK, AnimusItems.BLOCK_WILLFUL_STONE_BLACK.get(), "willful_stone_black_dyeing");
     }
 
-    private void willfulStoneDyeRecipe(RecipeOutput output, net.minecraft.tags.TagKey<net.minecraft.world.item.Item> dye, ItemLike result, String name) {
+    private void willfulStoneDyeRecipe(RecipeOutput output, TagKey<Item> dye, ItemLike result, String name) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 8)
             .pattern("SSS")
             .pattern("SDS")

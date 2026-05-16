@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -112,7 +113,7 @@ public class RitualRelentlessTides extends Ritual {
         }
 
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
-        net.minecraft.world.phys.AABB effectAABB = effectRange.getAABB(masterPos);
+        AABB effectAABB = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(Math.abs(effectAABB.maxX - masterPos.getX()), Math.abs(effectAABB.maxZ - masterPos.getZ()));
         int verticalDepth = (int) Math.abs(effectAABB.minY - masterPos.getY());
         Fluid fluidToPlace = extractedFluid.getFluid();

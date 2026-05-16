@@ -9,6 +9,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.will.ISpiritusGem;
 import net.minecraft.commands.CommandSourceStack;
@@ -78,7 +79,7 @@ public class AnimusCommands {
             context.getSource().sendFailure(Component.literal("Could not access Anima"));
             return 0;
         }
-        network.set(com.breakinblocks.neovitae.api.soul.AnimaTicket.create(amount), Integer.MAX_VALUE);
+        network.set(AnimaTicket.create(amount), Integer.MAX_VALUE);
         context.getSource().sendSuccess(() -> Component.translatable(
                 "commands.animusnv.setlp.success", String.format("%,d", amount)), true);
         return 1;

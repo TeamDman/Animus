@@ -200,7 +200,7 @@ public class RitualCulling extends Ritual {
 
                 if (result) {
                     entityCount++;
-                    int evPerKill = EntitySacrificeHelper.calculateLP(livingEntity, livingEntity.getMaxHealth());
+                    int evPerKill = EntitySacrificeHelper.calculateEV(livingEntity, livingEntity.getMaxHealth());
                     tileAltar.addSacrificeEV(evPerKill, true);
 
                     if (AnimusConfig.rituals.cullingDebug.get()) {

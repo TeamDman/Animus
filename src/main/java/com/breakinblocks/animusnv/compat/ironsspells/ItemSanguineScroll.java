@@ -2,6 +2,7 @@ package com.breakinblocks.animusnv.compat.ironsspells;
 
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
@@ -130,7 +131,7 @@ public class ItemSanguineScroll extends Item {
         double multiplier = AnimusConfig.ironsSpells.sanguineScrollEVMultiplier.get();
         int evCost = (int)(manaCost * evPerMana * multiplier);
 
-        IAnima network = com.breakinblocks.animusnv.util.AnimusRitualHelper.getNetworkForBoundItem(player, stack);
+        IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, stack);
         if (network == null || network.getCurrentEV() < evCost) {
             player.displayClientMessage(
                 Component.literal("Not enough EV! Need " + evCost + " EV")

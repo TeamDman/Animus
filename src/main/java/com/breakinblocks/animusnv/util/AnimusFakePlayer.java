@@ -1,8 +1,10 @@
 package com.breakinblocks.animusnv.util;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -47,7 +49,7 @@ public class AnimusFakePlayer extends FakePlayer {
     /**
      * Each will type with >10 will adds +1 looting level to the sword.
      */
-    public static ItemStack createLootingSword(ServerLevel level, net.minecraft.core.BlockPos pos) {
+    public static ItemStack createLootingSword(ServerLevel level, BlockPos pos) {
         ItemStack sword = new ItemStack(Items.NETHERITE_SWORD);
 
         int lootingLevel = 0;
@@ -76,7 +78,7 @@ public class AnimusFakePlayer extends FakePlayer {
 
     // Block all damage to prevent thorns/damage reflection
     @Override
-    public boolean hurt(net.minecraft.world.damagesource.DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         return false;
     }
 }

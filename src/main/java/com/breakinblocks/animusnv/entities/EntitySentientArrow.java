@@ -3,6 +3,7 @@ package com.breakinblocks.animusnv.entities;
 import com.breakinblocks.animusnv.items.ItemSentientBow;
 import com.breakinblocks.animusnv.util.WillWeaponStats;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -173,7 +174,7 @@ public class EntitySentientArrow extends AbstractArrow {
 
         if (this.level().isClientSide && this.tickCount % 2 == 0) {
             this.level().addParticle(
-                net.minecraft.core.particles.ParticleTypes.END_ROD,
+                ParticleTypes.END_ROD,
                 this.getX() + (this.random.nextDouble() - 0.5) * 0.2,
                 this.getY() + (this.random.nextDouble() - 0.5) * 0.2,
                 this.getZ() + (this.random.nextDouble() - 0.5) * 0.2,

@@ -3,16 +3,20 @@ package com.breakinblocks.animusnv.compat.ironsspells;
 import com.breakinblocks.animusnv.Animus;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
+import com.breakinblocks.animusnv.compat.IronsSpellsCompat;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.animusnv.util.InventorySearchHelper;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -33,6 +37,8 @@ import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.api.will.IPlayerSpiritusHandler;
+import com.breakinblocks.neovitae.common.item.IActivatable;
+import com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding;
 
 /**
  * Handles spell power boosting for Sigil of Crimson Will
@@ -81,7 +87,7 @@ public class CrimsonWillSpellHandler {
         int manaCost = spellLevel; // Approximation of mana cost
 
         int evCost = manaCost * AnimusConfig.ironsSpells.crimsonWillEVPerMana.get();
-        IAnima network = com.breakinblocks.animusnv.util.AnimusRitualHelper.getNetworkForBoundItem(player, activeSigil);
+        IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, activeSigil);
         if (network == null || network.getCurrentEV() < evCost) {
             player.displayClientMessage(
                 Component.literal("Not enough EV! Need " + evCost + " EV")
@@ -198,8 +204,8 @@ public class CrimsonWillSpellHandler {
 
     private ItemStack findActiveSigil(Player player) {
         java.util.function.Predicate<ItemStack> isActiveCrimsonWill = stack -> {
-            if (!stack.is(com.breakinblocks.animusnv.compat.IronsSpellsCompat.SIGIL_CRIMSON_WILL.get())) return false;
-            if (stack.getItem() instanceof com.breakinblocks.neovitae.common.item.IActivatable activatable) {
+            if (!stack.is(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get())) return false;
+            if (stack.getItem() instanceof IActivatable activatable) {
                 return activatable.getActivated(stack);
             }
             return false;
@@ -212,18 +218,18 @@ public class CrimsonWillSpellHandler {
 
         var curiosResult = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
             .map(inv -> inv.findFirstCurio(isActiveCrimsonWill))
-            .orElse(java.util.Optional.empty());
+            .orElse(Optional.empty());
 
         if (curiosResult.isPresent()) {
             return curiosResult.get().stack();
         }
 
         var sigilHoldings = InventorySearchHelper.findAll(player,
-            stack -> stack.getItem() instanceof com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding);
+            stack -> stack.getItem() instanceof ItemSigilHolding);
 
         for (ItemStack holdingStack : sigilHoldings) {
-            net.minecraft.core.NonNullList<ItemStack> holdingInv =
-                com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding.getInternalInventory(holdingStack);
+            NonNullList<ItemStack> holdingInv =
+                ItemSigilHolding.getInternalInventory(holdingStack);
             for (ItemStack heldStack : holdingInv) {
                 if (isActiveCrimsonWill.test(heldStack)) {
                     return heldStack;

@@ -2,6 +2,7 @@ package com.breakinblocks.animusnv.compat.ironsspells;
 
 import com.breakinblocks.animusnv.Animus;
 import com.breakinblocks.animusnv.AnimusConfig;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.animusnv.util.InventorySearchHelper;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
@@ -20,6 +21,8 @@ import com.breakinblocks.neovitae.common.item.BloodOrbItem;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
+
+import java.util.Optional;
 
 /**
  * Handles spell casting events to enable EV-powered spell casting
@@ -74,7 +77,7 @@ public class SpellCastingHandler {
 
         // Use the blood orb's binding for network lookup (respects team bindings)
         IAnima network = orbStack != null
-            ? com.breakinblocks.animusnv.util.AnimusRitualHelper.getNetworkForBoundItem(player, orbStack)
+            ? AnimusRitualHelper.getNetworkForBoundItem(player, orbStack)
             : NeoVitaeAPI.getInstance().getAnima(player.getUUID());
         if (network == null) {
             return;
@@ -192,7 +195,7 @@ public class SpellCastingHandler {
 
         var curiosResult = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
             .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof BloodOrbItem))
-            .orElse(java.util.Optional.empty());
+            .orElse(Optional.empty());
 
         return curiosResult.map(r -> r.stack()).orElse(null);
     }

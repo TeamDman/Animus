@@ -109,7 +109,7 @@ public class AnimusItems {
     public static final DeferredHolder<Item, ItemBloodOrbTranscendent> BLOOD_ORB_TRANSCENDENT = AnimusBloodOrbs.BLOOD_ORB_TRANSCENDENT;
 
     public static final DeferredHolder<Item, Item> MOBSOUL = ITEMS.register("mob_soul",
-        com.breakinblocks.animusnv.items.ItemMobSoul::new);
+        ItemMobSoul::new);
 
     public static final DeferredHolder<Item, Item> REAGENT_BUILDER = ITEMS.register("reagentbuilder",
         ItemReagent::new);

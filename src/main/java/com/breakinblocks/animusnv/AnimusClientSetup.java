@@ -6,7 +6,11 @@ import com.breakinblocks.animusnv.client.renderers.ThrownSpearRenderer;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import com.breakinblocks.animusnv.client.renderers.AnimusArrowRenderer;
+import com.breakinblocks.animusnv.compat.EvilCraftCompat;
+import com.breakinblocks.animusnv.compat.evilcraft.SanguineRectifierRenderer;
+import com.breakinblocks.animusnv.items.ItemSpearBound;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -18,6 +22,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import com.breakinblocks.neovitae.common.item.IActivatable;
+import com.breakinblocks.neovitae.common.item.IBindable;
 
 @EventBusSubscriber(modid = Constants.Mod.MODID, value = Dist.CLIENT)
 public class AnimusClientSetup {
@@ -89,8 +94,8 @@ public class AnimusClientSetup {
 
     private static void registerEvilCraftRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(
-            com.breakinblocks.animusnv.compat.EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(),
-            com.breakinblocks.animusnv.compat.evilcraft.SanguineRectifierRenderer::new
+            EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(),
+            SanguineRectifierRenderer::new
         );
     }
 
@@ -99,7 +104,7 @@ public class AnimusClientSetup {
         event.registerLayerDefinition(AnimusModelLayers.PILUM, SpearModel::createBodyLayer);
     }
 
-    private static void registerToggleableSigilProperty(net.minecraft.world.item.Item item) {
+    private static void registerToggleableSigilProperty(Item item) {
         ItemProperties.register(item,
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "activated"),
             (stack, level, entity, seed) -> {
@@ -111,11 +116,11 @@ public class AnimusClientSetup {
         );
     }
 
-    private static void registerBoundSpearProperty(net.minecraft.world.item.Item item) {
+    private static void registerBoundSpearProperty(Item item) {
         ItemProperties.register(item,
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "activated"),
             (stack, level, entity, seed) -> {
-                if (item instanceof com.breakinblocks.animusnv.items.ItemSpearBound spear) {
+                if (item instanceof ItemSpearBound spear) {
                     return spear.isActivated(stack) ? 1.0F : 0.0F;
                 }
                 return 0.0F;
@@ -123,11 +128,11 @@ public class AnimusClientSetup {
         );
     }
 
-    private static void registerKeyBindingProperty(net.minecraft.world.item.Item item) {
+    private static void registerKeyBindingProperty(Item item) {
         ItemProperties.register(item,
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "bound"),
             (stack, level, entity, seed) -> {
-                if (item instanceof com.breakinblocks.neovitae.common.item.IBindable bindable) {
+                if (item instanceof IBindable bindable) {
                     return bindable.getBinding(stack) != null ? 1.0F : 0.0F;
                 }
                 return 0.0F;
@@ -135,12 +140,12 @@ public class AnimusClientSetup {
         );
     }
 
-    private static void registerActiveSigilProperty(net.minecraft.world.item.Item item) {
+    private static void registerActiveSigilProperty(Item item) {
         ItemProperties.register(item,
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "active"),
             (stack, level, entity, seed) -> {
                 // NeoVitae still uses custom data for the "Active" tag
-                var customData = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
+                var customData = stack.get(DataComponents.CUSTOM_DATA);
                 if (customData != null && customData.copyTag().getBoolean("Active")) {
                     return 1.0F;
                 }
@@ -149,7 +154,7 @@ public class AnimusClientSetup {
         );
     }
 
-    private static void registerBowPullProperties(net.minecraft.world.item.Item item) {
+    private static void registerBowPullProperties(Item item) {
         ItemProperties.register(item,
             ResourceLocation.withDefaultNamespace("pull"),
             (stack, level, entity, seed) -> {
@@ -167,7 +172,7 @@ public class AnimusClientSetup {
         );
     }
 
-    private static void registerSpearThrowingProperty(net.minecraft.world.item.Item item) {
+    private static void registerSpearThrowingProperty(Item item) {
         ItemProperties.register(item,
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "throwing"),
             (stack, level, entity, seed) -> {

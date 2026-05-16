@@ -13,7 +13,9 @@ import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
+import com.breakinblocks.neovitae.common.item.soul.SpiritusTooltipHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,36 +37,23 @@ public class ItemSentientShield extends ShieldItem {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
-        SpiritusType type = getCurrentType(stack);
-        String displayType = type == SpiritusType.RAW ? "raw" : type.name().toLowerCase();
-        tooltip.add(Component.translatable("tooltip.animusnv.sentient_shield.will_type", displayType)
-            .withStyle(ChatFormatting.AQUA));
+        SpiritusTooltipHelper.appendSpiritusInfo(stack, "sentientShield", tooltip, flag);
 
-        tooltip.add(Component.literal(""));
-
-        // Show only the relevant effect for the current will type
-        switch (type) {
-            case RAW:
+        if (flag.hasShiftDown()) {
+            // NeoVitae's appendSpiritusInfo handles RUINA/INVICTUS riders; add Animus-specific
+            // riders for RAW/VINDICTA which NeoVitae doesn't describe.
+            SpiritusType type = getCurrentType(stack);
+            if (type == SpiritusType.RAW) {
                 tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_RAW)
                     .withStyle(ChatFormatting.GOLD));
-                break;
-            case INVICTUS:
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_STEADFAST)
-                    .withStyle(ChatFormatting.GOLD));
-                break;
-            case RUINA:
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_CORROSIVE)
-                    .withStyle(ChatFormatting.GOLD));
-                break;
-            case VINDICTA:
+            } else if (type == SpiritusType.VINDICTA) {
                 tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_VENGEFUL)
                     .withStyle(ChatFormatting.GOLD));
-                break;
-        }
+            }
 
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_WILL_BONUS)
-            .withStyle(ChatFormatting.GREEN));
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_WILL_BONUS)
+                .withStyle(ChatFormatting.GREEN));
+        }
 
         super.appendHoverText(stack, context, tooltip, flag);
     }
@@ -90,7 +79,7 @@ public class ItemSentientShield extends ShieldItem {
     }
 
     public List<ItemStack> getRandomSpiritusDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int tier) {
-        return new java.util.ArrayList<>();
+        return new ArrayList<>();
     }
 
     public SpiritusType getActiveSpiritusType(ItemStack stack, LivingEntity player, Entity target) {

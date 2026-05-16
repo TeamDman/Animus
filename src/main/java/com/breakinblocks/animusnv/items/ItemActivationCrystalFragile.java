@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import com.breakinblocks.neovitae.common.item.IBindable;
 import com.breakinblocks.neovitae.common.datacomponent.Binding;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
+import com.breakinblocks.neovitae.ritual.Ritual;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
                 return InteractionResult.FAIL;
             }
 
-            com.breakinblocks.neovitae.ritual.Ritual ritual = masterRitualStone.getCurrentRitual();
+            Ritual ritual = masterRitualStone.getCurrentRitual();
             if (ritual == null) {
                 return InteractionResult.FAIL;
             }

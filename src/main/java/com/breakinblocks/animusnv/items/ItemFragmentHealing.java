@@ -1,6 +1,7 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.Constants;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -43,7 +44,7 @@ public class ItemFragmentHealing extends Item {
     }
 
     @Override
-    public boolean canAttackBlock(BlockState state, Level level, net.minecraft.core.BlockPos pos, Player player) {
+    public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return false;
     }
 

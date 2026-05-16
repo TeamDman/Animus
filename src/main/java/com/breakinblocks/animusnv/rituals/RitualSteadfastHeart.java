@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -94,7 +95,7 @@ public class RitualSteadfastHeart extends Ritual {
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, range);
 
         int entityCount = 0;
-        Holder<net.minecraft.world.effect.MobEffect> absorbEffect = MobEffects.ABSORPTION;
+        Holder<MobEffect> absorbEffect = MobEffects.ABSORPTION;
 
         for (LivingEntity entity : entities) {
             if (!(entity instanceof Player) || entity instanceof FakePlayer) {
@@ -163,7 +164,7 @@ public class RitualSteadfastHeart extends Ritual {
         }
     }
 
-    private void applyAbsorptionBuff(Player player, Holder<net.minecraft.world.effect.MobEffect> absorbEffect) {
+    private void applyAbsorptionBuff(Player player, Holder<MobEffect> absorbEffect) {
         MobEffectInstance existingEffect = player.getEffect(absorbEffect);
         int currentDuration = 0;
 

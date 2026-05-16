@@ -4,9 +4,11 @@ import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -67,9 +69,9 @@ public class ItemMobSoul extends Item {
             return InteractionResult.FAIL;
         }
 
-        if (entity instanceof net.minecraft.world.entity.Mob mob) {
+        if (entity instanceof Mob mob) {
             mob.finalizeSpawn(
-                (net.minecraft.server.level.ServerLevel) level,
+                (ServerLevel) level,
                 level.getCurrentDifficultyAt(pos),
                 MobSpawnType.MOB_SUMMONED,
                 null

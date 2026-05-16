@@ -3,10 +3,13 @@ package com.breakinblocks.animusnv.items.sigils.effects;
 import com.mojang.serialization.MapCodec;
 import com.breakinblocks.animusnv.AnimusConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -111,7 +114,7 @@ public record StormSigilEffect() implements ISigilEffect {
             // Area damage during rain
             if (level.isRaining() && level.canSeeSky(pos)) {
                 AABB damageArea = new AABB(pos).inflate(5.0);
-                level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class, damageArea).forEach(entity -> {
+                level.getEntitiesOfClass(LivingEntity.class, damageArea).forEach(entity -> {
                     if (entity != player && level.canSeeSky(entity.blockPosition())) {
                         entity.hurt(level.damageSources().lightningBolt(), 4.0F);
                     }
@@ -143,8 +146,8 @@ public record StormSigilEffect() implements ISigilEffect {
     private static void spawnFishingLoot(ServerLevel level, BlockPos pos, Player player) {
         ResourceLocation fishingLootTable = ResourceLocation.fromNamespaceAndPath("minecraft", "gameplay/fishing");
         LootTable lootTable = level.getServer().reloadableRegistries()
-                .getLootTable(net.minecraft.resources.ResourceKey.create(
-                        net.minecraft.core.registries.Registries.LOOT_TABLE, fishingLootTable));
+                .getLootTable(ResourceKey.create(
+                        Registries.LOOT_TABLE, fishingLootTable));
 
         LootParams.Builder paramsBuilder = new LootParams.Builder(level)
                 .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))

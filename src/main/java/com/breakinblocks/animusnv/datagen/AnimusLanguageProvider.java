@@ -645,15 +645,10 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.sentient_bow.flavour", "A bow infused with demonic essence");
         add("tooltip.animusnv.sentient_bow.info", "Arrows gain power from Spiritus");
         add("tooltip.animusnv.sentient_bow.will_drops", "Drops Spiritus matching your attuned type on kill");
-        add("tooltip.animusnv.sentient_bow.will_type", "Spiritus Type: %s");
-        add("tooltip.animusnv.sentient_shield.corrosive", "Ruina: Poison II to attacker (5s)");
-        add("tooltip.animusnv.sentient_shield.effects", "Blocking Effects:");
         add("tooltip.animusnv.sentient_shield.flavour", "A shield powered by the will of demons");
         add("tooltip.animusnv.sentient_shield.raw", "Raw: Strength II (5s)");
-        add("tooltip.animusnv.sentient_shield.steadfast", "Invictus: Resistance II (5s)");
         add("tooltip.animusnv.sentient_shield.vengeful", "Vindicta: 30% damage reflect + Weakness (5s)");
         add("tooltip.animusnv.sentient_shield.will_bonus", "+30% Spiritus gained while equipped");
-        add("tooltip.animusnv.sentient_shield.will_type", "Spiritus Type: %s");
         add("tooltip.animusnv.sigil.active", "Status: Active");
         add("tooltip.animusnv.sigil.boundless_nature.flavour", "Channels Essentia Vitae into mana");
         add("tooltip.animusnv.sigil.boundless_nature.info", "EV-powered mana tablet for Botania tools, tiny buffer");
@@ -728,7 +723,6 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.spear_sentient.flavour", "A javelin empowered by Spiritus");
         add("tooltip.animusnv.spear_sentient.info", "Scales with Spiritus like the Sentient Sword");
         add("tooltip.animusnv.spear_sentient.level", "Level: %s (%s Spiritus)");
-        add("tooltip.animusnv.spear_sentient.will_type", "Spiritus Type: %s");
         add("tooltip.animusnv.transposition.teleposer_location", "Teleposer: %s, %s, %s");
         add("tooltip.animusnv.unbound_bind", "Unbound - Right-click to bind");
     }

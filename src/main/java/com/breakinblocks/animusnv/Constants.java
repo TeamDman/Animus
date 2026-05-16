@@ -1,6 +1,11 @@
 package com.breakinblocks.animusnv;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.fml.ModList;
 
 public class Constants {
@@ -186,10 +191,7 @@ public class Constants {
             public static final String SPEAR_SENTIENT_AOE = "tooltip.animusnv.spear_sentient.aoe";
 
             public static final String SENTIENT_SHIELD_FLAVOUR = "tooltip.animusnv.sentient_shield.flavour";
-            public static final String SENTIENT_SHIELD_EFFECTS = "tooltip.animusnv.sentient_shield.effects";
             public static final String SENTIENT_SHIELD_RAW = "tooltip.animusnv.sentient_shield.raw";
-            public static final String SENTIENT_SHIELD_STEADFAST = "tooltip.animusnv.sentient_shield.steadfast";
-            public static final String SENTIENT_SHIELD_CORROSIVE = "tooltip.animusnv.sentient_shield.corrosive";
             public static final String SENTIENT_SHIELD_VENGEFUL = "tooltip.animusnv.sentient_shield.vengeful";
             public static final String SENTIENT_SHIELD_WILL_BONUS = "tooltip.animusnv.sentient_shield.will_bonus";
 
@@ -262,51 +264,51 @@ public class Constants {
             throw new UnsupportedOperationException("Utility class");
         }
 
-        public static final net.minecraft.tags.TagKey<net.minecraft.world.entity.EntityType<?>> DISALLOW_CAPTURING =
-            net.minecraft.tags.TagKey.create(
-                net.minecraft.core.registries.Registries.ENTITY_TYPE,
+        public static final TagKey<EntityType<?>> DISALLOW_CAPTURING =
+            TagKey.create(
+                Registries.ENTITY_TYPE,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_capturing")
             );
 
-        public static final net.minecraft.tags.TagKey<net.minecraft.world.entity.EntityType<?>> DISALLOW_CULLING =
-            net.minecraft.tags.TagKey.create(
-                net.minecraft.core.registries.Registries.ENTITY_TYPE,
+        public static final TagKey<EntityType<?>> DISALLOW_CULLING =
+            TagKey.create(
+                Registries.ENTITY_TYPE,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_culling")
             );
 
-        public static final net.minecraft.tags.TagKey<net.minecraft.world.entity.EntityType<?>> DISALLOW_SACRIFICE =
-            net.minecraft.tags.TagKey.create(
-                net.minecraft.core.registries.Registries.ENTITY_TYPE,
+        public static final TagKey<EntityType<?>> DISALLOW_SACRIFICE =
+            TagKey.create(
+                Registries.ENTITY_TYPE,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_sacrifice")
             );
 
-        public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_LEACH =
-            net.minecraft.tags.TagKey.create(
-                net.minecraft.core.registries.Registries.BLOCK,
+        public static final TagKey<Block> DISALLOW_LEACH =
+            TagKey.create(
+                Registries.BLOCK,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_leach")
             );
 
-        public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_ANTILIFE =
-            net.minecraft.tags.TagKey.create(
-                net.minecraft.core.registries.Registries.BLOCK,
+        public static final TagKey<Block> DISALLOW_ANTILIFE =
+            TagKey.create(
+                Registries.BLOCK,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_antilife")
             );
 
-        public static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> DISALLOW_REPAIR =
-            net.minecraft.tags.TagKey.create(
-                net.minecraft.core.registries.Registries.ITEM,
+        public static final TagKey<Item> DISALLOW_REPAIR =
+            TagKey.create(
+                Registries.ITEM,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_repair")
             );
 
-        public static final net.minecraft.tags.TagKey<net.minecraft.world.item.Item> WILLFUL_STONES =
-            net.minecraft.tags.TagKey.create(
-                net.minecraft.core.registries.Registries.ITEM,
+        public static final TagKey<Item> WILLFUL_STONES =
+            TagKey.create(
+                Registries.ITEM,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "willful_stones")
             );
 
-        public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_ACCELERATION =
-            net.minecraft.tags.TagKey.create(
-                net.minecraft.core.registries.Registries.BLOCK,
+        public static final TagKey<Block> DISALLOW_ACCELERATION =
+            TagKey.create(
+                Registries.BLOCK,
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_acceleration")
             );
     }

@@ -1,6 +1,7 @@
 package com.breakinblocks.animusnv.entities;
 
 import com.breakinblocks.animusnv.items.ItemSpear;
+import com.breakinblocks.animusnv.items.ItemSpearBound;
 import com.breakinblocks.animusnv.items.ItemSpearSentient;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
@@ -8,12 +9,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -24,6 +28,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -54,8 +59,8 @@ public class EntityThrownSpear extends AbstractArrow {
         // Bound and Sentient spears have built-in loyalty (level 3)
         // Other spears use loyalty enchantment level
         int loyalty;
-        if (stack.getItem() instanceof com.breakinblocks.animusnv.items.ItemSpearBound ||
-            stack.getItem() instanceof com.breakinblocks.animusnv.items.ItemSpearSentient) {
+        if (stack.getItem() instanceof ItemSpearBound ||
+            stack.getItem() instanceof ItemSpearSentient) {
             loyalty = 3; // Max loyalty level
         } else {
             loyalty = getLoyaltyLevel(level, stack);
@@ -65,14 +70,14 @@ public class EntityThrownSpear extends AbstractArrow {
 
         String variant = "iron";
         boolean activated = false;
-        net.minecraft.resources.ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         if (itemId != null) {
             String path = itemId.getPath();
             if (path.contains("diamond")) {
                 variant = "diamond";
             } else if (path.contains("bound")) {
                 variant = "bound";
-                if (stack.getItem() instanceof com.breakinblocks.animusnv.items.ItemSpearBound boundSpear) {
+                if (stack.getItem() instanceof ItemSpearBound boundSpear) {
                     activated = boundSpear.isActivated(stack);
                 }
             }
@@ -143,7 +148,7 @@ public class EntityThrownSpear extends AbstractArrow {
     private boolean isAcceptibleReturnOwner() {
         Entity entity = this.getOwner();
         if (entity != null && entity.isAlive()) {
-            return !(entity instanceof net.minecraft.world.entity.player.Player player && player.isSpectator());
+            return !(entity instanceof Player player && player.isSpectator());
         } else {
             return false;
         }
@@ -191,17 +196,17 @@ public class EntityThrownSpear extends AbstractArrow {
     }
 
     @Override
-    protected void onHit(net.minecraft.world.phys.HitResult result) {
+    protected void onHit(HitResult result) {
         super.onHit(result);
 
         boolean isBound = "bound".equals(this.getVariant());
         boolean isActivated = this.entityData.get(ID_ACTIVATED);
         if (isBound && isActivated && !this.level().isClientSide) {
             Entity owner = this.getOwner();
-            net.minecraft.world.entity.LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(this.level());
+            LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(this.level());
             if (lightning != null) {
                 lightning.moveTo(result.getLocation().x, result.getLocation().y, result.getLocation().z);
-                lightning.setCause(owner instanceof net.minecraft.server.level.ServerPlayer ? (net.minecraft.server.level.ServerPlayer)owner : null);
+                lightning.setCause(owner instanceof ServerPlayer ? (ServerPlayer)owner : null);
                 lightning.setVisualOnly(true);
                 this.level().addFreshEntity(lightning);
             }
@@ -299,8 +304,8 @@ public class EntityThrownSpear extends AbstractArrow {
         // Bound and Sentient spears have built-in loyalty (level 3)
         // Other spears use loyalty enchantment level
         int loyalty;
-        if (this.spearItem.getItem() instanceof com.breakinblocks.animusnv.items.ItemSpearBound ||
-            this.spearItem.getItem() instanceof com.breakinblocks.animusnv.items.ItemSpearSentient) {
+        if (this.spearItem.getItem() instanceof ItemSpearBound ||
+            this.spearItem.getItem() instanceof ItemSpearSentient) {
             loyalty = 3; // Max loyalty level
         } else {
             loyalty = getLoyaltyLevel(this.level(), this.spearItem);

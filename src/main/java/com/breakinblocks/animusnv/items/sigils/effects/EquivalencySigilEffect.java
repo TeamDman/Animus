@@ -15,6 +15,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -254,8 +256,8 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         activeOperations.put(player.getUUID(), operation);
 
         // Play sound once at start (30% volume)
-        level.playSound(null, centerPos, net.minecraft.sounds.SoundEvents.PORTAL_TRAVEL,
-                net.minecraft.sounds.SoundSource.BLOCKS, 0.3f, 1.5f);
+        level.playSound(null, centerPos, SoundEvents.PORTAL_TRAVEL,
+                SoundSource.BLOCKS, 0.3f, 1.5f);
 
         player.displayClientMessage(
                 Component.translatable(

@@ -6,14 +6,19 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -104,7 +109,7 @@ public class RitualSiphon extends Ritual {
         }
 
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
-        net.minecraft.world.phys.AABB effectAABB = effectRange.getAABB(masterPos);
+        AABB effectAABB = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(Math.abs(effectAABB.maxX - masterPos.getX()), Math.abs(effectAABB.maxZ - masterPos.getZ()));
         int verticalDepth = (int) Math.abs(effectAABB.minY - masterPos.getY());
         BlockPos fluidPos = findFluidSource(serverLevel, masterPos, horizontalRadius, verticalDepth);
@@ -155,7 +160,7 @@ public class RitualSiphon extends Ritual {
 
         Set<BlockPos> extractedPositions = extractedPositionsCache.computeIfAbsent(
             masterPos.immutable(),
-            k -> new java.util.HashSet<>()
+            k -> new HashSet<>()
         );
         extractedPositions.add(fluidPos.immutable());
 
@@ -193,14 +198,14 @@ public class RitualSiphon extends Ritual {
     private BlockState getReplacementBlock() {
         String blockId = AnimusConfig.rituals.siphonReplacementBlock.get();
         try {
-            net.minecraft.resources.ResourceLocation resourceLocation =
-                net.minecraft.resources.ResourceLocation.tryParse(blockId);
+            ResourceLocation resourceLocation =
+                ResourceLocation.tryParse(blockId);
 
             if (resourceLocation != null) {
-                net.minecraft.world.level.block.Block block =
-                    net.minecraft.core.registries.BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElse(null);
+                Block block =
+                    BuiltInRegistries.BLOCK.getOptional(resourceLocation).orElse(null);
 
-                if (block != null && block != net.minecraft.world.level.block.Blocks.AIR) {
+                if (block != null && block != Blocks.AIR) {
                     return block.defaultBlockState();
                 }
             }

@@ -2,6 +2,7 @@ package com.breakinblocks.animusnv.rituals;
 
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
+import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -148,7 +149,7 @@ public class RitualUnmaking extends Ritual {
     }
 
     private boolean isEnhancedItem(ItemStack stack) {
-        Boolean enhanced = stack.get(com.breakinblocks.animusnv.registry.AnimusDataComponents.ANIMUS_ENHANCED.get());
+        Boolean enhanced = stack.get(AnimusDataComponents.ANIMUS_ENHANCED.get());
         return enhanced != null && enhanced;
     }
 

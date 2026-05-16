@@ -2,6 +2,7 @@ package com.breakinblocks.animusnv.blockentities;
 
 import com.breakinblocks.animusnv.Animus;
 import com.breakinblocks.animusnv.AnimusConfig;
+import com.breakinblocks.animusnv.blocks.BlockBloodCore;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.breakinblocks.animusnv.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -11,8 +12,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.will.ISpiritusHandler;
@@ -153,7 +156,7 @@ public class BlockEntityBloodCore extends BlockEntity {
 
             BlockPos targetPos = worldPosition.offset(xOffset, 0, zOffset);
 
-            targetPos = level.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, targetPos);
+            targetPos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, targetPos);
 
             BlockState groundState = level.getBlockState(targetPos);
             BlockPos saplingPos = targetPos.above();
@@ -195,7 +198,7 @@ public class BlockEntityBloodCore extends BlockEntity {
                     level.setBlock(saplingPos, AnimusBlocks.BLOCK_BLOOD_SAPLING.get().defaultBlockState(), 3);
 
                     BlockState saplingState = level.getBlockState(saplingPos);
-                    if (saplingState.getBlock() instanceof net.minecraft.world.level.block.SaplingBlock saplingBlock) {
+                    if (saplingState.getBlock() instanceof SaplingBlock saplingBlock) {
                         saplingBlock.advanceTree(level, saplingPos, saplingState, random);
                         if (AnimusConfig.bloodCore.debug.get()) {
                             Animus.LOGGER.debug("  Tree grown successfully");
@@ -240,10 +243,10 @@ public class BlockEntityBloodCore extends BlockEntity {
 
         if (level != null && !level.isClientSide) {
             BlockState currentState = level.getBlockState(worldPosition);
-            if (currentState.getBlock() instanceof com.breakinblocks.animusnv.blocks.BlockBloodCore) {
-                boolean stateActive = currentState.getValue(com.breakinblocks.animusnv.blocks.BlockBloodCore.ACTIVE);
+            if (currentState.getBlock() instanceof BlockBloodCore) {
+                boolean stateActive = currentState.getValue(BlockBloodCore.ACTIVE);
                 if (stateActive != spreading) {
-                    level.setBlock(worldPosition, currentState.setValue(com.breakinblocks.animusnv.blocks.BlockBloodCore.ACTIVE, spreading), 3);
+                    level.setBlock(worldPosition, currentState.setValue(BlockBloodCore.ACTIVE, spreading), 3);
                 }
             }
         }

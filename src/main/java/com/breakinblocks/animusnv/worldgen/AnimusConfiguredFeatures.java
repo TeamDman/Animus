@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
@@ -39,7 +40,7 @@ public class AnimusConfiguredFeatures {
             ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, name));
     }
 
-    private static <FC extends net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration, F extends Feature<FC>>
+    private static <FC extends FeatureConfiguration, F extends Feature<FC>>
     void register(BootstrapContext<ConfiguredFeature<?, ?>> context,
                   ResourceKey<ConfiguredFeature<?, ?>> key,
                   F feature,

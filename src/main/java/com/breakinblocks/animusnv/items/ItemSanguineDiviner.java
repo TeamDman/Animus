@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
@@ -38,6 +39,7 @@ import com.breakinblocks.neovitae.util.AltarUtil;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Sanguine Diviner - Displays information about NeoVitae altars and rituals
@@ -150,11 +152,11 @@ public class ItemSanguineDiviner extends Item {
                 );
 
                 // Show owner if available
-                java.util.UUID owner = ritualStone.getOwner();
+                UUID owner = ritualStone.getOwner();
                 if (owner != null) {
                     // Try to get player name from server
                     String ownerName = owner.toString();
-                    net.minecraft.server.level.ServerPlayer ownerPlayer = level.getServer() != null
+                    ServerPlayer ownerPlayer = level.getServer() != null
                         ? level.getServer().getPlayerList().getPlayer(owner)
                         : null;
                     if (ownerPlayer != null) {

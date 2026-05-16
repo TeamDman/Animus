@@ -8,9 +8,12 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,9 +39,9 @@ public final class CullingHelper {
      */
     public static boolean isBoss(LivingEntity entity) {
         return entity.isInvulnerable()
-               || entity.getType() == net.minecraft.world.entity.EntityType.WITHER
-               || entity.getType() == net.minecraft.world.entity.EntityType.ENDER_DRAGON
-               || entity.getType().is(net.minecraft.tags.EntityTypeTags.RAIDERS);
+               || entity.getType() == EntityType.WITHER
+               || entity.getType() == EntityType.ENDER_DRAGON
+               || entity.getType().is(EntityTypeTags.RAIDERS);
     }
 
     /**
@@ -228,7 +231,7 @@ public final class CullingHelper {
      * @return the will amount to add to the buffer
      */
     public static double calculateWillGain(LivingEntity entity) {
-        double modifier = (entity instanceof net.minecraft.world.entity.animal.Animal) ? 2.0 : 0.5;
+        double modifier = (entity instanceof Animal) ? 2.0 : 0.5;
         return modifier * Math.min(15.0, entity.getMaxHealth());
     }
 

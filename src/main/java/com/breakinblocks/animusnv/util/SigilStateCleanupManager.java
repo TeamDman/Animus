@@ -1,5 +1,7 @@
 package com.breakinblocks.animusnv.util;
 
+import com.breakinblocks.animusnv.Animus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +41,7 @@ public final class SigilStateCleanupManager {
             try {
                 handler.accept(playerId);
             } catch (Exception e) {
-                com.breakinblocks.animusnv.Animus.LOGGER.error(
+                Animus.LOGGER.error(
                     "Error in sigil cleanup handler for player {}: {}",
                     playerId, e.getMessage()
                 );

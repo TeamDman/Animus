@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -69,7 +70,7 @@ public class RitualNaturesLeach extends Ritual {
 
     public void performRitual(IMasterRitualStone ritualStone) {
         Level level = ritualStone.getWorldObj();
-        net.minecraft.util.RandomSource randomSource = level.random;
+        RandomSource randomSource = level.random;
         Random random = new Random(randomSource.nextLong());
         BlockPos pos = ritualStone.getMasterBlockPos();
 

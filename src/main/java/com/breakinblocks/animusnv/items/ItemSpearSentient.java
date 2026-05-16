@@ -1,5 +1,6 @@
 package com.breakinblocks.animusnv.items;
 
+import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.entities.EntityThrownSpear;
 import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
 import com.breakinblocks.animusnv.util.WillWeaponStats;
@@ -10,13 +11,18 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -27,8 +33,10 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.item.NVItems;
+import com.breakinblocks.neovitae.common.item.soul.SpiritusTooltipHelper;
 import com.breakinblocks.neovitae.will.ISpiritus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,20 +71,17 @@ public class ItemSpearSentient extends ItemSpear {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(com.breakinblocks.animusnv.Constants.Localizations.Tooltips.SPEAR_SENTIENT_FLAVOUR)
+        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SENTIENT_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
-        SpiritusType type = getCurrentType(stack);
-        String displayType = type == SpiritusType.RAW ? "raw" : type.name().toLowerCase();
-        tooltip.add(Component.translatable("tooltip.animusnv.spear_sentient.will_type", displayType)
-            .withStyle(ChatFormatting.AQUA));
+        SpiritusTooltipHelper.appendSpiritusInfo(stack, "sentientSpear", tooltip, flag);
 
-        // Note: In 1.21, TooltipContext doesn't provide Level access easily on client
-        // We show base stats instead of player-specific info in tooltips
-        tooltip.add(Component.translatable(com.breakinblocks.animusnv.Constants.Localizations.Tooltips.SPEAR_SENTIENT_INFO)
-            .withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(com.breakinblocks.animusnv.Constants.Localizations.Tooltips.SPEAR_SENTIENT_AOE)
-            .withStyle(ChatFormatting.YELLOW));
+        if (flag.hasShiftDown()) {
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SENTIENT_INFO)
+                .withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SENTIENT_AOE)
+                .withStyle(ChatFormatting.YELLOW));
+        }
     }
 
     public static int getLevel(ItemStack stack, double soulsRemaining) {
@@ -110,8 +115,8 @@ public class ItemSpearSentient extends ItemSpear {
             case RAW:
                 // Apply wither effect
                 if (poisonTime[level] > 0) {
-                    target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                        net.minecraft.world.effect.MobEffects.WITHER,
+                    target.addEffect(new MobEffectInstance(
+                        MobEffects.WITHER,
                         poisonTime[level],
                         WillWeaponStats.POISON_LEVEL[level]
                     ));
@@ -124,8 +129,8 @@ public class ItemSpearSentient extends ItemSpear {
                     float currentAbsorption = attacker.getAbsorptionAmount();
                     float maxHealth = attacker.getMaxHealth();
                     float newAbsorption = Math.min(10.0f, currentAbsorption + (maxHealth * 0.05f));
-                    attacker.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                        net.minecraft.world.effect.MobEffects.ABSORPTION,
+                    attacker.addEffect(new MobEffectInstance(
+                        MobEffects.ABSORPTION,
                         absorptionTime[level],
                         127
                     ));
@@ -226,14 +231,14 @@ public class ItemSpearSentient extends ItemSpear {
     }
 
     public List<ItemStack> getRandomSpiritusDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int looting) {
-        List<ItemStack> soulList = new java.util.ArrayList<>();
+        List<ItemStack> soulList = new ArrayList<>();
 
-        if (killedEntity.getCommandSenderWorld().getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL
-            && !(killedEntity instanceof net.minecraft.world.entity.monster.Enemy)) {
+        if (killedEntity.getCommandSenderWorld().getDifficulty() != Difficulty.PEACEFUL
+            && !(killedEntity instanceof Enemy)) {
             return soulList;
         }
 
-        double willModifier = killedEntity instanceof net.minecraft.world.entity.monster.Slime ? 0.67 : 1;
+        double willModifier = killedEntity instanceof Slime ? 0.67 : 1;
 
         SpiritusType type = this.getCurrentType(stack);
         ISpiritus soul = switch (type) {

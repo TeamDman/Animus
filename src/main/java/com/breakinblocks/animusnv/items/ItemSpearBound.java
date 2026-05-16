@@ -11,21 +11,25 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import com.breakinblocks.neovitae.common.item.IBindable;
 import com.breakinblocks.neovitae.common.datacomponent.Binding;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
@@ -105,7 +109,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         if (player.isShiftKeyDown()) {
             InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
             ItemStack otherStack = player.getItemInHand(otherHand);
-            if (otherStack.getItem() instanceof net.minecraft.world.item.ShieldItem) {
+            if (otherStack.getItem() instanceof ShieldItem) {
                 return InteractionResultHolder.pass(stack);
             }
         }
@@ -191,10 +195,10 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                     if (riptide > 0) {
                         float yaw = player.getYRot();
                         float pitch = player.getXRot();
-                        float xSpeed = -net.minecraft.util.Mth.sin(yaw * ((float)Math.PI / 180F)) * net.minecraft.util.Mth.cos(pitch * ((float)Math.PI / 180F));
-                        float ySpeed = -net.minecraft.util.Mth.sin(pitch * ((float)Math.PI / 180F));
-                        float zSpeed = net.minecraft.util.Mth.cos(yaw * ((float)Math.PI / 180F)) * net.minecraft.util.Mth.cos(pitch * ((float)Math.PI / 180F));
-                        float length = net.minecraft.util.Mth.sqrt(xSpeed * xSpeed + ySpeed * ySpeed + zSpeed * zSpeed);
+                        float xSpeed = -Mth.sin(yaw * ((float)Math.PI / 180F)) * Mth.cos(pitch * ((float)Math.PI / 180F));
+                        float ySpeed = -Mth.sin(pitch * ((float)Math.PI / 180F));
+                        float zSpeed = Mth.cos(yaw * ((float)Math.PI / 180F)) * Mth.cos(pitch * ((float)Math.PI / 180F));
+                        float length = Mth.sqrt(xSpeed * xSpeed + ySpeed * ySpeed + zSpeed * zSpeed);
                         float multiplier = 3.0F * ((1.0F + (float)riptide) / 4.0F);
                         xSpeed = xSpeed * (multiplier / length);
                         ySpeed = ySpeed * (multiplier / length);
@@ -202,7 +206,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                         player.push((double)xSpeed, (double)ySpeed, (double)zSpeed);
                         player.startAutoSpinAttack(20, 8.0F + (float)riptide * 2.0F, stack);
                         if (player.onGround()) {
-                            player.move(net.minecraft.world.entity.MoverType.SELF, new net.minecraft.world.phys.Vec3(0.0, 1.2, 0.0));
+                            player.move(MoverType.SELF, new Vec3(0.0, 1.2, 0.0));
                         }
 
                         level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -325,7 +329,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
      */
     private int getEntitySacrificeValue(LivingEntity entity) {
         // Use the datamap to calculate full sacrifice value (kill = max health worth of damage)
-        int evValue = EntitySacrificeHelper.calculateLP(entity, entity.getMaxHealth());
+        int evValue = EntitySacrificeHelper.calculateEV(entity, entity.getMaxHealth());
 
         // Baby entities give half value
         if (entity.isBaby()) {

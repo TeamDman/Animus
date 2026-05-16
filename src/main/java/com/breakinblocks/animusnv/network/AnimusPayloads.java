@@ -6,6 +6,7 @@ import com.breakinblocks.animusnv.client.AcceleratedBlocksClientData;
 import com.breakinblocks.animusnv.client.AltarGhostBlockRenderer;
 import com.breakinblocks.animusnv.items.sigils.effects.EquivalencySigilEffect;
 import com.breakinblocks.animusnv.registry.AnimusItems;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -58,10 +59,10 @@ public class AnimusPayloads {
     }
 
     public static void sendToPlayer(ServerPlayer player, Object payload) {
-        PacketDistributor.sendToPlayer(player, (net.minecraft.network.protocol.common.custom.CustomPacketPayload) payload);
+        PacketDistributor.sendToPlayer(player, (CustomPacketPayload) payload);
     }
 
     public static void sendToServer(Object payload) {
-        PacketDistributor.sendToServer((net.minecraft.network.protocol.common.custom.CustomPacketPayload) payload);
+        PacketDistributor.sendToServer((CustomPacketPayload) payload);
     }
 }

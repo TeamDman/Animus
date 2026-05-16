@@ -23,6 +23,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
+import com.breakinblocks.neovitae.common.item.soul.SpiritusTooltipHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,15 +72,14 @@ public class ItemSentientBow extends BowItem {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
-        SpiritusType type = getCurrentType(stack);
-        String displayType = type == SpiritusType.RAW ? "raw" : type.name().toLowerCase();
-        tooltip.add(Component.translatable("tooltip.animusnv.sentient_bow.will_type", displayType)
-            .withStyle(ChatFormatting.AQUA));
+        SpiritusTooltipHelper.appendSpiritusInfo(stack, "sentientBow", tooltip, flag);
 
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_INFO)
-            .withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_WILL_DROPS)
-            .withStyle(ChatFormatting.YELLOW));
+        if (flag.hasShiftDown()) {
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_INFO)
+                .withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_WILL_DROPS)
+                .withStyle(ChatFormatting.YELLOW));
+        }
     }
 
     public static int getLevel(ItemStack stack, double soulsRemaining) {

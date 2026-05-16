@@ -8,6 +8,7 @@ import com.breakinblocks.animusnv.items.ItemSpearBound;
 import com.breakinblocks.animusnv.items.ItemSpearSentient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -95,12 +97,12 @@ public class SpearItemRenderer extends BlockEntityWithoutLevelRenderer {
         RenderType renderType = Sheets.cutoutBlockSheet();
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(buffer, renderType, true, stack.hasFoil());
 
-        for (net.minecraft.core.Direction direction : net.minecraft.core.Direction.values()) {
-            for (net.minecraft.client.renderer.block.model.BakedQuad quad : model.getQuads(null, direction, mc.level.random)) {
+        for (Direction direction : Direction.values()) {
+            for (BakedQuad quad : model.getQuads(null, direction, mc.level.random)) {
                 vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
             }
         }
-        for (net.minecraft.client.renderer.block.model.BakedQuad quad : model.getQuads(null, null, mc.level.random)) {
+        for (BakedQuad quad : model.getQuads(null, null, mc.level.random)) {
             vertexConsumer.putBulkData(poseStack.last(), quad, 1.0f, 1.0f, 1.0f, 1.0f, packedLight, packedOverlay);
         }
 

@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.IAnima;
@@ -80,7 +81,7 @@ public class RitualPersistence extends Ritual {
 
     private void loadChunks(ServerLevel level, BlockPos masterPos) {
         AreaDescriptor chunkRange = getBlockRange(CHUNK_RANGE);
-        net.minecraft.world.phys.AABB rangeAABB = chunkRange.getAABB(masterPos);
+        AABB rangeAABB = chunkRange.getAABB(masterPos);
         int blockRadius = (int) Math.max(Math.abs(rangeAABB.maxX - masterPos.getX()), Math.abs(rangeAABB.maxZ - masterPos.getZ()));
         int radius = Math.max(0, (blockRadius / 16));
 

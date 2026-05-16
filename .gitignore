@@ -33,3 +33,10 @@ changelog/
 gradle/wrapper/gradle-wrapper.properties
 
 settings.gradle
+
+# Markdown — ignore all *.md except README, LICENSE, and anything under changelogs/
+*.md
+!README.md
+!LICENSE.md
+!changelogs/
+!changelogs/**/*.md

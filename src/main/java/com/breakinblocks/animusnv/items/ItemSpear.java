@@ -3,19 +3,23 @@ package com.breakinblocks.animusnv.items;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.entities.EntityThrownSpear;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
@@ -24,6 +28,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -82,10 +87,10 @@ public class ItemSpear extends TridentItem {
                     if (riptide > 0) {
                         float yaw = player.getYRot();
                         float pitch = player.getXRot();
-                        float xSpeed = -net.minecraft.util.Mth.sin(yaw * ((float)Math.PI / 180F)) * net.minecraft.util.Mth.cos(pitch * ((float)Math.PI / 180F));
-                        float ySpeed = -net.minecraft.util.Mth.sin(pitch * ((float)Math.PI / 180F));
-                        float zSpeed = net.minecraft.util.Mth.cos(yaw * ((float)Math.PI / 180F)) * net.minecraft.util.Mth.cos(pitch * ((float)Math.PI / 180F));
-                        float length = net.minecraft.util.Mth.sqrt(xSpeed * xSpeed + ySpeed * ySpeed + zSpeed * zSpeed);
+                        float xSpeed = -Mth.sin(yaw * ((float)Math.PI / 180F)) * Mth.cos(pitch * ((float)Math.PI / 180F));
+                        float ySpeed = -Mth.sin(pitch * ((float)Math.PI / 180F));
+                        float zSpeed = Mth.cos(yaw * ((float)Math.PI / 180F)) * Mth.cos(pitch * ((float)Math.PI / 180F));
+                        float length = Mth.sqrt(xSpeed * xSpeed + ySpeed * ySpeed + zSpeed * zSpeed);
                         float multiplier = 3.0F * ((1.0F + (float)riptide) / 4.0F);
                         xSpeed = xSpeed * (multiplier / length);
                         ySpeed = ySpeed * (multiplier / length);
@@ -93,7 +98,7 @@ public class ItemSpear extends TridentItem {
                         player.push((double)xSpeed, (double)ySpeed, (double)zSpeed);
                         player.startAutoSpinAttack(20, 8.0F + (float)riptide * 2.0F, stack);
                         if (player.onGround()) {
-                            player.move(net.minecraft.world.entity.MoverType.SELF, new net.minecraft.world.phys.Vec3(0.0, 1.2, 0.0));
+                            player.move(MoverType.SELF, new Vec3(0.0, 1.2, 0.0));
                         }
 
                         // Use .value() for Holder<SoundEvent>
@@ -108,7 +113,7 @@ public class ItemSpear extends TridentItem {
     private int getRiptideLevel(ItemStack stack, Level level) {
         if (level instanceof ServerLevel serverLevel) {
             return stack.getEnchantmentLevel(serverLevel.registryAccess()
-                .lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                .lookupOrThrow(Registries.ENCHANTMENT)
                 .getOrThrow(Enchantments.RIPTIDE));
         }
         return 0;
@@ -121,7 +126,7 @@ public class ItemSpear extends TridentItem {
         if (player.isShiftKeyDown()) {
             InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
             ItemStack otherStack = player.getItemInHand(otherHand);
-            if (otherStack.getItem() instanceof net.minecraft.world.item.ShieldItem) {
+            if (otherStack.getItem() instanceof ShieldItem) {
                 return InteractionResultHolder.pass(stack);
             }
         }

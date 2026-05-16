@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import com.breakinblocks.animusnv.registry.AnimusItems;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -124,7 +125,7 @@ public record ChainsSigilEffect() implements ISigilEffect {
         String displayName = customName != null
                 ? customName
                 : target.getType().getDescription().getString() + " Soul";
-        soul.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, Component.literal(displayName));
+        soul.set(DataComponents.CUSTOM_NAME, Component.literal(displayName));
 
         // Give item to player or drop it
         if (!player.getInventory().add(soul)) {

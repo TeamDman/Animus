@@ -7,9 +7,11 @@ import com.breakinblocks.animusnv.items.ItemSentientBow;
 import com.breakinblocks.animusnv.items.ItemSpearSentient;
 import com.breakinblocks.animusnv.items.sigils.effects.FreeSoulSigilEffect;
 import com.breakinblocks.animusnv.registry.AnimusItems;
+import com.breakinblocks.animusnv.rituals.RitualEndlessGreed;
 import com.breakinblocks.animusnv.util.SigilStateCleanupManager;
 import com.breakinblocks.animusnv.util.WillWeaponStats;
 import com.breakinblocks.neovitae.common.datacomponent.AnointmentHolder;
+import com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding;
 import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.will.ISpiritus;
@@ -17,10 +19,13 @@ import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.will.IPlayerSpiritusHandler;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -37,6 +42,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.enchantment.Enchantments;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -93,8 +99,8 @@ public class AnimusEventHandler {
                 return stack;
             }
             // Check inside Sigil of Holding
-            if (!stack.isEmpty() && stack.getItem() instanceof com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding) {
-                var holdingInv = com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding.getInternalInventory(stack);
+            if (!stack.isEmpty() && stack.getItem() instanceof ItemSigilHolding) {
+                var holdingInv = ItemSigilHolding.getInternalInventory(stack);
                 for (ItemStack heldStack : holdingInv) {
                     if (!heldStack.isEmpty() && heldStack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
                         return heldStack;
@@ -106,8 +112,8 @@ public class AnimusEventHandler {
             if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
                 return stack;
             }
-            if (!stack.isEmpty() && stack.getItem() instanceof com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding) {
-                var holdingInv = com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding.getInternalInventory(stack);
+            if (!stack.isEmpty() && stack.getItem() instanceof ItemSigilHolding) {
+                var holdingInv = ItemSigilHolding.getInternalInventory(stack);
                 for (ItemStack heldStack : holdingInv) {
                     if (!heldStack.isEmpty() && heldStack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
                         return heldStack;
@@ -197,7 +203,7 @@ public class AnimusEventHandler {
 
         handleSentientWeaponWillDrops(event);
 
-        if (com.breakinblocks.animusnv.rituals.RitualEndlessGreed.handleMobDrops(level, killedEntity.blockPosition(), event.getDrops())) {
+        if (RitualEndlessGreed.handleMobDrops(level, killedEntity.blockPosition(), event.getDrops())) {
             event.getDrops().clear();
         }
     }
@@ -275,14 +281,14 @@ public class AnimusEventHandler {
         double[] soulDrop,
         double[] staticDrop
     ) {
-        java.util.ArrayList<ItemStack> soulList = new java.util.ArrayList<>();
+        ArrayList<ItemStack> soulList = new ArrayList<>();
 
-        if (killedEntity.getCommandSenderWorld().getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL
-            && !(killedEntity instanceof net.minecraft.world.entity.monster.Enemy)) {
+        if (killedEntity.getCommandSenderWorld().getDifficulty() != Difficulty.PEACEFUL
+            && !(killedEntity instanceof Enemy)) {
             return soulList;
         }
 
-        double willModifier = killedEntity instanceof net.minecraft.world.entity.monster.Slime ? 0.67 : 1;
+        double willModifier = killedEntity instanceof Slime ? 0.67 : 1;
 
         ISpiritus soul = WillWeaponStats.getSoulItem(willType);
 

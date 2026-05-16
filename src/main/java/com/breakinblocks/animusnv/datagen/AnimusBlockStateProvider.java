@@ -2,11 +2,17 @@ package com.breakinblocks.animusnv.datagen;
 
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.blocks.BlockBloodCore;
+import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -36,23 +42,23 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
         );
 
         stairsBlock(
-            (net.minecraft.world.level.block.StairBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_STAIRS.get(),
+            (StairBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_STAIRS.get(),
             modLoc("block/bloodwood_planks")
         );
 
         slabBlock(
-            (net.minecraft.world.level.block.SlabBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB.get(),
+            (SlabBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB.get(),
             modLoc("block/blood_wood_planks"),
             modLoc("block/bloodwood_planks")
         );
 
         fenceBlock(
-            (net.minecraft.world.level.block.FenceBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE.get(),
+            (FenceBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE.get(),
             modLoc("block/bloodwood_planks")
         );
 
         fenceGateBlock(
-            (net.minecraft.world.level.block.FenceGateBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE.get(),
+            (FenceGateBlock) AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE.get(),
             modLoc("block/bloodwood_planks")
         );
 
@@ -79,8 +85,8 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
             )
         );
 
-        if (net.neoforged.fml.ModList.get().isLoaded("evilcraft")) {
-            simpleBlock(com.breakinblocks.animusnv.compat.EvilCraftCompat.SANGUINE_RECTIFIER.get(),
+        if (ModList.get().isLoaded("evilcraft")) {
+            simpleBlock(EvilCraftCompat.SANGUINE_RECTIFIER.get(),
                 models().getExistingFile(modLoc("block/block_sanguine_rectifier")));
         }
 

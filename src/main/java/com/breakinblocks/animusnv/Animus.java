@@ -1,6 +1,7 @@
 package com.breakinblocks.animusnv;
 
 import com.breakinblocks.animusnv.compat.CompatHandler;
+import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.network.AnimusPayloads;
 import com.breakinblocks.animusnv.registry.*;
 import com.breakinblocks.animusnv.worldgen.AnimusTreeDecoratorTypes;
@@ -69,7 +70,7 @@ public class Animus {
     private void registerEvilCraftCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
             Capabilities.FluidHandler.BLOCK,
-            com.breakinblocks.animusnv.compat.EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(),
+            EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(),
             (be, direction) -> be.getBloodTank()
         );
     }

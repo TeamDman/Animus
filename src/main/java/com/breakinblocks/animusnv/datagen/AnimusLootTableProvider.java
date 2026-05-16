@@ -1,5 +1,6 @@
 package com.breakinblocks.animusnv.datagen;
 
+import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import net.minecraft.core.HolderLookup;
@@ -17,7 +18,11 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.advancements.critereon.EnchantmentPredicate;
+import net.minecraft.advancements.critereon.ItemEnchantmentsPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.ItemSubPredicates;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
@@ -26,8 +31,10 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -69,7 +76,7 @@ public class AnimusLootTableProvider extends LootTableProvider {
             this.dropSelf(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get());
             // EvilCraft compat block (registered in EvilCraftCompat)
             if (net.neoforged.fml.ModList.get().isLoaded("evilcraft")) {
-                this.dropSelf(com.breakinblocks.animusnv.compat.EvilCraftCompat.SANGUINE_RECTIFIER.get());
+                this.dropSelf(EvilCraftCompat.SANGUINE_RECTIFIER.get());
             }
 
             this.dropSelf(AnimusBlocks.BLOCK_WILLFUL_STONE.get());
@@ -124,11 +131,11 @@ public class AnimusLootTableProvider extends LootTableProvider {
                 AnyOfCondition.anyOf(
                     MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)),
                     MatchTool.toolMatches(ItemPredicate.Builder.item().withSubPredicate(
-                        net.minecraft.advancements.critereon.ItemSubPredicates.ENCHANTMENTS,
-                        net.minecraft.advancements.critereon.ItemEnchantmentsPredicate.enchantments(
-                            java.util.List.of(new net.minecraft.advancements.critereon.EnchantmentPredicate(
+                        ItemSubPredicates.ENCHANTMENTS,
+                        ItemEnchantmentsPredicate.enchantments(
+                            List.of(new EnchantmentPredicate(
                                 enchantmentLookup.getOrThrow(Enchantments.SILK_TOUCH),
-                                net.minecraft.advancements.critereon.MinMaxBounds.Ints.atLeast(1)
+                                MinMaxBounds.Ints.atLeast(1)
                             ))
                         )
                     ))
@@ -138,7 +145,7 @@ public class AnimusLootTableProvider extends LootTableProvider {
 
         @Override
         protected Iterable<Block> getKnownBlocks() {
-            var blocks = new java.util.ArrayList<Block>();
+            var blocks = new ArrayList<Block>();
             AnimusBlocks.BLOCKS.getEntries().stream()
                 .filter(entry -> entry != AnimusBlocks.BLOCK_FLUID_ANTILIFE
                     && entry != AnimusBlocks.BLOCK_FLUID_LIVING_TERRA
@@ -146,8 +153,8 @@ public class AnimusLootTableProvider extends LootTableProvider {
                 .map(DeferredHolder::get)
                 .forEach(blocks::add);
 
-            if (net.neoforged.fml.ModList.get().isLoaded("evilcraft")) {
-                com.breakinblocks.animusnv.compat.EvilCraftCompat.BLOCKS.getEntries().stream()
+            if (ModList.get().isLoaded("evilcraft")) {
+                EvilCraftCompat.BLOCKS.getEntries().stream()
                     .map(DeferredHolder::get)
                     .forEach(blocks::add);
             }

@@ -10,7 +10,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.registries.BuiltInRegistries;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
@@ -46,7 +48,7 @@ public class RitualPeacefulBeckoning extends Ritual {
     }
 
     @Override
-    public boolean activateRitual(IMasterRitualStone mrs, net.minecraft.world.entity.player.Player player, UUID owner) {
+    public boolean activateRitual(IMasterRitualStone mrs, Player player, UUID owner) {
         return rebuildList(mrs);
     }
 
@@ -100,7 +102,7 @@ public class RitualPeacefulBeckoning extends Ritual {
         }
 
         AreaDescriptor spawnRange = getBlockRange(SPAWN_RANGE);
-        net.minecraft.world.phys.AABB spawnAABB = spawnRange.getAABB(masterPos);
+        AABB spawnAABB = spawnRange.getAABB(masterPos);
 
         double x = spawnAABB.minX + level.random.nextDouble() * (spawnAABB.maxX - spawnAABB.minX);
         double y = spawnAABB.minY;

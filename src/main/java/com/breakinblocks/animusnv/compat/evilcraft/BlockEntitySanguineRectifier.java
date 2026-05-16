@@ -11,6 +11,8 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -194,7 +196,7 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
             altar.addSacrificeEV(drained.getAmount(), false);
 
             // Send blood stream effect occasionally (every ~40 ticks)
-            if (level instanceof net.minecraft.server.level.ServerLevel serverLevel
+            if (level instanceof ServerLevel serverLevel
                     && level.getGameTime() % 40 == 0) {
                 StreamPresets.bloodTendril(worldPosition, altarPos)
                     .build()
@@ -258,7 +260,7 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
     }
     public void dropContents(Level level, BlockPos pos) {
         if (!orbStack.isEmpty()) {
-            net.minecraft.world.Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), orbStack);
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), orbStack);
             orbStack = ItemStack.EMPTY;
         }
     }

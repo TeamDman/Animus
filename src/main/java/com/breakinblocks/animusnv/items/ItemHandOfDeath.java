@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -60,7 +61,7 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             }
             setCachedSouls(stack, totalWill);
 
-            target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+            target.addEffect(new MobEffectInstance(
                 Holder.direct(NVMobEffects.SPIRITUS_SNARE.get()), 100, 1));
         }
 

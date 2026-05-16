@@ -3,11 +3,13 @@ package com.breakinblocks.animusnv.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.breakinblocks.animusnv.AnimusConfig;
+import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -26,7 +28,11 @@ import org.joml.Matrix4f;
 import com.breakinblocks.animusnv.Constants;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class SigilEquivalencyRenderer {
@@ -70,7 +76,7 @@ public class SigilEquivalencyRenderer {
         }
 
         int radius = getRadius(sigilStack);
-        net.minecraft.core.Direction clickedFace = blockHit.getDirection();
+        Direction clickedFace = blockHit.getDirection();
         List<BlockPos> matchingBlocks = findMatchingBlocksInRadius(level, targetPos, targetState.getBlock(), radius, clickedFace);
 
         if (matchingBlocks.isEmpty()) {
@@ -98,10 +104,10 @@ public class SigilEquivalencyRenderer {
         poseStack.popPose();
     }
 
-    private static List<BlockPos> findMatchingBlocksInRadius(Level level, BlockPos center, Block targetBlock, int radius, net.minecraft.core.Direction clickedFace) {
+    private static List<BlockPos> findMatchingBlocksInRadius(Level level, BlockPos center, Block targetBlock, int radius, Direction clickedFace) {
         List<BlockPos> matches = new ArrayList<>();
-        java.util.Set<BlockPos> visited = new java.util.HashSet<>();
-        java.util.Queue<BlockPos> queue = new java.util.LinkedList<>();
+        Set<BlockPos> visited = new HashSet<>();
+        Queue<BlockPos> queue = new LinkedList<>();
 
         int maxBlocks = (radius * 2 + 1) * (radius * 2 + 1);
 
@@ -109,14 +115,14 @@ public class SigilEquivalencyRenderer {
         visited.add(center);
 
         BlockPos[] neighbors;
-        if (clickedFace == net.minecraft.core.Direction.UP || clickedFace == net.minecraft.core.Direction.DOWN) {
+        if (clickedFace == Direction.UP || clickedFace == Direction.DOWN) {
             neighbors = new BlockPos[] {
                 new BlockPos(1, 0, 0),
                 new BlockPos(-1, 0, 0),
                 new BlockPos(0, 0, 1),
                 new BlockPos(0, 0, -1)
             };
-        } else if (clickedFace == net.minecraft.core.Direction.NORTH || clickedFace == net.minecraft.core.Direction.SOUTH) {
+        } else if (clickedFace == Direction.NORTH || clickedFace == Direction.SOUTH) {
             neighbors = new BlockPos[] {
                 new BlockPos(1, 0, 0),
                 new BlockPos(-1, 0, 0),
@@ -158,14 +164,14 @@ public class SigilEquivalencyRenderer {
         return matches;
     }
 
-    private static boolean isOnSamePlaneAndInRadius(BlockPos pos, BlockPos center, int radius, net.minecraft.core.Direction clickedFace) {
+    private static boolean isOnSamePlaneAndInRadius(BlockPos pos, BlockPos center, int radius, Direction clickedFace) {
         int dx = Math.abs(pos.getX() - center.getX());
         int dy = Math.abs(pos.getY() - center.getY());
         int dz = Math.abs(pos.getZ() - center.getZ());
 
-        if (clickedFace == net.minecraft.core.Direction.UP || clickedFace == net.minecraft.core.Direction.DOWN) {
+        if (clickedFace == Direction.UP || clickedFace == Direction.DOWN) {
             return pos.getY() == center.getY() && Math.max(dx, dz) <= radius;
-        } else if (clickedFace == net.minecraft.core.Direction.NORTH || clickedFace == net.minecraft.core.Direction.SOUTH) {
+        } else if (clickedFace == Direction.NORTH || clickedFace == Direction.SOUTH) {
             return pos.getZ() == center.getZ() && Math.max(dx, dy) <= radius;
         } else {
             return pos.getX() == center.getX() && Math.max(dy, dz) <= radius;
@@ -173,7 +179,7 @@ public class SigilEquivalencyRenderer {
     }
 
     private static int getRadius(ItemStack stack) {
-        Integer customRadius = stack.get(com.breakinblocks.animusnv.registry.AnimusDataComponents.EQUIVALENCY_RADIUS.get());
+        Integer customRadius = stack.get(AnimusDataComponents.EQUIVALENCY_RADIUS.get());
         if (customRadius != null && customRadius > 0) {
             return customRadius;
         }

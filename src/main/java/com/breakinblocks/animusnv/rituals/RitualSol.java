@@ -11,8 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -171,7 +173,7 @@ public class RitualSol extends Ritual {
     }
 
     private BlockPos findDarkSpot(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
-        net.minecraft.world.phys.AABB aabb = effectRange.getAABB(masterPos);
+        AABB aabb = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(
             Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
             Math.max(Math.abs(aabb.minZ - masterPos.getZ()), Math.abs(aabb.maxZ - masterPos.getZ()))
@@ -189,7 +191,7 @@ public class RitualSol extends Ritual {
             true,
             4096,
             checkPos -> level.isEmptyBlock(checkPos)
-                && level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, checkPos) < 8
+                && level.getBrightness(LightLayer.BLOCK, checkPos) < 8
                 && level.getBlockState(checkPos.below()).isFaceSturdy(level, checkPos.below(), Direction.UP)
         );
     }

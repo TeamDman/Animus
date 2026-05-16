@@ -9,6 +9,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -112,7 +113,7 @@ public class ArcaneChannelingHandler {
         int upgradeLevel = SentientUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID);
         double targetReduction = getCooldownReduction(upgradeLevel);
 
-        Holder<net.minecraft.world.entity.ai.attributes.Attribute> cooldownAttr = AttributeRegistry.COOLDOWN_REDUCTION;
+        Holder<Attribute> cooldownAttr = AttributeRegistry.COOLDOWN_REDUCTION;
         AttributeInstance cooldownAttribute = player.getAttribute(cooldownAttr);
         if (cooldownAttribute == null) {
             return;

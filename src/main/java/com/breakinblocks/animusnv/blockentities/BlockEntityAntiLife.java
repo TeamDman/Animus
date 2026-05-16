@@ -4,7 +4,9 @@ import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -77,8 +79,8 @@ public class BlockEntityAntiLife extends BlockEntity {
         super.loadAdditional(tag, registries);
         // Try to get the block - if it fails, default to AIR
         String seekingId = tag.getString("seeking");
-        this.seeking = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getOptional(
-            net.minecraft.resources.ResourceLocation.tryParse(seekingId.replace("block.", ""))
+        this.seeking = BuiltInRegistries.BLOCK.getOptional(
+            ResourceLocation.tryParse(seekingId.replace("block.", ""))
         ).orElse(Blocks.AIR);
 
         this.range = tag.getInt("range");

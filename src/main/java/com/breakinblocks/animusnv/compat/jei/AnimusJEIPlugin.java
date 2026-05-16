@@ -55,7 +55,7 @@ public class AnimusJEIPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         registration.addIngredientInfo(
             Arrays.asList(
-                new ItemStack(com.breakinblocks.animusnv.registry.AnimusItems.ANTILIFE_BUCKET.get())
+                new ItemStack(AnimusItems.ANTILIFE_BUCKET.get())
             ),
             VanillaTypes.ITEM_STACK,
             Component.translatable("jei.animusnv.antilife.info")
@@ -63,7 +63,7 @@ public class AnimusJEIPlugin implements IModPlugin {
 
         registration.addIngredientInfo(
             Arrays.asList(
-                new ItemStack(com.breakinblocks.animusnv.registry.AnimusItems.LIVING_TERRA_BUCKET.get())
+                new ItemStack(AnimusItems.LIVING_TERRA_BUCKET.get())
             ),
             VanillaTypes.ITEM_STACK,
             Component.translatable("jei.animusnv.living_terra.info")
@@ -71,7 +71,7 @@ public class AnimusJEIPlugin implements IModPlugin {
 
         registration.addIngredientInfo(
             Arrays.asList(
-                new ItemStack(com.breakinblocks.animusnv.registry.AnimusItems.BLOOD_APPLE.get())
+                new ItemStack(AnimusItems.BLOOD_APPLE.get())
             ),
             VanillaTypes.ITEM_STACK,
             Component.translatable("jei.animusnv.blood_apple.info")

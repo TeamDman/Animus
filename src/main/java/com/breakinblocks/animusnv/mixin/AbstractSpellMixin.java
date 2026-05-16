@@ -3,6 +3,7 @@ package com.breakinblocks.animusnv.mixin;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.compat.IronsSpellsCompat;
 import com.breakinblocks.animusnv.compat.ironsspells.ItemBloodInfusedSpellbook;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastResult;
@@ -82,7 +83,7 @@ public class AbstractSpellMixin {
 
             // Use the orb's binding for network lookup (respects team bindings)
             IAnima network = !orbStack.isEmpty()
-                ? com.breakinblocks.animusnv.util.AnimusRitualHelper.getNetworkForBoundItem(player, orbStack)
+                ? AnimusRitualHelper.getNetworkForBoundItem(player, orbStack)
                 : NeoVitaeAPI.getInstance().getAnima(player.getUUID());
             if (network == null) {
                 return;

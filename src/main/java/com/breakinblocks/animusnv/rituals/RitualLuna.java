@@ -4,11 +4,13 @@ import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.slf4j.Logger;
@@ -96,7 +98,7 @@ public class RitualLuna extends Ritual {
                     shouldRemoveBlock = false;
                 }
             } else {
-                net.minecraft.world.entity.item.ItemEntity itemEntity = new net.minecraft.world.entity.item.ItemEntity(
+                ItemEntity itemEntity = new ItemEntity(
                     level,
                     masterPos.getX() + 0.5,
                     masterPos.getY() + 1,
@@ -133,7 +135,7 @@ public class RitualLuna extends Ritual {
     }
 
     private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
-        net.minecraft.world.phys.AABB aabb = effectRange.getAABB(masterPos);
+        AABB aabb = effectRange.getAABB(masterPos);
         int horizontalRadius = (int) Math.max(
             Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
             Math.max(Math.abs(aabb.minZ - masterPos.getZ()), Math.abs(aabb.maxZ - masterPos.getZ()))
