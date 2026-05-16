@@ -3,6 +3,7 @@ package com.breakinblocks.animusnv.items.sigils.effects;
 import com.mojang.serialization.MapCodec;
 import com.breakinblocks.animusnv.util.SigilStateTracker;
 import net.minecraft.core.Holder;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +13,7 @@ import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public record RemediumSigilEffect() implements ISigilEffect {
     public static final MapCodec<RemediumSigilEffect> CODEC = MapCodec.unit(RemediumSigilEffect::new);
@@ -58,6 +60,11 @@ public record RemediumSigilEffect() implements ISigilEffect {
         }
 
         TRACKER.updateTime(player.getUUID(), currentTime);
+    }
+
+    @Override
+    public void onPlayerLogout(UUID playerId, MinecraftServer server) {
+        TRACKER.cleanup(playerId);
     }
 
 }

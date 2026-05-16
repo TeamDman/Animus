@@ -10,7 +10,6 @@ import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.compat.evilcraft.SanguineRectifierRenderer;
 import com.breakinblocks.animusnv.items.ItemSpearBound;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -38,12 +37,8 @@ public class AnimusClientSetup {
             registerToggleableSigilProperty(AnimusItems.SIGIL_LEACH.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_TRANSPOSITION.get());
             registerToggleableSigilProperty(AnimusItems.SIGIL_MONK.get());
-
-            registerActiveSigilProperty(AnimusItems.SIGIL_REMEDIUM.get());
-            registerActiveSigilProperty(AnimusItems.SIGIL_REPARARE.get());
-            registerActiveSigilProperty(AnimusItems.SIGIL_HEAVENLY_WRATH.get());
-            // TODO: ItemSigilBoundlessNature needs to be ported from 1.20.1
-            // registerActiveSigilProperty(AnimusItems.SIGIL_BOUNDLESS_NATURE.get());
+            registerToggleableSigilProperty(AnimusItems.SIGIL_REMEDIUM.get());
+            registerToggleableSigilProperty(AnimusItems.SIGIL_REPARARE.get());
 
             registerBoundSpearProperty(AnimusItems.SPEAR_BOUND.get());
 
@@ -134,20 +129,6 @@ public class AnimusClientSetup {
             (stack, level, entity, seed) -> {
                 if (item instanceof IBindable bindable) {
                     return bindable.getBinding(stack) != null ? 1.0F : 0.0F;
-                }
-                return 0.0F;
-            }
-        );
-    }
-
-    private static void registerActiveSigilProperty(Item item) {
-        ItemProperties.register(item,
-            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "active"),
-            (stack, level, entity, seed) -> {
-                // NeoVitae still uses custom data for the "Active" tag
-                var customData = stack.get(DataComponents.CUSTOM_DATA);
-                if (customData != null && customData.copyTag().getBoolean("Active")) {
-                    return 1.0F;
                 }
                 return 0.0F;
             }

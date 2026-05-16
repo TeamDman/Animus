@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
-import com.breakinblocks.animusnv.util.SigilStateCleanupManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -63,14 +63,14 @@ public record EquivalencySigilEffect() implements ISigilEffect {
     // Track ongoing replacement operations
     private static final Map<UUID, ReplacementOperation> activeOperations = new ConcurrentHashMap<>();
 
-    // Register cleanup handler for player logout
-    static {
-        SigilStateCleanupManager.registerCustomHandler(activeOperations::remove);
-    }
-
     @Override
     public MapCodec<? extends ISigilEffect> codec() {
         return CODEC;
+    }
+
+    @Override
+    public void onPlayerLogout(UUID playerId, MinecraftServer server) {
+        activeOperations.remove(playerId);
     }
 
     @Override

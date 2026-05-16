@@ -5,12 +5,14 @@ import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.util.InventorySearchHelper;
 import com.breakinblocks.animusnv.util.SigilStateTracker;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 
 import java.util.List;
+import java.util.UUID;
 
 public record RepareSigilEffect() implements ISigilEffect {
     public static final MapCodec<RepareSigilEffect> CODEC = MapCodec.unit(RepareSigilEffect::new);
@@ -56,6 +58,11 @@ public record RepareSigilEffect() implements ISigilEffect {
         }
 
         TRACKER.updateTime(player.getUUID(), currentTime);
+    }
+
+    @Override
+    public void onPlayerLogout(UUID playerId, MinecraftServer server) {
+        TRACKER.cleanup(playerId);
     }
 
     private static boolean canRepair(ItemStack stack) {

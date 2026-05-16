@@ -8,7 +8,6 @@ import com.breakinblocks.animusnv.items.ItemSpearSentient;
 import com.breakinblocks.animusnv.items.sigils.effects.FreeSoulSigilEffect;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import com.breakinblocks.animusnv.rituals.RitualEndlessGreed;
-import com.breakinblocks.animusnv.util.SigilStateCleanupManager;
 import com.breakinblocks.animusnv.util.WillWeaponStats;
 import com.breakinblocks.neovitae.common.datacomponent.AnointmentHolder;
 import com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding;
@@ -70,7 +69,6 @@ public class AnimusEventHandler {
         UUID playerId = event.getEntity().getUUID();
 
         FragmentHealingEventHandler.cleanupPlayer(playerId);
-        SigilStateCleanupManager.cleanupPlayer(playerId);
 
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             FreeSoulSigilEffect.onPlayerLogout(serverPlayer);

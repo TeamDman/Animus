@@ -29,7 +29,6 @@ public class SigilStateTracker {
 
     public SigilStateTracker(String name) {
         this.name = name;
-        SigilStateCleanupManager.register(this);
     }
 
     public String getName() {
