@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import top.theillusivec4.curios.api.CuriosApi;
 import com.breakinblocks.neovitae.common.item.BloodOrbItem;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
@@ -193,7 +194,7 @@ public class SpellCastingHandler {
             return fromInventory.get();
         }
 
-        var curiosResult = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
+        var curiosResult = CuriosApi.getCuriosInventory(player)
             .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof BloodOrbItem))
             .orElse(Optional.empty());
 

@@ -192,8 +192,8 @@ public class Constants {
 
             public static final String SENTIENT_SHIELD_FLAVOUR = "tooltip.animusnv.sentient_shield.flavour";
             public static final String SENTIENT_SHIELD_RAW = "tooltip.animusnv.sentient_shield.raw";
-            public static final String SENTIENT_SHIELD_VENGEFUL = "tooltip.animusnv.sentient_shield.vengeful";
-            public static final String SENTIENT_SHIELD_WILL_BONUS = "tooltip.animusnv.sentient_shield.will_bonus";
+            public static final String SENTIENT_SHIELD_VINDICTA = "tooltip.animusnv.sentient_shield.vindicta";
+            public static final String SENTIENT_SHIELD_SPIRITUS_BONUS = "tooltip.animusnv.sentient_shield.spiritus_bonus";
 
             public static final String KEY_HOLD_OFFHAND = "tooltip.animusnv.key.hold_offhand";
             public static final String KEY_UNBOUND = "tooltip.animusnv.key.unbound";
@@ -229,7 +229,7 @@ public class Constants {
             public static final String SIGIL_MONK_MINING = "tooltip.animusnv.sigil.monk.mining";
             public static final String SIGIL_MONK_KILL_BONUS = "tooltip.animusnv.sigil.monk.kill_bonus";
             public static final String SIGIL_MONK_SPIRITUS_SNARE = "tooltip.animusnv.sigil.monk.soul_snare";
-            public static final String SIGIL_MONK_WILL_BONUS = "tooltip.animusnv.sigil.monk.will_bonus";
+            public static final String SIGIL_MONK_SPIRITUS_BONUS = "tooltip.animusnv.sigil.monk.spiritus_bonus";
             public static final String SIGIL_MONK_EXECUTE = "tooltip.animusnv.sigil.monk.execute";
             public static final String SIGIL_MONK_COST = "tooltip.animusnv.sigil.monk.cost";
             public static final String SIGIL_MONK_ACTIVE = "tooltip.animusnv.sigil.monk.active";
@@ -237,7 +237,7 @@ public class Constants {
 
             public static final String SENTIENT_BOW_FLAVOUR = "tooltip.animusnv.sentient_bow.flavour";
             public static final String SENTIENT_BOW_INFO = "tooltip.animusnv.sentient_bow.info";
-            public static final String SENTIENT_BOW_WILL_DROPS = "tooltip.animusnv.sentient_bow.will_drops";
+            public static final String SENTIENT_BOW_SPIRITUS_DROPS = "tooltip.animusnv.sentient_bow.spiritus_drops";
 
             public static final String HELLFORGED_BOW_FLAVOUR = "tooltip.animusnv.hellforged_bow.flavour";
             public static final String HELLFORGED_BOW_INFO = "tooltip.animusnv.hellforged_bow.info";

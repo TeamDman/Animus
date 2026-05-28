@@ -5,7 +5,9 @@ import com.breakinblocks.animusnv.Constants;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
 import io.redspace.ironsspellbooks.api.spells.SpellData;
+import io.redspace.ironsspellbooks.api.spells.SpellRarity;
 import io.redspace.ironsspellbooks.item.Scroll;
+import io.redspace.ironsspellbooks.registries.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -147,7 +149,7 @@ public class RitualArcaneMastery extends Ritual {
             }
 
             network.syphon(AnimaTicket.create(totalCost));
-            ItemStack upgradedScroll = new ItemStack(io.redspace.ironsspellbooks.registries.ItemRegistry.SCROLL.get());
+            ItemStack upgradedScroll = new ItemStack(ItemRegistry.SCROLL.get());
             ISpellContainer.createScrollContainer(spell, targetLevel, upgradedScroll);
 
             if (!player.getInventory().add(upgradedScroll)) {
@@ -186,7 +188,7 @@ public class RitualArcaneMastery extends Ritual {
         return false;
     }
 
-    private int getEVCostForRarity(io.redspace.ironsspellbooks.api.spells.SpellRarity rarity) {
+    private int getEVCostForRarity(SpellRarity rarity) {
         return switch (rarity) {
             case COMMON -> COMMON_EV;
             case UNCOMMON -> UNCOMMON_EV;

@@ -42,8 +42,8 @@ public class EntityThrownSpear extends AbstractArrow {
     private static final EntityDataAccessor<Boolean> ID_FOIL = SynchedEntityData.defineId(EntityThrownSpear.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<String> ID_VARIANT = SynchedEntityData.defineId(EntityThrownSpear.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Boolean> ID_ACTIVATED = SynchedEntityData.defineId(EntityThrownSpear.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<String> ID_WILL_TYPE = SynchedEntityData.defineId(EntityThrownSpear.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<Integer> ID_WILL_LEVEL = SynchedEntityData.defineId(EntityThrownSpear.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> ID_SPIRITUS_TYPE = SynchedEntityData.defineId(EntityThrownSpear.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> ID_SPIRITUS_LEVEL = SynchedEntityData.defineId(EntityThrownSpear.class, EntityDataSerializers.INT);
     private ItemStack spearItem = ItemStack.EMPTY;
     private boolean dealtDamage;
     public int clientSideReturnTridentTickCount;
@@ -101,8 +101,8 @@ public class EntityThrownSpear extends AbstractArrow {
         builder.define(ID_FOIL, false);
         builder.define(ID_VARIANT, "iron");
         builder.define(ID_ACTIVATED, false);
-        builder.define(ID_WILL_TYPE, "DEFAULT");
-        builder.define(ID_WILL_LEVEL, 0);
+        builder.define(ID_SPIRITUS_TYPE, "DEFAULT");
+        builder.define(ID_SPIRITUS_LEVEL, 0);
     }
 
     @Override
@@ -175,24 +175,24 @@ public class EntityThrownSpear extends AbstractArrow {
         this.entityData.set(ID_VARIANT, variant);
     }
 
-    public void setWillType(SpiritusType type) {
-        this.entityData.set(ID_WILL_TYPE, type.toString());
+    public void setSpiritusType(SpiritusType type) {
+        this.entityData.set(ID_SPIRITUS_TYPE, type.toString());
     }
 
-    public SpiritusType getWillType() {
+    public SpiritusType getSpiritusType() {
         try {
-            return SpiritusType.valueOf(this.entityData.get(ID_WILL_TYPE));
+            return SpiritusType.valueOf(this.entityData.get(ID_SPIRITUS_TYPE));
         } catch (IllegalArgumentException e) {
             return SpiritusType.RAW;
         }
     }
 
-    public void setWillLevel(int level) {
-        this.entityData.set(ID_WILL_LEVEL, level);
+    public void setSpiritusLevel(int level) {
+        this.entityData.set(ID_SPIRITUS_LEVEL, level);
     }
 
-    public int getWillLevel() {
-        return this.entityData.get(ID_WILL_LEVEL);
+    public int getSpiritusLevel() {
+        return this.entityData.get(ID_SPIRITUS_LEVEL);
     }
 
     @Override
@@ -254,8 +254,8 @@ public class EntityThrownSpear extends AbstractArrow {
         DamageSource damageSource = this.damageSources().trident(this, owner == null ? this : owner);
 
         boolean isSentient = "sentient".equals(this.getVariant());
-        SpiritusType willType = isSentient ? this.getWillType() : null;
-        int willLevel = isSentient ? this.getWillLevel() : 0;
+        SpiritusType spiritusType = isSentient ? this.getSpiritusType() : null;
+        int spiritusLevel = isSentient ? this.getSpiritusLevel() : 0;
 
         for (LivingEntity target : entities) {
             if (target == null || target.isDeadOrDying() || target == owner) {
@@ -270,8 +270,8 @@ public class EntityThrownSpear extends AbstractArrow {
 
             target.hurt(damageSource, damage);
 
-            if (isSentient && willType != null && owner instanceof LivingEntity livingOwner) {
-                ItemSpearSentient.applyEffectToEntity(willType, willLevel, target, livingOwner);
+            if (isSentient && spiritusType != null && owner instanceof LivingEntity livingOwner) {
+                ItemSpearSentient.applyEffectToEntity(spiritusType, spiritusLevel, target, livingOwner);
             }
         }
     }
@@ -318,11 +318,11 @@ public class EntityThrownSpear extends AbstractArrow {
         if (tag.contains("Activated", 1)) {
             this.entityData.set(ID_ACTIVATED, tag.getBoolean("Activated"));
         }
-        if (tag.contains("WillType", 8)) {
-            this.entityData.set(ID_WILL_TYPE, tag.getString("WillType"));
+        if (tag.contains("SpiritusType", 8)) {
+            this.entityData.set(ID_SPIRITUS_TYPE, tag.getString("SpiritusType"));
         }
-        if (tag.contains("WillLevel", 3)) {
-            this.entityData.set(ID_WILL_LEVEL, tag.getInt("WillLevel"));
+        if (tag.contains("SpiritusLevel", 3)) {
+            this.entityData.set(ID_SPIRITUS_LEVEL, tag.getInt("SpiritusLevel"));
         }
     }
 
@@ -333,8 +333,8 @@ public class EntityThrownSpear extends AbstractArrow {
         tag.putBoolean("DealtDamage", this.dealtDamage);
         tag.putString("Variant", this.getVariant());
         tag.putBoolean("Activated", this.entityData.get(ID_ACTIVATED));
-        tag.putString("WillType", this.entityData.get(ID_WILL_TYPE));
-        tag.putInt("WillLevel", this.entityData.get(ID_WILL_LEVEL));
+        tag.putString("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE));
+        tag.putInt("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL));
     }
 
     @Override

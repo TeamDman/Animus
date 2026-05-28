@@ -30,15 +30,18 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import com.breakinblocks.animusnv.util.AltarTierLookup;
 import com.breakinblocks.neovitae.client.render.NeoVitaeRenderer;
 import com.breakinblocks.neovitae.client.render.RenderResizableCuboid;
 import com.breakinblocks.neovitae.common.block.NVBlocks;
 import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
 import com.breakinblocks.neovitae.common.registry.AltarComponent;
+import com.breakinblocks.neovitae.common.registry.AltarTier;
 import com.breakinblocks.neovitae.common.structure.NVMultiblock;
 import com.breakinblocks.neovitae.common.tag.NVTags;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Renders holographic previews of altar tier upgrade blocks.
@@ -94,28 +97,27 @@ public class AltarTierRenderer {
         }
 
         int currentTier = altar.getTier();
-        int nextTier = currentTier + 1;
-
-        if (nextTier >= NVMultiblock.TIER_LIST.length || NVMultiblock.TIER_LIST[nextTier] == null) {
+        Optional<AltarTier> nextTier = AltarTierLookup.findNextTier(level.registryAccess(), currentTier);
+        if (nextTier.isEmpty()) {
             return;
         }
 
         MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
         PoseStack poseStack = event.getPoseStack();
 
-        renderNextTierComponents(poseStack, buffers, altarPos, nextTier, level);
+        renderNextTierComponents(poseStack, buffers, altarPos, nextTier.get(), level);
 
         RenderSystem.disableDepthTest();
         buffers.endBatch();
     }
 
     private static void renderNextTierComponents(PoseStack poseStack, MultiBufferSource buffers,
-                                                   BlockPos altarPos, int nextTier, Level level) {
+                                                   BlockPos altarPos, AltarTier nextTier, Level level) {
         Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vec3 eyePos = camera.getPosition();
         VertexConsumer buffer = buffers.getBuffer(Sheets.translucentCullBlockSheet());
 
-        List<AltarComponent> components = NVMultiblock.TIER_LIST[nextTier].components();
+        List<AltarComponent> components = nextTier.components();
 
         for (AltarComponent component : components) {
             BlockPos componentPos = altarPos.offset(component.pos());

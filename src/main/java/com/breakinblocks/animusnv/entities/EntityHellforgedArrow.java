@@ -30,9 +30,9 @@ import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
  * - Applies status effects based on Spiritus type
  */
 public class EntityHellforgedArrow extends AbstractArrow {
-    private static final EntityDataAccessor<String> ID_WILL_TYPE =
+    private static final EntityDataAccessor<String> ID_SPIRITUS_TYPE =
         SynchedEntityData.defineId(EntityHellforgedArrow.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<Integer> ID_WILL_LEVEL =
+    private static final EntityDataAccessor<Integer> ID_SPIRITUS_LEVEL =
         SynchedEntityData.defineId(EntityHellforgedArrow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> ID_CHARGE_MULTIPLIER =
         SynchedEntityData.defineId(EntityHellforgedArrow.class, EntityDataSerializers.FLOAT);
@@ -59,30 +59,30 @@ public class EntityHellforgedArrow extends AbstractArrow {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(ID_WILL_TYPE, SpiritusType.RAW.toString());
-        builder.define(ID_WILL_LEVEL, 0);
+        builder.define(ID_SPIRITUS_TYPE, SpiritusType.RAW.toString());
+        builder.define(ID_SPIRITUS_LEVEL, 0);
         builder.define(ID_CHARGE_MULTIPLIER, 0.0F);
         builder.define(ID_EXECUTE_THRESHOLD, 0.0F);
     }
 
-    public void setWillType(SpiritusType type) {
-        this.entityData.set(ID_WILL_TYPE, type.toString());
+    public void setSpiritusType(SpiritusType type) {
+        this.entityData.set(ID_SPIRITUS_TYPE, type.toString());
     }
 
-    public SpiritusType getWillType() {
+    public SpiritusType getSpiritusType() {
         try {
-            return SpiritusType.valueOf(this.entityData.get(ID_WILL_TYPE).toUpperCase());
+            return SpiritusType.valueOf(this.entityData.get(ID_SPIRITUS_TYPE).toUpperCase());
         } catch (IllegalArgumentException e) {
             return SpiritusType.RAW;
         }
     }
 
-    public void setWillLevel(int level) {
-        this.entityData.set(ID_WILL_LEVEL, level);
+    public void setSpiritusLevel(int level) {
+        this.entityData.set(ID_SPIRITUS_LEVEL, level);
     }
 
-    public int getWillLevel() {
-        return this.entityData.get(ID_WILL_LEVEL);
+    public int getSpiritusLevel() {
+        return this.entityData.get(ID_SPIRITUS_LEVEL);
     }
 
     public void setChargeMultiplier(float multiplier) {
@@ -107,8 +107,8 @@ public class EntityHellforgedArrow extends AbstractArrow {
 
         if (entity instanceof LivingEntity target && !this.level().isClientSide) {
             Entity owner = this.getOwner();
-            SpiritusType willType = this.getWillType();
-            int willLevel = Math.min(this.getWillLevel(), 4);
+            SpiritusType spiritusType = this.getSpiritusType();
+            int spiritusLevel = Math.min(this.getSpiritusLevel(), 4);
             float chargeMultiplier = this.getChargeMultiplier();
             float executeThreshold = this.getExecuteThreshold();
 
@@ -164,7 +164,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 this.setBaseDamage(originalDamage);
             }
 
-            applyWillEffects(target, willType, willLevel, owner instanceof LivingEntity ? (LivingEntity) owner : null, chargeMultiplier);
+            applySpiritusEffects(target, spiritusType, spiritusLevel, owner instanceof LivingEntity ? (LivingEntity) owner : null, chargeMultiplier);
         } else {
             super.onHitEntity(result);
         }
@@ -179,11 +179,11 @@ public class EntityHellforgedArrow extends AbstractArrow {
         }
     }
 
-    private void applyWillEffects(LivingEntity target, SpiritusType willType, int level,
+    private void applySpiritusEffects(LivingEntity target, SpiritusType spiritusType, int level,
                                    LivingEntity attacker, float chargeMultiplier) {
         float durationMultiplier = 1.0f + (chargeMultiplier * 0.5f);
 
-        switch (willType) {
+        switch (spiritusType) {
             case RUINA:
                 target.addEffect(new MobEffectInstance(
                     MobEffects.POISON,
@@ -318,11 +318,11 @@ public class EntityHellforgedArrow extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("WillType", 8)) {
-            this.entityData.set(ID_WILL_TYPE, tag.getString("WillType"));
+        if (tag.contains("SpiritusType", 8)) {
+            this.entityData.set(ID_SPIRITUS_TYPE, tag.getString("SpiritusType"));
         }
-        if (tag.contains("WillLevel", 3)) {
-            this.entityData.set(ID_WILL_LEVEL, tag.getInt("WillLevel"));
+        if (tag.contains("SpiritusLevel", 3)) {
+            this.entityData.set(ID_SPIRITUS_LEVEL, tag.getInt("SpiritusLevel"));
         }
         if (tag.contains("ChargeMultiplier", 5)) {
             this.entityData.set(ID_CHARGE_MULTIPLIER, tag.getFloat("ChargeMultiplier"));
@@ -335,8 +335,8 @@ public class EntityHellforgedArrow extends AbstractArrow {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("WillType", this.entityData.get(ID_WILL_TYPE));
-        tag.putInt("WillLevel", this.entityData.get(ID_WILL_LEVEL));
+        tag.putString("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE));
+        tag.putInt("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL));
         tag.putFloat("ChargeMultiplier", this.entityData.get(ID_CHARGE_MULTIPLIER));
         tag.putFloat("ExecuteThreshold", this.entityData.get(ID_EXECUTE_THRESHOLD));
     }

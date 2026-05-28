@@ -88,7 +88,7 @@ public class AnimusConfig {
         public final ModConfigSpec.IntValue solVerticalRange;
         public final ModConfigSpec.BooleanValue unmakingDisallowEnhanced;
         public final ModConfigSpec.BooleanValue cullingPlayerKillDrops;
-        public final ModConfigSpec.DoubleValue cullingWillConsumeChance;
+        public final ModConfigSpec.DoubleValue cullingSpiritusConsumeChance;
         public final ModConfigSpec.IntValue endlessGreedRange;
         public final ModConfigSpec.IntValue endlessGreedVerticalRange;
         public final ModConfigSpec.IntValue endlessGreedEVPerItem;
@@ -290,7 +290,7 @@ public class AnimusConfig {
                 )
                 .define("cullingPlayerKillDrops", true);
 
-            cullingWillConsumeChance = builder
+            cullingSpiritusConsumeChance = builder
                 .comment(
                     "Chance (0.0 to 1.0) to consume 1 raw Spiritus when killing a mob with player-like kill",
                     "Only applies when cullingPlayerKillDrops is enabled",
@@ -566,7 +566,7 @@ public class AnimusConfig {
 
     public static class Botania {
         public final ModConfigSpec.IntValue EVtoManaConversionRate;
-        public final ModConfigSpec.IntValue willToManaConversionRate;
+        public final ModConfigSpec.IntValue spiritusToManaConversionRate;
         public final ModConfigSpec.IntValue unleashedNatureManaDrain;
 
         public Botania(ModConfigSpec.Builder builder) {
@@ -580,13 +580,13 @@ public class AnimusConfig {
                 )
                 .defineInRange("evToManaConversionRate", 2, 1, 100);
 
-            willToManaConversionRate = builder
+            spiritusToManaConversionRate = builder
                 .comment(
                     "Spiritus to Mana conversion rate",
                     "Used by Diabolical Fungi and other will-to-mana generating flowers",
                     "Default: 250 mana per 1 Spiritus consumed"
                 )
-                .defineInRange("willToManaConversionRate", 250, 1, 1000);
+                .defineInRange("spiritusToManaConversionRate", 250, 1, 1000);
 
             unleashedNatureManaDrain = builder
                 .comment(
@@ -601,7 +601,7 @@ public class AnimusConfig {
     }
 
     public static class Weapons {
-        public final ModConfigSpec.DoubleValue sentientBowWillCost;
+        public final ModConfigSpec.DoubleValue sentientBowSpiritusCost;
         public final ModConfigSpec.IntValue hellforgedBowBaseLpCost;
         public final ModConfigSpec.IntValue hellforgedBowLpPerTick;
         public final ModConfigSpec.IntValue hellforgedBowMaxChargeTicks;
@@ -613,7 +613,7 @@ public class AnimusConfig {
 
             builder.comment("Sentient Bow - Spiritus powered bow").push("sentientBow");
 
-            sentientBowWillCost = builder
+            sentientBowSpiritusCost = builder
                 .comment(
                     "Amount of Spiritus consumed per arrow fired",
                     "Default: 1.0"

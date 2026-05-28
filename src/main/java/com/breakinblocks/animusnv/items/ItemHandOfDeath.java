@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.will.IPlayerSpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.IPlayerSpiritusHandler;
 
 import java.util.List;
 
@@ -54,12 +54,12 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         // Must cache soul count before parent call modifies will
         if (!attacker.level().isClientSide && attacker instanceof Player player) {
-            IPlayerSpiritusHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
-            double totalWill = 0;
+            IPlayerSpiritusHandler playerSpiritus = NeoVitaeAPI.getInstance().getPlayerSpiritusHandler();
+            double totalSpiritus = 0;
             for (SpiritusType type : SpiritusType.values()) {
-                totalWill += playerWill.getTotalSpiritus(type, player);
+                totalSpiritus += playerSpiritus.getTotalSpiritus(type, player);
             }
-            setCachedSouls(stack, totalWill);
+            setCachedSouls(stack, totalSpiritus);
 
             target.addEffect(new MobEffectInstance(
                 Holder.direct(NVMobEffects.SPIRITUS_SNARE.get()), 100, 1));

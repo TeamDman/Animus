@@ -23,7 +23,7 @@ import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
-import com.breakinblocks.neovitae.api.will.ISpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.ISpiritusHandler;
 import com.breakinblocks.neovitae.common.datamap.EntitySacrificeHelper;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
@@ -45,14 +45,14 @@ public class RitualCulling extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
 
-    public final int maxWill = 100;
+    public final int maxSpiritus = 100;
     public final Random rand = new Random();
     public BlockPos altarOffsetPos = BlockPos.ZERO;
     public double crystalBuffer = 0;
     public int reagentDrain = 2;
     public boolean result = false;
-    public double willBuffer = 0;
-    public HashMap<String, Double> willMap = new HashMap<>();
+    public double spiritusBuffer = 0;
+    public HashMap<String, Double> spiritusMap = new HashMap<>();
 
     public RitualCulling() {
         super(Constants.Rituals.CULLING, 0, 50000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.CULLING);
@@ -75,13 +75,13 @@ public class RitualCulling extends Ritual {
     @Override
     public void readFromNBT(CompoundTag tag) {
         super.readFromNBT(tag);
-        willBuffer = tag.getDouble(Constants.NBT.CULLING_BUFFER_WILL);
+        spiritusBuffer = tag.getDouble(Constants.NBT.CULLING_BUFFER_WILL);
     }
 
     @Override
     public void writeToNBT(CompoundTag tag) {
         super.writeToNBT(tag);
-        tag.putDouble(Constants.NBT.CULLING_BUFFER_WILL, willBuffer);
+        tag.putDouble(Constants.NBT.CULLING_BUFFER_WILL, spiritusBuffer);
     }
 
     @Override
@@ -121,13 +121,13 @@ public class RitualCulling extends Ritual {
             return;
         }
 
-        ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
+        ISpiritusHandler spiritusHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
         SpiritusType type = SpiritusType.NIHILUM;
-        double currentAmount = willHandler.getCurrentWill(level, pos, type);
+        double currentAmount = spiritusHandler.getCurrentSpiritus(level, pos, type);
 
         // Raw Spiritus enables player-like kills (mob drops as if killed by player)
-        double rawWillAmount = willHandler.getCurrentWill(level, pos, SpiritusType.RAW);
-        boolean usePlayerKill = AnimusConfig.rituals.cullingPlayerKillDrops.get() && rawWillAmount >= 1.0;
+        double rawSpiritusAmount = spiritusHandler.getCurrentSpiritus(level, pos, SpiritusType.RAW);
+        boolean usePlayerKill = AnimusConfig.rituals.cullingPlayerKillDrops.get() && rawSpiritusAmount >= 1.0;
 
         AraVitaeTile tileAltar = AnimusUtil.getNearbyAltar(level, getBlockRange(ALTAR_RANGE), pos, altarOffsetPos);
         if (tileAltar == null) {
@@ -177,7 +177,7 @@ public class RitualCulling extends Ritual {
 
                 livingEntity.setSilent(true);
 
-                // Bosses require 100+ destructive Spiritus and extra EV to kill
+                // Bosses require 100+ Nihilum Spiritus and extra EV to kill
                 if (isBoss) {
                     int requiredEssence = AnimusConfig.rituals.bossCost.get() + (getRefreshCost() * list.size());
                     CullingHelper.tryMakeBossVulnerable(livingEntity, currentAmount, currentEV, requiredEssence);
@@ -186,8 +186,8 @@ public class RitualCulling extends Ritual {
                 if (usePlayerKill && level instanceof ServerLevel serverLevel) {
                     result = CullingHelper.applyPlayerKillDamage(livingEntity, serverLevel, ritualStone.getOwner(), pos, damage);
 
-                    if (result && rand.nextDouble() < AnimusConfig.rituals.cullingWillConsumeChance.get()) {
-                        willHandler.drainSpiritus(level, pos, SpiritusType.RAW, 1.0);
+                    if (result && rand.nextDouble() < AnimusConfig.rituals.cullingSpiritusConsumeChance.get()) {
+                        spiritusHandler.drainSpiritus(level, pos, SpiritusType.RAW, 1.0);
                         if (AnimusConfig.rituals.cullingDebug.get()) {
                             Animus.LOGGER.debug("[Ritual of Culling Debug]:   Consumed 1 raw Spiritus");
                         }
@@ -210,7 +210,7 @@ public class RitualCulling extends Ritual {
                     if (isBoss) {
                         network.syphon(AnimaTicket.create(AnimusConfig.rituals.bossCost.get()));
                     } else {
-                        willBuffer += CullingHelper.calculateWillGain(livingEntity);
+                        spiritusBuffer += CullingHelper.calculateSpiritusGain(livingEntity);
                     }
 
                     CullingHelper.spawnKillEffects(level, at, rand);
@@ -223,10 +223,10 @@ public class RitualCulling extends Ritual {
 
             network.syphon(AnimaTicket.create(getRefreshCost() * entityCount));
 
-            // ~3% chance per cycle to generate destructive Spiritus
-            double addAmount = Math.min(maxWill - currentAmount, Math.min(entityCount / 2.0, 10));
+            // ~3% chance per cycle to generate Nihilum Spiritus
+            double addAmount = Math.min(maxSpiritus - currentAmount, Math.min(entityCount / 2.0, 10));
             if (rand.nextInt(30) == 0 && addAmount > 0) {
-                willHandler.addSpiritus(level, pos, type, addAmount);
+                spiritusHandler.addSpiritus(level, pos, type, addAmount);
             }
         }
     }

@@ -29,6 +29,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 
 import java.util.List;
 
@@ -160,8 +162,8 @@ public class ItemSpear extends TridentItem {
      * This makes them pass ItemAnointmentProvider.isItemTool() check.
      */
     @Override
-    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
-        if (itemAbility == net.neoforged.neoforge.common.ItemAbilities.SWORD_DIG) {
+    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
+        if (itemAbility == ItemAbilities.SWORD_DIG) {
             return true;
         }
         return super.canPerformAction(stack, itemAbility);

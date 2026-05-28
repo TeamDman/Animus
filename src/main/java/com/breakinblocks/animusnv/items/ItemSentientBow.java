@@ -4,7 +4,7 @@ import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.entities.EntitySentientArrow;
 import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
-import com.breakinblocks.animusnv.util.WillWeaponStats;
+import com.breakinblocks.animusnv.util.SpiritusWeaponStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -50,13 +50,13 @@ public class ItemSentientBow extends BowItem {
     public static final int[] slowLevel = new int[]{0, 1, 1, 2, 2};
 
     // Default will cost per shot (used before config loads)
-    public static final double DEFAULT_WILL_COST = 1.0;
+    public static final double DEFAULT_SPIRITUS_COST = 1.0;
 
-    public static double getWillCostPerShot() {
+    public static double getSpiritusCostPerShot() {
         try {
-            return AnimusConfig.weapons.sentientBowWillCost.get();
+            return AnimusConfig.weapons.sentientBowSpiritusCost.get();
         } catch (IllegalStateException e) {
-            return DEFAULT_WILL_COST;
+            return DEFAULT_SPIRITUS_COST;
         }
     }
 
@@ -77,13 +77,13 @@ public class ItemSentientBow extends BowItem {
         if (flag.hasShiftDown()) {
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_INFO)
                 .withStyle(ChatFormatting.GRAY));
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_WILL_DROPS)
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_SPIRITUS_DROPS)
                 .withStyle(ChatFormatting.YELLOW));
         }
     }
 
     public static int getLevel(ItemStack stack, double soulsRemaining) {
-        return WillWeaponStats.getLevel(soulsRemaining);
+        return SpiritusWeaponStats.getLevel(soulsRemaining);
     }
 
     public static double getDamageAdded(SpiritusType type, int level) {
@@ -103,10 +103,10 @@ public class ItemSentientBow extends BowItem {
 
         SpiritusType type = getCurrentType(stack);
         double soulsRemaining = getTotalSpiritusOfType(player, type);
-        if (!player.getAbilities().instabuild && soulsRemaining < getWillCostPerShot()) {
+        if (!player.getAbilities().instabuild && soulsRemaining < getSpiritusCostPerShot()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
-                    Component.translatable("message.animus.sentient_bow.out_of_will")
+                    Component.translatable("message.animus.sentient_bow.out_of_spiritus")
                         .withStyle(ChatFormatting.RED),
                     true
                 );
@@ -127,10 +127,10 @@ public class ItemSentientBow extends BowItem {
         SpiritusType type = getCurrentType(stack);
         double soulsRemaining = getTotalSpiritusOfType(player, type);
 
-        if (soulsRemaining < getWillCostPerShot()) {
+        if (soulsRemaining < getSpiritusCostPerShot()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
-                    Component.translatable("message.animus.sentient_bow.out_of_will")
+                    Component.translatable("message.animus.sentient_bow.out_of_spiritus")
                         .withStyle(ChatFormatting.RED),
                     true
                 );
@@ -146,14 +146,14 @@ public class ItemSentientBow extends BowItem {
         }
 
         if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
-            drainSpiritusFromPlayer(player, type, getWillCostPerShot());
+            drainSpiritusFromPlayer(player, type, getSpiritusCostPerShot());
 
-            int willLevel = getLevel(stack, soulsRemaining);
-            double bonusDamage = getDamageAdded(type, willLevel);
+            int spiritusLevel = getLevel(stack, soulsRemaining);
+            double bonusDamage = getDamageAdded(type, spiritusLevel);
 
             EntitySentientArrow arrow = new EntitySentientArrow(level, player);
-            arrow.setWillType(type);
-            arrow.setWillLevel(willLevel);
+            arrow.setSpiritusType(type);
+            arrow.setSpiritusLevel(spiritusLevel);
             arrow.setBonusDamage(bonusDamage);
             arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, power * 3.0F, 1.0F);
 

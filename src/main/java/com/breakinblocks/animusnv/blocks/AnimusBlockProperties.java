@@ -37,7 +37,7 @@ public final class AnimusBlockProperties {
             .requiresCorrectToolForDrops();
     }
 
-    public static BlockBehaviour.Properties crystallizedDemonWill() {
+    public static BlockBehaviour.Properties crystallizedSpiritus() {
         return BlockBehaviour.Properties.of()
             .strength(5.0F, 10.0F)
             .sound(SoundType.AMETHYST)

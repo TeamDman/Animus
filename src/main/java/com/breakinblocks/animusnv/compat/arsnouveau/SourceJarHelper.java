@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import java.lang.reflect.Method;
+
 /**
  * Helper class for interacting with Ars Nouveau Source Jars
  * Uses reflection to avoid hard dependencies on Ars Nouveau classes
@@ -11,8 +13,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class SourceJarHelper {
     // Cache reflected classes and methods
     private static Class<?> sourceJarClass;
-    private static java.lang.reflect.Method getSourceMethod;
-    private static java.lang.reflect.Method removeSourceMethod;
+    private static Method getSourceMethod;
+    private static Method removeSourceMethod;
     private static boolean initialized = false;
     private static boolean initFailed = false;
 

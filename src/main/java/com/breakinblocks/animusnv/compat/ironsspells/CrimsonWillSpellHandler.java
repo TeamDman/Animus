@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+import top.theillusivec4.curios.api.CuriosApi;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,7 +38,7 @@ import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
-import com.breakinblocks.neovitae.api.will.IPlayerSpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.IPlayerSpiritusHandler;
 import com.breakinblocks.neovitae.common.item.IActivatable;
 import com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding;
 
@@ -57,9 +59,9 @@ public class CrimsonWillSpellHandler {
         ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "crimson_will_summon_damage");
 
     private static final double BASE_SPELL_POWER_BONUS = 0.30;
-    private static final double MAX_WILL_BONUS = 0.20;
-    private static final double MAX_WILL_AMOUNT = 4096.0;
-    private static final double WILL_CONSUMED_PER_CAST = 5.0;
+    private static final double MAX_SPIRITUS_BONUS = 0.20;
+    private static final double MAX_SPIRITUS_AMOUNT = 4096.0;
+    private static final double SPIRITUS_CONSUMED_PER_CAST = 5.0;
 
     private static final Set<UUID> playersWithModifiers = ConcurrentHashMap.newKeySet();
 
@@ -97,20 +99,20 @@ public class CrimsonWillSpellHandler {
             return;
         }
 
-        IPlayerSpiritusHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
-        double currentWill = playerWill.getTotalSpiritus(SpiritusType.RAW, player);
+        IPlayerSpiritusHandler playerSpiritus = NeoVitaeAPI.getInstance().getPlayerSpiritusHandler();
+        double currentSpiritus = playerSpiritus.getTotalSpiritus(SpiritusType.RAW, player);
 
         // Sigil works at 0 will (just with lower bonus)
-        double willMultiplier = Math.min(currentWill / MAX_WILL_AMOUNT, 1.0);
-        double willBonus = MAX_WILL_BONUS * willMultiplier;
-        double totalBonus = BASE_SPELL_POWER_BONUS + willBonus;
+        double spiritusMultiplier = Math.min(currentSpiritus / MAX_SPIRITUS_AMOUNT, 1.0);
+        double spiritusBonus = MAX_SPIRITUS_BONUS * spiritusMultiplier;
+        double totalBonus = BASE_SPELL_POWER_BONUS + spiritusBonus;
 
         applyPowerModifiers(player, totalBonus);
         playersWithModifiers.add(player.getUUID());
 
         network.syphon(AnimaTicket.create(evCost));
-        if (currentWill >= WILL_CONSUMED_PER_CAST) {
-            playerWill.consumeSpiritus(SpiritusType.RAW, player, WILL_CONSUMED_PER_CAST);
+        if (currentSpiritus >= SPIRITUS_CONSUMED_PER_CAST) {
+            playerSpiritus.consumeSpiritus(SpiritusType.RAW, player, SPIRITUS_CONSUMED_PER_CAST);
         }
 
         if (player.level() instanceof ServerLevel serverLevel) {
@@ -157,7 +159,7 @@ public class CrimsonWillSpellHandler {
         }
 
         Animus.LOGGER.debug("Crimson Will empowered spell: {} EV, {} will, {}% bonus",
-            evCost, WILL_CONSUMED_PER_CAST, (int)(totalBonus * 100));
+            evCost, SPIRITUS_CONSUMED_PER_CAST, (int)(totalBonus * 100));
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -203,7 +205,7 @@ public class CrimsonWillSpellHandler {
     }
 
     private ItemStack findActiveSigil(Player player) {
-        java.util.function.Predicate<ItemStack> isActiveCrimsonWill = stack -> {
+        Predicate<ItemStack> isActiveCrimsonWill = stack -> {
             if (!stack.is(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get())) return false;
             if (stack.getItem() instanceof IActivatable activatable) {
                 return activatable.getActivated(stack);
@@ -216,7 +218,7 @@ public class CrimsonWillSpellHandler {
             return fromInventory.get();
         }
 
-        var curiosResult = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
+        var curiosResult = CuriosApi.getCuriosInventory(player)
             .map(inv -> inv.findFirstCurio(isActiveCrimsonWill))
             .orElse(Optional.empty());
 

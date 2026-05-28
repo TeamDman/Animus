@@ -3,6 +3,7 @@ package com.breakinblocks.animusnv.util;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.IntSupplier;
 
 /**
  * Utility class for tracking cooldown/interval-based state for sigil effects.
@@ -40,7 +41,7 @@ public class SigilStateTracker {
         return lastTime == null || currentTime - lastTime >= interval;
     }
 
-    public boolean isReady(UUID playerId, long currentTime, java.util.function.IntSupplier intervalSupplier) {
+    public boolean isReady(UUID playerId, long currentTime, IntSupplier intervalSupplier) {
         return isReady(playerId, currentTime, intervalSupplier.getAsInt());
     }
 

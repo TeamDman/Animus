@@ -11,7 +11,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.will.ISpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.ISpiritusHandler;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
@@ -54,16 +54,16 @@ public class AnimusFakePlayer extends FakePlayer {
 
         int lootingLevel = 0;
 
-        ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
-        double corrosiveWill = willHandler.getCurrentWill(level, pos, SpiritusType.RUINA);
-        double destructiveWill = willHandler.getCurrentWill(level, pos, SpiritusType.NIHILUM);
-        double vengefulWill = willHandler.getCurrentWill(level, pos, SpiritusType.VINDICTA);
-        double steadfastWill = willHandler.getCurrentWill(level, pos, SpiritusType.INVICTUS);
+        ISpiritusHandler spiritusHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
+        double ruinaSpiritus = spiritusHandler.getCurrentSpiritus(level, pos, SpiritusType.RUINA);
+        double nihilumSpiritus = spiritusHandler.getCurrentSpiritus(level, pos, SpiritusType.NIHILUM);
+        double vindictaSpiritus = spiritusHandler.getCurrentSpiritus(level, pos, SpiritusType.VINDICTA);
+        double invictusSpiritus = spiritusHandler.getCurrentSpiritus(level, pos, SpiritusType.INVICTUS);
 
-        if (corrosiveWill > 10) lootingLevel++;
-        if (destructiveWill > 10) lootingLevel++;
-        if (vengefulWill > 10) lootingLevel++;
-        if (steadfastWill > 10) lootingLevel++;
+        if (ruinaSpiritus > 10) lootingLevel++;
+        if (nihilumSpiritus > 10) lootingLevel++;
+        if (vindictaSpiritus > 10) lootingLevel++;
+        if (invictusSpiritus > 10) lootingLevel++;
 
         if (lootingLevel > 0) {
             final int finalLootingLevel = lootingLevel;

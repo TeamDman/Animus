@@ -6,7 +6,7 @@ import com.breakinblocks.animusnv.entities.EntityHellforgedArrow;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
-import com.breakinblocks.animusnv.util.WillWeaponStats;
+import com.breakinblocks.animusnv.util.SpiritusWeaponStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -120,7 +120,7 @@ public class ItemHellforgedBow extends BowItem {
 
         SpiritusType type = getCurrentType(stack);
         if (type != SpiritusType.RAW) {
-            tooltip.add(Component.translatable("tooltip.animusnv.hellforged_bow.will_type", type.name().toLowerCase())
+            tooltip.add(Component.translatable("tooltip.animusnv.hellforged_bow.spiritus_type", type.name().toLowerCase())
                 .withStyle(ChatFormatting.DARK_PURPLE));
         }
 
@@ -224,9 +224,9 @@ public class ItemHellforgedBow extends BowItem {
             AnimaTicket ticket = AnimaTicket.create(getBaseEvCost());
             network.syphonAndDamage(player, ticket);
 
-            SpiritusType willType = getCurrentType(stack);
-            double willAmount = NeoVitaeAPI.getInstance().getPlayerWillHandler().getTotalSpiritus(willType, player);
-            int willLevel = getLevel(willAmount);
+            SpiritusType spiritusType = getCurrentType(stack);
+            double spiritusAmount = NeoVitaeAPI.getInstance().getPlayerSpiritusHandler().getTotalSpiritus(spiritusType, player);
+            int spiritusLevel = getLevel(spiritusAmount);
 
             float chargeMultiplier = 0.0f;
             if (useDuration > NORMAL_DRAW_TICKS) {
@@ -239,8 +239,8 @@ public class ItemHellforgedBow extends BowItem {
             double totalDamage = baseDamage + chargeBonusDamage;
 
             EntityHellforgedArrow arrow = new EntityHellforgedArrow(level, player);
-            arrow.setWillType(willType);
-            arrow.setWillLevel(willLevel);
+            arrow.setSpiritusType(spiritusType);
+            arrow.setSpiritusLevel(spiritusLevel);
             arrow.setBaseDamage(totalDamage);
             arrow.setChargeMultiplier(chargeMultiplier);
             arrow.setExecuteThreshold(chargeMultiplier >= 1.0f ? getExecuteThreshold() : 0.0);
@@ -366,8 +366,8 @@ public class ItemHellforgedBow extends BowItem {
         }
     }
 
-    public static int getLevel(double willAmount) {
-        return WillWeaponStats.getLevel(willAmount);
+    public static int getLevel(double spiritusAmount) {
+        return SpiritusWeaponStats.getLevel(spiritusAmount);
     }
 
     private IAnima getNetworkForBinding(Player player, ItemStack stack) {

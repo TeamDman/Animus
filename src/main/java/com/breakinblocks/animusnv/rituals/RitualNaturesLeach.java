@@ -23,7 +23,7 @@ import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
-import com.breakinblocks.neovitae.api.will.ISpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.ISpiritusHandler;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
 
@@ -44,7 +44,7 @@ public class RitualNaturesLeach extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
     public static final int ALTAR_RECHECK_INTERVAL = 100;
-    public final int maxWill = 100;
+    public final int maxSpiritus = 100;
 
     public BlockPos cachedAltarPos = null;
     public AraVitaeTile cachedAltar = null;
@@ -74,9 +74,9 @@ public class RitualNaturesLeach extends Ritual {
         Random random = new Random(randomSource.nextLong());
         BlockPos pos = ritualStone.getMasterBlockPos();
 
-        ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
+        ISpiritusHandler spiritusHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
         SpiritusType type = SpiritusType.RUINA;
-        will = willHandler.getCurrentWill(level, pos, type);
+        will = spiritusHandler.getCurrentSpiritus(level, pos, type);
 
         IAnima network = AnimusRitualHelper.getOwnerNetwork(ritualStone);
         if (network == null) {
@@ -165,14 +165,14 @@ public class RitualNaturesLeach extends Ritual {
         int lpPerBlock = AnimusConfig.rituals.naturesLeachLpPerBlock.get();
         tileAltar.addSacrificeEV(eaten * lpPerBlock, true);
 
-        // Each consumed block generates 0.5-1.5 corrosive will
+        // Each consumed block generates 0.5-1.5 Ruina Spiritus
         if (eaten > 0) {
-            double willPerBlock = 0.5 + random.nextDouble();
-            double totalWillToAdd = eaten * willPerBlock;
-            double currentWill = willHandler.getCurrentWill(level, pos, type);
-            double actualAdd = Math.min(totalWillToAdd, maxWill - currentWill);
+            double spiritusPerBlock = 0.5 + random.nextDouble();
+            double totalSpiritusToAdd = eaten * spiritusPerBlock;
+            double currentSpiritus = spiritusHandler.getCurrentSpiritus(level, pos, type);
+            double actualAdd = Math.min(totalSpiritusToAdd, maxSpiritus - currentSpiritus);
             if (actualAdd > 0) {
-                willHandler.addSpiritus(level, pos, type, actualAdd);
+                spiritusHandler.addSpiritus(level, pos, type, actualAdd);
             }
         }
     }

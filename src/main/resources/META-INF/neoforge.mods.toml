@@ -34,7 +34,7 @@ description = '''${mod_description}'''
 [[dependencies.animusnv]]
     modId = "neovitae"
     type = "required"
-    versionRange = "[1.0.0-SNAPSHOT,)"
+    versionRange = "[1.0.3,)"
     ordering = "AFTER"
     side = "BOTH"
 

@@ -21,7 +21,7 @@ import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.common.item.soul.SentientScytheItem;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.will.IPlayerSpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.IPlayerSpiritusHandler;
 
 import java.util.List;
 
@@ -43,12 +43,12 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         // Must cache soul count before parent call modifies will
         if (!attacker.level().isClientSide && attacker instanceof Player player) {
-            IPlayerSpiritusHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
-            double totalWill = 0;
+            IPlayerSpiritusHandler playerSpiritus = NeoVitaeAPI.getInstance().getPlayerSpiritusHandler();
+            double totalSpiritus = 0;
             for (SpiritusType type : SpiritusType.values()) {
-                totalWill += playerWill.getTotalSpiritus(type, player);
+                totalSpiritus += playerSpiritus.getTotalSpiritus(type, player);
             }
-            stack.set(AnimusDataComponents.CACHED_SOULS.get(), totalWill);
+            stack.set(AnimusDataComponents.CACHED_SOULS.get(), totalSpiritus);
 
             target.addEffect(new MobEffectInstance(
                 Holder.direct(NVMobEffects.SPIRITUS_SNARE.get()), 100, 1));
@@ -127,10 +127,10 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
         super.appendHoverText(stack, context, tooltip, flag);
 
         double soulsRemaining = getCachedSouls(stack);
-        int willLevel = getLevel(soulsRemaining);
-        double willDamage = getDamageAdded(willLevel);
+        int spiritusLevel = getLevel(soulsRemaining);
+        double spiritusDamage = getDamageAdded(spiritusLevel);
 
-        tooltip.add(Component.literal(String.format("Spiritus Damage: +%.1f", willDamage))
+        tooltip.add(Component.literal(String.format("Spiritus Damage: +%.1f", spiritusDamage))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.translatable("tooltip.animusnv.runic_sentient_scythe.enhanced")

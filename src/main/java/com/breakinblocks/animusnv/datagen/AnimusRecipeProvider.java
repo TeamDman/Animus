@@ -217,7 +217,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
 
     private void buildHellfireForgeRecipes(RecipeOutput output) {
         HellfireForgeRecipeBuilder.build(AnimusItems.BLOCK_WILLFUL_STONE.get(), 4)
-            .minWill(50.0)
+            .minSpiritus(50.0)
             .drain(25.0)
             .requires(Tags.Items.STONES)
             .requires(Tags.Items.STONES)
@@ -226,7 +226,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("willful_stone"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.BLOCK_CRYSTALLIZED_SPIRITUS.get())
-            .minWill(2048.0)
+            .minSpiritus(2048.0)
             .drain(1024.0)
             .requires(Items.SCULK)
             .requires(NVItems.TABULA_AETHEREA.get())
@@ -235,7 +235,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("crystallized_spiritus_block"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.SENTIENT_SHIELD.get())
-            .minWill(200.0)
+            .minSpiritus(200.0)
             .drain(100.0)
             .requires(Items.SHIELD)
             .requires(NVItems.SPIRITUS_GEM_PETTY.get())
@@ -243,14 +243,14 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("sentient_shield"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.SPEAR_SENTIENT.get())
-            .minWill(0.0)
+            .minSpiritus(0.0)
             .drain(0.0)
             .requires(AnimusItems.SPEAR_DIAMOND.get())
             .requires(NVItems.SPIRITUS_GEM_PETTY.get())
             .save(output, loc("spear_sentient"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.SENTIENT_BOW.get())
-            .minWill(64.0)
+            .minSpiritus(64.0)
             .drain(32.0)
             .requires(Items.BOW)
             .requires(NVItems.SPIRITUS_GEM_PETTY.get())
@@ -259,7 +259,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("sentient_bow"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.HELLFORGED_BOW.get())
-            .minWill(256.0)
+            .minSpiritus(256.0)
             .drain(128.0)
             .requires(AnimusItems.SENTIENT_BOW.get())
             .requires(NVItems.SPIRITUS_VINDICTA_CRYSTAL_ITEM.get())
@@ -268,7 +268,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("hellforged_bow"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.HAND_OF_DEATH.get())
-            .minWill(1024.0)
+            .minSpiritus(1024.0)
             .drain(512.0)
             .requires(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
             .requires(NVItems.SPIRITUS_VINDICTA_CRYSTAL_ITEM.get())
@@ -277,7 +277,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("hand_of_death"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_BOUNDLESS_NATURE.get())
-            .minWill(128.0)
+            .minSpiritus(128.0)
             .drain(64.0)
             .requires(Items.OAK_SAPLING)
             .requires(Items.WHEAT_SEEDS)
@@ -286,7 +286,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentboundlessnature"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_BUILDER.get())
-            .minWill(128.0)
+            .minSpiritus(128.0)
             .drain(64.0)
             .requires(Items.SUGAR)
             .requires(Items.CRAFTING_TABLE)
@@ -295,7 +295,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentbuilder"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_CHAINS.get())
-            .minWill(128.0)
+            .minSpiritus(128.0)
             .drain(64.0)
             .requires(Items.IRON_BARS)
             .requires(Items.ENDER_PEARL)
@@ -304,7 +304,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentchains"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_CONSUMPTION.get())
-            .minWill(128.0)
+            .minSpiritus(128.0)
             .drain(64.0)
             .requires(Items.IRON_PICKAXE)
             .requires(Items.IRON_PICKAXE)
@@ -313,7 +313,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentconsumption"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_EQUIVALENCY.get())
-            .minWill(128.0)
+            .minSpiritus(128.0)
             .drain(64.0)
             .requires(Items.PURPLE_DYE)
             .requires(Items.DIAMOND)
@@ -322,7 +322,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentequivalency"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_FREE_SOUL.get())
-            .minWill(256.0)
+            .minSpiritus(256.0)
             .drain(128.0)
             .requires(Items.SOUL_SAND)
             .requires(Items.SOUL_SOIL)
@@ -331,7 +331,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentfreesoul"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_HEAVENLY_WRATH.get())
-            .minWill(256.0)
+            .minSpiritus(256.0)
             .drain(128.0)
             .requires(Items.FEATHER)
             .requires(Items.PHANTOM_MEMBRANE)
@@ -340,7 +340,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentheavelywrath"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_LEACH.get())
-            .minWill(64.0)
+            .minSpiritus(64.0)
             .drain(32.0)
             .requires(Items.NETHER_WART)
             .requires(Items.CRIMSON_FUNGUS)
@@ -349,7 +349,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentleach"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_REMEDIUM.get())
-            .minWill(128.0)
+            .minSpiritus(128.0)
             .drain(64.0)
             .requires(Items.MILK_BUCKET)
             .requires(Items.GOLDEN_APPLE)
@@ -358,7 +358,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentremendium"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_REPARARE.get())
-            .minWill(128.0)
+            .minSpiritus(128.0)
             .drain(64.0)
             .requires(Items.ANVIL)
             .requires(Items.DIAMOND)
@@ -367,7 +367,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentreparare"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_STORM.get())
-            .minWill(64.0)
+            .minSpiritus(64.0)
             .drain(32.0)
             .requires(Items.SAND)
             .requires(Items.WATER_BUCKET)
@@ -376,7 +376,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagentstorm"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_TEMPORAL_DOMINANCE.get())
-            .minWill(1024.0)
+            .minSpiritus(1024.0)
             .drain(512.0)
             .requires(Items.ECHO_SHARD)
             .requires(Items.CLOCK)
@@ -385,7 +385,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("reagenttemporaldominance"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.REAGENT_TRANSPOSITION.get())
-            .minWill(128.0)
+            .minSpiritus(128.0)
             .drain(64.0)
             .requires(Items.END_STONE)
             .requires(Items.ENDER_PEARL)

@@ -27,7 +27,7 @@ import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
-import com.breakinblocks.neovitae.api.will.ISpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.ISpiritusHandler;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
 
@@ -38,7 +38,7 @@ import java.util.function.Consumer;
  * Ritual of the Steadfast Heart - Grants Absorption to players
  * Provides increasingly powerful absorption effect to players in range
  * Can also buff players remotely via bound blood orbs in a chest above the ritual
- * Also generates Steadfast Spiritus
+ * Also generates Invictus Spiritus
  * Activation Cost: 20000 EV
  * Refresh Cost: 100 EV per player (nearby or remote)
  * Refresh Time: Configurable (default 60 ticks = 3 seconds)
@@ -46,7 +46,7 @@ import java.util.function.Consumer;
  */
 public class RitualSteadfastHeart extends Ritual {
     public static final String EFFECT_RANGE = "effect";
-    public final int maxWill = 100;
+    public final int maxSpiritus = 100;
     public double willBuffer = 0;
 
     public RitualSteadfastHeart() {
@@ -84,9 +84,9 @@ public class RitualSteadfastHeart extends Ritual {
 
         BlockPos pos = mrs.getMasterBlockPos();
 
-        ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
+        ISpiritusHandler spiritusHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
         SpiritusType type = SpiritusType.INVICTUS;
-        double currentAmount = willHandler.getCurrentWill(level, pos, type);
+        double currentAmount = spiritusHandler.getCurrentSpiritus(level, pos, type);
 
         Set<UUID> buffedPlayers = new HashSet<>();
 
@@ -158,9 +158,9 @@ public class RitualSteadfastHeart extends Ritual {
         AnimaTicket ticket = AnimaTicket.create(getRefreshCost() * entityCount);
         network.syphon(ticket);
 
-        double addAmount = 2 * Math.min((maxWill - currentAmount) + 1, Math.min(entityCount / 2.0, 10));
+        double addAmount = 2 * Math.min((maxSpiritus - currentAmount) + 1, Math.min(entityCount / 2.0, 10));
         if (addAmount > 0) {
-            willHandler.addSpiritus(level, pos, type, addAmount);
+            spiritusHandler.addSpiritus(level, pos, type, addAmount);
         }
     }
 

@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -109,11 +110,11 @@ public final class CullingHelper {
 
     /**
      * Attempts to make a boss entity vulnerable if the required conditions are met:
-     * killBoss config enabled, 100+ destructive Spiritus, and sufficient EV.
+     * killBoss config enabled, 100+ Nihilum Spiritus, and sufficient EV.
      * Returns true if the boss was made vulnerable and can be killed.
      *
      * @param entity         the boss entity
-     * @param currentAmount  current destructive Spiritus amount
+     * @param currentAmount  current Nihilum Spiritus amount
      * @param currentEV current EV in the Anima
      * @param requiredEssence the EV needed (boss cost + refresh cost * entity count)
      * @return true if the boss was made vulnerable
@@ -161,21 +162,21 @@ public final class CullingHelper {
 
         // Set lastHurtByPlayer so loot tables treat this as a player kill (enables player-only drops like blaze rods)
         try {
-            java.lang.reflect.Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("lastHurtByPlayer");
+            Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("lastHurtByPlayer");
             lastHurtByPlayerField.setAccessible(true);
             lastHurtByPlayerField.set(entity, fakePlayer);
 
-            java.lang.reflect.Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("lastHurtByPlayerTime");
+            Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("lastHurtByPlayerTime");
             lastHurtByPlayerTimeField.setAccessible(true);
             lastHurtByPlayerTimeField.setInt(entity, 100);
         } catch (Exception e) {
             // Fall back to obfuscated field names
             try {
-                java.lang.reflect.Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("f_20889_");
+                Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("f_20889_");
                 lastHurtByPlayerField.setAccessible(true);
                 lastHurtByPlayerField.set(entity, fakePlayer);
 
-                java.lang.reflect.Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("f_20890_");
+                Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("f_20890_");
                 lastHurtByPlayerTimeField.setAccessible(true);
                 lastHurtByPlayerTimeField.setInt(entity, 100);
             } catch (Exception e2) {
@@ -230,7 +231,7 @@ public final class CullingHelper {
      * @param entity the killed entity
      * @return the will amount to add to the buffer
      */
-    public static double calculateWillGain(LivingEntity entity) {
+    public static double calculateSpiritusGain(LivingEntity entity) {
         double modifier = (entity instanceof Animal) ? 2.0 : 0.5;
         return modifier * Math.min(15.0, entity.getMaxHealth());
     }

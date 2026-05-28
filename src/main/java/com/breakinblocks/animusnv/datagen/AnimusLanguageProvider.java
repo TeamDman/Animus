@@ -644,11 +644,11 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.sentient_bow.damage_bonus", "+%s Arrow Damage");
         add("tooltip.animusnv.sentient_bow.flavour", "A bow infused with demonic essence");
         add("tooltip.animusnv.sentient_bow.info", "Arrows gain power from Spiritus");
-        add("tooltip.animusnv.sentient_bow.will_drops", "Drops Spiritus matching your attuned type on kill");
+        add("tooltip.animusnv.sentient_bow.spiritus_drops", "Drops Spiritus matching your attuned type on kill");
         add("tooltip.animusnv.sentient_shield.flavour", "A shield powered by the will of demons");
         add("tooltip.animusnv.sentient_shield.raw", "Raw: Strength II (5s)");
-        add("tooltip.animusnv.sentient_shield.vengeful", "Vindicta: 30% damage reflect + Weakness (5s)");
-        add("tooltip.animusnv.sentient_shield.will_bonus", "+30% Spiritus gained while equipped");
+        add("tooltip.animusnv.sentient_shield.vindicta", "Vindicta: 30% damage reflect + Weakness (5s)");
+        add("tooltip.animusnv.sentient_shield.spiritus_bonus", "+30% Spiritus gained while equipped");
         add("tooltip.animusnv.sigil.active", "Status: Active");
         add("tooltip.animusnv.sigil.boundless_nature.flavour", "Channels Essentia Vitae into mana");
         add("tooltip.animusnv.sigil.boundless_nature.info", "EV-powered mana tablet for Botania tools, tiny buffer");
@@ -684,7 +684,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.sigil.monk.kill_bonus", "On kill: Resistance II (5s) + Regeneration (2s)");
         add("tooltip.animusnv.sigil.monk.mining", "Mine with the power of your fist");
         add("tooltip.animusnv.sigil.monk.soul_snare", "Applies Spiritus Snare II (2s) - guaranteed Spiritus drops");
-        add("tooltip.animusnv.sigil.monk.will_bonus", "Spiritus: +1-15%% max HP damage (scales 1-4096 Spiritus)");
+        add("tooltip.animusnv.sigil.monk.spiritus_bonus", "Spiritus: +1-15%% max HP damage (scales 1-4096 Spiritus)");
         add("tooltip.animusnv.sigil.remedium.active", "Status: Active");
         add("tooltip.animusnv.sigil.remedium.cost", "Removes negative effects once per second at the cost of EV");
         add("tooltip.animusnv.sigil.remedium.flavour", "Cleanses harmful effects");

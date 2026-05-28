@@ -42,16 +42,16 @@ public class SentientShieldEventHandler {
             return;
         }
 
-        SpiritusType willType = sentientShield.getCurrentType(shield);
-        double willAmount = NeoVitaeAPI.getInstance().getSpiritusHandler().getCurrentWill(
-            player.level(), player.blockPosition(), willType
+        SpiritusType spiritusType = sentientShield.getCurrentType(shield);
+        double spiritusAmount = NeoVitaeAPI.getInstance().getSpiritusHandler().getCurrentSpiritus(
+            player.level(), player.blockPosition(), spiritusType
         );
 
-        if (willAmount < 10.0) {
+        if (spiritusAmount < 10.0) {
             return;
         }
 
-        switch (willType) {
+        switch (spiritusType) {
             case RAW ->
                 player.addEffect(new MobEffectInstance(
                     MobEffects.DAMAGE_BOOST,

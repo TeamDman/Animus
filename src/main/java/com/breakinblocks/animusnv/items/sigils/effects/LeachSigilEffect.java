@@ -18,7 +18,7 @@ import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.will.ISpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.ISpiritusHandler;
 
 import java.util.Optional;
 
@@ -134,15 +134,15 @@ public record LeachSigilEffect() implements ISigilEffect {
                     1.0F
             );
 
-            // Generate corrosive Spiritus
+            // Generate Ruina Spiritus
             if (!level.isClientSide) {
-                double willToAdd = 0.3 + level.random.nextDouble() * 0.5;
-                ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
-                double currentWill = willHandler.getCurrentWill(level, player.blockPosition(), SpiritusType.RUINA);
-                double maxWill = 100;
-                double actualAdd = Math.min(willToAdd, maxWill - currentWill);
+                double spiritusToAdd = 0.3 + level.random.nextDouble() * 0.5;
+                ISpiritusHandler spiritusHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
+                double currentSpiritus = spiritusHandler.getCurrentSpiritus(level, player.blockPosition(), SpiritusType.RUINA);
+                double maxSpiritus = 100;
+                double actualAdd = Math.min(spiritusToAdd, maxSpiritus - currentSpiritus);
                 if (actualAdd > 0) {
-                    willHandler.addSpiritus(
+                    spiritusHandler.addSpiritus(
                             level,
                             player.blockPosition(),
                             SpiritusType.RUINA,

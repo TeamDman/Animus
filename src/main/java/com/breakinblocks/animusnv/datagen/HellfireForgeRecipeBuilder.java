@@ -17,11 +17,11 @@ import java.util.Optional;
 public class HellfireForgeRecipeBuilder {
     public static final int MAX_INGREDIENTS = 4;
 
-    protected double minWill;
-    protected double drainedWill;
+    protected double minSpiritus;
+    protected double drainedSpiritus;
     protected List<Ingredient> ingredients = new ArrayList<>();
     protected ItemStack result;
-    protected Optional<SpiritusType> willType = Optional.empty();
+    protected Optional<SpiritusType> spiritusType = Optional.empty();
 
     protected HellfireForgeRecipeBuilder(ItemStack result) {
         this.result = result;
@@ -65,11 +65,11 @@ public class HellfireForgeRecipeBuilder {
         return this;
     }
 
-    public HellfireForgeRecipeBuilder minWill(double minWill) {
-        if (minWill < 0) {
-            throw new IllegalArgumentException("minWill cannot be negative");
+    public HellfireForgeRecipeBuilder minSpiritus(double minSpiritus) {
+        if (minSpiritus < 0) {
+            throw new IllegalArgumentException("minSpiritus cannot be negative");
         }
-        this.minWill = minWill;
+        this.minSpiritus = minSpiritus;
         return this;
     }
 
@@ -77,12 +77,12 @@ public class HellfireForgeRecipeBuilder {
         if (drain < 0) {
             throw new IllegalArgumentException("drain cannot be negative");
         }
-        this.drainedWill = drain;
+        this.drainedSpiritus = drain;
         return this;
     }
 
-    public HellfireForgeRecipeBuilder requiredWillType(SpiritusType type) {
-        this.willType = Optional.of(type);
+    public HellfireForgeRecipeBuilder requiredSpiritusType(SpiritusType type) {
+        this.spiritusType = Optional.of(type);
         return this;
     }
 
@@ -90,7 +90,7 @@ public class HellfireForgeRecipeBuilder {
         if (ingredients.isEmpty()) {
             throw new IllegalStateException("ForgeRecipe must have at least one ingredient");
         }
-        ForgeRecipe recipe = new ForgeRecipe(minWill, drainedWill, ingredients, result, willType);
+        ForgeRecipe recipe = new ForgeRecipe(minSpiritus, drainedSpiritus, ingredients, result, spiritusType);
         output.accept(id.withPrefix("hellfire_forge/"), recipe, null);
     }
 }

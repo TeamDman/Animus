@@ -8,14 +8,14 @@ import com.breakinblocks.animusnv.items.ItemSpearSentient;
 import com.breakinblocks.animusnv.items.sigils.effects.FreeSoulSigilEffect;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import com.breakinblocks.animusnv.rituals.RitualEndlessGreed;
-import com.breakinblocks.animusnv.util.WillWeaponStats;
+import com.breakinblocks.animusnv.util.SpiritusWeaponStats;
 import com.breakinblocks.neovitae.common.datacomponent.AnointmentHolder;
 import com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding;
 import com.breakinblocks.neovitae.common.datacomponent.NVDataComponents;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
-import com.breakinblocks.neovitae.will.ISpiritus;
+import com.breakinblocks.neovitae.spiritus.ISpiritus;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.will.IPlayerSpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.IPlayerSpiritusHandler;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
@@ -199,14 +199,14 @@ public class AnimusEventHandler {
             return;
         }
 
-        handleSentientWeaponWillDrops(event);
+        handleSentientWeaponSpiritusDrops(event);
 
         if (RitualEndlessGreed.handleMobDrops(level, killedEntity.blockPosition(), event.getDrops())) {
             event.getDrops().clear();
         }
     }
 
-    private static void handleSentientWeaponWillDrops(LivingDropsEvent event) {
+    private static void handleSentientWeaponSpiritusDrops(LivingDropsEvent event) {
         LivingEntity killedEntity = event.getEntity();
         DamageSource source = event.getSource();
         Entity sourceEntity = source.getEntity();
@@ -214,32 +214,32 @@ public class AnimusEventHandler {
 
         if (directEntity instanceof EntityThrownSpear thrownSpear && "sentient".equals(thrownSpear.getVariant())) {
             if (sourceEntity instanceof Player player) {
-                SpiritusType willType = thrownSpear.getWillType();
-                int willLevel = Math.min(thrownSpear.getWillLevel(), 4);
+                SpiritusType spiritusType = thrownSpear.getSpiritusType();
+                int spiritusLevel = Math.min(thrownSpear.getSpiritusLevel(), 4);
                 int looting = getLootingLevel(player);
 
-                List<ItemStack> willDrops = generateSentientWillDrops(
-                    killedEntity, player, willType, willLevel, looting,
-                    WillWeaponStats.SOUL_DROP, WillWeaponStats.STATIC_DROP
+                List<ItemStack> spiritusDrops = generateSentientSpiritusDrops(
+                    killedEntity, player, spiritusType, spiritusLevel, looting,
+                    SpiritusWeaponStats.SOUL_DROP, SpiritusWeaponStats.STATIC_DROP
                 );
 
-                addWillDropsToPlayerOrWorld(player, killedEntity, willDrops, event.getDrops());
+                addSpiritusDropsToPlayerOrWorld(player, killedEntity, spiritusDrops, event.getDrops());
             }
             return;
         }
 
         if (directEntity instanceof EntitySentientArrow sentientArrow) {
             if (sourceEntity instanceof Player player) {
-                SpiritusType willType = sentientArrow.getWillType();
-                int willLevel = Math.min(sentientArrow.getWillLevel(), 4);
+                SpiritusType spiritusType = sentientArrow.getSpiritusType();
+                int spiritusLevel = Math.min(sentientArrow.getSpiritusLevel(), 4);
                 int looting = getLootingLevel(player);
 
-                List<ItemStack> willDrops = generateSentientWillDrops(
-                    killedEntity, player, willType, willLevel, looting,
-                    WillWeaponStats.SOUL_DROP, WillWeaponStats.STATIC_DROP
+                List<ItemStack> spiritusDrops = generateSentientSpiritusDrops(
+                    killedEntity, player, spiritusType, spiritusLevel, looting,
+                    SpiritusWeaponStats.SOUL_DROP, SpiritusWeaponStats.STATIC_DROP
                 );
 
-                addWillDropsToPlayerOrWorld(player, killedEntity, willDrops, event.getDrops());
+                addSpiritusDropsToPlayerOrWorld(player, killedEntity, spiritusDrops, event.getDrops());
             }
             return;
         }
@@ -248,11 +248,11 @@ public class AnimusEventHandler {
             ItemStack heldStack = player.getMainHandItem();
             if (heldStack.getItem() instanceof ItemSpearSentient sentientSpear) {
                 int looting = getLootingLevel(player);
-                List<ItemStack> willDrops = sentientSpear.getRandomSpiritusDrop(
+                List<ItemStack> spiritusDrops = sentientSpear.getRandomSpiritusDrop(
                     killedEntity, player, heldStack, looting
                 );
 
-                addWillDropsToPlayerOrWorld(player, killedEntity, willDrops, event.getDrops());
+                addSpiritusDropsToPlayerOrWorld(player, killedEntity, spiritusDrops, event.getDrops());
             }
         }
     }
@@ -270,11 +270,11 @@ public class AnimusEventHandler {
         return 0;
     }
 
-    private static List<ItemStack> generateSentientWillDrops(
+    private static List<ItemStack> generateSentientSpiritusDrops(
         LivingEntity killedEntity,
         Player attackingEntity,
-        SpiritusType willType,
-        int willLevel,
+        SpiritusType spiritusType,
+        int spiritusLevel,
         int looting,
         double[] soulDrop,
         double[] staticDrop
@@ -286,14 +286,14 @@ public class AnimusEventHandler {
             return soulList;
         }
 
-        double willModifier = killedEntity instanceof Slime ? 0.67 : 1;
+        double spiritusModifier = killedEntity instanceof Slime ? 0.67 : 1;
 
-        ISpiritus soul = WillWeaponStats.getSoulItem(willType);
+        ISpiritus soul = SpiritusWeaponStats.getSoulItem(spiritusType);
 
         for (int i = 0; i <= looting; i++) {
             if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
-                double dropAmount = willModifier * (soulDrop[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
-                    + staticDrop[willLevel]) * killedEntity.getMaxHealth() / 20.0;
+                double dropAmount = spiritusModifier * (soulDrop[spiritusLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
+                    + staticDrop[spiritusLevel]) * killedEntity.getMaxHealth() / 20.0;
                 ItemStack soulStack = soul.createSpiritus(dropAmount);
                 soulList.add(soulStack);
             }
@@ -305,19 +305,19 @@ public class AnimusEventHandler {
     /**
      * Add will drops directly to player's Spiritus Gem, drop excess as item entities.
      */
-    private static void addWillDropsToPlayerOrWorld(
+    private static void addSpiritusDropsToPlayerOrWorld(
         Player player,
         LivingEntity killedEntity,
-        List<ItemStack> willDrops,
+        List<ItemStack> spiritusDrops,
         Collection<ItemEntity> existingDrops
     ) {
-        if (willDrops.isEmpty()) {
+        if (spiritusDrops.isEmpty()) {
             return;
         }
 
-        IPlayerSpiritusHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
-        for (ItemStack willStack : willDrops) {
-            ItemStack remainder = playerWill.addSpiritus(player, willStack);
+        IPlayerSpiritusHandler playerSpiritus = NeoVitaeAPI.getInstance().getPlayerSpiritusHandler();
+        for (ItemStack spiritusStack : spiritusDrops) {
+            ItemStack remainder = playerSpiritus.addSpiritus(player, spiritusStack);
 
             if (!remainder.isEmpty()) {
                 SpiritusType pickupType = ((ISpiritus) remainder.getItem()).getType(remainder);

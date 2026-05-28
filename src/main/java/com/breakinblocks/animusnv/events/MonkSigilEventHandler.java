@@ -37,16 +37,16 @@ import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.animusnv.util.InventorySearchHelper;
 import javax.annotation.Nullable;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
-import com.breakinblocks.neovitae.api.will.IPlayerSpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.IPlayerSpiritusHandler;
 
 @EventBusSubscriber(modid = Constants.Mod.MODID)
 public class MonkSigilEventHandler {
 
-    private static final double MIN_WILL_FOR_EXECUTE = 1.0;
-    private static final double MAX_WILL_FOR_EXECUTE = 4096.0;
+    private static final double MIN_SPIRITUS_FOR_EXECUTE = 1.0;
+    private static final double MAX_SPIRITUS_FOR_EXECUTE = 4096.0;
     private static final double MIN_EXECUTE_PERCENT = 0.01; // 1%
     private static final double MAX_EXECUTE_PERCENT = 0.15; // 15%
-    private static final double WILL_COST_PER_EXECUTE = 5.0;
+    private static final double SPIRITUS_COST_PER_EXECUTE = 5.0;
     private static final int EV_REWARD_PER_EXECUTE = 200;
     private static final int EV_COST_PER_ACTION = 5;
 
@@ -98,19 +98,19 @@ public class MonkSigilEventHandler {
         float targetMaxHealth = target.getMaxHealth();
         float baseDamage = event.getAmount() + (float) unarmedDamage;
 
-        double totalWill = getTotalSpiritus(player);
+        double totalSpiritus = getTotalSpiritus(player);
 
         double executePercent = 0;
-        float willBonusDamage = 0;
+        float spiritusBonusDamage = 0;
 
-        if (totalWill >= MIN_WILL_FOR_EXECUTE) {
-            double clampedWill = Math.min(totalWill, MAX_WILL_FOR_EXECUTE);
-            double willRatio = (clampedWill - MIN_WILL_FOR_EXECUTE) / (MAX_WILL_FOR_EXECUTE - MIN_WILL_FOR_EXECUTE);
-            executePercent = MIN_EXECUTE_PERCENT + willRatio * (MAX_EXECUTE_PERCENT - MIN_EXECUTE_PERCENT);
-            willBonusDamage = (float) (targetMaxHealth * executePercent);
+        if (totalSpiritus >= MIN_SPIRITUS_FOR_EXECUTE) {
+            double clampedSpiritus = Math.min(totalSpiritus, MAX_SPIRITUS_FOR_EXECUTE);
+            double spiritusRatio = (clampedSpiritus - MIN_SPIRITUS_FOR_EXECUTE) / (MAX_SPIRITUS_FOR_EXECUTE - MIN_SPIRITUS_FOR_EXECUTE);
+            executePercent = MIN_EXECUTE_PERCENT + spiritusRatio * (MAX_EXECUTE_PERCENT - MIN_EXECUTE_PERCENT);
+            spiritusBonusDamage = (float) (targetMaxHealth * executePercent);
         }
 
-        float totalDamage = baseDamage + willBonusDamage;
+        float totalDamage = baseDamage + spiritusBonusDamage;
         event.setAmount(totalDamage);
 
         float healthAfterAttack = target.getHealth() - totalDamage;
@@ -119,8 +119,8 @@ public class MonkSigilEventHandler {
         MonkSigilEffect.consumeEV(player, monkSigil, EV_COST_PER_ACTION);
 
         if (executePercent > 0 && healthAfterAttack > 0 && healthAfterAttack < executeThreshold) {
-            if (totalWill >= WILL_COST_PER_EXECUTE) {
-                consumeSpiritus(player, WILL_COST_PER_EXECUTE);
+            if (totalSpiritus >= SPIRITUS_COST_PER_EXECUTE) {
+                consumeSpiritus(player, SPIRITUS_COST_PER_EXECUTE);
 
                 event.setAmount(targetMaxHealth * 2);
                 player.level().playSound(
@@ -378,16 +378,16 @@ public class MonkSigilEventHandler {
     }
 
     private static double getTotalSpiritus(Player player) {
-        IPlayerSpiritusHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
+        IPlayerSpiritusHandler playerSpiritus = NeoVitaeAPI.getInstance().getPlayerSpiritusHandler();
         double total = 0;
         for (SpiritusType type : SpiritusType.values()) {
-            total += playerWill.getTotalSpiritus(type, player);
+            total += playerSpiritus.getTotalSpiritus(type, player);
         }
         return total;
     }
 
     private static void consumeSpiritus(Player player, double amount) {
-        IPlayerSpiritusHandler playerWill = NeoVitaeAPI.getInstance().getPlayerWillHandler();
+        IPlayerSpiritusHandler playerSpiritus = NeoVitaeAPI.getInstance().getPlayerSpiritusHandler();
         double remaining = amount;
 
         // Prefer Raw Spiritus first, then other types
@@ -402,10 +402,10 @@ public class MonkSigilEventHandler {
         for (SpiritusType type : preferredOrder) {
             if (remaining <= 0) break;
 
-            double available = playerWill.getTotalSpiritus(type, player);
+            double available = playerSpiritus.getTotalSpiritus(type, player);
             if (available > 0) {
                 double toConsume = Math.min(remaining, available);
-                playerWill.consumeSpiritus(type, player, toConsume);
+                playerSpiritus.consumeSpiritus(type, player, toConsume);
                 remaining -= toConsume;
             }
         }

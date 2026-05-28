@@ -11,7 +11,7 @@ import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.api.soul.IAnima;
-import com.breakinblocks.neovitae.will.ISpiritusGem;
+import com.breakinblocks.neovitae.spiritus.ISpiritusGem;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -92,11 +92,11 @@ public class AnimusCommands {
         try {
             type = SpiritusType.valueOf(typeStr.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
-            context.getSource().sendFailure(Component.literal("Invalid will type: " + typeStr
-                    + ". Valid types: default, corrosive, destructive, vengeful, steadfast"));
+            context.getSource().sendFailure(Component.literal("Invalid spiritus type: " + typeStr
+                    + ". Valid types: " + String.join(", ", WILL_TYPE_NAMES)));
             return 0;
         }
-        NeoVitaeAPI.getInstance().getSpiritusHandler().fillWillToAmount(
+        NeoVitaeAPI.getInstance().getSpiritusHandler().fillSpiritusToAmount(
                 player.serverLevel(), player.blockPosition(), type, 100.0);
         String displayName = type.name().toLowerCase(Locale.ROOT);
         context.getSource().sendSuccess(() -> Component.translatable(
@@ -114,8 +114,8 @@ public class AnimusCommands {
 
         // Fill all will types to max
         for (SpiritusType type : SpiritusType.values()) {
-            int maxWill = gem.getMaxSpiritus(type, stack);
-            gem.setSpiritus(type, stack, maxWill);
+            int maxSpiritus = gem.getMaxSpiritus(type, stack);
+            gem.setSpiritus(type, stack, maxSpiritus);
         }
 
         context.getSource().sendSuccess(() -> Component.translatable(

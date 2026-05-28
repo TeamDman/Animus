@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.will.ISpiritusHandler;
+import com.breakinblocks.neovitae.api.spiritus.ISpiritusHandler;
 
 /**
  * Block Entity for Blood Core
@@ -46,13 +46,13 @@ public class BlockEntityBloodCore extends BlockEntity {
 
         delayCounter--;
         if (delayCounter <= 0) {
-            ISpiritusHandler willHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
-            double corrosiveWill = willHandler.getCurrentWill(level, worldPosition, SpiritusType.RUINA);
+            ISpiritusHandler spiritusHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
+            double ruinaSpiritus = spiritusHandler.getCurrentSpiritus(level, worldPosition, SpiritusType.RUINA);
 
             int baseTimer = AnimusConfig.bloodCore.treeSpreadInterval.get();
-            // More corrosive will = slower growth (up to 2x slower at 100+ will)
-            double willMultiplier = 1.0 + Math.min(corrosiveWill / 100.0, 1.0);
-            delayCounter = (int)(baseTimer * willMultiplier);
+            // More Ruina Spiritus = slower growth (up to 2x slower at 100+ Spiritus)
+            double spiritusMultiplier = 1.0 + Math.min(ruinaSpiritus / 100.0, 1.0);
+            delayCounter = (int)(baseTimer * spiritusMultiplier);
 
             if (AnimusConfig.bloodCore.debug.get()) {
                 Animus.LOGGER.debug("Blood Core at {} timer expired. Spreading: {}, Next interval: {} ticks",

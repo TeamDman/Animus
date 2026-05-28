@@ -41,7 +41,7 @@ public class SentientShieldEntry extends EntryProvider {
                 + "- [#](2E8B57)Ruina:[#]() Attackers take damage\n\n"
                 + "- [#](B8860B)Vindicta:[#]() Reflect damage back at attackers");
 
-        this.page("will_bonus", () -> BookTextPageModel.create()
+        this.page("spiritus_bonus", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Spiritus Gain Bonus");

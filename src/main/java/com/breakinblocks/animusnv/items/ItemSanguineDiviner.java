@@ -26,11 +26,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.ModList;
+import com.breakinblocks.animusnv.util.AltarTierLookup;
 import com.breakinblocks.neovitae.api.altar.rune.IAltarRuneType;
 import com.breakinblocks.neovitae.common.block.NVBlocks;
 import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
 import com.breakinblocks.neovitae.common.tag.NVTags;
 import com.breakinblocks.neovitae.common.registry.AltarComponent;
+import com.breakinblocks.neovitae.common.registry.AltarTier;
 import com.breakinblocks.neovitae.common.structure.NVMultiblock;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 import com.breakinblocks.neovitae.ritual.Ritual;
@@ -39,6 +41,7 @@ import com.breakinblocks.neovitae.util.AltarUtil;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -207,22 +210,20 @@ public class ItemSanguineDiviner extends Item {
 
                 // Keep building tiers until we hit max or can't place any more blocks
                 while (true) {
-                    int nextTier = currentTier + 1;
-
-                    // Check if there's a next tier
-                    if (nextTier >= NVMultiblock.TIER_LIST.length || NVMultiblock.TIER_LIST[nextTier] == null) {
+                    Optional<AltarTier> next = AltarTierLookup.findNextTier(level.registryAccess(), currentTier);
+                    if (next.isEmpty()) {
                         break;
                     }
 
-                    int placedCount = autoPlaceUpgradeBlocks(player, level, pos, nextTier);
+                    AltarTier nextDef = next.get();
+                    int placedCount = autoPlaceUpgradeBlocks(player, level, pos, nextDef);
                     totalPlacedCount += placedCount;
 
                     if (placedCount > 0) {
-                        highestTierBuilt = nextTier;
+                        highestTierBuilt = nextDef.tier();
                     }
 
-                    // Move to next tier and continue
-                    currentTier = nextTier;
+                    currentTier = nextDef.tier();
                 }
 
                 if (totalPlacedCount > 0) {
@@ -243,7 +244,7 @@ public class ItemSanguineDiviner extends Item {
                         1.0F,
                         1.0F
                     );
-                } else if (tierLevel + 1 >= NVMultiblock.TIER_LIST.length || NVMultiblock.TIER_LIST[tierLevel + 1] == null) {
+                } else if (AltarTierLookup.findNextTier(level.registryAccess(), tierLevel).isEmpty()) {
                     player.displayClientMessage(
                         Component.translatable("text.component.animusnv.diviner.max_tier")
                             .withStyle(ChatFormatting.GOLD),
@@ -286,9 +287,9 @@ public class ItemSanguineDiviner extends Item {
             // Show altar multipliers
             displayAltarMultipliers(player, altar);
 
-            int nextTier = tierLevel + 1;
-            if (nextTier < NVMultiblock.TIER_LIST.length && NVMultiblock.TIER_LIST[nextTier] != null) {
-                int nextDisplayTier = nextTier + 1;
+            Optional<AltarTier> nextTier = AltarTierLookup.findNextTier(level.registryAccess(), tierLevel);
+            if (nextTier.isPresent()) {
+                int nextDisplayTier = nextTier.get().tier() + 1;
                 player.displayClientMessage(
                     Component.translatable("text.component.animusnv.diviner.sneak_to_build", nextDisplayTier)
                         .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC),
@@ -318,22 +319,8 @@ public class ItemSanguineDiviner extends Item {
         return InteractionResult.PASS;
     }
 
-    /**
-     * Attempts to auto-place upgrade blocks for the next tier from the player's inventory.
-     * In creative mode, places default blocks even without inventory items.
-     *
-     * @param player    The player
-     * @param level     The world
-     * @param altarPos  Position of the Ara Vitae
-     * @param nextTier  The tier to build towards
-     * @return Number of blocks placed
-     */
-    private int autoPlaceUpgradeBlocks(Player player, Level level, BlockPos altarPos, int nextTier) {
-        if (nextTier >= NVMultiblock.TIER_LIST.length || NVMultiblock.TIER_LIST[nextTier] == null) {
-            return 0;
-        }
-
-        List<AltarComponent> components = NVMultiblock.TIER_LIST[nextTier].components();
+    private int autoPlaceUpgradeBlocks(Player player, Level level, BlockPos altarPos, AltarTier nextTier) {
+        List<AltarComponent> components = nextTier.components();
         int placedCount = 0;
         boolean isCreative = player.isCreative();
 

@@ -5,6 +5,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import java.lang.reflect.Method;
+
 /**
  * Helper class for integrating with Malum's spirit harvesting system
  * Uses reflection to avoid hard dependencies on Malum classes
@@ -12,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 public class SpiritHarvestHelper {
 
     private static boolean apiChecked = false;
-    private static java.lang.reflect.Method spawnSpiritsMethod = null;
+    private static Method spawnSpiritsMethod = null;
 
     public static void harvestSpirits(LivingEntity target, Player attacker, ItemStack weapon) {
         if (!apiChecked) {

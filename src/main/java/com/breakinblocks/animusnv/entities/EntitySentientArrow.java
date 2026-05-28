@@ -1,7 +1,7 @@
 package com.breakinblocks.animusnv.entities;
 
 import com.breakinblocks.animusnv.items.ItemSentientBow;
-import com.breakinblocks.animusnv.util.WillWeaponStats;
+import com.breakinblocks.animusnv.util.SpiritusWeaponStats;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -28,15 +28,15 @@ import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
  * - Applies status effects based on will type
  */
 public class EntitySentientArrow extends AbstractArrow {
-    private static final EntityDataAccessor<String> ID_WILL_TYPE =
+    private static final EntityDataAccessor<String> ID_SPIRITUS_TYPE =
         SynchedEntityData.defineId(EntitySentientArrow.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<Integer> ID_WILL_LEVEL =
+    private static final EntityDataAccessor<Integer> ID_SPIRITUS_LEVEL =
         SynchedEntityData.defineId(EntitySentientArrow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> ID_BONUS_DAMAGE =
         SynchedEntityData.defineId(EntitySentientArrow.class, EntityDataSerializers.FLOAT);
 
     private static final int[] poisonTime = ItemSentientBow.poisonTime;
-    private static final int[] poisonLevel = WillWeaponStats.POISON_LEVEL;
+    private static final int[] poisonLevel = SpiritusWeaponStats.POISON_LEVEL;
     private static final int[] slowTime = ItemSentientBow.slowTime;
     private static final int[] slowLevel = ItemSentientBow.slowLevel;
 
@@ -53,29 +53,29 @@ public class EntitySentientArrow extends AbstractArrow {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(ID_WILL_TYPE, SpiritusType.RAW.toString());
-        builder.define(ID_WILL_LEVEL, 0);
+        builder.define(ID_SPIRITUS_TYPE, SpiritusType.RAW.toString());
+        builder.define(ID_SPIRITUS_LEVEL, 0);
         builder.define(ID_BONUS_DAMAGE, 0.0F);
     }
 
-    public void setWillType(SpiritusType type) {
-        this.entityData.set(ID_WILL_TYPE, type.toString());
+    public void setSpiritusType(SpiritusType type) {
+        this.entityData.set(ID_SPIRITUS_TYPE, type.toString());
     }
 
-    public SpiritusType getWillType() {
+    public SpiritusType getSpiritusType() {
         try {
-            return SpiritusType.valueOf(this.entityData.get(ID_WILL_TYPE).toUpperCase());
+            return SpiritusType.valueOf(this.entityData.get(ID_SPIRITUS_TYPE).toUpperCase());
         } catch (IllegalArgumentException e) {
             return SpiritusType.RAW;
         }
     }
 
-    public void setWillLevel(int level) {
-        this.entityData.set(ID_WILL_LEVEL, level);
+    public void setSpiritusLevel(int level) {
+        this.entityData.set(ID_SPIRITUS_LEVEL, level);
     }
 
-    public int getWillLevel() {
-        return this.entityData.get(ID_WILL_LEVEL);
+    public int getSpiritusLevel() {
+        return this.entityData.get(ID_SPIRITUS_LEVEL);
     }
 
     public void setBonusDamage(double damage) {
@@ -99,11 +99,11 @@ public class EntitySentientArrow extends AbstractArrow {
 
         if (entity instanceof LivingEntity target && !this.level().isClientSide) {
             Entity owner = this.getOwner();
-            SpiritusType willType = this.getWillType();
-            int willLevel = Math.min(this.getWillLevel(), 4);
+            SpiritusType spiritusType = this.getSpiritusType();
+            int spiritusLevel = Math.min(this.getSpiritusLevel(), 4);
 
-            // Will drops handled by AnimusEventHandler.handleSentientWeaponWillDrops()
-            applyWillEffects(target, willType, willLevel, owner instanceof LivingEntity ? (LivingEntity) owner : null);
+            // Spiritus drops handled by AnimusEventHandler.handleSentientWeaponSpiritusDrops()
+            applySpiritusEffects(target, spiritusType, spiritusLevel, owner instanceof LivingEntity ? (LivingEntity) owner : null);
         }
 
         if (!this.level().isClientSide) {
@@ -120,8 +120,8 @@ public class EntitySentientArrow extends AbstractArrow {
         }
     }
 
-    private void applyWillEffects(LivingEntity target, SpiritusType willType, int level, LivingEntity attacker) {
-        switch (willType) {
+    private void applySpiritusEffects(LivingEntity target, SpiritusType spiritusType, int level, LivingEntity attacker) {
+        switch (spiritusType) {
             case RUINA:
                 target.addEffect(new MobEffectInstance(
                     MobEffects.POISON,
@@ -186,11 +186,11 @@ public class EntitySentientArrow extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("WillType", 8)) {
-            this.entityData.set(ID_WILL_TYPE, tag.getString("WillType"));
+        if (tag.contains("SpiritusType", 8)) {
+            this.entityData.set(ID_SPIRITUS_TYPE, tag.getString("SpiritusType"));
         }
-        if (tag.contains("WillLevel", 3)) {
-            this.entityData.set(ID_WILL_LEVEL, tag.getInt("WillLevel"));
+        if (tag.contains("SpiritusLevel", 3)) {
+            this.entityData.set(ID_SPIRITUS_LEVEL, tag.getInt("SpiritusLevel"));
         }
         if (tag.contains("BonusDamage", 5)) {
             this.entityData.set(ID_BONUS_DAMAGE, tag.getFloat("BonusDamage"));
@@ -200,8 +200,8 @@ public class EntitySentientArrow extends AbstractArrow {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("WillType", this.entityData.get(ID_WILL_TYPE));
-        tag.putInt("WillLevel", this.entityData.get(ID_WILL_LEVEL));
+        tag.putString("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE));
+        tag.putInt("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL));
         tag.putFloat("BonusDamage", this.entityData.get(ID_BONUS_DAMAGE));
     }
 

@@ -47,11 +47,11 @@ public class ItemSentientShield extends ShieldItem {
                 tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_RAW)
                     .withStyle(ChatFormatting.GOLD));
             } else if (type == SpiritusType.VINDICTA) {
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_VENGEFUL)
+                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_VINDICTA)
                     .withStyle(ChatFormatting.GOLD));
             }
 
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_WILL_BONUS)
+            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_SPIRITUS_BONUS)
                 .withStyle(ChatFormatting.GREEN));
         }
 
@@ -87,7 +87,7 @@ public class ItemSentientShield extends ShieldItem {
     }
 
     /** 1.3 = 30% bonus will gain while equipped */
-    public double getWillGainMultiplier() {
+    public double getSpiritusGainMultiplier() {
         return 1.3;
     }
 

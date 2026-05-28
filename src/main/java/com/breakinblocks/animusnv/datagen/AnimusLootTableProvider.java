@@ -3,6 +3,7 @@ package com.breakinblocks.animusnv.datagen;
 import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.breakinblocks.animusnv.registry.AnimusItems;
+import net.neoforged.fml.ModList;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -75,7 +76,7 @@ public class AnimusLootTableProvider extends LootTableProvider {
 
             this.dropSelf(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get());
             // EvilCraft compat block (registered in EvilCraftCompat)
-            if (net.neoforged.fml.ModList.get().isLoaded("evilcraft")) {
+            if (ModList.get().isLoaded("evilcraft")) {
                 this.dropSelf(EvilCraftCompat.SANGUINE_RECTIFIER.get());
             }
 

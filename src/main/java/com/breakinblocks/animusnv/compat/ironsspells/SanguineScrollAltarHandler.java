@@ -6,6 +6,7 @@ import com.breakinblocks.animusnv.compat.IronsSpellsCompat;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
 import io.redspace.ironsspellbooks.api.spells.SpellData;
+import io.redspace.ironsspellbooks.api.spells.SpellRarity;
 import io.redspace.ironsspellbooks.item.Scroll;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -160,7 +161,7 @@ public class SanguineScrollAltarHandler {
         event.setCanceled(true); // Prevent altar GUI from opening
     }
 
-    private static int getEVCostForRarity(io.redspace.ironsspellbooks.api.spells.SpellRarity rarity) {
+    private static int getEVCostForRarity(SpellRarity rarity) {
         return switch (rarity) {
             case COMMON -> COMMON_EV;
             case UNCOMMON -> UNCOMMON_EV;

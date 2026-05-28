@@ -3,7 +3,7 @@ package com.breakinblocks.animusnv.items;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.entities.EntityThrownSpear;
 import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
-import com.breakinblocks.animusnv.util.WillWeaponStats;
+import com.breakinblocks.animusnv.util.SpiritusWeaponStats;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -34,7 +34,7 @@ import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.item.NVItems;
 import com.breakinblocks.neovitae.common.item.soul.SpiritusTooltipHelper;
-import com.breakinblocks.neovitae.will.ISpiritus;
+import com.breakinblocks.neovitae.spiritus.ISpiritus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +52,10 @@ public class ItemSpearSentient extends ItemSpear {
     public static final double[] steadfastDamageAdded = new double[]{0.5, 1.0, 2.0, 3.0, 4.0};
 
     // Attack speed modifiers (spear-specific)
-    public static final double[] vengefulAttackSpeed = new double[]{-2.0, -1.8, -1.6, -1.4, -1.2};
-    public static final double[] destructiveAttackSpeed = new double[]{-2.6, -2.7, -2.8, -2.9, -3.0};
+    public static final double[] vindictaAttackSpeed = new double[]{-2.0, -1.8, -1.6, -1.4, -1.2};
+    public static final double[] nihilumAttackSpeed = new double[]{-2.6, -2.7, -2.8, -2.9, -3.0};
 
-    // Movement speed for vengeful (spear-specific)
+    // Movement speed for Vindicta (spear-specific)
     public static final double[] movementSpeed = new double[]{0.05, 0.1, 0.15, 0.2, 0.3};
 
     // Effect durations - poisonTime differs from bow, so kept here
@@ -85,7 +85,7 @@ public class ItemSpearSentient extends ItemSpear {
     }
 
     public static int getLevel(ItemStack stack, double soulsRemaining) {
-        return WillWeaponStats.getLevel(soulsRemaining);
+        return SpiritusWeaponStats.getLevel(soulsRemaining);
     }
 
     public static double getDamageAdded(SpiritusType type, int level) {
@@ -101,8 +101,8 @@ public class ItemSpearSentient extends ItemSpear {
     public static double getAttackSpeed(SpiritusType type, int level) {
         level = Math.min(level, 4);
         return switch (type) {
-            case NIHILUM -> destructiveAttackSpeed[level];
-            case VINDICTA -> vengefulAttackSpeed[level];
+            case NIHILUM -> nihilumAttackSpeed[level];
+            case VINDICTA -> vindictaAttackSpeed[level];
             default -> -2.4;
         };
     }
@@ -118,7 +118,7 @@ public class ItemSpearSentient extends ItemSpear {
                     target.addEffect(new MobEffectInstance(
                         MobEffects.WITHER,
                         poisonTime[level],
-                        WillWeaponStats.POISON_LEVEL[level]
+                        SpiritusWeaponStats.POISON_LEVEL[level]
                     ));
                 }
                 break;
@@ -151,13 +151,13 @@ public class ItemSpearSentient extends ItemSpear {
             Level level = player.level();
             SpiritusType type = getCurrentType(stack);
             double soulsRemaining = getTotalSpiritusOfType(player, type);
-            int willLevel = getLevel(stack, soulsRemaining);
+            int spiritusLevel = getLevel(stack, soulsRemaining);
 
-                applyEffectToEntity(type, willLevel, target, attacker);
+                applyEffectToEntity(type, spiritusLevel, target, attacker);
 
             // Will drops handled by getRandomSpiritusDrop()
             if (soulsRemaining >= 16.0) {
-                drainSpiritusFromPlayer(player, type, soulDrainPerSwing[Math.min(willLevel, 4)]);
+                drainSpiritusFromPlayer(player, type, soulDrainPerSwing[Math.min(spiritusLevel, 4)]);
             }
         }
 
@@ -177,13 +177,13 @@ public class ItemSpearSentient extends ItemSpear {
                             // Get will type and level before spawning
                             SpiritusType type = getCurrentType(stack);
                             double soulsRemaining = getTotalSpiritusOfType(player, type);
-                            int willLevel = getLevel(stack, soulsRemaining);
+                            int spiritusLevel = getLevel(stack, soulsRemaining);
 
                             // Spawn sentient spear entity
                             EntityThrownSpear thrownSpear = new EntityThrownSpear(level, player, stack);
                             thrownSpear.setVariant("sentient");
-                            thrownSpear.setWillType(type);
-                            thrownSpear.setWillLevel(willLevel);
+                            thrownSpear.setSpiritusType(type);
+                            thrownSpear.setSpiritusLevel(spiritusLevel);
                             thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
                             if (player.getAbilities().instabuild) {
                                 thrownSpear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
@@ -198,7 +198,7 @@ public class ItemSpearSentient extends ItemSpear {
 
                             if (soulsRemaining >= 16.0) {
                                 // Double will drain for throwing vs melee
-                                drainSpiritusFromPlayer(player, type, soulDrainPerSwing[Math.min(willLevel, 4)] * 2.0);
+                                drainSpiritusFromPlayer(player, type, soulDrainPerSwing[Math.min(spiritusLevel, 4)] * 2.0);
                             }
                         }
                     }
@@ -238,7 +238,7 @@ public class ItemSpearSentient extends ItemSpear {
             return soulList;
         }
 
-        double willModifier = killedEntity instanceof Slime ? 0.67 : 1;
+        double spiritusModifier = killedEntity instanceof Slime ? 0.67 : 1;
 
         SpiritusType type = this.getCurrentType(stack);
         ISpiritus soul = switch (type) {
@@ -253,12 +253,12 @@ public class ItemSpearSentient extends ItemSpear {
         if (attackingEntity instanceof Player player) {
             soulsRemaining = getTotalSpiritusOfType(player, type);
         }
-        int willLevel = Math.min(getLevel(stack, soulsRemaining), 4);
+        int spiritusLevel = Math.min(getLevel(stack, soulsRemaining), 4);
 
         for (int i = 0; i <= looting; i++) {
             if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
-                double dropAmount = willModifier * (WillWeaponStats.SOUL_DROP[willLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
-                    + WillWeaponStats.STATIC_DROP[willLevel]) * killedEntity.getMaxHealth() / 20.0;
+                double dropAmount = spiritusModifier * (SpiritusWeaponStats.SOUL_DROP[spiritusLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
+                    + SpiritusWeaponStats.STATIC_DROP[spiritusLevel]) * killedEntity.getMaxHealth() / 20.0;
                 ItemStack soulStack = soul.createSpiritus(dropAmount);
                 soulList.add(soulStack);
             }
