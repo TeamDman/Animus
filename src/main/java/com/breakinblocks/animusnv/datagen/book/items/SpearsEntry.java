@@ -64,7 +64,7 @@ public class SpearsEntry extends EntryProvider {
                 + "- AOE melee damage (5 block radius)\n\n"
                 + "- Enemies near an Ara Vitae are sacrificed (instant kill + EV to altar)\n\n"
                 + "- Unbreakable and fireproof\\\n\\\n"
-                + "[#](4A0080)The ultimate weapon of Vitaemancy.[#]()");
+                + "[#](4A0080)A capstone weapon for Vitaemancy.[#]()");
     }
 
     @Override

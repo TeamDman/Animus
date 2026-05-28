@@ -20,7 +20,7 @@ public class SteadfastHeartEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Ritual of the Steadfast Heart");
-        this.pageText("Fortify your allies. The [#](4A0080)Ritual of the Steadfast Heart[#]() grants increasingly powerful [#](4A0080)Absorption[#]() effects to all nearby players, providing extra health that regenerates over time. It can also buff players remotely through bound orbs of vitae."
+        this.pageText("Fortify your allies. The [#](4A0080)Ritual of the Steadfast Heart[#]() grants escalating [#](4A0080)Absorption[#]() effects to all nearby players, providing extra health that regenerates over time. It can also buff players remotely through bound orbs of vitae."
                 + "\\\n\\\nConstruct this circle using a [#](8B0000)Ritual Diviner[#]().");
 
         this.page("costs", () -> BookTextPageModel.create()

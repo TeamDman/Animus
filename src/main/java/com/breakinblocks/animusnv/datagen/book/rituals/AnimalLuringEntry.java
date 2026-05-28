@@ -8,9 +8,9 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.item.Items;
 
-public class PeacefulBeckoningEntry extends EntryProvider {
+public class AnimalLuringEntry extends EntryProvider {
 
-    public PeacefulBeckoningEntry(CategoryProviderBase parent) {
+    public AnimalLuringEntry(CategoryProviderBase parent) {
         super(parent);
     }
 
@@ -19,8 +19,8 @@ public class PeacefulBeckoningEntry extends EntryProvider {
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Ritual of Peaceful Beckoning");
-        this.pageText("You call forth peaceful creatures from the ether. The [#](4A0080)Ritual of Peaceful Beckoning[#]() spawns passive mobs in the area around the [#](8B0000)Master Ritual Stone[#](), perfect for populating farms or filling the world with life."
+        this.pageTitle("Ritual of Animal Luring");
+        this.pageText("You call forth peaceful creatures from the ether. The [#](4A0080)Ritual of Animal Luring[#]() spawns passive mobs in the area around the [#](8B0000)Master Ritual Stone[#](), useful for populating farms or seeding the world with life."
                 + "\\\n\\\nConstruct this circle using a [#](8B0000)Ritual Diviner[#]().");
 
         this.page("costs", () -> BookTextPageModel.create()
@@ -37,7 +37,7 @@ public class PeacefulBeckoningEntry extends EntryProvider {
 
     @Override
     protected String entryName() {
-        return "Ritual of Peaceful Beckoning";
+        return "Ritual of Animal Luring";
     }
 
     @Override
@@ -57,6 +57,6 @@ public class PeacefulBeckoningEntry extends EntryProvider {
 
     @Override
     protected String entryId() {
-        return "peaceful_beckoning";
+        return "animal_luring";
     }
 }

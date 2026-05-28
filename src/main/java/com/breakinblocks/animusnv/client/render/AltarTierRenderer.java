@@ -167,7 +167,7 @@ public class AltarTierRenderer {
      * Animus retains explicit textures for the vanilla NV capstone/structural tags so the
      * preview looks familiar in the default layout. For any other component (pack-custom
      * tags, exact-block references), the texture is derived from the first datapack-valid
-     * block's particle icon — see {@link NVMultiblock#getDisplayStates}.
+     * block's particle icon; see {@link NVMultiblock#getDisplayStates}.
      */
     private static ResourceLocation getComponentTexture(AltarComponent component, Level level) {
         if (component.material().tag()) {

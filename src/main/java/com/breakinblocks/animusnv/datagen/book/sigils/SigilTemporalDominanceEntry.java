@@ -30,7 +30,7 @@ public class SigilTemporalDominanceEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Sigil of Temporal Dominance");
         this.pageText("A sigil that accelerates time for block entities. Furnaces smelt faster, crops "
-                + "grow more quickly, and machines process at incredible speeds, all bent to your will "
+                + "grow more quickly, and machines process at up to 32x normal speed, all bent to your will "
                 + "through the expenditure of [#](4A0080)Essentia Vitae[#]().");
 
         this.page("usage", () -> BookTextPageModel.create()

@@ -390,7 +390,7 @@ public class ItemSanguineDiviner extends Item {
      * brand-new tier, the preference falls through to whatever the datapack says is valid.
      */
     private Block getDefaultBlockForComponent(AltarComponent component, Level level) {
-        // Animus-preferred blocks for the vanilla NV capstone tags — only honoured if the
+        // Animus-preferred blocks for the vanilla NV capstone tags; only honoured if the
         // datapack still considers them valid for this slot.
         Block preferred = null;
         if (component.material().tag()) {
@@ -413,7 +413,7 @@ public class ItemSanguineDiviner extends Item {
             return preferred;
         }
 
-        // Datapack-resolved fallback — works for arbitrary pack-defined tags and exact blocks.
+        // Datapack-resolved fallback; works for arbitrary pack-defined tags and exact blocks.
         List<BlockState> displayStates = NVMultiblock.getDisplayStates(component, level.registryAccess());
         if (!displayStates.isEmpty()) {
             return displayStates.get(0).getBlock();

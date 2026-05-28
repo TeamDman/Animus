@@ -29,7 +29,7 @@ public class SigilFreeSoulEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Sigil of the Free Soul");
-        this.pageText("A powerful protective sigil that grants temporary [#](4A0080)spectator mode[#]() and "
+        this.pageText("A protective sigil that grants temporary [#](4A0080)spectator mode[#]() and "
                 + "can prevent death outright. It functions as a reusable Totem of Undying, powered by "
                 + "your reserves of [#](4A0080)Essentia Vitae[#]().");
 

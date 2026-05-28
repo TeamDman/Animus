@@ -16,7 +16,7 @@ public class RitualsCategory extends CategoryProvider {
         return new String[]{
                 "__a_b_c_d_e_f______",
                 "____________________",
-                "__g_h_i_j_k_l______",
+                "__g_h_i_j_k________",
                 "____________________",
                 "__m_n_o_p_q________"
         };
@@ -25,7 +25,7 @@ public class RitualsCategory extends CategoryProvider {
     @Override
     protected void generateEntries() {
         // Basic rituals (no dusk stones)
-        var peacefulBeckoning = this.add(new PeacefulBeckoningEntry(this).generate('a'));
+        var animalLuring = this.add(new AnimalLuringEntry(this).generate('a'));
         var naturesLeach = this.add(new NaturesLeachEntry(this).generate('b'));
         var entropy = this.add(new EntropyEntry(this).generate('c'));
         var sol = this.add(new SolEntry(this).generate('d'));
@@ -37,7 +37,6 @@ public class RitualsCategory extends CategoryProvider {
         var siphon = this.add(new SiphonEntry(this).generate('i'));
         var relentlessTides = this.add(new RelentlessTidesEntry(this).generate('j'));
         var reparare = this.add(new ReparareEntry(this).generate('k'));
-        var endlessGreed = this.add(new EndlessGreedEntry(this).generate('l'));
 
         var ritualArcaneMastery = this.add(new RitualArcaneMasteryEntry(this).generate('m'));
         var ritualFloralSupremacy = this.add(new RitualFloralSupremacyEntry(this).generate('n'));

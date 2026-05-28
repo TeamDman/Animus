@@ -53,7 +53,7 @@ public class AnimusConfig {
         public final ModConfigSpec.IntValue cullingRange;
         public final ModConfigSpec.IntValue cullingVerticalRange;
         public final ModConfigSpec.IntValue cullingLpPerKill;
-        public final ModConfigSpec.IntValue peacefulBeckoningCost;
+        public final ModConfigSpec.IntValue animalLuringCost;
         public final ModConfigSpec.IntValue steadfastHeartRange;
         public final ModConfigSpec.IntValue steadfastHeartRefreshTime;
         public final ModConfigSpec.IntValue steadfastHeartMaxAmplifier;
@@ -126,9 +126,9 @@ public class AnimusConfig {
                          "Customize via datapacks at: data/<namespace>/data_maps/entity_type/entity_sacrifice_value.json")
                 .defineInRange("cullingLpPerKill", 200, 1, 10000);
 
-            peacefulBeckoningCost = builder
-                .comment("EV cost per mob spawned by Ritual of Peaceful Beckoning")
-                .defineInRange("peacefulBeckoningCost", 1000, 1, 100000);
+            animalLuringCost = builder
+                .comment("EV cost per mob spawned by Ritual of Animal Luring")
+                .defineInRange("animalLuringCost", 1000, 1, 100000);
 
             steadfastHeartRange = builder
                 .comment("Range in blocks for Ritual of Steadfast Heart absorption effect")

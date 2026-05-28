@@ -31,9 +31,6 @@ public class AnimusRituals {
     public static final DeferredHolder<Ritual, RitualCulling> CULLING =
         RITUALS.register(Constants.Rituals.CULLING, RitualCulling::new);
 
-    public static final DeferredHolder<Ritual, RitualEndlessGreed> ENDLESS_GREED =
-        RITUALS.register(Constants.Rituals.ENDLESS_GREED, RitualEndlessGreed::new);
-
     public static final DeferredHolder<Ritual, RitualEntropy> ENTROPY =
         RITUALS.register(Constants.Rituals.ENTROPY, RitualEntropy::new);
 
@@ -46,8 +43,8 @@ public class AnimusRituals {
     public static final DeferredHolder<Ritual, RitualNoliteIgnem> NOLITE_IGNEM =
         RITUALS.register(Constants.Rituals.NOLITE_IGNEM, RitualNoliteIgnem::new);
 
-    public static final DeferredHolder<Ritual, RitualPeacefulBeckoning> PEACEFUL_BECKONING =
-        RITUALS.register(Constants.Rituals.PEACEFUL_BECKONING, RitualPeacefulBeckoning::new);
+    public static final DeferredHolder<Ritual, RitualAnimalLuring> ANIMAL_LURING =
+        RITUALS.register(Constants.Rituals.ANIMAL_LURING, RitualAnimalLuring::new);
 
     public static final DeferredHolder<Ritual, RitualPersistence> PERSISTENCE =
         RITUALS.register(Constants.Rituals.PERSISTENCE, RitualPersistence::new);

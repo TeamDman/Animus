@@ -4,7 +4,6 @@ import com.breakinblocks.animusnv.Animus;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.registries.BuiltInRegistries;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.IAnima;
@@ -29,19 +27,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-/**
- * Ritual of Peaceful Beckoning - Spawns peaceful entities
- * Activation Cost: 5000 EV
- * Refresh Cost: Configured (default varies)
- * Refresh Time: 400 ticks
- */
-public class RitualPeacefulBeckoning extends Ritual {
+public class RitualAnimalLuring extends Ritual {
     public static final String SPAWN_RANGE = "spawn";
 
     private List<EntityType<?>> targets;
 
-    public RitualPeacefulBeckoning() {
-        super(Constants.Rituals.PEACEFUL_BECKONING, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.PEACEFUL_BECKONING);
+    public RitualAnimalLuring() {
+        super(Constants.Rituals.ANIMAL_LURING, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ANIMAL_LURING);
 
         addBlockRange(SPAWN_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-4, 1, -4), 9, 3, 9));
         setMaximumVolumeAndDistanceOfRange(SPAWN_RANGE, 0, 15, 10);
@@ -54,7 +46,7 @@ public class RitualPeacefulBeckoning extends Ritual {
 
     private boolean rebuildList(IMasterRitualStone mrs) {
         try {
-            Animus.LOGGER.debug("Rebuilding Ritual of Peaceful Beckoning entity list. [{}]", mrs.getMasterBlockPos());
+            Animus.LOGGER.debug("Rebuilding Ritual of Animal Luring entity list. [{}]", mrs.getMasterBlockPos());
 
             targets = new ArrayList<>();
 
@@ -72,7 +64,7 @@ public class RitualPeacefulBeckoning extends Ritual {
             return !targets.isEmpty();
         } catch (Exception e) {
             e.printStackTrace();
-            Animus.LOGGER.debug("Peaceful Beckoning ritual creation failed.");
+            Animus.LOGGER.debug("Animal Luring ritual creation failed.");
             return false;
         }
     }
@@ -136,7 +128,7 @@ public class RitualPeacefulBeckoning extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return AnimusConfig.rituals.peacefulBeckoningCost.get();
+        return AnimusConfig.rituals.animalLuringCost.get();
     }
 
     @Override
@@ -162,6 +154,6 @@ public class RitualPeacefulBeckoning extends Ritual {
 
     @Override
     public Ritual getNewCopy() {
-        return new RitualPeacefulBeckoning();
+        return new RitualAnimalLuring();
     }
 }

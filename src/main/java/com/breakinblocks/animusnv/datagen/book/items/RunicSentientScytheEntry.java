@@ -49,7 +49,7 @@ public class RunicSentientScytheEntry extends EntryProvider {
         this.pageTitle("Soul Harvesting");
         this.pageText("When [#](8B0000)Malum[#]() is installed, killing mobs with this scythe "
                 + "harvests their spirits directly:\n\n"
-                + "- Spirits drop as if using a Malum scythe\n\n"
+                + "- Spirits drop with native Malum-scythe behaviour\n\n"
                 + "- Works with all spirit types\n\n"
                 + "- No additional soul data required\n\n"
                 + "- Compatible with spirit pouches\\\n\\\n"

@@ -39,3 +39,5 @@ settings.gradle
 !README.md
 !LICENSE.md
 !**/changelogs/**/*.md
+
+.vscode/

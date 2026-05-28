@@ -54,7 +54,7 @@ public class SigilChainsEntry extends EntryProvider {
                 + "living displays, setting up mob farms, and ensuring safe transport of dangerous "
                 + "creatures.\\\n\\\n"
                 + "Release a captured entity by right-clicking the [#](8B0000)Mob Soul[#]() on any block.\\\n\\\n"
-                + "[#](2E8B57)Boss entities and extremely powerful mobs resist capture entirely.[#]()");
+                + "[#](2E8B57)Bosses and other high-HP entities resist capture entirely.[#]()");
     }
 
     @Override

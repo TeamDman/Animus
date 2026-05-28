@@ -6,12 +6,6 @@
       "refresh_time": 25,
       "crystal_level": 0
     },
-    "animusnv:ritual_endless_greed": {
-      "activation_cost": 5000,
-      "refresh_cost": 5,
-      "refresh_time": 20,
-      "crystal_level": 0
-    },
     "animusnv:ritual_entropy": {
       "activation_cost": 1000,
       "refresh_cost": 1,
@@ -36,7 +30,7 @@
       "refresh_time": 20,
       "crystal_level": 0
     },
-    "animusnv:ritual_peaceful_beckoning": {
+    "animusnv:ritual_animal_luring": {
       "activation_cost": 5000,
       "refresh_cost": 250,
       "refresh_time": 400,

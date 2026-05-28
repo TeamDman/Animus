@@ -23,7 +23,7 @@ public class BloodInfusedSpellbookEntry extends EntryProvider {
         this.pageText("The [#](8B0000)Blood-Infused Spellbook[#]() combines the power of Iron's "
                 + "Spells with the sacrificial arts. This hybrid tome can be progressively "
                 + "enhanced through [#](B8860B)six tiers[#]() of blood infusion, each "
-                + "granting powerful new abilities.\\\n\\\n"
+                + "granting new abilities at each step.\\\n\\\n"
                 + "[#](4A0080)Unlike common spellbooks, this tome grows stronger as you feed it "
                 + "Essentia Vitae at the Ara Vitae. It hungers, and it remembers.[#]()");
 

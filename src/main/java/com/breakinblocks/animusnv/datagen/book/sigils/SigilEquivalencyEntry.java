@@ -58,7 +58,7 @@ public class SigilEquivalencyEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Features");
-        this.pageText("Replaced blocks drop as if mined with [#](8B0000)Silk Touch[#]().\\\n\\\n"
+        this.pageText("Replaced blocks drop with [#](8B0000)Silk Touch[#]() behaviour.\\\n\\\n"
                 + "Replacements are [#](4A0080)plane-locked[#](). Only blocks on the same plane as the "
                 + "clicked face (floor, wall, or ceiling) are affected.\\\n\\\n"
                 + "[#](2E8B57)Replacements happen gradually over time to reduce server strain.[#]()");

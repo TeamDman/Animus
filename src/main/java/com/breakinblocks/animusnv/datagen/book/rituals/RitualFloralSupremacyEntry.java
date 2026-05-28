@@ -21,8 +21,8 @@ public class RitualFloralSupremacyEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Ritual of Floral Supremacy");
         this.pageText("The [#](8B0000)Ritual of Floral Supremacy[#]() supercharges nearby "
-                + "Botania mana-generating flowers, doubling their production rate as if "
-                + "they were planted on enchanted soil.\\\n\\\n"
+                + "Botania mana-generating flowers, doubling their production rate; the same effect "
+                + "they would get from enchanted soil.\\\n\\\n"
                 + "[#](4A0080)Nature's bloom feeds on sacrifice. The flowers respond to the "
                 + "pulse of Essentia Vitae flowing through the ritual stones, accelerating "
                 + "their natural mana generation.[#]()");

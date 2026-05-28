@@ -28,7 +28,7 @@ public class ChebyshevSearcher {
      * @param verticalDepth    number of Y levels to check
      * @param yDownward        if true, Y iterates downward from origin; if false, upward (into ground)
      * @param maxChecksPerTick max positions to check per call
-     * @param predicate        test for each BlockPos — return true to select it
+     * @param predicate        test for each BlockPos; return true to select it
      * @return the first matching position, or null if batch exhausted
      */
     @Nullable
@@ -44,7 +44,7 @@ public class ChebyshevSearcher {
                 for (int z = -radius; z <= radius && checks < maxChecksPerTick; z++) {
                     if (radius == state.radius && x == state.x && z < state.z) continue;
 
-                    // Only check perimeter blocks (skip interior — already checked at smaller radius)
+                    // Only check perimeter blocks (skip interior; already checked at smaller radius)
                     if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) continue;
 
                     int startY = (radius == state.radius && x == state.x && z == state.z) ? state.y : 0;

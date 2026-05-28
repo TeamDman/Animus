@@ -25,13 +25,12 @@ public class HandOfDeathEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Hand of Death");
-        this.pageText("The [#](8B0000)Hand of Death[#]() is the ultimate evolution of the "
+        this.pageText("The [#](8B0000)Hand of Death[#]() is the final evolution of the "
                 + "Runic Sentient Scythe. Forged with demon steel and infused with "
                 + "deathly power, this weapon executes weakened foes and heals its "
                 + "wielder through the lifeforce of the slain.\\\n\\\n"
-                + "[#](4A0080)The pinnacle of demonic weaponry. It combines all features "
-                + "of the Runic Sentient Scythe with devastating lifesteal and execute "
-                + "mechanics.[#]()");
+                + "[#](4A0080)It combines every feature of the Runic Sentient Scythe with "
+                + "lifesteal and an execute mechanic.[#]()");
 
         this.page("lifesteal", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
@@ -67,8 +66,8 @@ public class HandOfDeathEntry extends EntryProvider {
                 + "- Full Spiritus scaling\n\n"
                 + "- Malum spirit harvesting\n\n"
                 + "- All sentient weapon effects\\\n\\\n"
-                + "[#](8B0000)+14 bonus base damage[#]() over the Runic Sentient Scythe makes "
-                + "this one of the most powerful melee weapons available.\\\n\\\n"
+                + "[#](8B0000)+14 bonus base damage[#]() over the Runic Sentient Scythe, on top of "
+                + "lifesteal and execute, makes this the highest-damage melee weapon Animus ships.\\\n\\\n"
                 + "[#](2E8B57)Requires Malum to be installed.[#]()");
 
         this.page("crafting", () -> BookTextPageModel.create()
@@ -90,7 +89,7 @@ public class HandOfDeathEntry extends EntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "The ultimate demonic weapon with lifesteal and execute. Requires Malum.";
+        return "Demonic weapon with lifesteal and an execute mechanic. Requires Malum.";
     }
 
     @Override

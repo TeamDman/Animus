@@ -22,13 +22,13 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("advancement.animusnv.arcane_blood.title", "Arcane Blood");
         add("advancement.animusnv.blood_born_flora.description", "Obtain a Blood Sapling to grow your own Blood Wood trees");
         add("advancement.animusnv.blood_born_flora.title", "Blood-Born Flora");
-        add("advancement.animusnv.crystallized_power.description", "Create a Crystallized Spiritus Block - essential for the ultimate altar");
+        add("advancement.animusnv.crystallized_power.description", "Create a Crystallized Spiritus Block, required for the Transcendent Ara Vitae");
         add("advancement.animusnv.crystallized_power.title", "Crystallized Power");
-        add("advancement.animusnv.death_incarnate.description", "Wield the Hand of Death - the ultimate soul-reaping weapon");
+        add("advancement.animusnv.death_incarnate.description", "Wield the Hand of Death, a soul-reaping weapon with lifesteal and execute");
         add("advancement.animusnv.death_incarnate.title", "Death Incarnate");
         add("advancement.animusnv.equivalence.description", "Craft the Sigil of Equivalency to effortlessly transmute blocks");
         add("advancement.animusnv.equivalence.title", "Equivalence");
-        add("advancement.animusnv.fragment_of_life.description", "Acquire a Fragment of Healing - a powerful but permanent addition to your being");
+        add("advancement.animusnv.fragment_of_life.description", "Acquire a Fragment of Healing, a permanent passive health buff");
         add("advancement.animusnv.fragment_of_life.title", "Fragment of Life");
         add("advancement.animusnv.heavenly_wrath.description", "Forge the Sigil of Heavenly Wrath to smite your enemies from above");
         add("advancement.animusnv.heavenly_wrath.title", "Heavenly Wrath");
@@ -42,7 +42,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("advancement.animusnv.temporal_mastery.title", "Temporal Mastery");
         add("advancement.animusnv.tier6_ascension.description", "Build a Tier 6 Ara Vitae using Crystallized Spiritus Blocks");
         add("advancement.animusnv.tier6_ascension.title", "Tier 6 Ascension");
-        add("advancement.animusnv.transcendence.description", "Craft the Transcendent Orb of Vitae - the pinnacle of Vitaemancy mastery");
+        add("advancement.animusnv.transcendence.description", "Craft the Transcendent Orb of Vitae, the highest-capacity Orb of Vitae in the mod");
         add("advancement.animusnv.transcendence.title", "Transcendence");
         add("advancement.animusnv.willful_ascension.description", "Craft Willful Stone using Spiritus and compressed cobblestone");
         add("advancement.animusnv.willful_ascension.title", "Willful Ascension");
@@ -163,13 +163,12 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("guide.animusnv.entry.reagent_transposition", "Reagent: Transposition");
         add("guide.animusnv.entry.ritual_arcane_mastery", "Ritual of Arcane Mastery");
         add("guide.animusnv.entry.ritual_culling", "Ritual of Culling");
-        add("guide.animusnv.entry.ritual_endless_greed", "Ritual of Endless Greed");
         add("guide.animusnv.entry.ritual_entropy", "Ritual of Entropy");
         add("guide.animusnv.entry.ritual_floral_supremacy", "Ritual of Floral Supremacy");
         add("guide.animusnv.entry.ritual_luna", "Ritual of Luna");
         add("guide.animusnv.entry.ritual_natures_leach", "Ritual of Nature's Leach");
         add("guide.animusnv.entry.ritual_nolite_ignem", "Ritual of Nolite Ignem");
-        add("guide.animusnv.entry.ritual_peaceful_beckoning", "Ritual of Peaceful Beckoning");
+        add("guide.animusnv.entry.ritual_animal_luring", "Ritual of Animal Luring");
         add("guide.animusnv.entry.ritual_persistence", "Ritual of Persistence");
         add("guide.animusnv.entry.ritual_relentless_tides", "Ritual of Relentless Tides");
         add("guide.animusnv.entry.ritual_reparare", "Ritual of Reparare");
@@ -269,7 +268,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("jei.animusnv.blood_infused_spellbook.upgrade_title", "Upgrade Blood-Infused Spellbook");
         add("jei.animusnv.category.altar_infusion", "Ara Vitae Infusion");
         add("jei.animusnv.category.imperfect_ritual", "Imperfect Rituals");
-        add("jei.animusnv.crystallized_spiritus_block.info", "Crafted in the Tabula Vitae using powerful reagents. Required component for Tier 6 Ara Vitaes. Acts as a valid CRYSTAL component in altar structures.");
+        add("jei.animusnv.crystallized_spiritus_block.info", "Crafted in the Tabula Vitae using endgame reagents. Required component for Tier 6 Ara Vitaes. Acts as a valid CRYSTAL component in altar structures.");
         add("jei.animusnv.imperfect_ritual.instruction", "Right-click Ritual Stone to activate");
         add("jei.animusnv.imperfect_ritual_stone.boundless_skies", "§6Ritual of Boundless Skies§r: Place Ancient Debris on top. Costs 10000 EV. Grants 15 minutes of creative flight.");
         add("jei.animusnv.imperfect_ritual_stone.enhancement", "§6Ritual of Enhancement§r: Place an Amethyst Block on top. Costs 5000 EV. Enhances all enchantments on mainhand item by 1 level. Cannot enhance already enhanced items.");
@@ -357,9 +356,6 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("ritual.animusnv.ritual_culling", "Ritual of Culling");
         add("ritual.animusnv.ritual_culling.effect.info", "Area to damage hostile mobs");
         add("ritual.animusnv.ritual_eldritch_will", "Ritual of Eldritch Will");
-        add("ritual.animusnv.ritual_endless_greed", "Ritual of Endless Greed");
-        add("ritual.animusnv.ritual_endless_greed.chest.info", "Location of chest to deposit items");
-        add("ritual.animusnv.ritual_endless_greed.effect.info", "Area to collect items and XP from");
         add("ritual.animusnv.ritual_enhancement", "Ritual of Enhancement");
         add("ritual.animusnv.ritual_enhancement.desc", "Enhances all enchantments by 1 level");
         add("ritual.animusnv.ritual_entropy", "Ritual of Entropy");
@@ -380,8 +376,8 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("ritual.animusnv.ritual_neptune_blessing.desc", "Water Breathing + Dolphin's Grace");
         add("ritual.animusnv.ritual_nolite_ignem", "Ritual of Nolite Ignem");
         add("ritual.animusnv.ritual_nolite_ignem.effect.info", "Area to extinguish fires");
-        add("ritual.animusnv.ritual_peaceful_beckoning", "Ritual of Peaceful Beckoning");
-        add("ritual.animusnv.ritual_peaceful_beckoning.spawn.info", "Area where peaceful mobs will spawn");
+        add("ritual.animusnv.ritual_animal_luring", "Ritual of Animal Luring");
+        add("ritual.animusnv.ritual_animal_luring.spawn.info", "Area where peaceful mobs will spawn");
         add("ritual.animusnv.ritual_persistence", "Ritual of Persistence");
         add("ritual.animusnv.ritual_persistence.chunks.info", "Area of chunks to keep loaded");
         add("ritual.animusnv.ritual_reduction", "Ritual of Reduction");
@@ -526,7 +522,6 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("text.component.animusnv.ticket.consumption", "Consumption");
         add("text.component.animusnv.ticket.culling", "Culling");
         add("text.component.animusnv.ticket.eldritch", "Eldritch Will");
-        add("text.component.animusnv.ticket.endless_greed", "Endless Greed");
         add("text.component.animusnv.ticket.entropy", "Entropy");
         add("text.component.animusnv.ticket.equivalency", "Sigil of Equivalency");
         add("text.component.animusnv.ticket.floral_supremacy", "Floral Supremacy");
@@ -537,7 +532,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("text.component.animusnv.ticket.monk", "Sigil of the Demon Monk");
         add("text.component.animusnv.ticket.monk_execute", "Monk Execute");
         add("text.component.animusnv.ticket.nolite_ignem", "Nolite Ignem");
-        add("text.component.animusnv.ticket.peaceful_beckoning", "Peaceful Beckoning");
+        add("text.component.animusnv.ticket.animal_luring", "Animal Luring");
         add("text.component.animusnv.ticket.persistence", "Persistence");
         add("text.component.animusnv.ticket.relentless_tides", "Relentless Tides");
         add("text.component.animusnv.ticket.remedium", "Remedium");
@@ -612,7 +607,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.equivalency.scroll_adjust", "Sneak + Scroll to adjust (1-%s)");
         add("tooltip.animusnv.hand_of_death.execute", "Execute: Instantly kill targets below 15% health");
         add("tooltip.animusnv.hand_of_death.lifesteal", "Lifesteal: Heal 20% of damage dealt");
-        add("tooltip.animusnv.hand_of_death.ultimate", "The Ultimate Soul Reaper");
+        add("tooltip.animusnv.hand_of_death.ultimate", "Soul Reaper of Vitaemancy");
         add("tooltip.animusnv.healing.flavour", "Passively heals the user");
         add("tooltip.animusnv.healing.info", "Heals 1 health every 10 seconds");
         add("tooltip.animusnv.healing.permanent", "WARNING: Cannot be moved or dropped!");

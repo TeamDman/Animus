@@ -38,7 +38,7 @@ public class Constants {
             public static final String TICKET_TRANSPOSITION = "text.component.animusnv.ticket.transposition";
             public static final String TICKET_STORM = "text.component.animusnv.ticket.storm";
             public static final String TICKET_ANTILIFE = "text.component.animusnv.ticket.antilife";
-            public static final String TICKET_PEACEFUL_BECKONING = "text.component.animusnv.ticket.peaceful_beckoning";
+            public static final String TICKET_ANIMAL_LURING = "text.component.animusnv.ticket.animal_luring";
             public static final String TICKET_ENTROPY = "text.component.animusnv.ticket.entropy";
             public static final String TICKET_LUNA = "text.component.animusnv.ticket.luna";
             public static final String TICKET_BUILDER = "text.component.animusnv.ticket.builder";
@@ -115,7 +115,6 @@ public class Constants {
             public static final String TICKET_MONK_EXECUTE = "text.component.animusnv.ticket.monk_execute";
             public static final String MONK_NO_EV = "text.component.animusnv.monk.no_ev";
 
-            public static final String TICKET_ENDLESS_GREED = "text.component.animusnv.ticket.endless_greed";
         }
 
         public static class Tooltips {
@@ -364,7 +363,7 @@ public class Constants {
         public static final String LEACH = "ritual_natures_leach";
         public static final String ELDRITCH = "ritual_eldritch_will";
         public static final String LUNA = "ritual_luna";
-        public static final String PEACEFUL_BECKONING = "ritual_peaceful_beckoning";
+        public static final String ANIMAL_LURING = "ritual_animal_luring";
         public static final String REGRESSION = "ritual_regression";
         public static final String REPARARE = "ritual_reparare";
         public static final String SERENITY = "ritual_serenity";
@@ -376,7 +375,6 @@ public class Constants {
         public static final String STEADFAST = "ritual_steadfast_heart";
         public static final String UNMAKING = "ritual_unmaking";
         public static final String ARCANE_MASTERY = "ritual_arcane_mastery";
-        public static final String ENDLESS_GREED = "ritual_endless_greed";
 
         public static final String ENHANCEMENT = "ritual_enhancement";
         public static final String REDUCTION = "ritual_reduction";
