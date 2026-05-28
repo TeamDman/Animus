@@ -190,8 +190,6 @@ public class Constants {
             public static final String SPEAR_SENTIENT_AOE = "tooltip.animusnv.spear_sentient.aoe";
 
             public static final String SENTIENT_SHIELD_FLAVOUR = "tooltip.animusnv.sentient_shield.flavour";
-            public static final String SENTIENT_SHIELD_RAW = "tooltip.animusnv.sentient_shield.raw";
-            public static final String SENTIENT_SHIELD_VINDICTA = "tooltip.animusnv.sentient_shield.vindicta";
             public static final String SENTIENT_SHIELD_SPIRITUS_BONUS = "tooltip.animusnv.sentient_shield.spiritus_bonus";
 
             public static final String KEY_HOLD_OFFHAND = "tooltip.animusnv.key.hold_offhand";

@@ -641,9 +641,16 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.sentient_bow.info", "Arrows gain power from Spiritus");
         add("tooltip.animusnv.sentient_bow.spiritus_drops", "Drops Spiritus matching your attuned type on kill");
         add("tooltip.animusnv.sentient_shield.flavour", "A shield powered by the will of demons");
-        add("tooltip.animusnv.sentient_shield.raw", "Raw: Strength II (5s)");
-        add("tooltip.animusnv.sentient_shield.vindicta", "Vindicta: 30% damage reflect + Weakness (5s)");
         add("tooltip.animusnv.sentient_shield.spiritus_bonus", "+30% Spiritus gained while equipped");
+        add("tooltip.neovitae.sentientShield.rider.raw", "Block grants Strength II for 5 seconds");
+        add("tooltip.neovitae.sentientShield.rider.nihilum", "No special block effect");
+        add("tooltip.neovitae.sentientShield.rider.vindicta", "Block reflects 30% damage and applies Weakness for 5 seconds");
+        add("tooltip.neovitae.sentientBow.rider.raw", "Standard damage scaling per shot");
+        add("tooltip.neovitae.sentientBow.rider.nihilum", "Heaviest damage scaling per shot");
+        add("tooltip.neovitae.sentientBow.rider.vindicta", "Lighter damage per shot");
+        add("tooltip.neovitae.sentientSpear.rider.raw", "Standard damage scaling");
+        add("tooltip.neovitae.sentientSpear.rider.nihilum", "Heavy damage; slower attack speed");
+        add("tooltip.neovitae.sentientSpear.rider.vindicta", "Lighter damage; faster swings and bonus movement speed");
         add("tooltip.animusnv.sigil.active", "Status: Active");
         add("tooltip.animusnv.sigil.boundless_nature.flavour", "Channels Essentia Vitae into mana");
         add("tooltip.animusnv.sigil.boundless_nature.info", "EV-powered mana tablet for Botania tools, tiny buffer");

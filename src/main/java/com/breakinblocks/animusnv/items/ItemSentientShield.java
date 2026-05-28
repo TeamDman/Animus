@@ -40,17 +40,6 @@ public class ItemSentientShield extends ShieldItem {
         SpiritusTooltipHelper.appendSpiritusInfo(stack, "sentientShield", tooltip, flag);
 
         if (flag.hasShiftDown()) {
-            // NeoVitae's appendSpiritusInfo handles RUINA/INVICTUS riders; add Animus-specific
-            // riders for RAW/VINDICTA which NeoVitae doesn't describe.
-            SpiritusType type = getCurrentType(stack);
-            if (type == SpiritusType.RAW) {
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_RAW)
-                    .withStyle(ChatFormatting.GOLD));
-            } else if (type == SpiritusType.VINDICTA) {
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_VINDICTA)
-                    .withStyle(ChatFormatting.GOLD));
-            }
-
             tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_SPIRITUS_BONUS)
                 .withStyle(ChatFormatting.GREEN));
         }
