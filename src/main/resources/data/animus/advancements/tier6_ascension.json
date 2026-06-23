@@ -16,15 +16,10 @@
   },
   "parent": "animus:crystallized_power",
   "criteria": {
-    "placed_altar": {
+    "placed_crystallized_will": {
       "trigger": "minecraft:placed_block",
       "conditions": {
-        "location": [
-          {
-            "condition": "minecraft:block_state_property",
-            "block": "bloodmagic:altar"
-          }
-        ]
+        "block": "animus:crystallized_demon_will_block"
       }
     }
   },
