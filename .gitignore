@@ -31,3 +31,5 @@ src/generated/resources/.cache/*
 changelog/
 
 CLAUDE.md
+
+.vscode/
