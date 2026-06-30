@@ -1234,8 +1234,8 @@ public class AnimusEventHandler {
         };
 
         // Apply bonus demon will attribute from player
-        double bonusWillPercent = attackingEntity.getAttributeValue(AnimusAttributes.BONUS_DEMON_WILL.get());
-        double bonusWillMultiplier = 1 + bonusWillPercent / 100.0;
+        double bonusWillFraction = attackingEntity.getAttributeValue(AnimusAttributes.BONUS_DEMON_WILL.get());
+        double bonusWillMultiplier = 1 + bonusWillFraction;
 
         // Drop will items (with looting bonus like sword)
         for (int i = 0; i <= looting; i++) {
@@ -1257,9 +1257,9 @@ public class AnimusEventHandler {
     @SubscribeEvent
     public static void onSelfSacrifice(SacrificeKnifeUsedEvent event) {
         Player player = event.player;
-        double bonusPercent = player.getAttributeValue(AnimusAttributes.BONUS_SELF_SACRIFICE.get());
-        if (bonusPercent > 0) {
-            event.lpAdded = (int) (event.lpAdded * (1 + bonusPercent / 100.0));
+        double bonusFraction = player.getAttributeValue(AnimusAttributes.BONUS_SELF_SACRIFICE.get());
+        if (bonusFraction > 0) {
+            event.lpAdded = (int) (event.lpAdded * (1 + bonusFraction));
         }
     }
 
@@ -1269,10 +1269,10 @@ public class AnimusEventHandler {
     @SubscribeEvent
     public static void onSoulNetworkSyphon(SoulNetworkEvent.Syphon.User event) {
         Player player = event.getUser();
-        double reductionPercent = player.getAttributeValue(AnimusAttributes.SIGIL_COST_REDUCTION.get());
-        if (reductionPercent > 0) {
+        double reductionFraction = player.getAttributeValue(AnimusAttributes.SIGIL_COST_REDUCTION.get());
+        if (reductionFraction > 0) {
             SoulTicket oldTicket = event.getTicket();
-            int reducedAmount = Math.max(1, (int) (oldTicket.getAmount() * (1 - reductionPercent / 100.0)));
+            int reducedAmount = Math.max(1, (int) (oldTicket.getAmount() * (1 - reductionFraction)));
             event.setTicket(new SoulTicket(oldTicket.getDescription(), reducedAmount));
         }
     }

@@ -33,9 +33,9 @@ public class WillHandlerMixin {
 
         if (!(playerEntity instanceof Player player)) return drops;
 
-        double bonusPercent = player.getAttributeValue(AnimusAttributes.BONUS_DEMON_WILL.get());
-        if (bonusPercent > 0) {
-            double multiplier = 1 + bonusPercent / 100.0;
+        double bonusFraction = player.getAttributeValue(AnimusAttributes.BONUS_DEMON_WILL.get());
+        if (bonusFraction > 0) {
+            double multiplier = 1 + bonusFraction;
             for (ItemStack willStack : drops) {
                 if (willStack.getItem() instanceof IDemonWill demonWill) {
                     double currentWill = demonWill.getWill(demonWill.getType(willStack), willStack);

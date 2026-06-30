@@ -14,7 +14,7 @@ import wayoftime.bloodmagic.common.item.ItemDaggerOfSacrifice;
 
 /**
  * Mixin for Blood Magic's Dagger of Sacrifice to apply the bonus_sacrifice attribute.
- * Multiplies the LP amount passed to findAndFillAltar by (1 + bonus_sacrifice/100).
+ * Multiplies the LP amount passed to findAndFillAltar by (1 + bonus_sacrifice).
  */
 @Mixin(value = ItemDaggerOfSacrifice.class, remap = false)
 public class DaggerOfSacrificeMixin {
@@ -44,9 +44,9 @@ public class DaggerOfSacrificeMixin {
         animus$currentAttacker.remove();
 
         if (attacker instanceof Player player) {
-            double bonusPercent = player.getAttributeValue(AnimusAttributes.BONUS_SACRIFICE.get());
-            if (bonusPercent > 0) {
-                return (int) (originalAmount * (1 + bonusPercent / 100.0));
+            double bonusFraction = player.getAttributeValue(AnimusAttributes.BONUS_SACRIFICE.get());
+            if (bonusFraction > 0) {
+                return (int) (originalAmount * (1 + bonusFraction));
             }
         }
 
