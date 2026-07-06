@@ -34,11 +34,11 @@ public class UpgradeSourceAttunement extends LivingUpgrade {
     public UpgradeSourceAttunement() {
         super(KEY, levels -> {
             // Define XP thresholds for each level
-            levels.add(new Level(0, 5));    // Level 1: 5 upgrade points
-            levels.add(new Level(0, 10));   // Level 2: 10 points
-            levels.add(new Level(0, 15));   // Level 3: 15 points
-            levels.add(new Level(0, 20));   // Level 4: 20 points
-            levels.add(new Level(0, 25));   // Level 5: 25 points
+            levels.add(new Level(100, 5));    // Level 1: 5 upgrade points
+            levels.add(new Level(300, 10));   // Level 2: 10 points
+            levels.add(new Level(700, 15));   // Level 3: 15 points
+            levels.add(new Level(1500, 20));  // Level 4: 20 points
+            levels.add(new Level(3000, 25));  // Level 5: 25 points
         });
         MinecraftForge.EVENT_BUS.register(this);
     }
