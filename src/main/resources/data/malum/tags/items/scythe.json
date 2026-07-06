@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "animus:runic_sentient_scythe"
+    "animus:runic_sentient_scythe",
+    "animus:hand_of_death"
   ]
 }
