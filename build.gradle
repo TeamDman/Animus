@@ -252,6 +252,9 @@ tasks.named('jar', Jar).configure {
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
+            groupId = mod_group_id
+            artifactId = mod_id
+            version = project.version
             artifact jar
         }
     }
