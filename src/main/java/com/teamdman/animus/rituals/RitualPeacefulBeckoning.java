@@ -59,7 +59,8 @@ public class RitualPeacefulBeckoning extends Ritual {
 
                 // Only include peaceful mobs (not monsters, not misc)
                 MobCategory category = entityType.getCategory();
-                if (category == MobCategory.CREATURE || category == MobCategory.AMBIENT || category == MobCategory.WATER_CREATURE || category == MobCategory.WATER_AMBIENT) {
+                boolean peaceful = category == MobCategory.CREATURE || category == MobCategory.AMBIENT || category == MobCategory.WATER_CREATURE || category == MobCategory.WATER_AMBIENT;
+                if (peaceful && !entityType.is(Constants.Tags.DISALLOW_CAPTURING)) {
                     targets.add(entityType);
                 }
             }
