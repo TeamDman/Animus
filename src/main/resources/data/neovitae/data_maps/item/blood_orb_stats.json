@@ -1,8 +1,9 @@
 {
   "values": {
     "animusnv:blood_orb_transcendent": {
-      "capacity": 30000000,
+      "animaCapacity": 30000000,
       "fillRate": 75,
+      "fluidCapacity": 16000,
       "tier": 6
     }
   }

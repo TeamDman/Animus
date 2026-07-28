@@ -2,12 +2,12 @@
   "background_u_index": 0,
   "background_v_index": 0,
   "category": "rituals",
-  "description": "book.animusnv.guide.rituals.peaceful_beckoning.description",
+  "description": "book.animusnv.guide.rituals.animal_luring.description",
   "hide_while_locked": false,
   "icon": {
     "item": "minecraft:wheat"
   },
-  "name": "book.animusnv.guide.rituals.peaceful_beckoning.name",
+  "name": "book.animusnv.guide.rituals.animal_luring.name",
   "pages": [
     {
       "type": "modonomicon:text",
@@ -16,8 +16,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.rituals.peaceful_beckoning.intro.text",
-      "title": "book.animusnv.guide.rituals.peaceful_beckoning.intro.title",
+      "text": "book.animusnv.guide.rituals.animal_luring.intro.text",
+      "title": "book.animusnv.guide.rituals.animal_luring.intro.title",
       "use_markdown_in_title": false
     },
     {
@@ -27,8 +27,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.rituals.peaceful_beckoning.costs.text",
-      "title": "book.animusnv.guide.rituals.peaceful_beckoning.costs.title",
+      "text": "book.animusnv.guide.rituals.animal_luring.costs.text",
+      "title": "book.animusnv.guide.rituals.animal_luring.costs.title",
       "use_markdown_in_title": false
     }
   ],

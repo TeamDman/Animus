@@ -49,8 +49,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.items.sentient_shield.will_bonus.text",
-      "title": "book.animusnv.guide.items.sentient_shield.will_bonus.title",
+      "text": "book.animusnv.guide.items.sentient_shield.spiritus_bonus.text",
+      "title": "book.animusnv.guide.items.sentient_shield.spiritus_bonus.title",
       "use_markdown_in_title": false
     }
   ],
