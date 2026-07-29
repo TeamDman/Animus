@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
@@ -75,7 +76,7 @@ public class RitualAnimalLuring extends Ritual {
         IAnima network = AnimusRitualHelper.getOwnerNetwork(mrs);
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -86,9 +87,9 @@ public class RitualAnimalLuring extends Ritual {
             }
         }
 
-        EntityType<?> entityType = targets.get(level.random.nextInt(targets.size()));
+        EntityType<?> entityType = targets.get(level.getRandom().nextInt(targets.size()));
 
-        Entity mob = entityType.create(level);
+        Entity mob = entityType.create(level, EntitySpawnReason.MOB_SUMMONED);
         if (mob == null) {
             return;
         }
@@ -96,17 +97,17 @@ public class RitualAnimalLuring extends Ritual {
         AreaDescriptor spawnRange = getBlockRange(SPAWN_RANGE);
         AABB spawnAABB = spawnRange.getAABB(masterPos);
 
-        double x = spawnAABB.minX + level.random.nextDouble() * (spawnAABB.maxX - spawnAABB.minX);
+        double x = spawnAABB.minX + level.getRandom().nextDouble() * (spawnAABB.maxX - spawnAABB.minX);
         double y = spawnAABB.minY;
-        double z = spawnAABB.minZ + level.random.nextDouble() * (spawnAABB.maxZ - spawnAABB.minZ);
+        double z = spawnAABB.minZ + level.getRandom().nextDouble() * (spawnAABB.maxZ - spawnAABB.minZ);
 
         for (int i = 0; i < 16; i++) {
             mob.setPos(x, y, z);
             BlockPos mobPos = mob.blockPosition();
 
             if (!level.isEmptyBlock(mobPos)) {
-                x = spawnAABB.minX + level.random.nextDouble() * (spawnAABB.maxX - spawnAABB.minX);
-                z = spawnAABB.minZ + level.random.nextDouble() * (spawnAABB.maxZ - spawnAABB.minZ);
+                x = spawnAABB.minX + level.getRandom().nextDouble() * (spawnAABB.maxX - spawnAABB.minX);
+                z = spawnAABB.minZ + level.getRandom().nextDouble() * (spawnAABB.maxZ - spawnAABB.minZ);
             } else {
                 break;
             }

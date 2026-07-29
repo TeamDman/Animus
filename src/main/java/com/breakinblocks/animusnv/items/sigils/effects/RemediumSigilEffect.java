@@ -33,7 +33,7 @@ public record RemediumSigilEffect() implements ISigilEffect {
 
     @Override
     public void activeTick(Level level, Player player, ItemStack stack, int itemSlot, boolean isSelected) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 

@@ -1,23 +1,21 @@
 package com.breakinblocks.animusnv.client.render;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusItems;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.data.AtlasIds;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -50,12 +48,12 @@ import java.util.Optional;
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class AltarTierRenderer {
 
-    private static final ResourceLocation BLANK_RUNE = ResourceLocation.fromNamespaceAndPath("neovitae", "block/rune_blank");
-    private static final ResourceLocation STONE_BRICKS = ResourceLocation.withDefaultNamespace("block/stone_bricks");
-    private static final ResourceLocation GLOWSTONE = ResourceLocation.withDefaultNamespace("block/glowstone");
-    private static final ResourceLocation BLOODSTONE = ResourceLocation.fromNamespaceAndPath("neovitae", "block/bloodstone_brick");
-    private static final ResourceLocation HELLFORGED = ResourceLocation.fromNamespaceAndPath("neovitae", "block/hellforged_block");
-    private static final ResourceLocation CRYSTALLIZED_SPIRITUS = ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "block/crystallized_spiritus_block");
+    private static final Identifier BLANK_RUNE = Identifier.fromNamespaceAndPath("neovitae", "block/rune_blank");
+    private static final Identifier STONE_BRICKS = Identifier.withDefaultNamespace("block/stone_bricks");
+    private static final Identifier GLOWSTONE = Identifier.withDefaultNamespace("block/glowstone");
+    private static final Identifier BLOODSTONE = Identifier.fromNamespaceAndPath("neovitae", "block/bloodstone_brick");
+    private static final Identifier HELLFORGED = Identifier.fromNamespaceAndPath("neovitae", "block/hellforged_block");
+    private static final Identifier CRYSTALLIZED_SPIRITUS = Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "block/crystallized_spiritus_block");
 
     private static final int GHOST_COLOR_RUNE = 0xAAFF6666;
     private static final int GHOST_COLOR_PILLAR = 0xAA66FF66;
@@ -64,11 +62,7 @@ public class AltarTierRenderer {
     private static final int FULL_BRIGHT = 0x00F000F0;
 
     @SubscribeEvent
-    public static void onRenderLevel(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            return;
-        }
-
+    public static void onRenderLevel(RenderLevelStageEvent.AfterTranslucentParticles event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (player == null) return;
@@ -102,20 +96,19 @@ public class AltarTierRenderer {
             return;
         }
 
-        MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
+        MultiBufferSource.BufferSource buffers = mc.renderBuffers().bufferSource();
         PoseStack poseStack = event.getPoseStack();
+        Vec3 eyePos = event.getLevelRenderState().cameraRenderState.pos;
+        RenderType ghostSheet = Sheets.translucentBlockSheet();
 
-        renderNextTierComponents(poseStack, buffers, altarPos, nextTier.get(), level);
+        renderNextTierComponents(poseStack, buffers, ghostSheet, eyePos, altarPos, nextTier.get(), level);
 
-        RenderSystem.disableDepthTest();
-        buffers.endBatch();
+        buffers.endBatch(ghostSheet);
     }
 
-    private static void renderNextTierComponents(PoseStack poseStack, MultiBufferSource buffers,
-                                                   BlockPos altarPos, AltarTier nextTier, Level level) {
-        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-        Vec3 eyePos = camera.getPosition();
-        VertexConsumer buffer = buffers.getBuffer(Sheets.translucentCullBlockSheet());
+    private static void renderNextTierComponents(PoseStack poseStack, MultiBufferSource buffers, RenderType ghostSheet,
+                                                   Vec3 eyePos, BlockPos altarPos, AltarTier nextTier, Level level) {
+        VertexConsumer buffer = buffers.getBuffer(ghostSheet);
 
         List<AltarComponent> components = nextTier.components();
 
@@ -137,7 +130,7 @@ public class AltarTierRenderer {
 
             poseStack.translate(minX, minY, minZ);
 
-            ResourceLocation textureRL = getComponentTexture(component, level);
+            Identifier textureRL = getComponentTexture(component, level);
             int color = getComponentColor(component);
             NeoVitaeRenderer.Model3D model = getBlockModel(textureRL);
 
@@ -155,8 +148,8 @@ public class AltarTierRenderer {
             return state.is(tag);
         } else {
             Block block = level.registryAccess()
-                    .registryOrThrow(Registries.BLOCK)
-                    .get(ResourceKey.create(Registries.BLOCK, component.material().id()));
+                    .lookupOrThrow(Registries.BLOCK)
+                    .getValue(component.material().id());
             return block != null && state.is(block);
         }
     }
@@ -169,9 +162,9 @@ public class AltarTierRenderer {
      * tags, exact-block references), the texture is derived from the first datapack-valid
      * block's particle icon; see {@link NVMultiblock#getDisplayStates}.
      */
-    private static ResourceLocation getComponentTexture(AltarComponent component, Level level) {
+    private static Identifier getComponentTexture(AltarComponent component, Level level) {
         if (component.material().tag()) {
-            ResourceLocation tagId = component.material().id();
+            Identifier tagId = component.material().id();
             if (tagId.equals(NVTags.Blocks.RUNES.location())) return BLANK_RUNE;
             if (tagId.equals(NVTags.Blocks.PILLARS.location())) return STONE_BRICKS;
             if (tagId.equals(NVTags.Blocks.T3_CAPSTONES.location())) return GLOWSTONE;
@@ -184,9 +177,10 @@ public class AltarTierRenderer {
         if (!displayStates.isEmpty()) {
             BlockState state = displayStates.get(0);
             TextureAtlasSprite particle = Minecraft.getInstance()
-                    .getBlockRenderer()
-                    .getBlockModel(state)
-                    .getParticleIcon();
+                    .getModelManager()
+                    .getBlockStateModelSet()
+                    .getParticleMaterial(state)
+                    .sprite();
             return particle.contents().name();
         }
 
@@ -195,7 +189,7 @@ public class AltarTierRenderer {
 
     private static int getComponentColor(AltarComponent component) {
         if (component.material().tag()) {
-            ResourceLocation tagId = component.material().id();
+            Identifier tagId = component.material().id();
             if (tagId.equals(NVTags.Blocks.T6_CAPSTONES.location())) return GHOST_COLOR_CRYSTAL;
             if (tagId.equals(NVTags.Blocks.T3_CAPSTONES.location())
                     || tagId.equals(NVTags.Blocks.T4_CAPSTONES.location())
@@ -209,11 +203,12 @@ public class AltarTierRenderer {
         return GHOST_COLOR_PILLAR;
     }
 
-    private static NeoVitaeRenderer.Model3D getBlockModel(ResourceLocation textureRL) {
+    private static NeoVitaeRenderer.Model3D getBlockModel(Identifier textureRL) {
         NeoVitaeRenderer.Model3D model = new NeoVitaeRenderer.Model3D();
         TextureAtlasSprite sprite = Minecraft.getInstance()
-                .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-                .apply(textureRL);
+                .getAtlasManager()
+                .getAtlasOrThrow(AtlasIds.BLOCKS)
+                .getSprite(textureRL);
         model.setTexture(sprite);
         model.minX = 0;
         model.minY = 0;

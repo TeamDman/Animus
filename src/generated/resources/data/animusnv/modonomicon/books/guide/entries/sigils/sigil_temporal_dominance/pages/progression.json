@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "progression",
+  "show_title_separator": true,
+  "sort_number": 4,
+  "text": "book.animusnv.guide.sigils.sigil_temporal_dominance.progression.text",
+  "title": "book.animusnv.guide.sigils.sigil_temporal_dominance.progression.title"
+}

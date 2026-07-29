@@ -33,12 +33,12 @@ public class RitualClearSkies extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
         if (level instanceof ServerLevel serverLevel) {
-            serverLevel.setWeatherParameters(6000, 0, false, false);
+            serverLevel.getServer().setWeatherParameters(6000, 0, false, false);
         }
 
         level.playSound(
@@ -50,10 +50,8 @@ public class RitualClearSkies extends ImperfectRitual {
             1.5F
         );
 
-        player.displayClientMessage(
-            Component.translatable("ritual.animusnv.clear_skies.success"),
-            true
-        );
+        player.sendOverlayMessage(
+            Component.translatable("ritual.animusnv.clear_skies.success"));
 
         return true;
     }

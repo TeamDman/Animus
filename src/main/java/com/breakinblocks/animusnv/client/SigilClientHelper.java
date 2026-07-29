@@ -12,7 +12,7 @@ public class SigilClientHelper {
         if (connection != null) {
             var playerInfo = connection.getPlayerInfo(ownerId);
             if (playerInfo != null) {
-                return playerInfo.getProfile().getName();
+                return playerInfo.getProfile().name();
             }
         }
         return "Unknown";

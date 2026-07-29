@@ -2,22 +2,13 @@
   "type": "neovitae:hellfire_forge",
   "drain": 64.0,
   "inputs": [
-    {
-      "item": "minecraft:end_stone"
-    },
-    {
-      "item": "minecraft:ender_pearl"
-    },
-    {
-      "item": "minecraft:obsidian"
-    },
-    {
-      "item": "minecraft:chest"
-    }
+    "minecraft:end_stone",
+    "minecraft:ender_pearl",
+    "minecraft:obsidian",
+    "minecraft:chest"
   ],
   "minDrain": 128.0,
   "output": {
-    "count": 1,
     "id": "animusnv:reagenttransposition"
   }
 }

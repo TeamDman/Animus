@@ -38,34 +38,28 @@ public class RitualEnhancement extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
         ItemStack mainhandItem = player.getMainHandItem();
         if (mainhandItem.isEmpty()) {
-            player.displayClientMessage(
-                Component.translatable("ritual.animusnv.enhancement.no_item"),
-                false
-            );
+            player.sendSystemMessage(
+                Component.translatable("ritual.animusnv.enhancement.no_item"));
             return false;
         }
 
         Boolean enhanced = mainhandItem.get(AnimusDataComponents.ANIMUS_ENHANCED.get());
         if (enhanced != null && enhanced) {
-            player.displayClientMessage(
-                Component.translatable("ritual.animusnv.enhancement.already_enhanced"),
-                false
-            );
+            player.sendSystemMessage(
+                Component.translatable("ritual.animusnv.enhancement.already_enhanced"));
             return false;
         }
 
         ItemEnchantments enchantments = mainhandItem.get(DataComponents.ENCHANTMENTS);
         if (enchantments == null || enchantments.isEmpty()) {
-            player.displayClientMessage(
-                Component.translatable("ritual.animusnv.enhancement.no_enchantments"),
-                false
-            );
+            player.sendSystemMessage(
+                Component.translatable("ritual.animusnv.enhancement.no_enchantments"));
             return false;
         }
 
@@ -87,10 +81,8 @@ public class RitualEnhancement extends ImperfectRitual {
             1.5F
         );
 
-        player.displayClientMessage(
-            Component.translatable("ritual.animusnv.enhancement.success"),
-            true
-        );
+        player.sendOverlayMessage(
+            Component.translatable("ritual.animusnv.enhancement.success"));
 
         return true;
     }

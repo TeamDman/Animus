@@ -1,10 +1,12 @@
 package com.breakinblocks.animusnv.datagen;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import com.breakinblocks.neovitae.common.recipe.tabulavitae.TabulaVitaeRecipe;
@@ -15,24 +17,24 @@ import java.util.List;
 public class TabulaVitaeRecipeBuilder {
     public static final int MAX_INPUTS = TabulaVitaeRecipe.MAX_INPUTS;
 
-    private final ItemStack output;
+    private final ItemStackTemplate output;
     private final List<Ingredient> inputs = new ArrayList<>();
     private int syphon = 0;
     private int ticks = 200;
     private int minimumTier = 0;
 
-    private TabulaVitaeRecipeBuilder(ItemStack output) {
-        if (output == null || output.isEmpty()) {
+    private TabulaVitaeRecipeBuilder(ItemStackTemplate output) {
+        if (output == null) {
             throw new IllegalArgumentException("TabulaVitaeRecipe output cannot be null or empty");
         }
         this.output = output;
     }
 
     public static TabulaVitaeRecipeBuilder build(ItemLike output) {
-        return new TabulaVitaeRecipeBuilder(new ItemStack(output));
+        return new TabulaVitaeRecipeBuilder(new ItemStackTemplate(output.asItem()));
     }
 
-    public static TabulaVitaeRecipeBuilder build(ItemStack output) {
+    public static TabulaVitaeRecipeBuilder build(ItemStackTemplate output) {
         return new TabulaVitaeRecipeBuilder(output);
     }
 
@@ -41,7 +43,7 @@ public class TabulaVitaeRecipeBuilder {
     }
 
     public TabulaVitaeRecipeBuilder input(TagKey<Item> tag) {
-        return input(Ingredient.of(tag));
+        return input(AnimusRecipeProvider.ingredientOf(tag));
     }
 
     public TabulaVitaeRecipeBuilder input(Ingredient ingredient) {
@@ -76,11 +78,11 @@ public class TabulaVitaeRecipeBuilder {
         return this;
     }
 
-    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
+    public void save(RecipeOutput recipeOutput, Identifier id) {
         if (inputs.isEmpty()) {
             throw new IllegalStateException("TabulaVitaeRecipe must have at least one input");
         }
         TabulaVitaeRecipe recipe = new TabulaVitaeRecipe(inputs, output, syphon, ticks, minimumTier);
-        recipeOutput.accept(id, recipe, null);
+        recipeOutput.accept(ResourceKey.create(Registries.RECIPE, id), recipe, null);
     }
 }

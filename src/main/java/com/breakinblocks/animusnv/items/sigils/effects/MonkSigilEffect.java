@@ -26,7 +26,7 @@ public record MonkSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnAir(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 

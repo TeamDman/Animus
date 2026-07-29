@@ -1,82 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "sigils",
-  "description": "book.animusnv.guide.sigils.sigil_equivalency.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "animusnv:sigil_equivalency"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:sigils",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.sigils.sigil_equivalency.description",
+  "icon": {
+    "id": "animusnv:sigil_equivalency"
+  },
+  "id": "animusnv:sigils/sigil_equivalency",
   "name": "book.animusnv.guide.sigils.sigil_equivalency.name",
-  "pages": [
-    {
-      "type": "neovitae:hellfire_forge_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:hellfire_forge/reagentequivalency",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "neovitae:alchemy_array_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:array/sigil_equivalency",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.sigils.sigil_equivalency.intro.text",
-      "title": "book.animusnv.guide.sigils.sigil_equivalency.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.sigils.sigil_equivalency.selection.text",
-      "title": "book.animusnv.guide.sigils.sigil_equivalency.selection.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.sigils.sigil_equivalency.replacement.text",
-      "title": "book.animusnv.guide.sigils.sigil_equivalency.replacement.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.sigils.sigil_equivalency.features.text",
-      "title": "book.animusnv.guide.sigils.sigil_equivalency.features.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 4,
   "x": 4,
   "y": -2

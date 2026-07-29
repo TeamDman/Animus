@@ -1,9 +1,10 @@
 package com.breakinblocks.animusnv.blocks;
 
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class BlockBloodWoodStripped extends RotatedPillarBlock {
-    public BlockBloodWoodStripped() {
-        super(AnimusBlockProperties.bloodWoodLog());
+    public BlockBloodWoodStripped(BlockBehaviour.Properties props) {
+        super(props);
     }
 }

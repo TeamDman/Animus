@@ -45,7 +45,7 @@ public class RitualEntropy extends Ritual {
         int currentEV = network.getCurrentEV();
         BlockPos masterPos = masterRitualStone.getMasterBlockPos();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 

@@ -3,7 +3,7 @@ package com.breakinblocks.animusnv.rituals;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.compat.CompatHandler;
-import com.breakinblocks.animusnv.compat.arsnouveau.SourceJarHelper;
+import com.breakinblocks.animusnv.util.SourceJarHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -50,7 +50,7 @@ public class RitualSourceVitaeum extends Ritual {
         Level level = mrs.getWorldObj();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
+        if (level.isClientSide() || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
 

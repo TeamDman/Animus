@@ -97,11 +97,9 @@ public class SpellCastingHandler {
         }
 
         if (network.getCurrentEV() < evCost) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Not enough EV! Required: " + evCost + " EV")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             event.setCanceled(true);
             return;
         }
@@ -110,11 +108,9 @@ public class SpellCastingHandler {
 
         var syphonResult = network.syphonAndDamage(player, ticket);
         if (!syphonResult.success()) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Failed to consume EV!")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             event.setCanceled(true);
             return;
         }

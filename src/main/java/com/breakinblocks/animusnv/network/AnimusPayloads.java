@@ -9,6 +9,7 @@ import com.breakinblocks.animusnv.registry.AnimusItems;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -63,6 +64,6 @@ public class AnimusPayloads {
     }
 
     public static void sendToServer(Object payload) {
-        PacketDistributor.sendToServer((CustomPacketPayload) payload);
+        ClientPacketDistributor.sendToServer((CustomPacketPayload) payload);
     }
 }

@@ -2,18 +2,10 @@
   "type": "neovitae:hellfire_forge",
   "drain": 25.0,
   "inputs": [
-    {
-      "tag": "c:stones"
-    },
-    {
-      "tag": "c:stones"
-    },
-    {
-      "item": "neovitae:tabula_robur"
-    },
-    {
-      "tag": "c:dusts/redstone"
-    }
+    "#c:stones",
+    "#c:stones",
+    "neovitae:tabula_robur",
+    "#c:dusts/redstone"
   ],
   "minDrain": 50.0,
   "output": {

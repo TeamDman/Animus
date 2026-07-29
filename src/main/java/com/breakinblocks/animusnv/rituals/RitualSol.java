@@ -5,7 +5,7 @@ import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -43,8 +43,8 @@ import java.util.stream.IntStream;
 public class RitualSol extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
-    private static final ResourceLocation BLOOD_LIGHT_SIGIL = ResourceLocation.fromNamespaceAndPath("neovitae", "bloodlightsigil");
-    private static final ResourceLocation BLOOD_LIGHT_BLOCK = ResourceLocation.fromNamespaceAndPath("neovitae", "bloodlight");
+    private static final Identifier BLOOD_LIGHT_SIGIL = Identifier.fromNamespaceAndPath("neovitae", "bloodlightsigil");
+    private static final Identifier BLOOD_LIGHT_BLOCK = Identifier.fromNamespaceAndPath("neovitae", "bloodlight");
 
     private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
 
@@ -64,7 +64,7 @@ public class RitualSol extends Ritual {
         IAnima network = AnimusRitualHelper.getOwnerNetwork(mrs);
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -124,7 +124,7 @@ public class RitualSol extends Ritual {
         if (stack.isEmpty()) {
             return false;
         }
-        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return BLOOD_LIGHT_SIGIL.equals(itemId);
     }
 

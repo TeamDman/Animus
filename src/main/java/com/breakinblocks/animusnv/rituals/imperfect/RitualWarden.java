@@ -36,7 +36,7 @@ public class RitualWarden extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -58,10 +58,8 @@ public class RitualWarden extends ImperfectRitual {
             1.0F
         );
 
-        player.displayClientMessage(
-            Component.translatable("ritual.animusnv.warden.success"),
-            true
-        );
+        player.sendOverlayMessage(
+            Component.translatable("ritual.animusnv.warden.success"));
 
         return true;
     }

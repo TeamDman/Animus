@@ -15,6 +15,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.CuriosApi;
 import com.breakinblocks.neovitae.common.item.IBindable;
@@ -25,8 +26,8 @@ import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 
-import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class ItemBloodApple extends Item {
     private static final FoodProperties FOOD_PROPERTIES = new FoodProperties.Builder()
@@ -39,23 +40,25 @@ public class ItemBloodApple extends Item {
     private final AreaDescriptor altarRange = new AreaDescriptor.Rectangle(new BlockPos(-5, -10, -5), 11, 21, 11);
     private BlockPos offsetCached = BlockPos.ZERO;
 
-    public ItemBloodApple() {
-        super(new Item.Properties()
+    public ItemBloodApple(Item.Properties props) {
+        super(props
             .food(FOOD_PROPERTIES)
         );
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_FLAVOUR));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_INFO));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_EV));
-        super.appendHoverText(stack, context, tooltip, flag);
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_FLAVOUR));
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_INFO));
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.BLOOD_APPLE_EV));
+        super.appendHoverText(stack, context, display, tooltip, flag);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-        if (!level.isClientSide && entity instanceof Player player) {
+        if (!level.isClientSide() && entity instanceof Player player) {
             AraVitaeTile altar = AnimusUtil.getNearbyAltar(level, altarRange, entity.blockPosition(), offsetCached);
 
             int bloodAmount = AnimusConfig.general.bloodPerApple.get();

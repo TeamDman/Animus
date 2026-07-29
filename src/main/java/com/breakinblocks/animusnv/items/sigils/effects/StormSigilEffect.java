@@ -5,8 +5,9 @@ import com.breakinblocks.animusnv.AnimusConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,7 +59,7 @@ public record StormSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnAir(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -82,9 +83,9 @@ public record StormSigilEffect() implements ISigilEffect {
         BlockPos pos = result.getBlockPos();
 
         // Spawn lightning
-        LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
+        LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.EVENT);
         if (lightning != null) {
-            lightning.moveTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+            lightning.snapTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
             lightning.setVisualOnly(false);
             level.addFreshEntity(lightning);
         }
@@ -101,7 +102,7 @@ public record StormSigilEffect() implements ISigilEffect {
                     int actualMax = Math.max(minLoot, maxLoot);
 
                     // Schedule fishing loot to spawn 20 ticks after lightning
-                    int spawnCount = actualMin + level.random.nextInt(Math.max(1, actualMax - actualMin + 1));
+                    int spawnCount = actualMin + level.getRandom().nextInt(Math.max(1, actualMax - actualMin + 1));
                     BlockPos spawnPos = pos.above();
                     long spawnTick = serverLevel.getServer().getTickCount() + 20;
 
@@ -144,7 +145,7 @@ public record StormSigilEffect() implements ISigilEffect {
     }
 
     private static void spawnFishingLoot(ServerLevel level, BlockPos pos, Player player) {
-        ResourceLocation fishingLootTable = ResourceLocation.fromNamespaceAndPath("minecraft", "gameplay/fishing");
+        Identifier fishingLootTable = Identifier.fromNamespaceAndPath("minecraft", "gameplay/fishing");
         LootTable lootTable = level.getServer().reloadableRegistries()
                 .getLootTable(ResourceKey.create(
                         Registries.LOOT_TABLE, fishingLootTable));
@@ -170,9 +171,9 @@ public record StormSigilEffect() implements ISigilEffect {
                         item
                 );
                 itemEntity.setDeltaMovement(
-                        (level.random.nextDouble() - 0.5) * 0.2,
+                        (level.getRandom().nextDouble() - 0.5) * 0.2,
                         0.2,
-                        (level.random.nextDouble() - 0.5) * 0.2
+                        (level.getRandom().nextDouble() - 0.5) * 0.2
                 );
                 level.addFreshEntity(itemEntity);
             }

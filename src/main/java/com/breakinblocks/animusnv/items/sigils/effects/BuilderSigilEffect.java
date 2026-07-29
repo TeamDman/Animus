@@ -39,14 +39,14 @@ public record BuilderSigilEffect() implements ISigilEffect {
 
     @Override
     public void activeTick(Level level, Player player, ItemStack stack, int itemSlot, boolean isSelected) {
-        if (level.isClientSide() && FMLEnvironment.dist == Dist.CLIENT) {
+        if (level.isClientSide() && FMLEnvironment.getDist() == Dist.CLIENT) {
             BuilderSigilClientHelper.resetRightClickDelay();
         }
     }
 
     @Override
     public boolean useOnAir(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -84,7 +84,7 @@ public record BuilderSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnBlock(Level level, Player player, ItemStack stack, BlockPos blockPos, Direction side, Vec3 hitVec) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -140,7 +140,7 @@ public record BuilderSigilEffect() implements ISigilEffect {
                 if (distance > AnimusConfig.sigils.builderRange.get()) {
                     return false;
                 }
-            } while (!level.isEmptyBlock(placePos) && placePos.getY() > level.getMinBuildHeight());
+            } while (!level.isEmptyBlock(placePos) && placePos.getY() > level.getMinY());
 
             if (level.isEmptyBlock(placePos) && !buildStack.isEmpty()) {
                 BlockState state = block.defaultBlockState();

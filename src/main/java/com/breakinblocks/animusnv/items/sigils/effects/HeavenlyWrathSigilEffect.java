@@ -3,7 +3,7 @@ package com.breakinblocks.animusnv.items.sigils.effects;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -59,7 +59,7 @@ public record HeavenlyWrathSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnAir(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -116,7 +116,7 @@ public record HeavenlyWrathSigilEffect() implements ISigilEffect {
         double groundY = entityY;
 
         Level level = entity.level();
-        for (int y = (int) entityY; y >= level.getMinBuildHeight(); y--) {
+        for (int y = (int) entityY; y >= level.getMinY(); y--) {
             if (level.getBlockState(entity.blockPosition().atY(y)).isSolid()) {
                 groundY = y + 1;
                 break;
@@ -157,7 +157,7 @@ public record HeavenlyWrathSigilEffect() implements ISigilEffect {
         entity.removeEffect(MobEffects.LEVITATION);
 
         // Apply NeoVitae's heavy_heart effect to prevent flight
-        ResourceLocation heavyHeartRL = ResourceLocation.fromNamespaceAndPath("neovitae", "heavy_heart");
+        Identifier heavyHeartRL = Identifier.fromNamespaceAndPath("neovitae", "heavy_heart");
         var heavyHeartOpt = BuiltInRegistries.MOB_EFFECT.getOptional(heavyHeartRL);
         if (heavyHeartOpt.isPresent()) {
             entity.addEffect(new MobEffectInstance(Holder.direct(heavyHeartOpt.get()), 40, 4));

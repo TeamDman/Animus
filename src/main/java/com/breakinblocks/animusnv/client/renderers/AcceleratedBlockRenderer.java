@@ -1,14 +1,13 @@
 package com.breakinblocks.animusnv.client.renderers;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.breakinblocks.animusnv.client.AcceleratedBlocksClientData;
 import com.breakinblocks.animusnv.network.AcceleratedBlocksSyncPayload.AccelerationData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -17,6 +16,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 import com.breakinblocks.animusnv.Constants;
 
@@ -28,11 +28,7 @@ public class AcceleratedBlockRenderer {
     private static final int RENDER_DISTANCE = 32;
 
     @SubscribeEvent
-    public static void onRenderWorldLast(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            return;
-        }
-
+    public static void onRenderWorldLast(RenderLevelStageEvent.AfterTranslucentParticles event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         Level level = mc.level;
@@ -49,7 +45,8 @@ public class AcceleratedBlockRenderer {
 
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-        Vec3 cameraPos = event.getCamera().getPosition();
+        Vec3 cameraPos = event.getLevelRenderState().cameraRenderState.pos;
+        Quaternionf cameraOrientation = event.getLevelRenderState().cameraRenderState.orientation;
 
         Font font = mc.font;
 
@@ -76,20 +73,19 @@ public class AcceleratedBlockRenderer {
             String text = String.format("%dx * %.1fs", multiplier, remainingSeconds);
             int color = getColorForLevel(state.level());
 
-            renderFloatingText(poseStack, bufferSource, font, text, x, y, z, color);
+            renderFloatingText(poseStack, bufferSource, font, text, x, y, z, color, cameraOrientation);
         }
 
-        RenderSystem.disableDepthTest();
         bufferSource.endBatch();
-        RenderSystem.enableDepthTest();
     }
 
     private static void renderFloatingText(PoseStack poseStack, MultiBufferSource bufferSource, Font font,
-                                          String text, double x, double y, double z, int color) {
+                                          String text, double x, double y, double z, int color,
+                                          Quaternionf cameraOrientation) {
         poseStack.pushPose();
 
         poseStack.translate(x, y, z);
-        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+        poseStack.mulPose(cameraOrientation);
 
         poseStack.scale(0.025F, -0.025F, 0.025F);
 
@@ -100,10 +96,10 @@ public class AcceleratedBlockRenderer {
 
         int backgroundColor = (int)(0.25F * 255.0F) << 24;
         font.drawInBatch(text, halfWidth, 0, 0x20FFFFFF, false, matrix, bufferSource,
-            Font.DisplayMode.SEE_THROUGH, backgroundColor, LightTexture.FULL_BRIGHT);
+            Font.DisplayMode.SEE_THROUGH, backgroundColor, LightCoordsUtil.FULL_BRIGHT);
 
         font.drawInBatch(text, halfWidth, 0, colorWithAlpha, false, matrix, bufferSource,
-            Font.DisplayMode.NORMAL, 0, LightTexture.FULL_BRIGHT);
+            Font.DisplayMode.NORMAL, 0, LightCoordsUtil.FULL_BRIGHT);
 
         poseStack.popPose();
     }

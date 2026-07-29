@@ -6,8 +6,6 @@ import com.breakinblocks.animusnv.blocks.BlockBloodCore;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.breakinblocks.animusnv.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
@@ -16,6 +14,8 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.spiritus.ISpiritusHandler;
@@ -36,7 +36,7 @@ public class BlockEntityBloodCore extends BlockEntity {
     }
 
     public void tick() {
-        if (level == null || level.isClientSide || removed) {
+        if (level == null || level.isClientSide() || removed) {
             return;
         }
 
@@ -227,21 +227,21 @@ public class BlockEntityBloodCore extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(ValueOutput tag) {
+        super.saveAdditional(tag);
         tag.putInt("DelayCounter", delayCounter);
         tag.putInt("LeafRegrowthCounter", leafRegrowthCounter);
         tag.putBoolean("Spreading", spreading);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        delayCounter = tag.getInt("DelayCounter");
-        leafRegrowthCounter = tag.getInt("LeafRegrowthCounter");
-        spreading = tag.getBoolean("Spreading");
+    protected void loadAdditional(ValueInput tag) {
+        super.loadAdditional(tag);
+        delayCounter = tag.getIntOr("DelayCounter", 0);
+        leafRegrowthCounter = tag.getIntOr("LeafRegrowthCounter", 0);
+        spreading = tag.getBooleanOr("Spreading", false);
 
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             BlockState currentState = level.getBlockState(worldPosition);
             if (currentState.getBlock() instanceof BlockBloodCore) {
                 boolean stateActive = currentState.getValue(BlockBloodCore.ACTIVE);

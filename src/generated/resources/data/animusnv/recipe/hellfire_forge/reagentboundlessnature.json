@@ -2,22 +2,13 @@
   "type": "neovitae:hellfire_forge",
   "drain": 64.0,
   "inputs": [
-    {
-      "item": "minecraft:oak_sapling"
-    },
-    {
-      "item": "minecraft:wheat_seeds"
-    },
-    {
-      "item": "minecraft:bone_meal"
-    },
-    {
-      "item": "minecraft:flowering_azalea"
-    }
+    "minecraft:oak_sapling",
+    "minecraft:wheat_seeds",
+    "minecraft:bone_meal",
+    "minecraft:flowering_azalea"
   ],
   "minDrain": 128.0,
   "output": {
-    "count": 1,
     "id": "animusnv:reagentboundlessnature"
   }
 }

@@ -1,0 +1,9 @@
+{
+  "type": "neovitae:tabula_vitae_recipe",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "reagent_recipe",
+  "recipe_id_1": "animusnv:alchemytable/reagentfist",
+  "sort_number": 0
+}

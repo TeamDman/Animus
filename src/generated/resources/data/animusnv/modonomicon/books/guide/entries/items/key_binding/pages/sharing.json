@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "sharing",
+  "show_title_separator": true,
+  "sort_number": 2,
+  "text": "book.animusnv.guide.items.key_binding.sharing.text",
+  "title": "book.animusnv.guide.items.key_binding.sharing.title"
+}

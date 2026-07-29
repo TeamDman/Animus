@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "charged",
+  "show_title_separator": true,
+  "sort_number": 3,
+  "text": "book.animusnv.guide.compatibility.rune_unleashed_nature.charged.text",
+  "title": "book.animusnv.guide.compatibility.rune_unleashed_nature.charged.title"
+}

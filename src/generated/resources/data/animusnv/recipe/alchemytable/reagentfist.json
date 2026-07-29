@@ -1,21 +1,12 @@
 {
   "type": "neovitae:alchemytable",
   "input": [
-    {
-      "item": "minecraft:rotten_flesh"
-    },
-    {
-      "item": "minecraft:diamond_pickaxe"
-    },
-    {
-      "item": "minecraft:iron_shovel"
-    },
-    {
-      "item": "minecraft:iron_axe"
-    }
+    "minecraft:rotten_flesh",
+    "minecraft:diamond_pickaxe",
+    "minecraft:iron_shovel",
+    "minecraft:iron_axe"
   ],
   "output": {
-    "count": 1,
     "id": "animusnv:reagentfist"
   },
   "syphon": 500,

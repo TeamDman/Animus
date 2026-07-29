@@ -1,7 +1,5 @@
 package com.breakinblocks.animusnv.client.models;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,17 +7,12 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
-@OnlyIn(Dist.CLIENT)
-public class SpearModel extends Model {
-    private final ModelPart root;
+public class SpearModel extends Model.Simple {
 
     public SpearModel(ModelPart root) {
-        super(RenderType::entitySolid);
-        this.root = root;
+        super(root, RenderTypes::entitySolid);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -51,10 +44,5 @@ public class SpearModel extends Model {
             PartPose.ZERO);
 
         return LayerDefinition.create(meshdefinition, 32, 32);
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        this.root.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

@@ -90,16 +90,14 @@ public class ItemSanguineScroll extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResultHolder.pass(stack);
         }
 
         if (!hasSpell(stack)) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Empty Sanguine Scroll - Use at Ara Vitae to infuse with a spell")
-                    .withStyle(ChatFormatting.GRAY),
-                true
-            );
+                    .withStyle(ChatFormatting.GRAY));
             return InteractionResultHolder.fail(stack);
         }
 
@@ -108,21 +106,17 @@ public class ItemSanguineScroll extends Item {
 
         AbstractSpell spell = SpellRegistry.getSpell(spellId);
         if (spell == null) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Invalid spell data")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             return InteractionResultHolder.fail(stack);
         }
 
         MagicData magicData = MagicData.getPlayerMagicData(player);
         if (magicData.getPlayerCooldowns().hasCooldownsActive()) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Spell is on cooldown")
-                    .withStyle(ChatFormatting.GOLD),
-                true
-            );
+                    .withStyle(ChatFormatting.GOLD));
             return InteractionResultHolder.fail(stack);
         }
 
@@ -133,11 +127,9 @@ public class ItemSanguineScroll extends Item {
 
         IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, stack);
         if (network == null || network.getCurrentEV() < evCost) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Not enough EV! Need " + evCost + " EV")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             return InteractionResultHolder.fail(stack);
         }
 
@@ -166,11 +158,9 @@ public class ItemSanguineScroll extends Item {
             return InteractionResultHolder.consume(stack);
 
         } catch (Exception e) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Failed to cast spell: " + e.getMessage())
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             return InteractionResultHolder.fail(stack);
         }
     }

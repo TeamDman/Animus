@@ -13,18 +13,10 @@
     "SIS"
   ],
   "key": {
-    "S": {
-      "tag": "c:stones"
-    },
-    "M": {
-      "item": "botania:manasteel_ingot"
-    },
-    "R": {
-      "item": "neovitae:rune_blank"
-    },
-    "I": {
-      "item": "neovitae:tabula_animata"
-    }
+    "S": "#c:stones",
+    "M": "botania:manasteel_ingot",
+    "R": "neovitae:rune_blank",
+    "I": "neovitae:tabula_animata"
   },
   "result": {
     "count": 1,

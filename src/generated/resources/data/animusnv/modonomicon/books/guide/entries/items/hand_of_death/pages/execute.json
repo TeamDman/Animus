@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "execute",
+  "show_title_separator": true,
+  "sort_number": 3,
+  "text": "book.animusnv.guide.items.hand_of_death.execute.text",
+  "title": "book.animusnv.guide.items.hand_of_death.execute.title"
+}

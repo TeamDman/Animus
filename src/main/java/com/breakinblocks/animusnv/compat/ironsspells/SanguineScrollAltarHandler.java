@@ -60,7 +60,7 @@ public class SanguineScrollAltarHandler {
             return;
         }
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -81,11 +81,9 @@ public class SanguineScrollAltarHandler {
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
         ItemSanguineScroll.SlateType slateType = getSlateType(offHand);
         if (slateType == null) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Hold a slate in your offhand to create a Sanguine Scroll")
-                    .withStyle(ChatFormatting.GOLD),
-                true
-            );
+                    .withStyle(ChatFormatting.GOLD));
             return;
         }
 
@@ -95,20 +93,16 @@ public class SanguineScrollAltarHandler {
         String spellId = spell.getSpellId();
 
         if (spellId == null || spellId.isEmpty()) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Scroll contains no spell")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             return;
         }
 
         if (spell == null) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Invalid spell on scroll")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             return;
         }
 
@@ -117,11 +111,9 @@ public class SanguineScrollAltarHandler {
         int totalEVCost = baseCost * levelMultiplier;
 
         if (altar.getCurrentBlood() < totalEVCost) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Not enough EV in altar! Need " + totalEVCost + " EV")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             return;
         }
 
@@ -149,11 +141,9 @@ public class SanguineScrollAltarHandler {
             1.0F
         );
 
-        player.displayClientMessage(
+        player.sendOverlayMessage(
             Component.literal("Created Sanguine Scroll!")
-                .withStyle(ChatFormatting.DARK_RED),
-            true
-        );
+                .withStyle(ChatFormatting.DARK_RED));
 
         Animus.LOGGER.debug("Created Sanguine Scroll: {} level {} (slate: {})",
             spell.getDisplayName(null).getString(), spellLevel, slateType);

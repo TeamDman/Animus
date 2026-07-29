@@ -3,12 +3,9 @@
   "bloodNeeded": 1000,
   "craftSpeed": 5,
   "drainSpeed": 5,
-  "input": {
-    "item": "minecraft:prismarine_shard"
-  },
+  "input": "minecraft:prismarine_shard",
   "minTier": 1,
   "output": {
-    "count": 1,
     "id": "animusnv:fragment_healing"
   }
 }

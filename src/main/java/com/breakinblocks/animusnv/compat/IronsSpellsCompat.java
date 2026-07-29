@@ -9,7 +9,7 @@ import com.breakinblocks.animusnv.compat.ironsspells.ItemBloodInfusedSpellbook;
 import com.breakinblocks.animusnv.compat.ironsspells.ItemSanguineScroll;
 import com.breakinblocks.neovitae.common.item.sigil.SigilItem;
 import com.breakinblocks.neovitae.registry.SigilTypeRegistry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import com.breakinblocks.animusnv.compat.ironsspells.SentientArmorSpellHandler;
 import com.breakinblocks.animusnv.compat.ironsspells.RitualArcaneMastery;
 import com.breakinblocks.animusnv.compat.ironsspells.RitualIronHeart;
@@ -61,7 +61,7 @@ public class IronsSpellsCompat implements ICompatModule {
 
     public static final DeferredHolder<Item, SigilItem> SIGIL_CRIMSON_WILL =
         ITEMS.register("sigil_crimson_will", () -> new SigilItem(
-            SigilTypeRegistry.key(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "crimson_will"))
+            SigilTypeRegistry.key(Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "crimson_will"))
         ));
 
     public static final DeferredHolder<Item, ItemSanguineScroll> SANGUINE_SCROLL_RASA =

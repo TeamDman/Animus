@@ -6,8 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.Container;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.IItemHandler;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
@@ -41,7 +41,7 @@ public class RitualReparare extends Ritual {
         IAnima network = AnimusRitualHelper.getOwnerNetwork(mrs);
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -57,8 +57,7 @@ public class RitualReparare extends Ritual {
             return;
         }
 
-        IItemHandler handler = AnimusRitualHelper.getItemHandler(level, chestPos);
-        if (handler == null) {
+        if (!(chestTile instanceof Container container)) {
             return;
         }
 
@@ -67,8 +66,8 @@ public class RitualReparare extends Ritual {
         int totalEVCost = 0;
         int itemsRepaired = 0;
 
-        for (int slot = 0; slot < handler.getSlots(); slot++) {
-            ItemStack stack = handler.getStackInSlot(slot);
+        for (int slot = 0; slot < container.getContainerSize(); slot++) {
+            ItemStack stack = container.getItem(slot);
 
             if (stack.isEmpty()) {
                 continue;
@@ -101,6 +100,10 @@ public class RitualReparare extends Ritual {
 
             totalEVCost += evCost;
             itemsRepaired++;
+        }
+
+        if (itemsRepaired > 0) {
+            container.setChanged();
         }
 
         if (totalEVCost > 0 && itemsRepaired > 0) {

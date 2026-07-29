@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "animusnv:blood_wood"
-    }
+    "animusnv:blood_wood"
   ],
   "result": {
     "count": 4,

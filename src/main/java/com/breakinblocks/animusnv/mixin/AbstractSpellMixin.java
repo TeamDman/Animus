@@ -143,7 +143,7 @@ public class AbstractSpellMixin {
             }
         }
 
-        for (ItemStack stack : player.getInventory().items) {
+        for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
             if (stack.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
                 return stack;
             }
@@ -153,7 +153,7 @@ public class AbstractSpellMixin {
     }
 
     private static ItemStack findOrbOfVitae(Player player) {
-        for (ItemStack stack : player.getInventory().items) {
+        for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
             if (stack.getItem() instanceof BloodOrbItem) {
                 return stack;
             }

@@ -1,49 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "items",
-  "description": "book.animusnv.guide.items.blood_apple.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "animusnv:blood_apple"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:items",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.items.blood_apple.description",
+  "icon": {
+    "id": "animusnv:blood_apple"
+  },
+  "id": "animusnv:items/blood_apple",
   "name": "book.animusnv.guide.items.blood_apple.name",
-  "pages": [
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.blood_apple.intro.text",
-      "title": "book.animusnv.guide.items.blood_apple.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.blood_apple.usage.text",
-      "title": "book.animusnv.guide.items.blood_apple.usage.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.blood_apple.key_binding.text",
-      "title": "book.animusnv.guide.items.blood_apple.key_binding.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 0,
   "x": -3,
   "y": -2

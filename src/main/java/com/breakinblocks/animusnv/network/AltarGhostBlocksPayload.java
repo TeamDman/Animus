@@ -6,24 +6,24 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public record AltarGhostBlocksPayload(Map<BlockPos, ResourceLocation> ghostBlocks, int durationTicks) implements CustomPacketPayload {
+public record AltarGhostBlocksPayload(Map<BlockPos, Identifier> ghostBlocks, int durationTicks) implements CustomPacketPayload {
     public static final Type<AltarGhostBlocksPayload> TYPE = new Type<>(
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "altar_ghost_blocks")
+        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "altar_ghost_blocks")
     );
 
     public static final StreamCodec<FriendlyByteBuf, AltarGhostBlocksPayload> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public AltarGhostBlocksPayload decode(FriendlyByteBuf buf) {
             int size = buf.readInt();
-            Map<BlockPos, ResourceLocation> ghostBlocks = new HashMap<>();
+            Map<BlockPos, Identifier> ghostBlocks = new HashMap<>();
             for (int i = 0; i < size; i++) {
                 BlockPos pos = buf.readBlockPos();
-                ResourceLocation blockId = buf.readResourceLocation();
+                Identifier blockId = buf.readIdentifier();
                 ghostBlocks.put(pos, blockId);
             }
             int durationTicks = buf.readInt();
@@ -33,9 +33,9 @@ public record AltarGhostBlocksPayload(Map<BlockPos, ResourceLocation> ghostBlock
         @Override
         public void encode(FriendlyByteBuf buf, AltarGhostBlocksPayload payload) {
             buf.writeInt(payload.ghostBlocks.size());
-            for (Map.Entry<BlockPos, ResourceLocation> entry : payload.ghostBlocks.entrySet()) {
+            for (Map.Entry<BlockPos, Identifier> entry : payload.ghostBlocks.entrySet()) {
                 buf.writeBlockPos(entry.getKey());
-                buf.writeResourceLocation(entry.getValue());
+                buf.writeIdentifier(entry.getValue());
             }
             buf.writeInt(payload.durationTicks);
         }

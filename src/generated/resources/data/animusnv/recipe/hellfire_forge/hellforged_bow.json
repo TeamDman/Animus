@@ -2,22 +2,13 @@
   "type": "neovitae:hellfire_forge",
   "drain": 128.0,
   "inputs": [
-    {
-      "item": "animusnv:sentient_bow"
-    },
-    {
-      "item": "neovitae:spiritus_vindicta_shard"
-    },
-    {
-      "item": "minecraft:blaze_rod"
-    },
-    {
-      "item": "minecraft:nether_star"
-    }
+    "animusnv:sentient_bow",
+    "neovitae:spiritus_vindicta_shard",
+    "minecraft:blaze_rod",
+    "minecraft:nether_star"
   ],
   "minDrain": 256.0,
   "output": {
-    "count": 1,
     "id": "animusnv:hellforged_bow"
   }
 }

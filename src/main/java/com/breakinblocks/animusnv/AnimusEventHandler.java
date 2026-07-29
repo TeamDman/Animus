@@ -20,6 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
@@ -91,7 +92,7 @@ public class AnimusEventHandler {
     }
 
     private static ItemStack findFreeSoulSigil(Player player) {
-        for (ItemStack stack : player.getInventory().items) {
+        for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
             if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
                 return stack;
             }
@@ -105,7 +106,7 @@ public class AnimusEventHandler {
                 }
             }
         }
-        for (ItemStack stack : player.getInventory().offhand) {
+        for (ItemStack stack : List.of(player.getItemBySlot(EquipmentSlot.OFFHAND))) {
             if (!stack.isEmpty() && stack.is(AnimusItems.SIGIL_FREE_SOUL.get())) {
                 return stack;
             }
@@ -276,7 +277,7 @@ public class AnimusEventHandler {
     ) {
         ArrayList<ItemStack> soulList = new ArrayList<>();
 
-        if (killedEntity.getCommandSenderWorld().getDifficulty() != Difficulty.PEACEFUL
+        if (killedEntity.level().getDifficulty() != Difficulty.PEACEFUL
             && !(killedEntity instanceof Enemy)) {
             return soulList;
         }
@@ -286,8 +287,8 @@ public class AnimusEventHandler {
         ISpiritus soul = SpiritusWeaponStats.getSoulItem(spiritusType);
 
         for (int i = 0; i <= looting; i++) {
-            if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
-                double dropAmount = spiritusModifier * (soulDrop[spiritusLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
+            if (i == 0 || attackingEntity.level().getRandom().nextDouble() < 0.4) {
+                double dropAmount = spiritusModifier * (soulDrop[spiritusLevel] * attackingEntity.level().getRandom().nextDouble()
                     + staticDrop[spiritusLevel]) * killedEntity.getMaxHealth() / 20.0;
                 ItemStack soulStack = soul.createSpiritus(dropAmount);
                 soulList.add(soulStack);
@@ -318,7 +319,7 @@ public class AnimusEventHandler {
                 SpiritusType pickupType = ((ISpiritus) remainder.getItem()).getType(remainder);
                 if (((ISpiritus) remainder.getItem()).getSpiritus(pickupType, remainder) >= 0.0001) {
                     existingDrops.add(new ItemEntity(
-                        killedEntity.getCommandSenderWorld(),
+                        killedEntity.level(),
                         killedEntity.getX(),
                         killedEntity.getY(),
                         killedEntity.getZ(),

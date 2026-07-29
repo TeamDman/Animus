@@ -1,13 +1,8 @@
 {
   "type": "neovitae:array",
-  "addedinput": {
-    "item": "neovitae:tabula_spiritus"
-  },
-  "baseinput": {
-    "item": "animusnv:reagentheavelywrath"
-  },
+  "addedinput": "neovitae:tabula_spiritus",
+  "baseinput": "animusnv:reagentheavelywrath",
   "output": {
-    "count": 1,
     "id": "animusnv:sigil_heavenly_wrath"
   },
   "texture": "neovitae:textures/models/alchemyarrays/bindinglightningarray.png"

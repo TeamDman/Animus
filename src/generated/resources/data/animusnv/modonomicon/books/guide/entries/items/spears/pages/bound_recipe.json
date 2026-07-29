@@ -1,0 +1,9 @@
+{
+  "type": "neovitae:alchemy_array_recipe",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "bound_recipe",
+  "recipe_id_1": "animusnv:array/spear_bound",
+  "sort_number": 0
+}

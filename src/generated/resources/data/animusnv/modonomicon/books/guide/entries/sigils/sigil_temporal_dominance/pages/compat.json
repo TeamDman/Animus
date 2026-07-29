@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "compat",
+  "show_title_separator": true,
+  "sort_number": 5,
+  "text": "book.animusnv.guide.sigils.sigil_temporal_dominance.compat.text",
+  "title": "book.animusnv.guide.sigils.sigil_temporal_dominance.compat.title"
+}

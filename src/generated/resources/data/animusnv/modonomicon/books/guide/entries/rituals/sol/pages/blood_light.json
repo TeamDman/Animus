@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "blood_light",
+  "show_title_separator": true,
+  "sort_number": 3,
+  "text": "book.animusnv.guide.rituals.sol.blood_light.text",
+  "title": "book.animusnv.guide.rituals.sol.blood_light.title"
+}

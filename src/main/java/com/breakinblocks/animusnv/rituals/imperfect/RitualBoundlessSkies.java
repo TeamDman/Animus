@@ -34,7 +34,7 @@ public class RitualBoundlessSkies extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -56,10 +56,8 @@ public class RitualBoundlessSkies extends ImperfectRitual {
             1.2F
         );
 
-        player.displayClientMessage(
-            Component.translatable("ritual.animusnv.boundless_skies.success"),
-            true
-        );
+        player.sendOverlayMessage(
+            Component.translatable("ritual.animusnv.boundless_skies.success"));
 
         return true;
     }

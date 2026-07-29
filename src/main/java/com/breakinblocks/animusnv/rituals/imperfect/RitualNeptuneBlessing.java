@@ -36,7 +36,7 @@ public class RitualNeptuneBlessing extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -67,10 +67,8 @@ public class RitualNeptuneBlessing extends ImperfectRitual {
             1.0F
         );
 
-        player.displayClientMessage(
-            Component.translatable("ritual.animusnv.neptune_blessing.success"),
-            true
-        );
+        player.sendOverlayMessage(
+            Component.translatable("ritual.animusnv.neptune_blessing.success"));
 
         return true;
     }

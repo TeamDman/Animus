@@ -32,14 +32,17 @@ import org.jetbrains.annotations.Nullable;
  */
 public class BlockArcaneRune extends Block implements EntityBlock {
 
-    public BlockArcaneRune() {
-        super(BlockBehaviour.Properties.of()
+    public BlockArcaneRune(BlockBehaviour.Properties props) {
+        super(props);
+    }
+
+    public static BlockBehaviour.Properties defaultProperties() {
+        return BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_PURPLE)
             .strength(2.0F, 5.0F)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()
-            .lightLevel((state) -> 7) // Emit a subtle glow
-        );
+            .lightLevel((state) -> 7);
     }
 
     @Nullable
@@ -54,7 +57,7 @@ public class BlockArcaneRune extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null :
+        return level.isClientSide() ? null :
             createTickerHelper(type, ArsNouveauCompat.ARCANE_RUNE_BE.get(), SERVER_TICKER);
     }
 

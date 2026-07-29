@@ -68,7 +68,7 @@ public class RitualArcaneMastery extends Ritual {
         Level level = mrs.getWorldObj();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
+        if (level.isClientSide() || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
 
@@ -140,11 +140,9 @@ public class RitualArcaneMastery extends Ritual {
             int baseCost = getEVCostForRarity(spell.getRarity(targetLevel));
             int totalCost = Math.max(baseCost, baseCost * scrollLevel);
             if (network.getCurrentEV() < totalCost) {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.literal("Not enough EV! Need " + totalCost + " EV")
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
+                        .withStyle(ChatFormatting.RED));
                 return false;
             }
 
@@ -158,13 +156,11 @@ public class RitualArcaneMastery extends Ritual {
 
             stack.shrink(1);
             chest.setItem(i, stack);
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("Upgraded: ")
                     .withStyle(ChatFormatting.GOLD)
                     .append(spell.getDisplayName(null).copy().withStyle(ChatFormatting.LIGHT_PURPLE))
-                    .append(Component.literal(" Level " + scrollLevel + " → " + targetLevel).withStyle(ChatFormatting.YELLOW)),
-                false
-            );
+                    .append(Component.literal(" Level " + scrollLevel + " → " + targetLevel).withStyle(ChatFormatting.YELLOW)));
 
             spawnSuccessParticles(level, ritualPos);
             level.playSound(
@@ -200,9 +196,9 @@ public class RitualArcaneMastery extends Ritual {
 
     private void emitSmokeParticles(ServerLevel level, BlockPos pos) {
         for (int i = 0; i < 3; i++) {
-            double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.5;
+            double x = pos.getX() + 0.5 + (level.getRandom().nextDouble() - 0.5) * 0.5;
             double y = pos.getY() + 1.0;
-            double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 0.5;
+            double z = pos.getZ() + 0.5 + (level.getRandom().nextDouble() - 0.5) * 0.5;
             level.sendParticles(
                 ParticleTypes.SMOKE,
                 x, y, z,
@@ -215,9 +211,9 @@ public class RitualArcaneMastery extends Ritual {
 
     private void spawnSuccessParticles(ServerLevel level, BlockPos pos) {
         for (int i = 0; i < 20; i++) {
-            double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 2;
-            double y = pos.getY() + 0.5 + level.random.nextDouble() * 2;
-            double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 2;
+            double x = pos.getX() + 0.5 + (level.getRandom().nextDouble() - 0.5) * 2;
+            double y = pos.getY() + 0.5 + level.getRandom().nextDouble() * 2;
+            double z = pos.getZ() + 0.5 + (level.getRandom().nextDouble() - 0.5) * 2;
             level.sendParticles(
                 ParticleTypes.ENCHANT,
                 x, y, z,
@@ -228,9 +224,9 @@ public class RitualArcaneMastery extends Ritual {
         }
 
         for (int i = 0; i < 10; i++) {
-            double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5);
-            double y = pos.getY() + 0.5 + level.random.nextDouble();
-            double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5);
+            double x = pos.getX() + 0.5 + (level.getRandom().nextDouble() - 0.5);
+            double y = pos.getY() + 0.5 + level.getRandom().nextDouble();
+            double z = pos.getZ() + 0.5 + (level.getRandom().nextDouble() - 0.5);
             level.sendParticles(
                 ParticleTypes.SOUL,
                 x, y, z,

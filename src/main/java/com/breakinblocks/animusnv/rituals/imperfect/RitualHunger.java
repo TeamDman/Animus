@@ -32,7 +32,7 @@ public class RitualHunger extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -47,7 +47,7 @@ public class RitualHunger extends ImperfectRitual {
             SoundEvents.FIRE_EXTINGUISH,
             SoundSource.BLOCKS,
             0.5F,
-            2.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.8F
+            2.6F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.8F
         );
 
         return true;

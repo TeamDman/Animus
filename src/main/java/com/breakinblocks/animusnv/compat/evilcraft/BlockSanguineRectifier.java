@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,13 +28,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class BlockSanguineRectifier extends Block implements EntityBlock {
 
-    public BlockSanguineRectifier() {
-        super(BlockBehaviour.Properties.of()
+    public BlockSanguineRectifier(BlockBehaviour.Properties props) {
+        super(props);
+    }
+
+    public static BlockBehaviour.Properties defaultProperties() {
+        return BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_RED)
             .strength(3.0F, 6.0F)
             .sound(SoundType.METAL)
-            .noOcclusion()
-        );
+            .noOcclusion();
     }
 
     @Nullable
@@ -47,7 +49,7 @@ public class BlockSanguineRectifier extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        if (level.isClientSide) return null;
+        if (level.isClientSide()) return null;
         return createTickerHelper(type, EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(),
             (lvl, pos, st, be) -> be.tick());
     }
@@ -62,46 +64,40 @@ public class BlockSanguineRectifier extends Block implements EntityBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
-        if (level.isClientSide || !(placer instanceof Player player)) return;
+        if (level.isClientSide() || !(placer instanceof Player player)) return;
 
         if (level.getBlockEntity(pos) instanceof BlockEntitySanguineRectifier rectifier) {
             BlockPos altarPos = rectifier.scanForAltar();
             rectifier.setAltarPos(altarPos);
 
             if (altarPos != null) {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.rectifier.linked",
                         altarPos.getX(), altarPos.getY(), altarPos.getZ())
-                        .withStyle(ChatFormatting.GREEN),
-                    true
-                );
+                        .withStyle(ChatFormatting.GREEN));
             } else {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.rectifier.no_altar")
-                        .withStyle(ChatFormatting.YELLOW),
-                    true
-                );
+                        .withStyle(ChatFormatting.YELLOW));
             }
         }
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                                Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (level.isClientSide) return ItemInteractionResult.SUCCESS;
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
 
         if (!(level.getBlockEntity(pos) instanceof BlockEntitySanguineRectifier rectifier)) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         if (!stack.isEmpty() && rectifier.isValidOrb(stack)) {
             if (!rectifier.isOrbBound(stack)) {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.rectifier.orb_not_bound")
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
-                return ItemInteractionResult.FAIL;
+                        .withStyle(ChatFormatting.RED));
+                return InteractionResult.FAIL;
             }
 
             // Swap or place orb
@@ -114,20 +110,18 @@ public class BlockSanguineRectifier extends Block implements EntityBlock {
                 }
             }
 
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.translatable("text.component.animusnv.rectifier.orb_placed")
-                    .withStyle(ChatFormatting.GREEN),
-                true
-            );
-            return ItemInteractionResult.SUCCESS;
+                    .withStyle(ChatFormatting.GREEN));
+            return InteractionResult.SUCCESS;
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
 
         if (!(level.getBlockEntity(pos) instanceof BlockEntitySanguineRectifier rectifier)) {
             return InteractionResult.PASS;
@@ -139,18 +133,14 @@ public class BlockSanguineRectifier extends Block implements EntityBlock {
             rectifier.setAltarPos(altarPos);
 
             if (altarPos != null) {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.rectifier.linked",
                         altarPos.getX(), altarPos.getY(), altarPos.getZ())
-                        .withStyle(ChatFormatting.GREEN),
-                    true
-                );
+                        .withStyle(ChatFormatting.GREEN));
             } else {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.rectifier.no_altar")
-                        .withStyle(ChatFormatting.YELLOW),
-                    true
-                );
+                        .withStyle(ChatFormatting.YELLOW));
             }
             return InteractionResult.SUCCESS;
         }
@@ -164,11 +154,9 @@ public class BlockSanguineRectifier extends Block implements EntityBlock {
                 player.drop(orb, false);
             }
 
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.translatable("text.component.animusnv.rectifier.orb_removed")
-                    .withStyle(ChatFormatting.GOLD),
-                true
-            );
+                    .withStyle(ChatFormatting.GOLD));
             return InteractionResult.SUCCESS;
         }
 
@@ -177,7 +165,7 @@ public class BlockSanguineRectifier extends Block implements EntityBlock {
 
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockEntitySanguineRectifier rectifier) {
+        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BlockEntitySanguineRectifier rectifier) {
             rectifier.dropContents(level, pos);
         }
         return super.playerWillDestroy(level, pos, state, player);

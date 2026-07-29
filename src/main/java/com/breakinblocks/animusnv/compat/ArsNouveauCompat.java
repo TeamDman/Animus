@@ -35,11 +35,11 @@ public class ArsNouveauCompat implements ICompatModule {
 
     private static ArsNouveauCompat INSTANCE;
 
-    public static final DeferredRegister<Block> BLOCKS =
-        DeferredRegister.create(Registries.BLOCK, Constants.Mod.MODID);
+    public static final DeferredRegister.Blocks BLOCKS =
+        DeferredRegister.createBlocks(Constants.Mod.MODID);
 
-    public static final DeferredRegister<Item> ITEMS =
-        DeferredRegister.create(Registries.ITEM, Constants.Mod.MODID);
+    public static final DeferredRegister.Items ITEMS =
+        DeferredRegister.createItems(Constants.Mod.MODID);
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
         DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Constants.Mod.MODID);
@@ -51,11 +51,11 @@ public class ArsNouveauCompat implements ICompatModule {
         IMPERFECT_RITUALS.register(Constants.Rituals.MAGI, () -> new RitualMagi());
 
     // Using lambda instead of method reference to defer class loading
-    public static final DeferredHolder<Block, BlockArcaneRune> ARCANE_RUNE = BLOCKS.register(
-        "arcane_rune", () -> new BlockArcaneRune());
+    public static final DeferredHolder<Block, BlockArcaneRune> ARCANE_RUNE = BLOCKS.registerBlock(
+        "arcane_rune", BlockArcaneRune::new, BlockArcaneRune::defaultProperties);
 
-    public static final DeferredHolder<Item, Item> ARCANE_RUNE_ITEM = ITEMS.register(
-        "arcane_rune", () -> new BlockItem(ARCANE_RUNE.get(), new Item.Properties()));
+    public static final DeferredHolder<Item, Item> ARCANE_RUNE_ITEM = ITEMS.registerItem(
+        "arcane_rune", props -> new BlockItem(ARCANE_RUNE.get(), props.useBlockDescriptionPrefix()));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityArcaneRune>> ARCANE_RUNE_BE =
         BLOCK_ENTITIES.register("arcane_rune", () -> BlockEntityType.Builder.of(

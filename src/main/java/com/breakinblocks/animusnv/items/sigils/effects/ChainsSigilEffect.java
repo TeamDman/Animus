@@ -8,7 +8,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -37,7 +39,7 @@ public record ChainsSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnAir(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -52,7 +54,7 @@ public record ChainsSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnEntity(Level level, Player player, ItemStack stack, Entity target) {
-        if (level.isClientSide || !(target instanceof LivingEntity living)) {
+        if (level.isClientSide() || !(target instanceof LivingEntity living)) {
             return false;
         }
 
@@ -91,23 +93,22 @@ public record ChainsSigilEffect() implements ISigilEffect {
      */
     private boolean captureEntity(Player player, LivingEntity target) {
         // Check if entity can be captured
-        if (target.getType().is(Constants.Tags.DISALLOW_CAPTURING)) {
-            player.displayClientMessage(
-                    Component.translatable(Constants.Localizations.Text.CHAINS_CAPTURE_FAILED),
-                    true
-            );
+        if (target.is(Constants.Tags.DISALLOW_CAPTURING)) {
+            player.sendOverlayMessage(
+                    Component.translatable(Constants.Localizations.Text.CHAINS_CAPTURE_FAILED));
             return false;
         }
 
         // Create mob soul item
         ItemStack soul = new ItemStack(AnimusItems.MOBSOUL.get());
-        CompoundTag targetData = new CompoundTag();
 
         // Save entity data
-        target.saveWithoutId(targetData);
+        TagValueOutput targetOutput = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, target.registryAccess());
+        target.saveWithoutId(targetOutput);
+        CompoundTag targetData = targetOutput.buildResult();
 
         // Get entity type
-        ResourceLocation entityId = BuiltInRegistries.ENTITY_TYPE.getKey(target.getType());
+        Identifier entityId = BuiltInRegistries.ENTITY_TYPE.getKey(target.getType());
         if (entityId != null) {
             soul.set(AnimusDataComponents.SOUL_ENTITY_NAME.get(), entityId.toString());
         }

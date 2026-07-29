@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "creation",
+  "show_title_separator": true,
+  "sort_number": 1,
+  "text": "book.animusnv.guide.blocks.antilife_fluid.creation.text",
+  "title": "book.animusnv.guide.blocks.antilife_fluid.creation.title"
+}

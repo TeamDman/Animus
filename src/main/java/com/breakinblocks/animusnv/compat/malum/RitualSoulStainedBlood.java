@@ -4,7 +4,7 @@ import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -27,8 +27,8 @@ import com.breakinblocks.neovitae.ritual.ImperfectRitual;
 public class RitualSoulStainedBlood extends ImperfectRitual {
 
     private static final int EFFECT_DURATION = 18000; // 15 minutes
-    private static final ResourceLocation HALLOWED_GOLD_BLOCK = ResourceLocation.fromNamespaceAndPath("malum", "block_of_hallowed_gold");
-    private static final ResourceLocation STONE_WARD = ResourceLocation.fromNamespaceAndPath("malum", "stone_ward");
+    private static final Identifier HALLOWED_GOLD_BLOCK = Identifier.fromNamespaceAndPath("malum", "block_of_hallowed_gold");
+    private static final Identifier STONE_WARD = Identifier.fromNamespaceAndPath("malum", "stone_ward");
 
     public RitualSoulStainedBlood() {
         super(
@@ -47,7 +47,7 @@ public class RitualSoulStainedBlood extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -56,10 +56,8 @@ public class RitualSoulStainedBlood extends ImperfectRitual {
 
         if (effect == null) {
             // Send to chat (false) so it doesn't get overwritten by NeoVitae's action bar message
-            player.displayClientMessage(
-                Component.translatable("ritual.animusnv.soul_stained_blood.no_effect"),
-                false
-            );
+            player.sendSystemMessage(
+                Component.translatable("ritual.animusnv.soul_stained_blood.no_effect"));
             return false;
         }
 
@@ -81,10 +79,8 @@ public class RitualSoulStainedBlood extends ImperfectRitual {
             0.8F
         );
 
-        player.displayClientMessage(
-            Component.translatable("ritual.animusnv.soul_stained_blood.success"),
-            true
-        );
+        player.sendOverlayMessage(
+            Component.translatable("ritual.animusnv.soul_stained_blood.success"));
 
         return true;
     }

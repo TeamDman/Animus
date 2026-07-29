@@ -76,39 +76,33 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnBlock(Level level, Player player, ItemStack stack, BlockPos pos, Direction side, Vec3 hitVec) {
-        if (level.isClientSide || !player.isShiftKeyDown()) {
+        if (level.isClientSide() || !player.isShiftKeyDown()) {
             return false;
         }
 
         // Check if there's a block entity at this position
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity == null) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.TEMPORAL_NO_TILE)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
         // Check if this block is disallowed from acceleration
         BlockState blockState = level.getBlockState(pos);
         if (blockState.is(Constants.Tags.DISALLOW_ACCELERATION)) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.TEMPORAL_DISALLOWED)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
         // Check if GAG, TIAB, or JDT is already accelerating this block
         if (isAcceleratedByGAG(pos, level) || isAcceleratedByTIAB(pos, level) || isAcceleratedByJDT(pos, level)) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.TEMPORAL_GAG_ACTIVE)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
@@ -139,11 +133,9 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
         // Check if player has enough EV
         int currentEV = network.getCurrentEV();
         if (currentEV < evCost) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.TEMPORAL_NO_EV, evCost)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
@@ -158,14 +150,12 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
         int speedMultiplier = 1 << newLevel; // 2^level
 
         // Send feedback to player
-        player.displayClientMessage(
+        player.sendOverlayMessage(
                 Component.translatable(
                         Constants.Localizations.Text.TEMPORAL_ACTIVATED,
                         speedMultiplier,
                         DURATION_TICKS / 20
-                ).withStyle(ChatFormatting.GOLD),
-                true
-        );
+                ).withStyle(ChatFormatting.GOLD));
 
         // Return false to skip EV cost from sigil_type (we handle it ourselves)
         return false;

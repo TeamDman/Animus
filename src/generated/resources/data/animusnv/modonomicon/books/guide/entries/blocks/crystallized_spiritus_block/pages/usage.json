@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "usage",
+  "show_title_separator": true,
+  "sort_number": 2,
+  "text": "book.animusnv.guide.blocks.crystallized_spiritus_block.usage.text",
+  "title": "book.animusnv.guide.blocks.crystallized_spiritus_block.usage.title"
+}

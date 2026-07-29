@@ -1,6 +1,6 @@
 package com.breakinblocks.animusnv.compat;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
@@ -23,19 +23,19 @@ public class SentientUpgradeHelper {
         return getManager().getChestPiece(player);
     }
 
-    public static int getUpgradeLevel(Player player, ResourceLocation upgradeId) {
+    public static int getUpgradeLevel(Player player, Identifier upgradeId) {
         return getManager().getUpgradeLevel(player, upgradeId);
     }
 
-    public static boolean hasUpgrade(Player player, ResourceLocation upgradeId) {
+    public static boolean hasUpgrade(Player player, Identifier upgradeId) {
         return getUpgradeLevel(player, upgradeId) > 0;
     }
 
-    public static boolean addExperience(Player player, ResourceLocation upgradeId, float xpToAdd) {
+    public static boolean addExperience(Player player, Identifier upgradeId, float xpToAdd) {
         return getManager().grantUpgradeExperience(player, upgradeId, xpToAdd);
     }
 
-    public static float getExperience(Player player, ResourceLocation upgradeId) {
+    public static float getExperience(Player player, Identifier upgradeId) {
         return getManager().getUpgradeExperience(player, upgradeId);
     }
 

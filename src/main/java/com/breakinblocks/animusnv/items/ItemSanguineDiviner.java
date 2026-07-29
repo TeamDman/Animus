@@ -1,10 +1,10 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.Constants;
-import com.breakinblocks.animusnv.compat.arsnouveau.BlockEntityArcaneRune;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -18,8 +18,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -43,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Sanguine Diviner - Displays information about NeoVitae altars and rituals
@@ -57,8 +59,8 @@ import java.util.UUID;
  */
 public class ItemSanguineDiviner extends Item {
 
-    public ItemSanguineDiviner() {
-        super(new Item.Properties().stacksTo(1));
+    public ItemSanguineDiviner(Item.Properties props) {
+        super(props.stacksTo(1));
     }
 
     @Override
@@ -72,30 +74,11 @@ public class ItemSanguineDiviner extends Item {
         BlockPos pos = context.getClickedPos();
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
-        // Check if clicked block is an Arcane Rune (Ars Nouveau compat)
-        if (ModList.get().isLoaded("ars_nouveau") && blockEntity instanceof BlockEntityArcaneRune arcaneRune) {
-            if (level.isClientSide) {
-                return InteractionResult.SUCCESS;
-            }
 
-            displayArcaneRuneInfo(player, arcaneRune);
-
-            // Play sound
-            level.playSound(
-                null,
-                pos,
-                SoundEvents.EXPERIENCE_ORB_PICKUP,
-                SoundSource.BLOCKS,
-                0.5F,
-                1.2F
-            );
-
-            return InteractionResult.SUCCESS;
-        }
 
         // Check if clicked block is a Master Ritual Stone
         if (blockEntity instanceof IMasterRitualStone ritualStone) {
-            if (level.isClientSide) {
+            if (level.isClientSide()) {
                 return InteractionResult.SUCCESS;
             }
 
@@ -108,11 +91,9 @@ public class ItemSanguineDiviner extends Item {
                     // Stop the ritual
                     ritualStone.stopRitual(Ritual.BreakType.DEACTIVATE);
 
-                    player.displayClientMessage(
+                    player.sendOverlayMessage(
                         Component.translatable("text.component.animusnv.diviner.ritual_dismantled")
-                            .withStyle(ChatFormatting.GOLD),
-                        true
-                    );
+                            .withStyle(ChatFormatting.GOLD));
 
                     // Play sound
                     level.playSound(
@@ -124,35 +105,27 @@ public class ItemSanguineDiviner extends Item {
                         0.8F
                     );
                 } else {
-                    player.displayClientMessage(
+                    player.sendOverlayMessage(
                         Component.translatable("text.component.animusnv.diviner.no_ritual_to_dismantle")
-                            .withStyle(ChatFormatting.RED),
-                        true
-                    );
+                            .withStyle(ChatFormatting.RED));
                 }
                 return InteractionResult.SUCCESS;
             }
 
             // Normal click - show ritual information
             if (ritual == null) {
-                player.displayClientMessage(
+                player.sendSystemMessage(
                     Component.translatable("text.component.animusnv.diviner.no_ritual_set")
-                        .withStyle(ChatFormatting.GRAY),
-                    false
-                );
+                        .withStyle(ChatFormatting.GRAY));
             } else {
                 String ritualName = ritual.getTranslationKey();
-                player.displayClientMessage(
+                player.sendSystemMessage(
                     Component.translatable("text.component.animusnv.diviner.ritual_label").withStyle(ChatFormatting.AQUA)
-                        .append(Component.translatable(ritualName).withStyle(ChatFormatting.WHITE)),
-                    false
-                );
-                player.displayClientMessage(
+                        .append(Component.translatable(ritualName).withStyle(ChatFormatting.WHITE)));
+                player.sendSystemMessage(
                     Component.translatable("text.component.animusnv.diviner.status_label").withStyle(ChatFormatting.AQUA)
                         .append(Component.translatable(isActive ? "text.component.animusnv.diviner.status_active" : "text.component.animusnv.diviner.status_inactive")
-                            .withStyle(isActive ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                    false
-                );
+                            .withStyle(isActive ? ChatFormatting.GREEN : ChatFormatting.RED)));
 
                 // Show owner if available
                 UUID owner = ritualStone.getOwner();
@@ -166,19 +139,15 @@ public class ItemSanguineDiviner extends Item {
                         ownerName = ownerPlayer.getName().getString();
                     }
 
-                    player.displayClientMessage(
+                    player.sendSystemMessage(
                         Component.translatable("text.component.animusnv.diviner.owner_label").withStyle(ChatFormatting.AQUA)
                             .append(Component.literal(ownerName)
-                                .withStyle(ChatFormatting.YELLOW)),
-                        false
-                    );
+                                .withStyle(ChatFormatting.YELLOW)));
                 }
 
-                player.displayClientMessage(
+                player.sendSystemMessage(
                     Component.translatable("text.component.animusnv.diviner.sneak_to_dismantle")
-                        .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC),
-                    false
-                );
+                        .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
             }
 
             // Play sound
@@ -196,7 +165,7 @@ public class ItemSanguineDiviner extends Item {
 
         // Check if clicked block is a Ara Vitae
         if (blockEntity instanceof AraVitaeTile altar) {
-            if (level.isClientSide) {
+            if (level.isClientSide()) {
                 return InteractionResult.SUCCESS;
             }
 
@@ -229,11 +198,9 @@ public class ItemSanguineDiviner extends Item {
                 if (totalPlacedCount > 0) {
                     // Display 1-indexed tier to match NeoVitae convention
                     int displayTier = highestTierBuilt + 1;
-                    player.displayClientMessage(
+                    player.sendOverlayMessage(
                         Component.translatable("text.component.animusnv.diviner.placed_blocks", totalPlacedCount, totalPlacedCount == 1 ? "" : "s", displayTier)
-                            .withStyle(ChatFormatting.GREEN),
-                        true
-                    );
+                            .withStyle(ChatFormatting.GREEN));
 
                     // Play success sound
                     level.playSound(
@@ -245,17 +212,13 @@ public class ItemSanguineDiviner extends Item {
                         1.0F
                     );
                 } else if (AltarTierLookup.findNextTier(level.registryAccess(), tierLevel).isEmpty()) {
-                    player.displayClientMessage(
+                    player.sendOverlayMessage(
                         Component.translatable("text.component.animusnv.diviner.max_tier")
-                            .withStyle(ChatFormatting.GOLD),
-                        true
-                    );
+                            .withStyle(ChatFormatting.GOLD));
                 } else {
-                    player.displayClientMessage(
+                    player.sendOverlayMessage(
                         Component.translatable("text.component.animusnv.diviner.no_blocks_to_place")
-                            .withStyle(ChatFormatting.YELLOW),
-                        true
-                    );
+                            .withStyle(ChatFormatting.YELLOW));
                 }
 
                 return InteractionResult.SUCCESS;
@@ -266,18 +229,15 @@ public class ItemSanguineDiviner extends Item {
             int capacity = altar.getMainCapacity();
 
             // Display information to player
-            player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.DIVINER_ALTAR_INFO), false
-            );
-            player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.DIVINER_ESSENCE_INFO, currentBlood, capacity), false
-            );
+            player.sendSystemMessage(
+                Component.translatable(Constants.Localizations.Text.DIVINER_ALTAR_INFO));
+            player.sendSystemMessage(
+                Component.translatable(Constants.Localizations.Text.DIVINER_ESSENCE_INFO, currentBlood, capacity));
 
             // Show tier information (display as 1-indexed to match NeoVitae convention)
             int displayTier = tierLevel + 1;
-            player.displayClientMessage(
-                Component.translatable(Constants.Localizations.Text.DIVINER_TIER_INFO, displayTier), false
-            );
+            player.sendSystemMessage(
+                Component.translatable(Constants.Localizations.Text.DIVINER_TIER_INFO, displayTier));
 
             // Show rune breakdown for tier 1+ (tier is 0-indexed, so >= 1 means tier 2+)
             if (tierLevel >= 1) {
@@ -290,17 +250,13 @@ public class ItemSanguineDiviner extends Item {
             Optional<AltarTier> nextTier = AltarTierLookup.findNextTier(level.registryAccess(), tierLevel);
             if (nextTier.isPresent()) {
                 int nextDisplayTier = nextTier.get().tier() + 1;
-                player.displayClientMessage(
+                player.sendSystemMessage(
                     Component.translatable("text.component.animusnv.diviner.sneak_to_build", nextDisplayTier)
-                        .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC),
-                    false
-                );
+                        .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
             } else {
-                player.displayClientMessage(
+                player.sendSystemMessage(
                     Component.translatable("text.component.animusnv.diviner.max_tier")
-                        .withStyle(ChatFormatting.GOLD),
-                    false
-                );
+                        .withStyle(ChatFormatting.GOLD));
             }
 
             // Play sound
@@ -394,7 +350,7 @@ public class ItemSanguineDiviner extends Item {
         // datapack still considers them valid for this slot.
         Block preferred = null;
         if (component.material().tag()) {
-            ResourceLocation tagId = component.material().id();
+            Identifier tagId = component.material().id();
             if (tagId.equals(NVTags.Blocks.T6_CAPSTONES.location())) {
                 preferred = AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get();
             } else if (tagId.equals(NVTags.Blocks.T5_CAPSTONES.location())) {
@@ -431,8 +387,10 @@ public class ItemSanguineDiviner extends Item {
             return state.is(tag);
         } else {
             Block block = level.registryAccess()
-                    .registryOrThrow(Registries.BLOCK)
-                    .get(ResourceKey.create(Registries.BLOCK, component.material().id()));
+                    .lookupOrThrow(Registries.BLOCK)
+                    .get(ResourceKey.create(Registries.BLOCK, component.material().id()))
+                    .map(Holder::value)
+                    .orElse(null);
             return block != null && state.is(block);
         }
     }
@@ -457,55 +415,6 @@ public class ItemSanguineDiviner extends Item {
         return ItemStack.EMPTY;
     }
 
-    /**
-     * Displays information about an Arcane Rune (Ars Nouveau compat).
-     */
-    private void displayArcaneRuneInfo(Player player, BlockEntityArcaneRune arcaneRune) {
-        player.displayClientMessage(
-            Component.translatable("text.component.animusnv.diviner.arcane_rune_header")
-                .withStyle(ChatFormatting.LIGHT_PURPLE),
-            false
-        );
-
-        // Source level
-        int currentSource = arcaneRune.getSource();
-        int maxSource = arcaneRune.getMaxSource();
-        player.displayClientMessage(
-            Component.translatable("text.component.animusnv.diviner.arcane_rune_source", currentSource, maxSource)
-                .withStyle(ChatFormatting.AQUA),
-            false
-        );
-
-        // Powered state
-        boolean hasPower = arcaneRune.hasSource();
-        player.displayClientMessage(
-            Component.translatable("text.component.animusnv.diviner.arcane_rune_powered")
-                .withStyle(ChatFormatting.AQUA)
-                .append(Component.translatable(hasPower
-                    ? "text.component.animusnv.diviner.arcane_rune_powered_yes"
-                    : "text.component.animusnv.diviner.arcane_rune_powered_no")
-                    .withStyle(hasPower ? ChatFormatting.GREEN : ChatFormatting.RED)),
-            false
-        );
-
-        // Speed multiplier
-        float speedMult = arcaneRune.getSpeedMultiplier();
-        String speedPercent = String.format("%.0f%%", speedMult * 100);
-        player.displayClientMessage(
-            Component.translatable("text.component.animusnv.diviner.arcane_rune_speed", speedPercent)
-                .withStyle(hasPower ? ChatFormatting.GREEN : ChatFormatting.YELLOW),
-            false
-        );
-
-        // Dislocation bonus (only when powered)
-        if (arcaneRune.providesDislocationBonus()) {
-            player.displayClientMessage(
-                Component.translatable("text.component.animusnv.diviner.arcane_rune_dislocation")
-                    .withStyle(ChatFormatting.GREEN),
-                false
-            );
-        }
-    }
 
     /**
      * Displays the rune breakdown for an altar.
@@ -517,11 +426,9 @@ public class ItemSanguineDiviner extends Item {
             return;
         }
 
-        player.displayClientMessage(
+        player.sendSystemMessage(
             Component.translatable("text.component.animusnv.diviner.rune_breakdown_header")
-                .withStyle(ChatFormatting.DARK_PURPLE),
-            false
-        );
+                .withStyle(ChatFormatting.DARK_PURPLE));
 
         // Display each rune type with count
         for (Map.Entry<IAltarRuneType, Integer> entry : scanResult.runeCounts().entrySet()) {
@@ -531,13 +438,11 @@ public class ItemSanguineDiviner extends Item {
             // Capitalize and format the rune name nicely
             String displayName = formatRuneName(runeName);
 
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("  " + displayName + ": ")
                     .withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(String.valueOf(count))
-                        .withStyle(ChatFormatting.WHITE)),
-                false
-            );
+                        .withStyle(ChatFormatting.WHITE)));
         }
     }
 
@@ -549,9 +454,11 @@ public class ItemSanguineDiviner extends Item {
      */
     private Block getBloodStainedGlass(Level level) {
         Block block = level.registryAccess()
-                .registryOrThrow(Registries.BLOCK)
+                .lookupOrThrow(Registries.BLOCK)
                 .get(ResourceKey.create(Registries.BLOCK,
-                    ResourceLocation.fromNamespaceAndPath("neovitae", "blood_stained_glass")));
+                    Identifier.fromNamespaceAndPath("neovitae", "blood_stained_glass")))
+                .map(Holder::value)
+                .orElse(null);
         return block != null ? block : Blocks.GLASS;
     }
 
@@ -595,125 +502,109 @@ public class ItemSanguineDiviner extends Item {
             return;
         }
 
-        player.displayClientMessage(
+        player.sendSystemMessage(
             Component.translatable("text.component.animusnv.diviner.multipliers_header")
-                .withStyle(ChatFormatting.GOLD),
-            false
-        );
+                .withStyle(ChatFormatting.GOLD));
 
         // Speed bonus (displayed as percentage)
         if (speedBonus != 0) {
             String speedStr = String.format("%+.0f%%", speedBonus * 100);
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("  ")
                     .append(Component.translatable("text.component.animusnv.diviner.multiplier_speed"))
                     .withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(speedStr)
-                        .withStyle(speedBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                false
-            );
+                        .withStyle(speedBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)));
         }
 
         // Dislocation bonus (displayed as multiplier)
         if (dislocationBonus != 1.0f) {
             String dislocationStr = String.format("%.2fx", dislocationBonus);
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("  ")
                     .append(Component.translatable("text.component.animusnv.diviner.multiplier_dislocation"))
                     .withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(dislocationStr)
-                        .withStyle(dislocationBonus > 1 ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                false
-            );
+                        .withStyle(dislocationBonus > 1 ? ChatFormatting.GREEN : ChatFormatting.RED)));
         }
 
         // Sacrifice bonus
         if (sacrificeBonus != 0) {
             String sacrificeStr = String.format("%+.0f%%", sacrificeBonus * 100);
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("  ")
                     .append(Component.translatable("text.component.animusnv.diviner.multiplier_sacrifice"))
                     .withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(sacrificeStr)
-                        .withStyle(sacrificeBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                false
-            );
+                        .withStyle(sacrificeBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)));
         }
 
         // Self-sacrifice bonus
         if (selfSacrificeBonus != 0) {
             String selfSacrificeStr = String.format("%+.0f%%", selfSacrificeBonus * 100);
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("  ")
                     .append(Component.translatable("text.component.animusnv.diviner.multiplier_self_sacrifice"))
                     .withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(selfSacrificeStr)
-                        .withStyle(selfSacrificeBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                false
-            );
+                        .withStyle(selfSacrificeBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)));
         }
 
         // Orb capacity bonus
         if (orbCapacityBonus != 0) {
             String orbStr = String.format("%+.0f%%", orbCapacityBonus * 100);
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("  ")
                     .append(Component.translatable("text.component.animusnv.diviner.multiplier_orb"))
                     .withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(orbStr)
-                        .withStyle(orbCapacityBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                false
-            );
+                        .withStyle(orbCapacityBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)));
         }
 
         // Capacity bonus
         if (capacityBonus != 0) {
             String capacityStr = String.format("%+.0f%%", capacityBonus * 100);
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("  ")
                     .append(Component.translatable("text.component.animusnv.diviner.multiplier_capacity"))
                     .withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(capacityStr)
-                        .withStyle(capacityBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                false
-            );
+                        .withStyle(capacityBonus > 0 ? ChatFormatting.GREEN : ChatFormatting.RED)));
         }
 
         // Efficiency (lower is better - less EV lost when paused)
         if (efficiency != 1.0f) {
             String efficiencyStr = String.format("%.0f%%", efficiency * 100);
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("  ")
                     .append(Component.translatable("text.component.animusnv.diviner.multiplier_efficiency"))
                     .withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(efficiencyStr)
-                        .withStyle(efficiency < 1 ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                false
-            );
+                        .withStyle(efficiency < 1 ? ChatFormatting.GREEN : ChatFormatting.RED)));
         }
 
         // Tick rate (lower is better - faster operations)
         if (tickRate != 20) {
-            player.displayClientMessage(
+            player.sendSystemMessage(
                 Component.literal("  ")
                     .append(Component.translatable("text.component.animusnv.diviner.multiplier_tick_rate"))
                     .withStyle(ChatFormatting.GRAY)
                     .append(Component.literal(String.valueOf(tickRate))
-                        .withStyle(tickRate < 20 ? ChatFormatting.GREEN : ChatFormatting.RED)),
-                false
-            );
+                        .withStyle(tickRate < 20 ? ChatFormatting.GREEN : ChatFormatting.RED)));
         }
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.DIVINER_FIRST));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.DIVINER_SECOND));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.DIVINER_THIRD));
-        tooltip.add(Component.translatable("tooltip.animusnv.diviner.ghost_blocks").withStyle(ChatFormatting.DARK_AQUA));
-        tooltip.add(Component.translatable("tooltip.animusnv.diviner.auto_build").withStyle(ChatFormatting.DARK_AQUA));
-        tooltip.add(Component.translatable("tooltip.animusnv.diviner.ritual_info").withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable("tooltip.animusnv.diviner.ritual_dismantle").withStyle(ChatFormatting.GRAY));
-        super.appendHoverText(stack, context, tooltip, flag);
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.DIVINER_FIRST));
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.DIVINER_SECOND));
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.DIVINER_THIRD));
+        tooltip.accept(Component.translatable("tooltip.animusnv.diviner.ghost_blocks").withStyle(ChatFormatting.DARK_AQUA));
+        tooltip.accept(Component.translatable("tooltip.animusnv.diviner.auto_build").withStyle(ChatFormatting.DARK_AQUA));
+        tooltip.accept(Component.translatable("tooltip.animusnv.diviner.ritual_info").withStyle(ChatFormatting.GRAY));
+        tooltip.accept(Component.translatable("tooltip.animusnv.diviner.ritual_dismantle").withStyle(ChatFormatting.GRAY));
+        super.appendHoverText(stack, context, display, tooltip, flag);
     }
 }

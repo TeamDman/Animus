@@ -7,7 +7,7 @@ import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -22,6 +22,8 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
@@ -78,7 +80,7 @@ public class RitualSiphon extends Ritual {
         Level level = mrs.getWorldObj();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
+        if (level.isClientSide() || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
 
@@ -98,7 +100,8 @@ public class RitualSiphon extends Ritual {
 
         IFluidHandler fluidHandler;
         try {
-            fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, tankPos, Direction.DOWN);
+            ResourceHandler<FluidResource> tankHandler = level.getCapability(Capabilities.Fluid.BLOCK, tankPos, Direction.DOWN);
+            fluidHandler = tankHandler == null ? null : IFluidHandler.of(tankHandler);
             if (fluidHandler == null) {
                 emitSmokeParticles(serverLevel, masterPos);
                 return;
@@ -198,8 +201,8 @@ public class RitualSiphon extends Ritual {
     private BlockState getReplacementBlock() {
         String blockId = AnimusConfig.rituals.siphonReplacementBlock.get();
         try {
-            ResourceLocation resourceLocation =
-                ResourceLocation.tryParse(blockId);
+            Identifier resourceLocation =
+                Identifier.tryParse(blockId);
 
             if (resourceLocation != null) {
                 Block block =

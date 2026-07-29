@@ -1,49 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "items",
-  "description": "book.animusnv.guide.items.activation_crystal_fragile.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "animusnv:activation_crystal_fragile"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:items",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.items.activation_crystal_fragile.description",
+  "icon": {
+    "id": "animusnv:activation_crystal_fragile"
+  },
+  "id": "animusnv:items/activation_crystal_fragile",
   "name": "book.animusnv.guide.items.activation_crystal_fragile.name",
-  "pages": [
-    {
-      "type": "neovitae:ara_vitae_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:ara_vitae/activation_crystal_fragile",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.activation_crystal_fragile.intro.text",
-      "title": "book.animusnv.guide.items.activation_crystal_fragile.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.activation_crystal_fragile.usage.text",
-      "title": "book.animusnv.guide.items.activation_crystal_fragile.usage.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 4,
   "x": -3,
   "y": 0

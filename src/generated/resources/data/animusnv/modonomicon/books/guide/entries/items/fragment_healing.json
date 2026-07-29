@@ -1,49 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "items",
-  "description": "book.animusnv.guide.items.fragment_healing.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "animusnv:fragment_healing"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:items",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.items.fragment_healing.description",
+  "icon": {
+    "id": "animusnv:fragment_healing"
+  },
+  "id": "animusnv:items/fragment_healing",
   "name": "book.animusnv.guide.items.fragment_healing.name",
-  "pages": [
-    {
-      "type": "neovitae:ara_vitae_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:ara_vitae/fragment_healing",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.fragment_healing.intro.text",
-      "title": "book.animusnv.guide.items.fragment_healing.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.fragment_healing.mechanics.text",
-      "title": "book.animusnv.guide.items.fragment_healing.mechanics.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 1,
   "x": -1,
   "y": -2

@@ -1,82 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "compatibility",
-  "description": "book.animusnv.guide.compatibility.arcane_rune.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "minecraft:amethyst_shard"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:compatibility",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.arcane_rune.description",
+  "icon": {
+    "id": "minecraft:amethyst_shard"
+  },
+  "id": "animusnv:compatibility/arcane_rune",
   "name": "book.animusnv.guide.compatibility.arcane_rune.name",
-  "pages": [
-    {
-      "type": "modonomicon:crafting_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:arcane_rune",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.arcane_rune.intro.text",
-      "title": "book.animusnv.guide.compatibility.arcane_rune.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.arcane_rune.placement.text",
-      "title": "book.animusnv.guide.compatibility.arcane_rune.placement.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.arcane_rune.linking.text",
-      "title": "book.animusnv.guide.compatibility.arcane_rune.linking.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.arcane_rune.states.text",
-      "title": "book.animusnv.guide.compatibility.arcane_rune.states.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.arcane_rune.strategy.text",
-      "title": "book.animusnv.guide.compatibility.arcane_rune.strategy.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 0,
   "x": -3,
   "y": -1

@@ -1,49 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "blocks",
-  "description": "book.animusnv.guide.blocks.decorative_blocks.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "animusnv:blood_wood_planks"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:blocks",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.blocks.decorative_blocks.description",
+  "icon": {
+    "id": "animusnv:blood_wood_planks"
+  },
+  "id": "animusnv:blocks/decorative_blocks",
   "name": "book.animusnv.guide.blocks.decorative_blocks.name",
-  "pages": [
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.decorative_blocks.intro.text",
-      "title": "book.animusnv.guide.blocks.decorative_blocks.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.decorative_blocks.variants.text",
-      "title": "book.animusnv.guide.blocks.decorative_blocks.variants.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.decorative_blocks.crafting.text",
-      "title": "book.animusnv.guide.blocks.decorative_blocks.crafting.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 6,
   "x": 1,
   "y": 1

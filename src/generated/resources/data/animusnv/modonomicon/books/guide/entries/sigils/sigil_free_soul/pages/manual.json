@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "manual",
+  "show_title_separator": true,
+  "sort_number": 3,
+  "text": "book.animusnv.guide.sigils.sigil_free_soul.manual.text",
+  "title": "book.animusnv.guide.sigils.sigil_free_soul.manual.title"
+}

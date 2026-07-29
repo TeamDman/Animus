@@ -20,9 +20,6 @@ public class CompatHandler {
 
     static {
         // Use lambdas (not method references) to avoid eager class loading when dependency is missing
-        COMPAT_MODULES.put("irons_spellbooks", () -> new IronsSpellsCompat());
-        COMPAT_MODULES.put("ars_nouveau", () -> new ArsNouveauCompat());
-        COMPAT_MODULES.put("malum", () -> new MalumCompat());
         COMPAT_MODULES.put("evilcraft", () -> new EvilCraftCompat());
     }
 
@@ -31,33 +28,9 @@ public class CompatHandler {
      * (JVM would fail verifying compat class references even inside false branches).
      */
     public static void registerDeferredRegisters(IEventBus modEventBus) {
-        if (ModList.get().isLoaded("irons_spellbooks")) {
-            registerIronsSpellsDeferred(modEventBus);
-        }
-
-        if (ModList.get().isLoaded("ars_nouveau")) {
-            registerArsNouveauDeferred(modEventBus);
-        }
-
-        if (ModList.get().isLoaded("malum")) {
-            registerMalumDeferred(modEventBus);
-        }
-
         if (ModList.get().isLoaded("evilcraft")) {
             registerEvilCraftDeferred(modEventBus);
         }
-    }
-
-    private static void registerIronsSpellsDeferred(IEventBus modEventBus) {
-        IronsSpellsCompatLoader.registerDeferred(modEventBus);
-    }
-
-    private static void registerArsNouveauDeferred(IEventBus modEventBus) {
-        ArsNouveauCompatLoader.registerDeferred(modEventBus);
-    }
-
-    private static void registerMalumDeferred(IEventBus modEventBus) {
-        MalumCompatLoader.registerDeferred(modEventBus);
     }
 
     private static void registerEvilCraftDeferred(IEventBus modEventBus) {

@@ -56,7 +56,7 @@ public class RitualPersistence extends Ritual {
         Level level = mrs.getWorldObj();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
+        if (level.isClientSide() || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class RitualPersistence extends Ritual {
         int blockRadius = (int) Math.max(Math.abs(rangeAABB.maxX - masterPos.getX()), Math.abs(rangeAABB.maxZ - masterPos.getZ()));
         int radius = Math.max(0, (blockRadius / 16));
 
-        ChunkPos centerChunk = new ChunkPos(masterPos);
+        ChunkPos centerChunk = ChunkPos.containing(masterPos);
         TicketController controller = AnimusModEventHandler.getTicketController();
 
         Set<ChunkPos> chunks = loadedChunks.computeIfAbsent(masterPos, k -> new HashSet<>());
@@ -93,7 +93,7 @@ public class RitualPersistence extends Ritual {
         Set<ChunkPos> chunksToLoad = new HashSet<>();
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                ChunkPos chunkPos = new ChunkPos(centerChunk.x + x, centerChunk.z + z);
+                ChunkPos chunkPos = new ChunkPos(centerChunk.x() + x, centerChunk.z() + z);
                 chunksToLoad.add(chunkPos);
             }
         }
@@ -103,8 +103,8 @@ public class RitualPersistence extends Ritual {
                 controller.forceChunk(
                     level,
                     masterPos,
-                    chunkPos.x,
-                    chunkPos.z,
+                    chunkPos.x(),
+                    chunkPos.z(),
                     true,
                     false
                 );
@@ -117,8 +117,8 @@ public class RitualPersistence extends Ritual {
                 controller.forceChunk(
                     level,
                     masterPos,
-                    chunkPos.x,
-                    chunkPos.z,
+                    chunkPos.x(),
+                    chunkPos.z(),
                     false,
                     false
                 );
@@ -136,8 +136,8 @@ public class RitualPersistence extends Ritual {
                 controller.forceChunk(
                     level,
                     masterPos,
-                    chunkPos.x,
-                    chunkPos.z,
+                    chunkPos.x(),
+                    chunkPos.z(),
                     false,
                     false
                 );
@@ -192,8 +192,8 @@ public class RitualPersistence extends Ritual {
                 controller.forceChunk(
                     level,
                     masterPos,
-                    chunkPos.x,
-                    chunkPos.z,
+                    chunkPos.x(),
+                    chunkPos.z(),
                     false,
                     false
                 );

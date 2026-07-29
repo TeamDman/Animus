@@ -1,13 +1,8 @@
 {
   "type": "neovitae:array",
-  "addedinput": {
-    "item": "neovitae:tabula_spiritus"
-  },
-  "baseinput": {
-    "item": "animusnv:reagenttemporaldominance"
-  },
+  "addedinput": "neovitae:tabula_spiritus",
+  "baseinput": "animusnv:reagenttemporaldominance",
   "output": {
-    "count": 1,
     "id": "animusnv:sigil_temporal_dominance"
   },
   "texture": "neovitae:textures/models/alchemyarrays/moonarray.png"

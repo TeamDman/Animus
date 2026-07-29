@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "levels_low",
+  "show_title_separator": true,
+  "sort_number": 2,
+  "text": "book.animusnv.guide.items.living_armor_ars_nouveau.levels_low.text",
+  "title": "book.animusnv.guide.items.living_armor_ars_nouveau.levels_low.title"
+}

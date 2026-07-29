@@ -16,23 +16,23 @@ public class AnimusBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityBloodCore>> BLOOD_CORE = BLOCK_ENTITIES.register(
         "bloodcore",
-        () -> BlockEntityType.Builder.of(
+        () -> new BlockEntityType<BlockEntityBloodCore>(
             BlockEntityBloodCore::new,
             AnimusBlocks.BLOCK_BLOOD_CORE.get()
-        ).build(null)
+        )
     );
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityAntiLife>> ANTILIFE = BLOCK_ENTITIES.register(
         "antilife",
-        () -> BlockEntityType.Builder.of(
+        () -> new BlockEntityType<BlockEntityAntiLife>(
             BlockEntityAntiLife::new,
             AnimusBlocks.BLOCK_ANTILIFE.get()
-        ).build(null)
+        )
     );
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntityWillfulStone>> WILLFUL_STONE = BLOCK_ENTITIES.register(
         "willful_stone",
-        () -> BlockEntityType.Builder.of(
+        () -> new BlockEntityType<BlockEntityWillfulStone>(
             BlockEntityWillfulStone::new,
             AnimusBlocks.BLOCK_WILLFUL_STONE.get(),
             AnimusBlocks.BLOCK_WILLFUL_STONE_WHITE.get(),
@@ -50,6 +50,6 @@ public class AnimusBlockEntities {
             AnimusBlocks.BLOCK_WILLFUL_STONE_GREEN.get(),
             AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get(),
             AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get()
-        ).build(null)
+        )
     );
 }

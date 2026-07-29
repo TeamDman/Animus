@@ -2,8 +2,6 @@ package com.breakinblocks.animusnv.recipes;
 
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import com.breakinblocks.animusnv.registry.AnimusRecipeSerializers;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -17,8 +15,15 @@ import net.minecraft.world.level.Level;
  */
 public class KeyUnbindingRecipe extends CustomRecipe {
 
+    private final CraftingBookCategory category;
+
     public KeyUnbindingRecipe(CraftingBookCategory category) {
-        super(category);
+        this.category = category;
+    }
+
+    @Override
+    public CraftingBookCategory category() {
+        return category;
     }
 
     @Override
@@ -42,7 +47,7 @@ public class KeyUnbindingRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+    public ItemStack assemble(CraftingInput input) {
         for (int i = 0; i < input.size(); i++) {
             ItemStack stack = input.getItem(i);
 
@@ -56,12 +61,7 @@ public class KeyUnbindingRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return width * height >= 1;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<KeyUnbindingRecipe> getSerializer() {
         return AnimusRecipeSerializers.KEY_UNBINDING.get();
     }
 }

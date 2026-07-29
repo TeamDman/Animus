@@ -2,6 +2,7 @@ package com.breakinblocks.animusnv.compat.evilcraft;
 
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.compat.EvilCraftCompat;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -10,18 +11,25 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.api.soul.IAnima;
@@ -32,31 +40,40 @@ import com.breakinblocks.neovitae.common.item.BloodOrbItem;
 import com.breakinblocks.neovitae.api.stream.StreamPresets;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class BlockEntitySanguineRectifier extends BlockEntity {
+
+    private static final Identifier EVILCRAFT_BLOOD = Identifier.parse("evilcraft:blood");
 
     @Nullable
     private BlockPos altarPos;
     private ItemStack orbStack = ItemStack.EMPTY;
-    private final FluidTank bloodTank;
+    private final BloodTank bloodTank;
 
     public BlockEntitySanguineRectifier(BlockPos pos, BlockState state) {
         super(EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(), pos, state);
-        this.bloodTank = new FluidTank(AnimusConfig.sanguineRectifier.tankCapacity.get()) {
-            @Override
-            public boolean isFluidValid(FluidStack stack) {
-                return isEvilCraftBlood(stack);
-            }
-        };
+        this.bloodTank = new BloodTank(AnimusConfig.sanguineRectifier.tankCapacity.get());
     }
 
-    private static boolean isEvilCraftBlood(FluidStack stack) {
-        if (stack.isEmpty()) return false;
-        ResourceLocation fluidId = BuiltInRegistries.FLUID.getKey(stack.getFluid());
-        return fluidId.equals(ResourceLocation.parse("evilcraft:blood"));
+    private static class BloodTank extends FluidStacksResourceHandler {
+        BloodTank(int capacity) {
+            super(1, capacity);
+        }
+
+        @Override
+        public boolean isValid(int index, FluidResource resource) {
+            return isEvilCraftBlood(resource);
+        }
     }
 
-    public FluidTank getBloodTank() {
+    private static boolean isEvilCraftBlood(FluidResource resource) {
+        if (resource.isEmpty()) return false;
+        Identifier fluidId = BuiltInRegistries.FLUID.getKey(resource.getFluid());
+        return fluidId != null && fluidId.equals(EVILCRAFT_BLOOD);
+    }
+
+    public ResourceHandler<FluidResource> getBloodTank() {
         return bloodTank;
     }
 
@@ -67,7 +84,7 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
     public void setOrbStack(ItemStack stack) {
         this.orbStack = stack;
         setChanged();
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
         }
     }
@@ -117,7 +134,7 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
     }
 
     public void tick() {
-        if (level == null || level.isClientSide) return;
+        if (level == null || level.isClientSide()) return;
 
         AraVitaeTile altar = getLinkedAltar();
 
@@ -127,7 +144,7 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
         }
 
         // Mode 2: Blood → Altar (internal tank drains into altar)
-        if (altar != null && bloodTank.getFluidAmount() > 0) {
+        if (altar != null && bloodTank.getAmountAsInt(0) > 0) {
             tickBloodToAltar(altar);
         }
     }
@@ -150,7 +167,6 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
         float speedBonus = altar.getSpeedBonus();
         int fillRate = Math.max(1, (int) (baseRate * (1 + speedBonus)));
 
-        int evCost = fillRate * evPerBlood;
         int availableEV = network.getCurrentEV();
         if (availableEV <= 0) return;
 
@@ -158,19 +174,22 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
         int actualBlood = Math.min(fillRate, availableEV / Math.max(1, evPerBlood));
         if (actualBlood <= 0) return;
 
-        // Try to fill adjacent tanks
-        FluidStack bloodFluid = createBloodStack(actualBlood);
-        if (bloodFluid.isEmpty()) return;
+        FluidResource blood = bloodResource();
+        if (blood == null) return;
 
         int totalFilled = 0;
         for (Direction dir : Direction.values()) {
             if (totalFilled >= actualBlood) break;
             BlockPos adjacent = worldPosition.relative(dir);
-            IFluidHandler handler = level.getCapability(Capabilities.FluidHandler.BLOCK, adjacent, dir.getOpposite());
+            ResourceHandler<FluidResource> handler = level.getCapability(Capabilities.Fluid.BLOCK, adjacent, dir.getOpposite());
             if (handler != null) {
-                FluidStack toFill = createBloodStack(actualBlood - totalFilled);
-                int filled = handler.fill(toFill, IFluidHandler.FluidAction.EXECUTE);
-                totalFilled += filled;
+                try (Transaction tx = Transaction.openRoot()) {
+                    int filled = handler.insert(blood, actualBlood - totalFilled, tx);
+                    if (filled > 0) {
+                        tx.commit();
+                        totalFilled += filled;
+                    }
+                }
             }
         }
 
@@ -188,12 +207,20 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
         int altarSpace = altar.getCapacity() - altar.getCurrentBlood();
         if (altarSpace <= 0) return;
 
-        int toTransfer = Math.min(transferRate, Math.min(bloodTank.getFluidAmount(), altarSpace));
+        int toTransfer = Math.min(transferRate, Math.min(bloodTank.getAmountAsInt(0), altarSpace));
         if (toTransfer <= 0) return;
 
-        FluidStack drained = bloodTank.drain(toTransfer, IFluidHandler.FluidAction.EXECUTE);
-        if (!drained.isEmpty()) {
-            altar.addSacrificeEV(drained.getAmount(), false);
+        FluidResource stored = bloodTank.getResource(0);
+        if (stored.isEmpty()) return;
+
+        int drained;
+        try (Transaction tx = Transaction.openRoot()) {
+            drained = bloodTank.extract(0, stored, toTransfer, tx);
+            if (drained > 0) tx.commit();
+        }
+
+        if (drained > 0) {
+            altar.addSacrificeEV(drained, false);
 
             // Send blood stream effect occasionally (every ~40 ticks)
             if (level instanceof ServerLevel serverLevel
@@ -205,53 +232,54 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
         }
     }
 
-    private FluidStack createBloodStack(int amount) {
-        var fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse("evilcraft:blood"));
-        if (fluid == null) return FluidStack.EMPTY;
-        return new FluidStack(fluid, amount);
+    @Nullable
+    private static FluidResource bloodResource() {
+        Fluid fluid = BuiltInRegistries.FLUID.getValue(EVILCRAFT_BLOOD);
+        if (fluid == null || fluid == Fluids.EMPTY) return null;
+        return FluidResource.of(fluid);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
 
         if (altarPos != null) {
-            tag.putInt("AltarX", altarPos.getX());
-            tag.putInt("AltarY", altarPos.getY());
-            tag.putInt("AltarZ", altarPos.getZ());
+            output.putInt("AltarX", altarPos.getX());
+            output.putInt("AltarY", altarPos.getY());
+            output.putInt("AltarZ", altarPos.getZ());
         }
 
         if (!orbStack.isEmpty()) {
-            tag.put("OrbStack", orbStack.save(registries));
+            output.store("OrbStack", ItemStack.CODEC, orbStack);
         }
 
-        bloodTank.writeToNBT(registries, tag);
+        bloodTank.serialize(output);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
 
-        if (tag.contains("AltarX")) {
-            altarPos = new BlockPos(tag.getInt("AltarX"), tag.getInt("AltarY"), tag.getInt("AltarZ"));
+        Optional<Integer> altarX = input.getInt("AltarX");
+        if (altarX.isPresent()) {
+            altarPos = new BlockPos(altarX.get(), input.getIntOr("AltarY", 0), input.getIntOr("AltarZ", 0));
         } else {
             altarPos = null;
         }
 
-        if (tag.contains("OrbStack")) {
-            orbStack = ItemStack.parse(registries, tag.getCompound("OrbStack")).orElse(ItemStack.EMPTY);
-        } else {
-            orbStack = ItemStack.EMPTY;
-        }
+        orbStack = input.read("OrbStack", ItemStack.CODEC).orElse(ItemStack.EMPTY);
 
-        bloodTank.readFromNBT(registries, tag);
+        bloodTank.deserialize(input);
     }
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag tag = super.getUpdateTag(registries);
-        saveAdditional(tag, registries);
-        return tag;
+        try (ProblemReporter.ScopedCollector reporter =
+                     new ProblemReporter.ScopedCollector(LogUtils.getLogger())) {
+            TagValueOutput output = TagValueOutput.createWithContext(reporter, registries);
+            saveAdditional(output);
+            return output.buildResult();
+        }
     }
 
     @Override

@@ -1,60 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "blocks",
-  "description": "book.animusnv.guide.blocks.willful_stone.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "animusnv:willful_stone"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:blocks",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.blocks.willful_stone.description",
+  "icon": {
+    "id": "animusnv:willful_stone"
+  },
+  "id": "animusnv:blocks/willful_stone",
   "name": "book.animusnv.guide.blocks.willful_stone.name",
-  "pages": [
-    {
-      "type": "neovitae:hellfire_forge_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:hellfire_forge/willful_stone",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.willful_stone.intro.text",
-      "title": "book.animusnv.guide.blocks.willful_stone.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.willful_stone.crafting.text",
-      "title": "book.animusnv.guide.blocks.willful_stone.crafting.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.willful_stone.dyeing.text",
-      "title": "book.animusnv.guide.blocks.willful_stone.dyeing.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 4,
   "x": -1,
   "y": 0

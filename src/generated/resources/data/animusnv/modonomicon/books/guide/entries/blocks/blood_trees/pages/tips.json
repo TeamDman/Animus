@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "tips",
+  "show_title_separator": true,
+  "sort_number": 4,
+  "text": "book.animusnv.guide.blocks.blood_trees.tips.text",
+  "title": "book.animusnv.guide.blocks.blood_trees.tips.title"
+}

@@ -1,0 +1,9 @@
+{
+  "type": "neovitae:ara_vitae_recipe",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "recipe",
+  "recipe_id_1": "animusnv:ara_vitae/blood_sapling",
+  "sort_number": 0
+}

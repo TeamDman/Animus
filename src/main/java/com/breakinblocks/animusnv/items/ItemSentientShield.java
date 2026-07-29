@@ -4,19 +4,22 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.component.TooltipDisplay;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.item.soul.SpiritusTooltipHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Sentient Shield - A demon-will powered shield
@@ -28,28 +31,30 @@ public class ItemSentientShield extends ShieldItem {
     // Normal shield has 336 durability, sentient has 4x
     private static final int SENTIENT_SHIELD_DURABILITY = 336 * 4; // 1344
 
-    public ItemSentientShield() {
-        super(new Properties().durability(SENTIENT_SHIELD_DURABILITY));
+    public ItemSentientShield(Properties props) {
+        super(props.durability(SENTIENT_SHIELD_DURABILITY));
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_FLAVOUR)
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
         SpiritusTooltipHelper.appendSpiritusInfo(stack, "sentientShield", tooltip, flag);
 
         if (flag.hasShiftDown()) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_SPIRITUS_BONUS)
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_SHIELD_SPIRITUS_BONUS)
                 .withStyle(ChatFormatting.GREEN));
         }
 
-        super.appendHoverText(stack, context, tooltip, flag);
+        super.appendHoverText(stack, context, display, tooltip, flag);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        super.inventoryTick(stack, level, entity, slotId, isSelected);
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, EquipmentSlot slot) {
+        super.inventoryTick(stack, level, entity, slot);
 
         if (entity instanceof Player player) {
             SpiritusType newType = SpiritusTypeHelper.findSpiritusType(player);

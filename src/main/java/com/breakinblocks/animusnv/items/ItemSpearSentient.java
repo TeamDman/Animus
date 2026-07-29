@@ -13,10 +13,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -24,11 +24,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
@@ -38,6 +39,7 @@ import com.breakinblocks.neovitae.spiritus.ISpiritus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Sentient Spear - A demon-will powered javelin
@@ -65,21 +67,23 @@ public class ItemSpearSentient extends ItemSpear {
     // Soul drain per melee swing (spear-specific)
     public static final double[] soulDrainPerSwing = new double[]{0.05, 0.1, 0.2, 0.4, 0.75};
 
-    public ItemSpearSentient() {
-        super(Tiers.DIAMOND);
+    public ItemSpearSentient(Properties props) {
+        super(ToolMaterial.DIAMOND, props);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SENTIENT_FLAVOUR)
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SENTIENT_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
         SpiritusTooltipHelper.appendSpiritusInfo(stack, "sentientSpear", tooltip, flag);
 
         if (flag.hasShiftDown()) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SENTIENT_INFO)
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SENTIENT_INFO)
                 .withStyle(ChatFormatting.GRAY));
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SENTIENT_AOE)
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SENTIENT_AOE)
                 .withStyle(ChatFormatting.YELLOW));
         }
     }
@@ -146,7 +150,7 @@ public class ItemSpearSentient extends ItemSpear {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof Player player) {
             Level level = player.level();
             SpiritusType type = getCurrentType(stack);
@@ -161,17 +165,17 @@ public class ItemSpearSentient extends ItemSpear {
             }
         }
 
-        return super.hurtEnemy(stack, target, attacker);
+        super.hurtEnemy(stack, target, attacker);
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
             int useDuration = this.getUseDuration(stack, entity) - timeLeft;
             if (useDuration >= 10) {
                 int riptide = getRiptideLevel(stack, level);
                 if (riptide <= 0 || player.isInWaterOrRain()) {
-                    if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+                    if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
                         stack.hurtAndBreak(1, serverLevel, player, (item) -> {});
                         if (riptide == 0) {
                             // Get will type and level before spawning
@@ -208,9 +212,13 @@ public class ItemSpearSentient extends ItemSpear {
                         // Riptide handling (same as parent)
                         super.releaseUsing(stack, level, entity, timeLeft);
                     }
+
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     private int getRiptideLevel(ItemStack stack, Level level) {
@@ -233,7 +241,7 @@ public class ItemSpearSentient extends ItemSpear {
     public List<ItemStack> getRandomSpiritusDrop(LivingEntity killedEntity, LivingEntity attackingEntity, ItemStack stack, int looting) {
         List<ItemStack> soulList = new ArrayList<>();
 
-        if (killedEntity.getCommandSenderWorld().getDifficulty() != Difficulty.PEACEFUL
+        if (killedEntity.level().getDifficulty() != Difficulty.PEACEFUL
             && !(killedEntity instanceof Enemy)) {
             return soulList;
         }
@@ -256,8 +264,8 @@ public class ItemSpearSentient extends ItemSpear {
         int spiritusLevel = Math.min(getLevel(stack, soulsRemaining), 4);
 
         for (int i = 0; i <= looting; i++) {
-            if (i == 0 || attackingEntity.getCommandSenderWorld().random.nextDouble() < 0.4) {
-                double dropAmount = spiritusModifier * (SpiritusWeaponStats.SOUL_DROP[spiritusLevel] * attackingEntity.getCommandSenderWorld().random.nextDouble()
+            if (i == 0 || attackingEntity.level().getRandom().nextDouble() < 0.4) {
+                double dropAmount = spiritusModifier * (SpiritusWeaponStats.SOUL_DROP[spiritusLevel] * attackingEntity.level().getRandom().nextDouble()
                     + SpiritusWeaponStats.STATIC_DROP[spiritusLevel]) * killedEntity.getMaxHealth() / 20.0;
                 ItemStack soulStack = soul.createSpiritus(dropAmount);
                 soulList.add(soulStack);
@@ -272,8 +280,8 @@ public class ItemSpearSentient extends ItemSpear {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        super.inventoryTick(stack, level, entity, slotId, isSelected);
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, EquipmentSlot slot) {
+        super.inventoryTick(stack, level, entity, slot);
 
         if (entity instanceof Player player) {
             SpiritusType newType = SpiritusTypeHelper.findSpiritusType(player);

@@ -58,11 +58,9 @@ public class SigilScrollHandler {
             EquivalencySigilEffect.setRadius(stack, newRadius);
             AnimusPayloads.sendToServer(new SigilRadiusPayload(hand, newRadius));
 
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.EQUIVALENCY_RADIUS, newRadius)
-                            .withStyle(ChatFormatting.AQUA),
-                    true
-            );
+                            .withStyle(ChatFormatting.AQUA));
             return true;
         }
 

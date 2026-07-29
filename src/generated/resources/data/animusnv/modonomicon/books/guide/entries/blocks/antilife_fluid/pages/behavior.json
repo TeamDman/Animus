@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "behavior",
+  "show_title_separator": true,
+  "sort_number": 2,
+  "text": "book.animusnv.guide.blocks.antilife_fluid.behavior.text",
+  "title": "book.animusnv.guide.blocks.antilife_fluid.behavior.title"
+}

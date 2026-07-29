@@ -1,10 +1,12 @@
 package com.breakinblocks.animusnv.datagen;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
@@ -20,26 +22,26 @@ public class HellfireForgeRecipeBuilder {
     protected double minSpiritus;
     protected double drainedSpiritus;
     protected List<Ingredient> ingredients = new ArrayList<>();
-    protected ItemStack result;
+    protected ItemStackTemplate result;
     protected Optional<SpiritusType> spiritusType = Optional.empty();
 
-    protected HellfireForgeRecipeBuilder(ItemStack result) {
+    protected HellfireForgeRecipeBuilder(ItemStackTemplate result) {
         this.result = result;
-        if (result == null || result.isEmpty()) {
+        if (result == null) {
             throw new IllegalArgumentException("ForgeRecipe result cannot be null or empty");
         }
     }
 
     public static HellfireForgeRecipeBuilder build(ItemLike result) {
-        return new HellfireForgeRecipeBuilder(new ItemStack(result));
+        return new HellfireForgeRecipeBuilder(new ItemStackTemplate(result.asItem()));
     }
 
     public static HellfireForgeRecipeBuilder build(ItemLike result, int count) {
-        return new HellfireForgeRecipeBuilder(new ItemStack(result, count));
+        return new HellfireForgeRecipeBuilder(new ItemStackTemplate(result.asItem(), count));
     }
 
     public HellfireForgeRecipeBuilder requires(TagKey<Item> tag) {
-        return this.requires(Ingredient.of(tag));
+        return this.requires(AnimusRecipeProvider.ingredientOf(tag));
     }
 
     public HellfireForgeRecipeBuilder requires(ItemLike item) {
@@ -86,11 +88,11 @@ public class HellfireForgeRecipeBuilder {
         return this;
     }
 
-    public void save(RecipeOutput output, ResourceLocation id) {
+    public void save(RecipeOutput output, Identifier id) {
         if (ingredients.isEmpty()) {
             throw new IllegalStateException("ForgeRecipe must have at least one ingredient");
         }
         ForgeRecipe recipe = new ForgeRecipe(minSpiritus, drainedSpiritus, ingredients, result, spiritusType);
-        output.accept(id.withPrefix("hellfire_forge/"), recipe, null);
+        output.accept(ResourceKey.create(Registries.RECIPE, id.withPrefix("hellfire_forge/")), recipe, null);
     }
 }

@@ -75,7 +75,7 @@ public class RitualCulling extends Ritual {
     @Override
     public void readFromNBT(CompoundTag tag) {
         super.readFromNBT(tag);
-        spiritusBuffer = tag.getDouble(Constants.NBT.CULLING_BUFFER_WILL);
+        spiritusBuffer = tag.getDoubleOr(Constants.NBT.CULLING_BUFFER_WILL, 0.0);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class RitualCulling extends Ritual {
         Level level = ritualStone.getWorldObj();
         BlockPos pos = ritualStone.getMasterBlockPos();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -193,7 +193,7 @@ public class RitualCulling extends Ritual {
                         }
                     }
                 } else {
-                    result = livingEntity.hurt(level.damageSources().genericKill(), damage);
+                    result = livingEntity.hurtOrSimulate(level.damageSources().genericKill(), damage);
                 }
 
                 CullingHelper.debugLogKillResult(livingEntity, result);

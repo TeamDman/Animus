@@ -21,13 +21,16 @@ public class BlockCrystallizedSpiritus extends Block {
         Block.box(0, 12, 0, 16, 16, 16)
     );
 
-    public BlockCrystallizedSpiritus() {
-        super(BlockBehaviour.Properties.of()
+    public BlockCrystallizedSpiritus(BlockBehaviour.Properties props) {
+        super(props);
+    }
+
+    public static BlockBehaviour.Properties defaultProperties() {
+        return BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_RED)
             .strength(2.0F, 5.0F)
             .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()
-        );
+            .requiresCorrectToolForDrops();
     }
 
     @Override

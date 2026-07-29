@@ -1,73 +1,18 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "sigils",
-  "description": "book.animusnv.guide.sigils.sigil_crimson_will.description",
-  "hide_while_locked": false,
-  "icon": {
-    "height": 16,
-    "texture": "animusnv:sigil_crimson_will",
-    "width": 16
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:sigils",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.sigils.sigil_crimson_will.description",
+  "icon": "animusnv:sigil_crimson_will",
+  "id": "animusnv:sigils/sigil_crimson_will",
   "name": "book.animusnv.guide.sigils.sigil_crimson_will.name",
-  "pages": [
-    {
-      "type": "neovitae:tabula_vitae_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:alchemytable/reagentfist",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "neovitae:alchemy_array_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:array/sigil_crimson_will",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.sigils.sigil_crimson_will.intro.text",
-      "title": "book.animusnv.guide.sigils.sigil_crimson_will.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.sigils.sigil_crimson_will.effect.text",
-      "title": "book.animusnv.guide.sigils.sigil_crimson_will.effect.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.sigils.sigil_crimson_will.cost.text",
-      "title": "book.animusnv.guide.sigils.sigil_crimson_will.cost.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 3,
   "x": 2,
   "y": -2

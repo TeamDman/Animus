@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +18,7 @@ import com.breakinblocks.neovitae.common.datacomponent.Binding;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 import com.breakinblocks.neovitae.ritual.Ritual;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Fragile Activation Crystal - A one-time use ritual activator
@@ -25,8 +26,8 @@ import java.util.List;
  */
 public class ItemActivationCrystalFragile extends Item implements IBindable {
 
-    public ItemActivationCrystalFragile() {
-        super(new Item.Properties()
+    public ItemActivationCrystalFragile(Item.Properties props) {
+        super(props
             .stacksTo(1)
         );
     }
@@ -38,18 +39,16 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
         Player player = context.getPlayer();
         ItemStack stack = context.getItemInHand();
 
-        if (level.isClientSide || player == null) {
+        if (level.isClientSide() || player == null) {
             return InteractionResult.SUCCESS;
         }
 
         if (level.getBlockEntity(pos) instanceof IMasterRitualStone masterRitualStone) {
             Binding binding = getBinding(stack);
             if (binding == null) {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.activation_crystal.unbound")
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
+                        .withStyle(ChatFormatting.RED));
                 return InteractionResult.FAIL;
             }
 
@@ -62,11 +61,9 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
             boolean activated = masterRitualStone.activateRitual(ritual, player, 0);
 
             if (activated) {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.activation_crystal.shattered")
-                        .withStyle(ChatFormatting.GOLD),
-                    true
-                );
+                        .withStyle(ChatFormatting.GOLD));
                 stack.shrink(1);
                 return InteractionResult.SUCCESS;
             } else {
@@ -78,22 +75,24 @@ public class ItemActivationCrystalFragile extends Item implements IBindable {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_FLAVOUR));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_INFO));
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_FLAVOUR));
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_INFO));
 
         Binding binding = getBinding(stack);
         if (binding != null && !binding.isEmpty()) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.name())
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.OWNER, binding.name())
                 .withStyle(ChatFormatting.AQUA));
         } else {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.UNBOUND_BIND)
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.UNBOUND_BIND)
                 .withStyle(ChatFormatting.GRAY));
         }
 
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_WARNING)
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.ACTIVATION_CRYSTAL_WARNING)
             .withStyle(ChatFormatting.RED));
 
-        super.appendHoverText(stack, context, tooltip, flag);
+        super.appendHoverText(stack, context, display, tooltip, flag);
     }
 }

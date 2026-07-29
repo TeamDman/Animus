@@ -53,9 +53,9 @@ public record LeachSigilEffect() implements ISigilEffect {
 
         // Try to eat from inventory first, then from the world
         if (eatFromInventory(player) || eatFromSurroundingWorld(player, level)) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 // Restore hunger
-                int foodAmount = 1 + level.random.nextInt(3);
+                int foodAmount = 1 + level.getRandom().nextInt(3);
                 player.getFoodData().eat(foodAmount, 2.0F);
             }
         }
@@ -72,7 +72,7 @@ public record LeachSigilEffect() implements ISigilEffect {
     }
 
     private boolean eatFromInventory(Player player) {
-        Optional<ItemStack> food = player.getInventory().items.stream()
+        Optional<ItemStack> food = player.getInventory().getNonEquipmentItems().stream()
                 .filter(s -> !s.isEmpty())
                 .filter(s -> {
                     Block block = Block.byItem(s.getItem());
@@ -82,7 +82,7 @@ public record LeachSigilEffect() implements ISigilEffect {
 
         if (food.isPresent()) {
             ItemStack foodStack = food.get();
-            int shrinkAmount = Math.min(player.level().random.nextInt(4), foodStack.getCount());
+            int shrinkAmount = Math.min(player.level().getRandom().nextInt(4), foodStack.getCount());
             if (shrinkAmount > 0) {
                 foodStack.shrink(shrinkAmount);
                 return true;
@@ -114,9 +114,9 @@ public record LeachSigilEffect() implements ISigilEffect {
                         eatPos.getY() + 0.5,
                         eatPos.getZ() + 0.5,
                         5,
-                        (level.random.nextDouble() - 0.5) * 2.0,
-                        -level.random.nextDouble(),
-                        (level.random.nextDouble() - 0.5) * 2.0,
+                        (level.getRandom().nextDouble() - 0.5) * 2.0,
+                        -level.getRandom().nextDouble(),
+                        (level.getRandom().nextDouble() - 0.5) * 2.0,
                         0.1
                 );
             }
@@ -135,8 +135,8 @@ public record LeachSigilEffect() implements ISigilEffect {
             );
 
             // Generate Ruina Spiritus
-            if (!level.isClientSide) {
-                double spiritusToAdd = 0.3 + level.random.nextDouble() * 0.5;
+            if (!level.isClientSide()) {
+                double spiritusToAdd = 0.3 + level.getRandom().nextDouble() * 0.5;
                 ISpiritusHandler spiritusHandler = NeoVitaeAPI.getInstance().getSpiritusHandler();
                 double currentSpiritus = spiritusHandler.getCurrentSpiritus(level, player.blockPosition(), SpiritusType.RUINA);
                 double maxSpiritus = 100;

@@ -13,18 +13,19 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -39,6 +40,7 @@ import com.breakinblocks.neovitae.common.datamap.EntitySacrificeHelper;
 import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Bound Spear - A soul-bound javelin that can be toggled between active/deactivated modes
@@ -51,8 +53,8 @@ import java.util.List;
 public class ItemSpearBound extends ItemSpear implements IBindable {
     private static final int EV_COST = 50;
 
-    public ItemSpearBound() {
-        super(Tiers.DIAMOND);
+    public ItemSpearBound(Properties props) {
+        super(ToolMaterial.DIAMOND, props.enchantable(ToolMaterial.GOLD.enchantmentValue()));
     }
 
     @Override
@@ -102,7 +104,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         // Shield blocking overrides the toggle mechanic
@@ -110,70 +112,62 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
             ItemStack otherStack = player.getItemInHand(otherHand);
             if (otherStack.getItem() instanceof ShieldItem) {
-                return InteractionResultHolder.pass(stack);
+                return InteractionResult.PASS;
             }
         }
 
         if (player.isShiftKeyDown()) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 Binding binding = getBinding(stack);
 
                 if (binding == null) {
                     onBind(player, stack);
-                    player.displayClientMessage(
+                    player.sendOverlayMessage(
                         Component.translatable(Constants.Localizations.Text.SPEAR_BOUND_SUCCESS)
-                            .withStyle(ChatFormatting.AQUA),
-                        true
-                    );
+                            .withStyle(ChatFormatting.AQUA));
                 } else {
                     boolean wasActivated = isActivated(stack);
                     setActivated(stack, !wasActivated);
 
                     if (!wasActivated) {
-                        player.displayClientMessage(
+                        player.sendOverlayMessage(
                             Component.translatable(Constants.Localizations.Text.SPEAR_ACTIVATED)
-                                .withStyle(ChatFormatting.GREEN),
-                            true
-                        );
+                                .withStyle(ChatFormatting.GREEN));
                     } else {
-                        player.displayClientMessage(
+                        player.sendOverlayMessage(
                             Component.translatable(Constants.Localizations.Text.SPEAR_DEACTIVATED)
-                                .withStyle(ChatFormatting.GRAY),
-                            true
-                        );
+                                .withStyle(ChatFormatting.GRAY));
                     }
                 }
             }
-            return InteractionResultHolder.success(stack);
+            return InteractionResult.SUCCESS;
         }
 
         if (getRiptideLevel(stack, level) > 0 && !player.isInWaterOrRain()) {
-            return InteractionResultHolder.fail(stack);
+            return InteractionResult.FAIL;
         } else {
             player.startUsingItem(hand);
-            return InteractionResultHolder.consume(stack);
+            return InteractionResult.CONSUME;
         }
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
             int useDuration = this.getUseDuration(stack, entity) - timeLeft;
             if (useDuration >= 10) {
                 int riptide = getRiptideLevel(stack, level);
 
                 // If activated, check for EV cost (server-side only)
-                if (isActivated(stack) && !level.isClientSide && !consumeEV(player, stack)) {
-                    player.displayClientMessage(
+                if (isActivated(stack) && !level.isClientSide() && !consumeEV(player, stack)) {
+                    player.sendOverlayMessage(
                         Component.translatable(Constants.Localizations.Text.SPEAR_NO_EV_THROW)
-                            .withStyle(ChatFormatting.RED),
-                        true
-                    );
-                    return;
+                            .withStyle(ChatFormatting.RED));
+                    return false;
                 }
 
                 if (riptide <= 0 || player.isInWaterOrRain()) {
-                    if (!level.isClientSide) {
+                    if (!level.isClientSide()) {
                         if (riptide == 0) {
                             // Spawn our custom spear entity
                             EntityThrownSpear thrownSpear = new EntityThrownSpear(level, player, stack);
@@ -212,9 +206,13 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                             SoundEvents.TRIDENT_RIPTIDE_1.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
                     }
+
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     @Override
@@ -227,19 +225,18 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (!isActivated(stack)) {
-            return super.hurtEnemy(stack, target, attacker);
+            super.hurtEnemy(stack, target, attacker);
+            return;
         }
 
         if (attacker instanceof Player player) {
             if (!consumeEV(player, stack)) {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.SPEAR_NO_EV_ATTACK)
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
-                return false;
+                        .withStyle(ChatFormatting.RED));
+                return;
             }
         }
 
@@ -247,8 +244,8 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
 
         Level level = target.level();
 
-        if (level.isClientSide) {
-            return false;
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
         }
 
         double x = target.getX();
@@ -258,12 +255,10 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         // Apply AOE damage to nearby entities
         // If a Ara Vitae is nearby, all enemies are sacrificed to it (instant kill)
         // If no altar is nearby, normal AOE damage is dealt
-        checkAndDamage(x, y, z, level, attacker);
-
-        return false;
+        checkAndDamage(x, y, z, serverLevel, attacker);
     }
 
-    private boolean checkAndDamage(double x, double y, double z, Level level, LivingEntity attacker) {
+    private boolean checkAndDamage(double x, double y, double z, ServerLevel level, LivingEntity attacker) {
         int range = 5;
         boolean hit = false;
 
@@ -274,20 +269,18 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             return false;
         }
 
-        float damage = 6.0F + getTier().getAttackDamageBonus();
+        float damage = 6.0F + getMaterial().attackDamageBonus();
 
         for (LivingEntity target : entities) {
             if (target == null || target.isDeadOrDying() || !(attacker instanceof Player) || attacker == target) {
                 continue;
             }
 
-            if (target.canChangeDimensions(level, level) && !(target instanceof Player)) {
-                if (target.getType().is(Constants.Tags.DISALLOW_SACRIFICE)) {
+            if (target.canTeleport(level, level) && !(target instanceof Player)) {
+                if (target.is(Constants.Tags.DISALLOW_SACRIFICE)) {
                     if (attacker instanceof Player playerAttacker) {
-                        playerAttacker.displayClientMessage(
-                            Component.translatable(Constants.Localizations.Text.SACRIFICE_TOO_POWERFUL),
-                            true
-                        );
+                        playerAttacker.sendOverlayMessage(
+                            Component.translatable(Constants.Localizations.Text.SACRIFICE_TOO_POWERFUL));
                     }
                 } else {
                     int ev = getEntitySacrificeValue(target);
@@ -301,7 +294,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                             SoundEvents.FIRE_EXTINGUISH,
                             SoundSource.BLOCKS,
                             0.5F,
-                            2.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.8F
+                            2.6F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.8F
                         );
                         target.setHealth(-1);
                         target.die(level.damageSources().genericKill());
@@ -311,7 +304,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                 }
             }
 
-            boolean result = target.hurt(level.damageSources().genericKill(), damage);
+            boolean result = target.hurtServer(level, level.damageSources().genericKill(), damage);
             if (result) {
                 hit = true;
             }
@@ -340,42 +333,39 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
         Binding binding = getBinding(stack);
         boolean activated = isActivated(stack);
 
         if (binding != null) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_BOUND_TO, binding.name())
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_BOUND_TO, binding.name())
                 .withStyle(ChatFormatting.AQUA));
 
             if (activated) {
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_STATUS_ACTIVATED)
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_STATUS_ACTIVATED)
                     .withStyle(ChatFormatting.GREEN));
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_COST)
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_COST)
                     .withStyle(ChatFormatting.GOLD));
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_FIRST));
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SECOND));
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_FIRST));
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_SECOND));
             } else {
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_STATUS_DEACTIVATED)
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_STATUS_DEACTIVATED)
                     .withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_BEHAVES_DIAMOND)
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_BEHAVES_DIAMOND)
                     .withStyle(ChatFormatting.GRAY));
             }
 
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_TOGGLE)
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_TOGGLE)
                 .withStyle(ChatFormatting.YELLOW));
         } else {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_UNBOUND)
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_UNBOUND)
                 .withStyle(ChatFormatting.DARK_GRAY));
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_BIND)
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_BIND)
                 .withStyle(ChatFormatting.YELLOW));
         }
 
-    }
-
-    @Override
-    public int getEnchantmentValue() {
-        return Tiers.GOLD.getEnchantmentValue();
     }
 
     private boolean findAndFillAltar(Level level, LivingEntity entity, int ev) {

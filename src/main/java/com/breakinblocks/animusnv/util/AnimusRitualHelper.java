@@ -9,6 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
@@ -40,8 +42,14 @@ public final class AnimusRitualHelper {
     }
 
     @Nullable
+    public static ResourceHandler<ItemResource> getResourceHandler(Level level, BlockPos pos) {
+        return level.getCapability(Capabilities.Item.BLOCK, pos, null);
+    }
+
+    @Nullable
     public static IItemHandler getItemHandler(Level level, BlockPos pos) {
-        return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+        ResourceHandler<ItemResource> handler = getResourceHandler(level, pos);
+        return handler == null ? null : IItemHandler.of(handler);
     }
 
     public static void emitSmokeParticles(ServerLevel level, BlockPos pos) {

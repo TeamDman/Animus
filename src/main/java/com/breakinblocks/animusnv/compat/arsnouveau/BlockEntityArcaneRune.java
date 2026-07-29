@@ -75,7 +75,7 @@ public class BlockEntityArcaneRune extends AbstractSourceMachine {
     }
 
     public void tick() {
-        if (level == null || level.isClientSide) {
+        if (level == null || level.isClientSide()) {
             return;
         }
 

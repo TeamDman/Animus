@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 
@@ -17,28 +18,28 @@ public class AnimusEntityTypes {
 
     public static final DeferredHolder<EntityType<?>, EntityType<EntityThrownSpear>> THROWN_PILUM = ENTITY_TYPES.register(
         "thrown_spear",
-        () -> EntityType.Builder.<EntityThrownSpear>of(EntityThrownSpear::new, MobCategory.MISC)
+        key -> EntityType.Builder.<EntityThrownSpear>of(EntityThrownSpear::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(4)
             .updateInterval(20)
-            .build("thrown_spear")
+            .build(ResourceKey.create(Registries.ENTITY_TYPE, key))
     );
 
     public static final DeferredHolder<EntityType<?>, EntityType<EntitySentientArrow>> SENTIENT_ARROW = ENTITY_TYPES.register(
         "sentient_arrow",
-        () -> EntityType.Builder.<EntitySentientArrow>of(EntitySentientArrow::new, MobCategory.MISC)
+        key -> EntityType.Builder.<EntitySentientArrow>of(EntitySentientArrow::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(4)
             .updateInterval(20)
-            .build("sentient_arrow")
+            .build(ResourceKey.create(Registries.ENTITY_TYPE, key))
     );
 
     public static final DeferredHolder<EntityType<?>, EntityType<EntityHellforgedArrow>> HELLFORGED_ARROW = ENTITY_TYPES.register(
         "hellforged_arrow",
-        () -> EntityType.Builder.<EntityHellforgedArrow>of(EntityHellforgedArrow::new, MobCategory.MISC)
+        key -> EntityType.Builder.<EntityHellforgedArrow>of(EntityHellforgedArrow::new, MobCategory.MISC)
             .sized(0.5F, 0.5F)
             .clientTrackingRange(4)
             .updateInterval(20)
-            .build("hellforged_arrow")
+            .build(ResourceKey.create(Registries.ENTITY_TYPE, key))
     );
 }

@@ -5,7 +5,7 @@ import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -37,7 +37,7 @@ public class AnimusConfiguredFeatures {
 
     private static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE,
-            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, name));
+            Identifier.fromNamespaceAndPath(Constants.Mod.MODID, name));
     }
 
     private static <FC extends FeatureConfiguration, F extends Feature<FC>>

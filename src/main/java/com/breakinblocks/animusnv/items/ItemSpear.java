@@ -11,28 +11,26 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.ShieldItem;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.TridentItem;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Spear - A Roman-style throwable javelin
@@ -40,33 +38,35 @@ import java.util.List;
  * Normal melee attacks do NOT have AOE (only Bound Spear has AOE melee)
  */
 public class ItemSpear extends TridentItem {
-    protected final Tier tier;
+    protected final ToolMaterial material;
 
-    public ItemSpear(Tier tier) {
-        super(new Properties().durability(tier.getUses()));
-        this.tier = tier;
+    public ItemSpear(ToolMaterial material, Properties properties) {
+        super(properties.durability(material.durability()));
+        this.material = material;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        if (tier == Tiers.IRON) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_IRON_FLAVOUR));
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_IRON_INFO));
-        } else if (tier == Tiers.DIAMOND) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_DIAMOND_FLAVOUR));
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SPEAR_DIAMOND_INFO));
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        if (material == ToolMaterial.IRON) {
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_IRON_FLAVOUR));
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_IRON_INFO));
+        } else if (material == ToolMaterial.DIAMOND) {
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_DIAMOND_FLAVOUR));
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SPEAR_DIAMOND_INFO));
         }
-        super.appendHoverText(stack, context, tooltip, flag);
+        super.appendHoverText(stack, context, display, tooltip, flag);
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (entity instanceof Player player) {
             int useDuration = this.getUseDuration(stack, entity) - timeLeft;
             if (useDuration >= 10) {
                 int riptide = getRiptideLevel(stack, level);
                 if (riptide <= 0 || player.isInWaterOrRain()) {
-                    if (!level.isClientSide) {
+                    if (!level.isClientSide()) {
                         stack.hurtAndBreak(1, (ServerLevel) level, player, (item) ->
                             player.onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
                         if (riptide == 0) {
@@ -107,9 +107,13 @@ public class ItemSpear extends TridentItem {
                         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                             SoundEvents.TRIDENT_RIPTIDE_1.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
                     }
+
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     private int getRiptideLevel(ItemStack stack, Level level) {
@@ -122,30 +126,30 @@ public class ItemSpear extends TridentItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         if (player.isShiftKeyDown()) {
             InteractionHand otherHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
             ItemStack otherStack = player.getItemInHand(otherHand);
             if (otherStack.getItem() instanceof ShieldItem) {
-                return InteractionResultHolder.pass(stack);
+                return InteractionResult.PASS;
             }
         }
 
         if (stack.getDamageValue() >= stack.getMaxDamage() - 1) {
-            return InteractionResultHolder.fail(stack);
+            return InteractionResult.FAIL;
         } else if (getRiptideLevel(stack, level) > 0 && !player.isInWaterOrRain()) {
-            return InteractionResultHolder.fail(stack);
+            return InteractionResult.FAIL;
         } else {
             player.startUsingItem(hand);
-            return InteractionResultHolder.consume(stack);
+            return InteractionResult.CONSUME;
         }
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.SPEAR;
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.SPEAR;
     }
 
     @Override
@@ -153,19 +157,7 @@ public class ItemSpear extends TridentItem {
         return 72000;
     }
 
-    public Tier getTier() {
-        return tier;
-    }
-
-    /**
-     * Allow spears to be treated as sword-like weapons for NeoVitae anointments.
-     * This makes them pass ItemAnointmentProvider.isItemTool() check.
-     */
-    @Override
-    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        if (itemAbility == ItemAbilities.SWORD_DIG) {
-            return true;
-        }
-        return super.canPerformAction(stack, itemAbility);
+    public ToolMaterial getMaterial() {
+        return material;
     }
 }

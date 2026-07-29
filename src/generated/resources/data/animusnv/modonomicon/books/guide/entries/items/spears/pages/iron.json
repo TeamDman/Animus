@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "iron",
+  "show_title_separator": true,
+  "sort_number": 3,
+  "text": "book.animusnv.guide.items.spears.iron.text",
+  "title": "book.animusnv.guide.items.spears.iron.title"
+}

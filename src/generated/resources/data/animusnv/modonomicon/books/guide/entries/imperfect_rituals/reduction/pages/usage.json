@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "usage",
+  "show_title_separator": true,
+  "sort_number": 1,
+  "text": "book.animusnv.guide.imperfect_rituals.reduction.usage.text",
+  "title": "book.animusnv.guide.imperfect_rituals.reduction.usage.title"
+}

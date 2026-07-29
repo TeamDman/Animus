@@ -12,7 +12,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -77,13 +77,11 @@ public record EquivalencySigilEffect() implements ISigilEffect {
     public boolean useOnAir(Level level, Player player, ItemStack stack) {
         // Sneak + right-click air to clear selection
         if (player.isShiftKeyDown()) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 clearSelectedBlocks(stack);
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                         Component.translatable(Constants.Localizations.Text.EQUIVALENCY_CLEARED)
-                                .withStyle(ChatFormatting.GOLD),
-                        true
-                );
+                                .withStyle(ChatFormatting.GOLD));
             }
             return false; // Don't consume EV for clearing
         }
@@ -98,7 +96,7 @@ public record EquivalencySigilEffect() implements ISigilEffect {
             return false;
         }
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return true; // Consume on client to prevent further processing
         }
 
@@ -117,21 +115,17 @@ public record EquivalencySigilEffect() implements ISigilEffect {
 
         // Check if already selected
         if (selectedBlocks.contains(targetBlock)) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.EQUIVALENCY_ALREADY_SELECTED)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
         // Check max selection
         if (selectedBlocks.size() >= MAX_SELECTED_BLOCKS) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.EQUIVALENCY_MAX_SELECTED, MAX_SELECTED_BLOCKS)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
@@ -139,15 +133,13 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         selectedBlocks.add(targetBlock);
         setSelectedBlocks(stack, selectedBlocks);
 
-        player.displayClientMessage(
+        player.sendOverlayMessage(
                 Component.translatable(
                         Constants.Localizations.Text.EQUIVALENCY_ADDED,
                         targetBlock.getName(),
                         selectedBlocks.size(),
                         MAX_SELECTED_BLOCKS
-                ).withStyle(ChatFormatting.GREEN),
-                true
-        );
+                ).withStyle(ChatFormatting.GREEN));
 
         return false; // Don't consume EV for selection
     }
@@ -157,11 +149,9 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         // Check if we have selected blocks
         List<Block> selectedBlocks = getSelectedBlocks(stack);
         if (selectedBlocks.isEmpty()) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_SELECTION)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
@@ -178,11 +168,9 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         }
 
         if (availableBlocks.isEmpty()) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_BLOCKS)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
@@ -196,11 +184,9 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         List<BlockPos> matchingBlocks = findMatchingBlocksInRadius(level, centerPos, targetState.getBlock(), radius, clickedFace);
 
         if (matchingBlocks.isEmpty()) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_MATCHES)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
@@ -220,11 +206,9 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         }
 
         if (blocksToReplace.isEmpty()) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.equivalency.same_block_warning")
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
@@ -233,11 +217,9 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         int totalEV = blocksToReplace.size() * lpPerBlock;
 
         if (network.getCurrentEV() < totalEV) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_EV, totalEV)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
@@ -259,13 +241,11 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         level.playSound(null, centerPos, SoundEvents.PORTAL_TRAVEL,
                 SoundSource.BLOCKS, 0.3f, 1.5f);
 
-        player.displayClientMessage(
+        player.sendOverlayMessage(
                 Component.translatable(
                         Constants.Localizations.Text.EQUIVALENCY_STARTED,
                         blocksToReplace.size()
-                ).withStyle(ChatFormatting.GOLD),
-                true
-        );
+                ).withStyle(ChatFormatting.GOLD));
 
         // Return false to skip EV cost from sigil_type (we handle it ourselves)
         return false;
@@ -415,7 +395,7 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         String[] blockIds = selectedStr.split(",");
         for (String blockId : blockIds) {
             if (blockId.isEmpty()) continue;
-            ResourceLocation rl = ResourceLocation.tryParse(blockId);
+            Identifier rl = Identifier.tryParse(blockId);
             if (rl != null) {
                 Block block = BuiltInRegistries.BLOCK.getOptional(rl).orElse(null);
                 if (block != null && block != Blocks.AIR) {
@@ -431,7 +411,7 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < blocks.size(); i++) {
             Block block = blocks.get(i);
-            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
+            Identifier id = BuiltInRegistries.BLOCK.getKey(block);
             if (id != null) {
                 if (i > 0) sb.append(",");
                 sb.append(id.toString());

@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "crafting",
+  "show_title_separator": true,
+  "sort_number": 2,
+  "text": "book.animusnv.guide.blocks.willful_stone.crafting.text",
+  "title": "book.animusnv.guide.blocks.willful_stone.crafting.title"
+}

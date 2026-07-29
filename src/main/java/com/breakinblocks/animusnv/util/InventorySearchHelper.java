@@ -1,6 +1,7 @@
 package com.breakinblocks.animusnv.util;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -16,7 +17,23 @@ import java.util.function.Predicate;
 
 public final class InventorySearchHelper {
 
+    private static final EquipmentSlot[] ARMOR_SLOTS = {
+            EquipmentSlot.FEET, EquipmentSlot.LEGS, EquipmentSlot.CHEST, EquipmentSlot.HEAD
+    };
+
     private InventorySearchHelper() {
+    }
+
+    private static List<ItemStack> armorItems(Player player) {
+        List<ItemStack> items = new ArrayList<>(ARMOR_SLOTS.length);
+        for (EquipmentSlot slot : ARMOR_SLOTS) {
+            items.add(player.getItemBySlot(slot));
+        }
+        return items;
+    }
+
+    private static List<ItemStack> offhandItems(Player player) {
+        return List.of(player.getItemBySlot(EquipmentSlot.OFFHAND));
     }
 
     /**
@@ -24,13 +41,13 @@ public final class InventorySearchHelper {
      */
     private static void forEachItem(Player player, Consumer<ItemStack> consumer) {
         Inventory inv = player.getInventory();
-        for (ItemStack stack : inv.items) {
+        for (ItemStack stack : inv.getNonEquipmentItems()) {
             if (!stack.isEmpty()) consumer.accept(stack);
         }
-        for (ItemStack stack : inv.armor) {
+        for (ItemStack stack : armorItems(player)) {
             if (!stack.isEmpty()) consumer.accept(stack);
         }
-        for (ItemStack stack : inv.offhand) {
+        for (ItemStack stack : offhandItems(player)) {
             if (!stack.isEmpty()) consumer.accept(stack);
         }
     }
@@ -40,7 +57,7 @@ public final class InventorySearchHelper {
      */
     public static Optional<ItemStack> findFirst(Player player, Predicate<ItemStack> predicate) {
         Inventory inv = player.getInventory();
-        for (List<ItemStack> list : List.of(inv.items, inv.armor, inv.offhand)) {
+        for (List<ItemStack> list : List.of(inv.getNonEquipmentItems(), armorItems(player), offhandItems(player))) {
             for (ItemStack stack : list) {
                 if (!stack.isEmpty() && predicate.test(stack)) {
                     return Optional.of(stack);
@@ -119,7 +136,7 @@ public final class InventorySearchHelper {
     }
 
     public static Optional<ItemStack> findFirstInMainInventory(Player player, Predicate<ItemStack> predicate) {
-        for (ItemStack stack : player.getInventory().items) {
+        for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
             if (!stack.isEmpty() && predicate.test(stack)) {
                 return Optional.of(stack);
             }
@@ -134,7 +151,7 @@ public final class InventorySearchHelper {
     public static Optional<ItemStack> findFirstUsable(Player player, Predicate<ItemStack> predicate) {
         Inventory inv = player.getInventory();
 
-        for (ItemStack stack : inv.items) {
+        for (ItemStack stack : inv.getNonEquipmentItems()) {
             if (!stack.isEmpty() && predicate.test(stack)) {
                 return Optional.of(stack);
             }
@@ -149,7 +166,7 @@ public final class InventorySearchHelper {
             }
         }
 
-        for (ItemStack stack : inv.offhand) {
+        for (ItemStack stack : offhandItems(player)) {
             if (!stack.isEmpty() && predicate.test(stack)) {
                 return Optional.of(stack);
             }

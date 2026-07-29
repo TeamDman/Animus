@@ -3,14 +3,16 @@ package com.breakinblocks.animusnv.items;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Fragment of Healing - provides passive healing based on quantity in inventory
@@ -22,19 +24,21 @@ public class ItemFragmentHealing extends Item {
     public static final int BASE_HEALING_INTERVAL = 200; // 10 seconds
     public static final int REDUCTION_PER_FRAGMENT = 5;  // 0.25 seconds per fragment
 
-    public ItemFragmentHealing() {
-        super(new Item.Properties()
+    public ItemFragmentHealing(Item.Properties props) {
+        super(props
             .stacksTo(1)
         );
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltip, flag);
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HEALING_FLAVOUR));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HEALING_INFO));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HEALING_RATE));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HEALING_PERMANENT)
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, display, tooltip, flag);
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.HEALING_FLAVOUR));
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.HEALING_INFO));
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.HEALING_RATE));
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.HEALING_PERMANENT)
             .withStyle(net.minecraft.ChatFormatting.RED));
     }
 
@@ -44,7 +48,7 @@ public class ItemFragmentHealing extends Item {
     }
 
     @Override
-    public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
+    public boolean canDestroyBlock(ItemStack stack, BlockState state, Level level, BlockPos pos, LivingEntity user) {
         return false;
     }
 

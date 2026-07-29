@@ -19,6 +19,8 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.animusnv.util.ChebyshevSearcher;
 import com.breakinblocks.neovitae.api.soul.IAnima;
@@ -70,7 +72,7 @@ public class RitualRelentlessTides extends Ritual {
         Level level = mrs.getWorldObj();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
+        if (level.isClientSide() || !(level instanceof ServerLevel serverLevel)) {
             return;
         }
 
@@ -90,7 +92,8 @@ public class RitualRelentlessTides extends Ritual {
 
         IFluidHandler fluidHandler;
         try {
-            fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, tankPos, Direction.DOWN);
+            ResourceHandler<FluidResource> tankHandler = level.getCapability(Capabilities.Fluid.BLOCK, tankPos, Direction.DOWN);
+            fluidHandler = tankHandler == null ? null : IFluidHandler.of(tankHandler);
             if (fluidHandler == null) {
                 emitSmokeParticles(serverLevel, masterPos);
                 return;

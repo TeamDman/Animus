@@ -1,0 +1,9 @@
+{
+  "type": "neovitae:alchemy_array_recipe",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "array_recipe",
+  "recipe_id_1": "animusnv:array/sigil_equivalency",
+  "sort_number": 1
+}

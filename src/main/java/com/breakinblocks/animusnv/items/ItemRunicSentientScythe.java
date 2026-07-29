@@ -1,7 +1,6 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.compat.CompatHandler;
-import com.breakinblocks.animusnv.compat.malum.SpiritHarvestHelper;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -17,13 +16,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.common.item.soul.SentientScytheItem;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.spiritus.IPlayerSpiritusHandler;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Runic Sentient Scythe - A cross-mod compatibility weapon combining NeoVitae and Malum
@@ -35,14 +35,14 @@ import java.util.List;
  */
 public class ItemRunicSentientScythe extends SentientScytheItem {
 
-    public ItemRunicSentientScythe() {
-        super();
+    public ItemRunicSentientScythe(Item.Properties props) {
+        super(props);
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         // Must cache soul count before parent call modifies will
-        if (!attacker.level().isClientSide && attacker instanceof Player player) {
+        if (!attacker.level().isClientSide() && attacker instanceof Player player) {
             IPlayerSpiritusHandler playerSpiritus = NeoVitaeAPI.getInstance().getPlayerSpiritusHandler();
             double totalSpiritus = 0;
             for (SpiritusType type : SpiritusType.values()) {
@@ -59,13 +59,7 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
             }
         }
 
-        boolean result = super.hurtEnemy(stack, target, attacker);
-
-        if (CompatHandler.isMalumLoaded() && attacker instanceof Player player && target.isDeadOrDying()) {
-            SpiritHarvestHelper.harvestSpirits(target, player, stack);
-        }
-
-        return result;
+        super.hurtEnemy(stack, target, attacker);
     }
 
     /**
@@ -123,23 +117,25 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltip, flag);
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, display, tooltip, flag);
 
         double soulsRemaining = getCachedSouls(stack);
         int spiritusLevel = getLevel(soulsRemaining);
         double spiritusDamage = getDamageAdded(spiritusLevel);
 
-        tooltip.add(Component.literal(String.format("Spiritus Damage: +%.1f", spiritusDamage))
+        tooltip.accept(Component.literal(String.format("Spiritus Damage: +%.1f", spiritusDamage))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
-        tooltip.add(Component.translatable("tooltip.animusnv.runic_sentient_scythe.enhanced")
+        tooltip.accept(Component.translatable("tooltip.animusnv.runic_sentient_scythe.enhanced")
             .withStyle(ChatFormatting.AQUA));
-        tooltip.add(Component.translatable("tooltip.animusnv.runic_sentient_scythe.attack_speed")
+        tooltip.accept(Component.translatable("tooltip.animusnv.runic_sentient_scythe.attack_speed")
             .withStyle(ChatFormatting.GREEN));
 
         if (CompatHandler.isMalumLoaded()) {
-            tooltip.add(Component.translatable("tooltip.animusnv.runic_sentient_scythe.malum")
+            tooltip.accept(Component.translatable("tooltip.animusnv.runic_sentient_scythe.malum")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         }
     }

@@ -17,12 +17,13 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
@@ -38,7 +39,7 @@ import java.util.List;
  * Spreads to adjacent blocks of the same type, consuming EV per spread
  */
 public class BlockAntiLife extends BaseEntityBlock {
-    public static final MapCodec<BlockAntiLife> CODEC = simpleCodec(p -> new BlockAntiLife());
+    public static final MapCodec<BlockAntiLife> CODEC = simpleCodec(BlockAntiLife::new);
     public static final BooleanProperty DECAYING = BooleanProperty.create("decaying");
 
     @Override
@@ -46,14 +47,17 @@ public class BlockAntiLife extends BaseEntityBlock {
         return CODEC;
     }
 
-    public BlockAntiLife() {
-        super(Properties.of()
+    public BlockAntiLife(BlockBehaviour.Properties props) {
+        super(props);
+        registerDefaultState(stateDefinition.any().setValue(DECAYING, false));
+    }
+
+    public static BlockBehaviour.Properties defaultProperties() {
+        return BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_BLACK)
             .strength(0.5F)
             .noOcclusion()
-            .noLootTable()
-        );
-        registerDefaultState(stateDefinition.any().setValue(DECAYING, false));
+            .noLootTable();
     }
 
     public static InteractionResult setBlockToAntiLife(Level level, BlockPos blockPos, Player player) {
@@ -64,7 +68,7 @@ public class BlockAntiLife extends BaseEntityBlock {
         }
 
         // Check protection (e.g., FTB Chunks)
-        BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, blockPos, state, player);
+        BreakBlockEvent breakEvent = new BreakBlockEvent(level, blockPos, state, player);
         if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
             return InteractionResult.PASS;
         }
@@ -114,7 +118,7 @@ public class BlockAntiLife extends BaseEntityBlock {
                     Player player = antilife.getPlayerUUID() != null ? level.getPlayerByUUID(antilife.getPlayerUUID()) : null;
 
                     if (player != null && player.isAlive()) {
-                        BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, neighborPos, neighborState, player);
+                        BreakBlockEvent breakEvent = new BreakBlockEvent(level, neighborPos, neighborState, player);
                         if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
                             continue;
                         }
@@ -148,18 +152,16 @@ public class BlockAntiLife extends BaseEntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!level.isClientSide && state.getBlock() != newState.getBlock()) {
-            for (BlockPos neighborPos : getNeighbors(pos)) {
-                BlockState neighborState = level.getBlockState(neighborPos);
-                if (neighborState.getBlock() == AnimusBlocks.BLOCK_ANTILIFE.get()) {
-                    level.setBlock(neighborPos, defaultBlockState().setValue(DECAYING, true), 3);
-                    level.scheduleTick(neighborPos, this, level.getRandom().nextInt(10) + 10);
-                }
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+        for (BlockPos neighborPos : getNeighbors(pos)) {
+            BlockState neighborState = level.getBlockState(neighborPos);
+            if (neighborState.getBlock() == AnimusBlocks.BLOCK_ANTILIFE.get()) {
+                level.setBlock(neighborPos, defaultBlockState().setValue(DECAYING, true), 3);
+                level.scheduleTick(neighborPos, this, level.getRandom().nextInt(10) + 10);
             }
         }
 
-        super.onRemove(state, level, pos, newState, isMoving);
+        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
     }
 
     private List<BlockPos> getNeighbors(BlockPos pos) {

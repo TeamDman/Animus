@@ -8,8 +8,8 @@ import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.breakinblocks.animusnv.datagen.book.page.BookHellfireForgeRecipePageModel;
 import com.breakinblocks.animusnv.datagen.book.page.BookAlchemyArrayRecipePageModel;
 import com.breakinblocks.animusnv.registry.AnimusItems;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.resources.ResourceLocation;
+import com.klikli_dev.modonomicon.client.gui.book.theme.GuiSprite;
+import net.minecraft.resources.Identifier;
 
 public class SigilChainsEntry extends EntryProvider {
 
@@ -20,10 +20,10 @@ public class SigilChainsEntry extends EntryProvider {
     @Override
     protected void generatePages() {
         this.page("reagent_recipe", () -> BookHellfireForgeRecipePageModel.create()
-                .withRecipeId1(ResourceLocation.fromNamespaceAndPath("animusnv", "hellfire_forge/reagentchains")));
+                .withRecipeId1(Identifier.fromNamespaceAndPath("animusnv", "hellfire_forge/reagentchains")));
 
         this.page("array_recipe", () -> BookAlchemyArrayRecipePageModel.create()
-                .withRecipeId1(ResourceLocation.fromNamespaceAndPath("animusnv", "array/sigil_chains")));
+                .withRecipeId1(Identifier.fromNamespaceAndPath("animusnv", "array/sigil_chains")));
 
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
@@ -68,7 +68,7 @@ public class SigilChainsEntry extends EntryProvider {
     }
 
     @Override
-    protected Pair<Integer, Integer> entryBackground() {
+    protected GuiSprite entryBackground() {
         return EntryBackground.DEFAULT;
     }
 

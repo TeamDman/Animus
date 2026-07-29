@@ -1,13 +1,8 @@
 {
   "type": "neovitae:array",
-  "addedinput": {
-    "item": "neovitae:tabula_animata"
-  },
-  "baseinput": {
-    "item": "animusnv:reagentchains"
-  },
+  "addedinput": "neovitae:tabula_animata",
+  "baseinput": "animusnv:reagentchains",
   "output": {
-    "count": 1,
     "id": "animusnv:sigil_chains"
   },
   "texture": "neovitae:textures/models/alchemyarrays/bindingarray.png"

@@ -4,33 +4,53 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.common.data.ItemTagsProvider;
 
 import java.util.concurrent.CompletableFuture;
 
 public class AnimusItemTagsProvider extends ItemTagsProvider {
-    public AnimusItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, blockTagProvider, Constants.Mod.MODID, existingFileHelper);
+    public AnimusItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider) {
+        super(output, lookupProvider, Constants.Mod.MODID);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        copy(BlockTags.LOGS, ItemTags.LOGS);
-        copy(BlockTags.PLANKS, ItemTags.PLANKS);
-        copy(BlockTags.LEAVES, ItemTags.LEAVES);
-        copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
-        copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
-        copy(BlockTags.FENCES, ItemTags.FENCES);
-        copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES);
-        copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
-        copy(BlockTags.STAIRS, ItemTags.STAIRS);
-        copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
-        copy(BlockTags.SLABS, ItemTags.SLABS);
+        tag(ItemTags.LOGS)
+            .add(AnimusItems.BLOCK_BLOOD_WOOD.get())
+            .add(AnimusItems.BLOCK_BLOOD_WOOD_STRIPPED.get());
+
+        tag(ItemTags.PLANKS)
+            .add(AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get());
+
+        tag(ItemTags.LEAVES)
+            .add(AnimusItems.BLOCK_BLOOD_LEAVES.get());
+
+        tag(ItemTags.SAPLINGS)
+            .add(AnimusItems.BLOCK_BLOOD_SAPLING.get());
+
+        tag(ItemTags.WOODEN_FENCES)
+            .add(AnimusItems.BLOCK_BLOOD_WOOD_FENCE.get());
+
+        tag(ItemTags.FENCES)
+            .add(AnimusItems.BLOCK_BLOOD_WOOD_FENCE.get());
+
+        tag(ItemTags.FENCE_GATES)
+            .add(AnimusItems.BLOCK_BLOOD_WOOD_FENCE_GATE.get());
+
+        tag(ItemTags.WOODEN_STAIRS)
+            .add(AnimusItems.BLOCK_BLOOD_WOOD_STAIRS.get());
+
+        tag(ItemTags.STAIRS)
+            .add(AnimusItems.BLOCK_BLOOD_WOOD_STAIRS.get());
+
+        tag(ItemTags.WOODEN_SLABS)
+            .add(AnimusItems.BLOCK_BLOOD_WOOD_SLAB.get());
+
+        tag(ItemTags.SLABS)
+            .add(AnimusItems.BLOCK_BLOOD_WOOD_SLAB.get());
 
         tag(Constants.Tags.WILLFUL_STONES)
             .add(AnimusItems.BLOCK_WILLFUL_STONE.get())

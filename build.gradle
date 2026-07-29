@@ -2,7 +2,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.42-beta'
+    id 'net.neoforged.moddev' version "${mdg_version}"
 }
 
 version = "${minecraft_version}-${mod_version}"
@@ -12,7 +12,7 @@ base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 neoForge {
     version = neoforge_version
@@ -27,8 +27,8 @@ neoForge {
             programArgument '--nogui'
         }
 
-        data {
-            data()
+        clientData {
+            clientData()
             programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
     }
@@ -42,9 +42,70 @@ neoForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+// Compat modules whose upstream mod has no 26.1 build yet are excluded from compilation.
+// Flip the matching animus_compat_* property in gradle.properties once the dependency ports.
+def compatSources = [
+        arsnouveau : ['animus_compat_arsnouveau', [
+                'com/breakinblocks/animusnv/compat/arsnouveau/**',
+                'com/breakinblocks/animusnv/compat/ArsNouveauCompat.java',
+                'com/breakinblocks/animusnv/compat/ArsNouveauCompatLoader.java',
+        ]],
+        ironsspells: ['animus_compat_ironsspells', [
+                'com/breakinblocks/animusnv/compat/ironsspells/**',
+                'com/breakinblocks/animusnv/compat/IronsSpellsCompat.java',
+                'com/breakinblocks/animusnv/compat/IronsSpellsCompatLoader.java',
+                'com/breakinblocks/animusnv/mixin/AbstractSpellMixin.java',
+                'com/breakinblocks/animusnv/mixin/IronsSpellsMixinPlugin.java',
+        ]],
+        malum      : ['animus_compat_malum', [
+                'com/breakinblocks/animusnv/compat/malum/**',
+                'com/breakinblocks/animusnv/compat/MalumCompat.java',
+                'com/breakinblocks/animusnv/compat/MalumCompatLoader.java',
+        ]],
+        evilcraft  : ['animus_compat_evilcraft', [
+                'com/breakinblocks/animusnv/compat/evilcraft/**',
+                'com/breakinblocks/animusnv/compat/EvilCraftCompat.java',
+                'com/breakinblocks/animusnv/compat/EvilCraftCompatLoader.java',
+        ]],
+]
+
+def disabledCompat = compatSources.findAll { _, spec -> !project.findProperty(spec[0]).toBoolean() }
+
+if (!disabledCompat.isEmpty()) {
+    logger.lifecycle("Animus: compat disabled for 26.1 (no upstream build): ${disabledCompat.keySet().join(', ')}")
+    sourceSets.main.java {
+        disabledCompat.each { _, spec -> spec[1].each { exclude it } }
+    }
+}
+
+// Data files that reference registry entries only present when a disabled compat module
+// compiles. Shipping them would fail datapack load, so they are kept in source but not packaged.
+def ironsSpellsData = [
+        'data/animusnv/neovitae/sigil_type/crimson_will.json',
+        'data/animusnv/recipe/array/sigil_crimson_will.json',
+        'data/animusnv/recipe/ara_vitae/blood_infused_spellbook_*.json',
+        'data/animusnv/advancements/arcane_blood.json',
+        'data/animusnv/advancements/sanguine_scroll.json',
+        'data/curios/tags/items/spellbook.json',
+        'data/animusnv/modonomicon/books/guide/entries/compatibility/blood_infused_spellbook.json',
+        'data/animusnv/modonomicon/books/guide/entries/compatibility/blood_infused_spellbook/**',
+        'data/animusnv/modonomicon/books/guide/entries/compatibility/sanguine_scrolls.json',
+        'data/animusnv/modonomicon/books/guide/entries/compatibility/sanguine_scrolls/**',
+        'data/animusnv/modonomicon/books/guide/entries/sigils/sigil_crimson_will*.json',
+        'data/animusnv/modonomicon/books/guide/entries/sigils/sigil_crimson_will/**',
+        'data/animusnv/modonomicon/books/guide/entries/sigils/sigil_crimson_will_compat/**',
+]
+
+if (!project.findProperty('animus_compat_ironsspells').toBoolean()) {
+    tasks.named('processResources', ProcessResources).configure {
+        ironsSpellsData.each { exclude it }
+    }
+}
+
 repositories {
     maven { name = "Progwml6"; url = "https://dvs1.progwml6.com/files/maven/" }
     maven { name = "BlameJared"; url = "https://maven.blamejared.com" }
+    maven { name = "ModMaven"; url = "https://modmaven.dev" }
     maven { name = "Thehippomaster"; url = "https://maven.theillusivec4.top/" }
     maven { name = "GeckoLib"; url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" }
     maven { name = "KosmX"; url = "https://maven.kosmx.dev/" }
@@ -80,48 +141,30 @@ repositories {
 dependencies {
     implementation "com.breakinblocks.neovitae:neovitae:${neovitae_version}"
 
-    compileOnly "curse.maven:modonomicon-538392:7771524"
-    runtimeOnly "curse.maven:modonomicon-538392:7771524"
+    compileOnly("com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}") { transitive = false }
+    runtimeOnly("com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}") { transitive = false }
 
-    compileOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
-    runtimeOnly "curse.maven:jei-238222:${jei_cursemaven_id}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
-    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}+${minecraft_version}:api"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}+${minecraft_version}"
 
     compileOnly "curse.maven:geckolib-388172:${geckolib_cursemaven_id}"
     runtimeOnly "curse.maven:geckolib-388172:${geckolib_cursemaven_id}"
 
-    compileOnly files('libs/player-animation-lib-2.0.1+1.21.1.jar')
-    runtimeOnly files('libs/player-animation-lib-2.0.1+1.21.1.jar')
-
-    compileOnly "curse.maven:lodestone-616457:${lodestone_cursemaven_id}"
-    runtimeOnly "curse.maven:lodestone-616457:${lodestone_cursemaven_id}"
-
-    compileOnly files('libs/modopedia-1.1.5-neoforge.jar')
-    runtimeOnly files('libs/modopedia-1.1.5-neoforge.jar')
-
-    compileOnly "curse.maven:ars-nouveau-401955:${arsnouveau_cursemaven_id}"
-    runtimeOnly "curse.maven:ars-nouveau-401955:${arsnouveau_cursemaven_id}"
-
-    compileOnly "curse.maven:irons-spells-n-spellbooks-855414:${ironsspells_cursemaven_id}"
-    runtimeOnly "curse.maven:irons-spells-n-spellbooks-855414:${ironsspells_cursemaven_id}"
-
-    compileOnly "curse.maven:malum-484064:${malum_cursemaven_id}"
-    runtimeOnly "curse.maven:malum-484064:${malum_cursemaven_id}"
-
-    runtimeOnly "curse.maven:jade-324717:${jade_cursemaven_id}"
+    compileOnly "maven.modrinth:jade:${jade_version}"
+    runtimeOnly "maven.modrinth:jade:${jade_version}"
 
     // FTB Teams - soft dependency for team binding support (not required at runtime)
-    compileOnly "dev.ftb.mods:ftb-teams-neoforge:2101.1.9"
-    compileOnly "dev.ftb.mods:ftb-library-neoforge:2101.1.6"
-    compileOnly "dev.architectury:architectury-neoforge:13.0.8"
+    compileOnly("dev.ftb.mods:ftb-teams-neoforge:${ftb_teams_version}") { transitive = false }
+    compileOnly("dev.ftb.mods:ftb-library-neoforge:${ftb_library_version}") { transitive = false }
 
-    compileOnly "curse.maven:cyclops-core-232758:${cyclopscore_cursemaven_id}"
-    runtimeOnly "curse.maven:cyclops-core-232758:${cyclopscore_cursemaven_id}"
+    compileOnly "maven.modrinth:cyclops-core:${cyclopscore_version}"
+    runtimeOnly "maven.modrinth:cyclops-core:${cyclopscore_version}"
 
-    compileOnly "curse.maven:evilcraft-74610:${evilcraft_cursemaven_id}"
-    runtimeOnly "curse.maven:evilcraft-74610:${evilcraft_cursemaven_id}"
+    compileOnly "maven.modrinth:evilcraft:${evilcraft_version}"
+    runtimeOnly "maven.modrinth:evilcraft:${evilcraft_version}"
 }
 
 tasks.named('processResources', ProcessResources).configure {

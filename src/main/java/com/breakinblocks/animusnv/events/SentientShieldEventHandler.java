@@ -54,14 +54,14 @@ public class SentientShieldEventHandler {
         switch (spiritusType) {
             case RAW ->
                 player.addEffect(new MobEffectInstance(
-                    MobEffects.DAMAGE_BOOST,
+                    MobEffects.STRENGTH,
                     EFFECT_DURATION,
                     1
                 ));
 
             case INVICTUS ->
                 player.addEffect(new MobEffectInstance(
-                    MobEffects.DAMAGE_RESISTANCE,
+                    MobEffects.RESISTANCE,
                     EFFECT_DURATION,
                     1
                 ));

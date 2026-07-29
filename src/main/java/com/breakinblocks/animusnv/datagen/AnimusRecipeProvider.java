@@ -4,47 +4,65 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.recipes.KeyUnbindingRecipe;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.breakinblocks.animusnv.registry.AnimusItems;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.fml.ModList;
 import com.breakinblocks.neovitae.NeoVitae;
 import com.breakinblocks.neovitae.common.item.NVItems;
 
 import java.util.concurrent.CompletableFuture;
 
 public class AnimusRecipeProvider extends RecipeProvider {
-    private static final ResourceLocation ARRAY_GROWTH = NeoVitae.rl("textures/models/alchemyarrays/growthsigil.png");
-    private static final ResourceLocation ARRAY_LAPUTA = NeoVitae.rl("textures/models/alchemyarrays/shardoflaputa.png");
-    private static final ResourceLocation ARRAY_BINDING = NeoVitae.rl("textures/models/alchemyarrays/bindingarray.png");
-    private static final ResourceLocation ARRAY_VOID = NeoVitae.rl("textures/models/alchemyarrays/voidsigil.png");
-    private static final ResourceLocation ARRAY_FURNACE = NeoVitae.rl("textures/models/alchemyarrays/furnacearray.png");
-    private static final ResourceLocation ARRAY_TELEPORT = NeoVitae.rl("textures/models/alchemyarrays/teleportationarray.png");
-    private static final ResourceLocation ARRAY_LIGHTNING = NeoVitae.rl("textures/models/alchemyarrays/bindinglightningarray.png");
-    private static final ResourceLocation ARRAY_MOBSACRIFICE = NeoVitae.rl("textures/models/alchemyarrays/mobsacrifice.png");
-    private static final ResourceLocation ARRAY_LIGHT = NeoVitae.rl("textures/models/alchemyarrays/lightsigil.png");
-    private static final ResourceLocation ARRAY_FASTMINER = NeoVitae.rl("textures/models/alchemyarrays/fastminersigil.png");
-    private static final ResourceLocation ARRAY_WATER = NeoVitae.rl("textures/models/alchemyarrays/watersigil.png");
-    private static final ResourceLocation ARRAY_MOON = NeoVitae.rl("textures/models/alchemyarrays/moonarray.png");
-    private static final ResourceLocation ARRAY_TELEPORTATION = NeoVitae.rl("textures/models/alchemyarrays/teleportation.png");
-    private static final ResourceLocation ARRAY_SPIKE = NeoVitae.rl("textures/models/alchemyarrays/spikearray.png");
-    private static final ResourceLocation ARRAY_AIR = NeoVitae.rl("textures/models/alchemyarrays/airsigil.png");
+    private static final Identifier ARRAY_GROWTH = NeoVitae.rl("textures/models/alchemyarrays/growthsigil.png");
+    private static final Identifier ARRAY_LAPUTA = NeoVitae.rl("textures/models/alchemyarrays/shardoflaputa.png");
+    private static final Identifier ARRAY_BINDING = NeoVitae.rl("textures/models/alchemyarrays/bindingarray.png");
+    private static final Identifier ARRAY_VOID = NeoVitae.rl("textures/models/alchemyarrays/voidsigil.png");
+    private static final Identifier ARRAY_FURNACE = NeoVitae.rl("textures/models/alchemyarrays/furnacearray.png");
+    private static final Identifier ARRAY_TELEPORT = NeoVitae.rl("textures/models/alchemyarrays/teleportationarray.png");
+    private static final Identifier ARRAY_LIGHTNING = NeoVitae.rl("textures/models/alchemyarrays/bindinglightningarray.png");
+    private static final Identifier ARRAY_MOBSACRIFICE = NeoVitae.rl("textures/models/alchemyarrays/mobsacrifice.png");
+    private static final Identifier ARRAY_LIGHT = NeoVitae.rl("textures/models/alchemyarrays/lightsigil.png");
+    private static final Identifier ARRAY_FASTMINER = NeoVitae.rl("textures/models/alchemyarrays/fastminersigil.png");
+    private static final Identifier ARRAY_WATER = NeoVitae.rl("textures/models/alchemyarrays/watersigil.png");
+    private static final Identifier ARRAY_MOON = NeoVitae.rl("textures/models/alchemyarrays/moonarray.png");
+    private static final Identifier ARRAY_TELEPORTATION = NeoVitae.rl("textures/models/alchemyarrays/teleportation.png");
+    private static final Identifier ARRAY_SPIKE = NeoVitae.rl("textures/models/alchemyarrays/spikearray.png");
+    private static final Identifier ARRAY_AIR = NeoVitae.rl("textures/models/alchemyarrays/airsigil.png");
 
-    public AnimusRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, registries);
+    private static HolderGetter<Item> itemGetter;
+
+    protected AnimusRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+        super(registries, output);
+        itemGetter = this.items;
+    }
+
+    static Ingredient ingredientOf(TagKey<Item> tag) {
+        if (itemGetter == null) {
+            throw new IllegalStateException("AnimusRecipeProvider must be constructed before building tag-based ingredients");
+        }
+        return Ingredient.of(itemGetter.getOrThrow(tag));
+    }
+
+    private static ResourceKey<Recipe<?>> rKey(Identifier id) {
+        return ResourceKey.create(Registries.RECIPE, id);
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput output) {
+    protected void buildRecipes() {
+        RecipeOutput output = this.output;
         buildCraftingRecipes(output);
         buildAltarRecipes(output);
         buildTabulaVitaeRecipes(output);
@@ -52,8 +70,24 @@ public class AnimusRecipeProvider extends RecipeProvider {
         buildArrayRecipes(output);
     }
 
+    public static class Runner extends RecipeProvider.Runner {
+        public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+            super(output, registries);
+        }
+
+        @Override
+        protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+            return new AnimusRecipeProvider(registries, output);
+        }
+
+        @Override
+        public String getName() {
+            return "Animus Recipes";
+        }
+    }
+
     private void buildCraftingRecipes(RecipeOutput output) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AnimusItems.SPEAR_IRON.get())
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, AnimusItems.SPEAR_IRON.get())
             .pattern(" a ")
             .pattern("a a")
             .pattern("  b")
@@ -62,7 +96,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
             .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, AnimusItems.SPEAR_DIAMOND.get())
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.COMBAT, AnimusItems.SPEAR_DIAMOND.get())
             .pattern(" a ")
             .pattern("a a")
             .pattern("  b")
@@ -71,20 +105,20 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .unlockedBy("has_diamond", has(Tags.Items.GEMS_DIAMOND))
             .save(output);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get(), 4)
+        ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get(), 4)
             .requires(AnimusBlocks.BLOCK_BLOOD_WOOD.get())
             .unlockedBy("has_blood_wood", has(AnimusBlocks.BLOCK_BLOOD_WOOD.get()))
             .save(output);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get(), 4)
+        ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get(), 4)
             .requires(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get())
             .unlockedBy("has_stripped_blood_wood", has(AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get()))
-            .save(output, loc("blood_wood_planks_from_stripped"));
+            .save(output, rKey(loc("blood_wood_planks_from_stripped")));
 
-        SpecialRecipeBuilder.special(KeyUnbindingRecipe::new)
-            .save(output, loc("key_binding_unbind").toString());
+        SpecialRecipeBuilder.special(() -> new KeyUnbindingRecipe(CraftingBookCategory.MISC))
+            .save(output, rKey(loc("key_binding_unbind")));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_FENCE.get(), 3)
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_FENCE.get(), 3)
             .pattern("#S#")
             .pattern("#S#")
             .define('#', AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get())
@@ -92,7 +126,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .unlockedBy("has_blood_wood_planks", has(AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get()))
             .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_FENCE_GATE.get())
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_FENCE_GATE.get())
             .pattern("S#S")
             .pattern("S#S")
             .define('#', AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get())
@@ -100,13 +134,13 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .unlockedBy("has_blood_wood_planks", has(AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get()))
             .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_SLAB.get(), 6)
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_SLAB.get(), 6)
             .pattern("###")
             .define('#', AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get())
             .unlockedBy("has_blood_wood_planks", has(AnimusItems.BLOCK_BLOOD_WOOD_PLANKS.get()))
             .save(output);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_STAIRS.get(), 4)
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_STAIRS.get(), 4)
             .pattern("#  ")
             .pattern("## ")
             .pattern("###")
@@ -133,14 +167,14 @@ public class AnimusRecipeProvider extends RecipeProvider {
     }
 
     private void willfulStoneDyeRecipe(RecipeOutput output, TagKey<Item> dye, ItemLike result, String name) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 8)
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.BUILDING_BLOCKS, result, 8)
             .pattern("SSS")
             .pattern("SDS")
             .pattern("SSS")
             .define('S', Constants.Tags.WILLFUL_STONES)
             .define('D', dye)
             .unlockedBy("has_willful_stone", has(Constants.Tags.WILLFUL_STONES))
-            .save(output, loc(name));
+            .save(output, rKey(loc(name)));
     }
 
     private void buildAltarRecipes(RecipeOutput output) {
@@ -211,7 +245,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .input(Items.WATER_BUCKET)
             .input(Items.DIRT)
             .input(Items.BONE_MEAL)
-            .input(Ingredient.of(ItemTags.SAPLINGS))
+            .input(this.tag(ItemTags.SAPLINGS))
             .save(output, loc("alchemytable/living_terra_bucket"));
     }
 
@@ -344,7 +378,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .drain(32.0)
             .requires(Items.NETHER_WART)
             .requires(Items.CRIMSON_FUNGUS)
-            .requires(Ingredient.of(ItemTags.SAPLINGS))
+            .requires(this.tag(ItemTags.SAPLINGS))
             .requires(Items.VINE)
             .save(output, loc("reagentleach"));
 
@@ -486,7 +520,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("array/runic_sentient_scythe"));
     }
 
-    private ResourceLocation loc(String path) {
-        return ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, path);
+    private Identifier loc(String path) {
+        return Identifier.fromNamespaceAndPath(Constants.Mod.MODID, path);
     }
 }

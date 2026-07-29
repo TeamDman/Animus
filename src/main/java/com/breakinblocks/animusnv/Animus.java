@@ -69,7 +69,7 @@ public class Animus {
 
     private void registerEvilCraftCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
-            Capabilities.FluidHandler.BLOCK,
+            Capabilities.Fluid.BLOCK,
             EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(),
             (be, direction) -> be.getBloodTank()
         );

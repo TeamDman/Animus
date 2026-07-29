@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "crafting",
+  "show_title_separator": true,
+  "sort_number": 2,
+  "text": "book.animusnv.guide.blocks.decorative_blocks.crafting.text",
+  "title": "book.animusnv.guide.blocks.decorative_blocks.crafting.title"
+}

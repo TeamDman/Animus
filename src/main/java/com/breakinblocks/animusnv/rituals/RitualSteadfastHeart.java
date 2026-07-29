@@ -61,7 +61,7 @@ public class RitualSteadfastHeart extends Ritual {
     @Override
     public void readFromNBT(CompoundTag tag) {
         super.readFromNBT(tag);
-        willBuffer = tag.getDouble("willBuffer");
+        willBuffer = tag.getDoubleOr("willBuffer", 0.0);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class RitualSteadfastHeart extends Ritual {
         }
 
         Level level = mrs.getWorldObj();
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 

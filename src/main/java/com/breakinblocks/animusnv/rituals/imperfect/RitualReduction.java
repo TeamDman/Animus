@@ -38,25 +38,21 @@ public class RitualReduction extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
         ItemStack mainhandItem = player.getMainHandItem();
         if (mainhandItem.isEmpty()) {
-            player.displayClientMessage(
-                Component.translatable("ritual.animusnv.reduction.no_item"),
-                false
-            );
+            player.sendSystemMessage(
+                Component.translatable("ritual.animusnv.reduction.no_item"));
             return false;
         }
 
         ItemEnchantments enchantments = mainhandItem.get(DataComponents.ENCHANTMENTS);
         if (enchantments == null || enchantments.isEmpty()) {
-            player.displayClientMessage(
-                Component.translatable("ritual.animusnv.reduction.no_enchantments"),
-                false
-            );
+            player.sendSystemMessage(
+                Component.translatable("ritual.animusnv.reduction.no_enchantments"));
             return false;
         }
 
@@ -79,10 +75,8 @@ public class RitualReduction extends ImperfectRitual {
             0.8F
         );
 
-        player.displayClientMessage(
-            Component.translatable("ritual.animusnv.reduction.success"),
-            true
-        );
+        player.sendOverlayMessage(
+            Component.translatable("ritual.animusnv.reduction.success"));
 
         return true;
     }

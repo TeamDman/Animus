@@ -1,71 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "items",
-  "description": "book.animusnv.guide.items.living_armor_spells.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "minecraft:diamond_chestplate"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:items",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.items.living_armor_spells.description",
+  "icon": {
+    "id": "minecraft:diamond_chestplate"
+  },
+  "id": "animusnv:items/living_armor_spells",
   "name": "book.animusnv.guide.items.living_armor_spells.name",
-  "pages": [
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.living_armor_spells.intro.text",
-      "title": "book.animusnv.guide.items.living_armor_spells.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.living_armor_spells.xp.text",
-      "title": "book.animusnv.guide.items.living_armor_spells.xp.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.living_armor_spells.levels.text",
-      "title": "book.animusnv.guide.items.living_armor_spells.levels.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.living_armor_spells.details.text",
-      "title": "book.animusnv.guide.items.living_armor_spells.details.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.living_armor_spells.synergies.text",
-      "title": "book.animusnv.guide.items.living_armor_spells.synergies.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 8,
   "x": -3,
   "y": 2

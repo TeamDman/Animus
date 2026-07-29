@@ -1,38 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "imperfect_rituals",
-  "description": "book.animusnv.guide.imperfect_rituals.neptune_blessing.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "minecraft:prismarine"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:imperfect_rituals",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.imperfect_rituals.neptune_blessing.description",
+  "icon": {
+    "id": "minecraft:prismarine"
+  },
+  "id": "animusnv:imperfect_rituals/neptune_blessing",
   "name": "book.animusnv.guide.imperfect_rituals.neptune_blessing.name",
-  "pages": [
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.imperfect_rituals.neptune_blessing.intro.text",
-      "title": "book.animusnv.guide.imperfect_rituals.neptune_blessing.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.imperfect_rituals.neptune_blessing.effects.text",
-      "title": "book.animusnv.guide.imperfect_rituals.neptune_blessing.effects.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 4,
   "x": -3,
   "y": 0

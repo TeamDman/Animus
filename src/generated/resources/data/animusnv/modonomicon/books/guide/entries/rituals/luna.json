@@ -1,60 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "rituals",
-  "description": "book.animusnv.guide.rituals.luna.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "minecraft:glowstone"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:rituals",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.rituals.luna.description",
+  "icon": {
+    "id": "minecraft:glowstone"
+  },
+  "id": "animusnv:rituals/luna",
   "name": "book.animusnv.guide.rituals.luna.name",
-  "pages": [
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.rituals.luna.intro.text",
-      "title": "book.animusnv.guide.rituals.luna.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.rituals.luna.mechanics.text",
-      "title": "book.animusnv.guide.rituals.luna.mechanics.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.rituals.luna.search.text",
-      "title": "book.animusnv.guide.rituals.luna.search.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.rituals.luna.costs.text",
-      "title": "book.animusnv.guide.rituals.luna.costs.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 4,
   "x": 1,
   "y": -2

@@ -10,11 +10,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,11 +25,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import com.breakinblocks.neovitae.api.sigil.ISigilEffect;
 import com.breakinblocks.neovitae.common.block.TeleposerBlock;
 
@@ -48,7 +50,7 @@ public record TranspositionSigilEffect() implements ISigilEffect {
 
     private static final TagKey<Block> RELOCATION_NOT_SUPPORTED = TagKey.create(
             Registries.BLOCK,
-            ResourceLocation.fromNamespaceAndPath("c", "relocation_not_supported")
+            Identifier.fromNamespaceAndPath("c", "relocation_not_supported")
     );
 
     @Override
@@ -58,7 +60,7 @@ public record TranspositionSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnAir(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -78,10 +80,8 @@ public record TranspositionSigilEffect() implements ISigilEffect {
         if (result.getType() == HitResult.Type.MISS) {
             // Clear selection
             stack.remove(AnimusDataComponents.TRANSPOSITION_POS.get());
-            player.displayClientMessage(
-                    Component.translatable(Constants.Localizations.Text.TRANSPOSITION_CLEARED),
-                    true
-            );
+            player.sendOverlayMessage(
+                    Component.translatable(Constants.Localizations.Text.TRANSPOSITION_CLEARED));
             return true;
         }
 
@@ -90,7 +90,7 @@ public record TranspositionSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnBlock(Level level, Player player, ItemStack stack, BlockPos clickedPos, Direction side, Vec3 hitVec) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -99,11 +99,9 @@ public record TranspositionSigilEffect() implements ISigilEffect {
         // Sneak + Right-click on Teleposer to bind teleportation location
         if (player.isShiftKeyDown() && clickedState.getBlock() instanceof TeleposerBlock) {
             stack.set(AnimusDataComponents.TELEPOSER_POS.get(), clickedPos);
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.transposition.teleposer_bound")
-                            .withStyle(ChatFormatting.GOLD),
-                    true
-            );
+                            .withStyle(ChatFormatting.GOLD));
             level.playSound(null, clickedPos, SoundEvents.PORTAL_TRAVEL, SoundSource.BLOCKS, 0.5F, 2.0F);
             return true;
         }
@@ -113,28 +111,22 @@ public record TranspositionSigilEffect() implements ISigilEffect {
         if (storedPos == null) {
             // First click - select block to move
             if (clickedState.is(RELOCATION_NOT_SUPPORTED)) {
-                player.displayClientMessage(
-                        Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE),
-                        true
-                );
+                player.sendOverlayMessage(
+                        Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE));
                 return false;
             }
 
             // Check protection
-            BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, clickedPos, clickedState, player);
+            BreakBlockEvent breakEvent = new BreakBlockEvent(level, clickedPos, clickedState, player);
             if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
-                player.displayClientMessage(
-                        Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE),
-                        true
-                );
+                player.sendOverlayMessage(
+                        Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE));
                 return false;
             }
 
             stack.set(AnimusDataComponents.TRANSPOSITION_POS.get(), clickedPos);
-            player.displayClientMessage(
-                    Component.translatable(Constants.Localizations.Text.TRANSPOSITION_SET),
-                    true
-            );
+            player.sendOverlayMessage(
+                    Component.translatable(Constants.Localizations.Text.TRANSPOSITION_SET));
             level.playSound(null, clickedPos, SoundEvents.SHULKER_TELEPORT, SoundSource.BLOCKS, 1.0F, 1.0F);
 
             return true;
@@ -147,39 +139,33 @@ public record TranspositionSigilEffect() implements ISigilEffect {
             // Re-check restrictions
             if (oldState.is(RELOCATION_NOT_SUPPORTED)) {
                 stack.remove(AnimusDataComponents.TRANSPOSITION_POS.get());
-                level.playSound(null, newPos, SoundEvents.SHIELD_BLOCK, SoundSource.BLOCKS, 1.0F, 1.0F);
-                player.displayClientMessage(
-                        Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE),
-                        true
-                );
+                level.playSound(null, newPos, SoundEvents.SHIELD_BLOCK.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                player.sendOverlayMessage(
+                        Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE));
                 return false;
             }
 
-            BlockEvent.BreakEvent breakEvent = new BlockEvent.BreakEvent(level, storedPos, oldState, player);
+            BreakBlockEvent breakEvent = new BreakBlockEvent(level, storedPos, oldState, player);
             if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
                 stack.remove(AnimusDataComponents.TRANSPOSITION_POS.get());
-                level.playSound(null, newPos, SoundEvents.SHIELD_BLOCK, SoundSource.BLOCKS, 1.0F, 1.0F);
-                player.displayClientMessage(
-                        Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE),
-                        true
-                );
+                level.playSound(null, newPos, SoundEvents.SHIELD_BLOCK.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                player.sendOverlayMessage(
+                        Component.translatable(Constants.Localizations.Text.TRANSPOSITION_UNMOVABLE));
                 return false;
             }
 
             // Check destination is air
             if (!level.isEmptyBlock(newPos)) {
-                player.displayClientMessage(
-                        Component.translatable(Constants.Localizations.Text.DIVINER_OBSTRUCTED),
-                        true
-                );
+                player.sendOverlayMessage(
+                        Component.translatable(Constants.Localizations.Text.DIVINER_OBSTRUCTED));
                 return false;
             }
 
             // Force load chunk
-            ChunkPos oldChunkPos = new ChunkPos(storedPos);
+            ChunkPos oldChunkPos = ChunkPos.containing(storedPos);
             boolean wasForced = false;
             if (level instanceof ServerLevel serverLevel) {
-                wasForced = serverLevel.setChunkForced(oldChunkPos.x, oldChunkPos.z, true);
+                wasForced = serverLevel.setChunkForced(oldChunkPos.x(), oldChunkPos.z(), true);
             }
 
             try {
@@ -197,7 +183,7 @@ public record TranspositionSigilEffect() implements ISigilEffect {
                         tileData.putInt("x", newPos.getX());
                         tileData.putInt("y", newPos.getY());
                         tileData.putInt("z", newPos.getZ());
-                        newTile.loadCustomOnly(tileData, registries);
+                        newTile.loadCustomOnly(TagValueInput.create(ProblemReporter.DISCARDING, registries, tileData));
                         level.removeBlockEntity(storedPos);
                     }
                 }
@@ -206,7 +192,7 @@ public record TranspositionSigilEffect() implements ISigilEffect {
                 level.removeBlock(storedPos, false);
             } finally {
                 if (level instanceof ServerLevel serverLevel && wasForced) {
-                    serverLevel.setChunkForced(oldChunkPos.x, oldChunkPos.z, false);
+                    serverLevel.setChunkForced(oldChunkPos.x(), oldChunkPos.z(), false);
                 }
             }
 
@@ -222,37 +208,31 @@ public record TranspositionSigilEffect() implements ISigilEffect {
      * This is called from an event handler since ISigilEffect doesn't have hurtEnemy.
      */
     public static boolean handleEntityTeleport(Player player, LivingEntity target, ItemStack stack) {
-        if (player.level().isClientSide) {
+        if (player.level().isClientSide()) {
             return false;
         }
 
         BlockPos teleposerPos = stack.get(AnimusDataComponents.TELEPOSER_POS.get());
         if (teleposerPos == null) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.transposition.no_teleposer")
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
         // Check if target is a player and not sneaking
         if (target instanceof Player targetPlayer && !targetPlayer.isShiftKeyDown()) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.transposition.player_must_sneak")
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
         // Verify teleposer still exists
         if (!(player.level().getBlockState(teleposerPos).getBlock() instanceof TeleposerBlock)) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable("text.component.animusnv.transposition.teleposer_missing")
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             stack.remove(AnimusDataComponents.TELEPOSER_POS.get());
             return false;
         }
@@ -267,11 +247,9 @@ public record TranspositionSigilEffect() implements ISigilEffect {
         player.level().playSound(null, targetTeleportPos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
 
         String targetName = target instanceof Player ? target.getName().getString() : target.getType().getDescription().getString();
-        player.displayClientMessage(
+        player.sendOverlayMessage(
                 Component.translatable("text.component.animusnv.transposition.teleported", targetName)
-                        .withStyle(ChatFormatting.GREEN),
-                true
-        );
+                        .withStyle(ChatFormatting.GREEN));
 
         return true;
     }

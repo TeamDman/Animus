@@ -16,12 +16,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
@@ -32,6 +34,7 @@ import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -56,8 +59,8 @@ public class ItemHellforgedBow extends BowItem {
     public static final double DEFAULT_EXECUTE_THRESHOLD = 0.15;
     public static final int EV_PER_REPAIR = 100;
 
-    public ItemHellforgedBow() {
-        super(new Item.Properties()
+    public ItemHellforgedBow(Item.Properties props) {
+        super(props
             .stacksTo(1)
             .durability(750)
             .rarity(Rarity.EPIC));
@@ -104,33 +107,35 @@ public class ItemHellforgedBow extends BowItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_FLAVOUR)
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
         String ownerName = getBindingOwnerName(stack);
         if (ownerName != null) {
-            tooltip.add(Component.translatable("tooltip.animusnv.bound_to")
+            tooltip.accept(Component.translatable("tooltip.animusnv.bound_to")
                 .append(Component.literal(ownerName))
                 .withStyle(ChatFormatting.DARK_RED));
         } else {
-            tooltip.add(Component.translatable("tooltip.animusnv.unbound_bind")
+            tooltip.accept(Component.translatable("tooltip.animusnv.unbound_bind")
                 .withStyle(ChatFormatting.GRAY));
         }
 
         SpiritusType type = getCurrentType(stack);
         if (type != SpiritusType.RAW) {
-            tooltip.add(Component.translatable("tooltip.animusnv.hellforged_bow.spiritus_type", type.name().toLowerCase())
+            tooltip.accept(Component.translatable("tooltip.animusnv.hellforged_bow.spiritus_type", type.name().toLowerCase())
                 .withStyle(ChatFormatting.DARK_PURPLE));
         }
 
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_INFO)
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_INFO)
             .withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_EV_COST, getBaseEvCost())
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_EV_COST, getBaseEvCost())
             .withStyle(ChatFormatting.DARK_RED));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_CHARGE)
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_CHARGE)
             .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_EXECUTE,
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.HELLFORGED_BOW_EXECUTE,
             (int)(getExecuteThreshold() * 100))
             .withStyle(ChatFormatting.RED));
     }
@@ -184,43 +189,39 @@ public class ItemHellforgedBow extends BowItem {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player)) {
-            return;
+            return false;
         }
 
         UUID ownerId = getBindingOwnerId(stack);
         if (ownerId == null) {
-            if (!level.isClientSide) {
-                player.displayClientMessage(
+            if (!level.isClientSide()) {
+                player.sendOverlayMessage(
                     Component.translatable("message.animus.hellforged_bow.not_bound")
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
+                        .withStyle(ChatFormatting.RED));
             }
-            return;
+            return false;
         }
 
         int useDuration = this.getUseDuration(stack, entity) - timeLeft;
         float power = getPowerForTime(useDuration);
 
         if (power < 0.1F) {
-            return;
+            return false;
         }
 
         IAnima network = getNetworkForBinding(player, stack);
         if (network == null || network.getCurrentEV() < getBaseEvCost()) {
-            if (!level.isClientSide) {
-                player.displayClientMessage(
+            if (!level.isClientSide()) {
+                player.sendOverlayMessage(
                     Component.translatable("message.animus.hellforged_bow.out_of_ev")
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
+                        .withStyle(ChatFormatting.RED));
             }
-            return;
+            return false;
         }
 
-        if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
             AnimaTicket ticket = AnimaTicket.create(getBaseEvCost());
             network.syphonAndDamage(player, ticket);
 
@@ -238,6 +239,13 @@ public class ItemHellforgedBow extends BowItem {
             double chargeBonusDamage = chargeMultiplier * (getMaxArrowDamage() - baseDamage);
             double totalDamage = baseDamage + chargeBonusDamage;
 
+            int powerEnchant = stack.getEnchantmentLevel(serverLevel.registryAccess()
+                .lookupOrThrow(Registries.ENCHANTMENT)
+                .getOrThrow(Enchantments.POWER));
+            if (powerEnchant > 0) {
+                totalDamage += (double) powerEnchant * 0.5D + 0.5D;
+            }
+
             EntityHellforgedArrow arrow = new EntityHellforgedArrow(level, player);
             arrow.setSpiritusType(spiritusType);
             arrow.setSpiritusLevel(spiritusLevel);
@@ -245,13 +253,6 @@ public class ItemHellforgedBow extends BowItem {
             arrow.setChargeMultiplier(chargeMultiplier);
             arrow.setExecuteThreshold(chargeMultiplier >= 1.0f ? getExecuteThreshold() : 0.0);
             arrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, power * 3.0F, 1.0F);
-
-            int powerEnchant = stack.getEnchantmentLevel(serverLevel.registryAccess()
-                .lookupOrThrow(Registries.ENCHANTMENT)
-                .getOrThrow(Enchantments.POWER));
-            if (powerEnchant > 0) {
-                arrow.setBaseDamage(arrow.getBaseDamage() + (double) powerEnchant * 0.5D + 0.5D);
-            }
 
             int flameEnchant = stack.getEnchantmentLevel(serverLevel.registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT)
@@ -280,39 +281,36 @@ public class ItemHellforgedBow extends BowItem {
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
+        return true;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         UUID ownerId = getBindingOwnerId(stack);
         if (ownerId == null) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 bindToPlayer(stack, player);
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable("message.animus.hellforged_bow.bound")
-                        .withStyle(ChatFormatting.AQUA),
-                    true
-                );
+                        .withStyle(ChatFormatting.AQUA));
             }
-            return InteractionResultHolder.consume(stack);
+            return InteractionResult.CONSUME;
         }
 
         IAnima network = getNetworkForBinding(player, stack);
         if (network == null || network.getCurrentEV() < getBaseEvCost()) {
-            if (!level.isClientSide) {
-                player.displayClientMessage(
+            if (!level.isClientSide()) {
+                player.sendOverlayMessage(
                     Component.translatable("message.animus.hellforged_bow.out_of_ev")
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
+                        .withStyle(ChatFormatting.RED));
             }
-            return InteractionResultHolder.fail(stack);
+            return InteractionResult.FAIL;
         }
 
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(stack);
+        return InteractionResult.CONSUME;
     }
 
     @Override
@@ -355,8 +353,8 @@ public class ItemHellforgedBow extends BowItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        super.inventoryTick(stack, level, entity, slotId, isSelected);
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, EquipmentSlot slot) {
+        super.inventoryTick(stack, level, entity, slot);
 
         if (entity instanceof Player player) {
             SpiritusType newType = SpiritusTypeHelper.findSpiritusType(player);

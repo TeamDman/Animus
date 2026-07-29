@@ -16,8 +16,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  * This replaces the old BloodOrbDeferredRegister system.
  */
 public class AnimusBloodOrbs {
-    public static final DeferredRegister<Item> BLOOD_ORBS = DeferredRegister.createItems(Constants.Mod.MODID);
+    public static final DeferredRegister.Items BLOOD_ORBS = DeferredRegister.createItems(Constants.Mod.MODID);
 
     public static final DeferredHolder<Item, ItemBloodOrbTranscendent> BLOOD_ORB_TRANSCENDENT =
-        BLOOD_ORBS.register("blood_orb_transcendent", ItemBloodOrbTranscendent::new);
+        BLOOD_ORBS.registerItem("blood_orb_transcendent", ItemBloodOrbTranscendent::new);
 }

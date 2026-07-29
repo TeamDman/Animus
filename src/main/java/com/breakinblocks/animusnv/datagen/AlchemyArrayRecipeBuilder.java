@@ -1,21 +1,23 @@
 package com.breakinblocks.animusnv.datagen;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import com.breakinblocks.neovitae.NeoVitae;
 import com.breakinblocks.neovitae.common.recipe.alchemyarray.AlchemyArrayRecipe;
 
 public class AlchemyArrayRecipeBuilder {
-    private final ItemStack output;
+    private final ItemStackTemplate output;
     private Ingredient baseInput;
     private Ingredient addedInput;
-    private ResourceLocation texture;
+    private Identifier texture;
 
-    private AlchemyArrayRecipeBuilder(ItemStack output) {
-        if (output == null || output.isEmpty()) {
+    private AlchemyArrayRecipeBuilder(ItemStackTemplate output) {
+        if (output == null) {
             throw new IllegalArgumentException("AlchemyArrayRecipe output cannot be null or empty");
         }
         this.output = output;
@@ -23,10 +25,10 @@ public class AlchemyArrayRecipeBuilder {
     }
 
     public static AlchemyArrayRecipeBuilder build(ItemLike output) {
-        return new AlchemyArrayRecipeBuilder(new ItemStack(output));
+        return new AlchemyArrayRecipeBuilder(new ItemStackTemplate(output.asItem()));
     }
 
-    public static AlchemyArrayRecipeBuilder build(ItemStack output) {
+    public static AlchemyArrayRecipeBuilder build(ItemStackTemplate output) {
         return new AlchemyArrayRecipeBuilder(output);
     }
 
@@ -55,12 +57,12 @@ public class AlchemyArrayRecipeBuilder {
         return this;
     }
 
-    public AlchemyArrayRecipeBuilder texture(ResourceLocation texture) {
+    public AlchemyArrayRecipeBuilder texture(Identifier texture) {
         this.texture = texture;
         return this;
     }
 
-    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
+    public void save(RecipeOutput recipeOutput, Identifier id) {
         if (baseInput == null) {
             throw new IllegalStateException("AlchemyArrayRecipe requires a base input");
         }
@@ -68,6 +70,6 @@ public class AlchemyArrayRecipeBuilder {
             throw new IllegalStateException("AlchemyArrayRecipe requires an added input");
         }
         AlchemyArrayRecipe recipe = new AlchemyArrayRecipe(texture, baseInput, addedInput, output);
-        recipeOutput.accept(id, recipe, null);
+        recipeOutput.accept(ResourceKey.create(Registries.RECIPE, id), recipe, null);
     }
 }

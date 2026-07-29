@@ -3,15 +3,16 @@ package com.breakinblocks.animusnv.blockentities;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.UUID;
 
@@ -65,27 +66,23 @@ public class BlockEntityAntiLife extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(ValueOutput tag) {
+        super.saveAdditional(tag);
         tag.putString("seeking", seeking.getDescriptionId());
         tag.putInt("range", range);
-        if (playerUUID != null) {
-            tag.putUUID("player", playerUUID);
-        }
+        tag.storeNullable("player", UUIDUtil.CODEC, playerUUID);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    protected void loadAdditional(ValueInput tag) {
+        super.loadAdditional(tag);
         // Try to get the block - if it fails, default to AIR
-        String seekingId = tag.getString("seeking");
+        String seekingId = tag.getStringOr("seeking", "");
         this.seeking = BuiltInRegistries.BLOCK.getOptional(
-            ResourceLocation.tryParse(seekingId.replace("block.", ""))
+            Identifier.tryParse(seekingId.replace("block.", ""))
         ).orElse(Blocks.AIR);
 
-        this.range = tag.getInt("range");
-        if (tag.hasUUID("player")) {
-            this.playerUUID = tag.getUUID("player");
-        }
+        this.range = tag.getIntOr("range", 0);
+        tag.read("player", UUIDUtil.CODEC).ifPresent(uuid -> this.playerUUID = uuid);
     }
 }

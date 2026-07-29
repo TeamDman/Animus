@@ -6,12 +6,8 @@
     }
   ],
   "type": "neovitae:array",
-  "baseinput": {
-    "item": "animusnv:reagentfist"
-  },
-  "addedinput": {
-    "item": "neovitae:tabula_animata"
-  },
+  "baseinput": "animusnv:reagentfist",
+  "addedinput": "neovitae:tabula_animata",
   "output": {
     "count": 1,
     "id": "animusnv:sigil_crimson_will"

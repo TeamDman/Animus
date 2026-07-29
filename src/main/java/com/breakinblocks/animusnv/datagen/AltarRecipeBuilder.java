@@ -1,10 +1,12 @@
 package com.breakinblocks.animusnv.datagen;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import com.breakinblocks.neovitae.common.recipe.aravitae.AraVitaeRecipe;
@@ -15,18 +17,18 @@ public class AltarRecipeBuilder {
     protected int craftingSpeed;
     protected int drainSpeed;
     protected Ingredient input;
-    protected ItemStack result;
+    protected ItemStackTemplate result;
     protected boolean copyInputComponents = false;
 
-    protected AltarRecipeBuilder(ItemStack result) {
+    protected AltarRecipeBuilder(ItemStackTemplate result) {
         this.result = result;
-        if (result == null || result.isEmpty()) {
+        if (result == null) {
             throw new IllegalArgumentException("AltarRecipe result cannot be null or empty");
         }
     }
 
     public static AltarRecipeBuilder build(ItemLike result) {
-        return new AltarRecipeBuilder(new ItemStack(result, 1));
+        return new AltarRecipeBuilder(new ItemStackTemplate(result.asItem(), 1));
     }
 
     public AltarRecipeBuilder minTier(int tier) {
@@ -66,7 +68,7 @@ public class AltarRecipeBuilder {
     }
 
     public AltarRecipeBuilder from(TagKey<Item> input) {
-        return from(Ingredient.of(input));
+        return from(AnimusRecipeProvider.ingredientOf(input));
     }
 
     public AltarRecipeBuilder from(Ingredient input) {
@@ -79,7 +81,7 @@ public class AltarRecipeBuilder {
         return this;
     }
 
-    public void save(RecipeOutput output, ResourceLocation id) {
+    public void save(RecipeOutput output, Identifier id) {
         if (input == null) {
             throw new IllegalStateException("AltarRecipe requires an input ingredient (use .from())");
         }
@@ -87,6 +89,6 @@ public class AltarRecipeBuilder {
             throw new IllegalStateException("AltarRecipe requires bloodNeeded > 0");
         }
         AraVitaeRecipe recipe = new AraVitaeRecipe(input, result, minTier, totalBlood, craftingSpeed, drainSpeed, copyInputComponents);
-        output.accept(id.withPrefix("ara_vitae/"), recipe, null);
+        output.accept(ResourceKey.create(Registries.RECIPE, id.withPrefix("ara_vitae/")), recipe, null);
     }
 }

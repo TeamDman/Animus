@@ -37,12 +37,15 @@ public class BlockWillfulStone extends Block implements EntityBlock {
 
     private static final float HARDNESS = 1.5F;
 
-    public BlockWillfulStone() {
-        super(BlockBehaviour.Properties.of()
+    public BlockWillfulStone(BlockBehaviour.Properties props) {
+        super(props);
+    }
+
+    public static BlockBehaviour.Properties defaultProperties() {
+        return BlockBehaviour.Properties.of()
             .mapColor(MapColor.STONE)
             .strength(HARDNESS, 3600000.0F)
-            .sound(SoundType.STONE)
-        );
+            .sound(SoundType.STONE);
     }
 
     @Nullable
@@ -55,7 +58,7 @@ public class BlockWillfulStone extends Block implements EntityBlock {
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
 
-        if (!level.isClientSide && placer instanceof Player player) {
+        if (!level.isClientSide() && placer instanceof Player player) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof BlockEntityWillfulStone willfulStone) {
                 willfulStone.setOwner(player.getUUID());

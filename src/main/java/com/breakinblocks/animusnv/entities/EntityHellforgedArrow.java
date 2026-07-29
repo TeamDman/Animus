@@ -3,7 +3,6 @@ package com.breakinblocks.animusnv.entities;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
 import com.breakinblocks.animusnv.registry.AnimusSounds;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,9 +13,11 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
@@ -45,6 +46,8 @@ public class EntityHellforgedArrow extends AbstractArrow {
     private static final int[] slowLevel = {0, 1, 1, 2, 2};
     private static final int[] witherTime = {40, 60, 80, 100, 120};
     private static final int[] witherLevel = {0, 0, 1, 1, 2};
+
+    private double baseDamage = 2.0;
 
     public EntityHellforgedArrow(EntityType<? extends EntityHellforgedArrow> entityType, Level level) {
         super(entityType, level);
@@ -85,6 +88,16 @@ public class EntityHellforgedArrow extends AbstractArrow {
         return this.entityData.get(ID_SPIRITUS_LEVEL);
     }
 
+    @Override
+    public void setBaseDamage(double baseDamage) {
+        super.setBaseDamage(baseDamage);
+        this.baseDamage = baseDamage;
+    }
+
+    public double getBaseDamage() {
+        return this.baseDamage;
+    }
+
     public void setChargeMultiplier(float multiplier) {
         this.entityData.set(ID_CHARGE_MULTIPLIER, multiplier);
     }
@@ -105,7 +118,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
 
-        if (entity instanceof LivingEntity target && !this.level().isClientSide) {
+        if (entity instanceof LivingEntity target && !this.level().isClientSide()) {
             Entity owner = this.getOwner();
             SpiritusType spiritusType = this.getSpiritusType();
             int spiritusLevel = Math.min(this.getSpiritusLevel(), 4);
@@ -174,7 +187,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
 
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             this.discard();
         }
     }
@@ -201,13 +214,13 @@ public class EntityHellforgedArrow extends AbstractArrow {
 
             case INVICTUS:
                 target.addEffect(new MobEffectInstance(
-                    MobEffects.MOVEMENT_SLOWDOWN,
+                    MobEffects.SLOWNESS,
                     (int)(slowTime[level] * durationMultiplier),
                     slowLevel[level]
                 ));
                 if (chargeMultiplier >= 0.5f) {
                     target.addEffect(new MobEffectInstance(
-                        MobEffects.DIG_SLOWDOWN,
+                        MobEffects.MINING_FATIGUE,
                         (int)(slowTime[level] * durationMultiplier),
                         level / 2
                     ));
@@ -220,7 +233,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
                     ));
                     if (chargeMultiplier >= 0.75f) {
                         attacker.addEffect(new MobEffectInstance(
-                            MobEffects.DAMAGE_RESISTANCE,
+                            MobEffects.RESISTANCE,
                             (int)(60 * durationMultiplier),
                             0
                         ));
@@ -236,13 +249,13 @@ public class EntityHellforgedArrow extends AbstractArrow {
                 ));
                 if (attacker != null) {
                     attacker.addEffect(new MobEffectInstance(
-                        MobEffects.MOVEMENT_SPEED,
+                        MobEffects.SPEED,
                         (int)(100 * durationMultiplier),
                         level / 2
                     ));
                     if (chargeMultiplier >= 0.5f) {
                         attacker.addEffect(new MobEffectInstance(
-                            MobEffects.DAMAGE_BOOST,
+                            MobEffects.STRENGTH,
                             (int)(60 * durationMultiplier),
                             0
                         ));
@@ -280,7 +293,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
     public void tick() {
         super.tick();
 
-        if (this.level().isClientSide && this.tickCount % 2 == 0) {
+        if (this.level().isClientSide() && this.tickCount % 2 == 0) {
             float charge = this.getChargeMultiplier();
 
             this.level().addParticle(
@@ -316,29 +329,22 @@ public class EntityHellforgedArrow extends AbstractArrow {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("SpiritusType", 8)) {
-            this.entityData.set(ID_SPIRITUS_TYPE, tag.getString("SpiritusType"));
-        }
-        if (tag.contains("SpiritusLevel", 3)) {
-            this.entityData.set(ID_SPIRITUS_LEVEL, tag.getInt("SpiritusLevel"));
-        }
-        if (tag.contains("ChargeMultiplier", 5)) {
-            this.entityData.set(ID_CHARGE_MULTIPLIER, tag.getFloat("ChargeMultiplier"));
-        }
-        if (tag.contains("ExecuteThreshold", 5)) {
-            this.entityData.set(ID_EXECUTE_THRESHOLD, tag.getFloat("ExecuteThreshold"));
-        }
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.baseDamage = input.getDoubleOr("damage", 2.0);
+        this.entityData.set(ID_SPIRITUS_TYPE, input.getStringOr("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE)));
+        this.entityData.set(ID_SPIRITUS_LEVEL, input.getIntOr("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL)));
+        this.entityData.set(ID_CHARGE_MULTIPLIER, input.getFloatOr("ChargeMultiplier", this.entityData.get(ID_CHARGE_MULTIPLIER)));
+        this.entityData.set(ID_EXECUTE_THRESHOLD, input.getFloatOr("ExecuteThreshold", this.entityData.get(ID_EXECUTE_THRESHOLD)));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putString("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE));
-        tag.putInt("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL));
-        tag.putFloat("ChargeMultiplier", this.entityData.get(ID_CHARGE_MULTIPLIER));
-        tag.putFloat("ExecuteThreshold", this.entityData.get(ID_EXECUTE_THRESHOLD));
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putString("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE));
+        output.putInt("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL));
+        output.putFloat("ChargeMultiplier", this.entityData.get(ID_CHARGE_MULTIPLIER));
+        output.putFloat("ExecuteThreshold", this.entityData.get(ID_EXECUTE_THRESHOLD));
     }
 
     @Override

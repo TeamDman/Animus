@@ -1,13 +1,8 @@
 {
   "type": "neovitae:array",
-  "addedinput": {
-    "item": "neovitae:tabula_robur"
-  },
-  "baseinput": {
-    "item": "animusnv:reagentleach"
-  },
+  "addedinput": "neovitae:tabula_robur",
+  "baseinput": "animusnv:reagentleach",
   "output": {
-    "count": 1,
     "id": "animusnv:sigil_leach"
   },
   "texture": "neovitae:textures/models/alchemyarrays/mobsacrifice.png"

@@ -38,13 +38,16 @@ import org.jetbrains.annotations.Nullable;
 public class BlockBloodCore extends Block implements EntityBlock, BonemealableBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    public BlockBloodCore() {
-        super(BlockBehaviour.Properties.of()
+    public BlockBloodCore(BlockBehaviour.Properties props) {
+        super(props);
+        this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
+    }
+
+    public static BlockBehaviour.Properties defaultProperties() {
+        return BlockBehaviour.Properties.of()
             .strength(10.0F)
             .sound(SoundType.WOOD)
-            .randomTicks()
-        );
-        this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
+            .randomTicks();
     }
 
     @Override
@@ -60,7 +63,7 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof BlockEntityBloodCore bloodCore) {
                 boolean newSpreading = !bloodCore.isSpreading();
@@ -72,17 +75,13 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
                     level.playSound(null, pos, AnimusSounds.AWAKEN_CORE.get(),
                         SoundSource.BLOCKS, 1.0f, 1.0f);
 
-                    player.displayClientMessage(
+                    player.sendOverlayMessage(
                         Component.translatable(Constants.Localizations.Text.BLOOD_CORE_SPREADING_ENABLED)
-                            .withStyle(ChatFormatting.DARK_RED),
-                        true
-                    );
+                            .withStyle(ChatFormatting.DARK_RED));
                 } else {
-                    player.displayClientMessage(
+                    player.sendOverlayMessage(
                         Component.translatable(Constants.Localizations.Text.BLOOD_CORE_SPREADING_DISABLED)
-                            .withStyle(ChatFormatting.GRAY),
-                        true
-                    );
+                            .withStyle(ChatFormatting.GRAY));
                 }
 
                 return InteractionResult.SUCCESS;
@@ -97,7 +96,7 @@ public class BlockBloodCore extends Block implements EntityBlock, BonemealableBl
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null :
+        return level.isClientSide() ? null :
             createTickerHelper(type, AnimusBlockEntities.BLOOD_CORE.get(), SERVER_TICKER);
     }
 

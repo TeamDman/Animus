@@ -27,7 +27,7 @@ public record ConsumptionSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnAir(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -55,7 +55,7 @@ public record ConsumptionSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnBlock(Level level, Player player, ItemStack stack, BlockPos blockPos, Direction side, Vec3 hitVec) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 

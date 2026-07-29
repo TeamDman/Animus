@@ -1,71 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "blocks",
-  "description": "book.animusnv.guide.blocks.blood_trees.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "animusnv:blood_sapling"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:blocks",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.blocks.blood_trees.description",
+  "icon": {
+    "id": "animusnv:blood_sapling"
+  },
+  "id": "animusnv:blocks/blood_trees",
   "name": "book.animusnv.guide.blocks.blood_trees.name",
-  "pages": [
-    {
-      "type": "neovitae:ara_vitae_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:ara_vitae/blood_sapling",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.blood_trees.intro.text",
-      "title": "book.animusnv.guide.blocks.blood_trees.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.blood_trees.growing.text",
-      "title": "book.animusnv.guide.blocks.blood_trees.growing.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.blood_trees.core.text",
-      "title": "book.animusnv.guide.blocks.blood_trees.core.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.blocks.blood_trees.tips.text",
-      "title": "book.animusnv.guide.blocks.blood_trees.tips.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 5,
   "x": 1,
   "y": 0

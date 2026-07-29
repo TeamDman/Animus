@@ -1,38 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "compatibility",
-  "description": "book.animusnv.guide.compatibility.manasteel_soul.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "minecraft:iron_ingot"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:compatibility",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.manasteel_soul.description",
+  "icon": {
+    "id": "minecraft:iron_ingot"
+  },
+  "id": "animusnv:compatibility/manasteel_soul",
   "name": "book.animusnv.guide.compatibility.manasteel_soul.name",
-  "pages": [
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.manasteel_soul.intro.text",
-      "title": "book.animusnv.guide.compatibility.manasteel_soul.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.compatibility.manasteel_soul.effects.text",
-      "title": "book.animusnv.guide.compatibility.manasteel_soul.effects.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 6,
   "x": 1,
   "y": 0

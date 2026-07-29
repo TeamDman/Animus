@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -59,7 +58,7 @@ public class RitualLuna extends Ritual {
         int currentEV = network.getCurrentEV();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
@@ -79,9 +78,8 @@ public class RitualLuna extends Ritual {
         }
 
         BlockState state = level.getBlockState(lightPos);
-        Block block = state.getBlock();
 
-        ItemStack stack = block.getCloneItemStack(level, lightPos, state);
+        ItemStack stack = state.getCloneItemStack(level, lightPos, false);
 
         boolean shouldRemoveBlock = true;
         if (!stack.isEmpty()) {

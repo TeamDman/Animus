@@ -6,7 +6,7 @@ import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -29,11 +29,11 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
  */
 public class ArcaneChannelingHandler {
 
-    public static final ResourceLocation UPGRADE_ID =
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_channeling");
+    public static final Identifier UPGRADE_ID =
+        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_channeling");
 
-    private static final ResourceLocation COOLDOWN_MODIFIER_ID =
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_channeling_cooldown");
+    private static final Identifier COOLDOWN_MODIFIER_ID =
+        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "arcane_channeling_cooldown");
 
     public static void register() {
         NeoForge.EVENT_BUS.register(new ArcaneChannelingHandler());

@@ -63,11 +63,9 @@ public class AltarInfusionHandler {
             Level level, BlockPos pos, InteractionHand hand, ItemStack stack, AraVitaeTile altar) {
 
         if (!ItemBloodInfusedSpellbook.canUpgrade(stack)) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("This spellbook is already at maximum infusion!")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             player.setItemInHand(hand, stack); // Force sync to prevent client desync
             event.setCanceled(true);
             event.setUseBlock(TriState.FALSE);
@@ -81,11 +79,9 @@ public class AltarInfusionHandler {
 
         int altarEV = altar.getCurrentBlood();
         if (altarEV < evCost) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Altar needs " + evCost + " EV (has " + altarEV + " EV)")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             player.setItemInHand(hand, stack); // Force sync to prevent client desync
             event.setCanceled(true);
             event.setUseBlock(TriState.FALSE);
@@ -94,11 +90,9 @@ public class AltarInfusionHandler {
         }
         int requiredOrbTier = getRequiredOrbTier(nextTier);
         if (!hasBloodOrbOfTier(player, requiredOrbTier)) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Requires " + getOrbName(requiredOrbTier) + " or higher!")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             player.setItemInHand(hand, stack); // Force sync to prevent client desync
             event.setCanceled(true);
             event.setUseBlock(TriState.FALSE);
@@ -109,11 +103,9 @@ public class AltarInfusionHandler {
         altar.addSacrificeEV(-evCost, false);
         ItemBloodInfusedSpellbook.setInfusionTier(stack, nextTier);
 
-        player.displayClientMessage(
+        player.sendOverlayMessage(
             Component.literal("Spellbook infused to Tier " + nextTier + "!")
-                .withStyle(ChatFormatting.GOLD),
-            true
-        );
+                .withStyle(ChatFormatting.GOLD));
 
         spawnInfusionEffects(level, pos, nextTier);
         level.playSound(null, pos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -143,7 +135,7 @@ public class AltarInfusionHandler {
     }
 
     private static boolean hasBloodOrbOfTier(Player player, int requiredTier) {
-        for (ItemStack stack : player.getInventory().items) {
+        for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
             if (stack.getItem() instanceof BloodOrbItem orb) {
                 int orbTier = orb.getOrbTier(stack);
                 if (orbTier >= requiredTier) {
@@ -185,9 +177,9 @@ public class AltarInfusionHandler {
         int particleCount = 10 + (tier * 5);
 
         for (int i = 0; i < particleCount; i++) {
-            double offsetX = (serverLevel.random.nextDouble() - 0.5) * 2;
-            double offsetY = serverLevel.random.nextDouble();
-            double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 2;
+            double offsetX = (serverLevel.getRandom().nextDouble() - 0.5) * 2;
+            double offsetY = serverLevel.getRandom().nextDouble();
+            double offsetZ = (serverLevel.getRandom().nextDouble() - 0.5) * 2;
 
             serverLevel.sendParticles(
                 ParticleTypes.CRIMSON_SPORE,
@@ -201,9 +193,9 @@ public class AltarInfusionHandler {
         }
 
         for (int i = 0; i < particleCount / 2; i++) {
-            double offsetX = (serverLevel.random.nextDouble() - 0.5) * 1.5;
-            double offsetY = serverLevel.random.nextDouble() * 0.5;
-            double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 1.5;
+            double offsetX = (serverLevel.getRandom().nextDouble() - 0.5) * 1.5;
+            double offsetY = serverLevel.getRandom().nextDouble() * 0.5;
+            double offsetZ = (serverLevel.getRandom().nextDouble() - 0.5) * 1.5;
 
             serverLevel.sendParticles(
                 ParticleTypes.PORTAL,

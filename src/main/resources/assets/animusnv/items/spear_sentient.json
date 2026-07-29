@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "minecraft:using_item",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "animusnv:item/spear_sentient_throwing"
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "animusnv:item/spear_sentient"
+    }
+  }
+}

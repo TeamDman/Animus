@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "applications",
+  "show_title_separator": true,
+  "sort_number": 4,
+  "text": "book.animusnv.guide.sigils.sigil_chains.applications.text",
+  "title": "book.animusnv.guide.sigils.sigil_chains.applications.title"
+}

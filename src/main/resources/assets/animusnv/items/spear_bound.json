@@ -1,0 +1,36 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:component",
+    "component": "animusnv:spear_activated",
+    "cases": [
+      {
+        "when": true,
+        "model": {
+          "type": "minecraft:condition",
+          "property": "minecraft:using_item",
+          "on_true": {
+            "type": "minecraft:model",
+            "model": "animusnv:item/spear_bound_activated_throwing"
+          },
+          "on_false": {
+            "type": "minecraft:model",
+            "model": "animusnv:item/spear_bound_activated"
+          }
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:condition",
+      "property": "minecraft:using_item",
+      "on_true": {
+        "type": "minecraft:model",
+        "model": "animusnv:item/spear_bound_throwing"
+      },
+      "on_false": {
+        "type": "minecraft:model",
+        "model": "animusnv:item/spear_bound"
+      }
+    }
+  }
+}

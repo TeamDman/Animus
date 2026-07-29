@@ -21,7 +21,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -53,10 +53,10 @@ import com.breakinblocks.neovitae.common.item.sigil.ItemSigilHolding;
  */
 public class CrimsonWillSpellHandler {
 
-    private static final ResourceLocation SPELL_POWER_MODIFIER_ID =
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "crimson_will_spell_power");
-    private static final ResourceLocation SUMMON_DAMAGE_MODIFIER_ID =
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "crimson_will_summon_damage");
+    private static final Identifier SPELL_POWER_MODIFIER_ID =
+        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "crimson_will_spell_power");
+    private static final Identifier SUMMON_DAMAGE_MODIFIER_ID =
+        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "crimson_will_summon_damage");
 
     private static final double BASE_SPELL_POWER_BONUS = 0.30;
     private static final double MAX_SPIRITUS_BONUS = 0.20;
@@ -91,11 +91,9 @@ public class CrimsonWillSpellHandler {
         int evCost = manaCost * AnimusConfig.ironsSpells.crimsonWillEVPerMana.get();
         IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, activeSigil);
         if (network == null || network.getCurrentEV() < evCost) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.literal("Not enough EV! Need " + evCost + " EV")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             return;
         }
 
@@ -117,9 +115,9 @@ public class CrimsonWillSpellHandler {
 
         if (player.level() instanceof ServerLevel serverLevel) {
             for (int i = 0; i < 10; i++) {
-                double offsetX = (serverLevel.random.nextDouble() - 0.5) * 2;
-                double offsetY = serverLevel.random.nextDouble() * 2;
-                double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 2;
+                double offsetX = (serverLevel.getRandom().nextDouble() - 0.5) * 2;
+                double offsetY = serverLevel.getRandom().nextDouble() * 2;
+                double offsetZ = (serverLevel.getRandom().nextDouble() - 0.5) * 2;
 
                 serverLevel.sendParticles(
                     ParticleTypes.CRIMSON_SPORE,
@@ -133,9 +131,9 @@ public class CrimsonWillSpellHandler {
             }
 
             for (int i = 0; i < 5; i++) {
-                double offsetX = (serverLevel.random.nextDouble() - 0.5);
-                double offsetY = serverLevel.random.nextDouble();
-                double offsetZ = (serverLevel.random.nextDouble() - 0.5);
+                double offsetX = (serverLevel.getRandom().nextDouble() - 0.5);
+                double offsetY = serverLevel.getRandom().nextDouble();
+                double offsetZ = (serverLevel.getRandom().nextDouble() - 0.5);
 
                 serverLevel.sendParticles(
                     ParticleTypes.SOUL,
@@ -154,7 +152,7 @@ public class CrimsonWillSpellHandler {
                 SoundEvents.EVOKER_PREPARE_ATTACK,
                 SoundSource.PLAYERS,
                 0.3F,
-                1.5F + serverLevel.random.nextFloat() * 0.4F
+                1.5F + serverLevel.getRandom().nextFloat() * 0.4F
             );
         }
 

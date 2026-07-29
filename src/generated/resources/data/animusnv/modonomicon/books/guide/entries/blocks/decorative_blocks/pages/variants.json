@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "variants",
+  "show_title_separator": true,
+  "sort_number": 1,
+  "text": "book.animusnv.guide.blocks.decorative_blocks.variants.text",
+  "title": "book.animusnv.guide.blocks.decorative_blocks.variants.title"
+}

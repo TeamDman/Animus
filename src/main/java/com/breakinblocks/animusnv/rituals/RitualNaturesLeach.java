@@ -70,7 +70,7 @@ public class RitualNaturesLeach extends Ritual {
 
     public void performRitual(IMasterRitualStone ritualStone) {
         Level level = ritualStone.getWorldObj();
-        RandomSource randomSource = level.random;
+        RandomSource randomSource = level.getRandom();
         Random random = new Random(randomSource.nextLong());
         BlockPos pos = ritualStone.getMasterBlockPos();
 
@@ -85,7 +85,7 @@ public class RitualNaturesLeach extends Ritual {
 
         int currentEV = network.getCurrentEV();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 

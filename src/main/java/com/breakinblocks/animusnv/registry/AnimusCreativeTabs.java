@@ -4,7 +4,7 @@ import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -48,8 +48,8 @@ public class AnimusCreativeTabs {
                 // Registry lookup avoids class loading issues with optional mod classes
                 if (ModList.get().isLoaded("irons_spellbooks")) {
                     for (String itemName : IRONS_SPELLS_COMPAT_ITEMS) {
-                        Item item = BuiltInRegistries.ITEM.get(
-                            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
+                        Item item = BuiltInRegistries.ITEM.getValue(
+                            Identifier.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
                         if (item != null && item != Items.AIR) {
                             output.accept(new ItemStack(item));
                         }
@@ -58,8 +58,8 @@ public class AnimusCreativeTabs {
 
                 if (ModList.get().isLoaded("ars_nouveau")) {
                     for (String itemName : ARS_NOUVEAU_COMPAT_ITEMS) {
-                        Item item = BuiltInRegistries.ITEM.get(
-                            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
+                        Item item = BuiltInRegistries.ITEM.getValue(
+                            Identifier.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
                         if (item != null && item != Items.AIR) {
                             output.accept(new ItemStack(item));
                         }
@@ -68,8 +68,8 @@ public class AnimusCreativeTabs {
 
                 if (ModList.get().isLoaded("evilcraft")) {
                     for (String itemName : EVILCRAFT_COMPAT_ITEMS) {
-                        Item item = BuiltInRegistries.ITEM.get(
-                            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
+                        Item item = BuiltInRegistries.ITEM.getValue(
+                            Identifier.fromNamespaceAndPath(Constants.Mod.MODID, itemName));
                         if (item != null && item != Items.AIR) {
                             output.accept(new ItemStack(item));
                         }

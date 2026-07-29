@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -42,7 +41,7 @@ public final class CullingHelper {
         return entity.isInvulnerable()
                || entity.getType() == EntityType.WITHER
                || entity.getType() == EntityType.ENDER_DRAGON
-               || entity.getType().is(EntityTypeTags.RAIDERS);
+               || entity.getType().builtInRegistryHolder().is(EntityTypeTags.RAIDERS);
     }
 
     /**
@@ -60,7 +59,7 @@ public final class CullingHelper {
             return true;
         }
 
-        if (entity.getType().is(Constants.Tags.DISALLOW_CULLING)) {
+        if (entity.getType().builtInRegistryHolder().is(Constants.Tags.DISALLOW_CULLING)) {
             if (AnimusConfig.rituals.cullingDebug.get()) {
                 Animus.LOGGER.debug("[Ritual of Culling Debug]:   SKIPPED - Entity in disallow_culling tag");
             }
@@ -143,8 +142,8 @@ public final class CullingHelper {
     /**
      * Applies damage to a living entity using a fake player, simulating a player kill
      * so that loot tables produce player-only drops (e.g. blaze rods).
-     * Sets {@code lastHurtByPlayer} and {@code lastHurtByPlayerTime} via reflection,
-     * then applies player-attack damage from a fake player holding a looting sword.
+     * Sets {@code lastHurtByPlayer}, then applies player-attack damage from a fake
+     * player holding a looting sword.
      *
      * @param entity      the entity to damage
      * @param serverLevel the server level
@@ -161,33 +160,10 @@ public final class CullingHelper {
         fakePlayer.setPos(entity.getX(), entity.getY(), entity.getZ());
 
         // Set lastHurtByPlayer so loot tables treat this as a player kill (enables player-only drops like blaze rods)
-        try {
-            Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("lastHurtByPlayer");
-            lastHurtByPlayerField.setAccessible(true);
-            lastHurtByPlayerField.set(entity, fakePlayer);
-
-            Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("lastHurtByPlayerTime");
-            lastHurtByPlayerTimeField.setAccessible(true);
-            lastHurtByPlayerTimeField.setInt(entity, 100);
-        } catch (Exception e) {
-            // Fall back to obfuscated field names
-            try {
-                Field lastHurtByPlayerField = LivingEntity.class.getDeclaredField("f_20889_");
-                lastHurtByPlayerField.setAccessible(true);
-                lastHurtByPlayerField.set(entity, fakePlayer);
-
-                Field lastHurtByPlayerTimeField = LivingEntity.class.getDeclaredField("f_20890_");
-                lastHurtByPlayerTimeField.setAccessible(true);
-                lastHurtByPlayerTimeField.setInt(entity, 100);
-            } catch (Exception e2) {
-                if (AnimusConfig.rituals.cullingDebug.get()) {
-                    Animus.LOGGER.debug("[Ritual of Culling Debug]: Failed to set lastHurtByPlayer fields: {}", e2.getMessage());
-                }
-            }
-        }
+        entity.setLastHurtByPlayer(fakePlayer, 100);
 
         DamageSource playerDamage = serverLevel.damageSources().playerAttack(fakePlayer);
-        return entity.hurt(playerDamage, damage);
+        return entity.hurtServer(serverLevel, playerDamage, damage);
     }
 
     /**

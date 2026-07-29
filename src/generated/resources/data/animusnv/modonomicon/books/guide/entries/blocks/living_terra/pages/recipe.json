@@ -1,0 +1,9 @@
+{
+  "type": "neovitae:tabula_vitae_recipe",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "recipe",
+  "recipe_id_1": "animusnv:alchemytable/living_terra_bucket",
+  "sort_number": 0
+}

@@ -3,12 +3,9 @@
   "bloodNeeded": 2500,
   "craftSpeed": 5,
   "drainSpeed": 1,
-  "input": {
-    "item": "neovitae:ritual_diviner"
-  },
+  "input": "neovitae:ritual_diviner",
   "minTier": 1,
   "output": {
-    "count": 1,
     "id": "animusnv:sanguine_diviner"
   }
 }

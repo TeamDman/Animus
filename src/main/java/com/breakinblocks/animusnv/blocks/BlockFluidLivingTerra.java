@@ -8,6 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
@@ -19,14 +20,15 @@ import net.minecraft.world.level.material.FluidState;
  */
 public class BlockFluidLivingTerra extends LiquidBlock {
 
-    public BlockFluidLivingTerra() {
-        super(
-            (FlowingFluid) AnimusFluids.LIVING_TERRA_SOURCE.get(),
-            Properties.of()
-                .noCollission()
-                .strength(100.0F)
-                .noLootTable()
-        );
+    public BlockFluidLivingTerra(BlockBehaviour.Properties props) {
+        super((FlowingFluid) AnimusFluids.LIVING_TERRA_SOURCE.get(), props);
+    }
+
+    public static BlockBehaviour.Properties defaultProperties() {
+        return BlockBehaviour.Properties.of()
+            .noCollision()
+            .strength(100.0F)
+            .noLootTable();
     }
 
     @Override

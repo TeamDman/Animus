@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "features",
+  "show_title_separator": true,
+  "sort_number": 5,
+  "text": "book.animusnv.guide.sigils.sigil_equivalency.features.text",
+  "title": "book.animusnv.guide.sigils.sigil_equivalency.features.title"
+}

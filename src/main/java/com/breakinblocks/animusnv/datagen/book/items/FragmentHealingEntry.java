@@ -7,8 +7,8 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.breakinblocks.animusnv.datagen.book.page.BookAraVitaeRecipePageModel;
 import com.breakinblocks.animusnv.registry.AnimusItems;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.resources.ResourceLocation;
+import com.klikli_dev.modonomicon.client.gui.book.theme.GuiSprite;
+import net.minecraft.resources.Identifier;
 
 public class FragmentHealingEntry extends EntryProvider {
 
@@ -19,7 +19,7 @@ public class FragmentHealingEntry extends EntryProvider {
     @Override
     protected void generatePages() {
         this.page("recipe", () -> BookAraVitaeRecipePageModel.create()
-                .withRecipeId1(ResourceLocation.fromNamespaceAndPath("animusnv", "ara_vitae/fragment_healing")));
+                .withRecipeId1(Identifier.fromNamespaceAndPath("animusnv", "ara_vitae/fragment_healing")));
 
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
@@ -52,7 +52,7 @@ public class FragmentHealingEntry extends EntryProvider {
     }
 
     @Override
-    protected Pair<Integer, Integer> entryBackground() {
+    protected GuiSprite entryBackground() {
         return EntryBackground.DEFAULT;
     }
 

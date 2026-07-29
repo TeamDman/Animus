@@ -13,18 +13,10 @@
     "SBS"
   ],
   "key": {
-    "S": {
-      "tag": "c:stones"
-    },
-    "B": {
-      "item": "neovitae:tabula_rasa"
-    },
-    "G": {
-      "item": "ars_nouveau:source_gem"
-    },
-    "R": {
-      "item": "neovitae:rune_blank"
-    }
+    "S": "#c:stones",
+    "B": "neovitae:tabula_rasa",
+    "G": "ars_nouveau:source_gem",
+    "R": "neovitae:rune_blank"
   },
   "result": {
     "id": "animusnv:arcane_rune",

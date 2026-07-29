@@ -33,16 +33,14 @@ public class RitualRegression extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
         ItemStack heldItem = player.getMainHandItem();
         if (heldItem.isEmpty()) {
-            player.displayClientMessage(
-                Component.translatable("text.component.holdingitem"),
-                false
-            );
+            player.sendSystemMessage(
+                Component.translatable("text.component.holdingitem"));
             return false;
         }
 

@@ -49,22 +49,46 @@
       "lightning_effect": true
     },
     "animusnv:ritual_magi": {
-      "activation_cost": 2500,
-      "block": "ars_nouveau:source_gem_block",
-      "consume_block": false,
-      "lightning_effect": true
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "value": {
+        "activation_cost": 2500,
+        "block": "ars_nouveau:source_gem_block",
+        "consume_block": false,
+        "lightning_effect": true
+      }
     },
     "animusnv:ritual_iron_heart": {
-      "activation_cost": 2500,
-      "block": "irons_spellbooks:arcane_anvil",
-      "consume_block": false,
-      "lightning_effect": true
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "irons_spellbooks"
+        }
+      ],
+      "value": {
+        "activation_cost": 2500,
+        "block": "irons_spellbooks:arcane_anvil",
+        "consume_block": false,
+        "lightning_effect": true
+      }
     },
     "animusnv:ritual_soul_stained_blood": {
-      "activation_cost": 3000,
-      "block": "malum:block_of_hallowed_gold",
-      "consume_block": false,
-      "lightning_effect": true
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "value": {
+        "activation_cost": 3000,
+        "block": "malum:block_of_hallowed_gold",
+        "consume_block": false,
+        "lightning_effect": true
+      }
     }
   }
 }

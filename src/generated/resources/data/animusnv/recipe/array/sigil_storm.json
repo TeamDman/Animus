@@ -1,13 +1,8 @@
 {
   "type": "neovitae:array",
-  "addedinput": {
-    "item": "neovitae:tabula_animata"
-  },
-  "baseinput": {
-    "item": "animusnv:reagentstorm"
-  },
+  "addedinput": "neovitae:tabula_animata",
+  "baseinput": "animusnv:reagentstorm",
   "output": {
-    "count": 1,
     "id": "animusnv:sigil_storm"
   },
   "texture": "neovitae:textures/models/alchemyarrays/watersigil.png"

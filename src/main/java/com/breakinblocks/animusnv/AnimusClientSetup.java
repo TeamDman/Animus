@@ -4,76 +4,17 @@ import com.breakinblocks.animusnv.client.models.AnimusModelLayers;
 import com.breakinblocks.animusnv.client.models.SpearModel;
 import com.breakinblocks.animusnv.client.renderers.ThrownSpearRenderer;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
-import com.breakinblocks.animusnv.registry.AnimusItems;
 import com.breakinblocks.animusnv.client.renderers.AnimusArrowRenderer;
 import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.compat.evilcraft.SanguineRectifierRenderer;
-import com.breakinblocks.animusnv.items.ItemSpearBound;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import com.breakinblocks.neovitae.common.item.IActivatable;
-import com.breakinblocks.neovitae.common.item.IBindable;
 
 @EventBusSubscriber(modid = Constants.Mod.MODID, value = Dist.CLIENT)
 public class AnimusClientSetup {
-
-    @SubscribeEvent
-    public static void clientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            // Note: In NeoForge 1.21+, render layers are defined in block/fluid model JSON files
-            // using "render_type": "cutout" or "render_type": "translucent"
-            // No need to call ItemBlockRenderTypes.setRenderLayer() anymore
-
-            registerToggleableSigilProperty(AnimusItems.SIGIL_BUILDER.get());
-            registerToggleableSigilProperty(AnimusItems.SIGIL_LEACH.get());
-            registerToggleableSigilProperty(AnimusItems.SIGIL_TRANSPOSITION.get());
-            registerToggleableSigilProperty(AnimusItems.SIGIL_MONK.get());
-            registerToggleableSigilProperty(AnimusItems.SIGIL_REMEDIUM.get());
-            registerToggleableSigilProperty(AnimusItems.SIGIL_REPARARE.get());
-
-            registerBoundSpearProperty(AnimusItems.SPEAR_BOUND.get());
-
-            registerKeyBindingProperty(AnimusItems.KEY_BINDING.get());
-
-            registerSpearThrowingProperty(AnimusItems.SPEAR_IRON.get());
-            registerSpearThrowingProperty(AnimusItems.SPEAR_DIAMOND.get());
-            registerSpearThrowingProperty(AnimusItems.SPEAR_BOUND.get());
-            registerSpearThrowingProperty(AnimusItems.SPEAR_SENTIENT.get());
-
-            registerBowPullProperties(AnimusItems.SENTIENT_BOW.get());
-            registerBowPullProperties(AnimusItems.HELLFORGED_BOW.get());
-
-            if (ModList.get().isLoaded("irons_spellbooks")) {
-                registerCrimsonWillSigilProperty();
-            }
-
-        });
-    }
-
-    /**
-     * Uses registry lookup to avoid class loading issues with IronsSpellsCompat.
-     * Registers the standard toggleable sigil property using IActivatable.
-     */
-    private static void registerCrimsonWillSigilProperty() {
-        try {
-            Item sigilCrimsonWill = BuiltInRegistries.ITEM.get(
-                ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "sigil_crimson_will"));
-            if (sigilCrimsonWill != null && sigilCrimsonWill != Items.AIR) {
-                registerToggleableSigilProperty(sigilCrimsonWill);
-            }
-        } catch (Exception e) {
-            // Item not registered yet or compat not loaded
-        }
-    }
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -97,71 +38,5 @@ public class AnimusClientSetup {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(AnimusModelLayers.PILUM, SpearModel::createBodyLayer);
-    }
-
-    private static void registerToggleableSigilProperty(Item item) {
-        ItemProperties.register(item,
-            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "activated"),
-            (stack, level, entity, seed) -> {
-                if (item instanceof IActivatable activatable) {
-                    return activatable.getActivated(stack) ? 1.0F : 0.0F;
-                }
-                return 0.0F;
-            }
-        );
-    }
-
-    private static void registerBoundSpearProperty(Item item) {
-        ItemProperties.register(item,
-            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "activated"),
-            (stack, level, entity, seed) -> {
-                if (item instanceof ItemSpearBound spear) {
-                    return spear.isActivated(stack) ? 1.0F : 0.0F;
-                }
-                return 0.0F;
-            }
-        );
-    }
-
-    private static void registerKeyBindingProperty(Item item) {
-        ItemProperties.register(item,
-            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "bound"),
-            (stack, level, entity, seed) -> {
-                if (item instanceof IBindable bindable) {
-                    return bindable.getBinding(stack) != null ? 1.0F : 0.0F;
-                }
-                return 0.0F;
-            }
-        );
-    }
-
-    private static void registerBowPullProperties(Item item) {
-        ItemProperties.register(item,
-            ResourceLocation.withDefaultNamespace("pull"),
-            (stack, level, entity, seed) -> {
-                if (entity == null || entity.getUseItem() != stack) {
-                    return 0.0F;
-                }
-                return (float)(stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-            }
-        );
-        ItemProperties.register(item,
-            ResourceLocation.withDefaultNamespace("pulling"),
-            (stack, level, entity, seed) -> {
-                return entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
-            }
-        );
-    }
-
-    private static void registerSpearThrowingProperty(Item item) {
-        ItemProperties.register(item,
-            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "throwing"),
-            (stack, level, entity, seed) -> {
-                if (entity != null && entity.isUsingItem() && entity.getUseItem() == stack) {
-                    return 1.0F;
-                }
-                return 0.0F;
-            }
-        );
     }
 }

@@ -37,18 +37,16 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
 
     @Override
     public boolean useOnAir(Level level, Player player, ItemStack stack) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
         // Check if player is already in spectator mode
         if (player instanceof ServerPlayer serverPlayer) {
             if (serverPlayer.gameMode.getGameModeForPlayer() == GameType.SPECTATOR) {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                         Component.translatable(Constants.Localizations.Text.FREE_SOUL_ALREADY_SPECTATOR)
-                                .withStyle(ChatFormatting.RED),
-                        true
-                );
+                                .withStyle(ChatFormatting.RED));
                 return false;
             }
 
@@ -62,11 +60,9 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
 
             var syphonResult = network.syphonAndDamage(player, ticket);
             if (!syphonResult.success()) {
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                         Component.translatable(Constants.Localizations.Text.FREE_SOUL_NO_EV)
-                                .withStyle(ChatFormatting.RED),
-                        true
-                );
+                                .withStyle(ChatFormatting.RED));
                 return false;
             }
 
@@ -92,11 +88,9 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
 
         if (lastTrigger > 0 && (currentTime - lastTrigger) < cooldownMillis) {
             long remainingSeconds = (cooldownMillis - (currentTime - lastTrigger)) / 1000;
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.FREE_SOUL_ON_COOLDOWN, remainingSeconds)
-                            .withStyle(ChatFormatting.RED),
-                    true
-            );
+                            .withStyle(ChatFormatting.RED));
             return false;
         }
 
@@ -118,14 +112,12 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
         freeSoulStack.set(AnimusDataComponents.LAST_DEATH_PREVENT.get(), currentTime);
         player.setHealth(1.0F);
 
-        ServerLevel level = serverPlayer.serverLevel();
+        ServerLevel level = serverPlayer.level();
         activateSpectatorMode(serverPlayer, level, true);
 
-        player.displayClientMessage(
+        player.sendOverlayMessage(
                 Component.translatable(Constants.Localizations.Text.FREE_SOUL_SAVED)
-                        .withStyle(ChatFormatting.GOLD),
-                true
-        );
+                        .withStyle(ChatFormatting.GOLD));
 
         return true;
     }
@@ -141,11 +133,9 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
         player.setGameMode(GameType.SPECTATOR);
 
         if (!fromDeath) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.FREE_SOUL_ACTIVATED, durationSeconds)
-                            .withStyle(ChatFormatting.AQUA),
-                    true
-            );
+                            .withStyle(ChatFormatting.AQUA));
         }
     }
 
@@ -168,11 +158,9 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
             );
             state.hasTeleportedBack = true;
 
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.FREE_SOUL_RETURNING)
-                            .withStyle(ChatFormatting.GOLD),
-                    true
-            );
+                            .withStyle(ChatFormatting.GOLD));
         }
 
         if (currentTick >= state.exitTick) {
@@ -185,11 +173,9 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
 
             activeSpectators.remove(playerId);
 
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.FREE_SOUL_EXPIRED)
-                            .withStyle(ChatFormatting.YELLOW),
-                    true
-            );
+                            .withStyle(ChatFormatting.YELLOW));
         }
     }
 

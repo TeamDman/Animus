@@ -1,0 +1,9 @@
+{
+  "type": "neovitae:alchemy_array_recipe",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "recipe",
+  "recipe_id_1": "animusnv:array/runic_sentient_scythe",
+  "sort_number": 0
+}

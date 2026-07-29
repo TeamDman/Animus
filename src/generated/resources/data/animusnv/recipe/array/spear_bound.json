@@ -1,13 +1,8 @@
 {
   "type": "neovitae:array",
-  "addedinput": {
-    "item": "neovitae:reagent_binding"
-  },
-  "baseinput": {
-    "item": "animusnv:spear_diamond"
-  },
+  "addedinput": "neovitae:reagent_binding",
+  "baseinput": "animusnv:spear_diamond",
   "output": {
-    "count": 1,
     "id": "animusnv:spear_bound"
   },
   "texture": "neovitae:textures/models/alchemyarrays/spikearray.png"

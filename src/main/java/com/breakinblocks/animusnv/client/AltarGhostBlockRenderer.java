@@ -4,9 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,10 +26,12 @@ import java.util.Map;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class AltarGhostBlockRenderer {
-    private static Map<BlockPos, ResourceLocation> ghostBlocks = new HashMap<>();
+    private static final float LINE_WIDTH = 2.0f;
+
+    private static Map<BlockPos, Identifier> ghostBlocks = new HashMap<>();
     private static int remainingTicks = 0;
 
-    public static void setGhostBlocks(Map<BlockPos, ResourceLocation> blocks, int durationTicks) {
+    public static void setGhostBlocks(Map<BlockPos, Identifier> blocks, int durationTicks) {
         ghostBlocks = new HashMap<>(blocks);
         remainingTicks = durationTicks;
     }
@@ -39,11 +42,7 @@ public class AltarGhostBlockRenderer {
     }
 
     @SubscribeEvent
-    public static void onRenderLevelStage(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
-            return;
-        }
-
+    public static void onRenderLevelStage(RenderLevelStageEvent.AfterTranslucentParticles event) {
         if (ghostBlocks.isEmpty() || remainingTicks <= 0) {
             return;
         }
@@ -62,13 +61,14 @@ public class AltarGhostBlockRenderer {
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
 
-        Vec3 cameraPos = event.getCamera().getPosition();
+        Vec3 cameraPos = event.getLevelRenderState().cameraRenderState.pos;
+        RenderType lines = RenderTypes.lines();
 
         poseStack.pushPose();
 
-        for (Map.Entry<BlockPos, ResourceLocation> entry : ghostBlocks.entrySet()) {
+        for (Map.Entry<BlockPos, Identifier> entry : ghostBlocks.entrySet()) {
             BlockPos pos = entry.getKey();
-            ResourceLocation blockId = entry.getValue();
+            Identifier blockId = entry.getValue();
 
             Block block = BuiltInRegistries.BLOCK.getOptional(blockId).orElse(null);
             if (block == null || block == Blocks.AIR) {
@@ -84,16 +84,18 @@ public class AltarGhostBlockRenderer {
                 pos.getZ() - cameraPos.z
             );
 
-            renderGhostBlock(poseStack, bufferSource, state);
+            renderGhostBlock(poseStack, bufferSource, lines, state);
 
             poseStack.popPose();
         }
 
         poseStack.popPose();
+
+        bufferSource.endBatch(lines);
     }
 
-    private static void renderGhostBlock(PoseStack poseStack, MultiBufferSource bufferSource, BlockState state) {
-        VertexConsumer consumer = bufferSource.getBuffer(RenderType.lines());
+    private static void renderGhostBlock(PoseStack poseStack, MultiBufferSource bufferSource, RenderType lines, BlockState state) {
+        VertexConsumer consumer = bufferSource.getBuffer(lines);
         Matrix4f matrix = poseStack.last().pose();
 
         float r = 0.3f;
@@ -144,7 +146,7 @@ public class AltarGhostBlockRenderer {
             dz /= length;
         }
 
-        consumer.addVertex(matrix, x1, y1, z1).setColor(r, g, b, a).setNormal(dx, dy, dz);
-        consumer.addVertex(matrix, x2, y2, z2).setColor(r, g, b, a).setNormal(dx, dy, dz);
+        consumer.addVertex(matrix, x1, y1, z1).setColor(r, g, b, a).setNormal(dx, dy, dz).setLineWidth(LINE_WIDTH);
+        consumer.addVertex(matrix, x2, y2, z2).setColor(r, g, b, a).setNormal(dx, dy, dz).setLineWidth(LINE_WIDTH);
     }
 }

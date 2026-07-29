@@ -32,7 +32,7 @@ public class FragmentHealingEventHandler {
 
         // Count each stack as one fragment (max stack size is 1)
         int fragmentCount = 0;
-        for (ItemStack stack : player.getInventory().items) {
+        for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
             if (stack.getItem() == AnimusItems.FRAGMENT_HEALING.get() && !stack.isEmpty()) {
                 fragmentCount++;
             }
@@ -61,12 +61,10 @@ public class FragmentHealingEventHandler {
     public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
         if (event.getCrafting().getItem() == AnimusItems.FRAGMENT_HEALING.get()) {
             Player player = event.getEntity();
-            if (!player.level().isClientSide) {
-                player.displayClientMessage(
+            if (!player.level().isClientSide()) {
+                player.sendSystemMessage(
                     Component.translatable(Constants.Localizations.Text.HEALING_WARNING)
-                        .withStyle(ChatFormatting.GOLD),
-                    false
-                );
+                        .withStyle(ChatFormatting.GOLD));
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.compat.CompatHandler;
-import com.breakinblocks.animusnv.compat.malum.SpiritHarvestHelper;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -18,13 +17,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.spiritus.IPlayerSpiritusHandler;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Hand of Death - The ultimate sentient scythe forged from demon steel
@@ -46,14 +46,14 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
     // Execute threshold (15% of max health)
     private static final float EXECUTE_THRESHOLD = 0.15f;
 
-    public ItemHandOfDeath() {
-        super();
+    public ItemHandOfDeath(Item.Properties props) {
+        super(props);
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         // Must cache soul count before parent call modifies will
-        if (!attacker.level().isClientSide && attacker instanceof Player player) {
+        if (!attacker.level().isClientSide() && attacker instanceof Player player) {
             IPlayerSpiritusHandler playerSpiritus = NeoVitaeAPI.getInstance().getPlayerSpiritusHandler();
             double totalSpiritus = 0;
             for (SpiritusType type : SpiritusType.values()) {
@@ -65,10 +65,10 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
                 Holder.direct(NVMobEffects.SPIRITUS_SNARE.get()), 100, 1));
         }
 
-        boolean result = super.hurtEnemy(stack, target, attacker);
+        super.hurtEnemy(stack, target, attacker);
 
-        if (attacker.level().isClientSide || !(attacker instanceof Player player)) {
-            return result;
+        if (attacker.level().isClientSide() || !(attacker instanceof Player player)) {
+            return;
         }
 
         Level level = attacker.level();
@@ -98,21 +98,14 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
                 executeTarget(target, maxHealth, level, player, stack);
             }
         }
-
-        return result;
     }
 
     private void executeTarget(LivingEntity target, float maxHealth, Level level, Player executioner, ItemStack weapon) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 
         target.hurt(level.damageSources().playerAttack(executioner), maxHealth);
-
-        // Parent's spirit harvest check ran before execute, so handle it here
-        if (CompatHandler.isMalumLoaded() && target.isDeadOrDying()) {
-            SpiritHarvestHelper.harvestSpirits(target, executioner, weapon);
-        }
 
         ServerLevel serverLevel = (ServerLevel) level;
 
@@ -160,11 +153,9 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
         );
 
         if (executioner != null) {
-            executioner.displayClientMessage(
+            executioner.sendOverlayMessage(
                 Component.translatable("text.component.animusnv.hand_of_death.execute", target.getName())
-                    .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD),
-                true
-            );
+                    .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD));
         }
     }
 
@@ -235,18 +226,20 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.animusnv.hand_of_death.ultimate")
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable("tooltip.animusnv.hand_of_death.ultimate")
             .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
 
-        super.appendHoverText(stack, context, tooltip, flag);
+        super.appendHoverText(stack, context, display, tooltip, flag);
 
-        tooltip.add(Component.literal(String.format("Hand of Death Bonus: +%.1f", BONUS_DAMAGE))
+        tooltip.accept(Component.literal(String.format("Hand of Death Bonus: +%.1f", BONUS_DAMAGE))
             .withStyle(ChatFormatting.RED));
 
-        tooltip.add(Component.translatable("tooltip.animusnv.hand_of_death.lifesteal")
+        tooltip.accept(Component.translatable("tooltip.animusnv.hand_of_death.lifesteal")
             .withStyle(ChatFormatting.GREEN));
-        tooltip.add(Component.translatable("tooltip.animusnv.hand_of_death.execute")
+        tooltip.accept(Component.translatable("tooltip.animusnv.hand_of_death.execute")
             .withStyle(ChatFormatting.DARK_PURPLE));
     }
 

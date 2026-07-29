@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "states",
+  "show_title_separator": true,
+  "sort_number": 4,
+  "text": "book.animusnv.guide.compatibility.arcane_rune.states.text",
+  "title": "book.animusnv.guide.compatibility.arcane_rune.states.title"
+}

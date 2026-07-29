@@ -19,17 +19,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.advancements.critereon.EnchantmentPredicate;
-import net.minecraft.advancements.critereon.ItemEnchantmentsPredicate;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.ItemSubPredicates;
-import net.minecraft.advancements.critereon.MinMaxBounds;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
-import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.fml.ModList;
@@ -127,21 +118,7 @@ public class AnimusLootTableProvider extends LootTableProvider {
 
         // Parent class constants for this condition aren't accessible, so we construct it manually
         private LootItemCondition.Builder noShearsOrSilkTouch() {
-            HolderLookup.RegistryLookup<Enchantment> enchantmentLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
-            return InvertedLootItemCondition.invert(
-                AnyOfCondition.anyOf(
-                    MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)),
-                    MatchTool.toolMatches(ItemPredicate.Builder.item().withSubPredicate(
-                        ItemSubPredicates.ENCHANTMENTS,
-                        ItemEnchantmentsPredicate.enchantments(
-                            List.of(new EnchantmentPredicate(
-                                enchantmentLookup.getOrThrow(Enchantments.SILK_TOUCH),
-                                MinMaxBounds.Ints.atLeast(1)
-                            ))
-                        )
-                    ))
-                )
-            );
+            return this.hasShears().or(this.hasSilkTouch()).invert();
         }
 
         @Override

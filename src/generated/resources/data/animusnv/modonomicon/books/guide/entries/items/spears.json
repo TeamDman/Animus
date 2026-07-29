@@ -1,93 +1,20 @@
 {
-  "background_u_index": 0,
-  "background_v_index": 0,
-  "category": "items",
-  "description": "book.animusnv.guide.items.spears.description",
-  "hide_while_locked": false,
-  "icon": {
-    "item": "animusnv:spear_bound"
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
   },
+  "category": "animusnv:items",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.items.spears.description",
+  "icon": {
+    "id": "animusnv:spear_bound"
+  },
+  "id": "animusnv:items/spears",
   "name": "book.animusnv.guide.items.spears.name",
-  "pages": [
-    {
-      "type": "neovitae:alchemy_array_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:array/spear_bound",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "neovitae:hellfire_forge_recipe",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "recipe_id_1": "animusnv:hellfire_forge/spear_sentient",
-      "text": "",
-      "title1": "",
-      "title2": ""
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.spears.intro.text",
-      "title": "book.animusnv.guide.items.spears.intro.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.spears.iron.text",
-      "title": "book.animusnv.guide.items.spears.iron.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.spears.diamond.text",
-      "title": "book.animusnv.guide.items.spears.diamond.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.spears.bound.text",
-      "title": "book.animusnv.guide.items.spears.bound.title",
-      "use_markdown_in_title": false
-    },
-    {
-      "type": "modonomicon:text",
-      "anchor": "",
-      "condition": {
-        "type": "modonomicon:none"
-      },
-      "show_title_separator": true,
-      "text": "book.animusnv.guide.items.spears.bound_active.text",
-      "title": "book.animusnv.guide.items.spears.bound_active.title",
-      "use_markdown_in_title": false
-    }
-  ],
-  "show_when_any_parent_unlocked": false,
   "sort_number": 5,
   "x": -1,
   "y": 0

@@ -36,7 +36,7 @@ public class RitualMagi extends ImperfectRitual {
     public boolean onActivate(IImperfectRitualStone ritualStone, Player player) {
         Level level = ritualStone.getRitualWorld();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return false;
         }
 
@@ -58,10 +58,8 @@ public class RitualMagi extends ImperfectRitual {
             1.0F
         );
 
-        player.displayClientMessage(
-            Component.translatable("ritual.animusnv.magi.success"),
-            true
-        );
+        player.sendOverlayMessage(
+            Component.translatable("ritual.animusnv.magi.success"));
 
         return true;
     }

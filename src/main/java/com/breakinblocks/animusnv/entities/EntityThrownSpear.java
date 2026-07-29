@@ -5,27 +5,29 @@ import com.breakinblocks.animusnv.items.ItemSpearBound;
 import com.breakinblocks.animusnv.items.ItemSpearSentient;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -70,7 +72,7 @@ public class EntityThrownSpear extends AbstractArrow {
 
         String variant = "iron";
         boolean activated = false;
-        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         if (itemId != null) {
             String path = itemId.getPath();
             if (path.contains("diamond")) {
@@ -88,8 +90,8 @@ public class EntityThrownSpear extends AbstractArrow {
 
     private static int getLoyaltyLevel(Level level, ItemStack stack) {
         if (level.registryAccess() == null) return 0;
-        var enchantmentRegistry = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
-        var loyaltyHolder = enchantmentRegistry.getHolder(Enchantments.LOYALTY);
+        var enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        var loyaltyHolder = enchantmentRegistry.get(Enchantments.LOYALTY);
         if (loyaltyHolder.isEmpty()) return 0;
         return stack.getEnchantmentLevel(loyaltyHolder.get());
     }
@@ -120,15 +122,15 @@ public class EntityThrownSpear extends AbstractArrow {
         int loyalty = this.entityData.get(ID_LOYALTY);
         if (loyalty > 0 && (this.dealtDamage || this.isNoPhysics()) && owner != null) {
             if (!this.isAcceptibleReturnOwner()) {
-                if (!this.level().isClientSide && this.pickup == AbstractArrow.Pickup.ALLOWED) {
-                    this.spawnAtLocation(this.getPickupItem(), 0.1F);
+                if (this.level() instanceof ServerLevel serverLevel && this.pickup == AbstractArrow.Pickup.ALLOWED) {
+                    this.spawnAtLocation(serverLevel, this.getPickupItem(), 0.1F);
                 }
                 this.discard();
             } else {
                 this.setNoPhysics(true);
                 Vec3 vec3 = owner.getEyePosition().subtract(this.position());
                 this.setPosRaw(this.getX(), this.getY() + vec3.y * 0.015 * (double)loyalty, this.getZ());
-                if (this.level().isClientSide) {
+                if (this.level().isClientSide()) {
                     this.yOld = this.getY();
                 }
 
@@ -201,11 +203,11 @@ public class EntityThrownSpear extends AbstractArrow {
 
         boolean isBound = "bound".equals(this.getVariant());
         boolean isActivated = this.entityData.get(ID_ACTIVATED);
-        if (isBound && isActivated && !this.level().isClientSide) {
+        if (isBound && isActivated && !this.level().isClientSide()) {
             Entity owner = this.getOwner();
-            LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(this.level());
+            LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(this.level(), EntitySpawnReason.TRIGGERED);
             if (lightning != null) {
-                lightning.moveTo(result.getLocation().x, result.getLocation().y, result.getLocation().z);
+                lightning.snapTo(result.getLocation().x, result.getLocation().y, result.getLocation().z);
                 lightning.setCause(owner instanceof ServerPlayer ? (ServerPlayer)owner : null);
                 lightning.setVisualOnly(true);
                 this.level().addFreshEntity(lightning);
@@ -222,7 +224,7 @@ public class EntityThrownSpear extends AbstractArrow {
         DamageSource damageSource = this.damageSources().trident(this, owner == null ? this : owner);
         this.dealtDamage = true;
 
-        if (entity.hurt(damageSource, damage)) {
+        if (entity.hurtOrSimulate(damageSource, damage)) {
             if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
@@ -242,7 +244,7 @@ public class EntityThrownSpear extends AbstractArrow {
     }
 
     private void dealAOEDamage(double x, double y, double z, float damage) {
-        if (this.level().isClientSide) {
+        if (this.level().isClientSide()) {
             return;
         }
 
@@ -294,12 +296,10 @@ public class EntityThrownSpear extends AbstractArrow {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("Spear", 10)) {
-            this.spearItem = ItemStack.parseOptional(this.level().registryAccess(), tag.getCompound("Spear"));
-        }
-        this.dealtDamage = tag.getBoolean("DealtDamage");
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        input.read("Spear", ItemStack.CODEC).ifPresent(stack -> this.spearItem = stack);
+        this.dealtDamage = input.getBooleanOr("DealtDamage", false);
 
         // Bound and Sentient spears have built-in loyalty (level 3)
         // Other spears use loyalty enchantment level
@@ -312,29 +312,21 @@ public class EntityThrownSpear extends AbstractArrow {
         }
         this.entityData.set(ID_LOYALTY, (byte)loyalty);
 
-        if (tag.contains("Variant", 8)) {
-            this.entityData.set(ID_VARIANT, tag.getString("Variant"));
-        }
-        if (tag.contains("Activated", 1)) {
-            this.entityData.set(ID_ACTIVATED, tag.getBoolean("Activated"));
-        }
-        if (tag.contains("SpiritusType", 8)) {
-            this.entityData.set(ID_SPIRITUS_TYPE, tag.getString("SpiritusType"));
-        }
-        if (tag.contains("SpiritusLevel", 3)) {
-            this.entityData.set(ID_SPIRITUS_LEVEL, tag.getInt("SpiritusLevel"));
-        }
+        this.entityData.set(ID_VARIANT, input.getStringOr("Variant", this.entityData.get(ID_VARIANT)));
+        this.entityData.set(ID_ACTIVATED, input.getBooleanOr("Activated", this.entityData.get(ID_ACTIVATED)));
+        this.entityData.set(ID_SPIRITUS_TYPE, input.getStringOr("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE)));
+        this.entityData.set(ID_SPIRITUS_LEVEL, input.getIntOr("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL)));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.put("Spear", this.spearItem.save(this.level().registryAccess()));
-        tag.putBoolean("DealtDamage", this.dealtDamage);
-        tag.putString("Variant", this.getVariant());
-        tag.putBoolean("Activated", this.entityData.get(ID_ACTIVATED));
-        tag.putString("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE));
-        tag.putInt("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL));
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.store("Spear", ItemStack.CODEC, this.spearItem);
+        output.putBoolean("DealtDamage", this.dealtDamage);
+        output.putString("Variant", this.getVariant());
+        output.putBoolean("Activated", this.entityData.get(ID_ACTIVATED));
+        output.putString("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE));
+        output.putInt("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL));
     }
 
     @Override

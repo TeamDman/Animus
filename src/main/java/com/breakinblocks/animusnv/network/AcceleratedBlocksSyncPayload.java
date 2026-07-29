@@ -7,7 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 public record AcceleratedBlocksSyncPayload(Map<BlockPos, AccelerationEntry> acceleratedBlocks) implements CustomPacketPayload {
     public static final Type<AcceleratedBlocksSyncPayload> TYPE = new Type<>(
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "accelerated_blocks_sync")
+        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "accelerated_blocks_sync")
     );
 
     public static final StreamCodec<FriendlyByteBuf, AcceleratedBlocksSyncPayload> STREAM_CODEC = new StreamCodec<>() {
@@ -27,7 +27,7 @@ public record AcceleratedBlocksSyncPayload(Map<BlockPos, AccelerationEntry> acce
                 BlockPos pos = buf.readBlockPos();
                 int level = buf.readInt();
                 long expiryTime = buf.readLong();
-                ResourceLocation dimLocation = buf.readResourceLocation();
+                Identifier dimLocation = buf.readIdentifier();
                 ResourceKey<Level> dimension = ResourceKey.create(Registries.DIMENSION, dimLocation);
                 acceleratedBlocks.put(pos, new AccelerationEntry(level, expiryTime, dimension));
             }
@@ -42,7 +42,7 @@ public record AcceleratedBlocksSyncPayload(Map<BlockPos, AccelerationEntry> acce
                 AccelerationEntry data = entry.getValue();
                 buf.writeInt(data.level);
                 buf.writeLong(data.expiryTime);
-                buf.writeResourceLocation(data.dimension.location());
+                buf.writeIdentifier(data.dimension.identifier());
             }
         }
     };

@@ -14,12 +14,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
@@ -27,6 +29,7 @@ import com.breakinblocks.neovitae.common.item.soul.SpiritusTooltipHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -52,6 +55,8 @@ public class ItemSentientBow extends BowItem {
     // Default will cost per shot (used before config loads)
     public static final double DEFAULT_SPIRITUS_COST = 1.0;
 
+    private static final double BASE_ARROW_DAMAGE = 2.0;
+
     public static double getSpiritusCostPerShot() {
         try {
             return AnimusConfig.weapons.sentientBowSpiritusCost.get();
@@ -60,24 +65,26 @@ public class ItemSentientBow extends BowItem {
         }
     }
 
-    public ItemSentientBow() {
-        super(new Item.Properties()
+    public ItemSentientBow(Item.Properties props) {
+        super(props
             .stacksTo(1)
             .durability(500)
             .rarity(Rarity.RARE));
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_FLAVOUR)
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_FLAVOUR)
             .withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
         SpiritusTooltipHelper.appendSpiritusInfo(stack, "sentientBow", tooltip, flag);
 
         if (flag.hasShiftDown()) {
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_INFO)
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_INFO)
                 .withStyle(ChatFormatting.GRAY));
-            tooltip.add(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_SPIRITUS_DROPS)
+            tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.SENTIENT_BOW_SPIRITUS_DROPS)
                 .withStyle(ChatFormatting.YELLOW));
         }
     }
@@ -98,54 +105,50 @@ public class ItemSentientBow extends BowItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         SpiritusType type = getCurrentType(stack);
         double soulsRemaining = getTotalSpiritusOfType(player, type);
         if (!player.getAbilities().instabuild && soulsRemaining < getSpiritusCostPerShot()) {
-            if (!level.isClientSide) {
-                player.displayClientMessage(
+            if (!level.isClientSide()) {
+                player.sendOverlayMessage(
                     Component.translatable("message.animus.sentient_bow.out_of_spiritus")
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
+                        .withStyle(ChatFormatting.RED));
             }
-            return InteractionResultHolder.fail(stack);
+            return InteractionResult.FAIL;
         }
 
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(stack);
+        return InteractionResult.CONSUME;
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player)) {
-            return;
+            return false;
         }
 
         SpiritusType type = getCurrentType(stack);
         double soulsRemaining = getTotalSpiritusOfType(player, type);
 
         if (soulsRemaining < getSpiritusCostPerShot()) {
-            if (!level.isClientSide) {
-                player.displayClientMessage(
+            if (!level.isClientSide()) {
+                player.sendOverlayMessage(
                     Component.translatable("message.animus.sentient_bow.out_of_spiritus")
-                        .withStyle(ChatFormatting.RED),
-                    true
-                );
+                        .withStyle(ChatFormatting.RED));
             }
-            return;
+            return false;
         }
 
         int useDuration = this.getUseDuration(stack, entity) - timeLeft;
         float power = getPowerForTime(useDuration);
 
         if (power < 0.1F) {
-            return;
+            return false;
         }
 
-        if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
             drainSpiritusFromPlayer(player, type, getSpiritusCostPerShot());
 
             int spiritusLevel = getLevel(stack, soulsRemaining);
@@ -161,7 +164,7 @@ public class ItemSentientBow extends BowItem {
                 .lookupOrThrow(Registries.ENCHANTMENT)
                 .getOrThrow(Enchantments.POWER));
             if (powerEnchant > 0) {
-                arrow.setBaseDamage(arrow.getBaseDamage() + (double) powerEnchant * 0.5D + 0.5D);
+                arrow.setBaseDamage(BASE_ARROW_DAMAGE + (double) powerEnchant * 0.5D + 0.5D);
             }
 
             int flameEnchant = stack.getEnchantmentLevel(serverLevel.registryAccess()
@@ -186,6 +189,7 @@ public class ItemSentientBow extends BowItem {
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
+        return true;
     }
 
     @Override
@@ -207,8 +211,8 @@ public class ItemSentientBow extends BowItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        super.inventoryTick(stack, level, entity, slotId, isSelected);
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, EquipmentSlot slot) {
+        super.inventoryTick(stack, level, entity, slot);
 
         if (entity instanceof Player player) {
             SpiritusType newType = SpiritusTypeHelper.findSpiritusType(player);

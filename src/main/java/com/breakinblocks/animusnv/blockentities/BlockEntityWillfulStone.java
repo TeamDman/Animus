@@ -2,10 +2,11 @@ package com.breakinblocks.animusnv.blockentities;
 
 import com.breakinblocks.animusnv.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.UUID;
 
@@ -31,18 +32,14 @@ public class BlockEntityWillfulStone extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        if (owner != null) {
-            tag.putUUID("Owner", owner);
-        }
+    protected void saveAdditional(ValueOutput tag) {
+        super.saveAdditional(tag);
+        tag.storeNullable("Owner", UUIDUtil.CODEC, owner);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        if (tag.contains("Owner")) {
-            owner = tag.getUUID("Owner");
-        }
+    protected void loadAdditional(ValueInput tag) {
+        super.loadAdditional(tag);
+        tag.read("Owner", UUIDUtil.CODEC).ifPresent(uuid -> owner = uuid);
     }
 }

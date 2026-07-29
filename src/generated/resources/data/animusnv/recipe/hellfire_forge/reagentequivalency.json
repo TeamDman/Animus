@@ -2,22 +2,13 @@
   "type": "neovitae:hellfire_forge",
   "drain": 64.0,
   "inputs": [
-    {
-      "item": "minecraft:purple_dye"
-    },
-    {
-      "item": "minecraft:diamond"
-    },
-    {
-      "item": "minecraft:emerald"
-    },
-    {
-      "item": "minecraft:quartz_block"
-    }
+    "minecraft:purple_dye",
+    "minecraft:diamond",
+    "minecraft:emerald",
+    "minecraft:quartz_block"
   ],
   "minDrain": 128.0,
   "output": {
-    "count": 1,
     "id": "animusnv:reagentequivalency"
   }
 }

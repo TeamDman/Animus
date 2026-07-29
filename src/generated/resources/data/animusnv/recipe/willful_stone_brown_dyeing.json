@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "D": {
-      "tag": "c:dyes/brown"
-    },
-    "S": {
-      "tag": "animusnv:willful_stones"
-    }
+    "D": "#c:dyes/brown",
+    "S": "#animusnv:willful_stones"
   },
   "pattern": [
     "SSS",

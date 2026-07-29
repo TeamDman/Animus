@@ -5,7 +5,7 @@ import com.hollingsworth.arsnouveau.api.event.SpellDamageEvent;
 import com.hollingsworth.arsnouveau.setup.registry.ModPotions;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.compat.SentientUpgradeHelper;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
@@ -23,8 +23,8 @@ import net.neoforged.neoforge.common.NeoForge;
  */
 public class SourceAttunementHandler {
 
-    public static final ResourceLocation UPGRADE_ID =
-        ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "source_attunement");
+    public static final Identifier UPGRADE_ID =
+        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "source_attunement");
 
     public static void register() {
         NeoForge.EVENT_BUS.register(new SourceAttunementHandler());

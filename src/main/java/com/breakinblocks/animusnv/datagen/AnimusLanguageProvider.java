@@ -1,13 +1,17 @@
 package com.breakinblocks.animusnv.datagen;
 
+import com.klikli_dev.modonomicon.api.datagen.LanguageProviderCache;
 import com.klikli_dev.modonomicon.api.datagen.ModonomiconLanguageProvider;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class AnimusLanguageProvider extends LanguageProvider implements ModonomiconLanguageProvider {
-    public AnimusLanguageProvider(PackOutput output) {
+    private final LanguageProviderCache langCache;
+
+    public AnimusLanguageProvider(PackOutput output, LanguageProviderCache langCache) {
         super(output, Constants.Mod.MODID, "en_us");
+        this.langCache = langCache;
     }
 
     @Override
@@ -727,5 +731,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.spear_sentient.level", "Level: %s (%s Spiritus)");
         add("tooltip.animusnv.transposition.teleposer_location", "Teleposer: %s, %s, %s");
         add("tooltip.animusnv.unbound_bind", "Unbound - Right-click to bind");
+
+        this.langCache.data().forEach(this::add);
     }
 }

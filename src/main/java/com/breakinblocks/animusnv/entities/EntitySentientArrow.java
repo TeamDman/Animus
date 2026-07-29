@@ -4,7 +4,6 @@ import com.breakinblocks.animusnv.items.ItemSentientBow;
 import com.breakinblocks.animusnv.util.SpiritusWeaponStats;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,9 +12,11 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
@@ -39,6 +40,8 @@ public class EntitySentientArrow extends AbstractArrow {
     private static final int[] poisonLevel = SpiritusWeaponStats.POISON_LEVEL;
     private static final int[] slowTime = ItemSentientBow.slowTime;
     private static final int[] slowLevel = ItemSentientBow.slowLevel;
+
+    private double baseDamage = 2.0;
 
     public EntitySentientArrow(EntityType<? extends EntitySentientArrow> entityType, Level level) {
         super(entityType, level);
@@ -78,6 +81,16 @@ public class EntitySentientArrow extends AbstractArrow {
         return this.entityData.get(ID_SPIRITUS_LEVEL);
     }
 
+    @Override
+    public void setBaseDamage(double baseDamage) {
+        super.setBaseDamage(baseDamage);
+        this.baseDamage = baseDamage;
+    }
+
+    public double getBaseDamage() {
+        return this.baseDamage;
+    }
+
     public void setBonusDamage(double damage) {
         this.entityData.set(ID_BONUS_DAMAGE, (float) damage);
     }
@@ -97,7 +110,7 @@ public class EntitySentientArrow extends AbstractArrow {
         this.setBaseDamage(totalDamage);
         super.onHitEntity(result);
 
-        if (entity instanceof LivingEntity target && !this.level().isClientSide) {
+        if (entity instanceof LivingEntity target && !this.level().isClientSide()) {
             Entity owner = this.getOwner();
             SpiritusType spiritusType = this.getSpiritusType();
             int spiritusLevel = Math.min(this.getSpiritusLevel(), 4);
@@ -106,7 +119,7 @@ public class EntitySentientArrow extends AbstractArrow {
             applySpiritusEffects(target, spiritusType, spiritusLevel, owner instanceof LivingEntity ? (LivingEntity) owner : null);
         }
 
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             this.discard();
         }
     }
@@ -115,7 +128,7 @@ public class EntitySentientArrow extends AbstractArrow {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
 
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             this.discard();
         }
     }
@@ -132,7 +145,7 @@ public class EntitySentientArrow extends AbstractArrow {
 
             case INVICTUS:
                 target.addEffect(new MobEffectInstance(
-                    MobEffects.MOVEMENT_SLOWDOWN,
+                    MobEffects.SLOWNESS,
                     slowTime[level],
                     slowLevel[level]
                 ));
@@ -148,7 +161,7 @@ public class EntitySentientArrow extends AbstractArrow {
             case VINDICTA:
                 if (attacker != null) {
                     attacker.addEffect(new MobEffectInstance(
-                        MobEffects.MOVEMENT_SPEED,
+                        MobEffects.SPEED,
                         100,
                         level / 2
                     ));
@@ -172,7 +185,7 @@ public class EntitySentientArrow extends AbstractArrow {
     public void tick() {
         super.tick();
 
-        if (this.level().isClientSide && this.tickCount % 2 == 0) {
+        if (this.level().isClientSide() && this.tickCount % 2 == 0) {
             this.level().addParticle(
                 ParticleTypes.END_ROD,
                 this.getX() + (this.random.nextDouble() - 0.5) * 0.2,
@@ -184,25 +197,20 @@ public class EntitySentientArrow extends AbstractArrow {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("SpiritusType", 8)) {
-            this.entityData.set(ID_SPIRITUS_TYPE, tag.getString("SpiritusType"));
-        }
-        if (tag.contains("SpiritusLevel", 3)) {
-            this.entityData.set(ID_SPIRITUS_LEVEL, tag.getInt("SpiritusLevel"));
-        }
-        if (tag.contains("BonusDamage", 5)) {
-            this.entityData.set(ID_BONUS_DAMAGE, tag.getFloat("BonusDamage"));
-        }
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.baseDamage = input.getDoubleOr("damage", 2.0);
+        this.entityData.set(ID_SPIRITUS_TYPE, input.getStringOr("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE)));
+        this.entityData.set(ID_SPIRITUS_LEVEL, input.getIntOr("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL)));
+        this.entityData.set(ID_BONUS_DAMAGE, input.getFloatOr("BonusDamage", this.entityData.get(ID_BONUS_DAMAGE)));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putString("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE));
-        tag.putInt("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL));
-        tag.putFloat("BonusDamage", this.entityData.get(ID_BONUS_DAMAGE));
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putString("SpiritusType", this.entityData.get(ID_SPIRITUS_TYPE));
+        output.putInt("SpiritusLevel", this.entityData.get(ID_SPIRITUS_LEVEL));
+        output.putFloat("BonusDamage", this.entityData.get(ID_BONUS_DAMAGE));
     }
 
     @Override

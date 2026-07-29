@@ -78,7 +78,7 @@ public class AnimusFakePlayer extends FakePlayer {
 
     // Block all damage to prevent thorns/damage reflection
     @Override
-    public boolean hurt(DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         return false;
     }
 }

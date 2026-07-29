@@ -7,7 +7,8 @@ import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -36,13 +37,10 @@ import java.util.Set;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Constants.Mod.MODID)
 public class SigilEquivalencyRenderer {
+    private static final float LINE_WIDTH = 2.0f;
 
     @SubscribeEvent
-    public static void onRenderLevelStage(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
-            return;
-        }
-
+    public static void onRenderLevelStage(RenderLevelStageEvent.AfterTranslucentParticles event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (player == null || mc.level == null) {
@@ -85,7 +83,8 @@ public class SigilEquivalencyRenderer {
 
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-        Vec3 cameraPos = event.getCamera().getPosition();
+        Vec3 cameraPos = event.getLevelRenderState().cameraRenderState.pos;
+        RenderType lines = RenderTypes.lines();
 
         poseStack.pushPose();
 
@@ -97,11 +96,13 @@ public class SigilEquivalencyRenderer {
                 pos.getZ() - cameraPos.z
             );
 
-            renderPreviewBlock(poseStack, bufferSource);
+            renderPreviewBlock(poseStack, bufferSource, lines);
             poseStack.popPose();
         }
 
         poseStack.popPose();
+
+        bufferSource.endBatch(lines);
     }
 
     private static List<BlockPos> findMatchingBlocksInRadius(Level level, BlockPos center, Block targetBlock, int radius, Direction clickedFace) {
@@ -186,8 +187,8 @@ public class SigilEquivalencyRenderer {
         return AnimusConfig.sigils.sigilEquivalencyRadius.get();
     }
 
-    private static void renderPreviewBlock(PoseStack poseStack, MultiBufferSource bufferSource) {
-        VertexConsumer consumer = bufferSource.getBuffer(RenderType.lines());
+    private static void renderPreviewBlock(PoseStack poseStack, MultiBufferSource bufferSource, RenderType lines) {
+        VertexConsumer consumer = bufferSource.getBuffer(lines);
         Matrix4f matrix = poseStack.last().pose();
 
         float r = 0.8f;
@@ -235,7 +236,7 @@ public class SigilEquivalencyRenderer {
             dz /= length;
         }
 
-        consumer.addVertex(matrix, x1, y1, z1).setColor(r, g, b, a).setNormal(dx, dy, dz);
-        consumer.addVertex(matrix, x2, y2, z2).setColor(r, g, b, a).setNormal(dx, dy, dz);
+        consumer.addVertex(matrix, x1, y1, z1).setColor(r, g, b, a).setNormal(dx, dy, dz).setLineWidth(LINE_WIDTH);
+        consumer.addVertex(matrix, x2, y2, z2).setColor(r, g, b, a).setNormal(dx, dy, dz).setLineWidth(LINE_WIDTH);
     }
 }

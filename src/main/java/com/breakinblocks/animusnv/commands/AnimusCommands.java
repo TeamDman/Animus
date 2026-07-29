@@ -43,7 +43,7 @@ public class AnimusCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 Commands.literal("animusnv")
-                        .requires(source -> source.hasPermission(2))
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .then(Commands.literal("getlp")
                                 .executes(AnimusCommands::getEV))
                         .then(Commands.literal("setlp")
@@ -97,7 +97,7 @@ public class AnimusCommands {
             return 0;
         }
         NeoVitaeAPI.getInstance().getSpiritusHandler().fillSpiritusToAmount(
-                player.serverLevel(), player.blockPosition(), type, 100.0);
+                player.level(), player.blockPosition(), type, 100.0);
         String displayName = type.name().toLowerCase(Locale.ROOT);
         context.getSource().sendSuccess(() -> Component.translatable(
                 "commands.animusnv.fillwill.success", displayName), true);

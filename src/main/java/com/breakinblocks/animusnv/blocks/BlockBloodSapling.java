@@ -21,12 +21,15 @@ public class BlockBloodSapling extends SaplingBlock {
         Optional.empty()  // no flower variant
     );
 
-    public BlockBloodSapling() {
-        super(BLOOD_TREE_GROWER, BlockBehaviour.Properties.of()
-            .noCollission()
+    public BlockBloodSapling(BlockBehaviour.Properties props) {
+        super(BLOOD_TREE_GROWER, props);
+    }
+
+    public static BlockBehaviour.Properties defaultProperties() {
+        return BlockBehaviour.Properties.of()
+            .noCollision()
             .randomTicks()
             .strength(0.0F)
-            .sound(SoundType.GRASS)
-        );
+            .sound(SoundType.GRASS);
     }
 }

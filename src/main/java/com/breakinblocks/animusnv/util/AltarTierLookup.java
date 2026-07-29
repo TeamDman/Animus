@@ -4,7 +4,7 @@ import com.breakinblocks.neovitae.common.registry.AltarTier;
 import com.breakinblocks.neovitae.common.registry.NVRegistries;
 import com.breakinblocks.neovitae.common.tag.NVTags;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryAccess;
 
 import java.util.Comparator;
@@ -33,9 +33,10 @@ public final class AltarTierLookup {
     }
 
     private static java.util.stream.Stream<AltarTier> validTiers(RegistryAccess registries) {
-        Registry<AltarTier> registry = registries.registryOrThrow(NVRegistries.Keys.ALTAR_TIER_KEY);
-        return registry.getOrCreateTag(NVTags.Tiers.VALID_TIERS)
+        return registries.lookupOrThrow(NVRegistries.Keys.ALTAR_TIER_KEY)
+                .get(NVTags.Tiers.VALID_TIERS)
                 .stream()
+                .flatMap(HolderSet::stream)
                 .map(Holder::value);
     }
 }

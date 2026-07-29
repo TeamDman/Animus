@@ -6,9 +6,7 @@
     }
   ],
   "type": "neovitae:ara_vitae_recipe",
-  "input": {
-    "item": "irons_spellbooks:dragonskin_spell_book"
-  },
+  "input": "irons_spellbooks:dragonskin_spell_book",
   "output": {
     "count": 1,
     "id": "animusnv:blood_infused_spellbook",

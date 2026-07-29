@@ -1,13 +1,8 @@
 {
   "type": "neovitae:array",
-  "addedinput": {
-    "item": "neovitae:tabula_robur"
-  },
-  "baseinput": {
-    "item": "animusnv:reagentbuilder"
-  },
+  "addedinput": "neovitae:tabula_robur",
+  "baseinput": "animusnv:reagentbuilder",
   "output": {
-    "count": 1,
     "id": "animusnv:sigil_builder"
   },
   "texture": "neovitae:textures/models/alchemyarrays/shardoflaputa.png"

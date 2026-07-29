@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "strategy",
+  "show_title_separator": true,
+  "sort_number": 4,
+  "text": "book.animusnv.guide.items.key_binding.strategy.text",
+  "title": "book.animusnv.guide.items.key_binding.strategy.title"
+}

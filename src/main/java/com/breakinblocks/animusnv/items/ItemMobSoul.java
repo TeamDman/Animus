@@ -5,34 +5,37 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.TagValueInput;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Mob Soul - stores a captured entity
  * Right-click on a block to release the captured mob
  */
 public class ItemMobSoul extends Item {
-    public ItemMobSoul() {
-        super(new Properties().stacksTo(1));
+    public ItemMobSoul(Properties props) {
+        super(props.stacksTo(1));
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
 
@@ -52,28 +55,28 @@ public class ItemMobSoul extends Item {
 
         BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
 
-        Entity entity = entityType.create(level);
+        Entity entity = entityType.create(level, EntitySpawnReason.MOB_SUMMONED);
         if (entity == null) {
             return InteractionResult.FAIL;
         }
 
         CompoundTag entityData = stack.get(AnimusDataComponents.SOUL_DATA.get());
         if (entityData != null) {
-            entity.load(entityData);
+            entity.load(TagValueInput.create(ProblemReporter.DISCARDING, level.registryAccess(), entityData));
         }
 
-        entity.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
+        entity.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
             entity.getYRot(), entity.getXRot());
 
         if (!level.addFreshEntity(entity)) {
             return InteractionResult.FAIL;
         }
 
-        if (entity instanceof Mob mob) {
+        if (entity instanceof Mob mob && level instanceof ServerLevel serverLevel) {
             mob.finalizeSpawn(
-                (ServerLevel) level,
-                level.getCurrentDifficultyAt(pos),
-                MobSpawnType.MOB_SUMMONED,
+                serverLevel,
+                serverLevel.getCurrentDifficultyAt(pos),
+                EntitySpawnReason.MOB_SUMMONED,
                 null
             );
         }
@@ -84,11 +87,13 @@ public class ItemMobSoul extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+    @SuppressWarnings("deprecation")
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
+                                Consumer<Component> tooltip, TooltipFlag flag) {
         String entityName = stack.get(AnimusDataComponents.SOUL_ENTITY_NAME.get());
         if (entityName != null) {
             EntityType.byString(entityName).ifPresent(entityType -> {
-                tooltip.add(Component.translatable("tooltip.animusnv.mob_soul.type")
+                tooltip.accept(Component.translatable("tooltip.animusnv.mob_soul.type")
                     .append(": ")
                     .append(entityType.getDescription()));
             });
@@ -96,11 +101,11 @@ public class ItemMobSoul extends Item {
 
         String soulName = stack.get(AnimusDataComponents.SOUL_NAME.get());
         if (soulName != null) {
-            tooltip.add(Component.literal(soulName));
+            tooltip.accept(Component.literal(soulName));
         }
 
-        tooltip.add(Component.translatable("tooltip.animusnv.mob_soul.info"));
-        super.appendHoverText(stack, context, tooltip, flag);
+        tooltip.accept(Component.translatable("tooltip.animusnv.mob_soul.info"));
+        super.appendHoverText(stack, context, display, tooltip, flag);
     }
 
     @Override

@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "bound",
+  "show_title_separator": true,
+  "sort_number": 5,
+  "text": "book.animusnv.guide.items.spears.bound.text",
+  "title": "book.animusnv.guide.items.spears.bound.title"
+}

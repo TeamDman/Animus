@@ -57,11 +57,9 @@ public class KeyBindingEventHandler {
         }
 
         if (mainHandStack.getItem() == AnimusItems.KEY_BINDING.get()) {
-            player.displayClientMessage(
+            player.sendOverlayMessage(
                 Component.translatable(Constants.Localizations.Text.KEY_CANNOT_BIND_KEY)
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+                    .withStyle(ChatFormatting.RED));
             event.setCanceled(true);
             return;
         }
@@ -96,11 +94,9 @@ public class KeyBindingEventHandler {
 
             if (currentBinding != null && currentBinding.uuid().equals(playerId)) {
                 mainHandStack.set(NVDataComponents.BINDING.get(), keyBinding);
-                player.displayClientMessage(
+                player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.KEY_ITEM_BOUND, keyBinding.name())
-                        .withStyle(ChatFormatting.AQUA),
-                    true
-                );
+                        .withStyle(ChatFormatting.AQUA));
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.breakinblocks.animusnv;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -264,49 +264,49 @@ public class Constants {
         public static final TagKey<EntityType<?>> DISALLOW_CAPTURING =
             TagKey.create(
                 Registries.ENTITY_TYPE,
-                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_capturing")
+                Identifier.fromNamespaceAndPath(Mod.MODID, "disallow_capturing")
             );
 
         public static final TagKey<EntityType<?>> DISALLOW_CULLING =
             TagKey.create(
                 Registries.ENTITY_TYPE,
-                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_culling")
+                Identifier.fromNamespaceAndPath(Mod.MODID, "disallow_culling")
             );
 
         public static final TagKey<EntityType<?>> DISALLOW_SACRIFICE =
             TagKey.create(
                 Registries.ENTITY_TYPE,
-                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_sacrifice")
+                Identifier.fromNamespaceAndPath(Mod.MODID, "disallow_sacrifice")
             );
 
         public static final TagKey<Block> DISALLOW_LEACH =
             TagKey.create(
                 Registries.BLOCK,
-                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_leach")
+                Identifier.fromNamespaceAndPath(Mod.MODID, "disallow_leach")
             );
 
         public static final TagKey<Block> DISALLOW_ANTILIFE =
             TagKey.create(
                 Registries.BLOCK,
-                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_antilife")
+                Identifier.fromNamespaceAndPath(Mod.MODID, "disallow_antilife")
             );
 
         public static final TagKey<Item> DISALLOW_REPAIR =
             TagKey.create(
                 Registries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_repair")
+                Identifier.fromNamespaceAndPath(Mod.MODID, "disallow_repair")
             );
 
         public static final TagKey<Item> WILLFUL_STONES =
             TagKey.create(
                 Registries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "willful_stones")
+                Identifier.fromNamespaceAndPath(Mod.MODID, "willful_stones")
             );
 
         public static final TagKey<Block> DISALLOW_ACCELERATION =
             TagKey.create(
                 Registries.BLOCK,
-                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_acceleration")
+                Identifier.fromNamespaceAndPath(Mod.MODID, "disallow_acceleration")
             );
     }
 
@@ -315,10 +315,10 @@ public class Constants {
             throw new UnsupportedOperationException("Utility class");
         }
 
-        public static final ResourceLocation fluidAntiLifeFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antilife_flowing");
-        public static final ResourceLocation fluidAntiLifeStill = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/antilife_still");
-        public static final ResourceLocation fluidLivingTerraFlowing = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/living_terra_flowing");
-        public static final ResourceLocation fluidLivingTerraStill = ResourceLocation.fromNamespaceAndPath(Mod.MODID, "block/fluid/living_terra_still");
+        public static final Identifier fluidAntiLifeFlowing = Identifier.fromNamespaceAndPath(Mod.MODID, "block/fluid/antilife_flowing");
+        public static final Identifier fluidAntiLifeStill = Identifier.fromNamespaceAndPath(Mod.MODID, "block/fluid/antilife_still");
+        public static final Identifier fluidLivingTerraFlowing = Identifier.fromNamespaceAndPath(Mod.MODID, "block/fluid/living_terra_flowing");
+        public static final Identifier fluidLivingTerraStill = Identifier.fromNamespaceAndPath(Mod.MODID, "block/fluid/living_terra_still");
     }
 
     public static class Mod {
@@ -408,7 +408,7 @@ public class Constants {
         public static final String MONK = "monk";
     }
 
-    public static ResourceLocation rl(String path) {
-        return ResourceLocation.fromNamespaceAndPath(Mod.MODID, path);
+    public static Identifier rl(String path) {
+        return Identifier.fromNamespaceAndPath(Mod.MODID, path);
     }
 }

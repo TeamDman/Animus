@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "organization",
+  "show_title_separator": true,
+  "sort_number": 2,
+  "text": "book.animusnv.guide.intro.welcome.organization.text",
+  "title": "book.animusnv.guide.intro.welcome.organization.title"
+}

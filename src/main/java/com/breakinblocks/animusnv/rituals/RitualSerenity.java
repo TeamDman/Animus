@@ -53,7 +53,7 @@ public class RitualSerenity extends Ritual {
         Level level = mrs.getWorldObj();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide || !(level instanceof ServerLevel)) {
+        if (level.isClientSide() || !(level instanceof ServerLevel)) {
             return;
         }
 

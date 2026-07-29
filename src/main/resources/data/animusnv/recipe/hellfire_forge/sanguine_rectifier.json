@@ -9,18 +9,10 @@
   "minDrain": 32.0,
   "drain": 5.0,
   "inputs": [
-    {
-      "item": "minecraft:cauldron"
-    },
-    {
-      "item": "evilcraft:dark_gem"
-    },
-    {
-      "item": "neovitae:tabula_animata"
-    },
-    {
-      "item": "neovitae:blood_stained_glass"
-    }
+    "minecraft:cauldron",
+    "evilcraft:dark_gem",
+    "neovitae:tabula_animata",
+    "neovitae:blood_stained_glass"
   ],
   "output": {
     "id": "animusnv:sanguine_rectifier",

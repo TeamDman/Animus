@@ -9,7 +9,7 @@ import io.redspace.ironsspellbooks.api.spells.ISpellContainerMutable;
 import io.redspace.ironsspellbooks.item.SpellBook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class ItemBloodInfusedSpellbook extends SpellBook {
 
-    private static final ResourceLocation MANA_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "blood_spellbook_mana");
+    private static final Identifier MANA_MODIFIER_ID = Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "blood_spellbook_mana");
 
     public ItemBloodInfusedSpellbook() {
         super(5); // 5 base spell slots
@@ -255,7 +255,7 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         super.curioTick(slotContext, stack);
 
-        if (slotContext.entity().level().isClientSide) {
+        if (slotContext.entity().level().isClientSide()) {
             return;
         }
 
@@ -291,7 +291,7 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
 
-        if (slotContext.entity().level().isClientSide) {
+        if (slotContext.entity().level().isClientSide()) {
             return;
         }
 

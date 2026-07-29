@@ -54,7 +54,7 @@ public class RitualUnmaking extends Ritual {
         int currentEV = network.getCurrentEV();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
 

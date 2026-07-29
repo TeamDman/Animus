@@ -1,13 +1,8 @@
 {
   "type": "neovitae:array",
-  "addedinput": {
-    "item": "neovitae:tabula_robur"
-  },
-  "baseinput": {
-    "item": "animusnv:reagentfist"
-  },
+  "addedinput": "neovitae:tabula_robur",
+  "baseinput": "animusnv:reagentfist",
   "output": {
-    "count": 1,
     "id": "animusnv:sigil_monk"
   },
   "texture": "neovitae:textures/models/alchemyarrays/fastminersigil.png"

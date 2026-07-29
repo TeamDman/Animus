@@ -4,14 +4,15 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.items.*;
 import com.breakinblocks.animusnv.items.ItemReagent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -19,20 +20,20 @@ import com.breakinblocks.neovitae.common.item.sigil.SigilItem;
 import com.breakinblocks.neovitae.registry.SigilTypeRegistry;
 
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class AnimusItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.createItems(Constants.Mod.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Constants.Mod.MODID);
 
-    public static final DeferredHolder<Item, AnimusGuideBookItem> GUIDE_BOOK = ITEMS.register("guide_book", AnimusGuideBookItem::new);
+    public static final DeferredHolder<Item, AnimusGuideBookItem> GUIDE_BOOK = ITEMS.registerItem("guide_book", AnimusGuideBookItem::new);
 
     private static DeferredHolder<Item, Item> registerBlockItem(String name, DeferredHolder<Block, ? extends Block> block) {
-        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return ITEMS.registerItem(name, props -> new BlockItem(block.get(), props), Item.Properties::useBlockDescriptionPrefix);
     }
 
     private static DeferredHolder<Item, Item> registerSigil(String name, String sigilTypePath) {
-        return ITEMS.register(name, () -> new SigilItem(
-                SigilTypeRegistry.key(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, sigilTypePath))
+        return ITEMS.registerItem(name, props -> new SigilItem(props,
+                SigilTypeRegistry.key(Identifier.fromNamespaceAndPath(Constants.Mod.MODID, sigilTypePath))
         ));
     }
 
@@ -44,40 +45,40 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_WOOD_FENCE = registerBlockItem("blood_wood_fence", AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE);
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_WOOD_FENCE_GATE = registerBlockItem("blood_wood_fence_gate", AnimusBlocks.BLOCK_BLOOD_WOOD_FENCE_GATE);
 
-    public static final DeferredHolder<Item, Item> BLOCK_BLOOD_SAPLING = ITEMS.register("blood_sapling",
-        () -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_SAPLING.get(), new Item.Properties()) {
+    public static final DeferredHolder<Item, Item> BLOCK_BLOOD_SAPLING = ITEMS.registerItem("blood_sapling",
+        props -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_SAPLING.get(), props) {
             @Override
-            public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_SAPLING_FLAVOUR));
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_SAPLING_INFO));
-                super.appendHoverText(stack, context, tooltip, flag);
+            public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.BLOOD_SAPLING_FLAVOUR));
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.BLOOD_SAPLING_INFO));
+                super.appendHoverText(stack, context, display, tooltip, flag);
             }
-        });
+        }, Item.Properties::useBlockDescriptionPrefix);
 
-    public static final DeferredHolder<Item, Item> BLOCK_BLOOD_CORE = ITEMS.register("blood_core",
-        () -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_CORE.get(), new Item.Properties()) {
+    public static final DeferredHolder<Item, Item> BLOCK_BLOOD_CORE = ITEMS.registerItem("blood_core",
+        props -> new BlockItem(AnimusBlocks.BLOCK_BLOOD_CORE.get(), props) {
             @Override
-            public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_CORE_FLAVOUR));
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_CORE_INFO));
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.BLOOD_CORE_MULTIBLOCK));
-                super.appendHoverText(stack, context, tooltip, flag);
+            public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.BLOOD_CORE_FLAVOUR));
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.BLOOD_CORE_INFO));
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.BLOOD_CORE_MULTIBLOCK));
+                super.appendHoverText(stack, context, display, tooltip, flag);
             }
-        });
+        }, Item.Properties::useBlockDescriptionPrefix);
 
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_LEAVES = registerBlockItem("blood_leaves", AnimusBlocks.BLOCK_BLOOD_LEAVES);
     public static final DeferredHolder<Item, Item> BLOCK_ANTILIFE = registerBlockItem("antilife", AnimusBlocks.BLOCK_ANTILIFE);
 
-    public static final DeferredHolder<Item, Item> BLOCK_CRYSTALLIZED_SPIRITUS = ITEMS.register("crystallized_spiritus_block",
-        () -> new BlockItem(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get(), new Item.Properties()) {
+    public static final DeferredHolder<Item, Item> BLOCK_CRYSTALLIZED_SPIRITUS = ITEMS.registerItem("crystallized_spiritus_block",
+        props -> new BlockItem(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get(), props) {
             @Override
-            public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.CRYSTALLIZED_SPIRITUS_FLAVOUR));
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.CRYSTALLIZED_SPIRITUS_INFO));
-                tooltip.add(Component.translatable(Constants.Localizations.Tooltips.CRYSTALLIZED_SPIRITUS_ALTAR));
-                super.appendHoverText(stack, context, tooltip, flag);
+            public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.CRYSTALLIZED_SPIRITUS_FLAVOUR));
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.CRYSTALLIZED_SPIRITUS_INFO));
+                tooltip.accept(Component.translatable(Constants.Localizations.Tooltips.CRYSTALLIZED_SPIRITUS_ALTAR));
+                super.appendHoverText(stack, context, display, tooltip, flag);
             }
-        });
+        }, Item.Properties::useBlockDescriptionPrefix);
 
     // Imperfect Ritual Stone removed - use NeoVitae's native NVBlocks.IMPERFECT_RITUAL_STONE instead
 
@@ -100,57 +101,57 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE_RED = registerBlockItem("willful_stone_red", AnimusBlocks.BLOCK_WILLFUL_STONE_RED);
     public static final DeferredHolder<Item, Item> BLOCK_WILLFUL_STONE_BLACK = registerBlockItem("willful_stone_black", AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK);
 
-    public static final DeferredHolder<Item, Item> BLOOD_APPLE = ITEMS.register("blood_apple",
+    public static final DeferredHolder<Item, Item> BLOOD_APPLE = ITEMS.registerItem("blood_apple",
         ItemBloodApple::new);
 
-    public static final DeferredHolder<Item, Item> FRAGMENT_HEALING = ITEMS.register("fragment_healing",
+    public static final DeferredHolder<Item, Item> FRAGMENT_HEALING = ITEMS.registerItem("fragment_healing",
         ItemFragmentHealing::new);
 
     public static final DeferredHolder<Item, ItemBloodOrbTranscendent> BLOOD_ORB_TRANSCENDENT = AnimusBloodOrbs.BLOOD_ORB_TRANSCENDENT;
 
-    public static final DeferredHolder<Item, Item> MOBSOUL = ITEMS.register("mob_soul",
+    public static final DeferredHolder<Item, Item> MOBSOUL = ITEMS.registerItem("mob_soul",
         ItemMobSoul::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_BUILDER = ITEMS.register("reagentbuilder",
+    public static final DeferredHolder<Item, Item> REAGENT_BUILDER = ITEMS.registerItem("reagentbuilder",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_CHAINS = ITEMS.register("reagentchains",
+    public static final DeferredHolder<Item, Item> REAGENT_CHAINS = ITEMS.registerItem("reagentchains",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_CONSUMPTION = ITEMS.register("reagentconsumption",
+    public static final DeferredHolder<Item, Item> REAGENT_CONSUMPTION = ITEMS.registerItem("reagentconsumption",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_LEACH = ITEMS.register("reagentleach",
+    public static final DeferredHolder<Item, Item> REAGENT_LEACH = ITEMS.registerItem("reagentleach",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_STORM = ITEMS.register("reagentstorm",
+    public static final DeferredHolder<Item, Item> REAGENT_STORM = ITEMS.registerItem("reagentstorm",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_TRANSPOSITION = ITEMS.register("reagenttransposition",
+    public static final DeferredHolder<Item, Item> REAGENT_TRANSPOSITION = ITEMS.registerItem("reagenttransposition",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_BOUNDLESS_NATURE = ITEMS.register("reagentboundlessnature",
+    public static final DeferredHolder<Item, Item> REAGENT_BOUNDLESS_NATURE = ITEMS.registerItem("reagentboundlessnature",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_EQUIVALENCY = ITEMS.register("reagentequivalency",
+    public static final DeferredHolder<Item, Item> REAGENT_EQUIVALENCY = ITEMS.registerItem("reagentequivalency",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_FREE_SOUL = ITEMS.register("reagentfreesoul",
+    public static final DeferredHolder<Item, Item> REAGENT_FREE_SOUL = ITEMS.registerItem("reagentfreesoul",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_HEAVENLY_WRATH = ITEMS.register("reagentheavelywrath",
+    public static final DeferredHolder<Item, Item> REAGENT_HEAVENLY_WRATH = ITEMS.registerItem("reagentheavelywrath",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_REMEDIUM = ITEMS.register("reagentremendium",
+    public static final DeferredHolder<Item, Item> REAGENT_REMEDIUM = ITEMS.registerItem("reagentremendium",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_REPARARE = ITEMS.register("reagentreparare",
+    public static final DeferredHolder<Item, Item> REAGENT_REPARARE = ITEMS.registerItem("reagentreparare",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_TEMPORAL_DOMINANCE = ITEMS.register("reagenttemporaldominance",
+    public static final DeferredHolder<Item, Item> REAGENT_TEMPORAL_DOMINANCE = ITEMS.registerItem("reagenttemporaldominance",
         ItemReagent::new);
 
-    public static final DeferredHolder<Item, Item> REAGENT_FIST = ITEMS.register("reagentfist",
+    public static final DeferredHolder<Item, Item> REAGENT_FIST = ITEMS.registerItem("reagentfist",
         ItemReagent::new);
 
     public static final DeferredHolder<Item, Item> SIGIL_BUILDER = registerSigil("sigil_builder", "builder");
@@ -170,51 +171,51 @@ public class AnimusItems {
     // TODO: ItemSigilBoundlessNature needs to be ported from 1.20.1
     // public static final DeferredHolder<Item, Item> SIGIL_BOUNDLESS_NATURE = registerSigil("sigil_boundless_nature", "boundless_nature");
 
-    public static final DeferredHolder<Item, Item> SPEAR_IRON = ITEMS.register("spear_iron",
-        () -> new ItemSpear(Tiers.IRON));
+    public static final DeferredHolder<Item, Item> SPEAR_IRON = ITEMS.registerItem("spear_iron",
+        props -> new ItemSpear(ToolMaterial.IRON, props));
 
-    public static final DeferredHolder<Item, Item> SPEAR_DIAMOND = ITEMS.register("spear_diamond",
-        () -> new ItemSpear(Tiers.DIAMOND));
+    public static final DeferredHolder<Item, Item> SPEAR_DIAMOND = ITEMS.registerItem("spear_diamond",
+        props -> new ItemSpear(ToolMaterial.DIAMOND, props));
 
-    public static final DeferredHolder<Item, Item> SPEAR_BOUND = ITEMS.register("spear_bound",
+    public static final DeferredHolder<Item, Item> SPEAR_BOUND = ITEMS.registerItem("spear_bound",
         ItemSpearBound::new);
 
-    public static final DeferredHolder<Item, Item> SPEAR_SENTIENT = ITEMS.register("spear_sentient",
+    public static final DeferredHolder<Item, Item> SPEAR_SENTIENT = ITEMS.registerItem("spear_sentient",
         ItemSpearSentient::new);
 
-    public static final DeferredHolder<Item, Item> SENTIENT_SHIELD = ITEMS.register("sentient_shield",
+    public static final DeferredHolder<Item, Item> SENTIENT_SHIELD = ITEMS.registerItem("sentient_shield",
         ItemSentientShield::new);
 
-    public static final DeferredHolder<Item, Item> SENTIENT_BOW = ITEMS.register("sentient_bow",
+    public static final DeferredHolder<Item, Item> SENTIENT_BOW = ITEMS.registerItem("sentient_bow",
         ItemSentientBow::new);
 
-    public static final DeferredHolder<Item, Item> HELLFORGED_BOW = ITEMS.register("hellforged_bow",
+    public static final DeferredHolder<Item, Item> HELLFORGED_BOW = ITEMS.registerItem("hellforged_bow",
         ItemHellforgedBow::new);
 
-    public static final DeferredHolder<Item, Item> RUNIC_SENTIENT_SCYTHE = ITEMS.register("runic_sentient_scythe",
+    public static final DeferredHolder<Item, Item> RUNIC_SENTIENT_SCYTHE = ITEMS.registerItem("runic_sentient_scythe",
         ItemRunicSentientScythe::new);
 
-    public static final DeferredHolder<Item, Item> HAND_OF_DEATH = ITEMS.register("hand_of_death",
+    public static final DeferredHolder<Item, Item> HAND_OF_DEATH = ITEMS.registerItem("hand_of_death",
         ItemHandOfDeath::new);
 
-    public static final DeferredHolder<Item, Item> KEY_BINDING = ITEMS.register("key_binding",
+    public static final DeferredHolder<Item, Item> KEY_BINDING = ITEMS.registerItem("key_binding",
         ItemKeyBinding::new);
 
-    public static final DeferredHolder<Item, Item> ACTIVATION_CRYSTAL_FRAGILE = ITEMS.register("activation_crystal_fragile",
+    public static final DeferredHolder<Item, Item> ACTIVATION_CRYSTAL_FRAGILE = ITEMS.registerItem("activation_crystal_fragile",
         ItemActivationCrystalFragile::new);
 
-    public static final DeferredHolder<Item, Item> SANGUINE_DIVINER = ITEMS.register("sanguine_diviner",
+    public static final DeferredHolder<Item, Item> SANGUINE_DIVINER = ITEMS.registerItem("sanguine_diviner",
         ItemSanguineDiviner::new);
 
-    public static final DeferredHolder<Item, Item> ANTILIFE_BUCKET = ITEMS.register("antilife_bucket",
-        () -> new BucketItem(
+    public static final DeferredHolder<Item, Item> ANTILIFE_BUCKET = ITEMS.registerItem("antilife_bucket",
+        props -> new BucketItem(
             AnimusFluids.ANTILIFE_SOURCE.get(),
-            new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)
+            props.craftRemainder(Items.BUCKET).stacksTo(1)
         ));
 
-    public static final DeferredHolder<Item, Item> LIVING_TERRA_BUCKET = ITEMS.register("living_terra_bucket",
-        () -> new BucketItem(
+    public static final DeferredHolder<Item, Item> LIVING_TERRA_BUCKET = ITEMS.registerItem("living_terra_bucket",
+        props -> new BucketItem(
             AnimusFluids.LIVING_TERRA_SOURCE.get(),
-            new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)
+            props.craftRemainder(Items.BUCKET).stacksTo(1)
         ));
 }

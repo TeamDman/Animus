@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "usage",
+  "show_title_separator": true,
+  "sort_number": 1,
+  "text": "book.animusnv.guide.items.blood_apple.usage.text",
+  "title": "book.animusnv.guide.items.blood_apple.usage.title"
+}

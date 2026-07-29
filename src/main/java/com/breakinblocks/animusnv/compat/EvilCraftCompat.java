@@ -12,51 +12,52 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class EvilCraftCompat implements ICompatModule {
 
     private static EvilCraftCompat INSTANCE;
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.createBlocks(Constants.Mod.MODID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.createItems(Constants.Mod.MODID);
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Constants.Mod.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Constants.Mod.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
         DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Constants.Mod.MODID);
 
     public static final DeferredHolder<Block, BlockSanguineRectifier> SANGUINE_RECTIFIER =
-        BLOCKS.register("sanguine_rectifier", BlockSanguineRectifier::new);
+        BLOCKS.registerBlock("sanguine_rectifier", BlockSanguineRectifier::new, BlockSanguineRectifier::defaultProperties);
 
     public static final DeferredHolder<Item, BlockItem> SANGUINE_RECTIFIER_ITEM =
-        ITEMS.register("sanguine_rectifier", () -> new BlockItem(SANGUINE_RECTIFIER.get(), new Item.Properties()) {
+        ITEMS.registerItem("sanguine_rectifier", props -> new BlockItem(SANGUINE_RECTIFIER.get(), props) {
             @Override
-            public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-                tooltip.add(Component.translatable("tooltip.animusnv.sanguine_rectifier.desc")
+            public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+                tooltip.accept(Component.translatable("tooltip.animusnv.sanguine_rectifier.desc")
                     .withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.translatable("tooltip.animusnv.sanguine_rectifier.ev_to_blood")
+                tooltip.accept(Component.translatable("tooltip.animusnv.sanguine_rectifier.ev_to_blood")
                     .withStyle(ChatFormatting.DARK_RED));
-                tooltip.add(Component.translatable("tooltip.animusnv.sanguine_rectifier.blood_to_altar")
+                tooltip.accept(Component.translatable("tooltip.animusnv.sanguine_rectifier.blood_to_altar")
                     .withStyle(ChatFormatting.DARK_RED));
-                tooltip.add(Component.translatable("tooltip.animusnv.sanguine_rectifier.rate")
+                tooltip.accept(Component.translatable("tooltip.animusnv.sanguine_rectifier.rate")
                     .withStyle(ChatFormatting.DARK_AQUA));
                 if (!BlockEntitySanguineRectifier.isEvToBloodEnabled()) {
-                    tooltip.add(Component.translatable("tooltip.animusnv.sanguine_rectifier.ev_disabled")
+                    tooltip.accept(Component.translatable("tooltip.animusnv.sanguine_rectifier.ev_disabled")
                         .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC));
                 }
-                super.appendHoverText(stack, context, tooltip, flag);
+                super.appendHoverText(stack, context, display, tooltip, flag);
             }
-        });
+        }, Item.Properties::useBlockDescriptionPrefix);
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntitySanguineRectifier>> SANGUINE_RECTIFIER_BE =
-        BLOCK_ENTITIES.register("sanguine_rectifier", () -> BlockEntityType.Builder.of(
+        BLOCK_ENTITIES.register("sanguine_rectifier", () -> new BlockEntityType<BlockEntitySanguineRectifier>(
             BlockEntitySanguineRectifier::new,
             SANGUINE_RECTIFIER.get()
-        ).build(null));
+        ));
 
     public EvilCraftCompat() {
         INSTANCE = this;

@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -57,11 +57,11 @@ public class WorldEffectEventHandler {
             return;
         }
 
-        if (event.getSpawnType() == MobSpawnType.SPAWNER) {
+        if (event.getSpawnType() == EntitySpawnReason.SPAWNER) {
             return;
         }
 
-        if (event.getSpawnType() == MobSpawnType.CONVERSION) {
+        if (event.getSpawnType() == EntitySpawnReason.CONVERSION) {
             return;
         }
 
