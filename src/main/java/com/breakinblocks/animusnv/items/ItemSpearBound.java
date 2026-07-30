@@ -121,7 +121,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                 Binding binding = getBinding(stack);
 
                 if (binding == null) {
-                    onBind(player, stack);
+                    bind(player, stack);
                     player.sendOverlayMessage(
                         Component.translatable(Constants.Localizations.Text.SPEAR_BOUND_SUCCESS)
                             .withStyle(ChatFormatting.AQUA));
@@ -133,10 +133,14 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                         player.sendOverlayMessage(
                             Component.translatable(Constants.Localizations.Text.SPEAR_ACTIVATED)
                                 .withStyle(ChatFormatting.GREEN));
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                            SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.PLAYERS, 0.6F, 1.4F);
                     } else {
                         player.sendOverlayMessage(
                             Component.translatable(Constants.Localizations.Text.SPEAR_DEACTIVATED)
                                 .withStyle(ChatFormatting.GRAY));
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                            SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.PLAYERS, 0.6F, 1.2F);
                     }
                 }
             }
@@ -169,7 +173,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                 if (riptide <= 0 || player.isInWaterOrRain()) {
                     if (!level.isClientSide()) {
                         if (riptide == 0) {
-                            // Spawn our custom spear entity
                             EntityThrownSpear thrownSpear = new EntityThrownSpear(level, player, stack);
                             thrownSpear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
                             if (player.getAbilities().instabuild) {
