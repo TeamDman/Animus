@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.42-beta'
+    id 'me.modmuss50.mod-publish-plugin' version '1.1.0'
 }
 
 version = "${minecraft_version}-${mod_version}"
@@ -176,6 +177,65 @@ publishing {
                 username = System.getenv("MAVEN_USER") ?: ""
                 password = System.getenv("MAVEN_TOKEN") ?: ""
             }
+        }
+    }
+}
+
+publishMods {
+    file = jar.archiveFile
+    def changelogFile = file("metadata/changelogs/${mod_version}.md")
+    changelog = changelogFile.exists() ? changelogFile.text : "Release ${version}"
+    type = version.toString().endsWith("-SNAPSHOT") ? BETA : STABLE
+    modLoaders.add("neoforge")
+
+    curseforge {
+        projectId = curseforge_project_id
+        projectSlug = curseforge_project_slug
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        clientRequired = true
+        serverRequired = true
+        requires("neovitae", "geckolib", "modonomicon")
+        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum")
+    }
+
+    modrinth {
+        projectId = modrinth_project_id
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        requires("neovitae", "geckolib", "modonomicon")
+        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum")
+    }
+}
+
+tasks.register('publishMaven') {
+    description = 'Publishes the mod JAR to the BreakInBlocks Maven repository.'
+    group = 'publishing'
+    dependsOn 'publishMavenJavaPublicationToBreakInBlocksRepository'
+}
+
+tasks.register('publishMod') {
+    description = 'Publishes the mod to CurseForge, Modrinth, and the BreakInBlocks Maven repository.'
+    group = 'publishing'
+    dependsOn 'publishMods', 'publishMaven'
+}
+
+tasks.named('publishMods') {
+    finalizedBy 'publishMaven'
+}
+
+tasks.named('publishCurseforge') {
+    doFirst {
+        if (!curseforge_project_id) {
+            throw new GradleException("Set curseforge_project_id in gradle.properties before publishing.")
+        }
+    }
+}
+
+tasks.named('publishModrinth') {
+    doFirst {
+        if (!modrinth_project_id) {
+            throw new GradleException("Set modrinth_project_id in gradle.properties before publishing.")
         }
     }
 }
