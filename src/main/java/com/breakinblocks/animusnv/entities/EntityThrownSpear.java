@@ -107,7 +107,7 @@ public class EntityThrownSpear extends AbstractArrow {
 
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return this.spearItem.copy();
+        return this.spearItem == null ? ItemStack.EMPTY : this.spearItem.copy();
     }
 
     @Override

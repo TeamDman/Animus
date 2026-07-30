@@ -193,7 +193,7 @@ public class ItemHellforgedBow extends BowItem {
         if (ownerId == null) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
-                    Component.translatable("message.animus.hellforged_bow.not_bound")
+                    Component.translatable("text.component.animusnv.hellforged_bow.not_bound")
                         .withStyle(ChatFormatting.RED),
                     true
                 );
@@ -212,7 +212,7 @@ public class ItemHellforgedBow extends BowItem {
         if (network == null || network.getCurrentEV() < getBaseEvCost()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
-                    Component.translatable("message.animus.hellforged_bow.out_of_ev")
+                    Component.translatable("text.component.animusnv.hellforged_bow.no_ev")
                         .withStyle(ChatFormatting.RED),
                     true
                 );
@@ -291,7 +291,7 @@ public class ItemHellforgedBow extends BowItem {
             if (!level.isClientSide) {
                 bindToPlayer(stack, player);
                 player.displayClientMessage(
-                    Component.translatable("message.animus.hellforged_bow.bound")
+                    Component.translatable("text.component.animusnv.hellforged_bow.bound")
                         .withStyle(ChatFormatting.AQUA),
                     true
                 );
@@ -303,7 +303,7 @@ public class ItemHellforgedBow extends BowItem {
         if (network == null || network.getCurrentEV() < getBaseEvCost()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
-                    Component.translatable("message.animus.hellforged_bow.out_of_ev")
+                    Component.translatable("text.component.animusnv.hellforged_bow.no_ev")
                         .withStyle(ChatFormatting.RED),
                     true
                 );

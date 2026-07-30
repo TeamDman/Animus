@@ -32,7 +32,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("advancement.animusnv.fragment_of_life.title", "Fragment of Life");
         add("advancement.animusnv.heavenly_wrath.description", "Forge the Sigil of Heavenly Wrath to smite your enemies from above");
         add("advancement.animusnv.heavenly_wrath.title", "Heavenly Wrath");
-        add("advancement.animusnv.living_weapon.description", "Craft a weapon empowered by Spiritus - Sentient Spear, Shield, or Runic Scythe");
+        add("advancement.animusnv.living_weapon.description", "Craft a weapon empowered by Spiritus - Sentient Javelin, Shield, or Runic Scythe");
         add("advancement.animusnv.living_weapon.title", "Living Weapon");
         add("advancement.animusnv.root.description", "Craft a Sanguine Diviner to begin your journey into the deeper arts of Vitaemancy");
         add("advancement.animusnv.root.title", "Animus Awakens");
@@ -198,7 +198,8 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("guide.animusnv.entry.sigil_storm", "Sigil of the Storm");
         add("guide.animusnv.entry.sigil_temporal_dominance", "Sigil of Temporal Dominance");
         add("guide.animusnv.entry.sigil_transposition", "Sigil of Transposition");
-        add("guide.animusnv.entry.spears", "Spears");
+        add("entity.animusnv.thrown_spear", "Thrown Javelin");
+        add("guide.animusnv.entry.spears", "Javelins");
         add("guide.animusnv.entry.tier6_altar", "Tier 6 Altar");
         add("guide.animusnv.entry.welcome", "Welcome to Animus");
         add("guide.animusnv.entry.willful_stone", "Willful Stone");
@@ -254,10 +255,10 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("item.animusnv.sigil_storm", "Sigil of the Storm");
         add("item.animusnv.sigil_temporal_dominance", "Sigil of Temporal Dominance");
         add("item.animusnv.sigil_transposition", "Sigil of Transposition");
-        add("item.animusnv.spear_bound", "Bound Spear");
-        add("item.animusnv.spear_diamond", "Diamond Spear");
-        add("item.animusnv.spear_iron", "Iron Spear");
-        add("item.animusnv.spear_sentient", "Sentient Spear");
+        add("item.animusnv.spear_bound", "Bound Javelin");
+        add("item.animusnv.spear_diamond", "Diamond Javelin");
+        add("item.animusnv.spear_iron", "Iron Javelin");
+        add("item.animusnv.spear_sentient", "Sentient Javelin");
         add("itemGroup.animusnv", "Animus: NeoVitae");
         add("jei.animusnv.antilife.info", "Created when lightning strikes Essentia Vitae fluid from NeoVitae. Spreads to adjacent blocks, converting them into AntiLife. When touching Essentia Vitae, spreads as fluid instead.");
         add("jei.animusnv.antilife_block.info", "Created by the Sigil of Consumption or when AntiLife fluid touches solid blocks. Spreads to matching adjacent blocks up to the configured range.");
@@ -321,6 +322,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("jei.animusnv.sanguine_scroll.title.reinforced", "Sanguine Scroll (Robur)");
         add("living_upgrade.animusnv.arcane_channeling", "Arcane Channeling");
         add("living_upgrade.animusnv.source_attunement", "Source Attunement");
+        add("ritual.animusnv.boundless_skies.success", "The boundless skies embrace you - creative flight granted!");
         add("ritual.animusnv.clear_skies.success", "The skies clear at your command!");
         add("ritual.animusnv.enhancement.already_enhanced", "This item has already been enhanced!");
         add("ritual.animusnv.enhancement.no_enchantments", "This item has no enchantments to enhance!");
@@ -486,8 +488,10 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("text.component.animusnv.hand_of_death.execute", "⚰ EXECUTED: %s");
         add("text.component.animusnv.healing.cannot_drop", "Fragment of Healing cannot be dropped!");
         add("text.component.animusnv.healing.warning", "Warning: This item cannot be moved or dropped once obtained!");
+        add("text.component.animusnv.hellforged_bow.bound", "Hellforged Bow bound to you");
         add("text.component.animusnv.hellforged_bow.execute", "§4⚰ EXECUTED: %s");
         add("text.component.animusnv.hellforged_bow.no_ev", "Not enough EV to fire!");
+        add("text.component.animusnv.hellforged_bow.not_bound", "Hellforged Bow is not bound!");
         add("text.component.animusnv.key.cannot_bind_key", "A Key of Binding cannot bind another Key of Binding!");
         add("text.component.animusnv.key.item_bound", "Item bound to %s via Key of Binding");
         add("text.component.animusnv.monk.no_ev", "Not enough EV - Sigil of the Demon Monk deactivated");
@@ -498,9 +502,10 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("text.component.animusnv.reparare.deactivated", "Reparare Sigil deactivated");
         add("text.component.animusnv.reparare.no_ev", "Not enough EV - Reparare Sigil deactivated");
         add("text.component.animusnv.sacrifice.too_powerful", "This enemy is too powerful to be sacrificed!");
-        add("text.component.animusnv.spear.activated", "Bound Spear activated - 50EV per attack");
-        add("text.component.animusnv.spear.bound_success", "Bound Spear bound to you");
-        add("text.component.animusnv.spear.deactivated", "Bound Spear deactivated");
+        add("text.component.animusnv.sentient_bow.no_spiritus", "Not enough Spiritus to fire!");
+        add("text.component.animusnv.spear.activated", "Bound Javelin activated - 50EV per attack");
+        add("text.component.animusnv.spear.bound_success", "Bound Javelin bound to you");
+        add("text.component.animusnv.spear.deactivated", "Bound Javelin deactivated");
         add("text.component.animusnv.spear.no_ev_attack", "Not enough EV to attack!");
         add("text.component.animusnv.spear.no_ev_throw", "Not enough EV to throw!");
         add("text.component.animusnv.temporal.activated", "Temporal acceleration set to %sx speed for %s seconds");
@@ -581,6 +586,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.crystallized_spiritus.info", "Required component for Tier 6 Ara Vitaes");
         add("tooltip.animusnv.currentOwner", "Owner: %s");
 
+        add("tooltip.animusnv.hellforged_bow.spiritus_type", "Attuned Spiritus: %s");
         add("tooltip.animusnv.sanguine_rectifier.desc", "Converts Essentia Vitae to EvilCraft Blood and vice versa");
         add("tooltip.animusnv.sanguine_rectifier.ev_to_blood", "EV \u2192 Blood: Drains from bound Orb, fills adjacent tanks");
         add("tooltip.animusnv.sanguine_rectifier.blood_to_altar", "Blood \u2192 Altar: Pipe blood in, transfers to linked Ara Vitae");
@@ -706,7 +712,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.sigil.transposition.flavour", "Moves blocks");
         add("tooltip.animusnv.sigil.transposition.info", "Right-click to store/place blocks");
         add("tooltip.animusnv.sigil.transposition.stored", "Stored: %s");
-        add("tooltip.animusnv.spear_bound.behaves_diamond", "Behaves like Diamond Spear");
+        add("tooltip.animusnv.spear_bound.behaves_diamond", "Behaves like Diamond Javelin");
         add("tooltip.animusnv.spear_bound.bind", "Sneak + Right-Click to bind");
         add("tooltip.animusnv.spear_bound.bound_to", "Bound to: %s");
         add("tooltip.animusnv.spear_bound.cost", "Costs 50EV per attack/throw");
@@ -727,5 +733,19 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.spear_sentient.level", "Level: %s (%s Spiritus)");
         add("tooltip.animusnv.transposition.teleposer_location", "Teleposer: %s, %s, %s");
         add("tooltip.animusnv.unbound_bind", "Unbound - Right-click to bind");
+        add("tooltip.neovitae.sigil.builder.desc", "Accelerates block placement speed");
+        add("tooltip.neovitae.sigil.chains.desc", "Binds the soul of an enemy - right-click to capture into a Mob Soul");
+        add("tooltip.neovitae.sigil.consumption.desc", "Converts everything it touches to antilife");
+        add("tooltip.neovitae.sigil.crimson_will.desc", "Channels crimson will to empower spellcasting");
+        add("tooltip.neovitae.sigil.equivalency.desc", "Sneak + right-click to select blocks, right-click to replace all matching blocks in radius");
+        add("tooltip.neovitae.sigil.free_soul.desc", "Liberates the soul from the body for scouting");
+        add("tooltip.neovitae.sigil.heavenly_wrath.desc", "Levitates enemies then drops them for fall damage");
+        add("tooltip.neovitae.sigil.leach.desc", "Replenishes hunger using nearby plants or inventory crops");
+        add("tooltip.neovitae.sigil.monk.desc", "Enhances unarmed combat, mining, and defense");
+        add("tooltip.neovitae.sigil.remedium.desc", "Cleanses harmful effects");
+        add("tooltip.neovitae.sigil.reparare.desc", "Periodically repairs damaged items");
+        add("tooltip.neovitae.sigil.storm.desc", "Calls down lightning and disturbs fish");
+        add("tooltip.neovitae.sigil.temporal_dominance.desc", "Accelerates block entities, doubling speed with each use");
+        add("tooltip.neovitae.sigil.transposition.desc", "Right-click to store and place blocks");
     }
 }

@@ -52,7 +52,7 @@ public class EntityHellforgedArrow extends AbstractArrow {
     }
 
     public EntityHellforgedArrow(Level level, LivingEntity shooter) {
-        super(AnimusEntityTypes.HELLFORGED_ARROW.get(), shooter, level, ItemStack.EMPTY, ItemStack.EMPTY);
+        super(AnimusEntityTypes.HELLFORGED_ARROW.get(), shooter, level, ItemStack.EMPTY, null);
         this.pickup = Pickup.DISALLOWED;
     }
 

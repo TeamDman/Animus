@@ -28,38 +28,38 @@ public class SpearsEntry extends EntryProvider {
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Spears");
+        this.pageTitle("Javelins");
         this.pageText("Roman-style throwable javelins. Hold right-click to charge, then release to "
-                + "throw. Spears deal area-of-effect damage where they land, making them effective "
+                + "throw. Javelins deal area-of-effect damage where they land, making them effective "
                 + "against clustered enemies.");
 
         this.page("iron", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Iron Spear");
-        this.pageText("The [#](8B0000)Iron Spear[#]() is the basic variant, with serviceable damage and "
+        this.pageTitle("Iron Javelin");
+        this.pageText("The [#](8B0000)Iron Javelin[#]() is the basic variant, with serviceable damage and "
                 + "durability for its cost. Supports enchantments such as Sharpness and Looting.");
 
         this.page("diamond", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Diamond Spear");
-        this.pageText("The [#](8B0000)Diamond Spear[#]() offers higher damage and durability than "
+        this.pageTitle("Diamond Javelin");
+        this.pageText("The [#](8B0000)Diamond Javelin[#]() offers higher damage and durability than "
                 + "iron, but functions identically. A worthy upgrade for those who can afford it.");
 
         this.page("bound", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Bound Spear");
-        this.pageText("The [#](8B0000)Bound Spear[#]() is a soul-bound weapon with two modes. "
-                + "While deactivated, it behaves like a diamond spear. Sneak + right-click to toggle "
+        this.pageTitle("Bound Javelin");
+        this.pageText("The [#](8B0000)Bound Javelin[#]() is a soul-bound weapon with two modes. "
+                + "While deactivated, it behaves like a diamond javelin. Sneak + right-click to toggle "
                 + "its activated state.");
 
         this.page("bound_active", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Activated Features");
-        this.pageText("When activated, the Bound Spear costs [#](4A0080)50 EV[#]() per attack or "
+        this.pageText("When activated, the Bound Javelin costs [#](4A0080)50 EV[#]() per attack or "
                 + "throw, and gains:\n\n"
                 + "- AOE melee damage (5 block radius)\n\n"
                 + "- Enemies near an Ara Vitae are sacrificed (instant kill + EV to altar)\n\n"
@@ -69,7 +69,7 @@ public class SpearsEntry extends EntryProvider {
 
     @Override
     protected String entryName() {
-        return "Spears";
+        return "Javelins";
     }
 
     @Override

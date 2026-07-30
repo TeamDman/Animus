@@ -119,7 +119,7 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                 Binding binding = getBinding(stack);
 
                 if (binding == null) {
-                    onBind(player, stack);
+                    bind(player, stack);
                     player.displayClientMessage(
                         Component.translatable(Constants.Localizations.Text.SPEAR_BOUND_SUCCESS)
                             .withStyle(ChatFormatting.AQUA),
@@ -135,12 +135,16 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
                                 .withStyle(ChatFormatting.GREEN),
                             true
                         );
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                            SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.PLAYERS, 0.6F, 1.4F);
                     } else {
                         player.displayClientMessage(
                             Component.translatable(Constants.Localizations.Text.SPEAR_DEACTIVATED)
                                 .withStyle(ChatFormatting.GRAY),
                             true
                         );
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                            SoundEvents.RESPAWN_ANCHOR_DEPLETE.value(), SoundSource.PLAYERS, 0.6F, 1.2F);
                     }
                 }
             }
