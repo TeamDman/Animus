@@ -49,7 +49,7 @@ public class EntitySentientArrow extends AbstractArrow {
     }
 
     public EntitySentientArrow(Level level, LivingEntity shooter) {
-        super(AnimusEntityTypes.SENTIENT_ARROW.get(), shooter, level, ItemStack.EMPTY, ItemStack.EMPTY);
+        super(AnimusEntityTypes.SENTIENT_ARROW.get(), shooter, level, ItemStack.EMPTY, null);
         this.pickup = Pickup.DISALLOWED;
     }
 

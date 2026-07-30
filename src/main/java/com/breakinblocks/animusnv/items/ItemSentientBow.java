@@ -113,7 +113,7 @@ public class ItemSentientBow extends BowItem {
         if (!player.getAbilities().instabuild && soulsRemaining < getSpiritusCostPerShot()) {
             if (!level.isClientSide()) {
                 player.sendOverlayMessage(
-                    Component.translatable("message.animus.sentient_bow.out_of_spiritus")
+                    Component.translatable("text.component.animusnv.sentient_bow.no_spiritus")
                         .withStyle(ChatFormatting.RED));
             }
             return InteractionResult.FAIL;
@@ -135,7 +135,7 @@ public class ItemSentientBow extends BowItem {
         if (soulsRemaining < getSpiritusCostPerShot()) {
             if (!level.isClientSide()) {
                 player.sendOverlayMessage(
-                    Component.translatable("message.animus.sentient_bow.out_of_spiritus")
+                    Component.translatable("text.component.animusnv.sentient_bow.no_spiritus")
                         .withStyle(ChatFormatting.RED));
             }
             return false;

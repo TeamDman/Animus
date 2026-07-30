@@ -3,8 +3,11 @@ package com.breakinblocks.animusnv.items;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,12 +16,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.TooltipDisplay;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.item.soul.SpiritusTooltipHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -32,7 +37,17 @@ public class ItemSentientShield extends ShieldItem {
     private static final int SENTIENT_SHIELD_DURABILITY = 336 * 4; // 1344
 
     public ItemSentientShield(Properties props) {
-        super(props.durability(SENTIENT_SHIELD_DURABILITY));
+        super(props.durability(SENTIENT_SHIELD_DURABILITY)
+            .equippableUnswappable(EquipmentSlot.OFFHAND)
+            .delayedComponent(DataComponents.BLOCKS_ATTACKS, context -> new BlocksAttacks(
+                0.25F,
+                1.0F,
+                List.of(new BlocksAttacks.DamageReduction(90.0F, Optional.empty(), 0.0F, 1.0F)),
+                new BlocksAttacks.ItemDamageFunction(3.0F, 1.0F, 1.0F),
+                Optional.of(context.getOrThrow(DamageTypeTags.BYPASSES_SHIELD)),
+                Optional.of(SoundEvents.SHIELD_BLOCK),
+                Optional.of(SoundEvents.SHIELD_BREAK)))
+            .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK));
     }
 
     @Override

@@ -325,6 +325,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("jei.animusnv.sanguine_scroll.title.reinforced", "Sanguine Scroll (Robur)");
         add("living_upgrade.animusnv.arcane_channeling", "Arcane Channeling");
         add("living_upgrade.animusnv.source_attunement", "Source Attunement");
+        add("ritual.animusnv.boundless_skies.success", "The boundless skies embrace you - creative flight granted!");
         add("ritual.animusnv.clear_skies.success", "The skies clear at your command!");
         add("ritual.animusnv.enhancement.already_enhanced", "This item has already been enhanced!");
         add("ritual.animusnv.enhancement.no_enchantments", "This item has no enchantments to enhance!");
@@ -490,8 +491,10 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("text.component.animusnv.hand_of_death.execute", "⚰ EXECUTED: %s");
         add("text.component.animusnv.healing.cannot_drop", "Fragment of Healing cannot be dropped!");
         add("text.component.animusnv.healing.warning", "Warning: This item cannot be moved or dropped once obtained!");
+        add("text.component.animusnv.hellforged_bow.bound", "Hellforged Bow bound to you");
         add("text.component.animusnv.hellforged_bow.execute", "§4⚰ EXECUTED: %s");
         add("text.component.animusnv.hellforged_bow.no_ev", "Not enough EV to fire!");
+        add("text.component.animusnv.hellforged_bow.not_bound", "Hellforged Bow is not bound!");
         add("text.component.animusnv.key.cannot_bind_key", "A Key of Binding cannot bind another Key of Binding!");
         add("text.component.animusnv.key.item_bound", "Item bound to %s via Key of Binding");
         add("text.component.animusnv.monk.no_ev", "Not enough EV - Sigil of the Demon Monk deactivated");
@@ -502,6 +505,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("text.component.animusnv.reparare.deactivated", "Reparare Sigil deactivated");
         add("text.component.animusnv.reparare.no_ev", "Not enough EV - Reparare Sigil deactivated");
         add("text.component.animusnv.sacrifice.too_powerful", "This enemy is too powerful to be sacrificed!");
+        add("text.component.animusnv.sentient_bow.no_spiritus", "Not enough Spiritus to fire!");
         add("text.component.animusnv.spear.activated", "Bound Spear activated - 50EV per attack");
         add("text.component.animusnv.spear.bound_success", "Bound Spear bound to you");
         add("text.component.animusnv.spear.deactivated", "Bound Spear deactivated");
@@ -622,6 +626,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.hellforged_bow.info", "Draws power from your Essentia Vitae network");
         add("tooltip.animusnv.hellforged_bow.ev_cost", "Base EV cost: %s per shot");
         add("tooltip.animusnv.hellforged_bow.piercing", "Arrows pierce through enemies");
+        add("tooltip.animusnv.hellforged_bow.spiritus_type", "Attuned Spiritus: %s");
         add("tooltip.animusnv.imperfect_ritual_stone.info", "Place a block on top and right-click to activate a ritual");
         add("tooltip.animusnv.key", "Key Binding");
         add("tooltip.animusnv.key.curio", "Equip in curio slot or hold in offhand to bind items");
@@ -731,6 +736,20 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.spear_sentient.level", "Level: %s (%s Spiritus)");
         add("tooltip.animusnv.transposition.teleposer_location", "Teleposer: %s, %s, %s");
         add("tooltip.animusnv.unbound_bind", "Unbound - Right-click to bind");
+        add("tooltip.neovitae.sigil.builder.desc", "Accelerates block placement speed");
+        add("tooltip.neovitae.sigil.chains.desc", "Binds the soul of an enemy - right-click to capture into a Mob Soul");
+        add("tooltip.neovitae.sigil.consumption.desc", "Converts everything it touches to antilife");
+        add("tooltip.neovitae.sigil.crimson_will.desc", "Channels crimson will to empower spellcasting");
+        add("tooltip.neovitae.sigil.equivalency.desc", "Sneak + right-click to select blocks, right-click to replace all matching blocks in radius");
+        add("tooltip.neovitae.sigil.free_soul.desc", "Liberates the soul from the body for scouting");
+        add("tooltip.neovitae.sigil.heavenly_wrath.desc", "Levitates enemies then drops them for fall damage");
+        add("tooltip.neovitae.sigil.leach.desc", "Replenishes hunger using nearby plants or inventory crops");
+        add("tooltip.neovitae.sigil.monk.desc", "Enhances unarmed combat, mining, and defense");
+        add("tooltip.neovitae.sigil.remedium.desc", "Cleanses harmful effects");
+        add("tooltip.neovitae.sigil.reparare.desc", "Periodically repairs damaged items");
+        add("tooltip.neovitae.sigil.storm.desc", "Calls down lightning and disturbs fish");
+        add("tooltip.neovitae.sigil.temporal_dominance.desc", "Accelerates block entities, doubling speed with each use");
+        add("tooltip.neovitae.sigil.transposition.desc", "Right-click to store and place blocks");
 
         this.langCache.data().forEach(this::add);
     }
