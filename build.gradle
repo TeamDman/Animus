@@ -86,7 +86,7 @@ def ironsSpellsData = [
         'data/animusnv/recipe/ara_vitae/blood_infused_spellbook_*.json',
         'data/animusnv/advancements/arcane_blood.json',
         'data/animusnv/advancements/sanguine_scroll.json',
-        'data/curios/tags/items/spellbook.json',
+        'data/curios/tags/item/spellbook.json',
         'data/animusnv/modonomicon/books/guide/entries/compatibility/blood_infused_spellbook.json',
         'data/animusnv/modonomicon/books/guide/entries/compatibility/blood_infused_spellbook/**',
         'data/animusnv/modonomicon/books/guide/entries/compatibility/sanguine_scrolls.json',
