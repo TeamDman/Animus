@@ -10,6 +10,17 @@
   "name": "book.animusnv.guide.rituals.persistence.name",
   "pages": [
     {
+      "type": "modonomicon:multiblock",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "multiblock_id": "neovitae:ritual/ritual_persistence",
+      "multiblock_name": "Ritual of Persistence",
+      "show_visualize_button": true,
+      "text": "book.animusnv.guide.rituals.persistence.multiblock.text"
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {

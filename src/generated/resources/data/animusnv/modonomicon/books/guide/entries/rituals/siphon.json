@@ -10,6 +10,17 @@
   "name": "book.animusnv.guide.rituals.siphon.name",
   "pages": [
     {
+      "type": "modonomicon:multiblock",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "multiblock_id": "neovitae:ritual/ritual_siphon",
+      "multiblock_name": "Ritual of Siphon",
+      "show_visualize_button": true,
+      "text": "book.animusnv.guide.rituals.siphon.multiblock.text"
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {

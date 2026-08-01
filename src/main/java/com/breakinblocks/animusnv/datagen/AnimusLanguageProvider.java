@@ -260,6 +260,9 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("item.animusnv.spear_iron", "Iron Javelin");
         add("item.animusnv.spear_sentient", "Sentient Javelin");
         add("itemGroup.animusnv", "Animus: NeoVitae");
+        add("jei.animusnv.alias.book", "Book");
+        add("jei.animusnv.alias.guide", "Guide");
+        add("jei.animusnv.alias.manual", "Manual");
         add("jei.animusnv.antilife.info", "Created when lightning strikes Essentia Vitae fluid from NeoVitae. Spreads to adjacent blocks, converting them into AntiLife. When touching Essentia Vitae, spreads as fluid instead.");
         add("jei.animusnv.antilife_block.info", "Created by the Sigil of Consumption or when AntiLife fluid touches solid blocks. Spreads to matching adjacent blocks up to the configured range.");
         add("jei.animusnv.blood_apple.info", "Blood Apples are obtained by harvesting Blood Tree Leaves. They restore 4 hunger and 9.6 saturation when eaten, and grant 200 EV to your Anima. Blood Trees grow from Blood Saplings, which can be created at the Ara Vitae.");

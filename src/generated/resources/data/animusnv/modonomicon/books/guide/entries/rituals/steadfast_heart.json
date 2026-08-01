@@ -10,6 +10,17 @@
   "name": "book.animusnv.guide.rituals.steadfast_heart.name",
   "pages": [
     {
+      "type": "modonomicon:multiblock",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "multiblock_id": "neovitae:ritual/ritual_steadfast_heart",
+      "multiblock_name": "Ritual of the Steadfast Heart",
+      "show_visualize_button": true,
+      "text": "book.animusnv.guide.rituals.steadfast_heart.multiblock.text"
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {

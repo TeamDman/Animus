@@ -10,6 +10,17 @@
   "name": "book.animusnv.guide.rituals.natures_leach.name",
   "pages": [
     {
+      "type": "modonomicon:multiblock",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "multiblock_id": "neovitae:ritual/ritual_natures_leach",
+      "multiblock_name": "Ritual of Nature's Leach",
+      "show_visualize_button": true,
+      "text": "book.animusnv.guide.rituals.natures_leach.multiblock.text"
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {

@@ -10,6 +10,17 @@
   "name": "book.animusnv.guide.rituals.animal_luring.name",
   "pages": [
     {
+      "type": "modonomicon:multiblock",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "multiblock_id": "neovitae:ritual/ritual_animal_luring",
+      "multiblock_name": "Ritual of Animal Luring",
+      "show_visualize_button": true,
+      "text": "book.animusnv.guide.rituals.animal_luring.multiblock.text"
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {

@@ -10,6 +10,17 @@
   "name": "book.animusnv.guide.rituals.relentless_tides.name",
   "pages": [
     {
+      "type": "modonomicon:multiblock",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "multiblock_id": "neovitae:ritual/ritual_relentless_tides",
+      "multiblock_name": "Ritual of Relentless Tides",
+      "show_visualize_button": true,
+      "text": "book.animusnv.guide.rituals.relentless_tides.multiblock.text"
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {

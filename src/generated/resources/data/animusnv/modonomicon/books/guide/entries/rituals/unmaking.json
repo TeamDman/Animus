@@ -10,6 +10,17 @@
   "name": "book.animusnv.guide.rituals.unmaking.name",
   "pages": [
     {
+      "type": "modonomicon:multiblock",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "multiblock_id": "neovitae:ritual/ritual_unmaking",
+      "multiblock_name": "Ritual of Unmaking",
+      "show_visualize_button": true,
+      "text": "book.animusnv.guide.rituals.unmaking.multiblock.text"
+    },
+    {
       "type": "modonomicon:text",
       "anchor": "",
       "condition": {

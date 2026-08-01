@@ -4,8 +4,10 @@ import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.EntryBackground;
 import com.klikli_dev.modonomicon.api.datagen.EntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookMultiblockPageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
 public class RelentlessTidesEntry extends EntryProvider {
@@ -16,6 +18,12 @@ public class RelentlessTidesEntry extends EntryProvider {
 
     @Override
     protected void generatePages() {
+        this.page("multiblock", () -> BookMultiblockPageModel.create()
+                .withMultiblockId(ResourceLocation.fromNamespaceAndPath("neovitae", "ritual/ritual_relentless_tides"))
+                .withMultiblockName("Ritual of Relentless Tides")
+                .withText(this.context().pageText()));
+        this.pageText("[#](2E8B57)Built from standard runes; any Ritual Diviner will serve.[#]()");
+
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
