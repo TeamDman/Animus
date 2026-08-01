@@ -3,6 +3,7 @@ package com.breakinblocks.animusnv.datagen.book.compatibility;
 import com.klikli_dev.modonomicon.api.datagen.CategoryProvider;
 import com.klikli_dev.modonomicon.api.datagen.ModonomiconProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
+import com.klikli_dev.modonomicon.api.datagen.book.condition.BookModLoadedConditionModel;
 import net.minecraft.world.item.Items;
 
 public class CompatCategory extends CategoryProvider {
@@ -23,7 +24,8 @@ public class CompatCategory extends CategoryProvider {
     @Override
     protected void generateEntries() {
         // Ars Nouveau
-        var arcaneRune = this.add(new ArcaneRuneEntry(this).generate('a'));
+        var arcaneRune = this.add(new ArcaneRuneEntry(this).generate('a')
+                .withCondition(BookModLoadedConditionModel.create().withModId("ars_nouveau")));
         var runeUnleashedNature = this.add(new RuneUnleashedNatureEntry(this).generate('b'));
         var magi = this.add(new MagiEntry(this).generate('c'));
         // Iron's Spells

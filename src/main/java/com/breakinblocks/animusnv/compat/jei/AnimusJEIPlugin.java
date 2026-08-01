@@ -9,6 +9,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.registration.IIngredientAliasRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -101,6 +102,19 @@ public class AnimusJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+    }
+
+    @Override
+    public void registerIngredientAliases(IIngredientAliasRegistration registration) {
+        registration.addAliases(
+            VanillaTypes.ITEM_STACK,
+            List.of(new ItemStack(AnimusItems.GUIDE_BOOK.get())),
+            List.of(
+                "jei.animusnv.alias.guide",
+                "jei.animusnv.alias.book",
+                "jei.animusnv.alias.manual"
+            )
+        );
     }
 
     @Override

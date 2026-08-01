@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "animusnv:arcane_rune"
+    {
+      "id": "animusnv:arcane_rune",
+      "required": false
+    }
   ]
 }
