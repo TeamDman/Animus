@@ -1,0 +1,12 @@
+{
+  "type": "modonomicon:multiblock",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "multiblock",
+  "multiblock_id": "neovitae:ritual/ritual_serenity",
+  "multiblock_name": "Ritual of Serenity",
+  "show_visualize_button": true,
+  "sort_number": 0,
+  "text": "book.animusnv.guide.rituals.serenity.multiblock.text"
+}

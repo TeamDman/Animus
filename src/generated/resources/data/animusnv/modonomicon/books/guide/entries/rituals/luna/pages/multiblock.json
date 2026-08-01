@@ -1,0 +1,12 @@
+{
+  "type": "modonomicon:multiblock",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "multiblock",
+  "multiblock_id": "neovitae:ritual/ritual_luna",
+  "multiblock_name": "Ritual of Luna",
+  "show_visualize_button": true,
+  "sort_number": 0,
+  "text": "book.animusnv.guide.rituals.luna.multiblock.text"
+}

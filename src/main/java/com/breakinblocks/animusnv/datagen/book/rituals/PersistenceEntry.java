@@ -4,8 +4,10 @@ import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.EntryBackground;
 import com.klikli_dev.modonomicon.api.datagen.EntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookMultiblockPageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.klikli_dev.modonomicon.client.gui.book.theme.GuiSprite;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 
 public class PersistenceEntry extends EntryProvider {
@@ -16,6 +18,12 @@ public class PersistenceEntry extends EntryProvider {
 
     @Override
     protected void generatePages() {
+        this.page("multiblock", () -> BookMultiblockPageModel.create()
+                .withMultiblockId(Identifier.fromNamespaceAndPath("neovitae", "ritual/ritual_persistence"))
+                .withMultiblockName("Ritual of Persistence")
+                .withText(this.context().pageText()));
+        this.pageText("[#](2E8B57)Use a Ritual Diviner [Dusk] for easier construction.[#]()");
+
         this.page("intro", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
