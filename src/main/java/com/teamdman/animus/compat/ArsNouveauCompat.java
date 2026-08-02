@@ -2,6 +2,7 @@ package com.teamdman.animus.compat;
 
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.rituals.RitualSourceVitaeum;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -100,6 +101,8 @@ public class ArsNouveauCompat implements ICompatModule {
 
         // Register Arcane Rune as a valid BLOODRUNE component for Blood Magic altars
         registerAltarComponent();
+
+        BloodMagicRitualInjector.register(Constants.Rituals.SOURCE_VITAEUM, new RitualSourceVitaeum());
 
         Animus.LOGGER.info("Ars Nouveau compatibility initialized successfully");
     }

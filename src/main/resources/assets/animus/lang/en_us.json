@@ -366,6 +366,7 @@
   "tooltip.animus.imperfect_ritual_stone.info": "Place a block on top and right-click to activate a ritual",
   "ritual.animus.imperfect_stone.no_ritual": "No ritual found for block: %s",
   "ritual.animus.imperfect_stone.not_enough_lp": "Not enough LP! Need: %s",
+  "ritual.animus.imperfect_stone.no_network": "Could not access your Soul Network.",
   "ritual.animus.imperfect_stone.ticket": "Imperfect Ritual: %s",
   "ritual.animus.imperfect_stone.activated": "Ritual activated!",
   "ritual.animus.regression.no_item": "You must be holding an item to perform this ritual!",

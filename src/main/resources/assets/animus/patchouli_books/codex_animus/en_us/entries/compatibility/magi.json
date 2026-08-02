@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.imperfect_ritual_magi",
   "icon": "ars_nouveau:source_gem_block",
   "category": "animus:compatibility",
+  "flag": "mod:ars_nouveau",
   "sortnum": 22,
   "pages": [
     {

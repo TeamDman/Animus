@@ -7,6 +7,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -18,9 +20,8 @@ import wayoftime.bloodmagic.core.data.SoulTicket;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
 /**
- * Imperfect Ritual Stone - One-time use ritual activation block
+ * Imperfect Ritual Stone - Reusable ritual activation block
  * Right-click to activate ritual based on block placed on top
- * Consumes LP and destroys itself after use
  */
 public class BlockImperfectRitualStone extends Block {
 
@@ -52,54 +53,53 @@ public class BlockImperfectRitualStone extends Block {
         if (recipe.isEmpty()) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.imperfect_stone.no_ritual", aboveState.getBlock().getName()),
-                true
+                false
             );
             return InteractionResult.FAIL;
         }
 
         var ritualRecipe = recipe.get();
 
-        // Get player's soul network
         SoulNetwork network = NetworkHelper.getSoulNetwork(serverPlayer);
         if (network == null) {
+            player.displayClientMessage(
+                Component.translatable("ritual.animus.imperfect_stone.no_network"),
+                false
+            );
             return InteractionResult.FAIL;
         }
 
-        // Check LP cost
         int lpCost = ritualRecipe.getLpCost();
         if (network.getCurrentEssence() < lpCost) {
             player.displayClientMessage(
                 Component.translatable("ritual.animus.imperfect_stone.not_enough_lp", lpCost),
-                true
+                false
             );
             network.causeNausea();
             return InteractionResult.FAIL;
         }
 
-        // Consume LP
+        if (!ritualRecipe.onActivate(serverLevel, pos, abovePos, serverPlayer)) {
+            return InteractionResult.FAIL;
+        }
+
         network.syphon(new SoulTicket(
             Component.translatable("ritual.animus.imperfect_stone.ticket", ritualRecipe.getRitualKey()),
             lpCost
         ));
 
-        // Execute ritual effect
-        boolean success = ritualRecipe.onActivate(serverLevel, pos, abovePos, serverPlayer);
-
-        if (success) {
-            // Summon visual-only lightning strike at ritual stone position (no fire, no thunder)
-            net.minecraft.world.entity.LightningBolt lightning = net.minecraft.world.entity.EntityType.LIGHTNING_BOLT.create(serverLevel);
-            if (lightning != null) {
-                lightning.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-                lightning.setVisualOnly(true); // Visual only - no fire, no thunder
-                serverLevel.addFreshEntity(lightning);
-            }
-
-            player.displayClientMessage(
-                Component.translatable("ritual.animus.imperfect_stone.activated"),
-                true
-            );
+        LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(serverLevel);
+        if (lightning != null) {
+            lightning.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            lightning.setVisualOnly(true);
+            serverLevel.addFreshEntity(lightning);
         }
 
-        return success ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+        player.displayClientMessage(
+            Component.translatable("ritual.animus.imperfect_stone.activated"),
+            false
+        );
+
+        return InteractionResult.SUCCESS;
     }
 }

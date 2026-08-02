@@ -42,11 +42,6 @@ public class MagiRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean matches(BlockState state) {
-        // Only match if Ars Nouveau is loaded and the block is source_gem_block
-        if (!CompatHandler.isArsNouveauLoaded()) {
-            return false;
-        }
-
         Block sourceGemBlock = ForgeRegistries.BLOCKS.getValue(SOURCE_GEM_BLOCK_ID);
         if (sourceGemBlock == null || sourceGemBlock == Blocks.AIR) {
             return false;

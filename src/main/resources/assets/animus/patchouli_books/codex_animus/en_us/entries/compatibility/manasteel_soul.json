@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.imperfect_ritual_manasteel_soul",
   "icon": "botania:manasteel_block",
   "category": "animus:compatibility",
+  "flag": "mod:botania",
   "sortnum": 20,
   "pages": [
     {

@@ -33,8 +33,9 @@ import java.util.function.Consumer;
  * Activation Cost: 10000 LP
  * Refresh Cost: 0 LP (conversion happens via Source drain)
  * Refresh Time: Based on altar speed (default 40 ticks / 2 seconds)
+ *
+ * Note: Do NOT add @RitualRegister here - registration is done in ArsNouveauCompat
  */
-@RitualRegister(Constants.Rituals.SOURCE_VITAEUM)
 public class RitualSourceVitaeum extends Ritual {
 
     public RitualSourceVitaeum() {

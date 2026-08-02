@@ -44,11 +44,6 @@ public class ManasteelSoulRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean matches(BlockState state) {
-        // Only match if Botania is loaded and the block is manasteel_block
-        if (!CompatHandler.isBotaniaLoaded()) {
-            return false;
-        }
-
         Block manasteelBlock = ForgeRegistries.BLOCKS.getValue(MANASTEEL_BLOCK_ID);
         if (manasteelBlock == null || manasteelBlock == Blocks.AIR) {
             return false;

@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.imperfect_ritual_iron_heart",
   "icon": "irons_spellbooks:arcane_anvil",
   "category": "animus:compatibility",
+  "flag": "mod:irons_spellbooks",
   "sortnum": 23,
   "pages": [
     {

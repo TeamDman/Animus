@@ -42,11 +42,6 @@ public class SoulStainedBloodRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean matches(BlockState state) {
-        // Only match if Malum is loaded and the block is block_of_hallowed_gold
-        if (!CompatHandler.isMalumLoaded()) {
-            return false;
-        }
-
         Block hallowedGoldBlock = ForgeRegistries.BLOCKS.getValue(HALLOWED_GOLD_BLOCK_ID);
         if (hallowedGoldBlock == null || hallowedGoldBlock == Blocks.AIR) {
             return false;

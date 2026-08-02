@@ -2,6 +2,7 @@
   "name": "guide.animus.entry.imperfect_ritual_soul_stained_blood",
   "icon": "malum:block_of_hallowed_gold",
   "category": "animus:compatibility",
+  "flag": "mod:malum",
   "sortnum": 21,
   "pages": [
     {

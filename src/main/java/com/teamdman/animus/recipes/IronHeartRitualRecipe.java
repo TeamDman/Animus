@@ -42,11 +42,6 @@ public class IronHeartRitualRecipe extends ImperfectRitualRecipe {
 
     @Override
     public boolean matches(BlockState state) {
-        // Only match if Iron's Spellbooks is loaded and the block is arcane_anvil
-        if (!CompatHandler.isIronsSpellsLoaded()) {
-            return false;
-        }
-
         Block arcaneAnvil = ForgeRegistries.BLOCKS.getValue(ARCANE_ANVIL_ID);
         if (arcaneAnvil == null || arcaneAnvil == Blocks.AIR) {
             return false;

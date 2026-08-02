@@ -21,7 +21,12 @@
     {
       "type": "patchouli:text",
       "title": "Even More Rituals",
-      "text": "$(bold)Ritual of Boundless Skies$()$(br)Block: Ancient Debris$(br)Cost: 10000 LP$(br)Effect: 10 minutes of creative flight$(br2)$(bold)Ritual of Clear Skies$()$(br)Block: Lapis Block$(br)Cost: 1000 LP$(br)Effect: Clears weather for ~5 minutes"
+      "text": "$(bold)Ritual of Boundless Skies$()$(br)Block: Ancient Debris$(br)Cost: 10000 LP$(br)Effect: 15 minutes of creative flight$(br2)$(bold)Ritual of Clear Skies$()$(br)Block: Glowstone$(br)Cost: 1000 LP$(br)Effect: Clears weather for ~5 minutes"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Blessings",
+      "text": "$(bold)Ritual of Neptune's Blessing$()$(br)Block: Prismarine$(br)Cost: 2000 LP$(br)Effect: Water Breathing and Dolphin's Grace$(br2)$(bold)Ritual of the Warden$()$(br)Block: Sculk$(br)Cost: 3000 LP$(br)Effect: Obsidian Cloak damage reduction"
     },
     {
       "type": "patchouli:crafting",

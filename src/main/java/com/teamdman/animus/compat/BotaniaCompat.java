@@ -10,19 +10,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import wayoftime.bloodmagic.BloodMagic;
-import wayoftime.bloodmagic.ritual.Ritual;
+import com.teamdman.animus.compat.botania.RitualFloralSupremacy;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Compatibility module for Botania
@@ -118,8 +112,6 @@ public class BotaniaCompat implements ICompatModule {
         Animus.LOGGER.info("Registered Botania compatibility registries");
     }
 
-    private static boolean ritualRegistered = false;
-
     @Override
     public void init() {
         Animus.LOGGER.info("Initializing Botania compatibility");
@@ -127,27 +119,12 @@ public class BotaniaCompat implements ICompatModule {
         // Register Rune of Unleashed Nature as a valid altar component
         registerAltarComponent();
 
-        // Register Ritual of Floral Supremacy during server start (after Blood Magic's Patchouli registration)
-        // This avoids the "multiblock already registered" conflict
-        MinecraftForge.EVENT_BUS.register(RitualRegistrationHandler.class);
+        BloodMagicRitualInjector.register(Constants.Rituals.FLORAL_SUPREMACY, new RitualFloralSupremacy());
 
         // Register render layer for Diabolical Fungi (client-side only)
         // This is handled in AnimusClientSetup conditionally
 
         Animus.LOGGER.info("Botania compatibility initialized successfully");
-    }
-
-    /**
-     * Handler class for delayed ritual registration
-     */
-    public static class RitualRegistrationHandler {
-        @SubscribeEvent
-        public static void onServerStarting(ServerStartingEvent event) {
-            if (!ritualRegistered) {
-                registerRitualDelayed();
-                ritualRegistered = true;
-            }
-        }
     }
 
     /**
@@ -162,46 +139,6 @@ public class BotaniaCompat implements ICompatModule {
             Animus.LOGGER.info("Registered Rune of Unleashed Nature as BLOODRUNE component for Blood Magic altars");
         } catch (Exception e) {
             Animus.LOGGER.error("Failed to register Rune of Unleashed Nature with Blood Magic", e);
-        }
-    }
-
-    /**
-     * Register Ritual of Floral Supremacy using reflection
-     * Blood Magic doesn't expose a public API for programmatic ritual registration,
-     * so we need to access the private maps in RitualManager.
-     *
-     * This is called during ServerStartingEvent to ensure it runs AFTER Blood Magic's
-     * Patchouli multiblock registration (which happens during FMLLoadCompleteEvent).
-     */
-    @SuppressWarnings("unchecked")
-    private static void registerRitualDelayed() {
-        try {
-            Ritual ritual = new com.teamdman.animus.compat.botania.RitualFloralSupremacy();
-            String ritualId = Constants.Rituals.FLORAL_SUPREMACY;
-
-            // Get the private 'rituals' map from RitualManager
-            Field ritualsField = BloodMagic.RITUAL_MANAGER.getClass().getDeclaredField("rituals");
-            ritualsField.setAccessible(true);
-            Map<String, Ritual> rituals = (Map<String, Ritual>) ritualsField.get(BloodMagic.RITUAL_MANAGER);
-
-            // Get the private 'ritualsReverse' map from RitualManager
-            Field ritualsReverseField = BloodMagic.RITUAL_MANAGER.getClass().getDeclaredField("ritualsReverse");
-            ritualsReverseField.setAccessible(true);
-            Map<Ritual, String> ritualsReverse = (Map<Ritual, String>) ritualsReverseField.get(BloodMagic.RITUAL_MANAGER);
-
-            // Get the private 'sortedRituals' list from RitualManager
-            Field sortedRitualsField = BloodMagic.RITUAL_MANAGER.getClass().getDeclaredField("sortedRituals");
-            sortedRitualsField.setAccessible(true);
-            java.util.List<Ritual> sortedRituals = (java.util.List<Ritual>) sortedRitualsField.get(BloodMagic.RITUAL_MANAGER);
-
-            // Register the ritual
-            rituals.put(ritualId, ritual);
-            ritualsReverse.put(ritual, ritualId);
-            sortedRituals.add(ritual);
-
-            Animus.LOGGER.info("Registered Ritual of Floral Supremacy with Blood Magic");
-        } catch (Exception e) {
-            Animus.LOGGER.error("Failed to register Ritual of Floral Supremacy", e);
         }
     }
 
