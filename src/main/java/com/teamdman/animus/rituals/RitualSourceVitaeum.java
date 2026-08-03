@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  *
  * Activation Cost: 10000 LP
  * Refresh Cost: 0 LP (conversion happens via Source drain)
- * Refresh Time: Based on altar speed (default 40 ticks / 2 seconds)
+ * Refresh Time: 40 ticks (2 seconds)
  *
  * Note: Do NOT add @RitualRegister here - registration is done in ArsNouveauCompat
  */
@@ -167,9 +167,7 @@ public class RitualSourceVitaeum extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        // Base time is 40 ticks (2 seconds)
-        // This will be modified by altar speed runes automatically
-        return 40;
+        return 40; // 2 seconds
     }
 
     @Override

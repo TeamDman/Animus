@@ -21,8 +21,8 @@ import java.util.function.Consumer;
  * Ritual of Persistence - Keeps chunks loaded
  * Maintains chunk loading in a configurable radius around the ritual stone
  * Activation Cost: 50000 LP
- * Refresh Cost: Configurable (default: 100 LP per tick)
- * Refresh Time: 20 ticks (1 second)
+ * Refresh Cost: Configurable (default: 100 LP), charged once per refresh
+ * Refresh Time: 20 ticks (1 second), so the default works out to 100 LP per second
  * Chunk Radius: Configurable (default: 3 chunks)
  */
 @RitualRegister(Constants.Rituals.PERSISTENCE)

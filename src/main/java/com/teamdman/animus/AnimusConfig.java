@@ -273,7 +273,7 @@ public class AnimusConfig {
                 .defineInRange("persistenceChunkRadius", 3, 1, 16);
 
             persistenceLPPerTick = builder
-                .comment("LP cost per tick for Ritual of Persistence (checked every second / 20 ticks)")
+                .comment("LP consumed each second the Ritual of Persistence is active (the key name is legacy; this is not per game tick)")
                 .defineInRange("persistenceLPPerTick", 100, 1, 10000);
 
             serenityRadius = builder
@@ -281,7 +281,7 @@ public class AnimusConfig {
                 .defineInRange("serenityRadius", 48, 1, 256);
 
             serenityLPPerTick = builder
-                .comment("LP cost per tick for Ritual of Serenity (checked every second / 20 ticks)")
+                .comment("LP consumed each second the Ritual of Serenity is active (the key name is legacy; this is not per game tick)")
                 .defineInRange("serenityLPPerTick", 1, 1, 10000);
 
             noliteIgnemRadius = builder

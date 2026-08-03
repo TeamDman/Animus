@@ -20,8 +20,8 @@ import java.util.function.Consumer;
  * Ritual of Serenity - Prevents mob spawning in a radius
  * Creates a peaceful zone where hostile mobs cannot spawn
  * Activation Cost: 10000 LP
- * Refresh Cost: Configurable (default: 50 LP)
- * Refresh Time: 20 ticks (1 second)
+ * Refresh Cost: Configurable (default: 1 LP), charged once per refresh
+ * Refresh Time: 20 ticks (1 second), so the default works out to 1 LP per second
  * Range: Configurable (default: 48 blocks), modifiable via Ritual Tinkerer
  */
 @RitualRegister(Constants.Rituals.SERENITY)
