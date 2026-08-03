@@ -1,6 +1,9 @@
 package com.teamdman.animus;
 
+import com.teamdman.animus.compat.CompatHandler;
+import com.teamdman.animus.compat.malum.SpiritHarvestHelper;
 import com.teamdman.animus.items.ItemFragmentHealing;
+import com.teamdman.animus.items.ItemRunicSentientScythe;
 import com.teamdman.animus.items.sigils.ItemSigilFreeSoul;
 import com.teamdman.animus.items.sigils.ItemSigilHeavenlyWrath;
 import com.teamdman.animus.items.sigils.ItemSigilMonk;
@@ -545,6 +548,36 @@ public class AnimusEventHandler {
             return AnimusConfig.sigils.monkExecuteThreshold.get();
         } catch (IllegalStateException e) {
             return DEFAULT_MAX_EXECUTE_PERCENT;
+        }
+    }
+
+    /**
+     * Apply Malum's scythe proficiency multiplier to our scythes.
+     * Malum only applies it to damage sources tagged malum:is_scythe; ours deal ordinary
+     * player attack damage, so sources of proficiency such as the Necklace of the Narrow
+     * Edge would otherwise do nothing for them.
+     */
+    @SubscribeEvent
+    public static void onScytheHurt(net.minecraftforge.event.entity.living.LivingHurtEvent event) {
+        if (!CompatHandler.isMalumLoaded()) {
+            return;
+        }
+
+        if (!(event.getSource().getEntity() instanceof Player player) || player.level().isClientSide()) {
+            return;
+        }
+
+        if (event.getSource().getDirectEntity() != player) {
+            return;
+        }
+
+        if (!(player.getMainHandItem().getItem() instanceof ItemRunicSentientScythe)) {
+            return;
+        }
+
+        double proficiency = SpiritHarvestHelper.getScytheProficiency(player);
+        if (proficiency != 1.0) {
+            event.setAmount((float) (event.getAmount() * proficiency));
         }
     }
 

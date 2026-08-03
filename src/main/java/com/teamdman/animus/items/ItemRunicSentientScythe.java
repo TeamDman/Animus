@@ -74,6 +74,15 @@ public class ItemRunicSentientScythe extends ItemSentientScythe {
     }
 
     @Override
+    public int attackEntitiesInAreaExcludingEntity(ItemStack stack, Player player, EnumDemonWillType type, int level, LivingEntity target, float damage) {
+        if (CompatHandler.isMalumLoaded() && SpiritHarvestHelper.isSweepSuppressed(player)) {
+            return 0;
+        }
+
+        return super.attackEntitiesInAreaExcludingEntity(stack, player, type, level, target, damage);
+    }
+
+    @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         // Cache total soul count for damage calculation (must be done before parent call)
         if (!attacker.level().isClientSide && attacker instanceof Player player) {
