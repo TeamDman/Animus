@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  * Maintains chunk loading in a configurable radius around the ritual stone
  * Activation Cost: 50000 LP
  * Refresh Cost: Configurable (default: 100 LP), charged once per refresh
- * Refresh Time: 20 ticks (1 second), so the default works out to 100 LP per second
+ * Refresh Time: Configurable (default: 20 ticks / 1 second), so the defaults work out to 100 LP per second
  * Chunk Radius: Configurable (default: 3 chunks)
  */
 @RitualRegister(Constants.Rituals.PERSISTENCE)
@@ -167,7 +167,7 @@ public class RitualPersistence extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20; // 1 second
+        return AnimusConfig.rituals.persistenceRefreshTime.get();
     }
 
     @Override

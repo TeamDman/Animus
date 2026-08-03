@@ -38,7 +38,7 @@ import java.util.function.Consumer;
  * Can also buff players remotely via bound blood orbs in a chest above the ritual
  * Also generates Steadfast demon will
  * Activation Cost: 20000 LP
- * Refresh Cost: 100 LP per player (nearby or remote)
+ * Refresh Cost: Configurable (default: 100 LP per player, nearby or remote)
  * Refresh Time: Configurable (default 60 ticks = 3 seconds)
  * Range: Configurable (default 128 blocks)
  */
@@ -215,7 +215,7 @@ public class RitualSteadfastHeart extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 100;
+        return AnimusConfig.rituals.steadfastHeartRefreshCost.get();
     }
 
     @Override

@@ -36,8 +36,8 @@ import java.util.stream.IntStream;
  * Uses center-outward search algorithm to prioritize nearby positions
  * Supports Blood Magic's Sigil of Blood Light for placing blood lights without consuming the sigil
  * Activation Cost: 1000 LP
- * Refresh Cost: 1 LP (regular blocks) or 1 LP (blood light)
- * Refresh Time: 5 ticks
+ * Refresh Cost: Configurable (default: 1 LP)
+ * Refresh Time: Configurable (default: 5 ticks)
  */
 @RitualRegister(Constants.Rituals.SOL)
 public class RitualSol extends Ritual {
@@ -190,12 +190,12 @@ public class RitualSol extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 1;
+        return AnimusConfig.rituals.solRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 5;
+        return AnimusConfig.rituals.solRefreshTime.get();
     }
 
     @Override

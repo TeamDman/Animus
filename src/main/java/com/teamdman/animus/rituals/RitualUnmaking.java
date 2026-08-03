@@ -31,8 +31,8 @@ import java.util.function.Consumer;
  * Place books and enchanted items near the ritual to extract enchantments
  * Consumes books to create enchanted books with the extracted enchantments
  * Activation Cost: 3000 LP
- * Refresh Cost: 0 LP (one-time use, deactivates after)
- * Refresh Time: 20 ticks
+ * Refresh Cost: Configurable (default: 0 LP; one-time use, deactivates after)
+ * Refresh Time: Configurable (default: 20 ticks)
  */
 @RitualRegister(Constants.Rituals.UNMAKING)
 public class RitualUnmaking extends Ritual {
@@ -180,12 +180,12 @@ public class RitualUnmaking extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 0;
+        return AnimusConfig.rituals.unmakingRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 20;
+        return AnimusConfig.rituals.unmakingRefreshTime.get();
     }
 
     @Override

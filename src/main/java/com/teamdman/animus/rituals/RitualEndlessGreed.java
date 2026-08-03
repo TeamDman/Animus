@@ -30,7 +30,7 @@ import java.util.function.Consumer;
  *
  * Activation Cost: 5000 LP
  * Refresh Cost: 5 LP per cycle (configurable)
- * Refresh Time: 20 ticks (1 second)
+ * Refresh Time: Configurable (default: 20 ticks / 1 second)
  * Range: 15x15 horizontal, 5 high (configurable)
  */
 @RitualRegister(Constants.Rituals.ENDLESS_GREED)
@@ -406,7 +406,7 @@ public class RitualEndlessGreed extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20; // 1 second
+        return AnimusConfig.rituals.endlessGreedRefreshTime.get();
     }
 
     @Override

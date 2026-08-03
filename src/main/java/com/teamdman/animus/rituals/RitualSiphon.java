@@ -35,7 +35,7 @@ import java.util.function.Consumer;
  * Replaces extracted fluids with configurable replacement block (default: antilife)
  * Activation Cost: 5000 LP
  * Refresh Cost: Configurable (default: 50 LP per extraction)
- * Refresh Time: 10 ticks (0.5 seconds)
+ * Refresh Time: Configurable (default: 10 ticks / 0.5 seconds)
  * Horizontal Radius: Configurable (default: 32 blocks)
  * Vertical Depth: Configurable (default: 128 blocks)
  * Replacement Block: Configurable (default: animus:block_antilife)
@@ -366,7 +366,7 @@ public class RitualSiphon extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 10; // 0.5 seconds
+        return AnimusConfig.rituals.siphonRefreshTime.get();
     }
 
     @Override

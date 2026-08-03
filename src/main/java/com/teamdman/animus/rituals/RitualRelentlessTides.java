@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  * Uses an optimized perimeter-based search algorithm for finding valid placement spots
  * Activation Cost: 5000 LP
  * Refresh Cost: Configurable (default: 50 LP per placement)
- * Refresh Time: 10 ticks (0.5 seconds)
+ * Refresh Time: Configurable (default: 10 ticks / 0.5 seconds)
  * Horizontal Radius: Configurable (default: 32 blocks)
  * Vertical Depth: Configurable (default: 128 blocks)
  */
@@ -327,7 +327,7 @@ public class RitualRelentlessTides extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 10; // 0.5 seconds
+        return AnimusConfig.rituals.relentlessTidesRefreshTime.get();
     }
 
     @Override

@@ -39,8 +39,8 @@ import java.util.function.Consumer;
  * Powerful ritual that kills non-boss entities and can kill bosses with demon will
  * Also destroys primed TNT if configured
  * Activation Cost: 50000 LP
- * Refresh Cost: 75 LP per entity
- * Refresh Time: 25 ticks
+ * Refresh Cost: Configurable (default: 75 LP per entity)
+ * Refresh Time: Configurable (default: 25 ticks)
  * Default Range: 5 blocks horizontal, 5 blocks vertical (can be expanded via Ritual Tinkerer)
  * Maximum Range: Configurable (default 10 blocks horizontal, 10 blocks vertical)
  * LP per Kill: Configurable (default 200 LP)
@@ -407,12 +407,12 @@ public class RitualCulling extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 75;
+        return AnimusConfig.rituals.cullingRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 25;
+        return AnimusConfig.rituals.cullingRefreshTime.get();
     }
 
     @Override

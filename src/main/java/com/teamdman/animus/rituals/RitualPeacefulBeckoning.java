@@ -29,7 +29,7 @@ import java.util.function.Consumer;
  * Ritual of Peaceful Beckoning - Spawns peaceful entities
  * Activation Cost: 5000 LP
  * Refresh Cost: Configured (default varies)
- * Refresh Time: 400 ticks
+ * Refresh Time: Configurable (default: 400 ticks)
  */
 @RitualRegister(Constants.Rituals.PEACEFUL_BECKONING)
 public class RitualPeacefulBeckoning extends Ritual {
@@ -153,7 +153,7 @@ public class RitualPeacefulBeckoning extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 400;
+        return AnimusConfig.rituals.peacefulBeckoningRefreshTime.get();
     }
 
     @Override

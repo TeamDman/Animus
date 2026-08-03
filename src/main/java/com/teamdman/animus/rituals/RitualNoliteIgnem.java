@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  * Extinguishes all fires within a configurable radius
  * Activation Cost: 5000 LP
  * Refresh Cost: Configurable (default: 10 LP per fire)
- * Refresh Time: 20 ticks (1 second)
+ * Refresh Time: Configurable (default: 20 ticks / 1 second)
  * Range: Configurable (default: 64 blocks)
  */
 @RitualRegister(Constants.Rituals.NOLITE_IGNEM)
@@ -133,7 +133,7 @@ public class RitualNoliteIgnem extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20; // 1 second
+        return AnimusConfig.rituals.noliteIgnemRefreshTime.get();
     }
 
     @Override

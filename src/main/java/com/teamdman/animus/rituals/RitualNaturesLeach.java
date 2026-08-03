@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  * Ritual of Nature's Leach - Consumes plants to fill blood altar
  * Scans area for consumable plant matter and destroys it to fill the altar
  * Activation Cost: 3000 LP
- * Refresh Cost: 10 LP
+ * Refresh Cost: Configurable (default: 10 LP)
  * Refresh Time: Configurable (default 80 ticks, varies with demon will)
  * Default Range: 8 blocks (can be expanded via Ritual Tinkerer)
  * Maximum Range: Configurable (default 32 blocks, max 64)
@@ -268,7 +268,7 @@ public class RitualNaturesLeach extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 10;
+        return AnimusConfig.rituals.naturesLeachRefreshCost.get();
     }
 
     @Override

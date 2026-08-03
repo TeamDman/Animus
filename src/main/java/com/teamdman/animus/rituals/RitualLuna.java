@@ -30,8 +30,8 @@ import java.util.function.Consumer;
  * Scans the effect range for blocks with light level > 0, harvests them, and stores in chest above ritual
  * Uses center-outward search algorithm to prioritize nearby positions
  * Activation Cost: 1000 LP
- * Refresh Cost: 1 LP
- * Refresh Time: 5 ticks
+ * Refresh Cost: Configurable (default: 1 LP)
+ * Refresh Time: Configurable (default: 5 ticks)
  */
 @RitualRegister(Constants.Rituals.LUNA)
 public class RitualLuna extends Ritual {
@@ -141,12 +141,12 @@ public class RitualLuna extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 1;
+        return AnimusConfig.rituals.lunaRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 5;
+        return AnimusConfig.rituals.lunaRefreshTime.get();
     }
 
     @Override

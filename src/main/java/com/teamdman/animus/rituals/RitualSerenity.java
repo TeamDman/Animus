@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * Creates a peaceful zone where hostile mobs cannot spawn
  * Activation Cost: 10000 LP
  * Refresh Cost: Configurable (default: 1 LP), charged once per refresh
- * Refresh Time: 20 ticks (1 second), so the default works out to 1 LP per second
+ * Refresh Time: Configurable (default: 20 ticks / 1 second), so the defaults work out to 1 LP per second
  * Range: Configurable (default: 48 blocks), modifiable via Ritual Tinkerer
  */
 @RitualRegister(Constants.Rituals.SERENITY)
@@ -151,7 +151,7 @@ public class RitualSerenity extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20; // 1 second
+        return AnimusConfig.rituals.serenityRefreshTime.get();
     }
 
     @Override

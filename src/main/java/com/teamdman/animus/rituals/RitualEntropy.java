@@ -23,8 +23,8 @@ import java.util.function.Consumer;
  * Ritual of Entropy - Converts items to cobblestone
  * Takes items from chest and converts them to 1 cobblestone per item
  * Activation Cost: 1000 LP
- * Refresh Cost: 1 LP
- * Refresh Time: 1 tick
+ * Refresh Cost: Configurable (default: 1 LP)
+ * Refresh Time: Configurable (default: 1 tick)
  */
 @RitualRegister(Constants.Rituals.ENTROPY)
 public class RitualEntropy extends Ritual {
@@ -106,12 +106,12 @@ public class RitualEntropy extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 1;
+        return AnimusConfig.rituals.entropyRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 1;
+        return AnimusConfig.rituals.entropyRefreshTime.get();
     }
 
     @Override

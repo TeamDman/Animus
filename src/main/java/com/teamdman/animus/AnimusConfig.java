@@ -116,6 +116,28 @@ public class AnimusConfig {
         public final ForgeConfigSpec.IntValue endlessGreedLPPerItem;
         public final ForgeConfigSpec.IntValue endlessGreedRefreshCost;
 
+        public final ForgeConfigSpec.IntValue cullingRefreshCost;
+        public final ForgeConfigSpec.IntValue entropyRefreshCost;
+        public final ForgeConfigSpec.IntValue lunaRefreshCost;
+        public final ForgeConfigSpec.IntValue naturesLeachRefreshCost;
+        public final ForgeConfigSpec.IntValue solRefreshCost;
+        public final ForgeConfigSpec.IntValue steadfastHeartRefreshCost;
+        public final ForgeConfigSpec.IntValue unmakingRefreshCost;
+
+        public final ForgeConfigSpec.IntValue cullingRefreshTime;
+        public final ForgeConfigSpec.IntValue endlessGreedRefreshTime;
+        public final ForgeConfigSpec.IntValue entropyRefreshTime;
+        public final ForgeConfigSpec.IntValue lunaRefreshTime;
+        public final ForgeConfigSpec.IntValue noliteIgnemRefreshTime;
+        public final ForgeConfigSpec.IntValue peacefulBeckoningRefreshTime;
+        public final ForgeConfigSpec.IntValue persistenceRefreshTime;
+        public final ForgeConfigSpec.IntValue relentlessTidesRefreshTime;
+        public final ForgeConfigSpec.IntValue serenityRefreshTime;
+        public final ForgeConfigSpec.IntValue siphonRefreshTime;
+        public final ForgeConfigSpec.IntValue solRefreshTime;
+        public final ForgeConfigSpec.IntValue sourceVitaeumRefreshTime;
+        public final ForgeConfigSpec.IntValue unmakingRefreshTime;
+
         public Rituals(ForgeConfigSpec.Builder builder) {
             builder.push("rituals");
 
@@ -416,8 +438,97 @@ public class AnimusConfig {
                 .defineInRange("lpPerItem", 1, 0, 100);
 
             endlessGreedRefreshCost = builder
-                .comment("Base LP cost per refresh cycle (20 ticks) for Ritual of Endless Greed")
+                .comment("Base LP cost per refresh cycle for Ritual of Endless Greed")
                 .defineInRange("refreshCost", 5, 0, 1000);
+
+            builder.pop();
+
+            builder.comment(
+                "Upkeep for rituals that run on a timer.",
+                "Cost is the LP drained once per refresh, not per game tick.",
+                "Time is how many game ticks pass between refreshes (20 ticks = 1 second).",
+                "Lowering a refresh time makes that ritual act more often, and therefore cost more LP over time."
+            ).push("refresh");
+
+            cullingRefreshCost = builder
+                .comment("LP drained from the owner's Soul Network per entity culled by Ritual of Culling")
+                .defineInRange("cullingCost", 75, 0, 100000);
+
+            cullingRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Culling")
+                .defineInRange("cullingTime", 25, 1, 12000);
+
+            endlessGreedRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Endless Greed")
+                .defineInRange("endlessGreedTime", 20, 1, 12000);
+
+            entropyRefreshCost = builder
+                .comment("LP drained per refresh by Ritual of Entropy")
+                .defineInRange("entropyCost", 1, 0, 100000);
+
+            entropyRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Entropy")
+                .defineInRange("entropyTime", 1, 1, 12000);
+
+            lunaRefreshCost = builder
+                .comment("LP drained per refresh by Ritual of Luna")
+                .defineInRange("lunaCost", 1, 0, 100000);
+
+            lunaRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Luna")
+                .defineInRange("lunaTime", 5, 1, 12000);
+
+            naturesLeachRefreshCost = builder
+                .comment("LP drained per refresh by Ritual of Nature's Leach")
+                .defineInRange("naturesLeachCost", 10, 0, 100000);
+
+            noliteIgnemRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Nolite Ignem")
+                .defineInRange("noliteIgnemTime", 20, 1, 12000);
+
+            peacefulBeckoningRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Peaceful Beckoning")
+                .defineInRange("peacefulBeckoningTime", 400, 1, 12000);
+
+            persistenceRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Persistence")
+                .defineInRange("persistenceTime", 20, 1, 12000);
+
+            relentlessTidesRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Relentless Tides")
+                .defineInRange("relentlessTidesTime", 10, 1, 12000);
+
+            serenityRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Serenity")
+                .defineInRange("serenityTime", 20, 1, 12000);
+
+            siphonRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Siphon")
+                .defineInRange("siphonTime", 10, 1, 12000);
+
+            solRefreshCost = builder
+                .comment("LP drained per refresh by Ritual of Sol")
+                .defineInRange("solCost", 1, 0, 100000);
+
+            solRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Sol")
+                .defineInRange("solTime", 5, 1, 12000);
+
+            sourceVitaeumRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Source Vitaeum")
+                .defineInRange("sourceVitaeumTime", 40, 1, 12000);
+
+            steadfastHeartRefreshCost = builder
+                .comment("LP drained per affected player by Ritual of the Steadfast Heart")
+                .defineInRange("steadfastHeartCost", 100, 0, 100000);
+
+            unmakingRefreshCost = builder
+                .comment("LP drained per refresh by Ritual of Unmaking")
+                .defineInRange("unmakingCost", 0, 0, 100000);
+
+            unmakingRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Unmaking")
+                .defineInRange("unmakingTime", 20, 1, 12000);
 
             builder.pop();
 
