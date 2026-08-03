@@ -41,3 +41,5 @@ settings.gradle
 !**/changelogs/**/*.md
 
 .vscode/
+temp_extract/
+run-gametest/

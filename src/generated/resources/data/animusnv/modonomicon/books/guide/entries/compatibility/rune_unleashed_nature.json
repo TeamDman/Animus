@@ -7,7 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
-    "type": "modonomicon:none"
+    "type": "modonomicon:mod_loaded",
+    "mod_id": "botania",
+    "tooltip": {
+      "translate": "tooltip.modonomicon.condition.mod_loaded",
+      "with": [
+        "botania"
+      ]
+    }
   },
   "description": "book.animusnv.guide.compatibility.rune_unleashed_nature.description",
   "icon": {

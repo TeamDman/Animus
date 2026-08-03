@@ -1,5 +1,6 @@
 package com.breakinblocks.animusnv.rituals;
 
+import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -83,12 +84,12 @@ public class RitualEntropy extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 1;
+        return AnimusConfig.rituals.entropyRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 1;
+        return AnimusConfig.rituals.entropyRefreshTime.get();
     }
 
     @Override

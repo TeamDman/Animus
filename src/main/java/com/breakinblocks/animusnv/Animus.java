@@ -1,5 +1,8 @@
 package com.breakinblocks.animusnv;
 
+import com.breakinblocks.animusnv.advancements.AnimusCriteriaTriggers;
+import java.lang.reflect.Method;
+import net.neoforged.neoforge.event.RegisterGameTestsEvent;
 import com.breakinblocks.animusnv.compat.CompatHandler;
 import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.network.AnimusPayloads;
@@ -47,12 +50,15 @@ public class Animus {
 
         AnimusRituals.RITUALS.register(modEventBus);
         AnimusRituals.IMPERFECT_RITUALS.register(modEventBus);
+        AnimusCriteriaTriggers.register(modEventBus);
 
         CompatHandler.registerDeferredRegisters(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerPayloads);
         modEventBus.addListener(this::registerCapabilities);
+
+        wireGameTests(modEventBus);
 
         LOGGER.debug("Animus mod loading...");
     }
@@ -73,6 +79,28 @@ public class Animus {
             EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(),
             (be, direction) -> be.getBloodTank()
         );
+    }
+
+    /**
+     * The gametest source set is only on the classpath in development, so it is wired
+     * reflectively and quietly skipped in production builds.
+     */
+    private static void wireGameTests(IEventBus modBus) {
+        try {
+            Class<?> registration = Class.forName("com.breakinblocks.animusnv.gametest.AnimusGameTestRegistration");
+            Method handler = registration.getMethod("registerTests", RegisterGameTestsEvent.class);
+            modBus.addListener(RegisterGameTestsEvent.class, event -> {
+                try {
+                    handler.invoke(null, event);
+                } catch (ReflectiveOperationException t) {
+                    LOGGER.error("Failed to invoke AnimusGameTestRegistration.registerTests", t);
+                }
+            });
+        } catch (ClassNotFoundException expected) {
+            // Test source set not on classpath - production build
+        } catch (ReflectiveOperationException e) {
+            LOGGER.error("Failed to wire gametest hooks", e);
+        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

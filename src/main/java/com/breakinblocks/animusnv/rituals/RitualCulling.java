@@ -233,12 +233,12 @@ public class RitualCulling extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 75;
+        return AnimusConfig.rituals.cullingRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 25;
+        return AnimusConfig.rituals.cullingRefreshTime.get();
     }
 
     @Override

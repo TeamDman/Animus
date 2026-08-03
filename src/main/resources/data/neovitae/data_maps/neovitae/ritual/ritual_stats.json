@@ -72,12 +72,6 @@
       "refresh_time": 5,
       "crystal_level": 0
     },
-    "animusnv:ritual_source_vitaeum": {
-      "activation_cost": 10000,
-      "refresh_cost": 0,
-      "refresh_time": 40,
-      "crystal_level": 0
-    },
     "animusnv:ritual_steadfast_heart": {
       "activation_cost": 20000,
       "refresh_cost": 100,

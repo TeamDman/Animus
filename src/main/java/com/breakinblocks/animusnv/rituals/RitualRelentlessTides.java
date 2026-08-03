@@ -209,7 +209,7 @@ public class RitualRelentlessTides extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 10;
+        return AnimusConfig.rituals.relentlessTidesRefreshTime.get();
     }
 
     @Override

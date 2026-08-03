@@ -28,6 +28,12 @@ neoForge {
             programArgument '--nogui'
         }
 
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+            gameDirectory = project.file('run-gametest')
+        }
+
         clientData {
             clientData()
             programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
@@ -37,11 +43,22 @@ neoForge {
     mods {
         "${mod_id}" {
             sourceSet sourceSets.main
+            sourceSet sourceSets.test
         }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+sourceSets {
+    test {
+        compileClasspath += main.output + main.compileClasspath
+        runtimeClasspath += main.output + main.runtimeClasspath
+    }
+}
+
+// Gametests run through runGameTestServer, not the JUnit test task
+tasks.named('test') { enabled = false }
 
 // Compat modules whose upstream mod has no 26.1 build yet are excluded from compilation.
 // Flip the matching animus_compat_* property in gradle.properties once the dependency ports.
@@ -85,8 +102,8 @@ def ironsSpellsData = [
         'data/animusnv/neovitae/sigil_type/crimson_will.json',
         'data/animusnv/recipe/array/sigil_crimson_will.json',
         'data/animusnv/recipe/ara_vitae/blood_infused_spellbook_*.json',
-        'data/animusnv/advancements/arcane_blood.json',
-        'data/animusnv/advancements/sanguine_scroll.json',
+        'data/animusnv/advancement/arcane_blood.json',
+        'data/animusnv/advancement/sanguine_scroll.json',
         'data/curios/tags/item/spellbook.json',
         'data/animusnv/modonomicon/books/guide/entries/compatibility/blood_infused_spellbook.json',
         'data/animusnv/modonomicon/books/guide/entries/compatibility/blood_infused_spellbook/**',

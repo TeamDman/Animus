@@ -7,7 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
-    "type": "modonomicon:none"
+    "type": "modonomicon:mod_loaded",
+    "mod_id": "irons_spellbooks",
+    "tooltip": {
+      "translate": "tooltip.modonomicon.condition.mod_loaded",
+      "with": [
+        "irons_spellbooks"
+      ]
+    }
   },
   "description": "book.animusnv.guide.compatibility.iron_heart.description",
   "icon": {

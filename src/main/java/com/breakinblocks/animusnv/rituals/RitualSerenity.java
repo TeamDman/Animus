@@ -105,7 +105,7 @@ public class RitualSerenity extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20;
+        return AnimusConfig.rituals.serenityRefreshTime.get();
     }
 
     @Override

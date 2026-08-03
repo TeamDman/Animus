@@ -165,12 +165,12 @@ public class RitualUnmaking extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 0;
+        return AnimusConfig.rituals.unmakingRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 20;
+        return AnimusConfig.rituals.unmakingRefreshTime.get();
     }
 
     @Override

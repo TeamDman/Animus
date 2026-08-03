@@ -117,12 +117,12 @@ public class RitualLuna extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 1;
+        return AnimusConfig.rituals.lunaRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 5;
+        return AnimusConfig.rituals.lunaRefreshTime.get();
     }
 
     @Override
@@ -134,16 +134,10 @@ public class RitualLuna extends Ritual {
 
     private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
         AABB aabb = effectRange.getAABB(masterPos);
-        int horizontalRadius = (int) Math.max(
-            Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
-            Math.max(Math.abs(aabb.minZ - masterPos.getZ()), Math.abs(aabb.maxZ - masterPos.getZ()))
-        );
-        int verticalRadius = (int) Math.max(
-            Math.abs(aabb.minY - masterPos.getY()),
-            Math.abs(aabb.maxY - masterPos.getY())
-        );
 
-        return SEARCHER.search(masterPos, masterPos.below(), horizontalRadius, verticalRadius,
+        return SEARCHER.search(masterPos, masterPos,
+                ChebyshevSearcher.horizontalRadiusOf(aabb, masterPos),
+                ChebyshevSearcher.downwardDepthOf(aabb, masterPos),
                 true, 4096,
                 checkPos -> level.getBlockState(checkPos).getLightEmission() > 0);
     }

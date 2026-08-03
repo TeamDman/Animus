@@ -4,6 +4,16 @@
   "background_parallax_layers": [],
   "background_texture_zoom_multiplier": 1.0,
   "background_width": 512,
+  "condition": {
+    "type": "modonomicon:category_has_visible_entries",
+    "category_id": "animusnv:compatibility",
+    "tooltip": {
+      "translate": "tooltip.modonomicon.condition.has_visible_entries",
+      "with": [
+        "animusnv.compatibility"
+      ]
+    }
+  },
   "description": "",
   "display_mode": "node",
   "icon": {

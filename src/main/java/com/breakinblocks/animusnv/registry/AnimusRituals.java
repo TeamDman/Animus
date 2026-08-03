@@ -3,6 +3,7 @@ package com.breakinblocks.animusnv.registry;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.rituals.*;
 import com.breakinblocks.animusnv.rituals.imperfect.*;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import com.breakinblocks.neovitae.ritual.ImperfectRitual;
@@ -64,8 +65,14 @@ public class AnimusRituals {
     public static final DeferredHolder<Ritual, RitualSol> SOL =
         RITUALS.register(Constants.Rituals.SOL, RitualSol::new);
 
+    /**
+     * Only exists when Ars Nouveau is installed; without it the ritual has nothing to convert,
+     * so registering it would put an inert entry in the Ritual Diviner.
+     */
     public static final DeferredHolder<Ritual, RitualSourceVitaeum> SOURCE_VITAEUM =
-        RITUALS.register(Constants.Rituals.SOURCE_VITAEUM, RitualSourceVitaeum::new);
+        ModList.get().isLoaded("ars_nouveau")
+            ? RITUALS.register(Constants.Rituals.SOURCE_VITAEUM, RitualSourceVitaeum::new)
+            : null;
 
     public static final DeferredHolder<Ritual, RitualSteadfastHeart> STEADFAST_HEART =
         RITUALS.register(Constants.Rituals.STEADFAST, RitualSteadfastHeart::new);

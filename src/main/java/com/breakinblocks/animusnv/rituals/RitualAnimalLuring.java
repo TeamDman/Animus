@@ -134,7 +134,7 @@ public class RitualAnimalLuring extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 400;
+        return AnimusConfig.rituals.animalLuringRefreshTime.get();
     }
 
     @Override
