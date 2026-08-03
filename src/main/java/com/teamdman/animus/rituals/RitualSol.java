@@ -9,11 +9,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -23,8 +23,6 @@ import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
@@ -46,8 +44,7 @@ public class RitualSol extends Ritual {
     private static final ResourceLocation BLOOD_LIGHT_SIGIL = ResourceLocation.fromNamespaceAndPath("bloodmagic", "bloodlightsigil");
     private static final ResourceLocation BLOOD_LIGHT_BLOCK = ResourceLocation.fromNamespaceAndPath("bloodmagic", "bloodlight");
 
-    // Track current search position for each ritual to resume searching where we left off
-    private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
+    private static final RitualAreaScanner SCANNER = new RitualAreaScanner();
 
     public RitualSol() {
         super(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL);
@@ -210,105 +207,19 @@ public class RitualSol extends Ritual {
 
     /**
      * Find a dark spot using center-outward search
-     * Starts from the master ritual stone and expands outward in square rings
-     * Uses the ritual's effect range (modifiable via Ritual Tinkerer)
+     * Expands outward in square rings across the ritual's effect range (modifiable via Ritual Tinkerer)
      */
     private BlockPos findDarkSpot(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
-        SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
-
-        int maxChecksPerTick = 4096; // Checks per tick - tested with no noticeable performance impact
-        int checksThisTick = 0;
-        
-        // Get bounds from the AreaDescriptor (respects Ritual Tinkerer modifications)
-        AABB aabb = effectRange.getAABB(masterPos);
-        int horizontalRadius = (int) Math.max(
-            Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
-            Math.max(Math.abs(aabb.minZ - masterPos.getZ()), Math.abs(aabb.maxZ - masterPos.getZ()))
-        );
-        int verticalRadius = (int) Math.max(
-            Math.abs(aabb.minY - masterPos.getY()),
-            Math.abs(aabb.maxY - masterPos.getY())
-        );
-
-        // Search by expanding square rings from center outward
-        for (int radius = state.currentRadius; radius <= horizontalRadius && checksThisTick < maxChecksPerTick; radius++) {
-            // Iterate through all positions in this radius ring
-            for (int x = -radius; x <= radius && checksThisTick < maxChecksPerTick; x++) {
-                // Skip if we're not resuming from this X position
-                if (radius == state.currentRadius && x < state.currentX) continue;
-
-                for (int z = -radius; z <= radius && checksThisTick < maxChecksPerTick; z++) {
-                    // Skip if we're not resuming from this Z position
-                    if (radius == state.currentRadius && x == state.currentX && z < state.currentZ) continue;
-
-                    // Only check positions on the perimeter of this radius ring
-                    // (except for radius 0, which is just the center point)
-                    if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) {
-                        continue;
-                    }
-
-                    // Search vertically downward from this column (from ritual stone to bottom)
-                    int startY = (radius == state.currentRadius && x == state.currentX && z == state.currentZ) ? state.currentY : 0;
-                    for (int y = startY; y >= -verticalRadius && checksThisTick < maxChecksPerTick; y--) {
-                        BlockPos checkPos = masterPos.offset(x, y, z);
-                        checksThisTick++;
-
-                        // Update search state to resume from here next tick
-                        state.currentRadius = radius;
-                        state.currentX = x;
-                        state.currentZ = z;
-                        state.currentY = y;
-
-                        // Check if this is a valid dark spot
-                        if (level.isEmptyBlock(checkPos) &&
-                            level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, checkPos) < 8 &&
-                            level.getBlockState(checkPos.below()).isFaceSturdy(level, checkPos.below(), Direction.UP)) {
-
-                            // Advance to next position for next search
-                            state.currentY--;
-                            if (state.currentY < -verticalRadius) {
-                                state.currentY = 0;
-                                state.currentZ++;
-                                if (state.currentZ > radius) {
-                                    state.currentZ = -radius;
-                                    state.currentX++;
-                                    if (state.currentX > radius) {
-                                        state.currentX = -radius;
-                                        state.currentZ = -radius;
-                                        state.currentY = 0;
-                                        state.currentRadius++;
-                                    }
-                                }
-                            }
-                            return checkPos;
-                        }
-                    }
-                    // Column complete, reset Y for next column
-                    state.currentY = 0;
-                }
-                // Row complete, reset Z for next row
-                state.currentZ = -radius;
-            }
-        }
-
-        // If we've searched the entire range, reset to start over next tick
-        if (state.currentRadius > horizontalRadius) {
-            searchStates.remove(masterPos);
-        }
-
-        return null;
+        return SCANNER.scan(level, masterPos, effectRange, checkPos ->
+            level.isEmptyBlock(checkPos)
+                && level.getBrightness(LightLayer.BLOCK, checkPos) < 8
+                && level.getBlockState(checkPos.below()).isFaceSturdy(level, checkPos.below(), Direction.UP));
     }
 
-    /**
-     * Track the search state for each ritual to resume where it left off
-     * Searches from center outward in expanding square rings
-     * Searches downward from ritual stone (Y=0) to Y=-verticalRadius
-     */
-    private static class SearchState {
-        int currentRadius = 0; // Start from center (at master ritual stone)
-        int currentX = Integer.MIN_VALUE; // X position - MIN_VALUE means start fresh (no skipping)
-        int currentZ = Integer.MIN_VALUE; // Z position - MIN_VALUE means start fresh (no skipping)
-        int currentY = Integer.MAX_VALUE; // Y position - MAX_VALUE means start fresh (no skipping, since y is checked differently)
+    @Override
+    public void stopRitual(IMasterRitualStone mrs, BreakType breakType) {
+        SCANNER.forget(mrs.getWorldObj(), mrs.getMasterBlockPos());
+        super.stopRitual(mrs, breakType);
     }
 
     @Override

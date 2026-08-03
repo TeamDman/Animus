@@ -9,7 +9,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -21,8 +20,6 @@ import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -40,8 +37,7 @@ public class RitualLuna extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
 
-    // Track current search position for each ritual to resume searching where we left off
-    private static final Map<BlockPos, SearchState> searchStates = new HashMap<>();
+    private static final RitualAreaScanner SCANNER = new RitualAreaScanner();
 
     public RitualLuna() {
         super(Constants.Rituals.LUNA, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LUNA);
@@ -160,109 +156,18 @@ public class RitualLuna extends Ritual {
     }
 
     /**
-     * Find a light-emitting block using breadth-first search
-     * Starts from 1 block below the master ritual stone and expands outward in all directions
-     * Uses the ritual's effect range (modifiable via Ritual Tinkerer)
+     * Find a light-emitting block using center-outward search
+     * Expands outward in square rings across the ritual's effect range (modifiable via Ritual Tinkerer)
      */
     private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
-        SearchState state = searchStates.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
-
-        int maxChecksPerTick = 4096; // Checks per tick - tested with no noticeable performance impact
-        int checksThisTick = 0;
-        
-        // Get bounds from the AreaDescriptor (respects Ritual Tinkerer modifications)
-        AABB aabb = effectRange.getAABB(masterPos);
-        int horizontalRadius = (int) Math.max(
-            Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
-            Math.max(Math.abs(aabb.minZ - masterPos.getZ()), Math.abs(aabb.maxZ - masterPos.getZ()))
-        );
-        int verticalRadius = (int) Math.max(
-            Math.abs(aabb.minY - masterPos.getY()),
-            Math.abs(aabb.maxY - masterPos.getY())
-        );
-
-        // Start position is 1 block below the ritual stone
-        BlockPos startPos = masterPos.below();
-
-        // Breadth-first search: expand outward in "shells" of increasing distance
-        // We use Manhattan distance for efficiency
-        for (int distance = state.currentDistance; distance <= horizontalRadius + verticalRadius && checksThisTick < maxChecksPerTick; distance++) {
-            // For each distance level, check all positions at that Manhattan distance from start
-            for (int x = -horizontalRadius; x <= horizontalRadius && checksThisTick < maxChecksPerTick; x++) {
-                // Skip if we're not resuming from this X position
-                if (distance == state.currentDistance && x < state.currentX) continue;
-
-                for (int z = -horizontalRadius; z <= horizontalRadius && checksThisTick < maxChecksPerTick; z++) {
-                    // Skip if we're not resuming from this Z position
-                    if (distance == state.currentDistance && x == state.currentX && z < state.currentZ) continue;
-
-                    for (int y = 0; y >= -verticalRadius && checksThisTick < maxChecksPerTick; y--) {
-                        // Skip if we're not resuming from this Y position
-                        if (distance == state.currentDistance && x == state.currentX && z == state.currentZ && y > state.currentY) continue;
-
-                        // Calculate Manhattan distance from start position
-                        int manhattanDist = Math.abs(x) + Math.abs(z) + Math.abs(y);
-
-                        // Only check positions at this exact distance
-                        if (manhattanDist != distance) {
-                            continue;
-                        }
-
-                        BlockPos checkPos = startPos.offset(x, y, z);
-                        checksThisTick++;
-
-                        // Update search state to resume from here next tick
-                        state.currentDistance = distance;
-                        state.currentX = x;
-                        state.currentZ = z;
-                        state.currentY = y;
-
-                        // Check if this block emits light
-                        BlockState blockState = level.getBlockState(checkPos);
-                        int lightEmission = blockState.getLightEmission();
-
-                        if (lightEmission > 0) {
-                            // Advance to next position for next search
-                            state.currentY--;
-                            if (state.currentY < -verticalRadius) {
-                                state.currentY = 0;
-                                state.currentZ++;
-                                if (state.currentZ > horizontalRadius) {
-                                    state.currentZ = -horizontalRadius;
-                                    state.currentX++;
-                                    if (state.currentX > horizontalRadius) {
-                                        state.currentDistance++;
-                                        state.currentX = -horizontalRadius;
-                                        state.currentZ = -horizontalRadius;
-                                        state.currentY = 0;
-                                    }
-                                }
-                            }
-                            return checkPos;
-                        }
-                    }
-                }
-            }
-        }
-
-        // If we've searched the entire range, reset to start over next tick
-        if (state.currentDistance > horizontalRadius + verticalRadius) {
-            searchStates.remove(masterPos);
-        }
-
-        return null;
+        return SCANNER.scan(level, masterPos, effectRange, checkPos ->
+            level.getBlockState(checkPos).getLightEmission() > 0);
     }
 
-    /**
-     * Track the search state for each ritual to resume where it left off
-     * Uses breadth-first search based on Manhattan distance from starting position
-     * Starting position is 1 block below the ritual stone
-     */
-    private static class SearchState {
-        int currentDistance = 0; // Current Manhattan distance being searched
-        int currentX = Integer.MIN_VALUE; // X offset - MIN_VALUE means start fresh (no skipping)
-        int currentZ = Integer.MIN_VALUE; // Z offset - MIN_VALUE means start fresh (no skipping)
-        int currentY = Integer.MAX_VALUE; // Y offset - MAX_VALUE means start fresh (no skipping, since y checks y > state)
+    @Override
+    public void stopRitual(IMasterRitualStone mrs, BreakType breakType) {
+        SCANNER.forget(mrs.getWorldObj(), mrs.getMasterBlockPos());
+        super.stopRitual(mrs, breakType);
     }
 
     @Override
