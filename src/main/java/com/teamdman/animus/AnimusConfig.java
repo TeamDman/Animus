@@ -267,7 +267,7 @@ public class AnimusConfig {
                 .defineInRange("steadfastHeartMaxAmplifier", 4, 0, 10);
 
             naturesLeachRange = builder
-                .comment("Range in blocks for Ritual of Nature's Leach to consume plants")
+                .comment("Maximum range in blocks the Ritual Tinkerer can expand Ritual of Nature's Leach to (it starts at 8)")
                 .defineInRange("naturesLeachRange", 32, 1, 64);
 
             naturesLeachBaseSpeed = builder

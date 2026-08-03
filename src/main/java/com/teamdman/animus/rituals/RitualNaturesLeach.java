@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * Scans area for consumable plant matter and destroys it to fill the altar
  * Activation Cost: 3000 LP
  * Refresh Cost: Configurable (default: 10 LP)
- * Refresh Time: Configurable (default 80 ticks, varies with demon will)
+ * Refresh Time: Configurable (default 80 ticks with no corrosive will, falling to 16 ticks at the 100 will cap)
  * Default Range: 8 blocks (can be expanded via Ritual Tinkerer)
  * Maximum Range: Configurable (default 32 blocks, max 64)
  * Altar Search Range: 32 blocks horizontally, ±10 blocks vertically (cached for performance)
@@ -274,7 +274,7 @@ public class RitualNaturesLeach extends Ritual {
     @Override
     public int getRefreshTime() {
         int baseSpeed = AnimusConfig.rituals.naturesLeachBaseSpeed.get();
-        return (int) Math.min(baseSpeed, (100 * (100 / (Math.max(1, will) * 6))));
+        return (int) Math.max(1, Math.min(baseSpeed, (100 * (100 / (Math.max(1, will) * 6)))));
     }
 
     @Override
