@@ -304,6 +304,8 @@ publishMods {
         projectSlug = "animus"
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
         minecraftVersions.add(minecraft_version)
+        clientRequired = true
+        serverRequired = true
         requires("blood-magic")
         optional("jei", "curios", "patchouli")
     }
