@@ -239,7 +239,7 @@ public class RitualSiphon extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 10;
+        return AnimusConfig.rituals.siphonRefreshTime.get();
     }
 
     @Override

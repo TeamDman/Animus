@@ -138,7 +138,7 @@ public class RitualSourceVitaeum extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 40;
+        return AnimusConfig.rituals.sourceVitaeumRefreshTime.get();
     }
 
     @Override

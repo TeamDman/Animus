@@ -2,6 +2,10 @@
   "background_u_index": 0,
   "background_v_index": 0,
   "category": "compatibility",
+  "condition": {
+    "type": "modonomicon:mod_loaded",
+    "mod_id": "irons_spellbooks"
+  },
   "description": "book.animusnv.guide.compatibility.blood_infused_spellbook.description",
   "hide_while_locked": false,
   "icon": {

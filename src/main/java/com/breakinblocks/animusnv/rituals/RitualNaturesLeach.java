@@ -227,13 +227,13 @@ public class RitualNaturesLeach extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 10;
+        return AnimusConfig.rituals.naturesLeachRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
         int baseSpeed = AnimusConfig.rituals.naturesLeachBaseSpeed.get();
-        return (int) Math.min(baseSpeed, (100 * (100 / (Math.max(1, will) * 6))));
+        return (int) Math.max(1, Math.min(baseSpeed, (100 * (100 / (Math.max(1, will) * 6)))));
     }
 
     @Override

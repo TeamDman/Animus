@@ -105,7 +105,7 @@ public class RitualNoliteIgnem extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20;
+        return AnimusConfig.rituals.noliteIgnemRefreshTime.get();
     }
 
     @Override

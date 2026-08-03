@@ -1,0 +1,650 @@
+
+#Animus Configuration
+[animus]
+
+	[animus.general]
+		#Mute the Ender Dragon death sound
+		muteDragon = false
+		#Mute the Wither spawn sound
+		muteWither = false
+		#Allow rituals to kill mobs with potion effects
+		canKillBuffedMobs = true
+		#Amount of blood to add to altar per Blood Apple
+		#Range: 1 ~ 10000
+		bloodPerApple = 50
+
+	[animus.rituals]
+		#Allow Ritual of Culling to kill boss monsters (Wither, Ender Dragon, etc.)
+		killBoss = true
+		#Extra LP cost for killing boss monsters
+		#Range: 0 ~ 1000000
+		bossCost = 25000
+		#Allow Ritual of Culling to destroy primed TNT
+		CullingKillsTnT = true
+		#Enable debug logging for Ritual of Culling
+		CullingDebug = false
+		#Horizontal range in blocks for Ritual of Culling effect area
+		#Range: 1 ~ 64
+		cullingRange = 10
+		#Vertical range in blocks for Ritual of Culling effect area (extends both above AND below the ritual stone)
+		#Range: 1 ~ 64
+		cullingVerticalRange = 10
+		#Amount of LP added to the Blood Altar per entity killed by Ritual of Culling
+		#Range: 1 ~ 10000
+		cullingLpPerKill = 200
+		#LP cost per mob spawned by Ritual of Peaceful Beckoning
+		#Range: 1 ~ 100000
+		peacefulBeckoningCost = 1000
+		#Horizontal range in blocks for Ritual of Peaceful Beckoning mob spawning
+		#Range: 1 ~ 32
+		peacefulBeckoningRange = 8
+		#Range in blocks for Ritual of Steadfast Heart absorption effect
+		#Range: 1 ~ 512
+		steadfastHeartRange = 128
+		#Refresh time in ticks for Ritual of Steadfast Heart (20 ticks = 1 second)
+		#Range: 1 ~ 6000
+		steadfastHeartRefreshTime = 60
+		#Maximum absorption amplifier for Ritual of Steadfast Heart (0 = 1 heart, 4 = 5 hearts)
+		#Range: 0 ~ 10
+		steadfastHeartMaxAmplifier = 4
+		#Maximum range in blocks the Ritual Tinkerer can expand Ritual of Nature's Leach to (it starts at 8)
+		#Range: 1 ~ 64
+		naturesLeachRange = 32
+		#Base refresh time in ticks for Ritual of Nature's Leach (before demon will modifier)
+		#Range: 1 ~ 6000
+		naturesLeachBaseSpeed = 80
+		#Amount of LP gained per block consumed by Ritual of Nature's Leach
+		#Range: 1 ~ 1000
+		naturesLeachLpPerBlock = 50
+		#Maximum damage to repair per item with Ritual of Reparare each interval
+		#Range: 1 ~ 100
+		reparareRitualRepairAmount = 1
+		#Ticks between repair attempts for Ritual of Reparare (20 ticks = 1 second)
+		#Range: 20 ~ 6000
+		reparareRitualInterval = 100
+		#LP cost per damage point repaired by Ritual of Reparare
+		#Range: 1 ~ 1000
+		reparareRitualLPPerDamage = 50
+		#Chunk radius for Ritual of Persistence chunk loading (in chunks, not blocks)
+		#Range: 1 ~ 16
+		persistenceChunkRadius = 3
+		#LP consumed each second the Ritual of Persistence is active (the key name is legacy; this is not per game tick)
+		#Range: 1 ~ 10000
+		persistenceLPPerTick = 100
+		#Radius in blocks for Ritual of Serenity spawn prevention
+		#Range: 1 ~ 256
+		serenityRadius = 48
+		#LP consumed each second the Ritual of Serenity is active (the key name is legacy; this is not per game tick)
+		#Range: 1 ~ 10000
+		serenityLPPerTick = 1
+		#Radius in blocks for Ritual of Nolite Ignem fire extinguishing
+		#Range: 1 ~ 256
+		noliteIgnemRadius = 64
+		#LP cost per fire block extinguished by Ritual of Nolite Ignem
+		#Range: 1 ~ 1000
+		noliteIgnemLPPerFire = 10
+		#Horizontal radius in blocks for Ritual of Relentless Tides fluid placement
+		#Range: 1 ~ 64
+		relentlessTidesRange = 32
+		#Maximum vertical depth in blocks for Ritual of Relentless Tides fluid placement
+		#Range: 1 ~ 256
+		relentlessTidesDepth = 128
+		#LP cost per fluid block placed by Ritual of Relentless Tides
+		#Range: 1 ~ 1000
+		relentlessTidesLPPerPlacement = 50
+		#Horizontal radius in blocks for Ritual of Siphon fluid extraction
+		#Range: 1 ~ 64
+		siphonRange = 32
+		#Maximum vertical depth in blocks for Ritual of Siphon fluid extraction
+		#Range: 1 ~ 256
+		siphonDepth = 128
+		#LP cost per fluid block extracted by Ritual of Siphon
+		#Range: 1 ~ 1000
+		siphonLPPerExtraction = 50
+		#Block to place where fluid is extracted by Ritual of Siphon
+		#Use format: modid:blockname
+		#Examples: animus:block_antilife, minecraft:stone, minecraft:cobblestone
+		#Default: animus:block_antilife
+		siphonReplacementBlock = "animus:block_antilife"
+		#Radius in blocks to search for Blood Altars for Ritual of Source Vitaeum
+		#Range: 1 ~ 32
+		sourceVitaeumAltarRange = 8
+		#Base conversion rate for Ritual of Source Vitaeum (X Source to 1 LP)
+		#Range: 1 ~ 1000
+		sourceVitaeumBaseConversion = 10
+		#Radius in blocks to check for other Master Ritual Stones (each doubles the conversion cost)
+		#Range: 1 ~ 32
+		sourceVitaeumPenaltyRadius = 10
+		#Amount of Source to attempt to convert per cycle
+		#Range: 10 ~ 10000
+		sourceVitaeumSourcePerCycle = 100
+		#Radius in blocks for Ritual of Floral Supremacy effect area
+		#Range: 1 ~ 32
+		floralSupremacyRadius = 8
+		#LP cost per flower supercharged by Ritual of Floral Supremacy
+		#Range: 1 ~ 1000
+		floralSupremacyLPPerFlower = 50
+		#Horizontal radius in blocks for Ritual of Luna light harvesting
+		#Range: 1 ~ 64
+		lunaHorizontalRange = 32
+		#Vertical depth below ritual stone for Ritual of Luna light harvesting
+		#Searches from ritual stone downward to this depth
+		#Set to -1 to search all blocks down to world bottom
+		#Default: 64
+		#Range: -1 ~ 256
+		lunaVerticalRange = 64
+		#Horizontal radius in blocks for Ritual of Sol light placement
+		#Range: 1 ~ 64
+		solHorizontalRange = 32
+		#Vertical depth below ritual stone for Ritual of Sol light placement
+		#Searches from ritual stone downward to this depth
+		#Set to -1 to search all blocks down to world bottom
+		#Default: 64
+		#Range: -1 ~ 256
+		solVerticalRange = 64
+		#Disallow items enhanced by the Imperfect Ritual of Enhancement from being processed by the Ritual of Unmaking
+		#When true, items with the AnimusEnhanced tag will be skipped
+		#Default: true
+		unmakingDisallowEnhanced = true
+		#Enable player-like kills for Ritual of Culling when raw demon will is available
+		#When enabled and raw will is present, mobs are killed as if the ritual owner killed them
+		#This enables player-only drops like blaze rods from blazes
+		#Default: true
+		cullingPlayerKillDrops = true
+		#Chance (0.0 to 1.0) to consume 1 raw demon will when killing a mob with player-like kill
+		#Only applies when cullingPlayerKillDrops is enabled
+		#Default: 0.1 (10% chance)
+		#Range: 0.0 ~ 1.0
+		cullingWillConsumeChance = 0.1
+
+		#Enable or disable individual rituals
+		[animus.rituals.enabled]
+			#Enable the Ritual of Culling
+			culling = true
+			#Enable the Ritual of Endless Greed
+			endlessGreed = true
+			#Enable the Ritual of Entropy
+			entropy = true
+			#Enable the Ritual of Luna
+			luna = true
+			#Enable the Ritual of Nature's Leach
+			naturesLeach = true
+			#Enable the Ritual of Nolite Ignem
+			noliteIgnem = true
+			#Enable the Ritual of Peaceful Beckoning
+			peacefulBeckoning = true
+			#Enable the Ritual of Persistence
+			persistence = true
+			#Enable the Ritual of Relentless Tides
+			relentlessTides = true
+			#Enable the Ritual of Reparare
+			reparare = true
+			#Enable the Ritual of Serenity
+			serenity = true
+			#Enable the Ritual of Siphon
+			siphon = true
+			#Enable the Ritual of Sol
+			sol = true
+			#Enable the Ritual of Source Vitaeum (requires Ars Nouveau)
+			sourceVitaeum = true
+			#Enable the Ritual of Steadfast Heart
+			steadfastHeart = true
+			#Enable the Ritual of Unmaking
+			unmaking = true
+			#Enable the Ritual of Floral Supremacy (requires Botania)
+			floralSupremacy = true
+			#Enable the Ritual of Arcane Mastery (requires Iron's Spells)
+			arcaneMastery = true
+
+		#Ritual of Endless Greed - Collects mob drops into a container
+		[animus.rituals.endlessGreed]
+			#Horizontal range in blocks for Ritual of Endless Greed effect area
+			#Range: 1 ~ 32
+			range = 7
+			#Vertical range in blocks for Ritual of Endless Greed effect area
+			#Range: 1 ~ 32
+			verticalRange = 5
+			#LP cost per item collected by Ritual of Endless Greed
+			#Range: 0 ~ 100
+			lpPerItem = 1
+			#Base LP cost per refresh cycle for Ritual of Endless Greed
+			#Range: 0 ~ 1000
+			refreshCost = 5
+
+		#Upkeep for rituals that run on a timer.
+		#Cost is the LP drained once per refresh, not per game tick.
+		#Time is how many game ticks pass between refreshes (20 ticks = 1 second).
+		#Lowering a refresh time makes that ritual act more often, and therefore cost more LP over time.
+		[animus.rituals.refresh]
+			#LP drained from the owner's Soul Network per entity culled by Ritual of Culling
+			#Range: 0 ~ 100000
+			cullingCost = 75
+			#Ticks between refreshes for Ritual of Culling
+			#Range: 1 ~ 12000
+			cullingTime = 25
+			#Ticks between refreshes for Ritual of Endless Greed
+			#Range: 1 ~ 12000
+			endlessGreedTime = 20
+			#LP drained per refresh by Ritual of Entropy
+			#Range: 0 ~ 100000
+			entropyCost = 1
+			#Ticks between refreshes for Ritual of Entropy
+			#Range: 1 ~ 12000
+			entropyTime = 1
+			#LP drained per refresh by Ritual of Luna
+			#Range: 0 ~ 100000
+			lunaCost = 1
+			#Ticks between refreshes for Ritual of Luna
+			#Range: 1 ~ 12000
+			lunaTime = 5
+			#LP drained per refresh by Ritual of Nature's Leach
+			#Range: 0 ~ 100000
+			naturesLeachCost = 10
+			#Ticks between refreshes for Ritual of Nolite Ignem
+			#Range: 1 ~ 12000
+			noliteIgnemTime = 20
+			#Ticks between refreshes for Ritual of Peaceful Beckoning
+			#Range: 1 ~ 12000
+			peacefulBeckoningTime = 400
+			#Ticks between refreshes for Ritual of Persistence
+			#Range: 1 ~ 12000
+			persistenceTime = 20
+			#Ticks between refreshes for Ritual of Relentless Tides
+			#Range: 1 ~ 12000
+			relentlessTidesTime = 10
+			#Ticks between refreshes for Ritual of Serenity
+			#Range: 1 ~ 12000
+			serenityTime = 20
+			#Ticks between refreshes for Ritual of Siphon
+			#Range: 1 ~ 12000
+			siphonTime = 10
+			#LP drained per refresh by Ritual of Sol
+			#Range: 0 ~ 100000
+			solCost = 1
+			#Ticks between refreshes for Ritual of Sol
+			#Range: 1 ~ 12000
+			solTime = 5
+			#Ticks between refreshes for Ritual of Source Vitaeum
+			#Range: 1 ~ 12000
+			sourceVitaeumTime = 40
+			#LP drained per affected player by Ritual of the Steadfast Heart
+			#Range: 0 ~ 100000
+			steadfastHeartCost = 100
+			#LP drained per refresh by Ritual of Unmaking
+			#Range: 0 ~ 100000
+			unmakingCost = 0
+			#Ticks between refreshes for Ritual of Unmaking
+			#Range: 1 ~ 12000
+			unmakingTime = 20
+
+	#Imperfect Ritual Configuration
+	[animus.imperfectRituals]
+
+		#Imperfect Ritual of Boundless Skies - Sets weather to permanent clear
+		[animus.imperfectRituals.boundlessSkies]
+			#Enable the Imperfect Ritual of Boundless Skies
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Boundless Skies
+			#Range: 0 ~ 1000000
+			cost = 10000
+
+		#Imperfect Ritual of Clear Skies - Clears the weather temporarily
+		[animus.imperfectRituals.clearSkies]
+			#Enable the Imperfect Ritual of Clear Skies
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Clear Skies
+			#Range: 0 ~ 1000000
+			cost = 1000
+
+		#Imperfect Ritual of Enhancement - Enhances enchantments on held item by 1 level
+		[animus.imperfectRituals.enhancement]
+			#Enable the Imperfect Ritual of Enhancement
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Enhancement
+			#Range: 0 ~ 1000000
+			cost = 5000
+
+		#Imperfect Ritual of Hunger - Sets player to hungry state
+		[animus.imperfectRituals.hunger]
+			#Enable the Imperfect Ritual of Hunger
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Hunger
+			#Range: 0 ~ 1000000
+			cost = 500
+
+		#Imperfect Ritual of Iron Heart - Provides absorption hearts
+		[animus.imperfectRituals.ironHeart]
+			#Enable the Imperfect Ritual of Iron Heart
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Iron Heart
+			#Range: 0 ~ 1000000
+			cost = 3500
+
+		#Imperfect Ritual of Magi - Converts source to LP (requires Ars Nouveau)
+		[animus.imperfectRituals.magi]
+			#Enable the Imperfect Ritual of Magi
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Magi
+			#Range: 0 ~ 1000000
+			cost = 2500
+
+		#Imperfect Ritual of Manasteel Soul - Infuses manasteel with blood (requires Botania)
+		[animus.imperfectRituals.manasteelSoul]
+			#Enable the Imperfect Ritual of Manasteel Soul
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Manasteel Soul
+			#Range: 0 ~ 1000000
+			cost = 2500
+
+		#Imperfect Ritual of Neptune's Blessing - Grants water breathing and swim speed
+		[animus.imperfectRituals.neptuneBlessing]
+			#Enable the Imperfect Ritual of Neptune's Blessing
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Neptune's Blessing
+			#Range: 0 ~ 1000000
+			cost = 2000
+
+		#Imperfect Ritual of Reduction - Downgrades all enchantments on held item by 1 level
+		[animus.imperfectRituals.reduction]
+			#Enable the Imperfect Ritual of Reduction
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Reduction
+			#Range: 0 ~ 1000000
+			cost = 1000
+
+		#Imperfect Ritual of Regression - Removes anvil repair cost from held item
+		[animus.imperfectRituals.regression]
+			#Enable the Imperfect Ritual of Regression
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Regression
+			#Range: 0 ~ 1000000
+			cost = 3000
+
+		#Imperfect Ritual of Soul Stained Blood - Converts blood orb to soul stained variant
+		[animus.imperfectRituals.soulStainedBlood]
+			#Enable the Imperfect Ritual of Soul Stained Blood
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of Soul Stained Blood
+			#Range: 0 ~ 1000000
+			cost = 2000
+
+		#Imperfect Ritual of the Warden - Summons warden-related effects
+		[animus.imperfectRituals.warden]
+			#Enable the Imperfect Ritual of the Warden
+			enabled = true
+			#LP cost to activate the Imperfect Ritual of the Warden
+			#Range: 0 ~ 1000000
+			cost = 3000
+
+	[animus.sigils]
+		#LP cost for Sigil of Consumption per block
+		#Range: 1 ~ 10000
+		antiLifeConsumption = 25
+		#Range of Sigil of Consumption in blocks
+		#Range: 1 ~ 64
+		antiLifeRange = 8
+		#Range of Sigil of Builder in blocks
+		#Range: 1 ~ 256
+		builderRange = 64
+		#Range of Sigil of Nature's Leach for consuming blocks in the world (in blocks)
+		#Range: 1 ~ 64
+		leachRange = 8
+		#Minimum number of fishing loot rolls when Sigil of Storm targets water
+		#Set both min and max to 0 to disable fish spawning
+		#Range: 0 ~ 64
+		stormFishLootMin = 2
+		#Maximum number of fishing loot rolls when Sigil of Storm targets water
+		#Set both min and max to 0 to disable fish spawning
+		#Range: 0 ~ 64
+		stormFishLootMax = 5
+		#Maximum damage to repair per item with Sigil of Reparare each interval
+		#Range: 1 ~ 100
+		reparareRepairAmount = 10
+		#Ticks between repair attempts for Sigil of Reparare (20 ticks = 1 second)
+		#Range: 20 ~ 6000
+		reparareInterval = 100
+		#LP cost per damage point repaired by Sigil of Reparare
+		#Range: 1 ~ 1000
+		reparareLPPerDamage = 50
+		#LP cost per use of Sigil of the Free Soul
+		#Range: 1 ~ 10000
+		freeSoulLPCost = 5000
+		#Duration in seconds for spectator mode when using Sigil of the Free Soul
+		#Range: 1 ~ 600
+		freeSoulDuration = 10
+		#Cooldown in seconds before Sigil of the Free Soul can prevent death again
+		#Range: 1 ~ 600
+		freeSoulCooldown = 60
+		#Default radius in blocks for Sigil of Equivalency block replacement (min: 1, max: 32)
+		#Range: 1 ~ 32
+		sigilEquivalencyRadius = 1
+		#LP cost per block replaced by Sigil of Equivalency
+		#Range: 1 ~ 10000
+		sigilEquivalencyLPCost = 1
+		#Number of blocks to replace per tick with Sigil of Equivalency (lower = less lag)
+		#Range: 1 ~ 100
+		sigilEquivalencyBlocksPerTick = 5
+
+		#Sigil of the Monk - unarmed combat enhancement
+		[animus.sigils.monk]
+			#Bonus unarmed damage when Sigil of the Monk is active
+			#This damage is added when attacking with empty hands
+			#Default: 10
+			#Range: 0.0 ~ 100.0
+			unarmedDamage = 10.0
+			#LP cost per second while Sigil of the Monk is active
+			#Default: 100 (5 LP per tick × 20 ticks)
+			#Set to 0 to disable LP drain
+			#Range: 0 ~ 10000
+			lpPerSecond = 100
+			#Maximum HP percentage threshold for execute effect with full demon will
+			#Execute threshold scales from 1% (at 1 will) to this value (at 4096 will)
+			#Targets at or below this % of max HP will be instantly killed
+			#Default: 0.15 (15%)
+			#Range: 0.0 ~ 1.0
+			executeThreshold = 0.15
+
+	[animus.hurtCooldown]
+		#How will the Hurt Cooldown (iframes) be affected
+		#DISABLED: No changes to vanilla behavior
+		#WHITELIST: Only listed damage sources have no iframes
+		#BLACKLIST: All except listed damage sources have no iframes
+		#Allowed Values: DISABLED, WHITELIST, BLACKLIST
+		mode = "BLACKLIST"
+		#If true, bosses will have no iframes
+		affectBosses = false
+		#If true, players will have no iframes
+		affectPlayers = false
+		#List of damage source types for whitelist/blacklist
+		sources = ["inFire", "inWall", "cactus", "lightningBolt", "lava", "outOfWorld"]
+
+	[animus.bloodCore]
+		#Enable debug logging for Blood Core tree spreading
+		debug = false
+		#Ticks between leaf regrowth attempts (when spreading is enabled)
+		#Lower = faster regrowth. Default: 100 (5 seconds)
+		#Range: 20 ~ 6000
+		leafRegrowthSpeed = 100
+		#Radius in blocks for blood tree spreading
+		#Range: 1 ~ 32
+		treeSpreadRadius = 16
+		#Base interval in ticks between tree spreading attempts
+		#Default: 600 (30 seconds)
+		#Range: 200 ~ 12000
+		treeSpreadInterval = 600
+
+	[animus.arsNouveau]
+		#Amount of Source consumed by Arcane Rune per drain cycle
+		#Default: 20 Source per cycle
+		#Range: 1 ~ 10000
+		arcaneRuneDrainAmount = 20
+		#Interval in ticks between Arcane Rune source drain cycles
+		#Default: 200 ticks (10 seconds)
+		#Range: 20 ~ 6000
+		arcaneRuneDrainInterval = 200
+
+		#Living Armor Integration
+		[animus.arsNouveau.livingArmor]
+			#Enable Living Armor XP gain from Ars Nouveau spell casting
+			#Default: true
+			enabled = true
+			#Base XP granted to Living Armor per glyph cast
+			#Actual XP = base × number of glyphs in spell
+			#Default: 5
+			#Range: 1 ~ 1000
+			baseXP = 5
+
+	[animus.botania]
+		#LP to Mana conversion rate
+		#Used by Sigil of Boundless Nature and other LP-to-mana items
+		#Default: 2 mana per 1 LP consumed
+		#Range: 1 ~ 100
+		LPtoManaConversionRate = 2
+		#Demon Will to Mana conversion rate
+		#Used by Diabolical Fungi and other will-to-mana generating flowers
+		#Default: 250 mana per 1 demon will consumed
+		#Range: 1 ~ 1000
+		willToManaConversionRate = 250
+		#Mana consumption rate for Rune of Unleashed Nature
+		#Mana consumed per second to maintain acceleration bonus
+		#Default: 10 mana per second
+		#Range: 1 ~ 1000
+		unleashedNatureManaDrain = 10
+
+	[animus.ironsSpells]
+		#Master toggle for Iron's Spellbooks integration
+		#Set to false to completely disable all Iron's Spellbooks features
+		#Use this if you're experiencing crashes with Iron's Spellbooks pre-release versions
+		#Requires game restart to take effect
+		#Default: true
+		enableIntegration = true
+
+		#Phase 1: LP-Powered Spell Casting
+		[animus.ironsSpells.lpCasting]
+			#Enable LP-powered spell casting
+			#When enabled, spells can consume Life Points instead of mana
+			#Default: true
+			enableLPCasting = true
+			#LP cost per mana point when casting spells with LP
+			#Higher values make spell casting more expensive
+			#Example: 100 means a spell costing 50 mana requires 5,000 LP
+			#Default: 100 LP per mana
+			#Range: 1 ~ 1000
+			lpPerMana = 100
+			#Require a Blood Orb in inventory or curio slot to use LP for spell casting
+			#If false, any player with LP in their soul network can use it
+			#Default: true
+			requireBloodOrb = true
+			#Allow spells to consume both mana and LP if player doesn't have enough of either
+			#Example: If a spell costs 100 mana and player has 60 mana + enough LP,
+			#it will consume 60 mana + LP equivalent of 40 mana
+			#Default: true
+			allowHybridCasting = true
+			#Show LP cost equivalent in spell tooltips when hovering over spells
+			#Default: true
+			showLPCostInTooltip = true
+
+		#Phase 2: Blood-Infused Spellbook
+		[animus.ironsSpells.bloodInfusedSpellbook]
+			#Enable Blood-Infused Spellbooks
+			#Default: true
+			enabled = true
+			#LP cost to infuse spellbook to Tier 1 (Weak Blood Orb)
+			#Range: 100 ~ 1000000
+			tier1LPCost = 5000
+			#LP cost to infuse spellbook to Tier 2 (Apprentice Blood Orb)
+			#Range: 100 ~ 1000000
+			tier2LPCost = 10000
+			#LP cost to infuse spellbook to Tier 3 (Magician Blood Orb)
+			#Range: 100 ~ 1000000
+			tier3LPCost = 25000
+			#LP cost to infuse spellbook to Tier 4 (Master Blood Orb)
+			#Range: 100 ~ 1000000
+			tier4LPCost = 50000
+			#LP cost to infuse spellbook to Tier 5 (Archmage Blood Orb)
+			#Range: 100 ~ 1000000
+			tier5LPCost = 100000
+			#LP cost to infuse spellbook to Tier 6 (Transcendent Blood Orb)
+			#Range: 100 ~ 1000000
+			tier6LPCost = 175000
+
+		#Phase 2: Sigil of Crimson Will
+		[animus.ironsSpells.sigilCrimsonWill]
+			#Enable Sigil of Crimson Will
+			#Default: true
+			enabled = true
+			#LP cost per mana point when empowering spells with Crimson Will
+			#This is in addition to normal spell costs
+			#Default: 50 LP per mana (half of normal LP casting cost)
+			#Range: 1 ~ 1000
+			lpPerMana = 50
+
+		#Phase 2: Sanguine Scrolls
+		[animus.ironsSpells.sanguineScrolls]
+			#Enable Sanguine Scrolls
+			#Default: true
+			enabled = true
+			#LP cost multiplier for Sanguine Scrolls
+			#Multiplied with spell mana cost and lpPerMana
+			#Example: 1.5 means spell costs mana × lpPerMana × 1.5 LP
+			#Default: 1.5 (50% more expensive than spellbook casting)
+			#Range: 1.0 ~ 5.0
+			lpCostMultiplier = 1.5
+			#Durability multiplier for Sanguine Scrolls
+			#Base durabilities: Blank=50, Reinforced=100, Imbued=200, Demon=400, Ethereal=600
+			#Example: 2.0 doubles all durability values
+			#Default: 1.0
+			#Range: 0.1 ~ 10.0
+			durabilityMultiplier = 1.0
+			#Require Blood Orb in inventory to craft Sanguine Scrolls at altar
+			#Default: false
+			requireBloodOrbToCraft = false
+
+		#Phase 5: Living Armor Integration
+		[animus.ironsSpells.livingArmor]
+			#Enable Living Armor XP gain from spell casting
+			#Default: true
+			enabled = true
+			#Base XP granted to Living Armor per spell cast
+			#Actual XP = base × spell level × rarity multiplier
+			#Rarity multipliers: Common=1.0, Uncommon=1.5, Rare=2.0, Epic=3.0, Legendary=5.0
+			#Default: 10
+			#Range: 1 ~ 1000
+			baseXP = 10
+
+	#Weapon Configuration
+	[animus.weapons]
+
+		#Sentient Bow - Demon will powered bow
+		[animus.weapons.sentientBow]
+			#Amount of demon will consumed per arrow fired
+			#Default: 1.0
+			#Range: 0.0 ~ 100.0
+			willCostPerShot = 1.0
+
+		#Hellforged Bow - LP powered bow with charged shots
+		[animus.weapons.hellforgedBow]
+			#Base LP cost to fire an arrow (before charging)
+			#Default: 5
+			#Range: 0 ~ 1000
+			baseLpCost = 5
+			#LP consumed per tick while charging beyond normal draw
+			#At max charge (70 ticks), this totals 3500 LP for the charge alone
+			#Default: 50
+			#Range: 0 ~ 1000
+			lpPerChargeTick = 50
+			#Maximum charge time in ticks (20 ticks = 1 second)
+			#Normal bow draw is ~22 ticks (1.1 seconds)
+			#Default: 70 (3.5 seconds total)
+			#Range: 20 ~ 200
+			maxChargeTicks = 70
+			#Maximum damage at full charge
+			#Default: 40.0
+			#Range: 1.0 ~ 200.0
+			maxDamage = 40.0
+			#HP percentage threshold for execute effect at full charge
+			#Targets at or below this % of max HP will be instantly killed
+			#Default: 0.15 (15%)
+			#Range: 0.0 ~ 1.0
+			executeThreshold = 0.15
+

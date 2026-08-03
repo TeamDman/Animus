@@ -189,7 +189,7 @@ public class RitualSteadfastHeart extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 100;
+        return AnimusConfig.rituals.steadfastHeartRefreshCost.get();
     }
 
     @Override

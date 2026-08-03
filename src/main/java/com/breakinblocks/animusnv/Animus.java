@@ -1,5 +1,6 @@
 package com.breakinblocks.animusnv;
 
+import com.breakinblocks.animusnv.advancements.AnimusCriteriaTriggers;
 import com.breakinblocks.animusnv.compat.CompatHandler;
 import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.network.AnimusPayloads;
@@ -47,6 +48,7 @@ public class Animus {
 
         AnimusRituals.RITUALS.register(modEventBus);
         AnimusRituals.IMPERFECT_RITUALS.register(modEventBus);
+        AnimusCriteriaTriggers.register(modEventBus);
 
         CompatHandler.registerDeferredRegisters(modEventBus);
 

@@ -1,6 +1,8 @@
 package com.breakinblocks.animusnv.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -11,7 +13,9 @@ import java.util.function.Predicate;
  * Reusable center-outward Chebyshev distance block searcher.
  * Iterates positions in expanding square rings from a center point,
  * checking a configurable number of positions per tick and resuming
- * where it left off on the next call.
+ * where it left off on the next call. Once the whole volume has been
+ * swept the cursor wraps back to the centre and sweeps again, so a
+ * ritual keeps reacting to blocks that change after it started.
  */
 public class ChebyshevSearcher {
 
@@ -26,7 +30,7 @@ public class ChebyshevSearcher {
      * @param origin           the center position to search from
      * @param horizontalRadius max horizontal distance from origin
      * @param verticalDepth    number of Y levels to check
-     * @param yDownward        if true, Y iterates downward from origin; if false, upward (into ground)
+     * @param yDownward        if true, Y iterates downward from origin; if false, upward
      * @param maxChecksPerTick max positions to check per call
      * @param predicate        test for each BlockPos; return true to select it
      * @return the first matching position, or null if batch exhausted
@@ -34,74 +38,115 @@ public class ChebyshevSearcher {
     @Nullable
     public BlockPos search(BlockPos masterPos, BlockPos origin, int horizontalRadius, int verticalDepth,
                            boolean yDownward, int maxChecksPerTick, Predicate<BlockPos> predicate) {
-        SearchState state = states.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
-        int checks = 0;
-
-        for (int radius = state.radius; radius <= horizontalRadius && checks < maxChecksPerTick; radius++) {
-            for (int x = -radius; x <= radius && checks < maxChecksPerTick; x++) {
-                if (radius == state.radius && x < state.x) continue;
-
-                for (int z = -radius; z <= radius && checks < maxChecksPerTick; z++) {
-                    if (radius == state.radius && x == state.x && z < state.z) continue;
-
-                    // Only check perimeter blocks (skip interior; already checked at smaller radius)
-                    if (radius > 0 && Math.abs(x) != radius && Math.abs(z) != radius) continue;
-
-                    int startY = (radius == state.radius && x == state.x && z == state.z) ? state.y : 0;
-                    for (int y = startY; y < verticalDepth && checks < maxChecksPerTick; y++) {
-                        BlockPos checkPos = yDownward
-                                ? origin.offset(x, -y, z)
-                                : origin.offset(x, y, z);
-                        checks++;
-
-                        state.radius = radius;
-                        state.x = x;
-                        state.z = z;
-                        state.y = y;
-
-                        if (predicate.test(checkPos)) {
-                            advanceState(state, radius, verticalDepth);
-                            return checkPos;
-                        }
-                    }
-                    state.y = 0;
-                }
-                state.z = -radius;
-            }
+        if (horizontalRadius < 0 || verticalDepth < 1) {
+            return null;
         }
 
-        if (state.radius > horizontalRadius) {
-            states.remove(masterPos);
+        SearchState state = states.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
+
+        if (state.radius > horizontalRadius || state.level >= verticalDepth) {
+            state.reset();
+        }
+
+        for (int checks = 0; checks < maxChecksPerTick; checks++) {
+            int ringCells = state.radius == 0 ? 1 : 8 * state.radius;
+
+            if (state.cell >= ringCells) {
+                state.cell = 0;
+                state.level = 0;
+                state.radius++;
+                if (state.radius > horizontalRadius) {
+                    state.reset();
+                }
+                continue;
+            }
+
+            int x = ringOffsetX(state.radius, state.cell);
+            int z = ringOffsetZ(state.radius, state.cell);
+            int y = state.level;
+
+            state.level++;
+            if (state.level >= verticalDepth) {
+                state.level = 0;
+                state.cell++;
+            }
+
+            BlockPos checkPos = yDownward ? origin.offset(x, -y, z) : origin.offset(x, y, z);
+            if (predicate.test(checkPos)) {
+                return checkPos;
+            }
         }
 
         return null;
-    }
-
-    private static void advanceState(SearchState state, int radius, int verticalDepth) {
-        state.y++;
-        if (state.y >= verticalDepth) {
-            state.y = 0;
-            state.z++;
-            if (state.z > radius) {
-                state.z = -radius;
-                state.x++;
-                if (state.x > radius) {
-                    state.x = -radius;
-                    state.z = -radius;
-                    state.radius++;
-                }
-            }
-        }
     }
 
     public void reset(BlockPos masterPos) {
         states.remove(masterPos);
     }
 
-    private static class SearchState {
-        int radius = 0;
-        int x = 0;
-        int z = 0;
-        int y = 0;
+    /**
+     * Largest horizontal step from the centre that still lands inside the area.
+     * The AABB's upper bound is exclusive, so it is pulled in by one before measuring.
+     */
+    public static int horizontalRadiusOf(AABB area, BlockPos centre) {
+        int maxX = Mth.ceil(area.maxX) - 1;
+        int maxZ = Mth.ceil(area.maxZ) - 1;
+        return Math.max(
+            Math.max(centre.getX() - Mth.floor(area.minX), maxX - centre.getX()),
+            Math.max(centre.getZ() - Mth.floor(area.minZ), maxZ - centre.getZ())
+        );
+    }
+
+    /**
+     * Number of Y levels from the centre down to the bottom of the area, inclusive.
+     */
+    public static int downwardDepthOf(AABB area, BlockPos centre) {
+        return Math.max(1, centre.getY() - Mth.floor(area.minY) + 1);
+    }
+
+    private static int ringOffsetX(int radius, int cell) {
+        if (radius == 0) {
+            return 0;
+        }
+        int side = 2 * radius + 1;
+        if (cell < side) {
+            return -radius + cell;
+        }
+        if (cell < side * 2) {
+            return -radius + (cell - side);
+        }
+        if (cell < side * 2 + (2 * radius - 1)) {
+            return -radius;
+        }
+        return radius;
+    }
+
+    private static int ringOffsetZ(int radius, int cell) {
+        if (radius == 0) {
+            return 0;
+        }
+        int side = 2 * radius + 1;
+        if (cell < side) {
+            return -radius;
+        }
+        if (cell < side * 2) {
+            return radius;
+        }
+        if (cell < side * 2 + (2 * radius - 1)) {
+            return -radius + 1 + (cell - side * 2);
+        }
+        return -radius + 1 + (cell - side * 2 - (2 * radius - 1));
+    }
+
+    private static final class SearchState {
+        int radius;
+        int cell;
+        int level;
+
+        void reset() {
+            radius = 0;
+            cell = 0;
+            level = 0;
+        }
     }
 }

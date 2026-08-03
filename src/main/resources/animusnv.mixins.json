@@ -4,7 +4,9 @@
   "package": "com.breakinblocks.animusnv.mixin",
   "compatibilityLevel": "JAVA_21",
   "refmap": "animusnv.refmap.json",
-  "mixins": [],
+  "mixins": [
+    "SentientScytheSweepMixin"
+  ],
   "client": [],
   "injectors": {
     "defaultRequire": 0

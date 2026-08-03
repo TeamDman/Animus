@@ -4,6 +4,8 @@ import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.EntryBackground;
 import com.klikli_dev.modonomicon.api.datagen.EntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
+import com.klikli_dev.modonomicon.api.datagen.book.condition.BookModLoadedConditionModel;
+import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.item.Items;
@@ -95,5 +97,11 @@ public class RuneUnleashedNatureEntry extends EntryProvider {
     @Override
     protected String entryId() {
         return "rune_unleashed_nature";
+    }
+
+    @Override
+    protected BookEntryModel additionalSetup(BookEntryModel entry) {
+        return super.additionalSetup(entry)
+                .withCondition(BookModLoadedConditionModel.create().withModId("botania"));
     }
 }

@@ -2,7 +2,9 @@ package com.breakinblocks.animusnv.datagen.book.compatibility;
 
 import com.klikli_dev.modonomicon.api.datagen.CategoryProvider;
 import com.klikli_dev.modonomicon.api.datagen.ModonomiconProviderBase;
+import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
+import com.klikli_dev.modonomicon.api.datagen.book.condition.BookCategoryHasVisibleEntriesConditionModel;
 import net.minecraft.world.item.Items;
 
 public class CompatCategory extends CategoryProvider {
@@ -51,5 +53,16 @@ public class CompatCategory extends CategoryProvider {
     @Override
     public String categoryId() {
         return "compatibility";
+    }
+
+    /**
+     * Every entry in here belongs to an optional mod, so the whole tab is hidden
+     * when none of those mods are installed.
+     */
+    @Override
+    protected BookCategoryModel additionalSetup(BookCategoryModel category) {
+        return super.additionalSetup(category)
+                .withCondition(BookCategoryHasVisibleEntriesConditionModel.create()
+                        .withCategory(category.getId()));
     }
 }

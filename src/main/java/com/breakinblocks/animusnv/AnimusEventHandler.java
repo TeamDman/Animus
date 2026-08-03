@@ -25,6 +25,9 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
+import com.breakinblocks.animusnv.compat.CompatHandler;
+import com.breakinblocks.animusnv.compat.malum.SpiritHarvestHelper;
+import com.breakinblocks.animusnv.items.ItemRunicSentientScythe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.EventPriority;
@@ -119,6 +122,36 @@ public class AnimusEventHandler {
             }
         }
         return ItemStack.EMPTY;
+    }
+
+    /**
+     * Apply Malum's scythe proficiency multiplier to our scythes.
+     * Malum only applies it to damage sources tagged malum:is_scythe; ours deal ordinary
+     * player attack damage, so sources of proficiency such as the Necklace of the Narrow
+     * Edge would otherwise do nothing for them.
+     */
+    @SubscribeEvent
+    public static void onScytheDamage(LivingIncomingDamageEvent event) {
+        if (!CompatHandler.isMalumLoaded()) {
+            return;
+        }
+
+        if (!(event.getSource().getEntity() instanceof Player player) || player.level().isClientSide()) {
+            return;
+        }
+
+        if (event.getSource().getDirectEntity() != player) {
+            return;
+        }
+
+        if (!(player.getMainHandItem().getItem() instanceof ItemRunicSentientScythe)) {
+            return;
+        }
+
+        double proficiency = SpiritHarvestHelper.getScytheProficiency(player);
+        if (proficiency != 1.0) {
+            event.setAmount((float) (event.getAmount() * proficiency));
+        }
     }
 
     /**

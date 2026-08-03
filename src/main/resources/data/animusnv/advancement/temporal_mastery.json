@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "id": "animusnv:sigil_temporal_dominance"
+    },
+    "title": {
+      "translate": "advancement.animus.temporal_mastery.title"
+    },
+    "description": {
+      "translate": "advancement.animus.temporal_mastery.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "animusnv:root",
+  "criteria": {
+    "has_temporal_sigil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "animusnv:sigil_temporal_dominance"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 50
+  }
+}

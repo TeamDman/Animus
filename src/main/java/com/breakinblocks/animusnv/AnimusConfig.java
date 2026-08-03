@@ -94,6 +94,27 @@ public class AnimusConfig {
         public final ModConfigSpec.IntValue endlessGreedEVPerItem;
         public final ModConfigSpec.IntValue endlessGreedRefreshCost;
 
+        public final ModConfigSpec.IntValue cullingRefreshCost;
+        public final ModConfigSpec.IntValue entropyRefreshCost;
+        public final ModConfigSpec.IntValue lunaRefreshCost;
+        public final ModConfigSpec.IntValue naturesLeachRefreshCost;
+        public final ModConfigSpec.IntValue solRefreshCost;
+        public final ModConfigSpec.IntValue steadfastHeartRefreshCost;
+        public final ModConfigSpec.IntValue unmakingRefreshCost;
+
+        public final ModConfigSpec.IntValue animalLuringRefreshTime;
+        public final ModConfigSpec.IntValue cullingRefreshTime;
+        public final ModConfigSpec.IntValue entropyRefreshTime;
+        public final ModConfigSpec.IntValue lunaRefreshTime;
+        public final ModConfigSpec.IntValue noliteIgnemRefreshTime;
+        public final ModConfigSpec.IntValue persistenceRefreshTime;
+        public final ModConfigSpec.IntValue relentlessTidesRefreshTime;
+        public final ModConfigSpec.IntValue serenityRefreshTime;
+        public final ModConfigSpec.IntValue siphonRefreshTime;
+        public final ModConfigSpec.IntValue solRefreshTime;
+        public final ModConfigSpec.IntValue sourceVitaeumRefreshTime;
+        public final ModConfigSpec.IntValue unmakingRefreshTime;
+
         public Rituals(ModConfigSpec.Builder builder) {
             builder.push("rituals");
 
@@ -143,7 +164,7 @@ public class AnimusConfig {
                 .defineInRange("steadfastHeartMaxAmplifier", 4, 0, 10);
 
             naturesLeachRange = builder
-                .comment("Range in blocks for Ritual of Nature's Leach to consume plants")
+                .comment("Maximum range in blocks the Ritual Tinkerer can expand Ritual of Nature's Leach to (it starts at 8)")
                 .defineInRange("naturesLeachRange", 32, 1, 64);
 
             naturesLeachBaseSpeed = builder
@@ -171,7 +192,7 @@ public class AnimusConfig {
                 .defineInRange("persistenceChunkRadius", 3, 1, 16);
 
             persistenceEVPerTick = builder
-                .comment("EV cost per tick for Ritual of Persistence (checked every second / 20 ticks)")
+                .comment("EV consumed each second the Ritual of Persistence is active (the key name is legacy; this is not per game tick)")
                 .defineInRange("persistenceEVPerTick", 100, 1, 10000);
 
             serenityRadius = builder
@@ -179,7 +200,7 @@ public class AnimusConfig {
                 .defineInRange("serenityRadius", 48, 1, 256);
 
             serenityEVPerTick = builder
-                .comment("EV cost per tick for Ritual of Serenity (checked every second / 20 ticks)")
+                .comment("EV consumed each second the Ritual of Serenity is active (the key name is legacy; this is not per game tick)")
                 .defineInRange("serenityEVPerTick", 1, 1, 10000);
 
             noliteIgnemRadius = builder
@@ -313,8 +334,93 @@ public class AnimusConfig {
                 .defineInRange("lpPerItem", 1, 0, 100);
 
             endlessGreedRefreshCost = builder
-                .comment("Base EV cost per refresh cycle (20 ticks) for Ritual of Endless Greed")
+                .comment("Base EV cost per refresh cycle for Ritual of Endless Greed")
                 .defineInRange("refreshCost", 5, 0, 1000);
+
+            builder.pop();
+
+            builder.comment(
+                "Upkeep for rituals that run on a timer.",
+                "Cost is the EV drained once per refresh, not per game tick.",
+                "Time is how many game ticks pass between refreshes (20 ticks = 1 second).",
+                "Lowering a refresh time makes that ritual act more often, and therefore cost more EV over time."
+            ).push("refresh");
+
+            animalLuringRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Animal Luring")
+                .defineInRange("animalLuringTime", 400, 1, 12000);
+
+            cullingRefreshCost = builder
+                .comment("EV drained from the owner's Anima per entity culled by Ritual of Culling")
+                .defineInRange("cullingCost", 75, 0, 100000);
+
+            cullingRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Culling")
+                .defineInRange("cullingTime", 25, 1, 12000);
+
+            entropyRefreshCost = builder
+                .comment("EV drained per refresh by Ritual of Entropy")
+                .defineInRange("entropyCost", 1, 0, 100000);
+
+            entropyRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Entropy")
+                .defineInRange("entropyTime", 1, 1, 12000);
+
+            lunaRefreshCost = builder
+                .comment("EV drained per refresh by Ritual of Luna")
+                .defineInRange("lunaCost", 1, 0, 100000);
+
+            lunaRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Luna")
+                .defineInRange("lunaTime", 5, 1, 12000);
+
+            naturesLeachRefreshCost = builder
+                .comment("EV drained per refresh by Ritual of Nature's Leach")
+                .defineInRange("naturesLeachCost", 10, 0, 100000);
+
+            noliteIgnemRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Nolite Ignem")
+                .defineInRange("noliteIgnemTime", 20, 1, 12000);
+
+            persistenceRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Persistence")
+                .defineInRange("persistenceTime", 20, 1, 12000);
+
+            relentlessTidesRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Relentless Tides")
+                .defineInRange("relentlessTidesTime", 10, 1, 12000);
+
+            serenityRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Serenity")
+                .defineInRange("serenityTime", 20, 1, 12000);
+
+            siphonRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Siphon")
+                .defineInRange("siphonTime", 10, 1, 12000);
+
+            solRefreshCost = builder
+                .comment("EV drained per refresh by Ritual of Sol")
+                .defineInRange("solCost", 1, 0, 100000);
+
+            solRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Sol")
+                .defineInRange("solTime", 5, 1, 12000);
+
+            sourceVitaeumRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Source Vitaeum")
+                .defineInRange("sourceVitaeumTime", 40, 1, 12000);
+
+            steadfastHeartRefreshCost = builder
+                .comment("EV drained per affected player by Ritual of the Steadfast Heart")
+                .defineInRange("steadfastHeartCost", 100, 0, 100000);
+
+            unmakingRefreshCost = builder
+                .comment("EV drained per refresh by Ritual of Unmaking")
+                .defineInRange("unmakingCost", 0, 0, 100000);
+
+            unmakingRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Unmaking")
+                .defineInRange("unmakingTime", 20, 1, 12000);
 
             builder.pop();
 

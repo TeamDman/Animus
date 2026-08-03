@@ -157,12 +157,12 @@ public class RitualSol extends Ritual {
 
     @Override
     public int getRefreshCost() {
-        return 1;
+        return AnimusConfig.rituals.solRefreshCost.get();
     }
 
     @Override
     public int getRefreshTime() {
-        return 5;
+        return AnimusConfig.rituals.solRefreshTime.get();
     }
 
     @Override
@@ -174,20 +174,12 @@ public class RitualSol extends Ritual {
 
     private BlockPos findDarkSpot(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
         AABB aabb = effectRange.getAABB(masterPos);
-        int horizontalRadius = (int) Math.max(
-            Math.max(Math.abs(aabb.minX - masterPos.getX()), Math.abs(aabb.maxX - masterPos.getX())),
-            Math.max(Math.abs(aabb.minZ - masterPos.getZ()), Math.abs(aabb.maxZ - masterPos.getZ()))
-        );
-        int verticalRadius = (int) Math.max(
-            Math.abs(aabb.minY - masterPos.getY()),
-            Math.abs(aabb.maxY - masterPos.getY())
-        );
 
         return SEARCHER.search(
             masterPos,
             masterPos,
-            horizontalRadius,
-            verticalRadius,
+            ChebyshevSearcher.horizontalRadiusOf(aabb, masterPos),
+            ChebyshevSearcher.downwardDepthOf(aabb, masterPos),
             true,
             4096,
             checkPos -> level.isEmptyBlock(checkPos)

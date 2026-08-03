@@ -156,7 +156,7 @@ public class RitualPersistence extends Ritual {
 
     @Override
     public int getRefreshTime() {
-        return 20;
+        return AnimusConfig.rituals.persistenceRefreshTime.get();
     }
 
     @Override

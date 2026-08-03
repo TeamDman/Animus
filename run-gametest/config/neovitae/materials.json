@@ -1,0 +1,220 @@
+[
+  {
+    "name": "iron",
+    "color": "#D8AF93",
+    "stages": [
+      "fragment",
+      "gravel",
+      "dust"
+    ],
+    "smelt_to": "minecraft:iron_ingot",
+    "smelt_xp": 0.7,
+    "ore_tag": "c:ores/iron",
+    "raw_tag": "c:raw_materials/iron",
+    "ingot_tag": "c:ingots/iron",
+    "dust_yield_from_ore": 3,
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "gold",
+    "color": "#FCEE4B",
+    "stages": [
+      "fragment",
+      "gravel",
+      "dust"
+    ],
+    "smelt_to": "minecraft:gold_ingot",
+    "smelt_xp": 1.0,
+    "ore_tag": "c:ores/gold",
+    "raw_tag": "c:raw_materials/gold",
+    "ingot_tag": "c:ingots/gold",
+    "dust_yield_from_ore": 3,
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "copper",
+    "color": "#E77C56",
+    "stages": [
+      "fragment",
+      "gravel",
+      "dust"
+    ],
+    "smelt_to": "minecraft:copper_ingot",
+    "smelt_xp": 0.7,
+    "ore_tag": "c:ores/copper",
+    "raw_tag": "c:raw_materials/copper",
+    "ingot_tag": "c:ingots/copper",
+    "dust_yield_from_ore": 3,
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "coal",
+    "color": "#404040",
+    "stages": [
+      "dust"
+    ],
+    "smelt_to": "minecraft:coal",
+    "smelt_xp": 0.1,
+    "ore_tag": "c:ores/coal",
+    "dust_yield_from_ore": 6,
+    "extra_input_items": [
+      "minecraft:coal"
+    ],
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "netherite_scrap",
+    "color": "#755045",
+    "stages": [
+      "fragment",
+      "gravel",
+      "dust"
+    ],
+    "smelt_to": "minecraft:netherite_scrap",
+    "smelt_xp": 2.0,
+    "display_name": "Ancient Debris",
+    "dust_yield_from_ore": 3,
+    "extra_ore_items": [
+      "minecraft:ancient_debris"
+    ],
+    "extra_raw_items": [
+      "minecraft:netherite_scrap"
+    ],
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "demonite",
+    "color": "#8CBFB5",
+    "stages": [
+      "fragment",
+      "gravel"
+    ],
+    "smelt_xp": 0.0,
+    "raw_tag": "c:raw_materials/hellforged",
+    "alias_tags": {
+      "fragment": [
+        "hellforged"
+      ],
+      "gravel": [
+        "hellforged"
+      ]
+    },
+    "dust_yield_from_ore": 3,
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "hellforged",
+    "color": "#99D6CB",
+    "stages": [
+      "dust"
+    ],
+    "smelt_to": "neovitae:ingot_hellforged",
+    "smelt_xp": 1.0,
+    "ingot_tag": "c:ingots/hellforged",
+    "dust_yield_from_ore": 3,
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "diamond",
+    "color": "#4AEDD9",
+    "stages": [
+      "fragment",
+      "gravel",
+      "dust"
+    ],
+    "smelt_to": "minecraft:diamond",
+    "smelt_xp": 1.0,
+    "ore_tag": "c:ores/diamond",
+    "ingot_tag": "c:gems/diamond",
+    "dust_yield_from_ore": 3,
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "emerald",
+    "color": "#41F384",
+    "stages": [
+      "fragment",
+      "gravel",
+      "dust"
+    ],
+    "smelt_to": "minecraft:emerald",
+    "smelt_xp": 1.0,
+    "ore_tag": "c:ores/emerald",
+    "ingot_tag": "c:gems/emerald",
+    "dust_yield_from_ore": 3,
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "lapis",
+    "color": "#345EC3",
+    "stages": [
+      "fragment",
+      "gravel",
+      "dust"
+    ],
+    "smelt_to": "minecraft:lapis_lazuli",
+    "smelt_xp": 0.2,
+    "ore_tag": "c:ores/lapis",
+    "ingot_tag": "c:gems/lapis",
+    "display_name": "Lapis Lazuli",
+    "dust_yield_from_ore": 3,
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "quartz",
+    "color": "#EDE6DC",
+    "stages": [
+      "fragment",
+      "gravel",
+      "dust"
+    ],
+    "smelt_to": "minecraft:quartz",
+    "smelt_xp": 0.2,
+    "ore_tag": "c:ores/quartz",
+    "ingot_tag": "c:gems/quartz",
+    "display_name": "Nether Quartz",
+    "dust_yield_from_ore": 3,
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  },
+  {
+    "name": "amethyst",
+    "color": "#9A6FD0",
+    "stages": [
+      "fragment",
+      "gravel",
+      "dust"
+    ],
+    "smelt_to": "minecraft:amethyst_shard",
+    "smelt_xp": 0.2,
+    "ingot_tag": "c:gems/amethyst",
+    "dust_yield_from_ore": 3,
+    "extra_ore_items": [
+      "minecraft:amethyst_cluster"
+    ],
+    "generative": true,
+    "gen_ore": "",
+    "gen_raw": ""
+  }
+]

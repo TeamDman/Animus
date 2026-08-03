@@ -32,16 +32,28 @@ neoForge {
             data()
             programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
+
+        gameTestServer {
+            type = 'gameTestServer'
+            gameDirectory = file('run-gametest')
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+        }
     }
 
     mods {
         "${mod_id}" {
             sourceSet sourceSets.main
+            sourceSet sourceSets.test
         }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+sourceSets.test {
+    compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+    runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+}
 
 repositories {
     maven { name = "Progwml6"; url = "https://dvs1.progwml6.com/files/maven/" }
