@@ -6,6 +6,7 @@
   "refmap": "animus.refmap.json",
   "mixins": [
     "AltarUtilMixin",
+    "BloodAltarTierMixin",
     "DaggerOfSacrificeMixin",
     "EnchantmentHelperMixin",
     "WillHandlerMixin"

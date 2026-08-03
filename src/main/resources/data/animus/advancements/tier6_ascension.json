@@ -16,10 +16,10 @@
   },
   "parent": "animus:crystallized_power",
   "criteria": {
-    "placed_crystallized_will": {
-      "trigger": "minecraft:placed_block",
+    "formed_tier_6_altar": {
+      "trigger": "animus:altar_tier",
       "conditions": {
-        "block": "animus:crystallized_demon_will_block"
+        "min_tier": 6
       }
     }
   },
