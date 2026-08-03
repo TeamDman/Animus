@@ -42,3 +42,4 @@ settings.gradle
 
 .vscode/
 temp_extract/
+run-gametest/

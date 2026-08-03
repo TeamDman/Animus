@@ -15,7 +15,6 @@
     "hidden": false,
     "background": "neovitae:textures/block/altar.png"
   },
-  "parent": "neovitae:recipes/tools/sacrificial_dagger",
   "criteria": {
     "has_diviner": {
       "trigger": "minecraft:inventory_changed",

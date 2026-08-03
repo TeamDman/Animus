@@ -5,8 +5,12 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.ServerAdvancementManager;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
+
+import java.util.List;
+import java.util.Optional;
 
 @GameTestHolder("animusnv")
 @PrefixGameTestTemplate(false)
@@ -16,17 +20,28 @@ public class AnimusDataTests {
 
     @GameTest(template = EMPTY)
     public static void animusAdvancementsLoad(GameTestHelper helper) {
-        ResourceLocation root = ResourceLocation.fromNamespaceAndPath("animusnv", "root");
-        ResourceLocation tier6 = ResourceLocation.fromNamespaceAndPath("animusnv", "tier6_ascension");
+        ServerAdvancementManager manager = helper.getLevel().getServer().getAdvancements();
 
-        for (ResourceLocation id : new ResourceLocation[]{root, tier6}) {
-            AdvancementHolder holder = helper.getLevel().getServer().getAdvancements().get(id);
-            if (holder == null) {
-                helper.fail(id + " failed to load; check the data directory name and the criteria format");
+        List<AdvancementHolder> ours = manager.getAllAdvancements().stream()
+                .filter(a -> a.id().getNamespace().equals("animusnv"))
+                .toList();
+
+        if (ours.size() < 14) {
+            helper.fail("only " + ours.size() + " Animus advancements loaded; check the data directory name and the criteria format");
+            return;
+        }
+
+        for (AdvancementHolder holder : ours) {
+            if (holder.value().criteria().isEmpty()) {
+                helper.fail(holder.id() + " has no criteria, so it would be granted immediately");
                 return;
             }
-            if (holder.value().criteria().isEmpty()) {
-                helper.fail(id + " has no criteria, so it would be granted immediately");
+
+            // A dangling parent drops the advancement out of the tree, so it never shows in game
+            // even though the file itself loaded fine.
+            Optional<ResourceLocation> parent = holder.value().parent();
+            if (parent.isPresent() && manager.get(parent.get()) == null) {
+                helper.fail(holder.id() + " has parent " + parent.get() + " which does not exist, so the tree cannot attach it");
                 return;
             }
         }
