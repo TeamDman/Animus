@@ -45,14 +45,28 @@ minecraft {
         }
 
         server {
+            workingDirectory project.file('run-server')
             property 'forge.enabledGameTestNamespaces', mod_id
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             args '--nogui'
             arg '-mixin.config=animus.mixins.json'
             arg '-mixin.config=animus.ironsspells.mixins.json'
         }
 
         gameTestServer {
+            workingDirectory project.file('run-gametest')
             property 'forge.enabledGameTestNamespaces', mod_id
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            arg '-mixin.config=animus.mixins.json'
+            arg '-mixin.config=animus.ironsspells.mixins.json'
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                    source sourceSets.test
+                }
+            }
         }
 
         data {
@@ -65,6 +79,11 @@ minecraft {
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+sourceSets.test {
+    compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+    runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+}
 
 repositories {
     maven {

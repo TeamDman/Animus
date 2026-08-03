@@ -33,3 +33,5 @@ changelog/
 CLAUDE.md
 
 .vscode/
+run-gametest/
+run-server/
