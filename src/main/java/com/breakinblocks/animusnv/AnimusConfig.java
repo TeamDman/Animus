@@ -80,6 +80,8 @@ public class AnimusConfig {
         public final ModConfigSpec.IntValue sourceVitaeumBaseConversion;
         public final ModConfigSpec.IntValue sourceVitaeumPenaltyRadius;
         public final ModConfigSpec.IntValue sourceVitaeumSourcePerCycle;
+        public final ModConfigSpec.IntValue arsVitaePenaltyRadius;
+        public final ModConfigSpec.IntValue arsVitaeSourcePerCycle;
         public final ModConfigSpec.IntValue floralSupremacyRadius;
         public final ModConfigSpec.IntValue floralSupremacyEVPerFlower;
         public final ModConfigSpec.IntValue lunaHorizontalRange;
@@ -113,6 +115,7 @@ public class AnimusConfig {
         public final ModConfigSpec.IntValue siphonRefreshTime;
         public final ModConfigSpec.IntValue solRefreshTime;
         public final ModConfigSpec.IntValue sourceVitaeumRefreshTime;
+        public final ModConfigSpec.IntValue arsVitaeRefreshTime;
         public final ModConfigSpec.IntValue unmakingRefreshTime;
 
 
@@ -250,7 +253,12 @@ public class AnimusConfig {
                 .defineInRange("sourceVitaeumAltarRange", 8, 1, 32);
 
             sourceVitaeumBaseConversion = builder
-                .comment("Base conversion rate for Ritual of Source Vitaeum (X Source to 1 EV)")
+                .comment(
+                    "Base exchange rate shared by both Source/EV conversion rituals",
+                    "Ritual of Source Vitaeum converts X Source into 1 EV",
+                    "Ritual of Ars Vitae converts X EV into 1 Source",
+                    "Both directions pay the same rate, so round-tripping loses value"
+                )
                 .defineInRange("sourceVitaeumBaseConversion", 10, 1, 1000);
 
             sourceVitaeumPenaltyRadius = builder
@@ -260,6 +268,14 @@ public class AnimusConfig {
             sourceVitaeumSourcePerCycle = builder
                 .comment("Amount of Source to attempt to convert per cycle")
                 .defineInRange("sourceVitaeumSourcePerCycle", 100, 10, 10000);
+
+            arsVitaePenaltyRadius = builder
+                .comment("Radius in blocks to check for other Master Ritual Stones (each doubles the conversion cost)")
+                .defineInRange("arsVitaePenaltyRadius", 10, 1, 32);
+
+            arsVitaeSourcePerCycle = builder
+                .comment("Amount of Source to attempt to produce per cycle")
+                .defineInRange("arsVitaeSourcePerCycle", 100, 10, 10000);
 
             floralSupremacyRadius = builder
                 .comment("Radius in blocks for Ritual of Floral Supremacy effect area")
@@ -410,6 +426,10 @@ public class AnimusConfig {
             sourceVitaeumRefreshTime = builder
                 .comment("Ticks between refreshes for Ritual of Source Vitaeum")
                 .defineInRange("sourceVitaeumTime", 40, 1, 12000);
+
+            arsVitaeRefreshTime = builder
+                .comment("Ticks between refreshes for Ritual of Ars Vitae")
+                .defineInRange("arsVitaeTime", 40, 1, 12000);
 
             steadfastHeartRefreshCost = builder
                 .comment("EV drained per affected player by Ritual of the Steadfast Heart")

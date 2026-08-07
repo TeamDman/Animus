@@ -1,0 +1,12 @@
+{
+  "type": "modonomicon:multiblock",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "multiblock",
+  "multiblock_id": "neovitae:ritual/ritual_ars_vitae",
+  "multiblock_name": "Ritual of Ars Vitae",
+  "show_visualize_button": true,
+  "sort_number": 0,
+  "text": "book.animusnv.guide.compatibility.ars_vitae.multiblock.text"
+}

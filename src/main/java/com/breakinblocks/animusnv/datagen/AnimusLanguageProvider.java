@@ -180,6 +180,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("guide.animusnv.entry.ritual_siphon", "Ritual of Siphon");
         add("guide.animusnv.entry.ritual_sol", "Ritual of Sol");
         add("guide.animusnv.entry.ritual_source_vitaeum", "Ritual of Source Vitaeum");
+        add("guide.animusnv.entry.ritual_ars_vitae", "Ritual of Ars Vitae");
         add("guide.animusnv.entry.ritual_steadfast_heart", "Ritual of Steadfast Heart");
         add("guide.animusnv.entry.ritual_unmaking", "Ritual of Unmaking");
         add("guide.animusnv.entry.rune_unleashed_nature", "Rune of Unleashed Nature");
@@ -407,6 +408,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("ritual.animusnv.ritual_soul_stained_blood.desc", "Sacrificial Empowerment III for 15 minutes");
         add("ritual.animusnv.ritual_soul_stained_blood.success", "The spirits empower your sacrifice!");
         add("ritual.animusnv.ritual_source_vitaeum", "Ritual of Source Vitaeum");
+        add("ritual.animusnv.ritual_ars_vitae", "Ritual of Ars Vitae");
         add("ritual.animusnv.ritual_steadfast_heart", "Ritual of the Steadfast Heart");
         add("ritual.animusnv.ritual_unmaking", "Ritual of Unmaking");
         add("ritual.animusnv.ritual_warden", "Ritual of the Warden");

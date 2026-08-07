@@ -74,6 +74,15 @@ public class AnimusRituals {
             ? RITUALS.register(Constants.Rituals.SOURCE_VITAEUM, RitualSourceVitaeum::new)
             : null;
 
+    /**
+     * Only exists when Ars Nouveau is installed; without it the ritual has nothing to convert,
+     * so registering it would put an inert entry in the Ritual Diviner.
+     */
+    public static final DeferredHolder<Ritual, RitualArsVitae> ARS_VITAE =
+        ModList.get().isLoaded("ars_nouveau")
+            ? RITUALS.register(Constants.Rituals.ARS_VITAE, RitualArsVitae::new)
+            : null;
+
     public static final DeferredHolder<Ritual, RitualSteadfastHeart> STEADFAST_HEART =
         RITUALS.register(Constants.Rituals.STEADFAST, RitualSteadfastHeart::new);
 

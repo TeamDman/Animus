@@ -142,6 +142,7 @@ Animus provides deep integration with several other mods. Each integration is fu
 
 - **Arcane Rune**, an altar rune block powered by Source from nearby Source Jars; contributes to altar speed and dislocation bonuses.
 - **Ritual of Source Vitaeum**, converts Source from nearby Source Jars into EV.
+- **Ritual of Ars Vitae**, the reverse trade: drains EV from the owner's network to fill a Source Jar above the ritual.
 - **Ritual of the Magi** (imperfect, activated by a Source Gem Block), Mana Regeneration for 15 minutes.
 - **Source Attunement**, a Sentient Armor upgrade tree that grants armor XP from glyph casting and unlocks spell-damage bonuses.
 
