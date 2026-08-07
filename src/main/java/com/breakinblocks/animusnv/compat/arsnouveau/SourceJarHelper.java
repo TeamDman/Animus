@@ -112,6 +112,29 @@ public class SourceJarHelper {
         return addSourceToJar(level, center.above(), maxAdd);
     }
 
+    public static int getFreeSpace(ServerLevel level, BlockPos jarPos) {
+        if (!initialized || initFailed) {
+            return 0;
+        }
+
+        BlockEntity be = level.getBlockEntity(jarPos);
+
+        if (be != null && sourceJarClass.isInstance(be)) {
+            try {
+                int currentSource = (int) getSourceMethod.invoke(be);
+                int maxSource = (int) getMaxSourceMethod.invoke(be);
+                return Math.max(0, maxSource - currentSource);
+            } catch (Exception e) {
+            }
+        }
+
+        return 0;
+    }
+
+    public static int getFreeSpaceAbove(ServerLevel level, BlockPos center) {
+        return getFreeSpace(level, center.above());
+    }
+
     /**
      * Check if a block entity at the specified position is a Source Jar
      *

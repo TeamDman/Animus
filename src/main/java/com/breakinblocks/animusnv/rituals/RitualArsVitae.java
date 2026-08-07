@@ -4,12 +4,14 @@ import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.compat.CompatHandler;
 import com.breakinblocks.animusnv.compat.arsnouveau.SourceJarHelper;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import com.breakinblocks.neovitae.api.soul.AnimaTicket;
+import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.ritual.*;
-import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
 
 import java.util.function.Consumer;
 
@@ -37,31 +39,32 @@ public class RitualArsVitae extends Ritual {
             return;
         }
 
-        if (!SourceJarHelper.isSourceJar(serverLevel, masterPos.above())) {
+        int jarSpace = SourceJarHelper.getFreeSpaceAbove(serverLevel, masterPos);
+
+        if (jarSpace <= 0) {
             return;
         }
 
-        int altarSearchRadius = AnimusConfig.rituals.arsVitaeAltarRange.get();
-        AraVitaeTile altar = findNearbyAltar(serverLevel, masterPos, altarSearchRadius);
+        IAnima network = AnimusRitualHelper.getOwnerNetwork(mrs);
 
-        if (altar == null) {
+        if (network == null) {
             return;
         }
 
         int penaltyRadius = AnimusConfig.rituals.arsVitaePenaltyRadius.get();
-        int nearbyRituals = countNearbyMasterRitualStones(serverLevel, altar.getBlockPos(), penaltyRadius);
+        int nearbyRituals = countNearbyMasterRitualStones(serverLevel, masterPos, penaltyRadius);
 
         int baseConversion = AnimusConfig.rituals.sourceVitaeumBaseConversion.get();
         int conversionRate = baseConversion * (int) Math.pow(2, nearbyRituals);
 
-        int availableEV = altar.getCurrentBlood();
+        int availableEV = network.getCurrentEV();
 
         if (availableEV < conversionRate) {
             return;
         }
 
         int sourcePerCycle = AnimusConfig.rituals.arsVitaeSourcePerCycle.get();
-        int affordableSource = Math.min(sourcePerCycle, availableEV / conversionRate);
+        int affordableSource = Math.min(Math.min(sourcePerCycle, jarSpace), availableEV / conversionRate);
 
         if (affordableSource <= 0) {
             return;
@@ -73,27 +76,14 @@ public class RitualArsVitae extends Ritual {
             return;
         }
 
-        altar.drainMainTank(sourceAdded * conversionRate);
+        network.syphon(AnimaTicket.create(sourceAdded * conversionRate));
     }
 
-    private AraVitaeTile findNearbyAltar(ServerLevel level, BlockPos center, int radius) {
+    private int countNearbyMasterRitualStones(ServerLevel level, BlockPos center, int radius) {
+        int count = 0;
         for (BlockPos pos : BlockPos.betweenClosed(
             center.offset(-radius, -radius, -radius),
             center.offset(radius, radius, radius)
-        )) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof AraVitaeTile altar) {
-                return altar;
-            }
-        }
-        return null;
-    }
-
-    private int countNearbyMasterRitualStones(ServerLevel level, BlockPos altarPos, int radius) {
-        int count = 0;
-        for (BlockPos pos : BlockPos.betweenClosed(
-            altarPos.offset(-radius, -radius, -radius),
-            altarPos.offset(radius, radius, radius)
         )) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof IMasterRitualStone) {

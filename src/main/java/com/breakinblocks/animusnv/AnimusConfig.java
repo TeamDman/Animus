@@ -80,7 +80,6 @@ public class AnimusConfig {
         public final ModConfigSpec.IntValue sourceVitaeumBaseConversion;
         public final ModConfigSpec.IntValue sourceVitaeumPenaltyRadius;
         public final ModConfigSpec.IntValue sourceVitaeumSourcePerCycle;
-        public final ModConfigSpec.IntValue arsVitaeAltarRange;
         public final ModConfigSpec.IntValue arsVitaePenaltyRadius;
         public final ModConfigSpec.IntValue arsVitaeSourcePerCycle;
         public final ModConfigSpec.IntValue floralSupremacyRadius;
@@ -268,10 +267,6 @@ public class AnimusConfig {
             sourceVitaeumSourcePerCycle = builder
                 .comment("Amount of Source to attempt to convert per cycle")
                 .defineInRange("sourceVitaeumSourcePerCycle", 100, 10, 10000);
-
-            arsVitaeAltarRange = builder
-                .comment("Radius in blocks to search for Ara Vitaes for Ritual of Ars Vitae")
-                .defineInRange("arsVitaeAltarRange", 8, 1, 32);
 
             arsVitaePenaltyRadius = builder
                 .comment("Radius in blocks to check for other Master Ritual Stones (each doubles the conversion cost)")

@@ -30,14 +30,14 @@ public class ArsVitaeEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Ritual of Ars Vitae");
-        this.pageText("The [#](4A0080)Ritual of Ars Vitae[#]() pours life essence back into the arcane, draining EV from a nearby Ara Vitae and filling a Source Jar with Ars Nouveau Source."
+        this.pageText("The [#](4A0080)Ritual of Ars Vitae[#]() pours life essence back into the arcane, drawing EV from the owner's network and filling a Source Jar with Ars Nouveau Source."
                 + "\\\n\\\nIt is the mirror of the [#](8B0000)Ritual of Source Vitaeum[#](), which runs the trade the other way.");
 
         this.page("setup", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Setup");
-        this.pageText("Place a [#](8B0000)Source Jar[#]() directly above the Master Ritual Stone, with an Ara Vitae within 8 blocks (configurable)."
+        this.pageText("Place a [#](8B0000)Source Jar[#]() directly above the Master Ritual Stone. The EV comes from your network, so no altar is needed."
                 + "\\\n\\\n[#](B8860B)Activation:[#]() 10,000 EV"
                 + "\\\n[#](B8860B)Exchange:[#]() 10 EV per Source (configurable)"
                 + "\\\n[#](B8860B)Throughput:[#]() up to 100 Source every 2 seconds (configurable)");
@@ -46,8 +46,8 @@ public class ArsVitaeEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Behavior");
-        this.pageText("EV is only taken for Source the jar actually accepts, so a full jar costs nothing. The ritual idles when the altar cannot pay for a single point of Source."
-                + "\\\n\\\nEvery other Master Ritual Stone within 10 blocks of the altar [#](8B0000)doubles[#]() the price, so keep converters apart."
+        this.pageText("A full jar makes the ritual skip its turn entirely, drawing nothing, and EV is only taken for Source the jar actually accepts. The ritual also idles when your network cannot pay for a single point of Source."
+                + "\\\n\\\nEvery other Master Ritual Stone within 10 blocks [#](8B0000)doubles[#]() the price, so keep converters apart."
                 + "\\\n\\\n[#](2E8B57)The exchange rate is shared with the Ritual of Source Vitaeum, and both directions pay it, so trading back and forth loses value.[#]()");
     }
 
@@ -58,7 +58,7 @@ public class ArsVitaeEntry extends EntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "Converts EV from an Ara Vitae into Source. Requires Ars Nouveau.";
+        return "Converts EV from your network into Source. Requires Ars Nouveau.";
     }
 
     @Override
