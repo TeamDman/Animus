@@ -1,0 +1,65 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "condition": {
+    "type": "modonomicon:mod_loaded",
+    "mod_id": "ars_nouveau"
+  },
+  "description": "book.animusnv.guide.compatibility.ars_vitae.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:glass_bottle"
+  },
+  "name": "book.animusnv.guide.compatibility.ars_vitae.name",
+  "pages": [
+    {
+      "type": "modonomicon:multiblock",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "multiblock_id": "neovitae:ritual/ritual_ars_vitae",
+      "multiblock_name": "Ritual of Ars Vitae",
+      "show_visualize_button": true,
+      "text": "book.animusnv.guide.compatibility.ars_vitae.multiblock.text"
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.ars_vitae.intro.text",
+      "title": "book.animusnv.guide.compatibility.ars_vitae.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.ars_vitae.setup.text",
+      "title": "book.animusnv.guide.compatibility.ars_vitae.setup.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.ars_vitae.behavior.text",
+      "title": "book.animusnv.guide.compatibility.ars_vitae.behavior.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 3,
+  "x": -1,
+  "y": 1
+}

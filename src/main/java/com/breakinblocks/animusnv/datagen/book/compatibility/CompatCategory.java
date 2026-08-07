@@ -18,7 +18,7 @@ public class CompatCategory extends CategoryProvider {
         return new String[]{
                 "__a_b_c_d__",
                 "__e_f_g_h__",
-                "__i________"
+                "__i_j______"
         };
     }
 
@@ -28,6 +28,7 @@ public class CompatCategory extends CategoryProvider {
         var arcaneRune = this.add(new ArcaneRuneEntry(this).generate('a'));
         var runeUnleashedNature = this.add(new RuneUnleashedNatureEntry(this).generate('b'));
         var magi = this.add(new MagiEntry(this).generate('c'));
+        var arsVitae = this.add(new ArsVitaeEntry(this).generate('j'));
         // Iron's Spells
         var bloodInfusedSpellbook = this.add(new BloodInfusedSpellbookEntry(this).generate('d'));
         var sanguineScrolls = this.add(new SanguineScrollsEntry(this).generate('e'));

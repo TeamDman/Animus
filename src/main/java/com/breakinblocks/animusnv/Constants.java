@@ -370,6 +370,7 @@ public class Constants {
         public static final String SIPHON = "ritual_siphon";
         public static final String SOL = "ritual_sol";
         public static final String SOURCE_VITAEUM = "ritual_source_vitaeum";
+        public static final String ARS_VITAE = "ritual_ars_vitae";
         public static final String STEADFAST = "ritual_steadfast_heart";
         public static final String UNMAKING = "ritual_unmaking";
         public static final String ARCANE_MASTERY = "ritual_arcane_mastery";
