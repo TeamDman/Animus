@@ -44,7 +44,7 @@ public class ArsVitaeEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Behavior");
-        this.pageText("EV is only taken for Source the jar actually accepts, so a full jar costs nothing. The ritual idles when your network cannot pay for a single point of Source."
+        this.pageText("A full jar makes the ritual skip its turn entirely, drawing nothing, and EV is only taken for Source the jar actually accepts. The ritual also idles when your network cannot pay for a single point of Source."
                 + "\\\n\\\nEvery other Master Ritual Stone within 10 blocks [#](8B0000)doubles[#]() the price, so keep converters apart."
                 + "\\\n\\\n[#](2E8B57)The exchange rate is shared with the Ritual of Source Vitaeum, and both directions pay it, so trading back and forth loses value.[#]()");
     }

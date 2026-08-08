@@ -39,7 +39,9 @@ public class RitualArsVitae extends Ritual {
             return;
         }
 
-        if (!SourceJarHelper.isSourceJar(serverLevel, masterPos.above())) {
+        int jarSpace = SourceJarHelper.getFreeSpaceAbove(serverLevel, masterPos);
+
+        if (jarSpace <= 0) {
             return;
         }
 
@@ -62,7 +64,7 @@ public class RitualArsVitae extends Ritual {
         }
 
         int sourcePerCycle = AnimusConfig.rituals.arsVitaeSourcePerCycle.get();
-        int affordableSource = Math.min(sourcePerCycle, availableEV / conversionRate);
+        int affordableSource = Math.min(Math.min(sourcePerCycle, jarSpace), availableEV / conversionRate);
 
         if (affordableSource <= 0) {
             return;
