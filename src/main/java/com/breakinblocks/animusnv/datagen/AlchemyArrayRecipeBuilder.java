@@ -19,7 +19,7 @@ public class AlchemyArrayRecipeBuilder {
             throw new IllegalArgumentException("AlchemyArrayRecipe output cannot be null or empty");
         }
         this.output = output;
-        this.texture = NeoVitae.rl("textures/models/alchemyarrays/sigil.png");
+        this.texture = NeoVitae.rl("textures/models/alchemyarrays/defaultarray.png");
     }
 
     public static AlchemyArrayRecipeBuilder build(ItemLike output) {
