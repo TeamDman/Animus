@@ -27,14 +27,14 @@ import java.util.concurrent.CompletableFuture;
 
 public class AnimusRecipeProvider extends RecipeProvider {
     private static final Identifier ARRAY_GROWTH = NeoVitae.rl("textures/models/alchemyarrays/growthsigil.png");
-    private static final Identifier ARRAY_LAPUTA = NeoVitae.rl("textures/models/alchemyarrays/shardoflaputa.png");
+    private static final Identifier ARRAY_PHANTOM_BRIDGE = NeoVitae.rl("textures/models/alchemyarrays/phantombridgesigil.png");
     private static final Identifier ARRAY_BINDING = NeoVitae.rl("textures/models/alchemyarrays/bindingarray.png");
     private static final Identifier ARRAY_VOID = NeoVitae.rl("textures/models/alchemyarrays/voidsigil.png");
     private static final Identifier ARRAY_FURNACE = NeoVitae.rl("textures/models/alchemyarrays/furnacearray.png");
-    private static final Identifier ARRAY_TELEPORT = NeoVitae.rl("textures/models/alchemyarrays/teleportationarray.png");
-    private static final Identifier ARRAY_LIGHTNING = NeoVitae.rl("textures/models/alchemyarrays/bindinglightningarray.png");
-    private static final Identifier ARRAY_MOBSACRIFICE = NeoVitae.rl("textures/models/alchemyarrays/mobsacrifice.png");
-    private static final Identifier ARRAY_LIGHT = NeoVitae.rl("textures/models/alchemyarrays/lightsigil.png");
+    private static final Identifier ARRAY_TELEPOSITION = NeoVitae.rl("textures/models/alchemyarrays/telepositionsigil.png");
+    private static final Identifier ARRAY_UPDRAFT = NeoVitae.rl("textures/models/alchemyarrays/updraftarray.png");
+    private static final Identifier ARRAY_SIPHON = NeoVitae.rl("textures/models/alchemyarrays/spiritsiphonarray.png");
+    private static final Identifier ARRAY_LIGHT = NeoVitae.rl("textures/models/alchemyarrays/bloodlightsigil.png");
     private static final Identifier ARRAY_FASTMINER = NeoVitae.rl("textures/models/alchemyarrays/fastminersigil.png");
     private static final Identifier ARRAY_WATER = NeoVitae.rl("textures/models/alchemyarrays/watersigil.png");
     private static final Identifier ARRAY_MOON = NeoVitae.rl("textures/models/alchemyarrays/moonarray.png");
@@ -432,7 +432,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_BUILDER.get())
             .base(AnimusItems.REAGENT_BUILDER.get())
             .added(NVItems.TABULA_ROBUR.get())
-            .texture(ARRAY_LAPUTA)
+            .texture(ARRAY_PHANTOM_BRIDGE)
             .save(output, loc("array/sigil_builder"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_EQUIVALENCY.get())
@@ -444,7 +444,7 @@ public class AnimusRecipeProvider extends RecipeProvider {
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_LEACH.get())
             .base(AnimusItems.REAGENT_LEACH.get())
             .added(NVItems.TABULA_ROBUR.get())
-            .texture(ARRAY_MOBSACRIFICE)
+            .texture(ARRAY_SIPHON)
             .save(output, loc("array/sigil_leach"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_MONK.get())
@@ -486,13 +486,13 @@ public class AnimusRecipeProvider extends RecipeProvider {
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_FREE_SOUL.get())
             .base(AnimusItems.REAGENT_FREE_SOUL.get())
             .added(NVItems.TABULA_SPIRITUS.get())
-            .texture(ARRAY_TELEPORT)
+            .texture(ARRAY_TELEPOSITION)
             .save(output, loc("array/sigil_free_soul"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_HEAVENLY_WRATH.get())
             .base(AnimusItems.REAGENT_HEAVENLY_WRATH.get())
             .added(NVItems.TABULA_SPIRITUS.get())
-            .texture(ARRAY_LIGHTNING)
+            .texture(ARRAY_UPDRAFT)
             .save(output, loc("array/sigil_heavenly_wrath"));
 
         AlchemyArrayRecipeBuilder.build(AnimusItems.SIGIL_TEMPORAL_DOMINANCE.get())
