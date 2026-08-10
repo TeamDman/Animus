@@ -4,10 +4,10 @@
       "id": "animusnv:willful_stone"
     },
     "title": {
-      "translate": "advancement.animus.willful_ascension.title"
+      "translate": "advancement.animusnv.willful_ascension.title"
     },
     "description": {
-      "translate": "advancement.animus.willful_ascension.description"
+      "translate": "advancement.animusnv.willful_ascension.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "animusnv:willful_stones"
+            "items": "#animusnv:willful_stones"
           }
         ]
       }

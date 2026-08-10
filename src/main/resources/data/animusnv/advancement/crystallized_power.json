@@ -4,10 +4,10 @@
       "id": "animusnv:crystallized_spiritus_block"
     },
     "title": {
-      "translate": "advancement.animus.crystallized_power.title"
+      "translate": "advancement.animusnv.crystallized_power.title"
     },
     "description": {
-      "translate": "advancement.animus.crystallized_power.description"
+      "translate": "advancement.animusnv.crystallized_power.description"
     },
     "frame": "task",
     "show_toast": true,

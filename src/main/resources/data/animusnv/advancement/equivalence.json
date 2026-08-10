@@ -4,10 +4,10 @@
       "id": "animusnv:sigil_equivalency"
     },
     "title": {
-      "translate": "advancement.animus.equivalence.title"
+      "translate": "advancement.animusnv.equivalence.title"
     },
     "description": {
-      "translate": "advancement.animus.equivalence.description"
+      "translate": "advancement.animusnv.equivalence.description"
     },
     "frame": "task",
     "show_toast": true,

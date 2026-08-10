@@ -4,10 +4,10 @@
       "id": "animusnv:blood_infused_spellbook"
     },
     "title": {
-      "translate": "advancement.animus.arcane_blood.title"
+      "translate": "advancement.animusnv.arcane_blood.title"
     },
     "description": {
-      "translate": "advancement.animus.arcane_blood.description"
+      "translate": "advancement.animusnv.arcane_blood.description"
     },
     "frame": "goal",
     "show_toast": true,

@@ -4,10 +4,10 @@
       "id": "animusnv:sigil_temporal_dominance"
     },
     "title": {
-      "translate": "advancement.animus.temporal_mastery.title"
+      "translate": "advancement.animusnv.temporal_mastery.title"
     },
     "description": {
-      "translate": "advancement.animus.temporal_mastery.description"
+      "translate": "advancement.animusnv.temporal_mastery.description"
     },
     "frame": "goal",
     "show_toast": true,

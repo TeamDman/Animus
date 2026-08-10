@@ -4,10 +4,10 @@
       "id": "animusnv:blood_sapling"
     },
     "title": {
-      "translate": "advancement.animus.blood_born_flora.title"
+      "translate": "advancement.animusnv.blood_born_flora.title"
     },
     "description": {
-      "translate": "advancement.animus.blood_born_flora.description"
+      "translate": "advancement.animusnv.blood_born_flora.description"
     },
     "frame": "task",
     "show_toast": true,

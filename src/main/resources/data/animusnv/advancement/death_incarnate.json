@@ -4,10 +4,10 @@
       "id": "animusnv:hand_of_death"
     },
     "title": {
-      "translate": "advancement.animus.death_incarnate.title"
+      "translate": "advancement.animusnv.death_incarnate.title"
     },
     "description": {
-      "translate": "advancement.animus.death_incarnate.description"
+      "translate": "advancement.animusnv.death_incarnate.description"
     },
     "frame": "challenge",
     "show_toast": true,
