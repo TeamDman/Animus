@@ -4,10 +4,10 @@
       "id": "animusnv:spear_sentient"
     },
     "title": {
-      "translate": "advancement.animus.living_weapon.title"
+      "translate": "advancement.animusnv.living_weapon.title"
     },
     "description": {
-      "translate": "advancement.animus.living_weapon.description"
+      "translate": "advancement.animusnv.living_weapon.description"
     },
     "frame": "task",
     "show_toast": true,

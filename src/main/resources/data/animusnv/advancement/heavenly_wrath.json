@@ -4,10 +4,10 @@
       "id": "animusnv:sigil_heavenly_wrath"
     },
     "title": {
-      "translate": "advancement.animus.heavenly_wrath.title"
+      "translate": "advancement.animusnv.heavenly_wrath.title"
     },
     "description": {
-      "translate": "advancement.animus.heavenly_wrath.description"
+      "translate": "advancement.animusnv.heavenly_wrath.description"
     },
     "frame": "task",
     "show_toast": true,

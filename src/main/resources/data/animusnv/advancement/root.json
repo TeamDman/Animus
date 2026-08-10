@@ -4,10 +4,10 @@
       "id": "animusnv:sanguine_diviner"
     },
     "title": {
-      "translate": "advancement.animus.root.title"
+      "translate": "advancement.animusnv.root.title"
     },
     "description": {
-      "translate": "advancement.animus.root.description"
+      "translate": "advancement.animusnv.root.description"
     },
     "frame": "task",
     "show_toast": true,

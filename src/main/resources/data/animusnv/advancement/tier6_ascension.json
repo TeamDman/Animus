@@ -4,10 +4,10 @@
       "id": "neovitae:ara_vitae"
     },
     "title": {
-      "translate": "advancement.animus.tier6_ascension.title"
+      "translate": "advancement.animusnv.tier6_ascension.title"
     },
     "description": {
-      "translate": "advancement.animus.tier6_ascension.description"
+      "translate": "advancement.animusnv.tier6_ascension.description"
     },
     "frame": "goal",
     "show_toast": true,

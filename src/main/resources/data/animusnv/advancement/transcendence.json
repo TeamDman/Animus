@@ -4,10 +4,10 @@
       "id": "animusnv:blood_orb_transcendent"
     },
     "title": {
-      "translate": "advancement.animus.transcendence.title"
+      "translate": "advancement.animusnv.transcendence.title"
     },
     "description": {
-      "translate": "advancement.animus.transcendence.description"
+      "translate": "advancement.animusnv.transcendence.description"
     },
     "frame": "challenge",
     "show_toast": true,
