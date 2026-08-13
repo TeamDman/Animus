@@ -44,20 +44,20 @@ public class BloodInfusedSpellbookEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Tiers 1-3");
         this.pageText("Each tier grants [#](8B0000)+50 Max Mana[#]() and additional spell slots:\\\n\\\n"
-                + "[#](B8860B)Tier 1:[#]() Weak Orb, 5k EV. 6 slots, +50 mana\\\n\\\n"
-                + "[#](B8860B)Tier 2:[#]() Apprentice Orb, 10k EV. 7 slots, +100 mana\\\n\\\n"
-                + "[#](B8860B)Tier 3:[#]() Magician Orb, 25k EV. 8 slots, +150 mana");
+                + "[#](B8860B)Tier 1:[#]() Created in the altar, 5k EV. 6 slots, +50 mana\\\n\\\n"
+                + "[#](B8860B)Tier 2:[#]() Discipulus Orb, 10k EV. 7 slots, +100 mana\\\n\\\n"
+                + "[#](B8860B)Tier 3:[#]() Veneficus Orb, 25k EV. 8 slots, +150 mana");
 
         this.page("tiers_high", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Tiers 4-6");
         this.pageText("Advanced tiers add EV cost reduction and lifesteal:\\\n\\\n"
-                + "[#](B8860B)Tier 4:[#]() Master Orb, 50k EV. 10 slots, +200 mana, "
+                + "[#](B8860B)Tier 4:[#]() Magus Orb, 50k EV. 10 slots, +200 mana, "
                 + "-10%% EV cost\\\n\\\n"
-                + "[#](B8860B)Tier 5:[#]() Archmage Orb, 100k EV. 11 slots, +250 mana, "
+                + "[#](B8860B)Tier 5:[#]() Dominus Orb, 100k EV. 11 slots, +250 mana, "
                 + "-20%% EV cost\\\n\\\n"
-                + "[#](B8860B)Tier 6:[#]() Transcendent Orb, 175k EV. 12 slots, +300 mana, "
+                + "[#](B8860B)Tier 6:[#]() Divinus Orb, 175k EV. 12 slots, +300 mana, "
                 + "+5%% lifesteal");
 
         this.page("upgrading", () -> BookTextPageModel.create()
@@ -65,7 +65,7 @@ public class BloodInfusedSpellbookEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Upgrading");
         this.pageText("To upgrade your spellbook to the next tier:\n\n"
-                + "- Place the required Orb of Vitae tier (or higher) in the altar\n\n"
+                + "- Carry the required Orb of Vitae (or higher) in your inventory\n\n"
                 + "- Ensure the altar has enough EV\n\n"
                 + "- Right-click the altar while holding your Blood-Infused Spellbook\\\n\\\n"
                 + "The spellbook's tooltip shows your current tier, bonuses, and the "

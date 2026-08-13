@@ -51,7 +51,7 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
             stack.set(AnimusDataComponents.CACHED_SOULS.get(), totalSpiritus);
 
             target.addEffect(new MobEffectInstance(
-                Holder.direct(NVMobEffects.SPIRITUS_SNARE.get()), 100, 1));
+                NVMobEffects.SPIRITUS_SNARE, 100, 1));
 
             // Spawn swing particle and sound effect
             if (attacker.level() instanceof ServerLevel serverLevel) {

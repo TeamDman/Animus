@@ -3,6 +3,8 @@ package com.breakinblocks.animusnv.compat.ironsspells;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
+import com.breakinblocks.neovitae.common.item.BloodOrbItem;
+import net.minecraft.core.registries.BuiltInRegistries;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainerMutable;
@@ -187,7 +189,7 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
                 tooltip.add(Component.literal(""));
                 tooltip.add(Component.literal("Upgrade Requirements:")
                     .withStyle(ChatFormatting.DARK_RED));
-                tooltip.add(Component.literal("  " + getOrbNameForTier(tier + 1) + " or higher")
+                tooltip.add(Component.literal("  " + getRequiredOrbName(tier + 1) + " or higher")
                     .withStyle(ChatFormatting.GRAY));
                 tooltip.add(Component.literal("  " + String.format("%,d EV in Ara Vitae", getUpgradeCost(stack)))
                     .withStyle(ChatFormatting.GRAY));
@@ -234,16 +236,18 @@ public class ItemBloodInfusedSpellbook extends SpellBook {
         };
     }
 
-    private static String getOrbNameForTier(int tier) {
-        return switch (tier) {
-            case 1 -> "Weak Orb of Vitae";
-            case 2 -> "Apprentice Orb of Vitae";
-            case 3 -> "Magician's Orb of Vitae";
-            case 4 -> "Master Orb of Vitae";
-            case 5 -> "Archmage's Orb of Vitae";
-            case 6 -> "Transcendent Orb of Vitae";
-            default -> "Orb of Vitae";
-        };
+    public static int getRequiredOrbTier(int infusionTier) {
+        return infusionTier - 1;
+    }
+
+    public static String getRequiredOrbName(int infusionTier) {
+        int required = getRequiredOrbTier(infusionTier);
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (item instanceof BloodOrbItem orb && orb.getOrbTier(new ItemStack(item)) == required) {
+                return item.getDescription().getString();
+            }
+        }
+        return "Orb of Vitae";
     }
 
     @Override

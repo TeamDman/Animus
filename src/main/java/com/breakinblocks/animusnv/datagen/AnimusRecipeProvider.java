@@ -118,6 +118,12 @@ public class AnimusRecipeProvider extends RecipeProvider {
         SpecialRecipeBuilder.special(() -> new KeyUnbindingRecipe(CraftingBookCategory.MISC))
             .save(output, rKey(loc("key_binding_unbind")));
 
+        ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.MISC, AnimusItems.GUIDE_BOOK.get())
+            .requires(Items.BOOK)
+            .requires(NVItems.TABULA_RASA.get())
+            .unlockedBy("has_tabula_rasa", has(NVItems.TABULA_RASA.get()))
+            .save(output);
+
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.BUILDING_BLOCKS, AnimusItems.BLOCK_BLOOD_WOOD_FENCE.get(), 3)
             .pattern("#S#")
             .pattern("#S#")
@@ -269,8 +275,8 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .save(output, loc("crystallized_spiritus_block"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.SENTIENT_SHIELD.get())
-            .minSpiritus(200.0)
-            .drain(100.0)
+            .minSpiritus(64.0)
+            .drain(32.0)
             .requires(Items.SHIELD)
             .requires(NVItems.SPIRITUS_GEM_PETTY.get())
             .requires(Items.DIAMOND)

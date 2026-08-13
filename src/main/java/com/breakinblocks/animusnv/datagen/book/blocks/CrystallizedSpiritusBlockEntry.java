@@ -26,8 +26,8 @@ public class CrystallizedSpiritusBlockEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Crystallized Spiritus Block");
         this.pageText("Solidified [#](4A0080)Spiritus[#]() in crystalline form. This decorative "
-                + "pillar serves as a valid [#](B8860B)CRYSTAL[#]() component for "
-                + "[#](B8860B)Tier 6[#]() Ara Vitaes.\\\n\\\n"
+                + "pillar serves as a valid [#](B8860B)CRYSTAL[#]() capstone for the "
+                + "[#](B8860B)Transcendent[#]() Ara Vitae.\\\n\\\n"
                 + "[#](4A0080)Will made manifest. Spiritus compressed beyond the threshold "
                 + "of dissolution, locked into permanent physical form.[#]()");
 
@@ -36,9 +36,9 @@ public class CrystallizedSpiritusBlockEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Usage");
         this.pageText("The Crystallized Spiritus Block functions as a [#](B8860B)CRYSTAL[#]() "
-                + "block for altar construction. It is required for the highest tier "
-                + "[#](8B0000)Ara Vitae[#]().\\\n\\\n"
-                + "See the [#](8B0000)Tier 6 Altar[#]() entry for full construction details.\\\n\\\n"
+                + "block for altar construction. It can stand in for the crystal cluster "
+                + "capstones on the highest tier [#](8B0000)Ara Vitae[#]().\\\n\\\n"
+                + "See the Scriptura Vitae for full altar construction details.\\\n\\\n"
                 + "[#](2E8B57)Beyond its functional role, the block radiates a faint demonic "
                 + "light, making it a striking addition to any ritual chamber.[#]()");
     }
@@ -50,7 +50,7 @@ public class CrystallizedSpiritusBlockEntry extends EntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "Solidified Spiritus, used as a CRYSTAL component for Tier 6 altars.";
+        return "Solidified Spiritus, an alternate CRYSTAL capstone for the Transcendent Ara Vitae.";
     }
 
     @Override

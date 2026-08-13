@@ -1,12 +1,12 @@
 {
   "type": "neovitae:hellfire_forge",
-  "drain": 100.0,
+  "drain": 32.0,
   "inputs": [
     "minecraft:shield",
     "neovitae:spiritus_gem_petty",
     "minecraft:diamond"
   ],
-  "minDrain": 200.0,
+  "minDrain": 64.0,
   "output": {
     "id": "animusnv:sentient_shield"
   }

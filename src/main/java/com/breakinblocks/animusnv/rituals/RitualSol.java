@@ -43,8 +43,8 @@ import java.util.stream.IntStream;
 public class RitualSol extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
-    private static final Identifier BLOOD_LIGHT_SIGIL = Identifier.fromNamespaceAndPath("neovitae", "bloodlightsigil");
-    private static final Identifier BLOOD_LIGHT_BLOCK = Identifier.fromNamespaceAndPath("neovitae", "bloodlight");
+    private static final Identifier BLOOD_LIGHT_SIGIL = Identifier.fromNamespaceAndPath("neovitae", "sigil_blood_light");
+    private static final Identifier BLOOD_LIGHT_BLOCK = Identifier.fromNamespaceAndPath("neovitae", "blood_light");
 
     private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
 

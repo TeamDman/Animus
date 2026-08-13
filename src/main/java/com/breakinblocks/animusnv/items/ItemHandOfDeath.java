@@ -62,7 +62,7 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             setCachedSouls(stack, totalSpiritus);
 
             target.addEffect(new MobEffectInstance(
-                Holder.direct(NVMobEffects.SPIRITUS_SNARE.get()), 100, 1));
+                NVMobEffects.SPIRITUS_SNARE, 100, 1));
         }
 
         super.hurtEnemy(stack, target, attacker);

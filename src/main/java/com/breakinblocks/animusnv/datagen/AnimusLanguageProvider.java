@@ -26,7 +26,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("advancement.animusnv.arcane_blood.title", "Arcane Blood");
         add("advancement.animusnv.blood_born_flora.description", "Obtain a Blood Sapling to grow your own Blood Wood trees");
         add("advancement.animusnv.blood_born_flora.title", "Blood-Born Flora");
-        add("advancement.animusnv.crystallized_power.description", "Create a Crystallized Spiritus Block, required for the Transcendent Ara Vitae");
+        add("advancement.animusnv.crystallized_power.description", "Create a Crystallized Spiritus Block, an alternate capstone for the Transcendent Ara Vitae");
         add("advancement.animusnv.crystallized_power.title", "Crystallized Power");
         add("advancement.animusnv.death_incarnate.description", "Wield the Hand of Death, a soul-reaping weapon with lifesteal and execute");
         add("advancement.animusnv.death_incarnate.title", "Death Incarnate");
@@ -44,8 +44,8 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("advancement.animusnv.sanguine_scroll.title", "Sanguine Scroll");
         add("advancement.animusnv.temporal_mastery.description", "Create the Sigil of Temporal Dominance to bend time to your will");
         add("advancement.animusnv.temporal_mastery.title", "Temporal Mastery");
-        add("advancement.animusnv.tier6_ascension.description", "Build a Tier 6 Ara Vitae using Crystallized Spiritus Blocks");
-        add("advancement.animusnv.tier6_ascension.title", "Tier 6 Ascension");
+        add("advancement.animusnv.tier6_ascension.description", "Build a Transcendent Ara Vitae capped with Crystallized Spiritus Blocks");
+        add("advancement.animusnv.tier6_ascension.title", "Transcendent Ascension");
         add("advancement.animusnv.transcendence.description", "Craft the Transcendent Orb of Vitae, the highest-capacity Orb of Vitae in the mod");
         add("advancement.animusnv.transcendence.title", "Transcendence");
         add("advancement.animusnv.willful_ascension.description", "Craft Willful Stone using Spiritus and compressed cobblestone");
@@ -126,7 +126,6 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("guide.animusnv.entry.arcane_rune", "Arcane Rune");
         add("guide.animusnv.entry.blood_apple", "Blood Apple");
         add("guide.animusnv.entry.blood_infused_spellbook", "Blood-Infused Spellbook");
-        add("guide.animusnv.entry.blood_orb_transcendent", "Transcendent Orb of Vitae");
         add("guide.animusnv.entry.blood_trees", "Blood Trees");
         add("guide.animusnv.entry.crystallized_spiritus", "Crystallized Spiritus");
         add("guide.animusnv.entry.crystallized_spiritus_block", "Crystallized Spiritus");
@@ -205,7 +204,6 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("guide.animusnv.entry.sigil_transposition", "Sigil of Transposition");
         add("entity.animusnv.thrown_spear", "Thrown Javelin");
         add("guide.animusnv.entry.spears", "Javelins");
-        add("guide.animusnv.entry.tier6_altar", "Tier 6 Altar");
         add("guide.animusnv.entry.welcome", "Welcome to Animus");
         add("guide.animusnv.entry.willful_stone", "Willful Stone");
         add("guide.animusnv.landing_text", "A comprehensive guide detailing the Animus of the Sanguine Arts");
@@ -277,7 +275,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("jei.animusnv.blood_infused_spellbook.upgrade_title", "Upgrade Blood-Infused Spellbook");
         add("jei.animusnv.category.altar_infusion", "Ara Vitae Infusion");
         add("jei.animusnv.category.imperfect_ritual", "Imperfect Rituals");
-        add("jei.animusnv.crystallized_spiritus_block.info", "Crafted in the Tabula Vitae using endgame reagents. Required component for Tier 6 Ara Vitaes. Acts as a valid CRYSTAL component in altar structures.");
+        add("jei.animusnv.crystallized_spiritus_block.info", "Crafted in the Hellfire Forge using endgame reagents. An alternate capstone for the Transcendent Ara Vitae, valid as a CRYSTAL component in altar structures.");
         add("jei.animusnv.imperfect_ritual.instruction", "Right-click Ritual Stone to activate");
         add("jei.animusnv.imperfect_ritual_stone.boundless_skies", "§6Ritual of Boundless Skies§r: Place Ancient Debris on top. Costs 10000 EV. Grants 15 minutes of creative flight.");
         add("jei.animusnv.imperfect_ritual_stone.enhancement", "§6Ritual of Enhancement§r: Place an Amethyst Block on top. Costs 5000 EV. Enhances all enchantments on mainhand item by 1 level. Cannot enhance already enhanced items.");
@@ -592,7 +590,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("tooltip.animusnv.conversion_rate", "Conversion: %s EV → %s mana per second");
         add("tooltip.animusnv.crystallized_spiritus.altar", "Acts as a valid CRYSTAL component");
         add("tooltip.animusnv.crystallized_spiritus.flavour", "Spiritus crystallized into solid form");
-        add("tooltip.animusnv.crystallized_spiritus.info", "Required component for Tier 6 Ara Vitaes");
+        add("tooltip.animusnv.crystallized_spiritus.info", "Alternate capstone for the Transcendent Ara Vitae");
         add("tooltip.animusnv.currentOwner", "Owner: %s");
 
         add("tooltip.animusnv.sanguine_rectifier.desc", "Converts Essentia Vitae to EvilCraft Blood and vice versa");

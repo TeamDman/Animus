@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_tabula_rasa": {
+      "conditions": {
+        "items": [
+          {
+            "items": "neovitae:tabula_rasa"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "animusnv:guide_book"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tabula_rasa"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "animusnv:guide_book"
+    ]
+  }
+}

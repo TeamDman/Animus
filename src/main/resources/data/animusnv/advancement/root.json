@@ -13,7 +13,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "neovitae:textures/block/altar.png"
+    "background": "minecraft:block/deepslate_bricks"
   },
   "criteria": {
     "has_diviner": {

@@ -19,7 +19,7 @@
     "formed_tier_6_altar": {
       "trigger": "animusnv:altar_tier",
       "conditions": {
-        "min_tier": 6
+        "min_tier": 5
       }
     }
   },
