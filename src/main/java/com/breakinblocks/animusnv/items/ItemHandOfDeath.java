@@ -1,7 +1,5 @@
 package com.breakinblocks.animusnv.items;
 
-import com.breakinblocks.animusnv.compat.CompatHandler;
-import com.breakinblocks.animusnv.compat.malum.SpiritHarvestHelper;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -62,7 +60,7 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             setCachedSouls(stack, totalSpiritus);
 
             target.addEffect(new MobEffectInstance(
-                Holder.direct(NVMobEffects.SPIRITUS_SNARE.get()), 100, 1));
+                NVMobEffects.SPIRITUS_SNARE, 100, 1));
         }
 
         boolean result = super.hurtEnemy(stack, target, attacker);
@@ -108,11 +106,6 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
         }
 
         target.hurt(level.damageSources().playerAttack(executioner), maxHealth);
-
-        // Parent's spirit harvest check ran before execute, so handle it here
-        if (CompatHandler.isMalumLoaded() && target.isDeadOrDying()) {
-            SpiritHarvestHelper.harvestSpirits(target, executioner, weapon);
-        }
 
         ServerLevel serverLevel = (ServerLevel) level;
 

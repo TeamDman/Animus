@@ -1,16 +1,13 @@
 package com.breakinblocks.animusnv.compat.arsnouveau;
 
 import com.hollingsworth.arsnouveau.api.source.AbstractSourceMachine;
-import com.breakinblocks.animusnv.Animus;
+import com.hollingsworth.arsnouveau.common.capability.SourceStorage;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.compat.ArsNouveauCompat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * Block Entity for Arcane Rune
@@ -32,46 +29,13 @@ public class BlockEntityArcaneRune extends AbstractSourceMachine {
     private int tickCounter = 0;
     private boolean hasSource = false;
 
-    private static Method setMaxSourceMethod;
-    private static Field maxSourceField;
-    private static boolean reflectionInitialized = false;
-
     public BlockEntityArcaneRune(BlockPos pos, BlockState state) {
         super(ArsNouveauCompat.ARCANE_RUNE_BE.get(), pos, state);
-        // Set max source capacity using reflection for cross-version compatibility
-        initMaxSourceReflection();
-        setMaxSourceValue(MAX_SOURCE_CAPACITY);
     }
 
-    private static void initMaxSourceReflection() {
-        if (reflectionInitialized) return;
-        reflectionInitialized = true;
-
-        try {
-            setMaxSourceMethod = AbstractSourceMachine.class.getMethod("setMaxSource", int.class);
-            return;
-        } catch (NoSuchMethodException e) {
-            // Fall back to field access
-        }
-
-        try {
-            maxSourceField = AbstractSourceMachine.class.getDeclaredField("maxSource");
-            maxSourceField.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            Animus.LOGGER.error("Could not find maxSource field or setMaxSource method in AbstractSourceMachine");
-        }
-    }
-
-    private void setMaxSourceValue(int value) {
-        try {
-            if (setMaxSourceMethod != null) {
-                setMaxSourceMethod.invoke(this, value);
-            } else if (maxSourceField != null) {
-                maxSourceField.setInt(this, value);
-            }
-        } catch (Exception e) {
-            Animus.LOGGER.error("Failed to set maxSource value: {}", e.getMessage());
-        }
+    @Override
+    protected SourceStorage createDefaultStorage() {
+        return new SourceStorage(MAX_SOURCE_CAPACITY);
     }
 
     public void tick() {

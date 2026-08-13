@@ -156,14 +156,6 @@ public class AnimusJEIPlugin implements IModPlugin {
             Item bloodInfusedSpellbook = getAnimusItem("blood_infused_spellbook");
             if (bloodInfusedSpellbook != null && bloodInfusedSpellbook != Items.AIR) {
 
-                String[] orbNames = {
-                    "Apprentice Orb of Vitae",
-                    "Magician's Orb of Vitae",
-                    "Master Orb of Vitae",
-                    "Archmage's Orb of Vitae",
-                    "Transcendent Orb of Vitae"
-                };
-
                 int[] evCosts = {
                     AnimusConfig.ironsSpells.bloodSpellbookTier2EV.get(),
                     AnimusConfig.ironsSpells.bloodSpellbookTier3EV.get(),
@@ -185,7 +177,7 @@ public class AnimusJEIPlugin implements IModPlugin {
                         evCosts[tier - 1],
                         tier,
                         tier + 1,
-                        orbNames[tier - 1],
+                        ItemBloodInfusedSpellbook.getRequiredOrbName(tier + 1),
                         Component.translatable("jei.animusnv.blood_infused_spellbook.upgrade_title"),
                         Component.translatable("jei.animusnv.blood_infused_spellbook.upgrade_desc")
                     ));

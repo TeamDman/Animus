@@ -221,9 +221,7 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
             tag.putInt("AltarZ", altarPos.getZ());
         }
 
-        if (!orbStack.isEmpty()) {
-            tag.put("OrbStack", orbStack.save(registries));
-        }
+        tag.put("OrbStack", orbStack.saveOptional(registries));
 
         bloodTank.writeToNBT(registries, tag);
     }
@@ -238,11 +236,7 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
             altarPos = null;
         }
 
-        if (tag.contains("OrbStack")) {
-            orbStack = ItemStack.parse(registries, tag.getCompound("OrbStack")).orElse(ItemStack.EMPTY);
-        } else {
-            orbStack = ItemStack.EMPTY;
-        }
+        orbStack = ItemStack.parseOptional(registries, tag.getCompound("OrbStack"));
 
         bloodTank.readFromNBT(registries, tag);
     }

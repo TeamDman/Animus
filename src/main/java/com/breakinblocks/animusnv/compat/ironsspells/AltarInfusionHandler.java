@@ -92,10 +92,10 @@ public class AltarInfusionHandler {
             event.setUseItem(TriState.FALSE);
             return;
         }
-        int requiredOrbTier = getRequiredOrbTier(nextTier);
+        int requiredOrbTier = ItemBloodInfusedSpellbook.getRequiredOrbTier(nextTier);
         if (!hasBloodOrbOfTier(player, requiredOrbTier)) {
             player.displayClientMessage(
-                Component.literal("Requires " + getOrbName(requiredOrbTier) + " or higher!")
+                Component.literal("Requires " + ItemBloodInfusedSpellbook.getRequiredOrbName(nextTier) + " or higher!")
                     .withStyle(ChatFormatting.RED),
                 true
             );
@@ -124,22 +124,6 @@ public class AltarInfusionHandler {
         event.setCanceled(true);
         event.setUseBlock(TriState.FALSE);
         event.setUseItem(TriState.FALSE);
-    }
-
-    private static int getRequiredOrbTier(int infusionTier) {
-        return infusionTier;
-    }
-
-    private static String getOrbName(int tier) {
-        return switch (tier) {
-            case 1 -> "Weak Orb of Vitae";
-            case 2 -> "Apprentice Orb of Vitae";
-            case 3 -> "Magician's Orb of Vitae";
-            case 4 -> "Master Orb of Vitae";
-            case 5 -> "Archmage's Orb of Vitae";
-            case 6 -> "Transcendent Orb of Vitae";
-            default -> "Orb of Vitae";
-        };
     }
 
     private static boolean hasBloodOrbOfTier(Player player, int requiredTier) {

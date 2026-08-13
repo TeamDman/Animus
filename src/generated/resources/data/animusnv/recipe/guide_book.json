@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "item": "neovitae:tabula_rasa"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "animusnv:guide_book"
+  }
+}

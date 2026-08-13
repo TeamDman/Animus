@@ -158,9 +158,9 @@ public record HeavenlyWrathSigilEffect() implements ISigilEffect {
 
         // Apply NeoVitae's heavy_heart effect to prevent flight
         ResourceLocation heavyHeartRL = ResourceLocation.fromNamespaceAndPath("neovitae", "heavy_heart");
-        var heavyHeartOpt = BuiltInRegistries.MOB_EFFECT.getOptional(heavyHeartRL);
+        var heavyHeartOpt = BuiltInRegistries.MOB_EFFECT.getHolder(heavyHeartRL);
         if (heavyHeartOpt.isPresent()) {
-            entity.addEffect(new MobEffectInstance(Holder.direct(heavyHeartOpt.get()), 40, 4));
+            entity.addEffect(new MobEffectInstance(heavyHeartOpt.get(), 40, 4));
         }
 
         // Base downward velocity

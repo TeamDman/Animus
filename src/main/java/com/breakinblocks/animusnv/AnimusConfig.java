@@ -877,27 +877,27 @@ public class AnimusConfig {
                 .define("enabled", true);
 
             bloodSpellbookTier1EV = builder
-                .comment("EV cost to infuse spellbook to Tier 1 (Weak Blood Orb)")
+                .comment("EV cost to infuse spellbook to Tier 1 (altar recipe, no orb needed)")
                 .defineInRange("tier1EVCost", 5000, 100, 1000000);
 
             bloodSpellbookTier2EV = builder
-                .comment("EV cost to infuse spellbook to Tier 2 (Apprentice Blood Orb)")
+                .comment("EV cost to infuse spellbook to Tier 2 (Discipulus Orb of Vitae)")
                 .defineInRange("tier2EVCost", 10000, 100, 1000000);
 
             bloodSpellbookTier3EV = builder
-                .comment("EV cost to infuse spellbook to Tier 3 (Magician Blood Orb)")
+                .comment("EV cost to infuse spellbook to Tier 3 (Veneficus Orb of Vitae)")
                 .defineInRange("tier3EVCost", 25000, 100, 1000000);
 
             bloodSpellbookTier4EV = builder
-                .comment("EV cost to infuse spellbook to Tier 4 (Master Blood Orb)")
+                .comment("EV cost to infuse spellbook to Tier 4 (Magus Orb of Vitae)")
                 .defineInRange("tier4EVCost", 50000, 100, 1000000);
 
             bloodSpellbookTier5EV = builder
-                .comment("EV cost to infuse spellbook to Tier 5 (Archmage Blood Orb)")
+                .comment("EV cost to infuse spellbook to Tier 5 (Dominus Orb of Vitae)")
                 .defineInRange("tier5EVCost", 100000, 100, 1000000);
 
             bloodSpellbookTier6EV = builder
-                .comment("EV cost to infuse spellbook to Tier 6 (Transcendent Blood Orb)")
+                .comment("EV cost to infuse spellbook to Tier 6 (Divinus Orb of Vitae)")
                 .defineInRange("tier6EVCost", 175000, 100, 1000000);
 
             builder.pop();

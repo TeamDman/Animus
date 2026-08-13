@@ -1,5 +1,6 @@
 package com.breakinblocks.animusnv.gametest;
 
+import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.advancements.AnimusCriteriaTriggers;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.gametest.framework.GameTest;
@@ -12,18 +13,18 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import java.util.List;
 import java.util.Optional;
 
-@GameTestHolder("animusnv")
+@GameTestHolder(Constants.Mod.MODID)
 @PrefixGameTestTemplate(false)
 public class AnimusDataTests {
 
-    private static final String EMPTY = "empty";
+    private static final String TEMPLATE = "empty_5x5x7";
 
-    @GameTest(template = EMPTY)
-    public static void animusAdvancementsLoad(GameTestHelper helper) {
+    @GameTest(template = TEMPLATE)
+    public void animus_advancements_load(GameTestHelper helper) {
         ServerAdvancementManager manager = helper.getLevel().getServer().getAdvancements();
 
         List<AdvancementHolder> ours = manager.getAllAdvancements().stream()
-                .filter(a -> a.id().getNamespace().equals("animusnv"))
+                .filter(a -> a.id().getNamespace().equals(Constants.Mod.MODID))
                 .toList();
 
         if (ours.size() < 14) {
@@ -37,8 +38,6 @@ public class AnimusDataTests {
                 return;
             }
 
-            // A dangling parent drops the advancement out of the tree, so it never shows in game
-            // even though the file itself loaded fine.
             Optional<ResourceLocation> parent = holder.value().parent();
             if (parent.isPresent() && manager.get(parent.get()) == null) {
                 helper.fail(holder.id() + " has parent " + parent.get() + " which does not exist, so the tree cannot attach it");
@@ -49,8 +48,8 @@ public class AnimusDataTests {
         helper.succeed();
     }
 
-    @GameTest(template = EMPTY)
-    public static void altarTierTriggerIsRegistered(GameTestHelper helper) {
+    @GameTest(template = TEMPLATE)
+    public void altar_tier_trigger_registered(GameTestHelper helper) {
         if (AnimusCriteriaTriggers.ALTAR_TIER.get() == null) {
             helper.fail("the altar_tier criterion is not registered, so Tier 6 Ascension can never fire");
             return;

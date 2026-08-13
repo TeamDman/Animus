@@ -27,8 +27,6 @@ import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -64,10 +62,6 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
 
     // Track acceleration state for each block entity
     private static final Map<BlockPos, AccelerationState> acceleratedBlocks = new ConcurrentHashMap<>();
-
-    // GAG compatibility - cache the reflection check
-    private static Boolean gagLoaded = null;
-    private static Method gagCheckMethod = null;
 
     @Override
     public MapCodec<? extends ISigilEffect> codec() {
@@ -274,48 +268,10 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
 
     /**
      * Check if GAG (Gadgets Against Grind) is accelerating this block.
-     * Uses reflection to avoid hard dependency.
+     * GAG spawns a TimeAcceleratorEntity at the block position.
      */
     private static boolean isAcceleratedByGAG(BlockPos pos, Level level) {
-        // One-time check if GAG is loaded
-        if (gagLoaded == null) {
-            try {
-                Class<?> temporalPouchClass = Class.forName("ky.someone.mods.gag.item.TemporalPouchItem");
-                try {
-                    gagCheckMethod = temporalPouchClass.getMethod("isAccelerated", BlockPos.class, Level.class);
-                    gagLoaded = true;
-                } catch (NoSuchMethodException e) {
-                    try {
-                        Field acceleratedField = temporalPouchClass.getDeclaredField("acceleratedBlocks");
-                        acceleratedField.setAccessible(true);
-                        gagLoaded = true;
-                    } catch (NoSuchFieldException ex) {
-                        gagLoaded = false;
-                    }
-                }
-            } catch (ClassNotFoundException e) {
-                gagLoaded = false;
-            }
-        }
-
-        if (!gagLoaded) {
-            return false;
-        }
-
-        try {
-            if (gagCheckMethod != null) {
-                return (Boolean) gagCheckMethod.invoke(null, pos, level);
-            } else {
-                Class<?> temporalPouchClass = Class.forName("ky.someone.mods.gag.item.TemporalPouchItem");
-                Field acceleratedField = temporalPouchClass.getDeclaredField("acceleratedBlocks");
-                acceleratedField.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                Map<?, ?> acceleratedMap = (Map<?, ?>) acceleratedField.get(null);
-                return acceleratedMap.containsKey(pos);
-            }
-        } catch (Exception e) {
-            return false;
-        }
+        return hasAcceleratorEntity(pos, level, "ky.someone.mods.gag.entity.TimeAcceleratorEntity");
     }
 
     /**
@@ -323,17 +279,8 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
      * TIAB spawns a TimeAcceleratorEntity at the block position.
      */
     private static boolean isAcceleratedByTIAB(BlockPos pos, Level level) {
-        try {
-            Class.forName("com.haoict.tiab.common.entities.TimeAcceleratorEntity");
-            List<? extends Entity> entities = level.getEntities(
-                    (Entity) null,
-                    new AABB(pos),
-                    entity -> entity != null && entity.getClass().getName().equals("com.haoict.tiab.common.entities.TimeAcceleratorEntity")
-            );
-            return !entities.isEmpty();
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
+        return hasAcceleratorEntity(pos, level, "org.mangorage.tiab.common.entities.TimeAcceleratorEntity")
+                || hasAcceleratorEntity(pos, level, "com.haoict.tiab.common.entities.TimeAcceleratorEntity");
     }
 
     /**
@@ -341,12 +288,16 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
      * JDT spawns a TimeWandEntity at the block position.
      */
     private static boolean isAcceleratedByJDT(BlockPos pos, Level level) {
+        return hasAcceleratorEntity(pos, level, "com.direwolf20.justdirethings.common.entities.TimeWandEntity");
+    }
+
+    private static boolean hasAcceleratorEntity(BlockPos pos, Level level, String className) {
         try {
-            Class.forName("com.direwolf20.justdirethings.common.entities.TimeWandEntity");
+            Class.forName(className);
             List<? extends Entity> entities = level.getEntities(
                     (Entity) null,
                     new AABB(pos),
-                    entity -> entity != null && entity.getClass().getName().equals("com.direwolf20.justdirethings.common.entities.TimeWandEntity")
+                    entity -> entity != null && entity.getClass().getName().equals(className)
             );
             return !entities.isEmpty();
         } catch (ClassNotFoundException e) {

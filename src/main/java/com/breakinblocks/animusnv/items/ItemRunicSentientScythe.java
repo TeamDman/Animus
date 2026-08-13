@@ -1,7 +1,6 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.compat.CompatHandler;
-import com.breakinblocks.animusnv.compat.malum.SpiritHarvestHelper;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -51,7 +50,7 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
             stack.set(AnimusDataComponents.CACHED_SOULS.get(), totalSpiritus);
 
             target.addEffect(new MobEffectInstance(
-                Holder.direct(NVMobEffects.SPIRITUS_SNARE.get()), 100, 1));
+                NVMobEffects.SPIRITUS_SNARE, 100, 1));
 
             // Spawn swing particle and sound effect
             if (attacker.level() instanceof ServerLevel serverLevel) {
@@ -59,13 +58,7 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
             }
         }
 
-        boolean result = super.hurtEnemy(stack, target, attacker);
-
-        if (CompatHandler.isMalumLoaded() && attacker instanceof Player player && target.isDeadOrDying()) {
-            SpiritHarvestHelper.harvestSpirits(target, player, stack);
-        }
-
-        return result;
+        return super.hurtEnemy(stack, target, attacker);
     }
 
     /**
