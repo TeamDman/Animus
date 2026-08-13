@@ -86,6 +86,9 @@ public class Animus {
      * reflectively and quietly skipped in production builds.
      */
     private static void wireGameTests(IEventBus modBus) {
+        if (System.getProperty("neoforge.enabledGameTestNamespaces") == null) {
+            return;
+        }
         try {
             Class<?> registration = Class.forName("com.breakinblocks.animusnv.gametest.AnimusGameTestRegistration");
             Method handler = registration.getMethod("registerTests", RegisterGameTestsEvent.class);
