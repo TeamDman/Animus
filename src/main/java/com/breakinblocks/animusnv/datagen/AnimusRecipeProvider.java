@@ -18,6 +18,7 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.fml.ModList;
 import com.breakinblocks.neovitae.NeoVitae;
+import com.breakinblocks.neovitae.common.block.NVBlocks;
 import com.breakinblocks.neovitae.common.item.NVItems;
 
 import java.util.concurrent.CompletableFuture;
@@ -46,10 +47,27 @@ public class AnimusRecipeProvider extends RecipeProvider {
     @Override
     protected void buildRecipes(RecipeOutput output) {
         buildCraftingRecipes(output);
+        buildStonecutterRecipes(output);
         buildAltarRecipes(output);
         buildTabulaVitaeRecipes(output);
         buildHellfireForgeRecipes(output);
         buildArrayRecipes(output);
+    }
+
+    private void buildStonecutterRecipes(RecipeOutput output) {
+        SingleItemRecipeBuilder.stonecutting(
+                Ingredient.of(NVBlocks.CRYSTAL_CLUSTER),
+                RecipeCategory.BUILDING_BLOCKS,
+                AnimusItems.BLOCK_CRYSTALLIZED_SPIRITUS.get())
+            .unlockedBy("has_crystal_cluster", has(NVBlocks.CRYSTAL_CLUSTER))
+            .save(output, loc("crystallized_spiritus_block_from_crystal_cluster"));
+
+        SingleItemRecipeBuilder.stonecutting(
+                Ingredient.of(AnimusItems.BLOCK_CRYSTALLIZED_SPIRITUS.get()),
+                RecipeCategory.BUILDING_BLOCKS,
+                NVBlocks.CRYSTAL_CLUSTER)
+            .unlockedBy("has_crystallized_spiritus_block", has(AnimusItems.BLOCK_CRYSTALLIZED_SPIRITUS.get()))
+            .save(output, loc("crystal_cluster_from_crystallized_spiritus_block"));
     }
 
     private void buildCraftingRecipes(RecipeOutput output) {
@@ -230,15 +248,6 @@ public class AnimusRecipeProvider extends RecipeProvider {
             .requires(NVItems.TABULA_ROBUR.get())
             .requires(Tags.Items.DUSTS_REDSTONE)
             .save(output, loc("willful_stone"));
-
-        HellfireForgeRecipeBuilder.build(AnimusItems.BLOCK_CRYSTALLIZED_SPIRITUS.get())
-            .minSpiritus(2048.0)
-            .drain(1024.0)
-            .requires(Items.SCULK)
-            .requires(NVItems.TABULA_AETHEREA.get())
-            .requires(NVItems.WEAK_BLOOD_SHARD.get())
-            .requires(Items.NETHER_STAR)
-            .save(output, loc("crystallized_spiritus_block"));
 
         HellfireForgeRecipeBuilder.build(AnimusItems.SENTIENT_SHIELD.get())
             .minSpiritus(64.0)

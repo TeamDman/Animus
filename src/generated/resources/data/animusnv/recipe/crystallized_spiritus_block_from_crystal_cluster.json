@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "neovitae:crystal_cluster"
+  },
+  "result": {
+    "count": 1,
+    "id": "animusnv:crystallized_spiritus_block"
+  }
+}

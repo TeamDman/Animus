@@ -271,7 +271,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("jei.animusnv.blood_infused_spellbook.upgrade_title", "Upgrade Blood-Infused Spellbook");
         add("jei.animusnv.category.altar_infusion", "Ara Vitae Infusion");
         add("jei.animusnv.category.imperfect_ritual", "Imperfect Rituals");
-        add("jei.animusnv.crystallized_spiritus_block.info", "Crafted in the Hellfire Forge using endgame reagents. An alternate capstone for the Transcendent Ara Vitae, valid as a CRYSTAL component in altar structures.");
+        add("jei.animusnv.crystallized_spiritus_block.info", "Cut from a Crystal Cluster on a stonecutter, and back again. An alternate capstone for the Transcendent Ara Vitae, valid as a CRYSTAL component in altar structures.");
         add("jei.animusnv.imperfect_ritual.instruction", "Right-click Ritual Stone to activate");
         add("jei.animusnv.imperfect_ritual_stone.boundless_skies", "§6Ritual of Boundless Skies§r: Place Ancient Debris on top. Costs 10000 EV. Grants 15 minutes of creative flight.");
         add("jei.animusnv.imperfect_ritual_stone.enhancement", "§6Ritual of Enhancement§r: Place an Amethyst Block on top. Costs 5000 EV. Enhances all enchantments on mainhand item by 1 level. Cannot enhance already enhanced items.");
