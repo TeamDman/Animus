@@ -5,9 +5,7 @@
   "description": "book.animusnv.guide.sigils.sigil_crimson_will.description",
   "hide_while_locked": false,
   "icon": {
-    "height": 16,
-    "texture": "animusnv:sigil_crimson_will",
-    "width": 16
+    "item": "animusnv:sigil_crimson_will"
   },
   "name": "book.animusnv.guide.sigils.sigil_crimson_will.name",
   "pages": [
@@ -51,8 +49,8 @@
         "type": "modonomicon:none"
       },
       "show_title_separator": true,
-      "text": "book.animusnv.guide.sigils.sigil_crimson_will.effect.text",
-      "title": "book.animusnv.guide.sigils.sigil_crimson_will.effect.title",
+      "text": "book.animusnv.guide.sigils.sigil_crimson_will.scaling.text",
+      "title": "book.animusnv.guide.sigils.sigil_crimson_will.scaling.title",
       "use_markdown_in_title": false
     },
     {
@@ -64,6 +62,17 @@
       "show_title_separator": true,
       "text": "book.animusnv.guide.sigils.sigil_crimson_will.cost.text",
       "title": "book.animusnv.guide.sigils.sigil_crimson_will.cost.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.sigils.sigil_crimson_will.states.text",
+      "title": "book.animusnv.guide.sigils.sigil_crimson_will.states.title",
       "use_markdown_in_title": false
     }
   ],

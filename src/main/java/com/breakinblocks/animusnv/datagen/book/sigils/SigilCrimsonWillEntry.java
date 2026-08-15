@@ -5,6 +5,7 @@ import com.klikli_dev.modonomicon.api.datagen.EntryBackground;
 import com.klikli_dev.modonomicon.api.datagen.EntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import com.breakinblocks.animusnv.compat.IronsSpellsCompat;
 import com.breakinblocks.animusnv.datagen.book.page.BookTabulaVitaeRecipePageModel;
 import com.breakinblocks.animusnv.datagen.book.page.BookAlchemyArrayRecipePageModel;
 import com.mojang.datafixers.util.Pair;
@@ -29,28 +30,54 @@ public class SigilCrimsonWillEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Sigil of Crimson Will");
         this.pageText("Crafted in an [#](8B0000)Alchemy Array[#]() by combining a "
-                + "[#](8B0000)Reagent: Crimson Will[#]() with a [#](B8860B)Tabula Robur[#](), this "
-                + "sigil taps into the raw power of [#](4A0080)Crimson Will[#](). Its potency is tied "
-                + "to the depth of your connection to Vitaemancy.");
+                + "[#](8B0000)Reagent: Fist[#]() with a [#](B8860B)Tabula Animata[#](), this sigil "
+                + "empowers your spellcasting with both Essentia Vitae and Spiritus. While active it "
+                + "raises spell power and summon damage, scaling with the raw Spiritus stored in "
+                + "your Anima.\\\n\\\n"
+                + "[#](4A0080)Right-click to activate. Every spell you cast while it is active "
+                + "consumes EV and briefly empowers you.[#]()");
 
-        this.page("effect", () -> BookTextPageModel.create()
+        this.page("scaling", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("Effect");
-        this.pageText("When active, the sigil amplifies certain aspects of [#](4A0080)Vitaemancy[#](). "
-                + "It can empower rituals, enhance sacrificial effects, and directly manipulate "
-                + "blood energies.\\\n\\\n"
-                + "[#](2E8B57)This sigil requires Iron's Spells 'n Spellbooks to be installed. "
-                + "Its full capabilities reveal themselves through experimentation and advanced "
-                + "Vitaemancy studies.[#]()");
+        this.pageTitle("Power Scaling");
+        this.pageText("[#](8B0000)Base Bonus:[#]() +30%% spell power and summon damage\\\n\\\n"
+                + "[#](4A0080)Spiritus Scaling:[#]()\n\n"
+                + "- Scales up to +50%% total at 4096 Spiritus\n\n"
+                + "- Uses Spiritus from your Anima\n\n"
+                + "- Works with 0 Spiritus (base 30%% only)\\\n\\\n"
+                + "The bonus is applied only during spell casting and removed "
+                + "immediately after.");
 
         this.page("cost", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
-        this.pageTitle("EV Cost");
-        this.pageText("The [#](4A0080)Essentia Vitae[#]() cost varies based on the effect being "
-                + "channelled. Greater workings demand greater sacrifice.\\\n\\\n"
-                + "[#](4A0080)The crimson tide answers to those bold enough to call upon it.[#]()");
+        this.pageTitle("Cost Breakdown");
+        this.pageText("Each spell cast with the sigil active consumes:\\\n\\\n"
+                + "[#](8B0000)Essentia Vitae:[#]()\n\n"
+                + "- Configurable per mana point (default: 50 EV)\n\n"
+                + "- Scales with spell level\n\n"
+                + "- Example: 10-level spell = 500 EV\\\n\\\n"
+                + "[#](4A0080)Spiritus:[#]()\n\n"
+                + "- 5 Spiritus per cast (if available)\n\n"
+                + "- Consumes from Anima\n\n"
+                + "- Optional. Sigil works without Spiritus");
+
+        this.page("states", () -> BookTextPageModel.create()
+                .withTitle(this.context().pageTitle())
+                .withText(this.context().pageText()));
+        this.pageTitle("Activation States");
+        this.pageText("[#](8B0000)Active[#]() (glowing red icon):\n\n"
+                + "- Consumes resources per spell\n\n"
+                + "- Boosts spell power and summon damage\n\n"
+                + "- Shows dynamic power bonus in tooltip\\\n\\\n"
+                + "[#](4A0080)Inactive[#]() (gray icon):\n\n"
+                + "- No resource consumption\n\n"
+                + "- No power boost\n\n"
+                + "- Right-click to toggle\\\n\\\n"
+                + "The sigil must be bound to your [#](8B0000)Anima[#]() to activate. "
+                + "Keep it in any inventory slot. Deactivate between fights to conserve EV.\\\n\\\n"
+                + "[#](2E8B57)Requires Iron's Spells 'n Spellbooks to be installed.[#]()");
     }
 
     @Override
@@ -60,7 +87,7 @@ public class SigilCrimsonWillEntry extends EntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "Channels raw crimson will to amplify Vitaemancy. Requires Iron's Spells.";
+        return "Empowers spellcasting with Essentia Vitae and Spiritus. Requires Iron's Spells.";
     }
 
     @Override
@@ -70,7 +97,7 @@ public class SigilCrimsonWillEntry extends EntryProvider {
 
     @Override
     protected BookIconModel entryIcon() {
-        return BookIconModel.create(ResourceLocation.fromNamespaceAndPath("animusnv", "sigil_crimson_will"));
+        return BookIconModel.create(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get());
     }
 
     @Override

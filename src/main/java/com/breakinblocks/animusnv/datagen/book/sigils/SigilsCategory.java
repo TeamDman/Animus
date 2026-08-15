@@ -18,7 +18,7 @@ public class SigilsCategory extends CategoryProvider {
                 "_____________",
                 "__f_g_h_i_j__",
                 "_____________",
-                "__k_l_m_n_o__"
+                "__k_l_m_n____"
         };
     }
 
@@ -38,7 +38,6 @@ public class SigilsCategory extends CategoryProvider {
         var storm = this.add(new SigilStormEntry(this).generate('l'));
         var temporalDominance = this.add(new SigilTemporalDominanceEntry(this).generate('m'));
         var transposition = this.add(new SigilTranspositionEntry(this).generate('n'));
-        var sigilCrimsonWillCompat = this.add(new SigilCrimsonWillCompatEntry(this).generate('o'));
     }
 
     @Override
