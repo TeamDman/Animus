@@ -489,7 +489,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("text.component.animusnv.free_soul.returning", "Returning to original position...");
         add("text.component.animusnv.free_soul.saved", "The Free Soul saves you from death!");
         add("text.component.animusnv.hand_of_death.execute", "⚰ EXECUTED: %s");
-        add("text.component.animusnv.healing.cannot_drop", "Fragment of Healing cannot be dropped!");
+        add("text.component.animusnv.healing.cannot_drop", "The Fragment of Healing is bound to your inventory!");
         add("text.component.animusnv.healing.warning", "Warning: This item cannot be moved or dropped once obtained!");
         add("text.component.animusnv.hellforged_bow.bound", "Hellforged Bow bound to you");
         add("text.component.animusnv.hellforged_bow.execute", "§4⚰ EXECUTED: %s");

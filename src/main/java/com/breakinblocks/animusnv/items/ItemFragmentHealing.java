@@ -1,6 +1,7 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.Constants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -35,12 +36,22 @@ public class ItemFragmentHealing extends Item {
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HEALING_INFO));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HEALING_RATE));
         tooltip.add(Component.translatable(Constants.Localizations.Tooltips.HEALING_PERMANENT)
-            .withStyle(net.minecraft.ChatFormatting.RED));
+            .withStyle(ChatFormatting.RED));
     }
 
     @Override
     public boolean onDroppedByPlayer(ItemStack item, Player player) {
-        return player.getAbilities().instabuild;
+        if (player.getAbilities().instabuild) {
+            return true;
+        }
+        if (!player.level().isClientSide) {
+            player.displayClientMessage(
+                Component.translatable(Constants.Localizations.Text.HEALING_CANNOT_DROP)
+                    .withStyle(ChatFormatting.RED),
+                true
+            );
+        }
+        return false;
     }
 
     @Override
