@@ -111,7 +111,6 @@ def ironsSpellsData = [
         'data/animusnv/modonomicon/books/guide/entries/compatibility/sanguine_scrolls/**',
         'data/animusnv/modonomicon/books/guide/entries/sigils/sigil_crimson_will*.json',
         'data/animusnv/modonomicon/books/guide/entries/sigils/sigil_crimson_will/**',
-        'data/animusnv/modonomicon/books/guide/entries/sigils/sigil_crimson_will_compat/**',
 ]
 
 if (!project.findProperty('animus_compat_ironsspells').toBoolean()) {

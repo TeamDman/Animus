@@ -52,6 +52,28 @@ public class AnimusItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.SLABS)
             .add(AnimusItems.BLOCK_BLOOD_WOOD_SLAB.get());
 
+        tag(ItemTags.SWORDS)
+            .add(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
+            .add(AnimusItems.HAND_OF_DEATH.get());
+
+        tag(ItemTags.TRIDENT_ENCHANTABLE)
+            .add(AnimusItems.SPEAR_IRON.get())
+            .add(AnimusItems.SPEAR_DIAMOND.get())
+            .add(AnimusItems.SPEAR_SENTIENT.get())
+            .add(AnimusItems.SPEAR_BOUND.get());
+
+        tag(ItemTags.BOW_ENCHANTABLE)
+            .add(AnimusItems.SENTIENT_BOW.get())
+            .add(AnimusItems.HELLFORGED_BOW.get());
+
+        tag(ItemTags.DURABILITY_ENCHANTABLE)
+            .add(AnimusItems.SPEAR_IRON.get())
+            .add(AnimusItems.SPEAR_DIAMOND.get())
+            .add(AnimusItems.SPEAR_SENTIENT.get())
+            .add(AnimusItems.SENTIENT_BOW.get())
+            .add(AnimusItems.HELLFORGED_BOW.get())
+            .add(AnimusItems.SENTIENT_SHIELD.get());
+
         tag(Constants.Tags.WILLFUL_STONES)
             .add(AnimusItems.BLOCK_WILLFUL_STONE.get())
             .add(AnimusItems.BLOCK_WILLFUL_STONE_WHITE.get())

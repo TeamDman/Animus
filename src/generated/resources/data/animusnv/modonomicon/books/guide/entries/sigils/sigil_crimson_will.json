@@ -10,7 +10,7 @@
     "type": "modonomicon:none"
   },
   "description": "book.animusnv.guide.sigils.sigil_crimson_will.description",
-  "icon": "animusnv:sigil_crimson_will",
+  "icon": "animusnv:textures/item/sigil_crimson_will.png",
   "id": "animusnv:sigils/sigil_crimson_will",
   "name": "book.animusnv.guide.sigils.sigil_crimson_will.name",
   "sort_number": 3,
