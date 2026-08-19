@@ -74,6 +74,18 @@ public class AnimusItemTagsProvider extends ItemTagsProvider {
             .add(AnimusItems.HELLFORGED_BOW.get())
             .add(AnimusItems.SENTIENT_SHIELD.get());
 
+        tag(Constants.Tags.MALUM_SOUL_SHATTER_CAPABLE_WEAPON)
+            .addOptional(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
+            .addOptional(AnimusItems.HAND_OF_DEATH.get());
+
+        tag(Constants.Tags.MALUM_ENCHANTABLE_REBOUND)
+            .addOptional(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
+            .addOptional(AnimusItems.HAND_OF_DEATH.get());
+
+        tag(Constants.Tags.MALUM_ENCHANTABLE_ASCENSION)
+            .addOptional(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
+            .addOptional(AnimusItems.HAND_OF_DEATH.get());
+
         tag(Constants.Tags.WILLFUL_STONES)
             .add(AnimusItems.BLOCK_WILLFUL_STONE.get())
             .add(AnimusItems.BLOCK_WILLFUL_STONE_WHITE.get())

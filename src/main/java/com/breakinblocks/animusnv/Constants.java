@@ -303,6 +303,24 @@ public class Constants {
                 Identifier.fromNamespaceAndPath(Mod.MODID, "willful_stones")
             );
 
+        public static final TagKey<Item> MALUM_SOUL_SHATTER_CAPABLE_WEAPON =
+            TagKey.create(
+                Registries.ITEM,
+                Identifier.fromNamespaceAndPath("malum", "soul_shatter_capable_weapon")
+            );
+
+        public static final TagKey<Item> MALUM_ENCHANTABLE_REBOUND =
+            TagKey.create(
+                Registries.ITEM,
+                Identifier.fromNamespaceAndPath("malum", "enchantable/rebound")
+            );
+
+        public static final TagKey<Item> MALUM_ENCHANTABLE_ASCENSION =
+            TagKey.create(
+                Registries.ITEM,
+                Identifier.fromNamespaceAndPath("malum", "enchantable/ascension")
+            );
+
         public static final TagKey<Block> DISALLOW_ACCELERATION =
             TagKey.create(
                 Registries.BLOCK,

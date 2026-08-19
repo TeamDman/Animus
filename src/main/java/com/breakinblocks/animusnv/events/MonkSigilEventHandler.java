@@ -6,6 +6,7 @@ import com.breakinblocks.animusnv.registry.AnimusAttributes;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import com.breakinblocks.animusnv.registry.AnimusSounds;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,6 +15,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
@@ -29,6 +32,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
@@ -53,6 +57,9 @@ public class MonkSigilEventHandler {
     // Netherite pickaxe base (9.0) + Efficiency V (level^2 + 1 = 26) = 35.0
     private static final float MONK_MINING_SPEED = 35.0f;
 
+    private static final Identifier MONK_UNARMED_MODIFIER_ID =
+        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "monk_sigil_unarmed_damage");
+
     public static boolean hasActiveMonkSigil(Player player) {
         return findActiveMonkSigil(player) != null;
     }
@@ -62,6 +69,38 @@ public class MonkSigilEventHandler {
         return InventorySearchHelper
             .findActiveSigil(player, AnimusItems.SIGIL_MONK.get())
             .orElse(null);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+        Player player = event.getEntity();
+
+        if (player.level().isClientSide()) {
+            return;
+        }
+
+        AttributeInstance unarmedAttribute = player.getAttribute(AnimusAttributes.UNARMED_DAMAGE);
+        if (unarmedAttribute == null) {
+            return;
+        }
+
+        double sigilBonus = hasActiveMonkSigil(player) ? MonkSigilEffect.getUnarmedDamage() : 0;
+        AttributeModifier existingModifier = unarmedAttribute.getModifier(MONK_UNARMED_MODIFIER_ID);
+
+        if (sigilBonus <= 0) {
+            if (existingModifier != null) {
+                unarmedAttribute.removeModifier(MONK_UNARMED_MODIFIER_ID);
+            }
+        } else if (existingModifier == null || Math.abs(existingModifier.amount() - sigilBonus) > 0.001) {
+            if (existingModifier != null) {
+                unarmedAttribute.removeModifier(MONK_UNARMED_MODIFIER_ID);
+            }
+            unarmedAttribute.addTransientModifier(new AttributeModifier(
+                MONK_UNARMED_MODIFIER_ID,
+                sigilBonus,
+                AttributeModifier.Operation.ADD_VALUE
+            ));
+        }
     }
 
     @SubscribeEvent
@@ -84,19 +123,19 @@ public class MonkSigilEventHandler {
             return;
         }
 
+        double unarmedDamage = player.getAttributeValue(AnimusAttributes.UNARMED_DAMAGE);
+        if (unarmedDamage > 0) {
+            event.setAmount(event.getAmount() + (float) unarmedDamage);
+        }
+
         ItemStack monkSigil = findActiveMonkSigil(player);
         if (monkSigil == null) {
             return;
         }
 
-        double unarmedDamage = player.getAttributeValue(AnimusAttributes.UNARMED_DAMAGE);
-        if (unarmedDamage <= 0) {
-            return;
-        }
-
         LivingEntity target = event.getEntity();
         float targetMaxHealth = target.getMaxHealth();
-        float baseDamage = event.getAmount() + (float) unarmedDamage;
+        float baseDamage = event.getAmount();
 
         double totalSpiritus = getTotalSpiritus(player);
 

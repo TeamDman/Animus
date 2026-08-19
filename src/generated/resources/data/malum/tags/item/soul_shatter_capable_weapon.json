@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "animusnv:runic_sentient_scythe",
+      "required": false
+    },
+    {
+      "id": "animusnv:hand_of_death",
+      "required": false
+    }
+  ]
+}
