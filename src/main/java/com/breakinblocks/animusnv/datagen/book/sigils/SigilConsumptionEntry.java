@@ -48,7 +48,7 @@ public class SigilConsumptionEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Protected Blocks");
         this.pageText("Certain blocks resist the corruption entirely. Anything tagged "
-                + "[#](4A0080)animus:disallow_antilife[#]() cannot be converted:\n\n"
+                + "[#](4A0080)animusnv:disallow_antilife[#]() cannot be converted:\n\n"
                 + "- Barrier and Bedrock\n\n"
                 + "- Command blocks\n\n"
                 + "- Structure blocks\n\n"

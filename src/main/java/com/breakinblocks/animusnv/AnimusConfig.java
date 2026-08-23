@@ -242,10 +242,10 @@ public class AnimusConfig {
                 .comment(
                     "Block to place where fluid is extracted by Ritual of Siphon",
                     "Use format: modid:blockname",
-                    "Examples: animus:block_antilife, minecraft:stone, minecraft:cobblestone",
-                    "Default: animus:block_antilife"
+                    "Examples: animusnv:antilife, minecraft:stone, minecraft:cobblestone",
+                    "Default: animusnv:antilife"
                 )
-                .define("siphonReplacementBlock", "animusnv:block_antilife");
+                .define("siphonReplacementBlock", "animusnv:antilife");
 
             sourceVitaeumAltarRange = builder
                 .comment("Radius in blocks to search for Ara Vitaes for Ritual of Source Vitaeum")

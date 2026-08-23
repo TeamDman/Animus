@@ -57,7 +57,7 @@ public class SigilTemporalDominanceEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Compatibility");
-        this.pageText("Blocks tagged with [#](4A0080)animus:disallow_acceleration[#]() cannot be "
+        this.pageText("Blocks tagged with [#](4A0080)animusnv:disallow_acceleration[#]() cannot be "
                 + "accelerated.\\\n\\\n"
                 + "The sigil does not stack with GAG's Temporal Pouch, Time in a Bottle, or "
                 + "JustDireThings' Time Wand.\\\n\\\n"

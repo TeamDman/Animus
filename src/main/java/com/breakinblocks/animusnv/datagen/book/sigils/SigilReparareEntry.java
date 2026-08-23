@@ -46,7 +46,7 @@ public class SigilReparareEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Limitations");
-        this.pageText("Items tagged with [#](4A0080)animus:disallow_repair[#]() cannot be restored "
+        this.pageText("Items tagged with [#](4A0080)animusnv:disallow_repair[#]() cannot be restored "
                 + "by this sigil. The repair rate per interval is also configurable.\\\n\\\n"
                 + "[#](4A0080)Blood mends what time breaks.[#]()");
     }

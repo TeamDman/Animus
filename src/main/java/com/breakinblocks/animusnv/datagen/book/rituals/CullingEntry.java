@@ -52,7 +52,7 @@ public class CullingEntry extends EntryProvider {
                 + "\n\n- Requires 99+ [#](4A0080)Spiritus Nihilum[#]() in the area"
                 + "\n\n- Incurs additional EV cost (configurable)"
                 + "\n\n- Makes otherwise-invulnerable bosses vulnerable"
-                + "\\\n\\\nEntities tagged [#](8B0000)animus:disallow_culling[#]() are protected from this ritual regardless of [#](4A0080)Spiritus[#]() levels.");
+                + "\\\n\\\nEntities tagged [#](8B0000)animusnv:disallow_culling[#]() are protected from this ritual regardless of [#](4A0080)Spiritus[#]() levels.");
 
         this.page("will", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())

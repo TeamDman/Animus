@@ -1,9 +1,10 @@
 {
+  "replace": false,
   "values": [
     {
       "id": "ic2:te",
       "required": false
     },
-    "minecraft:grass"
+    "minecraft:short_grass"
   ]
 }
