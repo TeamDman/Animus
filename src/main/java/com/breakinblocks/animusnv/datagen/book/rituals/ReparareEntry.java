@@ -45,7 +45,7 @@ public class ReparareEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Setup");
         this.pageText("Place any container with item capability directly above the [#](8B0000)Master Ritual Stone[#]()."
-                + "\\\n\\\nItems tagged with [#](8B0000)animus:disallow_repair[#]() will be skipped by the ritual."
+                + "\\\n\\\nItems tagged with [#](8B0000)animusnv:disallow_repair[#]() will be skipped by the ritual."
                 + "\\\n\\\n[#](2E8B57)A passive, hands-free way to keep your best tools in fighting shape. Simply toss them in a chest and let blood mend what blood has broken.[#]()");
     }
 

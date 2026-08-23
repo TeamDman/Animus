@@ -45,7 +45,7 @@ public class AntiLifeEntry extends EntryProvider {
                 + "- Decay spreads outward to connected AntiLife\n\n"
                 + "- Decayed blocks are removed entirely\\\n\\\n"
                 + "This prevents infinite expansion and allows cleanup of corrupted areas.\\\n\\\n"
-                + "[#](2E8B57)Blocks tagged animus:disallow_antilife are protected from conversion.[#]()");
+                + "[#](2E8B57)Blocks tagged animusnv:disallow_antilife are protected from conversion.[#]()");
     }
 
     @Override
