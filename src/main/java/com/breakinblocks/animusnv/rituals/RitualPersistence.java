@@ -161,10 +161,10 @@ public class RitualPersistence extends Ritual {
 
     @Override
     public void gatherComponents(Consumer<RitualComponent> components) {
-        addRune(components, 0, 0, -2, EnumRuneType.DUSK);
-        addRune(components, 0, 0, 2, EnumRuneType.DUSK);
-        addRune(components, -2, 0, 0, EnumRuneType.DUSK);
-        addRune(components, 2, 0, 0, EnumRuneType.DUSK);
+        addRune(components, 0, 0, -2, EnumRuneType.TENEBRAE);
+        addRune(components, 0, 0, 2, EnumRuneType.TENEBRAE);
+        addRune(components, -2, 0, 0, EnumRuneType.TENEBRAE);
+        addRune(components, 2, 0, 0, EnumRuneType.TENEBRAE);
 
         addRune(components, -1, 0, -1, EnumRuneType.EARTH);
         addRune(components, -1, 0, 1, EnumRuneType.EARTH);

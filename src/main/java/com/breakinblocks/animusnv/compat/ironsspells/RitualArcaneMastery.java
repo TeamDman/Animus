@@ -254,10 +254,10 @@ public class RitualArcaneMastery extends Ritual {
         // Air runes represent mental clarity and understanding
 
         // Inner circle - Cardinal directions with Dusk runes (arcane knowledge)
-        addRune(components, 0, 0, -2, EnumRuneType.DUSK);
-        addRune(components, 0, 0, 2, EnumRuneType.DUSK);
-        addRune(components, -2, 0, 0, EnumRuneType.DUSK);
-        addRune(components, 2, 0, 0, EnumRuneType.DUSK);
+        addRune(components, 0, 0, -2, EnumRuneType.TENEBRAE);
+        addRune(components, 0, 0, 2, EnumRuneType.TENEBRAE);
+        addRune(components, -2, 0, 0, EnumRuneType.TENEBRAE);
+        addRune(components, 2, 0, 0, EnumRuneType.TENEBRAE);
 
         // Middle ring - Diagonals with Air runes (mental clarity)
         addRune(components, -2, 0, -2, EnumRuneType.AIR);
@@ -266,10 +266,10 @@ public class RitualArcaneMastery extends Ritual {
         addRune(components, 2, 0, 2, EnumRuneType.AIR);
 
         // Outer ring - Extended pattern for mastery
-        addRune(components, 0, 0, -3, EnumRuneType.DUSK);
-        addRune(components, 0, 0, 3, EnumRuneType.DUSK);
-        addRune(components, -3, 0, 0, EnumRuneType.DUSK);
-        addRune(components, 3, 0, 0, EnumRuneType.DUSK);
+        addRune(components, 0, 0, -3, EnumRuneType.TENEBRAE);
+        addRune(components, 0, 0, 3, EnumRuneType.TENEBRAE);
+        addRune(components, -3, 0, 0, EnumRuneType.TENEBRAE);
+        addRune(components, 3, 0, 0, EnumRuneType.TENEBRAE);
 
         // Corner accents - Air runes for the flow of knowledge
         addRune(components, -3, 0, -3, EnumRuneType.AIR);
