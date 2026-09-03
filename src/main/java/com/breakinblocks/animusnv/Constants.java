@@ -279,6 +279,12 @@ public class Constants {
                 Identifier.fromNamespaceAndPath(Mod.MODID, "disallow_sacrifice")
             );
 
+        public static final TagKey<EntityType<?>> DISALLOW_EXECUTE =
+            TagKey.create(
+                Registries.ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(Mod.MODID, "disallow_execute")
+            );
+
         public static final TagKey<Block> DISALLOW_LEACH =
             TagKey.create(
                 Registries.BLOCK,

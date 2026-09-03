@@ -1,6 +1,41 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "animusnv:item/hand_of_death"
+    "type": "minecraft:select",
+    "property": "minecraft:component",
+    "component": "neovitae:spiritus_type",
+    "cases": [
+      {
+        "when": "ruina",
+        "model": {
+          "type": "minecraft:model",
+          "model": "animusnv:item/hand_of_death_ruina"
+        }
+      },
+      {
+        "when": "nihilum",
+        "model": {
+          "type": "minecraft:model",
+          "model": "animusnv:item/hand_of_death_nihilum"
+        }
+      },
+      {
+        "when": "vindicta",
+        "model": {
+          "type": "minecraft:model",
+          "model": "animusnv:item/hand_of_death_vindicta"
+        }
+      },
+      {
+        "when": "invictus",
+        "model": {
+          "type": "minecraft:model",
+          "model": "animusnv:item/hand_of_death_invictus"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "animusnv:item/hand_of_death"
+    }
   }
 }

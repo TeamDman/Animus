@@ -1,0 +1,7 @@
+{
+  "parent": "animusnv:item/spear_sentient",
+  "textures": {
+    "9": "animusnv:item/spear_sentient_nihilum",
+    "particle": "#9"
+  }
+}

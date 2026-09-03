@@ -2,10 +2,6 @@
   "model": {
     "type": "minecraft:select",
     "property": "minecraft:display_context",
-    "fallback": {
-      "type": "minecraft:model",
-      "model": "animusnv:item/runic_sentient_scythe"
-    },
     "cases": [
       {
         "when": [
@@ -14,10 +10,84 @@
           "ground"
         ],
         "model": {
-          "type": "minecraft:model",
-          "model": "animusnv:item/runic_sentient_scythe_gui"
+          "type": "minecraft:select",
+          "property": "minecraft:component",
+          "component": "neovitae:spiritus_type",
+          "cases": [
+            {
+              "when": "ruina",
+              "model": {
+                "type": "minecraft:model",
+                "model": "animusnv:item/runic_sentient_scythe_ruina_gui"
+              }
+            },
+            {
+              "when": "nihilum",
+              "model": {
+                "type": "minecraft:model",
+                "model": "animusnv:item/runic_sentient_scythe_nihilum_gui"
+              }
+            },
+            {
+              "when": "vindicta",
+              "model": {
+                "type": "minecraft:model",
+                "model": "animusnv:item/runic_sentient_scythe_vindicta_gui"
+              }
+            },
+            {
+              "when": "invictus",
+              "model": {
+                "type": "minecraft:model",
+                "model": "animusnv:item/runic_sentient_scythe_invictus_gui"
+              }
+            }
+          ],
+          "fallback": {
+            "type": "minecraft:model",
+            "model": "animusnv:item/runic_sentient_scythe_gui"
+          }
         }
       }
-    ]
+    ],
+    "fallback": {
+      "type": "minecraft:select",
+      "property": "minecraft:component",
+      "component": "neovitae:spiritus_type",
+      "cases": [
+        {
+          "when": "ruina",
+          "model": {
+            "type": "minecraft:model",
+            "model": "animusnv:item/runic_sentient_scythe_ruina"
+          }
+        },
+        {
+          "when": "nihilum",
+          "model": {
+            "type": "minecraft:model",
+            "model": "animusnv:item/runic_sentient_scythe_nihilum"
+          }
+        },
+        {
+          "when": "vindicta",
+          "model": {
+            "type": "minecraft:model",
+            "model": "animusnv:item/runic_sentient_scythe_vindicta"
+          }
+        },
+        {
+          "when": "invictus",
+          "model": {
+            "type": "minecraft:model",
+            "model": "animusnv:item/runic_sentient_scythe_invictus"
+          }
+        }
+      ],
+      "fallback": {
+        "type": "minecraft:model",
+        "model": "animusnv:item/runic_sentient_scythe"
+      }
+    }
   }
 }
