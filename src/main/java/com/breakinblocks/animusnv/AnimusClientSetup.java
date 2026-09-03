@@ -56,6 +56,7 @@ public class AnimusClientSetup {
             registerSpiritusTypeProperty(AnimusItems.SENTIENT_BOW.get());
             registerSpiritusTypeProperty(AnimusItems.RUNIC_SENTIENT_SCYTHE.get());
             registerSpiritusTypeProperty(AnimusItems.HAND_OF_DEATH.get());
+            registerSpiritusTypeProperty(AnimusItems.SPEAR_SENTIENT.get());
 
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 registerCrimsonWillSigilProperty();
