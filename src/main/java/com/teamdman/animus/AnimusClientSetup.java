@@ -3,6 +3,7 @@ package com.teamdman.animus;
 import com.teamdman.animus.client.models.AnimusModelLayers;
 import com.teamdman.animus.client.models.SpearModel;
 import com.teamdman.animus.client.renderers.ThrownSpearRenderer;
+import com.teamdman.animus.items.ItemSentientBow;
 import com.teamdman.animus.items.sigils.ItemSigilToggleableBase;
 import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusEntityTypes;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -20,6 +22,7 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import wayoftime.bloodmagic.common.item.soul.ItemSentientScythe;
 
 /**
  * Client-side setup for Animus mod
@@ -90,6 +93,11 @@ public class AnimusClientSetup {
 
             // Register bow properties for Hellforged Bow (extended charge)
             registerHellforgedBowProperties(AnimusItems.HELLFORGED_BOW.get());
+
+            // Register demon will aspect property so sentient gear recolours to match its will
+            registerWillTypeProperty(AnimusItems.SENTIENT_BOW.get());
+            registerWillTypeProperty(AnimusItems.RUNIC_SENTIENT_SCYTHE.get());
+            registerWillTypeProperty(AnimusItems.HAND_OF_DEATH.get());
         });
     }
 
@@ -226,6 +234,21 @@ public class AnimusClientSetup {
                     return 0.0F;
                 }
                 return (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+            }
+        );
+    }
+
+    private static void registerWillTypeProperty(Item item) {
+        ItemProperties.register(item,
+            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "will_type"),
+            (stack, level, entity, seed) -> {
+                if (item instanceof ItemSentientBow bow) {
+                    return bow.getCurrentType(stack).ordinal();
+                }
+                if (item instanceof ItemSentientScythe scythe) {
+                    return scythe.getCurrentType(stack).ordinal();
+                }
+                return 0.0F;
             }
         );
     }

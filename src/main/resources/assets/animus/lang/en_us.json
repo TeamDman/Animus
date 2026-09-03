@@ -127,7 +127,7 @@
   "tooltip.animus.runic_sentient_scythe.malum": "Harvests souls for Malum's spirit system",
   "tooltip.animus.hand_of_death.ultimate": "The Ultimate Soul Reaper",
   "tooltip.animus.hand_of_death.lifesteal": "Lifesteal: Heal 20% of damage dealt",
-  "tooltip.animus.hand_of_death.execute": "Execute: Instantly kill targets below 15% health",
+  "tooltip.animus.hand_of_death.execute": "Execute: Instantly kill non-boss targets below 15% health",
   "text.component.animus.hand_of_death.execute": "⚰ EXECUTED: %s",
   "tooltip.animus.key": "Key Binding",
   "tooltip.animus.currentOwner": "Owner: %s",

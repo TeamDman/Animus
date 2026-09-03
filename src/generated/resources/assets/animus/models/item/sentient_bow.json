@@ -2,14 +2,100 @@
   "parent": "minecraft:item/bow",
   "overrides": [
     {
+      "model": "animus:item/sentient_bow_corrosive",
+      "predicate": {
+        "animus:will_type": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_destructive",
+      "predicate": {
+        "animus:will_type": 2.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_vengeful",
+      "predicate": {
+        "animus:will_type": 3.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_steadfast",
+      "predicate": {
+        "animus:will_type": 4.0
+      }
+    },
+    {
       "model": "animus:item/sentient_bow_pulling_0",
       "predicate": {
+        "animus:will_type": 0.0,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_corrosive_pulling_0",
+      "predicate": {
+        "animus:will_type": 1.0,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_destructive_pulling_0",
+      "predicate": {
+        "animus:will_type": 2.0,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_vengeful_pulling_0",
+      "predicate": {
+        "animus:will_type": 3.0,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_steadfast_pulling_0",
+      "predicate": {
+        "animus:will_type": 4.0,
         "minecraft:pulling": 1.0
       }
     },
     {
       "model": "animus:item/sentient_bow_pulling_1",
       "predicate": {
+        "animus:will_type": 0.0,
+        "minecraft:pull": 0.65,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_corrosive_pulling_1",
+      "predicate": {
+        "animus:will_type": 1.0,
+        "minecraft:pull": 0.65,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_destructive_pulling_1",
+      "predicate": {
+        "animus:will_type": 2.0,
+        "minecraft:pull": 0.65,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_vengeful_pulling_1",
+      "predicate": {
+        "animus:will_type": 3.0,
+        "minecraft:pull": 0.65,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_steadfast_pulling_1",
+      "predicate": {
+        "animus:will_type": 4.0,
         "minecraft:pull": 0.65,
         "minecraft:pulling": 1.0
       }
@@ -17,6 +103,39 @@
     {
       "model": "animus:item/sentient_bow_pulling_2",
       "predicate": {
+        "animus:will_type": 0.0,
+        "minecraft:pull": 0.9,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_corrosive_pulling_2",
+      "predicate": {
+        "animus:will_type": 1.0,
+        "minecraft:pull": 0.9,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_destructive_pulling_2",
+      "predicate": {
+        "animus:will_type": 2.0,
+        "minecraft:pull": 0.9,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_vengeful_pulling_2",
+      "predicate": {
+        "animus:will_type": 3.0,
+        "minecraft:pull": 0.9,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animus:item/sentient_bow_steadfast_pulling_2",
+      "predicate": {
+        "animus:will_type": 4.0,
         "minecraft:pull": 0.9,
         "minecraft:pulling": 1.0
       }

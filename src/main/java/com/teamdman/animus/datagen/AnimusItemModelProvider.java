@@ -13,6 +13,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
 public class AnimusItemModelProvider extends ItemModelProvider {
+    private static final String[] WILL_ASPECTS = {"", "corrosive", "destructive", "vengeful", "steadfast"};
+
     public AnimusItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, Constants.Mod.MODID, existingFileHelper);
     }
@@ -73,7 +75,7 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.LIVING_TERRA_BUCKET, "item/living_terra_bucket");
 
         // Bows
-        bowItem(AnimusItems.SENTIENT_BOW, "sentient_bow");
+        willTypeBowItem(AnimusItems.SENTIENT_BOW, "sentient_bow");
         bowItem(AnimusItems.HELLFORGED_BOW, "hellforged_bow");
     }
 
@@ -177,6 +179,46 @@ public class AnimusItemModelProvider extends ItemModelProvider {
                 .predicate(mcLoc("pull"), 0.9F)
                 .model(getBuilder(name + "_pulling_2"))
             .end();
+    }
+
+    private void willTypeBowItem(RegistryObject<Item> item, String baseTextureName) {
+        String name = item.getId().getPath();
+
+        for (String aspect : WILL_ASPECTS) {
+            String suffix = aspect.isEmpty() ? "" : "_" + aspect;
+            for (int stage = 0; stage < 3; stage++) {
+                withExistingParent(name + suffix + "_pulling_" + stage, mcLoc("item/bow"))
+                    .texture("layer0", modLoc("item/" + baseTextureName + suffix + "_pulling_" + stage));
+            }
+            if (!suffix.isEmpty()) {
+                withExistingParent(name + suffix, mcLoc("item/bow"))
+                    .texture("layer0", modLoc("item/" + baseTextureName + suffix));
+            }
+        }
+
+        ItemModelBuilder builder = withExistingParent(name, mcLoc("item/bow"))
+            .texture("layer0", modLoc("item/" + baseTextureName));
+
+        for (int will = 1; will < WILL_ASPECTS.length; will++) {
+            builder.override()
+                .predicate(modLoc("will_type"), will)
+                .model(getBuilder(name + "_" + WILL_ASPECTS[will]))
+                .end();
+        }
+
+        float[] pullStages = {0.0F, 0.65F, 0.9F};
+        for (int stage = 0; stage < pullStages.length; stage++) {
+            for (int will = 0; will < WILL_ASPECTS.length; will++) {
+                String suffix = WILL_ASPECTS[will].isEmpty() ? "" : "_" + WILL_ASPECTS[will];
+                ItemModelBuilder.OverrideBuilder override = builder.override()
+                    .predicate(mcLoc("pulling"), 1.0F)
+                    .predicate(modLoc("will_type"), will);
+                if (pullStages[stage] > 0.0F) {
+                    override.predicate(mcLoc("pull"), pullStages[stage]);
+                }
+                override.model(getBuilder(name + suffix + "_pulling_" + stage)).end();
+            }
+        }
     }
 
     @Override

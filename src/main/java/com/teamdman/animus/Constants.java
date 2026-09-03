@@ -305,6 +305,12 @@ public class Constants {
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_sacrifice")
             );
 
+        public static final net.minecraft.tags.TagKey<net.minecraft.world.entity.EntityType<?>> DISALLOW_EXECUTE =
+            net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.ENTITY_TYPE,
+                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_execute")
+            );
+
         public static final net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> DISALLOW_LEACH =
             net.minecraft.tags.TagKey.create(
                 net.minecraft.core.registries.Registries.BLOCK,

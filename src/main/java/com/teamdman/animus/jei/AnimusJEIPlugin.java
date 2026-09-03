@@ -3,6 +3,7 @@ package com.teamdman.animus.jei;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
+import com.teamdman.animus.compat.CompatHandler;
 import com.teamdman.animus.compat.IronsSpellsCompat;
 import com.teamdman.animus.compat.ironsspells.ItemBloodInfusedSpellbook;
 import com.teamdman.animus.registry.AnimusBlocks;
@@ -57,7 +58,7 @@ public class AnimusJEIPlugin implements IModPlugin {
         Animus.LOGGER.info("JEI: Registered ImperfectRitualCategory");
 
         // Register the Altar Infusion category (for Iron's Spells compat)
-        if (ModList.get().isLoaded("irons_spellbooks")) {
+        if (CompatHandler.isIronsSpellsLoaded()) {
             registration.addRecipeCategories(new AltarInfusionCategory(guiHelper));
             Animus.LOGGER.info("JEI: Registered AltarInfusionCategory (irons_spellbooks loaded)");
         } else {
@@ -91,7 +92,7 @@ public class AnimusJEIPlugin implements IModPlugin {
         );
 
         // Sanguine Scrolls and Altar Infusion recipes (only if Iron's Spellbooks is loaded)
-        if (ModList.get().isLoaded("irons_spellbooks")) {
+        if (CompatHandler.isIronsSpellsLoaded()) {
             registerSanguineScrollsJEI(registration);
             registerAltarInfusionRecipes(registration);
         }
@@ -265,7 +266,7 @@ public class AnimusJEIPlugin implements IModPlugin {
         }
 
         // Altar Infusion catalysts (Iron's Spellbooks compat)
-        if (ModList.get().isLoaded("irons_spellbooks")) {
+        if (CompatHandler.isIronsSpellsLoaded()) {
             registration.addRecipeCatalyst(
                 new ItemStack(BloodMagicBlocks.BLOOD_ALTAR.get()),
                 AltarInfusionCategory.RECIPE_TYPE
@@ -350,28 +351,6 @@ public class AnimusJEIPlugin implements IModPlugin {
             );
 
             Animus.LOGGER.info("JEI: Hidden Malum-dependent items (Malum not loaded)");
-        }
-
-        // Hide Iron's Spells-dependent items when Iron's Spells is not loaded
-        if (!ModList.get().isLoaded("irons_spellbooks")) {
-            var ingredientManager = jeiRuntime.getIngredientManager();
-
-            // Hide all Iron's Spells compat items
-            ingredientManager.removeIngredientsAtRuntime(
-                VanillaTypes.ITEM_STACK,
-                List.of(
-                    new ItemStack(IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()),
-                    new ItemStack(IronsSpellsCompat.SIGIL_CRIMSON_WILL.get()),
-                    new ItemStack(IronsSpellsCompat.REAGENT_CRIMSON_WILL.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_BLANK.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_REINFORCED.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_IMBUED.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_DEMON.get()),
-                    new ItemStack(IronsSpellsCompat.SANGUINE_SCROLL_ETHEREAL.get())
-                )
-            );
-
-            Animus.LOGGER.info("JEI: Hidden Iron's Spells-dependent items (irons_spellbooks not loaded)");
         }
     }
 }

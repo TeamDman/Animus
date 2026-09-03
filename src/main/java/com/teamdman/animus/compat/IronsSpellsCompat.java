@@ -35,10 +35,10 @@ public class IronsSpellsCompat implements ICompatModule {
 
     // Items
     public static final RegistryObject<Item> BLOOD_INFUSED_SPELLBOOK = ITEMS.register("blood_infused_spellbook",
-        com.teamdman.animus.compat.ironsspells.ItemBloodInfusedSpellbook::new);
+        () -> new com.teamdman.animus.compat.ironsspells.ItemBloodInfusedSpellbook());
 
     public static final RegistryObject<Item> SIGIL_CRIMSON_WILL = ITEMS.register("sigil_crimson_will",
-        com.teamdman.animus.compat.ironsspells.ItemSigilCrimsonWill::new);
+        () -> new com.teamdman.animus.compat.ironsspells.ItemSigilCrimsonWill());
 
     public static final RegistryObject<Item> REAGENT_CRIMSON_WILL = ITEMS.register("reagentcrimsonwill",
             ItemReagent::new);

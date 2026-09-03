@@ -3,7 +3,7 @@
   "base": {
     "parent": "minecraft:item/handheld",
     "textures": {
-      "layer0": "animus:item/runic_sentient_scythe_huge"
+      "layer0": "animus:item/runic_sentient_scythe_steadfast_huge"
     },
     "display": {
       "thirdperson_righthand": {
@@ -32,38 +32,20 @@
     "gui": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "animus:item/runic_sentient_scythe"
+        "layer0": "animus:item/runic_sentient_scythe_steadfast"
       }
     },
     "fixed": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "animus:item/runic_sentient_scythe"
+        "layer0": "animus:item/runic_sentient_scythe_steadfast"
       }
     },
     "ground": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "animus:item/runic_sentient_scythe"
+        "layer0": "animus:item/runic_sentient_scythe_steadfast"
       }
     }
-  },
-  "overrides": [
-    {
-      "predicate": { "animus:will_type": 1 },
-      "model": "animus:item/runic_sentient_scythe_corrosive"
-    },
-    {
-      "predicate": { "animus:will_type": 2 },
-      "model": "animus:item/runic_sentient_scythe_destructive"
-    },
-    {
-      "predicate": { "animus:will_type": 3 },
-      "model": "animus:item/runic_sentient_scythe_vengeful"
-    },
-    {
-      "predicate": { "animus:will_type": 4 },
-      "model": "animus:item/runic_sentient_scythe_steadfast"
-    }
-  ]
+  }
 }

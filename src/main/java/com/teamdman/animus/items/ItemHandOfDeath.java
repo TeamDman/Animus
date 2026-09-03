@@ -2,6 +2,7 @@ package com.teamdman.animus.items;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.teamdman.animus.Constants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -129,7 +130,7 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
         }
 
         // Check if target is still alive and below execute threshold
-        if (target.isAlive()) {
+        if (target.isAlive() && !target.getType().is(Constants.Tags.DISALLOW_EXECUTE)) {
             float currentHealth = target.getHealth();
             float maxHealth = target.getMaxHealth();
             float healthPercent = currentHealth / maxHealth;
@@ -151,8 +152,9 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             return;
         }
 
-        // Deal damage equal to max health (guaranteed kill)
-        target.hurt(level.damageSources().playerAttack(executioner), maxHealth);
+        if (!target.hurt(level.damageSources().playerAttack(executioner), maxHealth) || target.isAlive()) {
+            return;
+        }
 
         ServerLevel serverLevel = (ServerLevel) level;
 

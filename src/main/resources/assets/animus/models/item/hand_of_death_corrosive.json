@@ -1,0 +1,7 @@
+{
+  "parent": "animus:item/hand_of_death",
+  "textures": {
+    "2": "animus:item/hand_of_death_corrosive",
+    "particle": "animus:item/hand_of_death_corrosive"
+  }
+}

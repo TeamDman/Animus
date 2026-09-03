@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/bow",
+  "textures": {
+    "layer0": "animus:item/sentient_bow_steadfast_pulling_1"
+  }
+}
