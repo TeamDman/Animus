@@ -1,0 +1,7 @@
+{
+  "parent": "animusnv:item/hand_of_death",
+  "textures": {
+    "2": "animusnv:item/hand_of_death_vindicta",
+    "particle": "animusnv:item/hand_of_death_vindicta"
+  }
+}

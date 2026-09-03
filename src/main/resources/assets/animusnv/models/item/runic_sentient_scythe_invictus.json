@@ -3,7 +3,7 @@
   "base": {
     "parent": "minecraft:item/handheld",
     "textures": {
-      "layer0": "animusnv:item/runic_sentient_scythe_huge"
+      "layer0": "animusnv:item/runic_sentient_scythe_invictus_huge"
     },
     "display": {
       "thirdperson_righthand": {
@@ -32,38 +32,20 @@
     "gui": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "animusnv:item/runic_sentient_scythe"
+        "layer0": "animusnv:item/runic_sentient_scythe_invictus"
       }
     },
     "fixed": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "animusnv:item/runic_sentient_scythe"
+        "layer0": "animusnv:item/runic_sentient_scythe_invictus"
       }
     },
     "ground": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "animusnv:item/runic_sentient_scythe"
+        "layer0": "animusnv:item/runic_sentient_scythe_invictus"
       }
     }
-  },
-  "overrides": [
-    {
-      "predicate": { "animusnv:spiritus_type": 1 },
-      "model": "animusnv:item/runic_sentient_scythe_ruina"
-    },
-    {
-      "predicate": { "animusnv:spiritus_type": 2 },
-      "model": "animusnv:item/runic_sentient_scythe_nihilum"
-    },
-    {
-      "predicate": { "animusnv:spiritus_type": 3 },
-      "model": "animusnv:item/runic_sentient_scythe_vindicta"
-    },
-    {
-      "predicate": { "animusnv:spiritus_type": 4 },
-      "model": "animusnv:item/runic_sentient_scythe_invictus"
-    }
-  ]
+  }
 }

@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "#c:bosses",
+    "minecraft:wither",
+    "minecraft:ender_dragon",
+    "minecraft:warden",
+    {
+      "id": "botania:doppleganger",
+      "required": false
+    }
+  ]
+}

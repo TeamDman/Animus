@@ -2,14 +2,100 @@
   "parent": "minecraft:item/generated",
   "overrides": [
     {
+      "model": "animusnv:item/sentient_bow_ruina",
+      "predicate": {
+        "animusnv:spiritus_type": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_nihilum",
+      "predicate": {
+        "animusnv:spiritus_type": 2.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_vindicta",
+      "predicate": {
+        "animusnv:spiritus_type": 3.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_invictus",
+      "predicate": {
+        "animusnv:spiritus_type": 4.0
+      }
+    },
+    {
       "model": "animusnv:item/sentient_bow_pulling_0",
       "predicate": {
+        "animusnv:spiritus_type": 0.0,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_ruina_pulling_0",
+      "predicate": {
+        "animusnv:spiritus_type": 1.0,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_nihilum_pulling_0",
+      "predicate": {
+        "animusnv:spiritus_type": 2.0,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_vindicta_pulling_0",
+      "predicate": {
+        "animusnv:spiritus_type": 3.0,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_invictus_pulling_0",
+      "predicate": {
+        "animusnv:spiritus_type": 4.0,
         "minecraft:pulling": 1.0
       }
     },
     {
       "model": "animusnv:item/sentient_bow_pulling_1",
       "predicate": {
+        "animusnv:spiritus_type": 0.0,
+        "minecraft:pull": 0.65,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_ruina_pulling_1",
+      "predicate": {
+        "animusnv:spiritus_type": 1.0,
+        "minecraft:pull": 0.65,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_nihilum_pulling_1",
+      "predicate": {
+        "animusnv:spiritus_type": 2.0,
+        "minecraft:pull": 0.65,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_vindicta_pulling_1",
+      "predicate": {
+        "animusnv:spiritus_type": 3.0,
+        "minecraft:pull": 0.65,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_invictus_pulling_1",
+      "predicate": {
+        "animusnv:spiritus_type": 4.0,
         "minecraft:pull": 0.65,
         "minecraft:pulling": 1.0
       }
@@ -17,6 +103,39 @@
     {
       "model": "animusnv:item/sentient_bow_pulling_2",
       "predicate": {
+        "animusnv:spiritus_type": 0.0,
+        "minecraft:pull": 0.9,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_ruina_pulling_2",
+      "predicate": {
+        "animusnv:spiritus_type": 1.0,
+        "minecraft:pull": 0.9,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_nihilum_pulling_2",
+      "predicate": {
+        "animusnv:spiritus_type": 2.0,
+        "minecraft:pull": 0.9,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_vindicta_pulling_2",
+      "predicate": {
+        "animusnv:spiritus_type": 3.0,
+        "minecraft:pull": 0.9,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "animusnv:item/sentient_bow_invictus_pulling_2",
+      "predicate": {
+        "animusnv:spiritus_type": 4.0,
         "minecraft:pull": 0.9,
         "minecraft:pulling": 1.0
       }

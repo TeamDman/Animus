@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "animusnv:item/sentient_bow_invictus_pulling_0"
+  }
+}

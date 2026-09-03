@@ -1,5 +1,6 @@
 package com.breakinblocks.animusnv.items;
 
+import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -87,7 +88,7 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             );
         }
 
-        if (target.isAlive()) {
+        if (target.isAlive() && !target.getType().is(Constants.Tags.DISALLOW_EXECUTE)) {
             float currentHealth = target.getHealth();
             float maxHealth = target.getMaxHealth();
             float healthPercent = currentHealth / maxHealth;
@@ -105,7 +106,9 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             return;
         }
 
-        target.hurt(level.damageSources().playerAttack(executioner), maxHealth);
+        if (!target.hurt(level.damageSources().playerAttack(executioner), maxHealth) || target.isAlive()) {
+            return;
+        }
 
         ServerLevel serverLevel = (ServerLevel) level;
 

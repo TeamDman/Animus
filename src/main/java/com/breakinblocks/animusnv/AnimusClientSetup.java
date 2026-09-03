@@ -9,6 +9,7 @@ import com.breakinblocks.animusnv.client.renderers.AnimusArrowRenderer;
 import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.compat.evilcraft.SanguineRectifierRenderer;
 import com.breakinblocks.animusnv.items.ItemSpearBound;
+import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -51,6 +52,10 @@ public class AnimusClientSetup {
 
             registerBowPullProperties(AnimusItems.SENTIENT_BOW.get());
             registerBowPullProperties(AnimusItems.HELLFORGED_BOW.get());
+
+            registerSpiritusTypeProperty(AnimusItems.SENTIENT_BOW.get());
+            registerSpiritusTypeProperty(AnimusItems.RUNIC_SENTIENT_SCYTHE.get());
+            registerSpiritusTypeProperty(AnimusItems.HAND_OF_DEATH.get());
 
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 registerCrimsonWillSigilProperty();
@@ -150,6 +155,13 @@ public class AnimusClientSetup {
             (stack, level, entity, seed) -> {
                 return entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
             }
+        );
+    }
+
+    private static void registerSpiritusTypeProperty(Item item) {
+        ItemProperties.register(item,
+            ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "spiritus_type"),
+            (stack, level, entity, seed) -> SpiritusTypeHelper.getCurrentType(stack).ordinal()
         );
     }
 

@@ -7,11 +7,14 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class AnimusItemModelProvider extends ItemModelProvider {
+    private static final String[] SPIRITUS_ASPECTS = {"", "ruina", "nihilum", "vindicta", "invictus"};
+
     public AnimusItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, Constants.Mod.MODID, existingFileHelper);
     }
@@ -94,9 +97,49 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         simpleItem(AnimusItems.ANTILIFE_BUCKET, "item/antilife_bucket");
         simpleItem(AnimusItems.LIVING_TERRA_BUCKET, "item/living_terra_bucket");
 
-        bowItem(AnimusItems.SENTIENT_BOW, "sentient_bow");
+        spiritusBowItem(AnimusItems.SENTIENT_BOW, "sentient_bow");
         bowItem(AnimusItems.HELLFORGED_BOW, "hellforged_bow");
 
+    }
+
+    private void spiritusBowItem(DeferredHolder<Item, Item> item, String textureName) {
+        String name = item.getId().getPath();
+
+        for (String aspect : SPIRITUS_ASPECTS) {
+            String suffix = aspect.isEmpty() ? "" : "_" + aspect;
+            for (int stage = 0; stage < 3; stage++) {
+                withExistingParent(name + suffix + "_pulling_" + stage, mcLoc("item/generated"))
+                    .texture("layer0", modLoc("item/" + textureName + suffix + "_pulling_" + stage));
+            }
+            if (!suffix.isEmpty()) {
+                withExistingParent(name + suffix, mcLoc("item/generated"))
+                    .texture("layer0", modLoc("item/" + textureName + suffix));
+            }
+        }
+
+        ItemModelBuilder builder = withExistingParent(name, mcLoc("item/generated"))
+            .texture("layer0", modLoc("item/" + textureName));
+
+        for (int type = 1; type < SPIRITUS_ASPECTS.length; type++) {
+            builder.override()
+                .predicate(modLoc("spiritus_type"), type)
+                .model(getBuilder(name + "_" + SPIRITUS_ASPECTS[type]))
+                .end();
+        }
+
+        float[] pullStages = {0.0F, 0.65F, 0.9F};
+        for (int stage = 0; stage < pullStages.length; stage++) {
+            for (int type = 0; type < SPIRITUS_ASPECTS.length; type++) {
+                String suffix = SPIRITUS_ASPECTS[type].isEmpty() ? "" : "_" + SPIRITUS_ASPECTS[type];
+                ItemModelBuilder.OverrideBuilder override = builder.override()
+                    .predicate(mcLoc("pulling"), 1.0F)
+                    .predicate(modLoc("spiritus_type"), type);
+                if (pullStages[stage] > 0.0F) {
+                    override.predicate(mcLoc("pull"), pullStages[stage]);
+                }
+                override.model(getBuilder(name + suffix + "_pulling_" + stage)).end();
+            }
+        }
     }
 
     private void bowItem(DeferredHolder<Item, Item> item, String textureName) {

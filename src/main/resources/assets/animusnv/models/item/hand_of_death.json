@@ -436,5 +436,23 @@
 			"color": 0,
 			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
 		}
+	],
+	"overrides": [
+		{
+			"predicate": { "animusnv:spiritus_type": 1 },
+			"model": "animusnv:item/hand_of_death_ruina"
+		},
+		{
+			"predicate": { "animusnv:spiritus_type": 2 },
+			"model": "animusnv:item/hand_of_death_nihilum"
+		},
+		{
+			"predicate": { "animusnv:spiritus_type": 3 },
+			"model": "animusnv:item/hand_of_death_vindicta"
+		},
+		{
+			"predicate": { "animusnv:spiritus_type": 4 },
+			"model": "animusnv:item/hand_of_death_invictus"
+		}
 	]
 }
