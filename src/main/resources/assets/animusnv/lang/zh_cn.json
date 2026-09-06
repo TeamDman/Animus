@@ -1042,7 +1042,7 @@
   "text.component.animusnv.diviner.sneak_to_autoplace": "潜行右击以自动放置",
   "text.component.animusnv.diviner.sneak_to_build": "潜行右击以搭建%s级祭坛",
   "text.component.animusnv.diviner.sneak_to_dismantle": "潜行右击以拆解",
-  "text.component.animusnv.diviner.status_active": "激活",
+  "text.component.animusnv.diviner.status_active": "已激活",
   "text.component.animusnv.diviner.status_inactive": "未激活",
   "text.component.animusnv.diviner.status_label": "状态：",
   "text.component.animusnv.diviner.tier_info": "§c层级：§f%d",
