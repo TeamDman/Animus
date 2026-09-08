@@ -6,7 +6,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -16,14 +18,15 @@ import java.util.function.Supplier;
 public class CompatHandler {
     private static final Map<String, Supplier<ICompatModule>> COMPAT_MODULES = new HashMap<>();
     private static final Map<String, ICompatModule> LOADED_MODULES = new HashMap<>();
+    private static final Set<String> REGISTERED_MODULES = new HashSet<>();
 
     static {
         // Register compatibility modules here
         // Using suppliers ensures classes are only loaded when the mod is present
-        COMPAT_MODULES.put("irons_spellbooks", IronsSpellsCompat::new);
-        COMPAT_MODULES.put("ars_nouveau", ArsNouveauCompat::new);
-        COMPAT_MODULES.put("malum", MalumCompat::new);
-        COMPAT_MODULES.put("botania", BotaniaCompat::new);
+        COMPAT_MODULES.put("irons_spellbooks", () -> new IronsSpellsCompat());
+        COMPAT_MODULES.put("ars_nouveau", () -> new ArsNouveauCompat());
+        COMPAT_MODULES.put("malum", () -> new MalumCompat());
+        COMPAT_MODULES.put("botania", () -> new BotaniaCompat());
     }
 
     /**
@@ -39,6 +42,15 @@ public class CompatHandler {
         }
     }
 
+    private static boolean isIronsSpellsApiPresent() {
+        try {
+            Class.forName("io.redspace.ironsspellbooks.item.SpellBook", false, CompatHandler.class.getClassLoader());
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
     /**
      * Register all DeferredRegisters for loaded compatibility modules
      * Must be called during mod construction, before registry events fire
@@ -49,10 +61,15 @@ public class CompatHandler {
         if (ModList.get().isLoaded("irons_spellbooks")) {
             if (isIronsSpellsDisabledByConfig()) {
                 Animus.LOGGER.info("Iron's Spellbooks integration disabled via config");
+            } else if (!isIronsSpellsApiPresent()) {
+                Animus.LOGGER.error("Iron's Spellbooks is installed but does not provide the API Animus expects, " +
+                    "so the integration has been skipped. Update Iron's Spellbooks, or set " +
+                    "ironsSpells.enableIntegration=false in animus-common.toml to turn the integration off.");
             } else {
                 try {
                     IronsSpellsCompat.registerDeferred(modEventBus);
-                } catch (NoSuchMethodError e) {
+                    REGISTERED_MODULES.add("irons_spellbooks");
+                } catch (LinkageError e) {
                     Animus.LOGGER.error("Iron's Spellbooks API incompatibility detected. " +
                         "You may be using an incompatible pre-release version. " +
                         "Set ironsSpells.enableIntegration=false in animus-common.toml to disable this integration.", e);
@@ -66,7 +83,8 @@ public class CompatHandler {
         if (ModList.get().isLoaded("ars_nouveau")) {
             try {
                 ArsNouveauCompat.registerDeferred(modEventBus);
-            } catch (Exception e) {
+                REGISTERED_MODULES.add("ars_nouveau");
+            } catch (LinkageError | Exception e) {
                 Animus.LOGGER.error("Failed to register Ars Nouveau DeferredRegister", e);
             }
         }
@@ -75,7 +93,8 @@ public class CompatHandler {
         if (ModList.get().isLoaded("botania")) {
             try {
                 BotaniaCompat.registerDeferred(modEventBus);
-            } catch (Exception e) {
+                REGISTERED_MODULES.add("botania");
+            } catch (LinkageError | Exception e) {
                 Animus.LOGGER.error("Failed to register Botania DeferredRegister", e);
             }
         }
@@ -94,12 +113,16 @@ public class CompatHandler {
                     return;
                 }
 
+                if (modId.equals("irons_spellbooks") && !isIronsSpellsApiPresent()) {
+                    return;
+                }
+
                 try {
                     ICompatModule module = supplier.get();
                     module.init();
                     LOADED_MODULES.put(modId, module);
                     Animus.LOGGER.info("Loaded compatibility module for: {}", modId);
-                } catch (NoSuchMethodError e) {
+                } catch (LinkageError e) {
                     Animus.LOGGER.error("API incompatibility detected for module: {}. " +
                         "You may be using an incompatible mod version.", modId, e);
                 } catch (Exception e) {
@@ -107,6 +130,13 @@ public class CompatHandler {
                 }
             }
         });
+    }
+
+    /**
+     * Check whether a module's DeferredRegisters were successfully attached
+     */
+    public static boolean hasRegistrations(String modId) {
+        return REGISTERED_MODULES.contains(modId);
     }
 
     /**
