@@ -187,6 +187,7 @@ Animus ships the **Codex Animus** guidebook (Modonomicon-based). Craft it or pic
 ## Credits
 
 - **Authors:** TeamDman and Saereth
+- **Translations:** Simplified Chinese by BaoZouZac and ChuijkYahus.
 - **Special Thanks:** WayOfTime for the original Blood Magic.
 
 ---
