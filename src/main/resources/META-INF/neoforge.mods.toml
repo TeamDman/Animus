@@ -1,13 +1,13 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
 license = "${mod_license}"
-issueTrackerURL = "https://github.com/Saereth/Animus/issues"
+issueTrackerURL = "https://github.com/TeamDman/Animus/issues"
 
 [[mods]]
 modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "Animus: NeoVitae"
-displayURL = "https://github.com/Saereth/Animus"
+displayURL = "https://github.com/TeamDman/Animus"
 logoFile = "logo.png"
 credits = "WayOfTime for NeoVitae"
 authors = "${mod_authors}"
