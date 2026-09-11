@@ -3,13 +3,15 @@ package com.teamdman.animus.compat.ironsspells;
 import com.teamdman.animus.Animus;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.compat.IronsSpellsCompat;
+import com.teamdman.animus.compat.CompatHandler;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
+import io.redspace.ironsspellbooks.api.spells.CastSource;
+import io.redspace.ironsspellbooks.config.ServerConfigs;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.damage.SpellDamageSource;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -19,6 +21,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import wayoftime.bloodmagic.event.SoulNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import wayoftime.bloodmagic.common.item.ItemBloodOrb;
@@ -44,200 +50,145 @@ import java.util.Map;
  */
 public class SpellCastingHandler {
 
-    // Track pending LP costs per player UUID for two-phase LP casting
     private static final Map<UUID, PendingLPCost> pendingLPCosts = new ConcurrentHashMap<>();
 
-    /**
-     * Inner class to track pending LP consumption between pre-cast and on-cast events
-     */
-    private static class PendingLPCost {
-        final int lpCost;
-        final int manaAdded;
-        final SoulNetwork network;
-        final boolean isHybrid;
+    private record LPCost(SoulNetwork network, int lpCost, int manaCovered, boolean hybrid) {}
+    private record PendingLPCost(String spellId, CastSource source, SoulNetwork network,
+                                 int reservedLP, int manaCovered, boolean hybrid) {}
 
-        PendingLPCost(int lpCost, int manaAdded, SoulNetwork network, boolean isHybrid) {
-            this.lpCost = lpCost;
-            this.manaAdded = manaAdded;
-            this.network = network;
-            this.isHybrid = isHybrid;
-        }
+    private static boolean consumesMana(Player player, AbstractSpell spell, CastSource source, MagicData data) {
+        return source.consumesMana()
+            && (!player.isCreative() || (Boolean) ServerConfigs.CREATIVE_MANA_COST.get())
+            && !data.getPlayerRecasts().hasRecastForSpell(spell.getSpellId());
     }
 
-    /**
-     * Handle spell pre-cast event to temporarily add mana when LP will be used
-     * This fires BEFORE Iron's Spells checks mana, allowing LP substitution to work
-     * Priority: HIGHEST to run before mana checks
-     */
+    private static LPCost quote(Player player, int manaCost, MagicData data) {
+        if (player.level().isClientSide || !CompatHandler.isIronsSpellsLoaded()
+            || !AnimusConfig.ironsSpells.enableLPCasting.get() || data.getMana() >= manaCost
+            || (AnimusConfig.ironsSpells.requireBloodOrb.get() && !hasBloodOrb(player))) {
+            return null;
+        }
+        ItemStack spellbook = findCastingSpellbook(player);
+        Binding binding = spellbook.isEmpty() ? null : ItemBloodInfusedSpellbook.getBindingStatic(spellbook);
+        SoulNetwork network = binding == null ? NetworkHelper.getSoulNetwork(player) : NetworkHelper.getSoulNetwork(binding);
+        boolean hybrid = AnimusConfig.ironsSpells.allowHybridCasting.get() && data.getMana() > 0;
+        int manaCovered = hybrid ? (int) Math.ceil(manaCost - data.getMana()) : manaCost;
+        double reduction = spellbook.isEmpty() ? 0 : ItemBloodInfusedSpellbook.getLPCostReduction(spellbook);
+        double cost = (double) manaCovered * AnimusConfig.ironsSpells.lpPerMana.get() * (1 - reduction);
+        if (network == null || cost > Integer.MAX_VALUE) {
+            return null;
+        }
+        int lpCost = Math.max(1, (int) cost);
+        return network.getCurrentEssence() >= lpCost ? new LPCost(network, lpCost, manaCovered, hybrid) : null;
+    }
+
+    /** This is a read-only projection, including when another condition rejects the cast. */
+    public static float getManaForCastCheck(Player player, AbstractSpell spell, int spellLevel,
+                                             CastSource source, MagicData data) {
+        if (!consumesMana(player, spell, source, data)) {
+            return data.getMana();
+        }
+        LPCost cost = quote(player, spell.getManaCost(spellLevel), data);
+        return cost == null ? data.getMana() : data.getMana() + cost.manaCovered();
+    }
+
+    /** Reserve LP after eligibility succeeds; mana itself is never temporarily increased. */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onSpellPreCast(SpellPreCastEvent event) {
-        // Only handle players
-        if (!(event.getEntity() instanceof Player)) {
+        Player player = event.getEntity();
+        if (player.level().isClientSide) {
             return;
         }
-        Player player = (Player) event.getEntity();
-
-        // Only process on server side
-        if (player.level().isClientSide()) {
+        refundPending(player);
+        if (!CompatHandler.isIronsSpellsLoaded() || !AnimusConfig.ironsSpells.enableLPCasting.get()) {
             return;
         }
-
-        // Check if LP casting is enabled
-        if (!AnimusConfig.ironsSpells.enableLPCasting.get()) {
-            return;
-        }
-
-        // Get the player's magic data to check mana
-        MagicData magicData = MagicData.getPlayerMagicData(player);
-        if (magicData == null) {
-            return;
-        }
-
-        // Get the mana cost for this spell via SpellRegistry
         AbstractSpell spell = SpellRegistry.getSpell(event.getSpellId());
-        if (spell == null) {
+        MagicData data = MagicData.getPlayerMagicData(player);
+        if (!consumesMana(player, spell, event.getCastSource(), data)
+            || data.getMana() >= spell.getManaCost(event.getSpellLevel())) {
             return;
         }
-        int manaCost = spell.getManaCost(event.getSpellLevel());
-        int currentMana = (int) magicData.getMana();
-
-        // If player has enough mana, let normal casting proceed
-        if (currentMana >= manaCost) {
+        LPCost cost = quote(player, spell.getManaCost(event.getSpellLevel()), data);
+        if (cost == null) {
+            event.setCanceled(true);
             return;
         }
-
-        // Player doesn't have enough mana - try LP casting
-        int manaDeficit = manaCost - currentMana;
-
-        // Check if Blood Orb is required and present
-        if (AnimusConfig.ironsSpells.requireBloodOrb.get() && !hasBloodOrb(player)) {
+        SoulTicket ticket = new SoulTicket(Component.literal("Spell Casting"), cost.lpCost());
+        SoulNetworkEvent.Syphon.User payment = new SoulNetworkEvent.Syphon.User(cost.network(), ticket, player);
+        if (MinecraftForge.EVENT_BUS.post(payment)) {
+            event.setCanceled(true);
             return;
         }
-
-        // Find Blood Infused Spellbook and get the bound owner's network
-        ItemStack spellbook = findBloodInfusedSpellbook(player);
-        SoulNetwork network;
-
-        if (!spellbook.isEmpty()) {
-            Binding binding = ItemBloodInfusedSpellbook.getBindingStatic(spellbook);
-            if (binding != null) {
-                UUID ownerUUID = binding.getOwnerId();
-                network = NetworkHelper.getSoulNetwork(ownerUUID);
-                if (network == null) {
-                    return;
-                }
-            } else {
-                network = NetworkHelper.getSoulNetwork(player);
-                if (network == null) {
-                    return;
-                }
-            }
-        } else {
-            network = NetworkHelper.getSoulNetwork(player);
-            if (network == null) {
-                return;
-            }
-        }
-
-        // Calculate LP cost
-        int lpPerMana = AnimusConfig.ironsSpells.lpPerMana.get();
-        int lpCost;
-        int manaToAdd;
-        boolean isHybrid;
-
-        boolean allowHybrid = AnimusConfig.ironsSpells.allowHybridCasting.get();
-        if (allowHybrid && currentMana > 0) {
-            // Hybrid casting: use available mana + LP for the rest
-            manaToAdd = manaDeficit;
-            lpCost = manaDeficit * lpPerMana;
-            isHybrid = true;
-        } else {
-            // Pure LP casting: use LP for entire cost
-            manaToAdd = manaCost;
-            lpCost = manaCost * lpPerMana;
-            isHybrid = false;
-        }
-
-        // Apply LP cost reduction from Blood Infused Spellbook
-        if (!spellbook.isEmpty()) {
-            double lpReduction = ItemBloodInfusedSpellbook.getLPCostReduction(spellbook);
-            if (lpReduction > 0) {
-                lpCost = (int) Math.max(1, lpCost * (1.0 - lpReduction));
-            }
-        }
-
-        // Check if player has enough LP
-        int currentEssence = network.getCurrentEssence();
-        if (currentEssence < lpCost) {
-            player.displayClientMessage(
-                Component.literal("Not enough Life Points! Required: " + lpCost + " LP")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
+        int amount = payment.getTicket().getAmount();
+        if (amount < 0 || cost.network().getCurrentEssence() < amount
+            || cost.network().syphon(payment.getTicket(), true) != amount) {
+            event.setCanceled(true);
             return;
         }
-
-        // Temporarily add mana so the spell can proceed
-        magicData.setMana(currentMana + manaToAdd);
-
-        // Store pending LP cost to consume in onSpellOnCast
-        pendingLPCosts.put(player.getUUID(), new PendingLPCost(lpCost, manaToAdd, network, isHybrid));
-
-        Animus.LOGGER.debug("Pre-cast: added {} temporary mana for player {}, pending {} LP",
-            manaToAdd, player.getName().getString(), lpCost);
+        pendingLPCosts.put(player.getUUID(), new PendingLPCost(event.getSpellId(), event.getCastSource(),
+            cost.network(), amount, cost.manaCovered(), cost.hybrid()));
     }
 
-    /**
-     * Handle spell on-cast event to consume LP when mana is insufficient
-     * This event has the actual mana cost available
-     * Priority: HIGH to run before normal mana consumption
-     */
-    @SubscribeEvent(priority = EventPriority.HIGH)
+    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
+    public static void onPreCastCancelled(SpellPreCastEvent event) {
+        if (!event.getEntity().level().isClientSide && event.isCanceled()) {
+            refundPending(event.getEntity());
+        }
+    }
+
+    /** Commit the reservation and let Iron's Spells consume only the mana portion. */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onSpellOnCast(SpellOnCastEvent event) {
-        // Only handle players
-        if (!(event.getEntity() instanceof Player)) {
+        Player player = event.getEntity();
+        if (player.level().isClientSide) {
             return;
         }
-        Player player = (Player) event.getEntity();
-
-        // Only process on server side
-        if (player.level().isClientSide()) {
+        PendingLPCost pending = pendingLPCosts.get(player.getUUID());
+        if (pending == null || !pending.spellId().equals(event.getSpellId()) || pending.source() != event.getCastSource()) {
             return;
         }
+        pendingLPCosts.remove(player.getUUID());
+        event.setManaCost(Math.max(0, event.getManaCost() - pending.manaCovered()));
+        spawnLPCastFeedback(player, pending.hybrid());
+    }
 
-        // Check if there's a pending LP cost from onSpellPreCast
+    private static void refundPending(Player player) {
         PendingLPCost pending = pendingLPCosts.remove(player.getUUID());
-        if (pending == null) {
-            // No pending LP cost - normal mana casting
-            return;
+        if (pending != null) {
+            long refunded = (long) pending.network().getCurrentEssence() + pending.reservedLP();
+            pending.network().setCurrentEssence((int) Math.min(Integer.MAX_VALUE, refunded));
         }
+    }
 
-        // Consume LP from soul network
-        SoulTicket ticket = new SoulTicket(
-            Component.literal("Spell Casting"),
-            pending.lpCost
-        );
-
-        var syphonResult = pending.network.syphonAndDamage(player, ticket);
-        if (!syphonResult.isSuccess()) {
-            // Failed to consume LP - shouldn't happen since we checked in pre-cast
-            player.displayClientMessage(
-                Component.literal("Failed to consume Life Points!")
-                    .withStyle(ChatFormatting.RED),
-                true
-            );
-            return;
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END && !event.side.isClient()
+            && pendingLPCosts.containsKey(event.player.getUUID())
+            && !MagicData.getPlayerMagicData(event.player).isCasting()) {
+            refundPending(event.player);
         }
+    }
 
-        // Spawn visual and audio feedback
-        spawnLPCastFeedback(player, pending.isHybrid);
+    @SubscribeEvent
+    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (!event.getEntity().level().isClientSide) {
+            refundPending(event.getEntity());
+        }
+    }
 
-        // Log success
-        Animus.LOGGER.debug("Player {} cast spell using {} LP{}",
-            player.getName().getString(),
-            pending.lpCost,
-            pending.isHybrid ? " (hybrid)" : ""
-        );
+    private static ItemStack findCastingSpellbook(Player player) {
+        ItemStack equipped = findBloodInfusedSpellbook(player);
+        if (!equipped.isEmpty()) {
+            return equipped;
+        }
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (stack.getItem() instanceof ItemBloodInfusedSpellbook) {
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     /**

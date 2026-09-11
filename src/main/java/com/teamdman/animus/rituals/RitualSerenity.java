@@ -55,6 +55,7 @@ public class RitualSerenity extends Ritual {
         }
         // Check if ritual is enabled
         if (!AnimusConfig.rituals.serenityEnabled.get()) {
+            removeActiveRitual(level, masterPos);
             return;
         }
 
@@ -133,8 +134,10 @@ public class RitualSerenity extends Ritual {
     /**
      * Clean up ritual when it stops
      */
-    public void onRitualStopped(Level level, BlockPos masterPos) {
-        removeActiveRitual(level, masterPos);
+    @Override
+    public void stopRitual(IMasterRitualStone mrs, BreakType breakType) {
+        removeActiveRitual(mrs.getWorldObj(), mrs.getMasterBlockPos());
+        super.stopRitual(mrs, breakType);
     }
 
     /**
@@ -142,6 +145,20 @@ public class RitualSerenity extends Ritual {
      */
     public static void cleanupLevel(Level level) {
         activeRituals.remove(level);
+    }
+
+    public static void tickActiveRituals(ServerLevel level) {
+        Map<BlockPos, AABB> rituals = activeRituals.get(level);
+        if (rituals == null) {
+            return;
+        }
+        rituals.keySet().removeIf(pos -> !AnimusConfig.rituals.serenityEnabled.get()
+            || !(level.getBlockEntity(pos) instanceof IMasterRitualStone mrs)
+            || !mrs.isActive() || !(mrs.getCurrentRitual() instanceof RitualSerenity)
+            || level.hasNeighborSignal(pos));
+        if (rituals.isEmpty()) {
+            activeRituals.remove(level);
+        }
     }
 
     @Override

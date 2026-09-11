@@ -3,8 +3,6 @@ package com.teamdman.animus.rituals;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,6 +19,7 @@ import wayoftime.bloodmagic.ritual.*;
 import wayoftime.bloodmagic.ritual.EnumRuneType;
 import wayoftime.bloodmagic.util.helper.NetworkHelper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -87,70 +86,55 @@ public class RitualUnmaking extends Ritual {
 
         ItemEntity books = booksOpt.get();
 
-        // Process enchanted items
+        boolean changed = false;
         for (ItemEntity itemEntity : itemList) {
+            if (books.getItem().isEmpty()) {
+                break;
+            }
+            if (itemEntity.isRemoved()) {
+                continue;
+            }
             ItemStack stack = itemEntity.getItem();
+            Map<Enchantment, Integer> enchantments = new HashMap<>(EnchantmentHelper.getEnchantments(stack));
+            if (enchantments.isEmpty()) {
+                continue;
+            }
 
             if (stack.is(Items.ENCHANTED_BOOK)) {
-                // Handle enchanted books - split enchantments
-                ListTag enchants = stack.getEnchantmentTags();
-                if (enchants.isEmpty()) {
+                // The original book plus blank books supply both copies of each
+                // enchantment. Leave the original intact if the full split cannot fit.
+                int requiredBooks = enchantments.size() * 2 - 1;
+                if (books.getItem().getCount() < requiredBooks) {
                     continue;
                 }
-
-                for (int i = enchants.size() - 1; i >= 0; i--) {
-                    if (books.getItem().isEmpty()) {
-                        break;
-                    }
-
-                    CompoundTag enchData = enchants.getCompound(i);
-                    String enchId = enchData.getString("id");
-                    int enchLvl = enchData.getInt("lvl");
-
-                    // Remove this enchantment
-                    enchants.remove(i);
-
-                    // Create two enchanted books with reduced level
-                    int newLevel = enchLvl > 2 ? enchLvl - 1 : 1;
-                    ItemStack enchBook = createEnchantedBook(enchId, newLevel);
-
-                    // Spawn two copies
-                    level.addFreshEntity(new ItemEntity(level, masterPos.getX() + 0.5, masterPos.getY() + 1, masterPos.getZ() + 0.5, enchBook.copy()));
-                    level.addFreshEntity(new ItemEntity(level, masterPos.getX() + 0.5, masterPos.getY() + 1, masterPos.getZ() + 0.5, enchBook));
-
-                    books.getItem().shrink(1);
+                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                    int newLevel = Math.max(1, entry.getValue() - 1);
+                    spawnEnchantedBook(level, masterPos, entry.getKey(), newLevel);
+                    spawnEnchantedBook(level, masterPos, entry.getKey(), newLevel);
                 }
-
+                books.getItem().shrink(requiredBooks);
                 stack.shrink(1);
                 level.playSound(null, masterPos, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.5F, 1.0F);
-                mrs.stopRitual(Ritual.BreakType.DEACTIVATE);
-
-            } else if (stack.isEnchanted()) {
-                // Handle regular enchanted items
-                Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
-
-                for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                    if (books.getItem().isEmpty()) {
-                        break;
-                    }
-
-                    // Create enchanted book
-                    ItemStack enchBook = new ItemStack(Items.ENCHANTED_BOOK);
-                    EnchantmentHelper.setEnchantments(Map.of(entry.getKey(), entry.getValue()), enchBook);
-
-                    // Spawn the book
-                    level.addFreshEntity(new ItemEntity(level, masterPos.getX() + 0.5, masterPos.getY() + 1, masterPos.getZ() + 0.5, enchBook));
-
+                changed = true;
+            } else {
+                var iterator = enchantments.entrySet().iterator();
+                while (iterator.hasNext() && !books.getItem().isEmpty()) {
+                    Map.Entry<Enchantment, Integer> entry = iterator.next();
+                    spawnEnchantedBook(level, masterPos, entry.getKey(), entry.getValue());
                     books.getItem().shrink(1);
+                    iterator.remove();
+                    changed = true;
                 }
-
-                // Clear enchantments from item
-                EnchantmentHelper.setEnchantments(Map.of(), stack);
-
+                EnchantmentHelper.setEnchantments(enchantments, stack);
                 level.playSound(null, masterPos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.5F, 1.0F);
-                mrs.stopRitual(Ritual.BreakType.DEACTIVATE);
             }
+            itemEntity.setItem(stack.copy());
         }
+        if (!changed) {
+            return;
+        }
+        books.setItem(books.getItem().copy());
+        mrs.stopRitual(Ritual.BreakType.DEACTIVATE);
 
         // Consume LP
         SoulTicket ticket = new SoulTicket(
@@ -160,22 +144,10 @@ public class RitualUnmaking extends Ritual {
         network.syphon(ticket, false);
     }
 
-    /**
-     * Creates an enchanted book with a specific enchantment
-     */
-    private ItemStack createEnchantedBook(String enchantmentId, int level) {
+    private void spawnEnchantedBook(Level level, BlockPos pos, Enchantment enchantment, int enchantmentLevel) {
         ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
-        CompoundTag tag = book.getOrCreateTag();
-
-        ListTag storedEnchantments = new ListTag();
-        CompoundTag enchantment = new CompoundTag();
-        enchantment.putString("id", enchantmentId);
-        enchantment.putInt("lvl", level);
-        storedEnchantments.add(enchantment);
-
-        tag.put("StoredEnchantments", storedEnchantments);
-
-        return book;
+        EnchantmentHelper.setEnchantments(Map.of(enchantment, enchantmentLevel), book);
+        level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, book));
     }
 
     @Override

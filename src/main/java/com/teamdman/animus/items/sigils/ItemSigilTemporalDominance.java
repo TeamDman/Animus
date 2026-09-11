@@ -7,6 +7,7 @@ import com.teamdman.animus.network.AcceleratedBlocksSyncPacket.AccelerationData;
 import com.teamdman.animus.network.AnimusNetwork;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -55,7 +56,7 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
     private static final int REFRESH_COST = 15000;
 
     // Track acceleration state for each block entity
-    private static final Map<BlockPos, AccelerationState> acceleratedBlocks = new ConcurrentHashMap<>();
+    private static final Map<GlobalPos, AccelerationState> acceleratedBlocks = new ConcurrentHashMap<>();
 
     // GAG compatibility - cache the reflection check
     private static Boolean gagLoaded = null;
@@ -213,7 +214,7 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
         }
 
         // Get or create acceleration state
-        AccelerationState state = acceleratedBlocks.get(pos);
+        AccelerationState state = acceleratedBlocks.get(GlobalPos.of(level.dimension(), pos));
         int newLevel;
         int lpCost;
 
@@ -251,7 +252,7 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
 
         // Update or create acceleration state
         long expiryTime = level.getGameTime() + DURATION_TICKS;
-        acceleratedBlocks.put(pos.immutable(), new AccelerationState(newLevel, expiryTime, level.dimension()));
+        acceleratedBlocks.put(GlobalPos.of(level.dimension(), pos.immutable()), new AccelerationState(newLevel, expiryTime, level.dimension()));
 
         // Calculate speed multiplier
         int speedMultiplier = 1 << newLevel; // 2^level
@@ -288,11 +289,11 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
      */
     public static void tickAcceleratedBlocks(ServerLevel level) {
         long currentTime = level.getGameTime();
-        Iterator<Map.Entry<BlockPos, AccelerationState>> iterator = acceleratedBlocks.entrySet().iterator();
+        Iterator<Map.Entry<GlobalPos, AccelerationState>> iterator = acceleratedBlocks.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            Map.Entry<BlockPos, AccelerationState> entry = iterator.next();
-            BlockPos pos = entry.getKey();
+            Map.Entry<GlobalPos, AccelerationState> entry = iterator.next();
+            BlockPos pos = entry.getKey().pos();
             AccelerationState state = entry.getValue();
 
             // Only process blocks in this dimension
@@ -347,8 +348,12 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
     /**
      * Get acceleration state for rendering overlay
      */
-    public static Map<BlockPos, AccelerationState> getAcceleratedBlocks() {
+    public static Map<GlobalPos, AccelerationState> getAcceleratedBlocks() {
         return Collections.unmodifiableMap(acceleratedBlocks);
+    }
+
+    public static void cleanupLevel(ServerLevel level) {
+        acceleratedBlocks.keySet().removeIf(pos -> pos.dimension().equals(level.dimension()));
     }
 
     /**
@@ -390,10 +395,10 @@ public class ItemSigilTemporalDominance extends AnimusSigilBase implements IBind
 
         // Convert internal state to packet data, filtering by dimension
         Map<BlockPos, AccelerationData> packetData = new HashMap<>();
-        for (Map.Entry<BlockPos, AccelerationState> entry : acceleratedBlocks.entrySet()) {
+        for (Map.Entry<GlobalPos, AccelerationState> entry : acceleratedBlocks.entrySet()) {
             AccelerationState state = entry.getValue();
             if (state.dimension.equals(level.dimension())) {
-                packetData.put(entry.getKey(), new AccelerationData(
+                packetData.put(entry.getKey().pos(), new AccelerationData(
                     state.level,
                     state.expiryTime,
                     state.dimension

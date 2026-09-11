@@ -3,6 +3,7 @@ package com.teamdman.animus.rituals;
 import com.teamdman.animus.AnimusConfig;
 import com.teamdman.animus.Constants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
@@ -28,10 +29,7 @@ import java.util.function.Consumer;
 @RitualRegister(Constants.Rituals.PERSISTENCE)
 public class RitualPersistence extends Ritual {
     // Track loaded chunks per ritual stone position
-    private static final Map<BlockPos, Set<ChunkPos>> loadedChunks = new HashMap<>();
-
-    // Track if ritual was active last tick (for detecting state changes)
-    private boolean wasActive = false;
+    private static final Map<GlobalPos, Set<ChunkPos>> loadedChunks = new HashMap<>();
 
     public RitualPersistence() {
         super(
@@ -52,12 +50,14 @@ public class RitualPersistence extends Ritual {
         }
         // Check if ritual is enabled
         if (!AnimusConfig.rituals.persistenceEnabled.get()) {
+            unloadChunks(serverLevel, masterPos);
             return;
         }
 
 
         SoulNetwork network = NetworkHelper.getSoulNetwork(mrs.getOwner());
         if (network == null) {
+            unloadChunks(serverLevel, masterPos);
             return;
         }
 
@@ -80,7 +80,6 @@ public class RitualPersistence extends Ritual {
 
         // Load chunks
         loadChunks(serverLevel, masterPos);
-        wasActive = true;
     }
 
     /**
@@ -91,7 +90,7 @@ public class RitualPersistence extends Ritual {
         ChunkPos centerChunk = new ChunkPos(masterPos);
 
         // Get or create the set of loaded chunks for this ritual
-        Set<ChunkPos> chunks = loadedChunks.computeIfAbsent(masterPos, k -> new HashSet<>());
+        Set<ChunkPos> chunks = loadedChunks.computeIfAbsent(GlobalPos.of(level.dimension(), masterPos.immutable()), k -> new HashSet<>());
 
         // Calculate which chunks should be loaded
         Set<ChunkPos> chunksToLoad = new HashSet<>();
@@ -139,8 +138,8 @@ public class RitualPersistence extends Ritual {
     /**
      * Unload all chunks for this ritual
      */
-    private void unloadChunks(ServerLevel level, BlockPos masterPos) {
-        Set<ChunkPos> chunks = loadedChunks.get(masterPos);
+    private static void unloadChunks(ServerLevel level, BlockPos masterPos) {
+        Set<ChunkPos> chunks = loadedChunks.get(GlobalPos.of(level.dimension(), masterPos));
         if (chunks != null) {
             for (ChunkPos chunkPos : chunks) {
                 ForgeChunkManager.forceChunk(
@@ -154,9 +153,8 @@ public class RitualPersistence extends Ritual {
                 );
             }
             chunks.clear();
-            loadedChunks.remove(masterPos);
+            loadedChunks.remove(GlobalPos.of(level.dimension(), masterPos));
         }
-        wasActive = false;
     }
 
 
@@ -199,26 +197,48 @@ public class RitualPersistence extends Ritual {
         return new RitualPersistence();
     }
 
-    /**
-     * Clean up all chunk loading when the ritual is removed or world unloads
-     */
-    public static void cleanupAllChunks(ServerLevel level) {
-        for (Map.Entry<BlockPos, Set<ChunkPos>> entry : loadedChunks.entrySet()) {
-            BlockPos masterPos = entry.getKey();
-            Set<ChunkPos> chunks = entry.getValue();
+    @Override
+    public void stopRitual(IMasterRitualStone mrs, BreakType breakType) {
+        if (mrs.getWorldObj() instanceof ServerLevel level) {
+            unloadChunks(level, mrs.getMasterBlockPos());
+        }
+        super.stopRitual(mrs, breakType);
+    }
 
-            for (ChunkPos chunkPos : chunks) {
-                ForgeChunkManager.forceChunk(
-                    level,
-                    Constants.Mod.MODID,
-                    masterPos,
-                    chunkPos.x,
-                    chunkPos.z,
-                    false,
-                    false
-                );
+    private static boolean isActiveRitual(ServerLevel level, BlockPos pos) {
+        return AnimusConfig.rituals.persistenceEnabled.get()
+            && level.getBlockEntity(pos) instanceof IMasterRitualStone mrs
+            && mrs.isActive() && mrs.getCurrentRitual() instanceof RitualPersistence
+            && !level.hasNeighborSignal(pos);
+    }
+
+    /** Restore bookkeeping for valid saved tickets and remove orphaned tickets from older versions. */
+    public static void validateTickets(ServerLevel level, ForgeChunkManager.TicketHelper helper) {
+        helper.getBlockTickets().forEach((pos, tickets) -> {
+            if (!isActiveRitual(level, pos)) {
+                helper.removeAllTickets(pos);
+                loadedChunks.remove(GlobalPos.of(level.dimension(), pos));
+                return;
+            }
+            Set<ChunkPos> chunks = new HashSet<>();
+            tickets.getFirst().forEach((long chunk) -> chunks.add(new ChunkPos(chunk)));
+            // Animus uses non-ticking tickets; do not retain an unmanaged second set.
+            tickets.getSecond().forEach((long chunk) -> helper.removeTicket(pos, chunk, true));
+            loadedChunks.put(GlobalPos.of(level.dimension(), pos.immutable()), chunks);
+        });
+    }
+
+    /** Also catches explosions, block replacement and redstone pauses. */
+    public static void tickLoadedChunks(ServerLevel level) {
+        for (GlobalPos pos : new ArrayList<>(loadedChunks.keySet())) {
+            if (pos.dimension().equals(level.dimension()) && !isActiveRitual(level, pos.pos())) {
+                unloadChunks(level, pos.pos());
             }
         }
-        loadedChunks.clear();
+    }
+
+    /** Active tickets stay saved so rituals resume after a server restart. */
+    public static void forgetLevel(ServerLevel level) {
+        loadedChunks.keySet().removeIf(pos -> pos.dimension().equals(level.dimension()));
     }
 }

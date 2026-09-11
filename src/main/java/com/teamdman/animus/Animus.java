@@ -2,9 +2,11 @@ package com.teamdman.animus;
 
 import com.teamdman.animus.advancements.AnimusCriteriaTriggers;
 import com.teamdman.animus.compat.CompatHandler;
+import com.teamdman.animus.rituals.RitualPersistence;
 import com.teamdman.animus.network.AnimusNetwork;
 import com.teamdman.animus.registry.*;
 import com.teamdman.animus.worldgen.AnimusTreeDecoratorTypes;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -55,6 +57,8 @@ public class Animus {
         AnimusNetwork.register();
 
         event.enqueueWork(AnimusCriteriaTriggers::register);
+        event.enqueueWork(() -> ForgeChunkManager.setForcedChunkLoadingCallback(
+            Constants.Mod.MODID, RitualPersistence::validateTickets));
 
         // Initialize compatibility modules for optional mod integrations
         CompatHandler.init();
@@ -84,26 +88,6 @@ public class Animus {
                 LOGGER.info("Registered Transcendent Blood Orb to OrbRegistry tierMap");
             } catch (Exception e) {
                 LOGGER.error("Failed to register Transcendent Blood Orb to OrbRegistry", e);
-            }
-
-            // Register strippable blocks (axe interaction) using reflection
-            try {
-                java.lang.reflect.Field strippablesField = net.minecraftforge.fml.util.ObfuscationReflectionHelper.findField(net.minecraft.world.item.AxeItem.class, "f_150683_");
-                strippablesField.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                java.util.Map<net.minecraft.world.level.block.Block, net.minecraft.world.level.block.Block> strippables =
-                    (java.util.Map<net.minecraft.world.level.block.Block, net.minecraft.world.level.block.Block>) strippablesField.get(null);
-
-                // Create new map with our addition
-                java.util.Map<net.minecraft.world.level.block.Block, net.minecraft.world.level.block.Block> newStrippables =
-                    new java.util.HashMap<>(strippables);
-                newStrippables.put(AnimusBlocks.BLOCK_BLOOD_WOOD.get(), AnimusBlocks.BLOCK_BLOOD_WOOD_STRIPPED.get());
-
-                // Replace the field
-                strippablesField.set(null, newStrippables);
-                LOGGER.info("Registered blood wood as strippable");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register strippable blocks", e);
             }
 
             // Register rituals here

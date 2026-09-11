@@ -5,6 +5,7 @@ import com.teamdman.animus.Constants;
 import com.teamdman.animus.client.InputClientHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -20,6 +21,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -31,6 +33,9 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 import wayoftime.bloodmagic.common.item.IBindable;
@@ -616,10 +621,20 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
         }
 
         private void replaceBlock(ServerPlayer player, BlockPos pos) {
+            if (player.level() != level || !level.hasChunkAt(pos) || player.isSpectator()
+                || !player.mayBuild() || !level.mayInteract(player, pos)
+                || !level.getWorldBorder().isWithinBounds(pos)) {
+                return;
+            }
             BlockState currentState = level.getBlockState(pos);
 
             // Verify block hasn't changed
             if (currentState.getBlock() != originalBlock) {
+                return;
+            }
+
+            if (!player.isCreative() && (currentState.getDestroySpeed(level, pos) < 0
+                || currentState.getDestroyProgress(player, level, pos) <= 0)) {
                 return;
             }
 
@@ -631,8 +646,39 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                 return;
             }
 
+            ItemStack replacementItem = new ItemStack(replacementBlock.asItem());
+            if (replacementItem.isEmpty() || (!player.isCreative() && !hasMaterial(player, replacementItem))
+                || !player.mayUseItemAt(pos, Direction.UP, replacementItem)) {
+                return;
+            }
+
+            BlockState newState = replacementBlock.defaultBlockState();
+            if (!newState.canSurvive(level, pos)
+                || MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, currentState, player))) {
+                return;
+            }
+
+            // Describe the proposed placement before changing the world, so a cancelled
+            // event cannot spill a container's contents or trigger neighboring blocks.
+            BlockSnapshot snapshot = BlockSnapshot.create(level.dimension(), level, pos);
+            BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(snapshot, currentState, player) {
+                @Override
+                public BlockState getPlacedBlock() { return newState; }
+
+                @Override
+                public BlockState getState() { return newState; }
+            };
+            if (MinecraftForge.EVENT_BUS.post(placeEvent) || !level.getBlockState(pos).equals(currentState)) {
+                return;
+            }
+
+            ItemStack consumed = player.isCreative() ? ItemStack.EMPTY : consumeBlockFromInventory(player, replacementBlock);
+            if (!player.isCreative() && consumed.isEmpty()) {
+                return;
+            }
+
             // Get drops with silk touch
-            ItemStack tool = new ItemStack(net.minecraft.world.item.Items.DIAMOND_PICKAXE);
+            ItemStack tool = new ItemStack(Items.DIAMOND_PICKAXE);
             tool.enchant(Enchantments.SILK_TOUCH, 1);
 
             LootParams.Builder lootBuilder = new LootParams.Builder(level)
@@ -643,6 +689,14 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
 
             List<ItemStack> drops = currentState.getDrops(lootBuilder);
 
+            if (!level.setBlock(pos, newState, 3)) {
+                if (!consumed.isEmpty() && !player.getInventory().add(consumed)) {
+                    player.drop(consumed, false);
+                }
+                return;
+            }
+            replacementBlock.setPlacedBy(level, pos, newState, player, replacementItem);
+
             // Give drops to player (skip in creative mode)
             if (!player.isCreative()) {
                 for (ItemStack drop : drops) {
@@ -651,17 +705,6 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
                     }
                 }
             }
-
-            // Consume block from inventory (skip in creative mode)
-            if (!player.isCreative()) {
-                if (!consumeBlockFromInventory(player, replacementBlock)) {
-                    return; // No blocks left, skip
-                }
-            }
-
-            // Place new block
-            BlockState newState = replacementBlock.defaultBlockState();
-            level.setBlock(pos, newState, 3);
 
             // Spawn particles on ~20% of blocks for visual feedback without spam
             if (random.nextFloat() < 0.2f) {
@@ -673,20 +716,28 @@ public class ItemSigilEquivalency extends AnimusSigilBase implements IBindable {
             }
         }
 
-        private boolean consumeBlockFromInventory(ServerPlayer player, Block block) {
+        private boolean hasMaterial(ServerPlayer player, ItemStack material) {
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                if (ItemStack.isSameItemSameTags(player.getInventory().getItem(i), material)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private ItemStack consumeBlockFromInventory(ServerPlayer player, Block block) {
             ItemStack blockItem = new ItemStack(block.asItem());
             if (blockItem.isEmpty()) {
-                return false;
+                return ItemStack.EMPTY;
             }
 
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack stack = player.getInventory().getItem(i);
                 if (ItemStack.isSameItemSameTags(stack, blockItem)) {
-                    stack.shrink(1);
-                    return true;
+                    return stack.split(1);
                 }
             }
-            return false;
+            return ItemStack.EMPTY;
         }
     }
 }

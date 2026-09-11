@@ -21,6 +21,8 @@ import com.teamdman.animus.registry.AnimusBlocks;
 import com.teamdman.animus.registry.AnimusItems;
 import com.teamdman.animus.registry.AnimusSounds;
 import com.teamdman.animus.rituals.RitualSerenity;
+import com.teamdman.animus.rituals.RitualPersistence;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -329,11 +331,24 @@ public class AnimusEventHandler {
             ItemSigilHeavenlyWrath.tickPendingFalls(serverLevel);
             ItemSigilTemporalDominance.tickAcceleratedBlocks(serverLevel);
             ItemSigilEquivalency.tickReplacements(serverLevel);
+            if (serverLevel.getGameTime() % 20 == 0) {
+                RitualPersistence.tickLoadedChunks(serverLevel);
+                RitualSerenity.tickActiveRituals(serverLevel);
+            }
 
             // Sync accelerated blocks to clients every 10 ticks (0.5 seconds)
             if (serverLevel.getGameTime() % 10 == 0) {
                 ItemSigilTemporalDominance.syncToClients(serverLevel);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLevelUnload(LevelEvent.Unload event) {
+        if (event.getLevel() instanceof ServerLevel level) {
+            RitualPersistence.forgetLevel(level);
+            RitualSerenity.cleanupLevel(level);
+            ItemSigilTemporalDominance.cleanupLevel(level);
         }
     }
 

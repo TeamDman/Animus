@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Mechanics",
-      "text": "$(bold)Regular Enchanted Items:$()$(br)Extracts all enchantments to separate enchanted books. The item is left unenchanted.$(br2)$(bold)Enchanted Books:$()$(br)Splits multi-enchant books and creates $(bold)two copies$() of each enchantment at reduced level (level -1, minimum 1).$(br2)$(bold)Blood Enhanced Items:$()$(br)Enhanced items can be processed normally. The enchantment books will contain the base (unboosted) levels. The Blood Enhanced mark remains on the item.$(br2)$(italic)Unmake and remake at will.$()"
+      "text": "$(bold)Regular Enchanted Items:$()$(br)Uses one blank book per extracted enchantment. If books run out, remaining enchantments stay on the item.$(br2)$(bold)Enchanted Books:$()$(br)Creates $(bold)two copies$() of each enchantment at reduced level (level -1, minimum 1). The original book supplies one output; supply one blank book for every other output (one blank for a single enchantment, three for two). If there are too few blanks, the original book is left intact.$(br2)$(bold)Blood Enhanced Items:$()$(br)Enhanced items can be processed normally. The enchantment books will contain the base (unboosted) levels. The Blood Enhanced mark remains on the item.$(br2)$(italic)Unmake and remake at will.$()"
     }
   ]
 }
