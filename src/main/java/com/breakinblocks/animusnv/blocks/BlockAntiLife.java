@@ -5,7 +5,6 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.blockentities.BlockEntityAntiLife;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -102,6 +101,12 @@ public class BlockAntiLife extends BaseEntityBlock {
         boolean decaying = state.getValue(DECAYING);
         int range = antilife.getRange();
 
+        Player owner = antilife.getPlayerUUID() == null ? null : level.getPlayerByUUID(antilife.getPlayerUUID());
+        if (!decaying && (owner == null || !owner.isAlive() || owner.isSpectator() || !owner.mayBuild())) {
+            level.scheduleTick(pos, this, 20);
+            return;
+        }
+        boolean retry = false;
         List<BlockPos> neighbors = getNeighbors(pos);
 
         for (BlockPos neighborPos : neighbors) {
@@ -115,17 +120,23 @@ public class BlockAntiLife extends BaseEntityBlock {
                 }
             } else if (range > 0) {
                 if (!level.isEmptyBlock(neighborPos) && neighborState.getBlock() == antilife.getSeeking()) {
-                    Player player = antilife.getPlayerUUID() != null ? level.getPlayerByUUID(antilife.getPlayerUUID()) : null;
-
-                    if (player != null && player.isAlive()) {
-                        BreakBlockEvent breakEvent = new BreakBlockEvent(level, neighborPos, neighborState, player);
-                        if (NeoForge.EVENT_BUS.post(breakEvent).isCanceled()) {
-                            continue;
-                        }
+                    if (!level.hasChunkAt(neighborPos) || !level.mayInteract(owner, neighborPos)
+                        || neighborState.is(Constants.Tags.DISALLOW_ANTILIFE)
+                        || neighborState.getDestroySpeed(level, neighborPos) < 0
+                        || neighborState.getDestroyProgress(owner, level, neighborPos) <= 0
+                        || NeoForge.EVENT_BUS.post(new BreakBlockEvent(level, neighborPos, neighborState, owner)).isCanceled()) {
+                        continue;
                     }
-
-                    level.setBlock(neighborPos, AnimusBlocks.BLOCK_ANTILIFE.get().defaultBlockState()
-                        .setValue(DECAYING, false), 3);
+                    IAnima network = NeoVitaeAPI.getInstance().getAnima(owner.getUUID());
+                    int cost = AnimusConfig.sigils.antiLifeConsumption.get();
+                    if (network == null || network.getCurrentEV() < cost) {
+                        retry = true;
+                        continue;
+                    }
+                    if (!level.setBlock(neighborPos, defaultBlockState().setValue(DECAYING, false), 3)) {
+                        continue;
+                    }
+                    network.syphon(AnimaTicket.create(cost));
 
                     if (level.getBlockEntity(neighborPos) instanceof BlockEntityAntiLife neighborAntiLife) {
                         neighborAntiLife.setSeeking(antilife.getSeeking());
@@ -134,18 +145,14 @@ public class BlockAntiLife extends BaseEntityBlock {
                     }
 
                     level.scheduleTick(neighborPos, this, random.nextInt(25));
-
-                    if (player != null && player.isAlive()) {
-                        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
-                        AnimaTicket ticket = AnimaTicket.create(AnimusConfig.sigils.antiLifeConsumption.get());
-                        network.syphonAndDamage(player, ticket);
-                    }
-
                     level.playSound(null, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 0.01F, 0.75F);
                 }
             }
         }
 
+        if (retry) {
+            level.scheduleTick(pos, this, 20);
+        }
         if (decaying) {
             level.removeBlock(pos, false);
         }

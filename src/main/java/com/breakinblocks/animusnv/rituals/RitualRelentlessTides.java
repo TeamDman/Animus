@@ -5,11 +5,9 @@ import com.breakinblocks.animusnv.AnimusStartupConfig;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,8 +43,8 @@ public class RitualRelentlessTides extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public static final String TANK_RANGE = "tank";
 
-    private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
-    private static final Map<BlockPos, Set<BlockPos>> filledPositionsCache = new HashMap<>();
+    private final ChebyshevSearcher searcher = new ChebyshevSearcher();
+    private final Map<BlockPos, Set<BlockPos>> filledPositionsCache = new HashMap<>();
     private static final int BUCKET_AMOUNT = 1000;
 
     public RitualRelentlessTides() {
@@ -117,7 +115,7 @@ public class RitualRelentlessTides extends Ritual {
 
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         AABB effectAABB = effectRange.getAABB(masterPos);
-        int horizontalRadius = (int) Math.max(Math.abs(effectAABB.maxX - masterPos.getX()), Math.abs(effectAABB.maxZ - masterPos.getZ()));
+        int horizontalRadius = ChebyshevSearcher.horizontalRadiusOf(effectAABB, masterPos);
         int verticalDepth = (int) Math.abs(effectAABB.minY - masterPos.getY());
         Fluid fluidToPlace = extractedFluid.getFluid();
         BlockPos placementPos = findValidPlacementPosition(serverLevel, masterPos, horizontalRadius, verticalDepth, fluidToPlace);
@@ -152,7 +150,7 @@ public class RitualRelentlessTides extends Ritual {
 
             Set<BlockPos> filledPositions = filledPositionsCache.computeIfAbsent(
                 masterPos.immutable(),
-                k -> new java.util.HashSet<>()
+                k -> new HashSet<>()
             );
             filledPositions.add(placementPos.immutable());
 
@@ -161,7 +159,7 @@ public class RitualRelentlessTides extends Ritual {
     }
 
     private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth, Fluid fluidToPlace) {
-        return SEARCHER.search(
+        return searcher.search(
             masterPos,
             masterPos.below(),
             horizontalRadius,
@@ -193,12 +191,20 @@ public class RitualRelentlessTides extends Ritual {
         AnimusRitualHelper.emitSmokeParticles(level, pos);
     }
 
-    private void resetSearchState(BlockPos pos) {
-        SEARCHER.reset(pos);
+    @Override
+    public void stopRitual(IMasterRitualStone mrs, BreakType breakType) {
+        resetState(mrs.getMasterBlockPos());
+        super.stopRitual(mrs, breakType);
     }
 
-    public void onRitualStopped(Level level, BlockPos masterPos) {
-        SEARCHER.reset(masterPos);
+    @Override
+    public void onUnload(IMasterRitualStone mrs) {
+        resetState(mrs.getMasterBlockPos());
+        super.onUnload(mrs);
+    }
+
+    private void resetState(BlockPos masterPos) {
+        searcher.reset(masterPos);
         filledPositionsCache.remove(masterPos);
     }
 

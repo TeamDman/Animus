@@ -14,7 +14,6 @@ import com.breakinblocks.animusnv.compat.ironsspells.SentientArmorSpellHandler;
 import com.breakinblocks.animusnv.compat.ironsspells.RitualArcaneMastery;
 import com.breakinblocks.animusnv.compat.ironsspells.RitualIronHeart;
 import com.breakinblocks.animusnv.compat.ironsspells.SanguineScrollAltarHandler;
-import com.breakinblocks.animusnv.compat.ironsspells.SpellCastingHandler;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -104,7 +103,6 @@ public class IronsSpellsCompat implements ICompatModule {
         SentientArmorSpellHandler.register();
         Animus.LOGGER.debug("Registered Sentient Armor Spell Handler");
 
-        SpellCastingHandler.register();
         Animus.LOGGER.debug("Registered Spell Casting Handler (EV to mana)");
 
         CrimsonWillSpellHandler.register();

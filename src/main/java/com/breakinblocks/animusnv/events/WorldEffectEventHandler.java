@@ -6,6 +6,7 @@ import com.breakinblocks.animusnv.items.sigils.effects.HeavenlyWrathSigilEffect;
 import com.breakinblocks.animusnv.items.sigils.effects.StormSigilEffect;
 import com.breakinblocks.animusnv.items.sigils.effects.TemporalDominanceSigilEffect;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
+import com.breakinblocks.animusnv.rituals.RitualPersistence;
 import com.breakinblocks.animusnv.rituals.RitualSerenity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 @EventBusSubscriber(modid = Constants.Mod.MODID)
@@ -78,8 +80,19 @@ public class WorldEffectEventHandler {
     }
 
     @SubscribeEvent
+    public static void onLevelUnload(LevelEvent.Unload event) {
+        if (event.getLevel() instanceof ServerLevel level) {
+            RitualPersistence.forgetLevel(level);
+            RitualSerenity.cleanupLevel(level);
+            TemporalDominanceSigilEffect.cleanupLevel(level);
+            EquivalencySigilEffect.cleanupLevel(level);
+        }
+    }
+
+    @SubscribeEvent
     public static void onLevelTick(LevelTickEvent.Post event) {
         if (event.getLevel() instanceof ServerLevel serverLevel) {
+            RitualPersistence.tickLoadedChunks(serverLevel);
             StormSigilEffect.tickPendingSpawns(serverLevel);
             HeavenlyWrathSigilEffect.tickPendingFalls(serverLevel);
             TemporalDominanceSigilEffect.tickAcceleratedBlocks(serverLevel);

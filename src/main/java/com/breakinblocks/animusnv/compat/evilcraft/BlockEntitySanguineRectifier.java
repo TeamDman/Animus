@@ -26,6 +26,7 @@ import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
@@ -53,17 +54,25 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
 
     public BlockEntitySanguineRectifier(BlockPos pos, BlockState state) {
         super(EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(), pos, state);
-        this.bloodTank = new BloodTank(AnimusConfig.sanguineRectifier.tankCapacity.get());
+        this.bloodTank = new BloodTank(AnimusConfig.sanguineRectifier.tankCapacity.get(), this::setChanged);
     }
 
     private static class BloodTank extends FluidStacksResourceHandler {
-        BloodTank(int capacity) {
+        private final Runnable onChanged;
+
+        BloodTank(int capacity, Runnable onChanged) {
             super(1, capacity);
+            this.onChanged = onChanged;
         }
 
         @Override
         public boolean isValid(int index, FluidResource resource) {
             return isEvilCraftBlood(resource);
+        }
+
+        @Override
+        protected void onContentsChanged(int index, FluidStack previousContents) {
+            onChanged.run();
         }
     }
 

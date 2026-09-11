@@ -1,123 +1,66 @@
 package com.breakinblocks.animusnv.compat.arsnouveau;
 
+import com.hollingsworth.arsnouveau.common.block.tile.SourceJarTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
-import java.lang.reflect.Method;
+import javax.annotation.Nullable;
 
-/**
- * Helper class for interacting with Ars Nouveau Source Jars
- * Uses reflection to avoid hard dependencies on Ars Nouveau classes
- */
-public class SourceJarHelper {
-    // Cache reflected classes and methods
-    private static Class<?> sourceJarClass;
-    private static Method getSourceMethod;
-    private static Method removeSourceMethod;
-    private static boolean initialized = false;
-    private static boolean initFailed = false;
+public final class SourceJarHelper {
+    private SourceJarHelper() {}
 
-    static {
-        try {
-            // Load Ars Nouveau classes via reflection
-            sourceJarClass = Class.forName("com.hollingsworth.arsnouveau.common.block.tile.SourceJarTile");
-
-            // Get methods for Source manipulation
-            getSourceMethod = sourceJarClass.getMethod("getSource");
-            removeSourceMethod = sourceJarClass.getMethod("removeSource", int.class);
-
-            initialized = true;
-        } catch (Exception e) {
-            System.err.println("Failed to initialize Ars Nouveau SourceJar integration: " + e.getMessage());
-            initFailed = true;
-        }
+    @Nullable
+    private static SourceJarTile jar(ServerLevel level, BlockPos pos) {
+        return level.hasChunkAt(pos) && level.getBlockEntity(pos) instanceof SourceJarTile jar ? jar : null;
     }
 
-    /**
-     * Drain Source from a Source Jar at the specified position
-     *
-     * @param level The server level
-     * @param jarPos The position of the Source Jar
-     * @param maxDrain Maximum amount of Source to drain
-     * @return Amount of Source actually drained
-     */
-    public static int drainSourceFromJar(ServerLevel level, BlockPos jarPos, int maxDrain) {
-        if (!initialized || initFailed) {
+    public static int drainSourceFromJar(ServerLevel level, BlockPos pos, int maxDrain) {
+        SourceJarTile jar = jar(level, pos);
+        if (jar == null || maxDrain <= 0) {
             return 0;
         }
+        int before = jar.getSource();
+        jar.removeSource(Math.min(maxDrain, before));
+        return Math.max(0, before - jar.getSource());
+    }
 
-        BlockEntity be = level.getBlockEntity(jarPos);
-
-        if (be != null && sourceJarClass.isInstance(be)) {
-            try {
-                // Get current Source amount
-                int currentSource = (int) getSourceMethod.invoke(be);
-
-                if (currentSource > 0) {
-                    // Drain as much as possible from this jar
-                    int toDrain = Math.min(maxDrain, currentSource);
-                    removeSourceMethod.invoke(be, toDrain);
-                    return toDrain;
-                }
-            } catch (Exception e) {
-                // Silent failure - jar cannot be drained
-            }
+    public static int addSourceToJar(ServerLevel level, BlockPos pos, int maxAdd) {
+        SourceJarTile jar = jar(level, pos);
+        if (jar == null || maxAdd <= 0) {
+            return 0;
         }
-
-        return 0;
+        int before = jar.getSource();
+        int amount = Math.min(maxAdd, Math.max(0, jar.getMaxSource() - before));
+        if (amount == 0) {
+            return 0;
+        }
+        jar.addSource(amount);
+        return Math.max(0, jar.getSource() - before);
     }
 
-    /**
-     * Drain Source from the Source Jar directly above the specified position (y+1)
-     *
-     * @param level The server level
-     * @param center The center position (ritual stone location)
-     * @param maxDrain Maximum amount of Source to drain
-     * @return Amount of Source actually drained
-     */
-    public static int drainSourceFromJarAbove(ServerLevel level, BlockPos center, int maxDrain) {
-        return drainSourceFromJar(level, center.above(), maxDrain);
+    public static int getFreeSpace(ServerLevel level, BlockPos pos) {
+        SourceJarTile jar = jar(level, pos);
+        return jar == null ? 0 : Math.max(0, jar.getMaxSource() - jar.getSource());
     }
 
-    /**
-     * Check if a block entity at the specified position is a Source Jar
-     *
-     * @param level The server level
-     * @param pos The position to check
-     * @return true if the block entity is a Source Jar
-     */
+    public static int getSourceAmount(ServerLevel level, BlockPos pos) {
+        SourceJarTile jar = jar(level, pos);
+        return jar == null ? 0 : jar.getSource();
+    }
+
     public static boolean isSourceJar(ServerLevel level, BlockPos pos) {
-        if (!initialized || initFailed) {
-            return false;
-        }
-
-        BlockEntity be = level.getBlockEntity(pos);
-        return be != null && sourceJarClass.isInstance(be);
+        return jar(level, pos) != null;
     }
 
-    /**
-     * Get the current Source amount in a Source Jar
-     *
-     * @param level The server level
-     * @param jarPos The position of the Source Jar
-     * @return Current Source amount, or 0 if not a Source Jar or error
-     */
-    public static int getSourceAmount(ServerLevel level, BlockPos jarPos) {
-        if (!initialized || initFailed) {
-            return 0;
-        }
+    public static int drainSourceFromJarAbove(ServerLevel level, BlockPos center, int amount) {
+        return drainSourceFromJar(level, center.above(), amount);
+    }
 
-        BlockEntity be = level.getBlockEntity(jarPos);
+    public static int addSourceToJarAbove(ServerLevel level, BlockPos center, int amount) {
+        return addSourceToJar(level, center.above(), amount);
+    }
 
-        if (be != null && sourceJarClass.isInstance(be)) {
-            try {
-                return (int) getSourceMethod.invoke(be);
-            } catch (Exception e) {
-                // Silent failure
-            }
-        }
-
-        return 0;
+    public static int getFreeSpaceAbove(ServerLevel level, BlockPos center) {
+        return getFreeSpace(level, center.above());
     }
 }

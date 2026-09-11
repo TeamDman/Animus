@@ -6,15 +6,12 @@ import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -26,7 +23,6 @@ import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.ritual.EnumRuneType;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -51,6 +47,9 @@ public class RitualUnmaking extends Ritual {
     public void performRitual(IMasterRitualStone mrs) {
         Level level = mrs.getWorldObj();
         IAnima network = AnimusRitualHelper.getOwnerNetwork(mrs);
+        if (network == null) {
+            return;
+        }
         int currentEV = network.getCurrentEV();
         BlockPos masterPos = mrs.getMasterBlockPos();
 
@@ -70,16 +69,16 @@ public class RitualUnmaking extends Ritual {
             return;
         }
 
-        Optional<ItemEntity> booksOpt = itemList.stream()
+        List<ItemEntity> books = itemList.stream()
             .filter(e -> !e.isRemoved())
             .filter(e -> e.getItem().is(Items.BOOK))
-            .findFirst();
+            .toList();
 
-        if (!booksOpt.isPresent()) {
+        if (books.isEmpty()) {
             return;
         }
 
-        ItemEntity books = booksOpt.get();
+        boolean processed = false;
 
         for (ItemEntity itemEntity : itemList) {
             ItemStack stack = itemEntity.getItem();
@@ -94,12 +93,11 @@ public class RitualUnmaking extends Ritual {
                     continue;
                 }
 
+                if (!consumeBooks(books, enchants.size())) {
+                    continue;
+                }
                 boolean processedAny = false;
                 for (Holder<Enchantment> enchHolder : enchants.keySet()) {
-                    if (books.getItem().isEmpty()) {
-                        break;
-                    }
-
                     int enchLvl = enchants.getLevel(enchHolder);
 
                     int newLevel = enchLvl > 2 ? enchLvl - 1 : 1;
@@ -108,14 +106,13 @@ public class RitualUnmaking extends Ritual {
                     level.addFreshEntity(new ItemEntity(level, masterPos.getX() + 0.5, masterPos.getY() + 1, masterPos.getZ() + 0.5, enchBook.copy()));
                     level.addFreshEntity(new ItemEntity(level, masterPos.getX() + 0.5, masterPos.getY() + 1, masterPos.getZ() + 0.5, enchBook));
 
-                    books.getItem().shrink(1);
                     processedAny = true;
                 }
 
                 if (processedAny) {
                     stack.shrink(1);
                     level.playSound(null, masterPos, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.5F, 1.0F);
-                    mrs.stopRitual(Ritual.BreakType.DEACTIVATE);
+                    processed = true;
                 }
 
             } else if (stack.isEnchanted()) {
@@ -124,28 +121,42 @@ public class RitualUnmaking extends Ritual {
                     continue;
                 }
 
+                if (!consumeBooks(books, enchantments.size())) {
+                    continue;
+                }
                 for (Holder<Enchantment> enchHolder : enchantments.keySet()) {
-                    if (books.getItem().isEmpty()) {
-                        break;
-                    }
-
                     int enchLevel = enchantments.getLevel(enchHolder);
 
                     ItemStack enchBook = createEnchantedBook(level, enchHolder, enchLevel);
                     level.addFreshEntity(new ItemEntity(level, masterPos.getX() + 0.5, masterPos.getY() + 1, masterPos.getZ() + 0.5, enchBook));
-
-                    books.getItem().shrink(1);
                 }
 
                 stack.set(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
 
                 level.playSound(null, masterPos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.5F, 1.0F);
-                mrs.stopRitual(Ritual.BreakType.DEACTIVATE);
+                processed = true;
             }
         }
 
-        AnimaTicket ticket = AnimaTicket.create(getRefreshCost());
-        network.syphon(ticket);
+        if (processed) {
+            network.syphon(AnimaTicket.create(getRefreshCost()));
+            mrs.stopRitual(Ritual.BreakType.DEACTIVATE);
+        }
+    }
+
+    private static boolean consumeBooks(List<ItemEntity> books, int count) {
+        if (books.stream().mapToInt(e -> e.getItem().getCount()).sum() < count) {
+            return false;
+        }
+        for (ItemEntity entity : books) {
+            int consumed = Math.min(count, entity.getItem().getCount());
+            entity.getItem().shrink(consumed);
+            count -= consumed;
+            if (count == 0) {
+                break;
+            }
+        }
+        return true;
     }
 
     private boolean isEnhancedItem(ItemStack stack) {

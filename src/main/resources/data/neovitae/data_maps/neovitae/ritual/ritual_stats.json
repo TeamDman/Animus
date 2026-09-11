@@ -83,6 +83,34 @@
       "refresh_cost": 0,
       "refresh_time": 20,
       "crystal_level": 0
+    },
+    "animusnv:ritual_ars_vitae": {
+      "value": {
+        "activation_cost": 10000,
+        "refresh_cost": 0,
+        "refresh_time": 40,
+        "crystal_level": 0
+      },
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ]
+    },
+    "animusnv:ritual_source_vitaeum": {
+      "value": {
+        "activation_cost": 10000,
+        "refresh_cost": 0,
+        "refresh_time": 40,
+        "crystal_level": 0
+      },
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ]
     }
   }
 }

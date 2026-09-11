@@ -5,6 +5,10 @@ import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.server.MinecraftServer;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -167,6 +171,7 @@ public record EquivalencySigilEffect() implements ISigilEffect {
             }
         }
 
+        availableBlocks.removeIf(block -> block == targetState.getBlock());
         if (availableBlocks.isEmpty()) {
             player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_BLOCKS)
@@ -212,28 +217,24 @@ public record EquivalencySigilEffect() implements ISigilEffect {
             return false;
         }
 
-        // Calculate total EV cost based on blocks that will actually be replaced
         int lpPerBlock = AnimusConfig.sigils.sigilEquivalencyEVCost.get();
-        int totalEV = blocksToReplace.size() * lpPerBlock;
 
-        if (network.getCurrentEV() < totalEV) {
+        if (network.getCurrentEV() < lpPerBlock) {
             player.sendOverlayMessage(
-                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_EV, totalEV)
+                    Component.translatable(Constants.Localizations.Text.EQUIVALENCY_NO_EV, lpPerBlock)
                             .withStyle(ChatFormatting.RED));
             return false;
         }
 
-        // Consume EV
-        network.syphon(AnimaTicket.create(totalEV));
-
-        // Create replacement operation
         ReplacementOperation operation = new ReplacementOperation(
                 level,
                 player.getUUID(),
                 blocksToReplace,
                 availableBlocks,
                 targetState.getBlock(),
-                centerPos
+                centerPos,
+                network,
+                lpPerBlock
         );
         activeOperations.put(player.getUUID(), operation);
 
@@ -357,6 +358,10 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         return false;
     }
 
+    public static void cleanupLevel(Level level) {
+        activeOperations.values().removeIf(operation -> operation.level == level);
+    }
+
     /**
      * Process active replacement operations.
      * Called from event handler.
@@ -469,17 +474,22 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         private final List<Block> replacementBlocks;
         private final Block originalBlock;
         private final BlockPos centerPos;
+        private final IAnima network;
+        private final int evPerBlock;
         private int currentIndex = 0;
         private final Random random = new Random();
 
         public ReplacementOperation(ServerLevel level, UUID playerUUID, List<BlockPos> positions,
-                                    List<Block> replacementBlocks, Block originalBlock, BlockPos centerPos) {
+                                    List<Block> replacementBlocks, Block originalBlock, BlockPos centerPos,
+                                    IAnima network, int evPerBlock) {
             this.level = level;
             this.playerUUID = playerUUID;
             this.positions = positions;
             this.replacementBlocks = replacementBlocks;
             this.originalBlock = originalBlock;
             this.centerPos = centerPos;
+            this.network = network;
+            this.evPerBlock = evPerBlock;
         }
 
         /**
@@ -494,6 +504,9 @@ public record EquivalencySigilEffect() implements ISigilEffect {
 
             int processed = 0;
             while (currentIndex < positions.size() && processed < maxBlocks) {
+                if (network.getCurrentEV() < evPerBlock) {
+                    return true;
+                }
                 BlockPos pos = positions.get(currentIndex);
                 replaceBlock(player, pos);
                 currentIndex++;
@@ -504,30 +517,64 @@ public record EquivalencySigilEffect() implements ISigilEffect {
         }
 
         private void replaceBlock(ServerPlayer player, BlockPos pos) {
+            if (player.level() != level || !level.hasChunkAt(pos) || player.isSpectator()
+                || !player.mayBuild() || !level.mayInteract(player, pos)
+                || !level.getWorldBorder().isWithinBounds(pos)) {
+                return;
+            }
             BlockState currentState = level.getBlockState(pos);
 
-            // Verify block hasn't changed
             if (currentState.getBlock() != originalBlock) {
                 return;
             }
 
-            // Select random replacement block
+            if (!player.isCreative() && (currentState.getDestroySpeed(level, pos) < 0
+                || currentState.getDestroyProgress(player, level, pos) <= 0)) {
+                return;
+            }
+
             Block replacementBlock = replacementBlocks.get(random.nextInt(replacementBlocks.size()));
 
-            // Skip if somehow the same
             if (currentState.getBlock() == replacementBlock) {
                 return;
             }
 
-            // Get drops with silk touch
-            ItemStack tool = new ItemStack(Items.DIAMOND_PICKAXE);
-            if (level.registryAccess().lookup(Registries.ENCHANTMENT).isPresent()) {
-                var enchantmentRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-                var silkTouch = enchantmentRegistry.get(Enchantments.SILK_TOUCH);
-                if (silkTouch.isPresent()) {
-                    tool.enchant(silkTouch.get(), 1);
-                }
+            ItemStack replacementItem = new ItemStack(replacementBlock.asItem());
+            if (replacementItem.isEmpty() || (!player.isCreative() && !hasMaterial(player, replacementItem))
+                || !player.mayUseItemAt(pos, Direction.UP, replacementItem)) {
+                return;
             }
+
+            BlockState newState = replacementBlock.defaultBlockState();
+            if (!newState.canSurvive(level, pos)
+                || NeoForge.EVENT_BUS.post(new BreakBlockEvent(level, pos, currentState, player)).isCanceled()) {
+                return;
+            }
+
+            BlockSnapshot snapshot = BlockSnapshot.create(level.dimension(), level, pos);
+            BlockEvent.EntityPlaceEvent placeEvent = new BlockEvent.EntityPlaceEvent(snapshot, currentState, player) {
+                @Override
+                public BlockState getPlacedBlock() {
+                    return newState;
+                }
+
+                @Override
+                public BlockState getState() {
+                    return newState;
+                }
+            };
+            if (NeoForge.EVENT_BUS.post(placeEvent).isCanceled() || !level.getBlockState(pos).equals(currentState)
+                || network.getCurrentEV() < evPerBlock) {
+                return;
+            }
+
+            ItemStack consumed = player.isCreative() ? ItemStack.EMPTY : consumeBlockFromInventory(player, replacementBlock);
+            if (!player.isCreative() && consumed.isEmpty()) {
+                return;
+            }
+
+            ItemStack tool = new ItemStack(Items.DIAMOND_PICKAXE);
+            tool.enchant(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH), 1);
 
             LootParams.Builder lootBuilder = new LootParams.Builder(level)
                     .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
@@ -537,7 +584,18 @@ public record EquivalencySigilEffect() implements ISigilEffect {
 
             List<ItemStack> drops = currentState.getDrops(lootBuilder);
 
-            // Give drops to player (skip in creative mode)
+            int paid = network.syphon(AnimaTicket.create(evPerBlock));
+            if (paid != evPerBlock || !level.setBlock(pos, newState, 3)) {
+                if (paid > 0) {
+                    network.add(AnimaTicket.create(paid), Integer.MAX_VALUE);
+                }
+                if (!consumed.isEmpty() && !player.getInventory().add(consumed)) {
+                    player.drop(consumed, false);
+                }
+                return;
+            }
+            replacementBlock.setPlacedBy(level, pos, newState, player, replacementItem);
+
             if (!player.isCreative()) {
                 for (ItemStack drop : drops) {
                     if (!player.getInventory().add(drop)) {
@@ -545,17 +603,6 @@ public record EquivalencySigilEffect() implements ISigilEffect {
                     }
                 }
             }
-
-            // Consume block from inventory (skip in creative mode)
-            if (!player.isCreative()) {
-                if (!consumeBlockFromInventory(player, replacementBlock)) {
-                    return; // No blocks left, skip
-                }
-            }
-
-            // Place new block
-            BlockState newState = replacementBlock.defaultBlockState();
-            level.setBlock(pos, newState, 3);
 
             // Spawn particles on ~20% of blocks for visual feedback without spam
             if (random.nextFloat() < 0.2f) {
@@ -567,20 +614,28 @@ public record EquivalencySigilEffect() implements ISigilEffect {
             }
         }
 
-        private boolean consumeBlockFromInventory(ServerPlayer player, Block block) {
+        private boolean hasMaterial(ServerPlayer player, ItemStack material) {
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                if (ItemStack.isSameItemSameComponents(player.getInventory().getItem(i), material)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private ItemStack consumeBlockFromInventory(ServerPlayer player, Block block) {
             ItemStack blockItem = new ItemStack(block.asItem());
             if (blockItem.isEmpty()) {
-                return false;
+                return ItemStack.EMPTY;
             }
 
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack stack = player.getInventory().getItem(i);
                 if (ItemStack.isSameItemSameComponents(stack, blockItem)) {
-                    stack.shrink(1);
-                    return true;
+                    return stack.split(1);
                 }
             }
-            return false;
+            return ItemStack.EMPTY;
         }
     }
 }

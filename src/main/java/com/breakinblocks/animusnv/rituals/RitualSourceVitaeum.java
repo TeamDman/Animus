@@ -5,11 +5,9 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.compat.CompatHandler;
 import com.breakinblocks.animusnv.util.SourceJarHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.ritual.*;
 import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
 
@@ -70,38 +68,29 @@ public class RitualSourceVitaeum extends Ritual {
 
         // Each nearby ritual stone doubles the conversion cost
         int baseConversion = AnimusConfig.rituals.sourceVitaeumBaseConversion.get();
-        int conversionRate = baseConversion * (int)Math.pow(2, nearbyRituals);
+        int conversionRate = SourceJarHelper.conversionRate(baseConversion, nearbyRituals);
 
         int sourcePerCycle = AnimusConfig.rituals.sourceVitaeumSourcePerCycle.get();
 
-        int sourceDrained = SourceJarHelper.drainSourceFromJarAbove(serverLevel, masterPos, sourcePerCycle);
-
-        if (sourceDrained <= 0) {
+        int availableSpace = Math.max(0, altar.getMainCapacity() - altar.getCurrentBlood());
+        double multiplier = Math.max(1, 1 + altar.getSacrificeBonus());
+        int maxBaseEV = (int) Math.floor(availableSpace / multiplier);
+        int availableSource = SourceJarHelper.getSourceAmount(serverLevel, masterPos.above());
+        int evToAdd = Math.min(maxBaseEV, Math.min(sourcePerCycle, availableSource) / conversionRate);
+        if (evToAdd <= 0) {
             return;
         }
 
-        int lpToAdd = sourceDrained / conversionRate;
-
-        if (lpToAdd <= 0) {
-            return;
+        int sourceDrained = SourceJarHelper.drainSourceFromJarAbove(serverLevel, masterPos, evToAdd * conversionRate);
+        int convertedEV = sourceDrained / conversionRate;
+        int remainder = sourceDrained % conversionRate;
+        if (remainder > 0) {
+            SourceJarHelper.addSourceToJarAbove(serverLevel, masterPos, remainder);
         }
-
-        int currentBlood = altar.getCurrentBlood();
-        int maxBlood = altar.getMainCapacity();
-        int availableSpace = maxBlood - currentBlood;
-
-        if (availableSpace <= 0) {
-            return;
+        if (convertedEV > 0) {
+            // Second param (true) makes it respect altar speed and dislocation runes
+            altar.addSacrificeEV(convertedEV, true);
         }
-
-        lpToAdd = Math.min(lpToAdd, availableSpace);
-
-        if (lpToAdd <= 0) {
-            return;
-        }
-
-        // Second param (true) makes it respect altar speed and dislocation runes
-        altar.addSacrificeEV(lpToAdd, true);
     }
 
     private AraVitaeTile findNearbyAltar(ServerLevel level, BlockPos center, int radius) {

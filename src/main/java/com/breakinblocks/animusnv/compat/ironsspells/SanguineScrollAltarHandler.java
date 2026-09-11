@@ -117,7 +117,7 @@ public class SanguineScrollAltarHandler {
             return;
         }
 
-        altar.addSacrificeEV(-totalEVCost, false);
+        altar.drainMainTank(totalEVCost);
         ItemStack sanguineScroll = getSanguineScrollForSlate(slateType);
         if (sanguineScroll.isEmpty()) {
             Animus.LOGGER.error("Failed to create sanguine scroll for slate type: " + slateType);

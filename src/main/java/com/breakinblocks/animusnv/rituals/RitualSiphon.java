@@ -9,7 +9,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -53,8 +52,8 @@ public class RitualSiphon extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public static final String TANK_RANGE = "tank";
 
-    private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
-    private static final Map<BlockPos, Set<BlockPos>> extractedPositionsCache = new HashMap<>();
+    private final ChebyshevSearcher searcher = new ChebyshevSearcher();
+    private final Map<BlockPos, Set<BlockPos>> extractedPositionsCache = new HashMap<>();
     private static final int BUCKET_AMOUNT = 1000;
 
     public RitualSiphon() {
@@ -113,7 +112,7 @@ public class RitualSiphon extends Ritual {
 
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         AABB effectAABB = effectRange.getAABB(masterPos);
-        int horizontalRadius = (int) Math.max(Math.abs(effectAABB.maxX - masterPos.getX()), Math.abs(effectAABB.maxZ - masterPos.getZ()));
+        int horizontalRadius = ChebyshevSearcher.horizontalRadiusOf(effectAABB, masterPos);
         int verticalDepth = (int) Math.abs(effectAABB.minY - masterPos.getY());
         BlockPos fluidPos = findFluidSource(serverLevel, masterPos, horizontalRadius, verticalDepth);
 
@@ -171,7 +170,7 @@ public class RitualSiphon extends Ritual {
     }
 
     private BlockPos findFluidSource(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth) {
-        return SEARCHER.search(
+        return searcher.search(
             masterPos,
             masterPos.below(),
             horizontalRadius,
@@ -226,12 +225,20 @@ public class RitualSiphon extends Ritual {
         AnimusRitualHelper.emitSmokeParticles(level, pos);
     }
 
-    private void resetSearchState(BlockPos pos) {
-        SEARCHER.reset(pos);
+    @Override
+    public void stopRitual(IMasterRitualStone mrs, BreakType breakType) {
+        resetState(mrs.getMasterBlockPos());
+        super.stopRitual(mrs, breakType);
     }
 
-    public void onRitualStopped(Level level, BlockPos masterPos) {
-        SEARCHER.reset(masterPos);
+    @Override
+    public void onUnload(IMasterRitualStone mrs) {
+        resetState(mrs.getMasterBlockPos());
+        super.onUnload(mrs);
+    }
+
+    private void resetState(BlockPos masterPos) {
+        searcher.reset(masterPos);
         extractedPositionsCache.remove(masterPos);
     }
 

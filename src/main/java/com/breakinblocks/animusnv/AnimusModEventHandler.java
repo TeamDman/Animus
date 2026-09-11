@@ -1,6 +1,7 @@
 package com.breakinblocks.animusnv;
 
 import com.breakinblocks.animusnv.registry.AnimusAttributes;
+import com.breakinblocks.animusnv.rituals.RitualPersistence;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,7 +14,8 @@ import net.neoforged.neoforge.common.world.chunk.TicketController;
 public class AnimusModEventHandler {
 
     private static final TicketController TICKET_CONTROLLER = new TicketController(
-        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "chunk_loader")
+        Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "chunk_loader"),
+        RitualPersistence::validateTickets
     );
 
     public static TicketController getTicketController() {

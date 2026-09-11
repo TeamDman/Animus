@@ -87,12 +87,20 @@ def compatSources = [
         ]],
 ]
 
+def compatTestSources = [
+        arsnouveau : ['com/breakinblocks/animusnv/gametest/AnimusSourceTests.java'],
+        ironsspells: ['com/breakinblocks/animusnv/gametest/AnimusSpellTests.java'],
+]
+
 def disabledCompat = compatSources.findAll { _, spec -> !project.findProperty(spec[0]).toBoolean() }
 
 if (!disabledCompat.isEmpty()) {
     logger.lifecycle("Animus: compat disabled for 26.1 (no upstream build): ${disabledCompat.keySet().join(', ')}")
     sourceSets.main.java {
         disabledCompat.each { _, spec -> spec[1].each { exclude it } }
+    }
+    sourceSets.test.java {
+        disabledCompat.each { name, _ -> (compatTestSources[name] ?: []).each { exclude it } }
     }
 }
 

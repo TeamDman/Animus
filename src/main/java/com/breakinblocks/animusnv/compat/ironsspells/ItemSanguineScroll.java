@@ -20,7 +20,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 
@@ -113,7 +112,7 @@ public class ItemSanguineScroll extends Item {
         }
 
         MagicData magicData = MagicData.getPlayerMagicData(player);
-        if (magicData.getPlayerCooldowns().hasCooldownsActive()) {
+        if (magicData.getPlayerCooldowns().isOnCooldown(spell)) {
             player.sendOverlayMessage(
                 Component.literal("Spell is on cooldown")
                     .withStyle(ChatFormatting.GOLD));
@@ -123,7 +122,7 @@ public class ItemSanguineScroll extends Item {
         int manaCost = spell.getManaCost(spellLevel);
         int evPerMana = AnimusConfig.ironsSpells.evPerMana.get();
         double multiplier = AnimusConfig.ironsSpells.sanguineScrollEVMultiplier.get();
-        int evCost = (int)(manaCost * evPerMana * multiplier);
+        int evCost = (int) Math.min(Integer.MAX_VALUE, Math.ceil((double) manaCost * evPerMana * multiplier));
 
         IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, stack);
         if (network == null || network.getCurrentEV() < evCost) {
@@ -133,9 +132,16 @@ public class ItemSanguineScroll extends Item {
             return InteractionResultHolder.fail(stack);
         }
 
-        network.syphonAndDamage(player, AnimaTicket.create(evCost));
+        int reserved = network.syphon(AnimaTicket.create(evCost));
+        boolean accepted = false;
         try {
-            spell.attemptInitiateCast(stack, spellLevel, level, player, CastSource.SCROLL, true, "sanguine_scroll");
+            if (reserved != evCost) {
+                return InteractionResultHolder.fail(stack);
+            }
+            accepted = spell.attemptInitiateCast(stack, spellLevel, level, player, CastSource.SCROLL, true, "sanguine_scroll");
+            if (!accepted) {
+                return InteractionResultHolder.fail(stack);
+            }
 
             magicData.getPlayerCooldowns().addCooldown(spell, spell.getSpellCooldown());
             if (level instanceof ServerLevel serverLevel) {
@@ -162,6 +168,10 @@ public class ItemSanguineScroll extends Item {
                 Component.literal("Failed to cast spell: " + e.getMessage())
                     .withStyle(ChatFormatting.RED));
             return InteractionResultHolder.fail(stack);
+        } finally {
+            if (!accepted && reserved > 0) {
+                network.add(AnimaTicket.create(reserved), Integer.MAX_VALUE);
+            }
         }
     }
 
@@ -191,7 +201,7 @@ public class ItemSanguineScroll extends Item {
                 int manaCost = spell.getManaCost(spellLevel);
                 int evPerMana = AnimusConfig.ironsSpells.evPerMana.get();
                 double multiplier = AnimusConfig.ironsSpells.sanguineScrollEVMultiplier.get();
-                int evCost = (int)(manaCost * evPerMana * multiplier);
+                int evCost = (int) Math.min(Integer.MAX_VALUE, Math.ceil((double) manaCost * evPerMana * multiplier));
 
                 tooltip.add(Component.literal(""));
                 tooltip.add(Component.literal("Cost: " + evCost + " EV")

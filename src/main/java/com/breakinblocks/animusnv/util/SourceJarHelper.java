@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 
 public class SourceJarHelper {
@@ -30,28 +31,44 @@ public class SourceJarHelper {
         }
     }
 
+    public static int conversionRate(int base, int nearbyRituals) {
+        long scaled = (long) Math.max(1, base) << Math.min(31, Math.max(0, nearbyRituals));
+        return (int) Math.min(Integer.MAX_VALUE, scaled);
+    }
+
+    @Nullable
+    private static BlockEntity jar(ServerLevel level, BlockPos pos) {
+        if (!initialized || initFailed || !level.hasChunkAt(pos)) {
+            return null;
+        }
+        BlockEntity be = level.getBlockEntity(pos);
+        return be != null && sourceJarClass.isInstance(be) ? be : null;
+    }
+
+    private static int source(BlockEntity jar) throws ReflectiveOperationException {
+        return (int) getSourceMethod.invoke(jar);
+    }
+
+    private static int maxSource(BlockEntity jar) throws ReflectiveOperationException {
+        return (int) getMaxSourceMethod.invoke(jar);
+    }
+
     public static int drainSourceFromJar(ServerLevel level, BlockPos jarPos, int maxDrain) {
-        if (!initialized || initFailed) {
+        BlockEntity jar = jar(level, jarPos);
+        if (jar == null || maxDrain <= 0) {
             return 0;
         }
-
-        BlockEntity be = level.getBlockEntity(jarPos);
-
-        if (be != null && sourceJarClass.isInstance(be)) {
-            try {
-                int currentSource = (int) getSourceMethod.invoke(be);
-
-                if (currentSource > 0) {
-                    int toDrain = Math.min(maxDrain, currentSource);
-                    removeSourceMethod.invoke(be, toDrain);
-                    return toDrain;
-                }
-            } catch (Exception e) {
+        try {
+            int before = source(jar);
+            int toDrain = Math.min(maxDrain, before);
+            if (toDrain <= 0) {
                 return 0;
             }
+            removeSourceMethod.invoke(jar, toDrain);
+            return Math.max(0, before - source(jar));
+        } catch (ReflectiveOperationException e) {
+            return 0;
         }
-
-        return 0;
     }
 
     public static int drainSourceFromJarAbove(ServerLevel level, BlockPos center, int maxDrain) {
@@ -59,28 +76,21 @@ public class SourceJarHelper {
     }
 
     public static int addSourceToJar(ServerLevel level, BlockPos jarPos, int maxAdd) {
-        if (!initialized || initFailed || maxAdd <= 0) {
+        BlockEntity jar = jar(level, jarPos);
+        if (jar == null || maxAdd <= 0) {
             return 0;
         }
-
-        BlockEntity be = level.getBlockEntity(jarPos);
-
-        if (be != null && sourceJarClass.isInstance(be)) {
-            try {
-                int currentSource = (int) getSourceMethod.invoke(be);
-                int maxSource = (int) getMaxSourceMethod.invoke(be);
-                int toAdd = Math.min(maxAdd, maxSource - currentSource);
-
-                if (toAdd > 0) {
-                    addSourceMethod.invoke(be, toAdd);
-                    return toAdd;
-                }
-            } catch (Exception e) {
+        try {
+            int before = source(jar);
+            int toAdd = Math.min(maxAdd, Math.max(0, maxSource(jar) - before));
+            if (toAdd <= 0) {
                 return 0;
             }
+            addSourceMethod.invoke(jar, toAdd);
+            return Math.max(0, source(jar) - before);
+        } catch (ReflectiveOperationException e) {
+            return 0;
         }
-
-        return 0;
     }
 
     public static int addSourceToJarAbove(ServerLevel level, BlockPos center, int maxAdd) {
@@ -88,23 +98,15 @@ public class SourceJarHelper {
     }
 
     public static int getFreeSpace(ServerLevel level, BlockPos jarPos) {
-        if (!initialized || initFailed) {
+        BlockEntity jar = jar(level, jarPos);
+        if (jar == null) {
             return 0;
         }
-
-        BlockEntity be = level.getBlockEntity(jarPos);
-
-        if (be != null && sourceJarClass.isInstance(be)) {
-            try {
-                int currentSource = (int) getSourceMethod.invoke(be);
-                int maxSource = (int) getMaxSourceMethod.invoke(be);
-                return Math.max(0, maxSource - currentSource);
-            } catch (Exception e) {
-                return 0;
-            }
+        try {
+            return Math.max(0, maxSource(jar) - source(jar));
+        } catch (ReflectiveOperationException e) {
+            return 0;
         }
-
-        return 0;
     }
 
     public static int getFreeSpaceAbove(ServerLevel level, BlockPos center) {
@@ -112,29 +114,18 @@ public class SourceJarHelper {
     }
 
     public static boolean isSourceJar(ServerLevel level, BlockPos pos) {
-        if (!initialized || initFailed) {
-            return false;
-        }
-
-        BlockEntity be = level.getBlockEntity(pos);
-        return be != null && sourceJarClass.isInstance(be);
+        return jar(level, pos) != null;
     }
 
     public static int getSourceAmount(ServerLevel level, BlockPos jarPos) {
-        if (!initialized || initFailed) {
+        BlockEntity jar = jar(level, jarPos);
+        if (jar == null) {
             return 0;
         }
-
-        BlockEntity be = level.getBlockEntity(jarPos);
-
-        if (be != null && sourceJarClass.isInstance(be)) {
-            try {
-                return (int) getSourceMethod.invoke(be);
-            } catch (Exception e) {
-                return 0;
-            }
+        try {
+            return source(jar);
+        } catch (ReflectiveOperationException e) {
+            return 0;
         }
-
-        return 0;
     }
 }

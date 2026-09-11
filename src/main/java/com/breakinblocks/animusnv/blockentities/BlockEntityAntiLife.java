@@ -68,7 +68,7 @@ public class BlockEntityAntiLife extends BlockEntity {
     @Override
     protected void saveAdditional(ValueOutput tag) {
         super.saveAdditional(tag);
-        tag.putString("seeking", seeking.getDescriptionId());
+        tag.putString("seeking", BuiltInRegistries.BLOCK.getKey(seeking).toString());
         tag.putInt("range", range);
         tag.storeNullable("player", UUIDUtil.CODEC, playerUUID);
     }
@@ -76,13 +76,19 @@ public class BlockEntityAntiLife extends BlockEntity {
     @Override
     protected void loadAdditional(ValueInput tag) {
         super.loadAdditional(tag);
-        // Try to get the block - if it fails, default to AIR
-        String seekingId = tag.getStringOr("seeking", "");
-        this.seeking = BuiltInRegistries.BLOCK.getOptional(
-            Identifier.tryParse(seekingId.replace("block.", ""))
-        ).orElse(Blocks.AIR);
-
+        this.seeking = resolveSeeking(tag.getStringOr("seeking", ""));
         this.range = tag.getIntOr("range", 0);
         tag.read("player", UUIDUtil.CODEC).ifPresent(uuid -> this.playerUUID = uuid);
+    }
+
+    private static Block resolveSeeking(String seekingId) {
+        if (seekingId.startsWith("block.")) {
+            return BuiltInRegistries.BLOCK.stream()
+                .filter(block -> block.getDescriptionId().equals(seekingId))
+                .findFirst()
+                .orElse(Blocks.AIR);
+        }
+        Identifier id = Identifier.tryParse(seekingId);
+        return id == null ? Blocks.AIR : BuiltInRegistries.BLOCK.getOptional(id).orElse(Blocks.AIR);
     }
 }

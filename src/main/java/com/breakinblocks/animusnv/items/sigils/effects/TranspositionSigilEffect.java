@@ -3,6 +3,9 @@ package com.breakinblocks.animusnv.items.sigils.effects;
 import com.mojang.serialization.MapCodec;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
+import com.breakinblocks.neovitae.api.soul.AnimaTicket;
+import com.breakinblocks.neovitae.api.soul.IAnima;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,6 +50,8 @@ import com.breakinblocks.neovitae.common.block.TeleposerBlock;
  */
 public record TranspositionSigilEffect() implements ISigilEffect {
     public static final MapCodec<TranspositionSigilEffect> CODEC = MapCodec.unit(TranspositionSigilEffect::new);
+
+    private static final int ENTITY_TELEPORT_COST = 5000;
 
     private static final TagKey<Block> RELOCATION_NOT_SUPPORTED = TagKey.create(
             Registries.BLOCK,
@@ -237,8 +242,16 @@ public record TranspositionSigilEffect() implements ISigilEffect {
             return false;
         }
 
-        // Teleport target
         BlockPos targetTeleportPos = teleposerPos.above();
+        IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, stack);
+        if (network == null || network.getCurrentEV() < ENTITY_TELEPORT_COST
+            || !player.level().hasChunkAt(teleposerPos)
+            || !player.level().getWorldBorder().isWithinBounds(targetTeleportPos)) {
+            return false;
+        }
+        network.syphon(AnimaTicket.create(ENTITY_TELEPORT_COST));
+
+        // Teleport target
         target.teleportTo(targetTeleportPos.getX() + 0.5, targetTeleportPos.getY(), targetTeleportPos.getZ() + 0.5);
         target.fallDistance = 0.0F;
 
