@@ -9,6 +9,7 @@ import net.minecraft.core.RegistryAccess;
 
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public final class AltarTierLookup {
     private AltarTierLookup() {}
@@ -32,7 +33,7 @@ public final class AltarTierLookup {
                 .orElse(0);
     }
 
-    private static java.util.stream.Stream<AltarTier> validTiers(RegistryAccess registries) {
+    private static Stream<AltarTier> validTiers(RegistryAccess registries) {
         Registry<AltarTier> registry = registries.registryOrThrow(NVRegistries.Keys.ALTAR_TIER_KEY);
         return registry.getOrCreateTag(NVTags.Tiers.VALID_TIERS)
                 .stream()

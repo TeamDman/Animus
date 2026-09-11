@@ -4,7 +4,6 @@ import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.AnimusStartupConfig;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
@@ -87,11 +86,25 @@ public class RitualSerenity extends Ritual {
     }
 
     public static boolean isInSerenityZone(Level level, BlockPos spawnPos) {
+        var zones = ZONE_TRACKER.getZones(level);
+        if (zones == null) return false;
+        zones.keySet().removeIf(pos -> !level.hasChunkAt(pos)
+            || !(level.getBlockEntity(pos) instanceof IMasterRitualStone mrs)
+            || !mrs.isActive() || !(mrs.getCurrentRitual() instanceof RitualSerenity)
+            || level.hasNeighborSignal(pos));
         return ZONE_TRACKER.isInZone(level, spawnPos);
     }
 
-    public void onRitualStopped(Level level, BlockPos masterPos) {
-        removeActiveRitual(level, masterPos);
+    @Override
+    public void stopRitual(IMasterRitualStone mrs, BreakType breakType) {
+        removeActiveRitual(mrs.getWorldObj(), mrs.getMasterBlockPos());
+        super.stopRitual(mrs, breakType);
+    }
+
+    @Override
+    public void onUnload(IMasterRitualStone mrs) {
+        removeActiveRitual(mrs.getWorldObj(), mrs.getMasterBlockPos());
+        super.onUnload(mrs);
     }
 
     public static void cleanupLevel(Level level) {

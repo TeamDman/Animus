@@ -1,188 +1,50 @@
 package com.breakinblocks.animusnv.mixin;
 
-import com.breakinblocks.animusnv.AnimusConfig;
-import com.breakinblocks.animusnv.compat.IronsSpellsCompat;
-import com.breakinblocks.animusnv.compat.ironsspells.ItemBloodInfusedSpellbook;
-import com.breakinblocks.animusnv.util.AnimusRitualHelper;
+import com.breakinblocks.animusnv.compat.ironsspells.CrimsonWillSpellHandler;
+import com.breakinblocks.animusnv.compat.ironsspells.SpellCastingHandler;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.sugar.Local;
+import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
-import io.redspace.ironsspellbooks.api.spells.CastResult;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.theillusivec4.curios.api.CuriosApi;
-import com.breakinblocks.neovitae.common.item.BloodOrbItem;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.soul.IAnima;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * Mixin for Iron's Spells AbstractSpell to enable EV-powered spell casting.
- *
- * This mixin intercepts the canBeCastedBy check and adds temporary mana
- * when the player has sufficient EV but insufficient mana, allowing the
- * spell cast to proceed.
- */
 @Mixin(value = AbstractSpell.class, remap = false)
 public class AbstractSpellMixin {
+    /** Substitute only the value used for eligibility; never grant spendable mana here. */
+    @Redirect(method = "canBeCastedBy", at = @At(value = "INVOKE",
+        target = "Lio/redspace/ironsspellbooks/api/magic/MagicData;getMana()F"))
+    private float animus$checkEV(MagicData data, int spellLevel, CastSource source, MagicData magicData, Player player) {
+        int cost = ((AbstractSpell) (Object) this).getManaCost(spellLevel);
+        return source.consumesMana() && SpellCastingHandler.canPayWithEV(player, cost)
+            ? Math.max(data.getMana(), cost) : data.getMana();
+    }
 
-    /**
-     * Inject at the HEAD of canBeCastedBy to add temporary mana before the mana check.
-     * This allows EV casting to work by ensuring mana is sufficient before the check runs.
-     */
-    @Inject(
-        method = "canBeCastedBy",
-        at = @At("HEAD")
-    )
-    private void animus$addTemporaryManaForEVCasting(
-        int spellLevel,
-        CastSource castSource,
-        MagicData magicData,
-        Player player,
-        CallbackInfoReturnable<CastResult> cir
-    ) {
+    /** After cost-modifying events, and only reached for mana-consuming casts. */
+    @Inject(method = "castSpell", at = @At(value = "INVOKE",
+        target = "Lio/redspace/ironsspellbooks/api/magic/MagicData;getMana()F"), cancellable = true)
+    private void animus$payEV(Level level, int spellLevel, ServerPlayer player, CastSource source,
+                             boolean triggerCooldown, CallbackInfo ci, @Local SpellOnCastEvent event) {
+        if (!SpellCastingHandler.payAndSupplyMana(player, event.getManaCost())) ci.cancel();
+    }
+
+    /** SpellOnCastEvent fires before damage/summons are created. */
+    @WrapMethod(method = "castSpell")
+    private void animus$finishPowerModifiers(Level level, int spellLevel, ServerPlayer player,
+                                             CastSource source, boolean triggerCooldown, Operation<Void> original) {
         try {
-            boolean evCastingEnabled;
-            boolean requireBloodOrb = true;
-            int evPerMana = 100;
-            boolean allowHybridCasting = true;
-            try {
-                if (AnimusConfig.ironsSpells != null) {
-                    evCastingEnabled = AnimusConfig.ironsSpells.enableEVCasting.get();
-                    requireBloodOrb = AnimusConfig.ironsSpells.requireBloodOrb.get();
-                    evPerMana = AnimusConfig.ironsSpells.evPerMana.get();
-                    allowHybridCasting = AnimusConfig.ironsSpells.allowHybridCasting.get();
-                } else {
-                    evCastingEnabled = true;
-                }
-            } catch (Exception e) {
-                evCastingEnabled = true;
-            }
-
-            if (!evCastingEnabled) {
-                return;
-            }
-
-            AbstractSpell spell = (AbstractSpell) (Object) this;
-            int manaCost = spell.getManaCost(spellLevel);
-            int currentMana = (int) magicData.getMana();
-
-            if (currentMana >= manaCost) {
-                return;
-            }
-
-            int manaDeficit = manaCost - currentMana;
-
-            ItemStack orbStack = findOrbOfVitae(player);
-            if (requireBloodOrb && orbStack.isEmpty()) {
-                return;
-            }
-
-            // Use the orb's binding for network lookup (respects team bindings)
-            IAnima network = !orbStack.isEmpty()
-                ? AnimusRitualHelper.getNetworkForBoundItem(player, orbStack)
-                : NeoVitaeAPI.getInstance().getAnima(player.getUUID());
-            if (network == null) {
-                return;
-            }
-
-            ItemStack spellbook = findBloodInfusedSpellbook(player);
-
-            int evCost;
-            int manaToAdd;
-
-            if (allowHybridCasting && currentMana > 0) {
-                manaToAdd = manaDeficit;
-                evCost = manaDeficit * evPerMana;
-            } else {
-                manaToAdd = manaCost;
-                evCost = manaCost * evPerMana;
-            }
-
-            if (!spellbook.isEmpty()) {
-                double evReduction = ItemBloodInfusedSpellbook.getEVCostReduction(spellbook);
-                if (evReduction > 0) {
-                    evCost = (int) Math.max(1, evCost * (1.0 - evReduction));
-                }
-            }
-
-            if (network.getCurrentEV() < evCost) {
-                return;
-            }
-
-            // SpellCastingHandler handles the actual EV consumption in SpellPreCastEvent
-            magicData.setMana(currentMana + manaToAdd);
-        } catch (Exception e) {
-            // Ignore - don't break spell casting
+            original.call(level, spellLevel, player, source, triggerCooldown);
+        } finally {
+            CrimsonWillSpellHandler.finishCast(player);
         }
-    }
-
-    private static ItemStack findBloodInfusedSpellbook(Player player) {
-        ItemStack mainHand = player.getMainHandItem();
-        if (mainHand.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
-            return mainHand;
-        }
-
-        ItemStack offHand = player.getOffhandItem();
-        if (offHand.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
-            return offHand;
-        }
-
-        var curiosOpt = CuriosApi.getCuriosInventory(player);
-        if (curiosOpt.isPresent()) {
-            var curios = curiosOpt.get();
-            var handler = curios.getEquippedCurios();
-            for (int i = 0; i < handler.getSlots(); i++) {
-                ItemStack stack = handler.getStackInSlot(i);
-                if (stack.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
-                    return stack;
-                }
-            }
-        }
-
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() == IronsSpellsCompat.BLOOD_INFUSED_SPELLBOOK.get()) {
-                return stack;
-            }
-        }
-
-        return ItemStack.EMPTY;
-    }
-
-    private static ItemStack findOrbOfVitae(Player player) {
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() instanceof BloodOrbItem) {
-                return stack;
-            }
-        }
-
-        for (ItemStack stack : player.getInventory().armor) {
-            if (stack.getItem() instanceof BloodOrbItem) {
-                return stack;
-            }
-        }
-
-        for (ItemStack stack : player.getInventory().offhand) {
-            if (stack.getItem() instanceof BloodOrbItem) {
-                return stack;
-            }
-        }
-
-        var curiosOpt = CuriosApi.getCuriosInventory(player);
-        if (curiosOpt.isPresent()) {
-            var curios = curiosOpt.get();
-            var handler = curios.getEquippedCurios();
-            for (int i = 0; i < handler.getSlots(); i++) {
-                ItemStack stack = handler.getStackInSlot(i);
-                if (stack.getItem() instanceof BloodOrbItem) {
-                    return stack;
-                }
-            }
-        }
-
-        return ItemStack.EMPTY;
     }
 }

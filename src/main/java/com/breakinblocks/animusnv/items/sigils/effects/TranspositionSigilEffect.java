@@ -2,6 +2,8 @@ package com.breakinblocks.animusnv.items.sigils.effects;
 
 import com.mojang.serialization.MapCodec;
 import com.breakinblocks.animusnv.Constants;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
+import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -257,8 +259,14 @@ public record TranspositionSigilEffect() implements ISigilEffect {
             return false;
         }
 
-        // Teleport target
         BlockPos targetTeleportPos = teleposerPos.above();
+        var network = AnimusRitualHelper.getNetworkForBoundItem(player, stack);
+        int cost = 5000;
+        if (network == null || network.getCurrentEV() < cost
+            || !player.level().hasChunkAt(teleposerPos)
+            || !player.level().getWorldBorder().isWithinBounds(targetTeleportPos)) return false;
+        network.syphon(AnimaTicket.create(cost));
+        // Teleport target
         target.teleportTo(targetTeleportPos.getX() + 0.5, targetTeleportPos.getY(), targetTeleportPos.getZ() + 0.5);
         target.fallDistance = 0.0F;
 

@@ -10,6 +10,7 @@ import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 
 import java.util.Optional;
 import java.util.Set;
@@ -86,7 +87,7 @@ public class CrimsonWillSpellHandler {
         }
 
         int spellLevel = event.getSpellLevel();
-        int manaCost = spellLevel; // Approximation of mana cost
+        int manaCost = SpellRegistry.getSpell(event.getSpellId()).getManaCost(spellLevel);
 
         int evCost = manaCost * AnimusConfig.ironsSpells.crimsonWillEVPerMana.get();
         IAnima network = AnimusRitualHelper.getNetworkForBoundItem(player, activeSigil);
@@ -162,20 +163,8 @@ public class CrimsonWillSpellHandler {
             evCost, SPIRITUS_CONSUMED_PER_CAST, (int)(totalBonus * 100));
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onSpellOnCast(SpellOnCastEvent event) {
-        if (!(event.getEntity() instanceof Player player)) {
-            return;
-        }
-
-        if (player.level().isClientSide()) {
-            return;
-        }
-
-        // Always remove regardless of sigil state (handles toggle-off during casting)
-        if (playersWithModifiers.remove(player.getUUID())) {
-            removePowerModifiers(player);
-        }
+    public static void finishCast(Player player) {
+        if (playersWithModifiers.remove(player.getUUID())) removePowerModifiers(player);
     }
 
     /**
@@ -266,7 +255,7 @@ public class CrimsonWillSpellHandler {
         }
     }
 
-    private void removePowerModifiers(Player player) {
+    private static void removePowerModifiers(Player player) {
         AttributeInstance spellPowerAttr = player.getAttribute(AttributeRegistry.SPELL_POWER);
         if (spellPowerAttr != null) {
             spellPowerAttr.removeModifier(SPELL_POWER_MODIFIER_ID);

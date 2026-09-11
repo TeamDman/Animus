@@ -44,6 +44,11 @@ public class BlockEntitySanguineRectifier extends BlockEntity {
         super(EvilCraftCompat.SANGUINE_RECTIFIER_BE.get(), pos, state);
         this.bloodTank = new FluidTank(AnimusConfig.sanguineRectifier.tankCapacity.get()) {
             @Override
+            protected void onContentsChanged() {
+                setChanged();
+            }
+
+            @Override
             public boolean isFluidValid(FluidStack stack) {
                 return isEvilCraftBlood(stack);
             }

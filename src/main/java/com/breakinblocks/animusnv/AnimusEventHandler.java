@@ -3,9 +3,10 @@ package com.breakinblocks.animusnv;
 import com.breakinblocks.animusnv.entities.EntitySentientArrow;
 import com.breakinblocks.animusnv.entities.EntityThrownSpear;
 import com.breakinblocks.animusnv.events.FragmentHealingEventHandler;
-import com.breakinblocks.animusnv.items.ItemSentientBow;
 import com.breakinblocks.animusnv.items.ItemSpearSentient;
 import com.breakinblocks.animusnv.items.sigils.effects.FreeSoulSigilEffect;
+import com.breakinblocks.animusnv.items.sigils.effects.TranspositionSigilEffect;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import com.breakinblocks.animusnv.util.SpiritusWeaponStats;
 import com.breakinblocks.neovitae.common.datacomponent.AnointmentHolder;
@@ -50,6 +51,18 @@ import java.util.UUID;
 
 @EventBusSubscriber(modid = Constants.Mod.MODID)
 public class AnimusEventHandler {
+
+    @SubscribeEvent
+    public static void onTranspositionAttack(AttackEntityEvent event) {
+        Player player = event.getEntity();
+        ItemStack stack = player.getMainHandItem();
+        if (!stack.is(AnimusItems.SIGIL_TRANSPOSITION.get()) || !(event.getTarget() instanceof LivingEntity target)) return;
+        if (player.level().isClientSide()) {
+            event.setCanceled(true);
+        } else if (TranspositionSigilEffect.handleEntityTeleport(player, target, stack)) {
+            event.setCanceled(true);
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {

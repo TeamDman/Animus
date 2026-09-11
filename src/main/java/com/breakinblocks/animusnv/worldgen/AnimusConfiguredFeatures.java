@@ -16,6 +16,8 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlac
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 
+import java.util.List;
+
 public class AnimusConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> BLOOD_TREE =
         registerKey("blood_tree");
@@ -32,7 +34,7 @@ public class AnimusConfiguredFeatures {
             new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),  // foliage shape
             new TwoLayersFeatureSize(1, 0, 1)  // minimum space requirements
         ).ignoreVines()
-         .decorators(java.util.List.of(BloodCoreDecorator.INSTANCE));  // Add blood core decorator
+         .decorators(List.of(BloodCoreDecorator.INSTANCE));  // Add blood core decorator
     }
 
     private static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {

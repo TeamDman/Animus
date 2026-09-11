@@ -1,7 +1,6 @@
 package com.breakinblocks.animusnv.compat.ironsspells;
 
 import com.breakinblocks.animusnv.Animus;
-import com.breakinblocks.animusnv.AnimusConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -106,7 +105,7 @@ public class AltarInfusionHandler {
             return;
         }
 
-        altar.addSacrificeEV(-evCost, false);
+        altar.drainMainTank(evCost);
         ItemBloodInfusedSpellbook.setInfusionTier(stack, nextTier);
 
         player.displayClientMessage(

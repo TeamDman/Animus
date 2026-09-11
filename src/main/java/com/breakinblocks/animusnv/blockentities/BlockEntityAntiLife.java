@@ -67,7 +67,7 @@ public class BlockEntityAntiLife extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.putString("seeking", seeking.getDescriptionId());
+        tag.putString("seeking", BuiltInRegistries.BLOCK.getKey(seeking).toString());
         tag.putInt("range", range);
         if (playerUUID != null) {
             tag.putUUID("player", playerUUID);
@@ -79,9 +79,14 @@ public class BlockEntityAntiLife extends BlockEntity {
         super.loadAdditional(tag, registries);
         // Try to get the block - if it fails, default to AIR
         String seekingId = tag.getString("seeking");
-        this.seeking = BuiltInRegistries.BLOCK.getOptional(
-            ResourceLocation.tryParse(seekingId.replace("block.", ""))
-        ).orElse(Blocks.AIR);
+        ResourceLocation id = ResourceLocation.tryParse(seekingId);
+        this.seeking = id == null ? Blocks.AIR : BuiltInRegistries.BLOCK.getOptional(id).orElse(Blocks.AIR);
+        // Older saves contain a translation key rather than a registry identifier.
+        if (seekingId.startsWith("block.")) {
+            this.seeking = BuiltInRegistries.BLOCK.stream()
+                .filter(block -> block.getDescriptionId().equals(seekingId))
+                .findFirst().orElse(Blocks.AIR);
+        }
 
         this.range = tag.getInt("range");
         if (tag.hasUUID("player")) {

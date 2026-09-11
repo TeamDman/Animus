@@ -5,7 +5,8 @@ import com.breakinblocks.animusnv.AnimusStartupConfig;
 import com.breakinblocks.animusnv.AnimusModEventHandler;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.GlobalPos;
+import net.neoforged.neoforge.common.world.chunk.TicketHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -32,8 +33,7 @@ import java.util.function.Consumer;
 public class RitualPersistence extends Ritual {
     public static final String CHUNK_RANGE = "chunks";
 
-    private static final Map<BlockPos, Set<ChunkPos>> loadedChunks = new HashMap<>();
-    private boolean wasActive = false;
+    private static final Map<GlobalPos, Set<ChunkPos>> loadedChunks = new HashMap<>();
 
     public RitualPersistence() {
         super(
@@ -62,6 +62,7 @@ public class RitualPersistence extends Ritual {
 
         IAnima network = AnimusRitualHelper.getOwnerNetwork(mrs);
         if (network == null) {
+            unloadChunks(serverLevel, masterPos);
             return;
         }
 
@@ -76,7 +77,6 @@ public class RitualPersistence extends Ritual {
         network.syphon(AnimaTicket.create(refreshCost));
 
         loadChunks(serverLevel, masterPos);
-        wasActive = true;
     }
 
     private void loadChunks(ServerLevel level, BlockPos masterPos) {
@@ -88,7 +88,7 @@ public class RitualPersistence extends Ritual {
         ChunkPos centerChunk = new ChunkPos(masterPos);
         TicketController controller = AnimusModEventHandler.getTicketController();
 
-        Set<ChunkPos> chunks = loadedChunks.computeIfAbsent(masterPos, k -> new HashSet<>());
+        Set<ChunkPos> chunks = loadedChunks.computeIfAbsent(GlobalPos.of(level.dimension(), masterPos.immutable()), k -> new HashSet<>());
 
         Set<ChunkPos> chunksToLoad = new HashSet<>();
         for (int x = -radius; x <= radius; x++) {
@@ -128,8 +128,8 @@ public class RitualPersistence extends Ritual {
         });
     }
 
-    private void unloadChunks(ServerLevel level, BlockPos masterPos) {
-        Set<ChunkPos> chunks = loadedChunks.get(masterPos);
+    private static void unloadChunks(ServerLevel level, BlockPos masterPos) {
+        Set<ChunkPos> chunks = loadedChunks.get(GlobalPos.of(level.dimension(), masterPos));
         TicketController controller = AnimusModEventHandler.getTicketController();
         if (chunks != null) {
             for (ChunkPos chunkPos : chunks) {
@@ -143,9 +143,8 @@ public class RitualPersistence extends Ritual {
                 );
             }
             chunks.clear();
-            loadedChunks.remove(masterPos);
+            loadedChunks.remove(GlobalPos.of(level.dimension(), masterPos));
         }
-        wasActive = false;
     }
 
 
@@ -182,23 +181,54 @@ public class RitualPersistence extends Ritual {
         return new RitualPersistence();
     }
 
-    public static void cleanupAllChunks(ServerLevel level) {
-        TicketController controller = AnimusModEventHandler.getTicketController();
-        for (Map.Entry<BlockPos, Set<ChunkPos>> entry : loadedChunks.entrySet()) {
-            BlockPos masterPos = entry.getKey();
-            Set<ChunkPos> chunks = entry.getValue();
+    @Override
+    public void stopRitual(IMasterRitualStone mrs, BreakType breakType) {
+        if (mrs.getWorldObj() instanceof ServerLevel level) {
+            unloadChunks(level, mrs.getMasterBlockPos());
+        }
+        super.stopRitual(mrs, breakType);
+    }
 
-            for (ChunkPos chunkPos : chunks) {
-                controller.forceChunk(
-                    level,
-                    masterPos,
-                    chunkPos.x,
-                    chunkPos.z,
-                    false,
-                    false
-                );
+    private static boolean isActiveRitual(ServerLevel level, BlockPos pos) {
+        if (!(level.getBlockEntity(pos) instanceof IMasterRitualStone mrs)
+            || !mrs.isActive() || !(mrs.getCurrentRitual() instanceof RitualPersistence ritual)
+            || level.hasNeighborSignal(pos)) return false;
+        IAnima network = AnimusRitualHelper.getOwnerNetwork(mrs);
+        return network != null && network.getCurrentEV() >= ritual.getRefreshCost();
+    }
+
+    public static void validateTickets(ServerLevel level, TicketHelper helper) {
+        helper.getBlockTickets().forEach((pos, tickets) -> {
+            if (!isActiveRitual(level, pos)) {
+                helper.removeAllTickets(pos);
+                loadedChunks.remove(GlobalPos.of(level.dimension(), pos));
+                return;
+            }
+            Set<ChunkPos> chunks = new HashSet<>();
+            tickets.nonTicking().forEach((long chunk) -> chunks.add(new ChunkPos(chunk)));
+            tickets.ticking().forEach((long chunk) -> helper.removeTicket(pos, chunk, true));
+            loadedChunks.put(GlobalPos.of(level.dimension(), pos.immutable()), chunks);
+        });
+        helper.getEntityTickets().keySet().forEach(helper::removeAllTickets);
+    }
+
+    /** Catch replacement, explosions, and redstone pauses even if the stone misses a stop callback. */
+    public static void tickLoadedChunks(ServerLevel level) {
+        for (GlobalPos pos : new ArrayList<>(loadedChunks.keySet())) {
+            if (pos.dimension().equals(level.dimension()) && !isActiveRitual(level, pos.pos())) {
+                unloadChunks(level, pos.pos());
             }
         }
-        loadedChunks.clear();
+    }
+
+    public static void cleanupAllChunks(ServerLevel level) {
+        for (GlobalPos pos : new ArrayList<>(loadedChunks.keySet())) {
+            if (pos.dimension().equals(level.dimension())) unloadChunks(level, pos.pos());
+        }
+    }
+
+    /** Keep valid tickets on disk for restart; release only in-memory level state. */
+    public static void forgetLevel(ServerLevel level) {
+        loadedChunks.keySet().removeIf(pos -> pos.dimension().equals(level.dimension()));
     }
 }

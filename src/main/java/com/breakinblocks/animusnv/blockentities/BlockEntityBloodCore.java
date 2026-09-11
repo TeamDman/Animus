@@ -158,8 +158,9 @@ public class BlockEntityBloodCore extends BlockEntity {
 
             targetPos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, targetPos);
 
+            BlockPos saplingPos = targetPos;
+            targetPos = saplingPos.below();
             BlockState groundState = level.getBlockState(targetPos);
-            BlockPos saplingPos = targetPos.above();
             BlockState aboveState = level.getBlockState(saplingPos);
 
             // If heightmap landed on grass, adjust positions

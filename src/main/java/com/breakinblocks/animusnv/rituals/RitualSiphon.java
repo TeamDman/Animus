@@ -9,7 +9,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -51,8 +50,8 @@ public class RitualSiphon extends Ritual {
     public static final String EFFECT_RANGE = "effect";
     public static final String TANK_RANGE = "tank";
 
-    private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
-    private static final Map<BlockPos, Set<BlockPos>> extractedPositionsCache = new HashMap<>();
+    private final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
+    private final Map<BlockPos, Set<BlockPos>> extractedPositionsCache = new HashMap<>();
     private static final int BUCKET_AMOUNT = 1000;
 
     public RitualSiphon() {
@@ -110,7 +109,7 @@ public class RitualSiphon extends Ritual {
 
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         AABB effectAABB = effectRange.getAABB(masterPos);
-        int horizontalRadius = (int) Math.max(Math.abs(effectAABB.maxX - masterPos.getX()), Math.abs(effectAABB.maxZ - masterPos.getZ()));
+        int horizontalRadius = ChebyshevSearcher.horizontalRadiusOf(effectAABB, masterPos);
         int verticalDepth = (int) Math.abs(effectAABB.minY - masterPos.getY());
         BlockPos fluidPos = findFluidSource(serverLevel, masterPos, horizontalRadius, verticalDepth);
 
@@ -227,7 +226,19 @@ public class RitualSiphon extends Ritual {
         SEARCHER.reset(pos);
     }
 
-    public void onRitualStopped(Level level, BlockPos masterPos) {
+    @Override
+    public void stopRitual(IMasterRitualStone mrs, BreakType breakType) {
+        resetState(mrs.getMasterBlockPos());
+        super.stopRitual(mrs, breakType);
+    }
+
+    @Override
+    public void onUnload(IMasterRitualStone mrs) {
+        resetState(mrs.getMasterBlockPos());
+        super.onUnload(mrs);
+    }
+
+    private void resetState(BlockPos masterPos) {
         SEARCHER.reset(masterPos);
         extractedPositionsCache.remove(masterPos);
     }

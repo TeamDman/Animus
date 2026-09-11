@@ -5,6 +5,7 @@ import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -137,7 +138,7 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
         int durationSeconds = AnimusConfig.sigils.freeSoulDuration.get();
         long exitTick = level.getServer().getTickCount() + (durationSeconds * 20L);
 
-        activeSpectators.put(player.getUUID(), new SpectatorState(exitTick, previousGameMode, originalPosition, fromDeath));
+        activeSpectators.put(player.getUUID(), new SpectatorState(exitTick, previousGameMode, originalPosition, level.dimension(), fromDeath));
         player.setGameMode(GameType.SPECTATOR);
 
         if (!fromDeath) {
@@ -161,11 +162,7 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
 
         // Teleport back 10 ticks early to prevent wall-clipping exploits
         if (!state.hasTeleportedBack && currentTick >= state.exitTick - 10) {
-            player.teleportTo(
-                    state.originalPosition.x,
-                    state.originalPosition.y,
-                    state.originalPosition.z
-            );
+            restorePosition(player, state);
             state.hasTeleportedBack = true;
 
             player.displayClientMessage(
@@ -176,6 +173,7 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
         }
 
         if (currentTick >= state.exitTick) {
+            restorePosition(player, state);
             player.setGameMode(state.previousGameMode);
 
             if (state.fromDeath) {
@@ -198,7 +196,17 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
         SpectatorState state = activeSpectators.remove(playerId);
 
         if (state != null) {
+            restorePosition(player, state);
             player.setGameMode(state.previousGameMode);
+        }
+    }
+
+    private static void restorePosition(ServerPlayer player, SpectatorState state) {
+        ServerLevel destination = player.server.getLevel(state.dimension);
+        if (destination != null) {
+            player.teleportTo(destination, state.originalPosition.x, state.originalPosition.y,
+                state.originalPosition.z, player.getYRot(), player.getXRot());
+            player.fallDistance = 0;
         }
     }
 
@@ -213,13 +221,15 @@ public record FreeSoulSigilEffect() implements ISigilEffect {
         final long exitTick;
         final GameType previousGameMode;
         final Vec3 originalPosition;
+        final ResourceKey<Level> dimension;
         final boolean fromDeath;
         boolean hasTeleportedBack = false;
 
-        SpectatorState(long exitTick, GameType previousGameMode, Vec3 originalPosition, boolean fromDeath) {
+        SpectatorState(long exitTick, GameType previousGameMode, Vec3 originalPosition, ResourceKey<Level> dimension, boolean fromDeath) {
             this.exitTick = exitTick;
             this.previousGameMode = previousGameMode;
             this.originalPosition = originalPosition;
+            this.dimension = dimension;
             this.fromDeath = fromDeath;
         }
     }

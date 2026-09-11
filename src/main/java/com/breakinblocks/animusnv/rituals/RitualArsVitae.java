@@ -55,7 +55,7 @@ public class RitualArsVitae extends Ritual {
         int nearbyRituals = countNearbyMasterRitualStones(serverLevel, masterPos, penaltyRadius);
 
         int baseConversion = AnimusConfig.rituals.sourceVitaeumBaseConversion.get();
-        int conversionRate = baseConversion * (int) Math.pow(2, nearbyRituals);
+        int conversionRate = SourceJarHelper.conversionRate(baseConversion, nearbyRituals);
 
         int availableEV = network.getCurrentEV();
 

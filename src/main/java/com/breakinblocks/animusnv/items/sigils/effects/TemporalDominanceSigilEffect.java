@@ -6,6 +6,7 @@ import com.breakinblocks.animusnv.network.AcceleratedBlocksSyncPayload;
 import com.breakinblocks.animusnv.network.AnimusPayloads;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -61,7 +62,7 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
     private static final int REFRESH_COST = 15000;
 
     // Track acceleration state for each block entity
-    private static final Map<BlockPos, AccelerationState> acceleratedBlocks = new ConcurrentHashMap<>();
+    private static final Map<GlobalPos, AccelerationState> acceleratedBlocks = new ConcurrentHashMap<>();
 
     @Override
     public MapCodec<? extends ISigilEffect> codec() {
@@ -112,7 +113,7 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
         }
 
         // Get or create acceleration state
-        AccelerationState state = acceleratedBlocks.get(pos);
+        AccelerationState state = acceleratedBlocks.get(GlobalPos.of(level.dimension(), pos));
         int newLevel;
         int evCost;
 
@@ -146,7 +147,7 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
 
         // Update or create acceleration state
         long expiryTime = level.getGameTime() + DURATION_TICKS;
-        acceleratedBlocks.put(pos.immutable(), new AccelerationState(newLevel, expiryTime, level.dimension()));
+        acceleratedBlocks.put(GlobalPos.of(level.dimension(), pos.immutable()), new AccelerationState(newLevel, expiryTime, level.dimension()));
 
         // Calculate speed multiplier
         int speedMultiplier = 1 << newLevel; // 2^level
@@ -171,11 +172,11 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
      */
     public static void tickAcceleratedBlocks(ServerLevel level) {
         long currentTime = level.getGameTime();
-        Iterator<Map.Entry<BlockPos, AccelerationState>> iterator = acceleratedBlocks.entrySet().iterator();
+        Iterator<Map.Entry<GlobalPos, AccelerationState>> iterator = acceleratedBlocks.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            Map.Entry<BlockPos, AccelerationState> entry = iterator.next();
-            BlockPos pos = entry.getKey();
+            Map.Entry<GlobalPos, AccelerationState> entry = iterator.next();
+            BlockPos pos = entry.getKey().pos();
             AccelerationState state = entry.getValue();
 
             // Only process blocks in this dimension
@@ -190,6 +191,9 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
             }
 
             // Get the block entity
+            if (!level.hasChunkAt(pos)) {
+                continue;
+            }
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity == null) {
                 iterator.remove();
@@ -228,7 +232,7 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
     /**
      * Get acceleration state for rendering overlay.
      */
-    public static Map<BlockPos, AccelerationState> getAcceleratedBlocks() {
+    public static Map<GlobalPos, AccelerationState> getAcceleratedBlocks() {
         return Collections.unmodifiableMap(acceleratedBlocks);
     }
 
@@ -236,6 +240,10 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
      * Sync accelerated blocks to all players in the dimension.
      * Called periodically from event handler.
      */
+    public static void cleanupLevel(Level level) {
+        acceleratedBlocks.keySet().removeIf(pos -> pos.dimension().equals(level.dimension()));
+    }
+
     public static void syncToClients(ServerLevel level) {
         if (acceleratedBlocks.isEmpty()) {
             // Send empty packet to clear client data
@@ -248,10 +256,10 @@ public record TemporalDominanceSigilEffect() implements ISigilEffect {
 
         // Convert internal state to payload data, filtering by dimension
         Map<BlockPos, AcceleratedBlocksSyncPayload.AccelerationEntry> payloadData = new HashMap<>();
-        for (Map.Entry<BlockPos, AccelerationState> entry : acceleratedBlocks.entrySet()) {
+        for (Map.Entry<GlobalPos, AccelerationState> entry : acceleratedBlocks.entrySet()) {
             AccelerationState state = entry.getValue();
             if (state.dimension.equals(level.dimension())) {
-                payloadData.put(entry.getKey(), new AcceleratedBlocksSyncPayload.AccelerationEntry(
+                payloadData.put(entry.getKey().pos(), new AcceleratedBlocksSyncPayload.AccelerationEntry(
                         state.level,
                         state.expiryTime,
                         state.dimension

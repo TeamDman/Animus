@@ -6,13 +6,12 @@ import com.breakinblocks.animusnv.client.BuilderSigilClientHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -56,7 +55,7 @@ public record BuilderSigilEffect() implements ISigilEffect {
                 ? player.getOffhandItem()
                 : player.getMainHandItem();
 
-        if (buildStack.isEmpty() || !(buildStack.getItem() instanceof BlockItem blockItem)) {
+        if (buildStack.isEmpty() || !(buildStack.getItem() instanceof BlockItem)) {
             return false;
         }
 
@@ -68,18 +67,7 @@ public record BuilderSigilEffect() implements ISigilEffect {
             return false;
         }
 
-        // Place the block
-        Block block = blockItem.getBlock();
-        BlockState state = block.defaultBlockState();
-        level.setBlock(placePos, state, 3);
-
-        // Consume item
-        buildStack.shrink(1);
-        if (buildStack.isEmpty() && sigilHand == InteractionHand.MAIN_HAND) {
-            player.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-        }
-
-        return true;
+        return placeBlock(player, buildStack, sigilHand, placePos, Direction.UP);
     }
 
     @Override
@@ -94,11 +82,9 @@ public record BuilderSigilEffect() implements ISigilEffect {
                 ? player.getOffhandItem()
                 : player.getMainHandItem();
 
-        if (buildStack.isEmpty() || !(buildStack.getItem() instanceof BlockItem blockItem)) {
+        if (buildStack.isEmpty() || !(buildStack.getItem() instanceof BlockItem)) {
             return false;
         }
-
-        Block block = blockItem.getBlock();
 
         if (player.isShiftKeyDown()) {
             // Fill area
@@ -115,14 +101,7 @@ public record BuilderSigilEffect() implements ISigilEffect {
                         };
 
                         if (level.isEmptyBlock(placePos) && !buildStack.isEmpty()) {
-                            BlockState state = block.defaultBlockState();
-                            level.setBlock(placePos, state, 3);
-
-                            buildStack.shrink(1);
-                            if (buildStack.isEmpty() && sigilHand == InteractionHand.MAIN_HAND) {
-                                player.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-                            }
-                            placedAny = true;
+                            placedAny |= placeBlock(player, buildStack, sigilHand, placePos, side);
                         }
                     }
                 }
@@ -135,7 +114,7 @@ public record BuilderSigilEffect() implements ISigilEffect {
             int distance = 0;
 
             do {
-                placePos = placePos.relative(side.getOpposite());
+                placePos = placePos.relative(side);
                 distance++;
                 if (distance > AnimusConfig.sigils.builderRange.get()) {
                     return false;
@@ -143,18 +122,23 @@ public record BuilderSigilEffect() implements ISigilEffect {
             } while (!level.isEmptyBlock(placePos) && placePos.getY() > level.getMinBuildHeight());
 
             if (level.isEmptyBlock(placePos) && !buildStack.isEmpty()) {
-                BlockState state = block.defaultBlockState();
-                level.setBlock(placePos, state, 3);
-
-                buildStack.shrink(1);
-                if (buildStack.isEmpty() && sigilHand == InteractionHand.MAIN_HAND) {
-                    player.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-                }
-
-                return true;
+                return placeBlock(player, buildStack, sigilHand, placePos, side);
             }
         }
 
         return false;
+    }
+
+    private static boolean placeBlock(Player player, ItemStack stack, InteractionHand sigilHand,
+                                      BlockPos pos, Direction side) {
+        Level level = player.level();
+        if (player.isSpectator() || !player.mayBuild() || !level.hasChunkAt(pos)
+            || !level.isInWorldBounds(pos) || !level.getWorldBorder().isWithinBounds(pos)
+            || !level.mayInteract(player, pos) || !player.mayUseItemAt(pos, side, stack)) {
+            return false;
+        }
+        InteractionHand hand = sigilHand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(pos), side, pos, false);
+        return stack.useOn(new BlockPlaceContext(player, hand, stack, hit)).consumesAction();
     }
 }
