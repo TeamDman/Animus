@@ -15,6 +15,7 @@ import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
 import com.breakinblocks.neovitae.common.blockentity.MasterRitualStoneBlockEntity;
 import com.breakinblocks.neovitae.common.datamap.NVDataMaps;
 import com.breakinblocks.neovitae.ritual.Ritual;
+import com.breakinblocks.neovitae.ritual.RitualComponent;
 import com.hollingsworth.arsnouveau.common.block.tile.SourceJarTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,7 +25,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public final class AnimusSourceTests {
 
@@ -35,6 +40,7 @@ public final class AnimusSourceTests {
         r.add("ars_vitae_charges_only_accepted_source", AnimusSourceTests::arsVitaeFillsJarAndChargesOnlyAcceptedSource);
         r.add("source_vitaeum_preserves_source_when_altar_full", AnimusSourceTests::sourceVitaeumPreservesSourceWhenAltarFull);
         r.add("ars_vitae_runs_through_master_stone", AnimusSourceTests::arsVitaeActivatesAndRunsThroughMasterStone);
+        r.add("source_vitaeum_pattern_is_distinct_from_ars_vitae", AnimusSourceTests::sourceVitaeumPatternIsDistinctFromArsVitae);
         r.add("conversion_penalty_never_overflows", AnimusSourceTests::conversionPenaltyNeverOverflows);
     }
 
@@ -120,5 +126,35 @@ public final class AnimusSourceTests {
             h.assertTrue(SourceJarHelper.conversionRate(10, count) > 0, "positive rate with " + count + " neighbors");
         }
         h.succeed();
+    }
+
+    private static void sourceVitaeumPatternIsDistinctFromArsVitae(GameTestHelper h) {
+        Set<String> sourcePattern = rotatedPatterns(new RitualSourceVitaeum()).get(0);
+        for (Set<String> rotatedArsPattern : rotatedPatterns(new RitualArsVitae())) {
+            h.assertTrue(!sourcePattern.equals(rotatedArsPattern), "Source Vitaeum must not match Ars Vitae in any rotation");
+        }
+        h.succeed();
+    }
+
+    private static List<Set<String>> rotatedPatterns(Ritual ritual) {
+        List<RitualComponent> components = new ArrayList<>();
+        ritual.gatherComponents(components::add);
+        List<Set<String>> patterns = new ArrayList<>();
+        for (int rotation = 0; rotation < 4; rotation++) {
+            int quarterTurns = rotation;
+            patterns.add(components.stream()
+                .map(component -> {
+                    int x = component.offset().getX();
+                    int z = component.offset().getZ();
+                    for (int turn = 0; turn < quarterTurns; turn++) {
+                        int rotatedX = -z;
+                        z = x;
+                        x = rotatedX;
+                    }
+                    return x + ":" + component.offset().getY() + ":" + z + ":" + component.runeType();
+                })
+                .collect(Collectors.toSet()));
+        }
+        return patterns;
     }
 }
