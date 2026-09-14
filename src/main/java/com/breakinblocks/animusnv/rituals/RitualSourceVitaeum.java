@@ -129,14 +129,14 @@ public class RitualSourceVitaeum extends Ritual {
         addRune(components, -2, 0, 1, EnumRuneType.AIR);
         addRune(components, -1, 0, -2, EnumRuneType.AIR);
         addRune(components, -1, 0, -1, EnumRuneType.AIR);
-        addRune(components, -1, 0, 0, EnumRuneType.WATER);
+        addRune(components, -1, 0, 0, EnumRuneType.AIR);
         addRune(components, -1, 0, 1, EnumRuneType.AIR);
         addRune(components, -1, 0, 2, EnumRuneType.AIR);
         addRune(components, 0, 0, -1, EnumRuneType.FIRE);
         addRune(components, 0, 0, 1, EnumRuneType.AIR);
         addRune(components, 1, 0, -2, EnumRuneType.AIR);
         addRune(components, 1, 0, -1, EnumRuneType.AIR);
-        addRune(components, 1, 0, 0, EnumRuneType.EARTH);
+        addRune(components, 1, 0, 0, EnumRuneType.AIR);
         addRune(components, 1, 0, 1, EnumRuneType.AIR);
         addRune(components, 1, 0, 2, EnumRuneType.AIR);
         addRune(components, 2, 0, -1, EnumRuneType.AIR);

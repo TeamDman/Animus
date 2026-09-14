@@ -14,6 +14,7 @@ import com.breakinblocks.neovitae.common.blockentity.MasterRitualStoneBlockEntit
 import com.breakinblocks.neovitae.common.datamap.NVDataMaps;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 import com.breakinblocks.neovitae.ritual.Ritual;
+import com.breakinblocks.neovitae.ritual.RitualComponent;
 import com.hollingsworth.arsnouveau.common.block.tile.SourceJarTile;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,10 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 import java.lang.reflect.Proxy;
 import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @GameTestHolder(Constants.Mod.MODID)
 @PrefixGameTestTemplate(false)
@@ -108,6 +113,37 @@ public class AnimusSourceTests {
         h.assertTrue(AnimusRituals.ARS_VITAE.getData(NVDataMaps.RITUAL_STATS) != null, "ritual stats loaded");
         master.stopRitual(Ritual.BreakType.DEACTIVATE);
         h.succeed();
+    }
+
+    @GameTest(template = TEMPLATE)
+    public void source_vitaeum_pattern_is_distinct_from_ars_vitae(GameTestHelper h) {
+        Set<String> sourcePattern = rotatedPatterns(new RitualSourceVitaeum()).get(0);
+        for (Set<String> rotatedArsPattern : rotatedPatterns(new RitualArsVitae())) {
+            h.assertTrue(!sourcePattern.equals(rotatedArsPattern), "Source Vitaeum must not match Ars Vitae in any rotation");
+        }
+        h.succeed();
+    }
+
+    private List<Set<String>> rotatedPatterns(Ritual ritual) {
+        List<RitualComponent> components = new ArrayList<>();
+        ritual.gatherComponents(components::add);
+        List<Set<String>> patterns = new ArrayList<>();
+        for (int rotation = 0; rotation < 4; rotation++) {
+            int quarterTurns = rotation;
+            patterns.add(components.stream()
+                .map(component -> {
+                    int x = component.offset().getX();
+                    int z = component.offset().getZ();
+                    for (int turn = 0; turn < quarterTurns; turn++) {
+                        int rotatedX = -z;
+                        z = x;
+                        x = rotatedX;
+                    }
+                    return x + ":" + component.offset().getY() + ":" + z + ":" + component.runeType();
+                })
+                .collect(Collectors.toSet()));
+        }
+        return patterns;
     }
 
     @GameTest(template = TEMPLATE)
