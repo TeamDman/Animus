@@ -35,7 +35,7 @@ public class ItemSigilRemedium extends AnimusSigilBase {
     private static final Map<UUID, ActiveSigil> activeSigils = new HashMap<>();
 
     private static class ActiveSigil {
-        final ItemStack stack;
+        ItemStack stack;
         long lastCleanTick;
 
         ActiveSigil(ItemStack stack, long lastCleanTick) {
@@ -123,10 +123,11 @@ public class ItemSigilRemedium extends AnimusSigilBase {
 
         // Verify the player still has the active sigil (including inside Sigil of Holding)
         boolean hasActiveSigil = false;
+        ItemStack currentActiveSigil = null;
         for (ItemStack stack : player.getInventory().items) {
             if (stack.getItem() instanceof ItemSigilRemedium && isActive(stack)) {
                 hasActiveSigil = true;
-                activeSigil.stack.getOrCreateTag().putBoolean("Active", true); // Ensure sync
+                currentActiveSigil = stack;
                 break;
             }
             if (stack.getItem() instanceof ItemSigilHolding) {
@@ -134,6 +135,7 @@ public class ItemSigilRemedium extends AnimusSigilBase {
                 for (ItemStack heldStack : holdingInv) {
                     if (heldStack.getItem() instanceof ItemSigilRemedium && isActive(heldStack)) {
                         hasActiveSigil = true;
+                        currentActiveSigil = heldStack;
                         break;
                     }
                 }
@@ -141,11 +143,15 @@ public class ItemSigilRemedium extends AnimusSigilBase {
             }
         }
 
-        if (!hasActiveSigil) {
+        if (!hasActiveSigil || currentActiveSigil == null) {
             // Player no longer has active sigil
             activeSigils.remove(playerId);
             return;
         }
+
+        // The active sigil may have moved, or may be stored inside Sigil of Holding.
+        // Keep the tracked stack pointed at the actual Remedium item, not the container.
+        activeSigil.stack = currentActiveSigil;
 
         // Check if it's time to cleanse (once per second = 20 ticks)
         long currentTick = level.getServer().getTickCount();
