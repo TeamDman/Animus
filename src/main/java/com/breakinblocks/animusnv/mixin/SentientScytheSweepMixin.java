@@ -5,11 +5,13 @@ import com.breakinblocks.animusnv.compat.malum.SpiritHarvestHelper;
 import com.breakinblocks.animusnv.items.ItemRunicSentientScythe;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.item.soul.SentientScytheItem;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
@@ -28,5 +30,13 @@ public class SentientScytheSweepMixin {
         if (CompatHandler.isMalumLoaded() && SpiritHarvestHelper.isSweepSuppressed(player)) {
             ci.cancel();
         }
+    }
+
+    @ModifyArg(method = "performAreaAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"), index = 0)
+    private DamageSource animus$useMalumSweepDamage(DamageSource source) {
+        if ((Object) this instanceof ItemRunicSentientScythe && CompatHandler.isMalumLoaded() && source.getEntity() instanceof Player player) {
+            return SpiritHarvestHelper.scytheSweepSource(player);
+        }
+        return source;
     }
 }

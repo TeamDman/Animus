@@ -1,6 +1,8 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.Constants;
+import com.breakinblocks.animusnv.compat.CompatHandler;
+import com.breakinblocks.animusnv.compat.malum.SpiritHarvestHelper;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -10,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -106,7 +109,10 @@ public class ItemHandOfDeath extends ItemRunicSentientScythe {
             return;
         }
 
-        if (!target.hurt(level.damageSources().playerAttack(executioner), maxHealth) || target.isAlive()) {
+        DamageSource source = CompatHandler.isMalumLoaded()
+            ? SpiritHarvestHelper.scytheMeleeSource(executioner)
+            : level.damageSources().playerAttack(executioner);
+        if (!target.hurt(source, maxHealth) || target.isAlive()) {
             return;
         }
 

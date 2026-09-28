@@ -1,6 +1,7 @@
 package com.breakinblocks.animusnv.items;
 
 import com.breakinblocks.animusnv.compat.CompatHandler;
+import com.breakinblocks.animusnv.compat.malum.SpiritHarvestHelper;
 import com.breakinblocks.animusnv.registry.AnimusDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -10,12 +11,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.common.item.soul.SentientScytheItem;
@@ -36,6 +40,15 @@ public class ItemRunicSentientScythe extends SentientScytheItem {
 
     public ItemRunicSentientScythe() {
         super();
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (CompatHandler.isMalumLoaded() && SpiritHarvestHelper.tryScytheAbility(level, player, hand, stack)) {
+            return InteractionResultHolder.success(stack);
+        }
+        return super.use(level, player, hand);
     }
 
     @Override

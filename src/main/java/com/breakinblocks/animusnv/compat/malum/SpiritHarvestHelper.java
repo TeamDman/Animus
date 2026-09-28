@@ -1,12 +1,18 @@
 package com.breakinblocks.animusnv.compat.malum;
 
-import net.minecraft.core.Holder;
+import com.sammy.malum.core.handlers.enchantment.AscensionHandler;
+import com.sammy.malum.core.handlers.enchantment.ReboundHandler;
+import com.sammy.malum.registry.common.MalumDamageTypes;
+import com.sammy.malum.registry.common.enchantment.EnchantmentKeys;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import team.lodestar.lodestone.helpers.DamageTypeHelper;
 import top.theillusivec4.curios.api.CuriosApi;
 
 /**
@@ -16,7 +22,6 @@ public class SpiritHarvestHelper {
 
     private static final ResourceLocation NARROW_EDGE_NECKLACE = ResourceLocation.fromNamespaceAndPath("malum", "necklace_of_the_narrow_edge");
     private static final ResourceLocation HIDDEN_BLADE_NECKLACE = ResourceLocation.fromNamespaceAndPath("malum", "necklace_of_the_hidden_blade");
-    private static final ResourceLocation SCYTHE_PROFICIENCY = ResourceLocation.fromNamespaceAndPath("malum", "scythe_proficiency");
 
     /**
      * Mirrors MalumScytheItem.canSweep: Malum suppresses scythe sweeping while either the
@@ -26,25 +31,26 @@ public class SpiritHarvestHelper {
         return hasCurioEquipped(attacker, NARROW_EDGE_NECKLACE) || hasCurioEquipped(attacker, HIDDEN_BLADE_NECKLACE);
     }
 
-    /**
-     * Malum multiplies scythe damage by its scythe_proficiency attribute, but only for damage
-     * sources in the malum:is_scythe damage type tag. Our scythes deal ordinary player attack
-     * damage, so the multiplier has to be applied by hand.
-     *
-     * @return the multiplier to apply, or 1.0 when Malum is absent
-     */
-    public static double getScytheProficiency(LivingEntity attacker) {
-        Holder.Reference<Attribute> proficiency = BuiltInRegistries.ATTRIBUTE.getHolder(SCYTHE_PROFICIENCY).orElse(null);
-        if (proficiency == null) {
-            return 1.0;
+    public static DamageSource scytheMeleeSource(Player player) {
+        return DamageTypeHelper.create(player.level(), MalumDamageTypes.SCYTHE_MELEE, player);
+    }
+
+    public static DamageSource scytheSweepSource(Player player) {
+        return DamageTypeHelper.create(player.level(), MalumDamageTypes.SCYTHE_SWEEP, player);
+    }
+
+    public static boolean tryScytheAbility(Level level, Player player, InteractionHand hand, ItemStack stack) {
+        if (EnchantmentKeys.getEnchantmentLevel(level, EnchantmentKeys.REBOUND, stack) > 0) {
+            ReboundHandler.throwScythe(level, player, hand, stack);
+            return true;
         }
 
-        AttributeInstance instance = attacker.getAttribute(proficiency);
-        if (instance == null) {
-            return 1.0;
+        if (EnchantmentKeys.getEnchantmentLevel(level, EnchantmentKeys.ASCENSION, stack) > 0) {
+            AscensionHandler.triggerAscension(level, player, hand, stack);
+            return true;
         }
 
-        return instance.getValue();
+        return false;
     }
 
     private static boolean hasCurioEquipped(LivingEntity entity, ResourceLocation itemId) {
