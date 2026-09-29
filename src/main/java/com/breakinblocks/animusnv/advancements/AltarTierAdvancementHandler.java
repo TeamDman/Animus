@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.Map;
@@ -26,7 +27,12 @@ public class AltarTierAdvancementHandler {
 
     @SubscribeEvent
     public static void onBlockPlaced(BlockEvent.EntityPlaceEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) {
+        if (!(event.getEntity() instanceof ServerPlayer player) || player instanceof FakePlayer) {
+            return;
+        }
+
+        AltarTierTrigger trigger = AnimusCriteriaTriggers.ALTAR_TIER.get();
+        if (!trigger.hasListeners(player)) {
             return;
         }
 
@@ -36,12 +42,14 @@ public class AltarTierAdvancementHandler {
         }
 
         BlockPos placedAt = event.getPos();
-        int chunkX = placedAt.getX() >> 4;
-        int chunkZ = placedAt.getZ() >> 4;
+        int minChunkX = (placedAt.getX() - SEARCH_RADIUS) >> 4;
+        int maxChunkX = (placedAt.getX() + SEARCH_RADIUS) >> 4;
+        int minChunkZ = (placedAt.getZ() - SEARCH_RADIUS) >> 4;
+        int maxChunkZ = (placedAt.getZ() + SEARCH_RADIUS) >> 4;
 
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dz = -1; dz <= 1; dz++) {
-                LevelChunk chunk = level.getChunkSource().getChunk(chunkX + dx, chunkZ + dz, false);
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                LevelChunk chunk = level.getChunkSource().getChunk(chunkX, chunkZ, false);
                 if (chunk == null) {
                     continue;
                 }
@@ -57,7 +65,7 @@ public class AltarTierAdvancementHandler {
                     altar.checkTier();
                     int tier = altar.getTier();
                     if (tier > 0) {
-                        AnimusCriteriaTriggers.ALTAR_TIER.get().trigger(player, tier);
+                        trigger.trigger(player, tier);
                     }
                 }
             }

@@ -2,16 +2,24 @@ package com.breakinblocks.animusnv.gametest;
 
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.advancements.AnimusCriteriaTriggers;
+import com.breakinblocks.animusnv.advancements.AltarTierTrigger;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ClientInformation;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @GameTestHolder(Constants.Mod.MODID)
 @PrefixGameTestTemplate(false)
@@ -43,6 +51,62 @@ public class AnimusDataTests {
                 helper.fail(holder.id() + " has parent " + parent.get() + " which does not exist, so the tree cannot attach it");
                 return;
             }
+        }
+
+        helper.succeed();
+    }
+
+    @GameTest(template = TEMPLATE)
+    public void altar_tier_trigger_tracks_listening_players(GameTestHelper helper) {
+        AltarTierTrigger trigger = AnimusCriteriaTriggers.ALTAR_TIER.get();
+        ServerPlayer player = FakePlayerFactory.get(helper.getLevel(), new GameProfile(UUID.randomUUID(), "AltarListener"));
+        PlayerAdvancements advancements = player.getAdvancements();
+        CriterionTrigger.Listener<AltarTierTrigger.Instance> first = new CriterionTrigger.Listener<>(
+            new AltarTierTrigger.Instance(Optional.empty(), 5), null, "first");
+        CriterionTrigger.Listener<AltarTierTrigger.Instance> second = new CriterionTrigger.Listener<>(
+            new AltarTierTrigger.Instance(Optional.empty(), 3), null, "second");
+
+        trigger.removePlayerListeners(advancements);
+        helper.assertFalse(trigger.hasListeners(player), "a player with no altar criteria is skipped");
+
+        trigger.addPlayerListener(advancements, first);
+        trigger.addPlayerListener(advancements, second);
+        helper.assertTrue(trigger.hasListeners(player), "a player working toward an altar advancement is checked");
+
+        trigger.removePlayerListener(advancements, first);
+        helper.assertTrue(trigger.hasListeners(player), "one remaining criterion keeps the player checked");
+
+        trigger.removePlayerListener(advancements, second);
+        helper.assertFalse(trigger.hasListeners(player), "a player who finished every altar criterion is skipped");
+
+        trigger.addPlayerListener(advancements, first);
+        trigger.removePlayerListeners(advancements);
+        helper.assertFalse(trigger.hasListeners(player), "logging out clears the player");
+
+        helper.succeed();
+    }
+
+    @GameTest(template = TEMPLATE)
+    public void altar_tier_trigger_awards_and_stops_checking(GameTestHelper helper) {
+        AltarTierTrigger trigger = AnimusCriteriaTriggers.ALTAR_TIER.get();
+        ServerPlayer player = new ServerPlayer(helper.getLevel().getServer(), helper.getLevel(),
+            new GameProfile(UUID.randomUUID(), "AltarAwardee"), ClientInformation.createDefault());
+        PlayerAdvancements advancements = player.getAdvancements();
+        AdvancementHolder ascension = helper.getLevel().getServer().getAdvancements()
+            .get(ResourceLocation.fromNamespaceAndPath(Constants.Mod.MODID, "tier6_ascension"));
+
+        try {
+            helper.assertTrue(ascension != null, "tier6_ascension advancement loaded");
+            helper.assertTrue(trigger.hasListeners(player), "a player without Tier 6 Ascension is checked");
+
+            trigger.trigger(player, 4);
+            helper.assertFalse(advancements.getOrStartProgress(ascension).isDone(), "a tier below the minimum does not award");
+
+            trigger.trigger(player, 5);
+            helper.assertTrue(advancements.getOrStartProgress(ascension).isDone(), "reaching the minimum tier awards the advancement");
+            helper.assertFalse(trigger.hasListeners(player), "a player who has Tier 6 Ascension is no longer checked");
+        } finally {
+            advancements.stopListening();
         }
 
         helper.succeed();
