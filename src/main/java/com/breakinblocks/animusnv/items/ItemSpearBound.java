@@ -86,6 +86,9 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
 
         // Use the binding owner's network, not the using player's
         IAnima network = NeoVitaeAPI.getInstance().getAnima(binding.uuid());
+        if (network == null) {
+            return false;
+        }
         AnimaTicket ticket = AnimaTicket.create(EV_COST);
 
         var result = network.syphonAndDamage(player, ticket);
@@ -236,6 +239,10 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
             return super.hurtEnemy(stack, target, attacker);
         }
 
+        if (target.level().isClientSide) {
+            return false;
+        }
+
         if (attacker instanceof Player player) {
             if (!consumeEV(player, stack)) {
                 player.displayClientMessage(
@@ -250,10 +257,6 @@ public class ItemSpearBound extends ItemSpear implements IBindable {
         super.hurtEnemy(stack, target, attacker);
 
         Level level = target.level();
-
-        if (level.isClientSide) {
-            return false;
-        }
 
         double x = target.getX();
         double y = target.getY();
