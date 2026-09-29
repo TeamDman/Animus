@@ -3,6 +3,8 @@ package com.breakinblocks.animusnv.blockentities;
 import com.breakinblocks.animusnv.Animus;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.blocks.BlockBloodCore;
+import com.breakinblocks.animusnv.compat.CompatHandler;
+import com.breakinblocks.animusnv.compat.DynamicTreesCompatLoader;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.breakinblocks.animusnv.registry.AnimusBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -196,17 +198,23 @@ public class BlockEntityBloodCore extends BlockEntity {
                         Animus.LOGGER.info("Blood Core at {} spawning blood tree at {}", worldPosition, saplingPos);
                     }
 
-                    level.setBlock(saplingPos, AnimusBlocks.BLOCK_BLOOD_SAPLING.get().defaultBlockState(), 3);
-
-                    BlockState saplingState = level.getBlockState(saplingPos);
-                    if (saplingState.getBlock() instanceof SaplingBlock saplingBlock) {
-                        saplingBlock.advanceTree(level, saplingPos, saplingState, random);
-                        if (AnimusConfig.bloodCore.debug.get()) {
-                            Animus.LOGGER.debug("  Tree grown successfully");
+                    if (CompatHandler.isDynamicTreesLoaded()) {
+                        if (!DynamicTreesCompatLoader.plantBloodTree(level, saplingPos)) {
+                            continue;
                         }
                     } else {
-                        if (AnimusConfig.bloodCore.debug.get()) {
-                            Animus.LOGGER.warn("  Failed to grow tree - block is not a sapling: {}", saplingState.getBlock());
+                        level.setBlock(saplingPos, AnimusBlocks.BLOCK_BLOOD_SAPLING.get().defaultBlockState(), 3);
+
+                        BlockState saplingState = level.getBlockState(saplingPos);
+                        if (saplingState.getBlock() instanceof SaplingBlock saplingBlock) {
+                            saplingBlock.advanceTree(level, saplingPos, saplingState, random);
+                            if (AnimusConfig.bloodCore.debug.get()) {
+                                Animus.LOGGER.debug("  Tree grown successfully");
+                            }
+                        } else {
+                            if (AnimusConfig.bloodCore.debug.get()) {
+                                Animus.LOGGER.warn("  Failed to grow tree - block is not a sapling: {}", saplingState.getBlock());
+                            }
                         }
                     }
 

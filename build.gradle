@@ -135,6 +135,9 @@ dependencies {
 
     compileOnly "curse.maven:evilcraft-74610:${evilcraft_cursemaven_id}"
     runtimeOnly "curse.maven:evilcraft-74610:${evilcraft_cursemaven_id}"
+
+    compileOnly "maven.modrinth:dynamictrees:${dynamictrees_version}"
+    runtimeOnly "maven.modrinth:dynamictrees:${dynamictrees_version}"
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -208,7 +211,7 @@ publishMods {
         clientRequired = true
         serverRequired = true
         requires("neovitae", "geckolib", "modonomicon")
-        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum")
+        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum", "dynamictrees")
     }
 
     modrinth {
@@ -216,7 +219,7 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         minecraftVersions.add(minecraft_version)
         requires("neovitae", "geckolib", "modonomicon")
-        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum")
+        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum", "dynamictrees")
     }
 }
 

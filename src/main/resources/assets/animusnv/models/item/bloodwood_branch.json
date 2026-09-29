@@ -1,0 +1,7 @@
+{
+  "parent": "dynamictrees:item/branch",
+  "textures": {
+    "bark": "animusnv:block/blockbloodwood",
+    "rings": "animusnv:block/blockbloodwood_top"
+  }
+}

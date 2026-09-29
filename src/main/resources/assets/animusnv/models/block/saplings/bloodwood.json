@@ -1,0 +1,9 @@
+{
+  "parent": "dynamictrees:block/smartmodel/sapling",
+  "render_type": "minecraft:cutout_mipped",
+  "textures": {
+    "particle": "animusnv:block/blockbloodleavesfancy",
+    "leaves": "animusnv:block/blockbloodleavesfancy",
+    "log": "animusnv:block/blockbloodwood"
+  }
+}

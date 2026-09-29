@@ -1,0 +1,7 @@
+{
+  "loader": "dynamictrees:branch",
+  "textures": {
+    "bark": "animusnv:block/stripped_bloodwood_log",
+    "rings": "animusnv:block/stripped_bloodwood_log_top"
+  }
+}
