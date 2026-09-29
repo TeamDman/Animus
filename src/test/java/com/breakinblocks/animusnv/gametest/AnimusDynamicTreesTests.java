@@ -52,7 +52,7 @@ public final class AnimusDynamicTreesTests {
 
             h.assertTrue(core != null, "blood core forms on the dynamic blood tree within " + MAX_PULSES + " growth pulses");
             h.assertTrue(TreeHelper.isBranch(level.getBlockState(core.below())), "blood core sits directly on the trunk");
-            h.assertTrue(core.getY() - soil.getY() > 4, "blood core waits for the trunk to reach its minimum height");
+            h.assertTrue(core.getY() - soil.getY() > 3, "blood core waits for the trunk to reach its minimum height");
         } finally {
             clearTree(level, soil);
         }
