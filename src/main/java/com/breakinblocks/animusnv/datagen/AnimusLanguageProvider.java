@@ -82,6 +82,13 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("block.animusnv.blood_wood_slab", "Blood Wood Slab");
         add("block.animusnv.blood_wood_stairs", "Blood Wood Stairs");
         add("block.animusnv.blood_wood_stripped", "Stripped Blood Wood Log");
+        add("block.animusnv.bloodwood_branch", "Blood Tree");
+        add("block.animusnv.stripped_bloodwood_branch", "Stripped Blood Tree");
+        add("block.animusnv.bloodwood_leaves", "Blood Leaves");
+        add("block.animusnv.bloodwood_sapling", "Blood Sapling");
+        add("item.animusnv.bloodwood_seed", "Blood Seed");
+        add("species.animusnv.bloodwood", "Blood Tree");
+        add("treePack.animusnv.name", "Animus");
         add("block.animusnv.crystallized_spiritus_block", "Crystallized Spiritus Block");
         add("block.animusnv.sanguine_rectifier", "Sanguine Rectifier");
         add("block.animusnv.diabolical_fungi", "Diabolical Fungi");

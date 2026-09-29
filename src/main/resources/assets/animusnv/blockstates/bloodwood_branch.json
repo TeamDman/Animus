@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": {
+      "type": "dynamictrees:branch",
+      "family": "animusnv:bloodwood",
+      "textures": {
+        "bark": "animusnv:block/blockbloodwood",
+        "rings": "animusnv:block/blockbloodwood_top"
+      }
+    }
+  }
+}

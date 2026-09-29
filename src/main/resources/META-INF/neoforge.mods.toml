@@ -102,6 +102,13 @@ description = '''${mod_description}'''
     ordering = "AFTER"
     side = "BOTH"
 
+[[dependencies.animusnv]]
+    modId = "dynamictrees"
+    type = "optional"
+    versionRange = "[1.8.0-BETA04,)"
+    ordering = "AFTER"
+    side = "BOTH"
+
 # =============================================================================
 # Mixins
 # =============================================================================

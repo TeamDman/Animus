@@ -13,6 +13,7 @@ public class AnimusGameTestRegistration {
         AnimusRegressionTests.register(r);
         AnimusTransactionTests.register(r);
         AnimusLifecycleTests.register(r);
+        AnimusDynamicTreesTests.register(r);
         registerOptional(r, "com.breakinblocks.animusnv.gametest.AnimusSourceTests");
         registerOptional(r, "com.breakinblocks.animusnv.gametest.AnimusSpellTests");
     }
