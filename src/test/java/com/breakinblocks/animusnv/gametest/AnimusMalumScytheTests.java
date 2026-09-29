@@ -9,8 +9,11 @@ import com.sammy.malum.registry.common.MalumDamageTypes;
 import com.sammy.malum.registry.common.MalumTags;
 import com.sammy.malum.registry.common.enchantment.EnchantmentKeys;
 import com.sammy.malum.registry.common.item.MalumItems;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTest;
@@ -20,6 +23,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
@@ -27,6 +31,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
@@ -61,6 +67,38 @@ public class AnimusMalumScytheTests {
         DamageSource source = bystander.getLastDamageSource();
         h.assertTrue(source != null, "bystander was hit by the area attack");
         h.assertTrue(source.is(MalumDamageTypes.SCYTHE_SWEEP), "area attack uses malum:scythe_sweep, got " + source);
+        h.succeed();
+    }
+
+    @GameTest(template = TEMPLATE)
+    public void scythe_vanilla_sweep_deals_malum_sweep_damage(GameTestHelper h) throws Exception {
+        ServerPlayer player = playerAt(h, new BlockPos(2, 2, 1));
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnimusItems.RUNIC_SENTIENT_SCYTHE.get()));
+        player.setOnGround(true);
+        Field strength = LivingEntity.class.getDeclaredField("attackStrengthTicker");
+        strength.setAccessible(true);
+        strength.setInt(player, 100);
+        Zombie target = h.spawn(EntityType.ZOMBIE, new BlockPos(2, 2, 2));
+        Zombie bystander = h.spawn(EntityType.ZOMBIE, new BlockPos(3, 2, 2));
+
+        List<DamageSource> bystanderHits = new ArrayList<>();
+        Consumer<LivingIncomingDamageEvent> listener = event -> {
+            if (event.getEntity() == bystander) {
+                bystanderHits.add(event.getSource());
+            }
+        };
+        NeoForge.EVENT_BUS.addListener(listener);
+        try {
+            player.attack(target);
+        } finally {
+            NeoForge.EVENT_BUS.unregister(listener);
+        }
+
+        h.assertFalse(bystanderHits.isEmpty(), "bystander was caught in the sweep");
+        for (DamageSource source : bystanderHits) {
+            h.assertFalse(source.is(DamageTypes.PLAYER_ATTACK), "sweep hit used plain player_attack, which Pact of the Reaper punishes");
+        }
+        h.assertTrue(bystanderHits.stream().anyMatch(source -> source.is(MalumDamageTypes.SCYTHE_SWEEP)), "sweep hits use malum:scythe_sweep");
         h.succeed();
     }
 
