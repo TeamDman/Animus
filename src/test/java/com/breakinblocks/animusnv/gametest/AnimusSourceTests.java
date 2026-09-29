@@ -11,6 +11,7 @@ import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.common.block.BlockRitualStone;
 import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
 import com.breakinblocks.neovitae.common.blockentity.MasterRitualStoneBlockEntity;
+import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.common.datamap.NVDataMaps;
 import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
 import com.breakinblocks.neovitae.ritual.Ritual;
@@ -76,6 +77,39 @@ public class AnimusSourceTests {
         before = network.getCurrentEV();
         ritual.performRitual(stone(h, pos, owner));
         h.assertTrue(network.getCurrentEV() == before, "full jar costs nothing");
+        h.succeed();
+    }
+
+    @GameTest(template = TEMPLATE)
+    public void ars_vitae_rate_scales_with_raw_spiritus(GameTestHelper h) {
+        BlockPos pos = h.absolutePos(new BlockPos(2, 2, 2));
+        var spiritus = NeoVitaeAPI.getInstance().getSpiritusHandler();
+        double originalRaw = spiritus.getCurrentSpiritus(h.getLevel(), pos, SpiritusType.RAW);
+        SourceJarTile jar = jar(h, pos.above());
+        UUID owner = UUID.randomUUID();
+        NeoVitaeAPI.getInstance().getAnima(owner).set(AnimaTicket.create(1000000), 1000000);
+        var ritual = new RitualArsVitae();
+        int base = AnimusConfig.rituals.arsVitaeSourcePerCycle.get();
+        int perRaw = AnimusConfig.rituals.arsVitaeSourcePerRawSpiritus.get();
+
+        try {
+            spiritus.drainSpiritus(h.getLevel(), pos, SpiritusType.RAW, originalRaw);
+            ritual.performRitual(stone(h, pos, owner));
+            h.assertTrue(jar.getSource() == base, "no Raw Spiritus produces the base rate, got " + jar.getSource());
+
+            jar.setSource(0);
+            spiritus.addSpiritus(h.getLevel(), pos, SpiritusType.RAW, 50);
+            double raw = spiritus.getCurrentSpiritus(h.getLevel(), pos, SpiritusType.RAW);
+            h.assertTrue(raw > 0, "Raw Spiritus was added to the chunk");
+            ritual.performRitual(stone(h, pos, owner));
+            h.assertTrue(jar.getSource() == base + (int) (raw * perRaw), "Raw Spiritus adds Source per point, got " + jar.getSource());
+            h.assertTrue(spiritus.getCurrentSpiritus(h.getLevel(), pos, SpiritusType.RAW) == raw, "Raw Spiritus is not consumed");
+        } finally {
+            spiritus.drainSpiritus(h.getLevel(), pos, SpiritusType.RAW,
+                spiritus.getCurrentSpiritus(h.getLevel(), pos, SpiritusType.RAW));
+            spiritus.addSpiritus(h.getLevel(), pos, SpiritusType.RAW, originalRaw);
+        }
+
         h.succeed();
     }
 

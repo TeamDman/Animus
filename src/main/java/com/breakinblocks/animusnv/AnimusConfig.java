@@ -82,6 +82,7 @@ public class AnimusConfig {
         public final ModConfigSpec.IntValue sourceVitaeumSourcePerCycle;
         public final ModConfigSpec.IntValue arsVitaePenaltyRadius;
         public final ModConfigSpec.IntValue arsVitaeSourcePerCycle;
+        public final ModConfigSpec.IntValue arsVitaeSourcePerRawSpiritus;
         public final ModConfigSpec.IntValue floralSupremacyRadius;
         public final ModConfigSpec.IntValue floralSupremacyEVPerFlower;
         public final ModConfigSpec.IntValue lunaHorizontalRange;
@@ -273,8 +274,12 @@ public class AnimusConfig {
                 .defineInRange("arsVitaePenaltyRadius", 10, 1, 32);
 
             arsVitaeSourcePerCycle = builder
-                .comment("Amount of Source to attempt to produce per cycle")
-                .defineInRange("arsVitaeSourcePerCycle", 100, 10, 10000);
+                .comment("Base amount of Source to attempt to produce per cycle")
+                .defineInRange("arsVitaeBaseSourcePerCycle", 1000, 10, 10000);
+
+            arsVitaeSourcePerRawSpiritus = builder
+                .comment("Extra Source produced per cycle for each point of Raw Spiritus in the chunk (the Spiritus is not consumed)")
+                .defineInRange("arsVitaeSourcePerRawSpiritus", 10, 0, 1000);
 
             floralSupremacyRadius = builder
                 .comment("Radius in blocks for Ritual of Floral Supremacy effect area")

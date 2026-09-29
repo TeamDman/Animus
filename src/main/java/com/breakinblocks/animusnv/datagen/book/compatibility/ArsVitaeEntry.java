@@ -40,13 +40,14 @@ public class ArsVitaeEntry extends EntryProvider {
         this.pageText("Place a [#](8B0000)Source Jar[#]() directly above the Master Ritual Stone. The EV comes from your network, so no altar is needed."
                 + "\\\n\\\n[#](B8860B)Activation:[#]() 10,000 EV"
                 + "\\\n[#](B8860B)Exchange:[#]() 10 EV per Source (configurable)"
-                + "\\\n[#](B8860B)Throughput:[#]() up to 100 Source every 2 seconds (configurable)");
+                + "\\\n[#](B8860B)Throughput:[#]() up to 1,000 Source every 2 seconds, plus 10 for each point of Raw Spiritus in the chunk (configurable)");
 
         this.page("behavior", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Behavior");
         this.pageText("A full jar makes the ritual skip its turn entirely, drawing nothing, and EV is only taken for Source the jar actually accepts. The ritual also idles when your network cannot pay for a single point of Source."
+                + "\\\n\\\n[#](8B0000)Raw Spiritus[#]() in the chunk speeds the flow without being consumed."
                 + "\\\n\\\nEvery other Master Ritual Stone within 10 blocks [#](8B0000)doubles[#]() the price, so keep converters apart."
                 + "\\\n\\\n[#](2E8B57)The exchange rate is shared with the Ritual of Source Vitaeum, and both directions pay it, so trading back and forth loses value.[#]()");
     }

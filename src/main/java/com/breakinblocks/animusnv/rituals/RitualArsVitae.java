@@ -9,8 +9,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
 import com.breakinblocks.neovitae.api.soul.IAnima;
+import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
 import com.breakinblocks.neovitae.ritual.*;
 
 import java.util.function.Consumer;
@@ -63,7 +65,10 @@ public class RitualArsVitae extends Ritual {
             return;
         }
 
-        int sourcePerCycle = AnimusConfig.rituals.arsVitaeSourcePerCycle.get();
+        double rawSpiritus = NeoVitaeAPI.getInstance().getSpiritusHandler()
+            .getCurrentSpiritus(serverLevel, masterPos, SpiritusType.RAW);
+        int sourcePerCycle = AnimusConfig.rituals.arsVitaeSourcePerCycle.get()
+            + (int) (rawSpiritus * AnimusConfig.rituals.arsVitaeSourcePerRawSpiritus.get());
         int affordableSource = Math.min(Math.min(sourcePerCycle, jarSpace), availableEV / conversionRate);
 
         if (affordableSource <= 0) {

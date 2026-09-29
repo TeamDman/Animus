@@ -34,7 +34,7 @@ public class BloodCoreGenFeature extends GenFeature {
     @Override
     protected GenFeatureConfiguration createDefaultConfiguration() {
         return super.createDefaultConfiguration()
-            .with(MIN_HEIGHT, 4)
+            .with(MIN_HEIGHT, 3)
             .with(MAX_HEIGHT, 32)
             .with(PLACE_CHANCE, 0.1F);
     }

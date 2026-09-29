@@ -432,7 +432,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("ritual.animusnv.ritual_source_vitaeum", "Ritual of Source Vitaeum");
         add("ritual.animusnv.ritual_source_vitaeum.info", "Converts Source into EV. Drains a Source Jar directly above the master stone and feeds the result into a nearby Ara Vitae. Other ritual stones near the altar worsen the exchange rate. Requires Ars Nouveau.");
         add("ritual.animusnv.ritual_ars_vitae", "Ritual of Ars Vitae");
-        add("ritual.animusnv.ritual_ars_vitae.info", "Converts EV into Source, filling a Source Jar directly above the master stone from the owner's anima. Other ritual stones nearby worsen the exchange rate. Requires Ars Nouveau.");
+        add("ritual.animusnv.ritual_ars_vitae.info", "Converts EV into Source, filling a Source Jar directly above the master stone from the owner's anima. Raw Spiritus in the chunk speeds it up. Other ritual stones nearby worsen the exchange rate. Requires Ars Nouveau.");
         add("ritual.animusnv.ritual_steadfast_heart", "Ritual of the Steadfast Heart");
         add("ritual.animusnv.ritual_steadfast_heart.info", "Grants Absorption to every player in range, growing stronger and longer the more time they spend within it. Bound Orbs of Vitae in a chest directly above the master stone extend the blessing to their owners wherever they are. Gathers Spiritus Invictus in the chunk.");
         add("ritual.animusnv.ritual_steadfast_heart.effect.info", "Area in which players receive Absorption");
