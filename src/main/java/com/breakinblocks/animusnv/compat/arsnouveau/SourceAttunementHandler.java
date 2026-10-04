@@ -1,6 +1,7 @@
 package com.breakinblocks.animusnv.compat.arsnouveau;
 
 import com.hollingsworth.arsnouveau.api.event.SpellCastEvent;
+import com.hollingsworth.arsnouveau.api.event.SpellCostCalcEvent;
 import com.hollingsworth.arsnouveau.api.event.SpellDamageEvent;
 import com.hollingsworth.arsnouveau.setup.registry.ModPotions;
 import com.breakinblocks.animusnv.Constants;
@@ -31,7 +32,7 @@ public class SourceAttunementHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void onSpellDamage(SpellDamageEvent event) {
+    public void onSpellDamage(SpellDamageEvent.Pre event) {
         if (!(event.caster instanceof Player player)) {
             return;
         }
@@ -44,6 +45,19 @@ public class SourceAttunementHandler {
         double damageBoost = 0.05 * upgradeLevel;
         float newDamage = event.damage * (1.0f + (float) damageBoost);
         event.damage = newDamage;
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void onSpellCost(SpellCostCalcEvent.Pre event) {
+        if (!(event.context.getUnwrappedCaster() instanceof Player player)) {
+            return;
+        }
+
+        if (SentientUpgradeHelper.getUpgradeLevel(player, UPGRADE_ID) < 5) {
+            return;
+        }
+
+        event.currentCost = (int) (event.currentCost * 0.8f);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

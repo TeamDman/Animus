@@ -42,17 +42,22 @@ public class SentientArmorGlyphHandler {
             return;
         }
 
-        int baseXP = AnimusConfig.arsNouveau.sentientArmorBaseXP.get();
+        int glyphCount = event.spell.size();
+        if (glyphCount <= 0) {
+            return;
+        }
+
+        int xpToGrant = AnimusConfig.arsNouveau.sentientArmorBaseXP.get() * glyphCount;
 
         boolean success = SentientUpgradeHelper.addExperience(
             player,
             SourceAttunementHandler.UPGRADE_ID,
-            baseXP
+            xpToGrant
         );
 
         if (success) {
-            Animus.LOGGER.debug("Granted {} XP to Sentient Armor (Source Attunement) for casting Ars Nouveau spell",
-                baseXP);
+            Animus.LOGGER.debug("Granted {} XP to Sentient Armor (Source Attunement) for casting Ars Nouveau spell with {} glyphs",
+                xpToGrant, glyphCount);
         }
     }
 }

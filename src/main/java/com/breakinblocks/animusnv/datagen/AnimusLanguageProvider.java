@@ -57,7 +57,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("animusnv.upgrade.arcane_channeling.level.1", "Mana Cost -5%");
         add("animusnv.upgrade.arcane_channeling.level.2", "Mana Cost -10%");
         add("animusnv.upgrade.arcane_channeling.level.3", "Cooldown -5%");
-        add("animusnv.upgrade.arcane_channeling.level.4", "Spells Trigger Armor");
+        add("animusnv.upgrade.arcane_channeling.level.4", "Cooldown -10%");
         add("animusnv.upgrade.arcane_channeling.level.5", "Casting Grants Resistance");
         add("animusnv.upgrade.source_attunement", "Source Attunement");
         add("animusnv.upgrade.source_attunement.level.1", "Spell Damage +5%");
@@ -329,8 +329,8 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("jei.animusnv.sanguine_scroll.title.ethereal", "Sanguine Scroll (Aetherea)");
         add("jei.animusnv.sanguine_scroll.title.imbued", "Sanguine Scroll (Animata)");
         add("jei.animusnv.sanguine_scroll.title.reinforced", "Sanguine Scroll (Robur)");
-        add("living_upgrade.animusnv.arcane_channeling", "Arcane Channeling");
-        add("living_upgrade.animusnv.source_attunement", "Source Attunement");
+        add("sentient_upgrade.animusnv.arcane_channeling", "Arcane Channeling");
+        add("sentient_upgrade.animusnv.source_attunement", "Source Attunement");
         add("ritual.animusnv.boundless_skies.success", "The boundless skies embrace you - creative flight granted!");
         add("ritual.animusnv.clear_skies.success", "The skies clear at your command!");
         add("ritual.animusnv.enhancement.already_enhanced", "This item has already been enhanced!");

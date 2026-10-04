@@ -4,6 +4,8 @@ import com.breakinblocks.animusnv.Animus;
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.compat.SentientUpgradeHelper;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
+import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
+import io.redspace.ironsspellbooks.api.spells.SpellRarity;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -45,8 +47,10 @@ public class SentientArmorSpellHandler {
 
         int spellLevel = event.getSpellLevel();
 
+        SpellRarity rarity = SpellRegistry.getSpell(event.getSpellId()).getRarity(spellLevel);
+
         int baseXP = AnimusConfig.ironsSpells.sentientArmorBaseXP.get();
-        float xpToGrant = baseXP * spellLevel;
+        float xpToGrant = baseXP * spellLevel * getRarityMultiplier(rarity);
 
         boolean success = SentientUpgradeHelper.addExperience(
             player,
@@ -55,8 +59,18 @@ public class SentientArmorSpellHandler {
         );
 
         if (success) {
-            Animus.LOGGER.debug("Granted {} XP to Sentient Armor (Arcane Channeling) for casting spell (level {})",
-                xpToGrant, spellLevel);
+            Animus.LOGGER.debug("Granted {} XP to Sentient Armor (Arcane Channeling) for casting spell (level {}, {})",
+                xpToGrant, spellLevel, rarity);
         }
+    }
+
+    private static float getRarityMultiplier(SpellRarity rarity) {
+        return switch (rarity) {
+            case COMMON -> 1.0f;
+            case UNCOMMON -> 1.5f;
+            case RARE -> 2.0f;
+            case EPIC -> 3.0f;
+            case LEGENDARY -> 5.0f;
+        };
     }
 }
