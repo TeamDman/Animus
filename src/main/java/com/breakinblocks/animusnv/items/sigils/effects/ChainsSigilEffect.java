@@ -93,7 +93,7 @@ public record ChainsSigilEffect() implements ISigilEffect {
      */
     private boolean captureEntity(Player player, LivingEntity target) {
         // Check if entity can be captured
-        if (target.is(Constants.Tags.DISALLOW_CAPTURING)) {
+        if (target instanceof Player || target.is(Constants.Tags.DISALLOW_CAPTURING)) {
             player.sendOverlayMessage(
                     Component.translatable(Constants.Localizations.Text.CHAINS_CAPTURE_FAILED));
             return false;
