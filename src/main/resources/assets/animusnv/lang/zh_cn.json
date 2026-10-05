@@ -38,7 +38,7 @@
   "animusnv.upgrade.arcane_channeling.level.1": "法力消耗 -5%",
   "animusnv.upgrade.arcane_channeling.level.2": "法力消耗 -10%",
   "animusnv.upgrade.arcane_channeling.level.3": "冷却 -5%",
-  "animusnv.upgrade.arcane_channeling.level.4": "冷却时间 -10%",
+  "animusnv.upgrade.arcane_channeling.level.4": "冷却 -10%",
   "animusnv.upgrade.arcane_channeling.level.5": "施法给予抗性提升",
   "animusnv.upgrade.source_attunement": "魔源调谐",
   "animusnv.upgrade.source_attunement.level.1": "法术伤害 +5%",
