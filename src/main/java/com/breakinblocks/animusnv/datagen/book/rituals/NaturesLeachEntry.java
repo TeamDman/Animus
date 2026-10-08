@@ -38,7 +38,7 @@ public class NaturesLeachEntry extends EntryProvider {
         this.pageText("[#](B8860B)Activation:[#]() 3,000 EV"
                 + "\\\n[#](B8860B)Refresh:[#]() 10 EV"
                 + "\\\n[#](B8860B)Refresh Time:[#]() 80 ticks (configurable), dropping to 16 as [#](4A0080)Spiritus Ruina[#]() builds up"
-                + "\\\n\\\n[#](B8860B)Effect Range:[#]() 8 blocks radius, expandable to 32 with the Ritual Tinkerer"
+                + "\\\n\\\n[#](B8860B)Effect Range:[#]() 32 blocks radius, expandable to 42 with the Ritual Tinkerer"
                 + "\\\n[#](B8860B)Altar Range:[#]() 32 blocks horizontal, 10 blocks vertical"
                 + "\\\n\\\nConsumes 1-3 plants per cycle, generating 50 EV (configurable) per plant consumed. The altar location is cached for performance.");
 

@@ -6,12 +6,14 @@ import com.breakinblocks.animusnv.AnimusModEventHandler;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.neoforged.neoforge.common.world.chunk.TicketHelper;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
+import net.neoforged.neoforge.common.world.chunk.TicketHelper;
 import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.neovitae.api.soul.IAnima;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
@@ -34,6 +36,8 @@ public class RitualPersistence extends Ritual {
     public static final String CHUNK_RANGE = "chunks";
 
     private static final Map<GlobalPos, Set<ChunkPos>> loadedChunks = new HashMap<>();
+    private final int defaultChunkRadius;
+    private boolean chunkRangeInitialized;
 
     public RitualPersistence() {
         super(
@@ -44,11 +48,12 @@ public class RitualPersistence extends Ritual {
         );
 
         int chunkRadius = AnimusStartupConfig.ritualRanges.persistenceChunkRadius.get();
+        defaultChunkRadius = chunkRadius;
         int blockRadius = (chunkRadius * 2 + 1) * 8;
         int size = blockRadius * 2;
 
         addBlockRange(CHUNK_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-blockRadius, 0, -blockRadius), size, 1, size));
-        setMaximumVolumeAndDistanceOfRange(CHUNK_RANGE, 0, blockRadius + 64, 1);
+        setMaximumVolumeAndDistanceOfRange(CHUNK_RANGE, RitualAreaDescriptors.maximumVolume(blockRadius + 64, 1), blockRadius + 64, 1);
     }
 
     @Override
@@ -80,23 +85,10 @@ public class RitualPersistence extends Ritual {
     }
 
     private void loadChunks(ServerLevel level, BlockPos masterPos) {
-        AreaDescriptor chunkRange = getBlockRange(CHUNK_RANGE);
-        AABB rangeAABB = chunkRange.getAABB(masterPos);
-        int blockRadius = (int) Math.max(Math.abs(rangeAABB.maxX - masterPos.getX()), Math.abs(rangeAABB.maxZ - masterPos.getZ()));
-        int radius = Math.max(0, (blockRadius / 16));
-
-        ChunkPos centerChunk = new ChunkPos(masterPos);
         TicketController controller = AnimusModEventHandler.getTicketController();
 
         Set<ChunkPos> chunks = loadedChunks.computeIfAbsent(GlobalPos.of(level.dimension(), masterPos.immutable()), k -> new HashSet<>());
-
-        Set<ChunkPos> chunksToLoad = new HashSet<>();
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
-                ChunkPos chunkPos = new ChunkPos(centerChunk.x + x, centerChunk.z + z);
-                chunksToLoad.add(chunkPos);
-            }
-        }
+        Set<ChunkPos> chunksToLoad = getChunksToLoad(masterPos);
 
         for (ChunkPos chunkPos : chunksToLoad) {
             if (!chunks.contains(chunkPos)) {
@@ -126,6 +118,59 @@ public class RitualPersistence extends Ritual {
             }
             return false;
         });
+    }
+
+    /** Returns every chunk intersecting the selected block area, including its negative boundaries. */
+    public Set<ChunkPos> getChunksToLoad(BlockPos masterPos) {
+        alignDefaultRange(masterPos);
+        AABB area = getBlockRange(CHUNK_RANGE).getAABB(masterPos);
+        int minX = Mth.floor(area.minX) >> 4;
+        int minZ = Mth.floor(area.minZ) >> 4;
+        int maxX = (Mth.ceil(area.maxX) - 1) >> 4;
+        int maxZ = (Mth.ceil(area.maxZ) - 1) >> 4;
+        Set<ChunkPos> chunks = new HashSet<>();
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                chunks.add(new ChunkPos(x, z));
+            }
+        }
+        return chunks;
+    }
+
+    private void alignDefaultRange(BlockPos masterPos) {
+        if (chunkRangeInitialized) {
+            return;
+        }
+        chunkRangeInitialized = true;
+        int oldRadius = (defaultChunkRadius * 2 + 1) * 8;
+        AreaDescriptor range = getBlockRange(CHUNK_RANGE);
+        AABB oldDefault = new AABB(-oldRadius, 0, -oldRadius, oldRadius, 1, oldRadius);
+        if (range.getAABB(BlockPos.ZERO).equals(oldDefault)) {
+            // Keep the configured number of chunks regardless of the stone's position within its chunk.
+            ChunkPos center = new ChunkPos(masterPos);
+            int minX = (center.x - defaultChunkRadius) * 16 - masterPos.getX();
+            int minZ = (center.z - defaultChunkRadius) * 16 - masterPos.getZ();
+            int size = (defaultChunkRadius * 2 + 1) * 16;
+            range.modifyAreaByBlockPositions(new BlockPos(minX, 0, minZ), new BlockPos(minX + size - 1, 0, minZ + size - 1));
+        }
+    }
+
+    @Override
+    public void onLoad(IMasterRitualStone mrs) {
+        alignDefaultRange(mrs.getMasterBlockPos());
+        super.onLoad(mrs);
+    }
+
+    @Override
+    public void readFromNBT(CompoundTag tag) {
+        super.readFromNBT(tag);
+        chunkRangeInitialized = tag.getBoolean("chunkRangeInitialized");
+    }
+
+    @Override
+    public void writeToNBT(CompoundTag tag) {
+        super.writeToNBT(tag);
+        tag.putBoolean("chunkRangeInitialized", chunkRangeInitialized);
     }
 
     private static void unloadChunks(ServerLevel level, BlockPos masterPos) {

@@ -44,7 +44,7 @@ public class RitualSerenity extends Ritual {
         int size = radius * 2 + 1;
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-radius, -radius, -radius), size, size, size));
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, radius + 32, radius + 32);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, RitualAreaDescriptors.maximumVolume(radius + 32, radius + 32), radius + 32, radius + 32);
     }
 
     @Override

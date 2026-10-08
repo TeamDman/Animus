@@ -5,12 +5,19 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.items.sigils.effects.FreeSoulSigilEffect;
 import com.breakinblocks.animusnv.items.sigils.effects.TemporalDominanceSigilEffect;
 import com.breakinblocks.animusnv.registry.AnimusItems;
+import com.breakinblocks.animusnv.registry.AnimusRituals;
+import com.breakinblocks.animusnv.rituals.RitualPersistence;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.soul.AnimaTicket;
+import com.breakinblocks.neovitae.common.block.BlockRitualStone;
+import com.breakinblocks.neovitae.common.block.NVBlocks;
+import com.breakinblocks.neovitae.common.blockentity.MasterRitualStoneBlockEntity;
+import com.breakinblocks.neovitae.ritual.Ritual;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ForcedChunksSavedData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.world.chunk.TicketHelper;
@@ -27,7 +35,11 @@ import net.neoforged.neoforge.common.world.chunk.TicketSet;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @GameTestHolder(Constants.Mod.MODID)
 @PrefixGameTestTemplate(false)
@@ -87,6 +99,75 @@ public class AnimusLifecycleTests {
         controller.callback().validateTickets(level, helper);
         h.assertTrue(!data.getBlockForcedChunks().getChunks().containsKey(owner), "orphan removed from saved tickets");
         controller.forceChunk(level, pos, chunk.x, chunk.z, false, false);
+        h.succeed();
+    }
+
+    @GameTest(template = TEMPLATE, timeoutTicks = 200)
+    public void persistence_updates_and_releases_selected_tickets(GameTestHelper h) throws Exception {
+        ServerLevel level = h.getLevel();
+        BlockPos pos = h.absolutePos(new BlockPos(2, 2, 2)).above(30);
+        ServerPlayer player = RegressionTestSupport.player(level);
+        var network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+        network.set(AnimaTicket.create(100000), 100000);
+        Ritual ritual = AnimusRituals.PERSISTENCE.get();
+        var controller = AnimusModEventHandler.getTicketController();
+        ChunkPos chunk = new ChunkPos(pos);
+        List<BlockPos> placed = new ArrayList<>();
+        try {
+            level.setBlockAndUpdate(pos, NVBlocks.MASTER_RITUAL_STONE.block().get().defaultBlockState());
+            placed.add(pos);
+            ritual.gatherComponents(component -> {
+                Block rune = BuiltInRegistries.BLOCK.stream()
+                    .filter(b -> b instanceof BlockRitualStone stone && stone.getRuneType() == component.runeType())
+                    .findFirst().orElseThrow();
+                BlockPos runePos = pos.offset(component.offset());
+                level.setBlockAndUpdate(runePos, rune.defaultBlockState());
+                placed.add(runePos);
+            });
+            if (!(level.getBlockEntity(pos) instanceof MasterRitualStoneBlockEntity master)) {
+                h.fail("master ritual stone block entity missing");
+                return;
+            }
+            h.assertTrue(master.activateRitual(ritual, player, 4), "ritual activates");
+            master.performRitual();
+
+            Field field = RitualPersistence.class.getDeclaredField("loadedChunks");
+            field.setAccessible(true);
+            Map<?, ?> tracked = (Map<?, ?>) field.get(null);
+            GlobalPos key = GlobalPos.of(level.dimension(), pos);
+            h.assertTrue(tracked.containsKey(key), "running stone tracks its chunks");
+
+            ChunkPos selectedChunk = new ChunkPos(chunk.x + 1, chunk.z - 1);
+            BlockPos selectedMin = new BlockPos(selectedChunk.x * 16 - pos.getX(), 0,
+                selectedChunk.z * 16 - pos.getZ());
+            Ritual current = master.getCurrentRitual();
+            current.getBlockRange(RitualPersistence.CHUNK_RANGE).modifyAreaByBlockPositions(
+                selectedMin, selectedMin.offset(15, 0, 15));
+            current.performRitual(master);
+            h.assertTrue(Set.of(selectedChunk).equals(tracked.get(key)), "selection changes update the forced chunks exactly");
+            h.assertFalse(controller.forceChunk(level, pos, chunk.x, chunk.z, false, false),
+                "chunks removed from the selection release their tickets");
+
+            ForcedChunksSavedData data = level.getDataStorage().get(ForcedChunksSavedData.factory(), "chunks");
+            var constructor = TicketHelper.class.getDeclaredConstructor(ForcedChunksSavedData.class, ResourceLocation.class, Map.class, Map.class);
+            constructor.setAccessible(true);
+            var tickets = new TicketSet(new LongOpenHashSet(new long[]{selectedChunk.toLong()}), new LongOpenHashSet());
+            var helper = constructor.newInstance(data, controller.id(), Map.of(pos, tickets), Map.of());
+            RitualPersistence.forgetLevel(level);
+            h.assertTrue(!tracked.containsKey(key), "unload forgets in-memory tracking");
+            controller.callback().validateTickets(level, helper);
+            h.assertTrue(Set.of(selectedChunk).equals(tracked.get(key)), "load restores the active stone's selected chunks");
+
+            master.stopRitual(Ritual.BreakType.DEACTIVATE);
+            h.assertTrue(!tracked.containsKey(key), "stop releases tracking");
+            h.assertFalse(controller.forceChunk(level, pos, selectedChunk.x, selectedChunk.z, false, false),
+                "stop releases the selected chunk's saved ticket");
+        } finally {
+            RitualPersistence.cleanupAllChunks(level);
+            for (BlockPos p : placed) {
+                level.setBlockAndUpdate(p, Blocks.AIR.defaultBlockState());
+            }
+        }
         h.succeed();
     }
 

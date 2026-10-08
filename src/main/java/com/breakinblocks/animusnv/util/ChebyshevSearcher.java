@@ -42,9 +42,42 @@ public class ChebyshevSearcher {
             return null;
         }
 
-        SearchState state = states.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
+        int minY = yDownward ? origin.getY() - verticalDepth + 1 : origin.getY();
+        AABB area = new AABB(origin.getX() - horizontalRadius, minY, origin.getZ() - horizontalRadius,
+            origin.getX() + horizontalRadius + 1, minY + verticalDepth, origin.getZ() + horizontalRadius + 1);
+        return search(masterPos, origin, area, yDownward, maxChecksPerTick, predicate);
+    }
 
-        if (state.radius > horizontalRadius || state.level >= verticalDepth) {
+    /** Searches the exact selected box, from its top downward and nearest horizontal column outward. */
+    @Nullable
+    public BlockPos search(BlockPos masterPos, AABB area, int maxChecksPerTick, Predicate<BlockPos> predicate) {
+        return search(masterPos, masterPos, area, true, maxChecksPerTick, predicate);
+    }
+
+    @Nullable
+    private BlockPos search(BlockPos masterPos, BlockPos origin, AABB area, boolean yDownward,
+                            int maxChecksPerTick, Predicate<BlockPos> predicate) {
+        int minX = Mth.floor(area.minX);
+        int minY = Mth.floor(area.minY);
+        int minZ = Mth.floor(area.minZ);
+        int maxX = Mth.ceil(area.maxX) - 1;
+        int maxY = Mth.ceil(area.maxY) - 1;
+        int maxZ = Mth.ceil(area.maxZ) - 1;
+        if (maxX < minX || maxY < minY || maxZ < minZ) {
+            reset(masterPos);
+            return null;
+        }
+
+        BlockPos center = new BlockPos(Mth.clamp(origin.getX(), minX, maxX),
+            yDownward ? maxY : minY, Mth.clamp(origin.getZ(), minZ, maxZ));
+        int horizontalRadius = horizontalRadiusOf(area, center);
+        int verticalDepth = maxY - minY + 1;
+
+        SearchState state = states.computeIfAbsent(masterPos.immutable(), k -> new SearchState());
+        if (!area.equals(state.area) || !center.equals(state.center) || yDownward != state.yDownward) {
+            state.area = area;
+            state.center = center;
+            state.yDownward = yDownward;
             state.reset();
         }
 
@@ -61,8 +94,13 @@ public class ChebyshevSearcher {
                 continue;
             }
 
-            int x = ringOffsetX(state.radius, state.cell);
-            int z = ringOffsetZ(state.radius, state.cell);
+            int x = center.getX() + ringOffsetX(state.radius, state.cell);
+            int z = center.getZ() + ringOffsetZ(state.radius, state.cell);
+            if (x < minX || x > maxX || z < minZ || z > maxZ) {
+                state.cell++;
+                state.level = 0;
+                continue;
+            }
             int y = state.level;
 
             state.level++;
@@ -71,7 +109,7 @@ public class ChebyshevSearcher {
                 state.cell++;
             }
 
-            BlockPos checkPos = yDownward ? origin.offset(x, -y, z) : origin.offset(x, y, z);
+            BlockPos checkPos = new BlockPos(x, yDownward ? maxY - y : minY + y, z);
             if (predicate.test(checkPos)) {
                 return checkPos;
             }
@@ -85,7 +123,7 @@ public class ChebyshevSearcher {
     }
 
     /**
-     * Largest horizontal step from the centre that still lands inside the area.
+     * Radius of the smallest square around the centre that encloses the area's horizontal bounds.
      * The AABB's upper bound is exclusive, so it is pulled in by one before measuring.
      */
     public static int horizontalRadiusOf(AABB area, BlockPos centre) {
@@ -139,6 +177,9 @@ public class ChebyshevSearcher {
     }
 
     private static final class SearchState {
+        AABB area;
+        BlockPos center;
+        boolean yDownward;
         int radius;
         int cell;
         int level;

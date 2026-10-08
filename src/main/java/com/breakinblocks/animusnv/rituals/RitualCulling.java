@@ -63,8 +63,8 @@ public class RitualCulling extends Ritual {
         addBlockRange(ALTAR_RANGE, RitualAreaDescriptors.horizontalArea(5, 10));
         addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.horizontalArea(hRange, vRange));
 
-        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 10, 15);
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, hRange + 5, vRange + 5);
+        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, RitualAreaDescriptors.maximumVolume(10, 15), 10, 15);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, RitualAreaDescriptors.maximumVolume(hRange + 5, vRange + 5), hRange + 5, vRange + 5);
     }
 
     public double smallGauss(double d) {

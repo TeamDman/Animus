@@ -41,7 +41,7 @@ public class RitualUnmaking extends Ritual {
         super(Constants.Rituals.UNMAKING, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.UNMAKING);
 
         addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.smallCube5());
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 8, 8);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, RitualAreaDescriptors.maximumVolume(8, 8), 8, 8);
     }
 
     @Override

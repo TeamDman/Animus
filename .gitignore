@@ -25,7 +25,6 @@ run
 *.gz
 *.log
 run-data/
-*.py
 
 src/generated/resources/.cache/*
 

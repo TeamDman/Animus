@@ -2,11 +2,22 @@ package com.breakinblocks.animusnv.rituals;
 
 import com.breakinblocks.animusnv.AnimusConfig;
 import com.breakinblocks.animusnv.Constants;
-import com.breakinblocks.animusnv.blocks.BlockBloodCore;
+import com.breakinblocks.animusnv.util.AnimusRitualHelper;
 import com.breakinblocks.animusnv.util.AnimusUtil;
+import com.breakinblocks.neovitae.api.NeoVitaeAPI;
+import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
+import com.breakinblocks.neovitae.api.soul.AnimaTicket;
+import com.breakinblocks.neovitae.api.soul.IAnima;
+import com.breakinblocks.neovitae.api.spiritus.ISpiritusHandler;
+import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
+import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
+import com.breakinblocks.neovitae.ritual.EnumRuneType;
+import com.breakinblocks.neovitae.ritual.IMasterRitualStone;
+import com.breakinblocks.neovitae.ritual.Ritual;
+import com.breakinblocks.neovitae.ritual.RitualComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,17 +26,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import com.breakinblocks.neovitae.common.blockentity.AraVitaeTile;
-import com.breakinblocks.neovitae.common.datacomponent.SpiritusType;
-import com.breakinblocks.animusnv.util.AnimusRitualHelper;
-import com.breakinblocks.neovitae.api.NeoVitaeAPI;
-import com.breakinblocks.neovitae.api.soul.IAnima;
-import com.breakinblocks.neovitae.api.soul.AnimaTicket;
-import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
-import com.breakinblocks.neovitae.api.spiritus.ISpiritusHandler;
-import com.breakinblocks.neovitae.ritual.*;
-import com.breakinblocks.neovitae.ritual.EnumRuneType;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.GrowingPlantBlock;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -36,7 +38,7 @@ import java.util.function.Consumer;
  * Activation Cost: 3000 EV
  * Refresh Cost: 10 EV
  * Refresh Time: Configurable (default 80 ticks, varies with Spiritus)
- * Range: Configurable (default 32 blocks)
+ * Range: 32-block radius, adjustable up to 42 with the Ritual Tinkerer
  * Altar Search Range: 32 blocks horizontally, ±10 blocks vertically (cached for performance)
  * EV per Block: Configurable (default 50 EV)
  */
@@ -44,6 +46,8 @@ public class RitualNaturesLeach extends Ritual {
     public static final String ALTAR_RANGE = "altar";
     public static final String EFFECT_RANGE = "effect";
     public static final int ALTAR_RECHECK_INTERVAL = 100;
+    private static final int EFFECT_RADIUS = 32;
+    private static final int MAX_EFFECT_RADIUS = 42;
     public final int maxSpiritus = 100;
 
     public BlockPos cachedAltarPos = null;
@@ -55,13 +59,32 @@ public class RitualNaturesLeach extends Ritual {
     public RitualNaturesLeach() {
         super(Constants.Rituals.LEACH, 0, 3000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LEACH);
 
-        int range = 32;
-        int rangeSize = range * 2 + 4;
+        int maxEffectSize = MAX_EFFECT_RADIUS * 2 + 1;
+        int maxAltarSize = 32 * 2 + 1;
 
         addBlockRange(ALTAR_RANGE, RitualAreaDescriptors.horizontalArea(32, 10));
-        addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-range, -range, -range), rangeSize, rangeSize, rangeSize));
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, range + 10, range + 10, range + 10);
-        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, 0, 32, 32);
+        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.symmetricCube(EFFECT_RADIUS));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, maxEffectSize * maxEffectSize * maxEffectSize,
+            MAX_EFFECT_RADIUS, MAX_EFFECT_RADIUS);
+        setMaximumVolumeAndDistanceOfRange(ALTAR_RANGE, maxAltarSize * maxAltarSize * maxAltarSize, 32, 32);
+    }
+
+    @Override
+    public void readFromNBT(CompoundTag tag) {
+        super.readFromNBT(tag);
+        if (tag.getInt("rangeVersion") == 0
+            && getBlockRange(EFFECT_RANGE) instanceof AreaDescriptor.Rectangle range
+            && range.getMinimumOffset().equals(new BlockPos(-EFFECT_RADIUS, -EFFECT_RADIUS, -EFFECT_RADIUS))
+            && range.getMaximumOffset().equals(new BlockPos(EFFECT_RADIUS + 3, EFFECT_RADIUS + 3, EFFECT_RADIUS + 3))) {
+            // Correct the old asymmetric default without resetting customized ranges.
+            addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.symmetricCube(EFFECT_RADIUS));
+        }
+    }
+
+    @Override
+    public void writeToNBT(CompoundTag tag) {
+        super.writeToNBT(tag);
+        tag.putInt("rangeVersion", 1);
     }
 
     public static boolean isBlacklisted(Block block) {
@@ -203,7 +226,8 @@ public class RitualNaturesLeach extends Ritual {
             return true;
         }
 
-        if (block instanceof BonemealableBlock && !(block instanceof BlockBloodCore)) {
+        // BonemealableBlock also includes terrain such as grass blocks, nylium, and netherrack.
+        if (block instanceof BushBlock || block instanceof GrowingPlantBlock || block == Blocks.BIG_DRIPLEAF) {
             return true;
         }
 
