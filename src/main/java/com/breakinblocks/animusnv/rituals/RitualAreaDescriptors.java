@@ -40,4 +40,10 @@ public final class RitualAreaDescriptors {
     public static AreaDescriptor altarSearch(int horizontalRadius, int verticalRadius) {
         return horizontalArea(horizontalRadius, verticalRadius);
     }
+
+    /** Largest block volume that fits the inclusive horizontal and vertical radius limits. */
+    public static int maximumVolume(int horizontalRadius, int verticalRadius) {
+        long width = horizontalRadius * 2L + 1;
+        return Math.toIntExact(width * width * (verticalRadius * 2L + 1));
+    }
 }

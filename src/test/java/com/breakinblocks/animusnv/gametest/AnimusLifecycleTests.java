@@ -141,6 +141,17 @@ public final class AnimusLifecycleTests {
             GlobalPos key = GlobalPos.of(level.dimension(), pos);
             h.assertTrue(tracked.containsKey(key), "running stone tracks its chunks");
 
+            ChunkPos selectedChunk = new ChunkPos(chunk.x() + 1, chunk.z() - 1);
+            BlockPos selectedMin = new BlockPos(selectedChunk.x() * 16 - pos.getX(), 0,
+                selectedChunk.z() * 16 - pos.getZ());
+            Ritual current = master.getCurrentRitual();
+            current.getBlockRange(RitualPersistence.CHUNK_RANGE).modifyAreaByBlockPositions(
+                selectedMin, selectedMin.offset(15, 0, 15));
+            current.performRitual(master);
+            h.assertTrue(Set.of(selectedChunk).equals(tracked.get(key)), "changing the selection updates the forced chunks exactly");
+            h.assertFalse(controller.forceChunk(level, pos, chunk.x(), chunk.z(), false, false),
+                "chunks removed from the selection release their tickets");
+
             TicketStorage storage = level.getDataStorage().computeIfAbsent(TicketStorage.TYPE);
             storage.getBlockForcedChunks().deactivateTicketsOnClosing();
             storage.getEntityForcedChunks().deactivateTicketsOnClosing();
@@ -151,7 +162,7 @@ public final class AnimusLifecycleTests {
 
             master.stopRitual(Ritual.BreakType.DEACTIVATE);
             h.assertTrue(!tracked.containsKey(key), "stop releases tracking");
-            h.assertTrue(!controller.forceChunk(level, pos, chunk.x(), chunk.z(), false, false), "stop releases the saved ticket");
+            h.assertTrue(!controller.forceChunk(level, pos, selectedChunk.x(), selectedChunk.z(), false, false), "stop releases the saved ticket");
         } catch (ReflectiveOperationException e) {
             h.fail("reflection failed: " + e);
             return;

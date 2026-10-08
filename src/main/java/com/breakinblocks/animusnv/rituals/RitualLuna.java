@@ -39,7 +39,7 @@ public class RitualLuna extends Ritual {
     public static final String CHEST_RANGE = "chest";
     public static final String EFFECT_RANGE = "effect";
 
-    private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
+    private final ChebyshevSearcher searcher = new ChebyshevSearcher();
 
     public RitualLuna() {
         super(Constants.Rituals.LUNA, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.LUNA);
@@ -47,7 +47,7 @@ public class RitualLuna extends Ritual {
         addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.largeCube65());
         addBlockRange(CHEST_RANGE, RitualAreaDescriptors.singleBlockAbove());
 
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, RitualAreaDescriptors.maximumVolume(128, 128), 128, 128);
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
     }
 
@@ -135,10 +135,7 @@ public class RitualLuna extends Ritual {
     private BlockPos findLightEmittingBlock(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
         AABB aabb = effectRange.getAABB(masterPos);
 
-        return SEARCHER.search(masterPos, masterPos,
-                ChebyshevSearcher.horizontalRadiusOf(aabb, masterPos),
-                ChebyshevSearcher.downwardDepthOf(aabb, masterPos),
-                true, 4096,
+        return searcher.search(masterPos, aabb, 4096,
                 checkPos -> level.getBlockState(checkPos).getLightEmission() > 0);
     }
 

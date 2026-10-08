@@ -55,8 +55,8 @@ public class LunaEntry extends EntryProvider {
         this.pageText("[#](B8860B)Activation:[#]() 1,000 EV"
                 + "\\\n[#](B8860B)Refresh:[#]() 1 EV per block harvested"
                 + "\\\n[#](B8860B)Refresh Time:[#]() 5 ticks"
-                + "\\\n\\\n[#](B8860B)Horizontal Range:[#]() 32 blocks (configurable)"
-                + "\\\n[#](B8860B)Vertical Range:[#]() 64 blocks (configurable, -1 for world bottom)"
+                + "\\\n\\\n[#](B8860B)Effect Range:[#]() 32 blocks radius in all directions"
+                + "\\\n[#](B8860B)Maximum Radius:[#]() 128 blocks with the Ritual Tinkerer"
                 + "\\\n\\\nHarvests any light-emitting block. If no chest is present, items drop at the stone."
                 + "\\\n\\\n[#](2E8B57)Pair with the Ritual of Sol for an automated cycle of light placement and reclamation.[#]()");
     }

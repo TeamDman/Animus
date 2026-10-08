@@ -1,15 +1,20 @@
 package com.breakinblocks.animusnv.gametest;
 
 import com.breakinblocks.animusnv.gametest.base.AnimusTestRegistrar;
+import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.breakinblocks.animusnv.registry.AnimusRituals;
 import com.breakinblocks.animusnv.rituals.RitualLuna;
 import com.breakinblocks.animusnv.rituals.RitualNaturesLeach;
 import com.breakinblocks.animusnv.rituals.RitualSol;
 import com.breakinblocks.animusnv.util.ChebyshevSearcher;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
+import com.breakinblocks.neovitae.ritual.EnumReaderBoundaries;
 import com.breakinblocks.neovitae.ritual.Ritual;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -31,6 +36,9 @@ public final class AnimusRitualTests {
         r.add("sol_and_luna_share_area", AnimusRitualTests::solAndLunaShareTheSameArea);
         r.add("search_volume_stays_in_range", AnimusRitualTests::searchVolumeStaysInsideRange);
         r.add("natures_leach_refresh_never_zero", AnimusRitualTests::naturesLeachRefreshTimeNeverZero);
+        r.add("natures_leach_ranges_are_editable", AnimusRitualTests::naturesLeachRangesAreEditable);
+        r.add("natures_leach_loads_saved_ranges", AnimusRitualTests::naturesLeachLoadsSavedRanges);
+        r.add("natures_leach_preserves_terrain", AnimusRitualTests::naturesLeachPreservesTerrain);
         r.add("every_ritual_has_usable_refresh", AnimusRitualTests::everyRitualHasUsableRefreshTime);
     }
 
@@ -139,6 +147,79 @@ public final class AnimusRitualTests {
             }
         }
 
+        helper.succeed();
+    }
+
+    private static void naturesLeachRangesAreEditable(GameTestHelper helper) {
+        RitualNaturesLeach ritual = new RitualNaturesLeach();
+        AABB effect = ritual.getBlockRange(RitualNaturesLeach.EFFECT_RANGE).getAABB(BlockPos.ZERO);
+        helper.assertTrue(effect.equals(new AABB(-32, -32, -32, 33, 33, 33)),
+            "default effect reaches exactly 32 blocks in each direction");
+
+        for (String key : ritual.getListOfRanges()) {
+            AreaDescriptor.Rectangle range = (AreaDescriptor.Rectangle) ritual.getBlockRange(key);
+            helper.assertTrue(ritual.canBlockRangeBeModified(key, range, null,
+                    range.getMinimumOffset(), range.getMaximumOffset()) == EnumReaderBoundaries.SUCCESS,
+                key + " default must be accepted by the Ritual Tinkerer");
+
+            int horizontal = ritual.getMaxHorizontalRadiusForRange(key);
+            int vertical = ritual.getMaxVerticalRadiusForRange(key);
+            helper.assertTrue(ritual.canBlockRangeBeModified(key, range, null,
+                    new BlockPos(-horizontal, -vertical, -horizontal),
+                    new BlockPos(horizontal, vertical, horizontal)) == EnumReaderBoundaries.SUCCESS,
+                key + " full advertised reach must fit the volume limit");
+            for (BlockPos outside : List.of(new BlockPos(horizontal + 1, 0, 0),
+                    new BlockPos(0, -vertical - 1, 0), new BlockPos(0, 0, -horizontal - 1))) {
+                helper.assertTrue(ritual.canBlockRangeBeModified(key, range, null, outside, outside)
+                        == EnumReaderBoundaries.NOT_WITHIN_BOUNDARIES,
+                    key + " must still reject positions outside its reach");
+            }
+        }
+        helper.succeed();
+    }
+
+    private static void naturesLeachLoadsSavedRanges(GameTestHelper helper) {
+        RitualNaturesLeach original = new RitualNaturesLeach();
+        original.getBlockRange(RitualNaturesLeach.EFFECT_RANGE).modifyAreaByBlockPositions(
+            new BlockPos(-32, -32, -32), new BlockPos(35, 35, 35));
+        CompoundTag legacy = new CompoundTag();
+        original.writeToNBT(legacy);
+        legacy.remove("rangeVersion");
+        RitualNaturesLeach loaded = new RitualNaturesLeach();
+        loaded.readFromNBT(legacy);
+        helper.assertTrue(loaded.getBlockRange(RitualNaturesLeach.EFFECT_RANGE).getAABB(BlockPos.ZERO)
+                .equals(new AABB(-32, -32, -32, 33, 33, 33)),
+            "saved legacy default is corrected when loaded");
+
+        original.getBlockRange(RitualNaturesLeach.EFFECT_RANGE).modifyAreaByBlockPositions(
+            new BlockPos(-4, 1, -3), new BlockPos(7, 5, 9));
+        original.getBlockRange(RitualNaturesLeach.ALTAR_RANGE).modifyAreaByBlockPositions(
+            new BlockPos(0, 3, 0), new BlockPos(0, 3, 0));
+        CompoundTag customized = new CompoundTag();
+        original.writeToNBT(customized);
+        loaded.readFromNBT(customized);
+        for (String key : original.getListOfRanges()) {
+            helper.assertTrue(loaded.getBlockRange(key).getAABB(BlockPos.ZERO)
+                    .equals(original.getBlockRange(key).getAABB(BlockPos.ZERO)),
+                "saved custom " + key + " range is preserved");
+        }
+        helper.succeed();
+    }
+
+    private static void naturesLeachPreservesTerrain(GameTestHelper helper) {
+        for (Block block : List.of(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.PODZOL, Blocks.MYCELIUM,
+                Blocks.ROOTED_DIRT, Blocks.NETHERRACK, Blocks.CRIMSON_NYLIUM, Blocks.WARPED_NYLIUM,
+                Blocks.STONE, Blocks.AIR, AnimusBlocks.BLOCK_BLOOD_CORE.get())) {
+            helper.assertFalse(RitualNaturesLeach.isConsumable(block),
+                "Nature's Leach must preserve " + block.getDescriptionId());
+        }
+        for (Block block : List.of(Blocks.OAK_LOG, Blocks.OAK_LEAVES, Blocks.OAK_SAPLING,
+                Blocks.WHEAT, Blocks.DANDELION, Blocks.BROWN_MUSHROOM, Blocks.CRIMSON_FUNGUS,
+                Blocks.AZALEA, Blocks.SHORT_GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.KELP, Blocks.CAVE_VINES, Blocks.BIG_DRIPLEAF,
+                Blocks.MOSS_BLOCK, Blocks.MOSS_CARPET, AnimusBlocks.BLOCK_BLOOD_SAPLING.get())) {
+            helper.assertTrue(RitualNaturesLeach.isConsumable(block),
+                "Nature's Leach must still consume " + block.getDescriptionId());
+        }
         helper.succeed();
     }
 

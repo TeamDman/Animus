@@ -9,6 +9,7 @@ public class AnimusGameTestRegistration {
         AnimusTestRegistrar r = new AnimusTestRegistrar(event);
 
         AnimusRitualTests.register(r);
+        AnimusRitualRangeTests.register(r);
         AnimusDataTests.register(r);
         AnimusRegressionTests.register(r);
         AnimusTransactionTests.register(r);

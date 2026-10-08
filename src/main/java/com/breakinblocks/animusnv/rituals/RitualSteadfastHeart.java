@@ -46,27 +46,35 @@ import java.util.function.Consumer;
  */
 public class RitualSteadfastHeart extends Ritual {
     public static final String EFFECT_RANGE = "effect";
+    private final int defaultRadius;
     public final int maxSpiritus = 100;
     public double willBuffer = 0;
 
     public RitualSteadfastHeart() {
         super(Constants.Rituals.STEADFAST, 0, 20000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.STEADFAST);
 
-        int range = 128;
-        int halfRange = range / 2;
-        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.symmetricCube(halfRange));
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, range, range);
+        int range = AnimusConfig.SPEC.isLoaded()
+            ? AnimusConfig.rituals.steadfastHeartRange.get()
+            : AnimusConfig.rituals.steadfastHeartRange.getDefault();
+        defaultRadius = range;
+        addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.symmetricCube(range));
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, RitualAreaDescriptors.maximumVolume(range, range), range, range);
     }
 
     @Override
     public void readFromNBT(CompoundTag tag) {
         super.readFromNBT(tag);
+        if (tag.getIntOr("rangeVersion", 0) == 0
+            && getBlockRange(EFFECT_RANGE).getAABB(BlockPos.ZERO).equals(new AABB(-64, -64, -64, 65, 65, 65))) {
+            addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.symmetricCube(defaultRadius));
+        }
         willBuffer = tag.getDoubleOr("willBuffer", 0.0);
     }
 
     @Override
     public void writeToNBT(CompoundTag tag) {
         super.writeToNBT(tag);
+        tag.putInt("rangeVersion", 1);
         tag.putDouble("willBuffer", willBuffer);
     }
 

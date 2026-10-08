@@ -5,6 +5,7 @@ import com.breakinblocks.animusnv.AnimusStartupConfig;
 import com.breakinblocks.animusnv.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -61,8 +62,17 @@ public class RitualRelentlessTides extends Ritual {
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRadius, -vDepth, -hRadius), hSize, vDepth, hSize));
         addBlockRange(TANK_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, hRadius + 32, vDepth + 64);
-        setMaximumVolumeAndDistanceOfRange(TANK_RANGE, 0, 5, 5);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, RitualAreaDescriptors.maximumVolume(hRadius + 32, vDepth + 64), hRadius + 32, vDepth + 64);
+        setMaximumVolumeAndDistanceOfRange(TANK_RANGE, 1, 5, 5);
+    }
+
+    @Override
+    public void readFromNBT(CompoundTag tag) {
+        super.readFromNBT(tag);
+        if (getBlockRange(TANK_RANGE) instanceof AreaDescriptor.Rectangle range) {
+            BlockPos tank = range.getMinimumOffset();
+            range.modifyAreaByBlockPositions(tank, tank);
+        }
     }
 
     @Override
@@ -115,10 +125,8 @@ public class RitualRelentlessTides extends Ritual {
 
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         AABB effectAABB = effectRange.getAABB(masterPos);
-        int horizontalRadius = ChebyshevSearcher.horizontalRadiusOf(effectAABB, masterPos);
-        int verticalDepth = (int) Math.abs(effectAABB.minY - masterPos.getY());
         Fluid fluidToPlace = extractedFluid.getFluid();
-        BlockPos placementPos = findValidPlacementPosition(serverLevel, masterPos, horizontalRadius, verticalDepth, fluidToPlace);
+        BlockPos placementPos = findValidPlacementPosition(serverLevel, masterPos, effectAABB, fluidToPlace);
 
         if (placementPos == null) {
             emitSmokeParticles(serverLevel, masterPos);
@@ -158,13 +166,10 @@ public class RitualRelentlessTides extends Ritual {
         }
     }
 
-    private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth, Fluid fluidToPlace) {
+    private BlockPos findValidPlacementPosition(ServerLevel level, BlockPos masterPos, AABB area, Fluid fluidToPlace) {
         return searcher.search(
             masterPos,
-            masterPos.below(),
-            horizontalRadius,
-            verticalDepth,
-            true,
+            area,
             64,
             checkPos -> isValidPlacementSpot(level, checkPos, fluidToPlace, masterPos)
         );

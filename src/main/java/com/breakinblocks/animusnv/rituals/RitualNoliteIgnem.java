@@ -42,7 +42,7 @@ public class RitualNoliteIgnem extends Ritual {
         int size = radius * 2 + 1;
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-radius, -radius, -radius), size, size, size));
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, radius + 20, radius + 20);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, RitualAreaDescriptors.maximumVolume(radius + 20, radius + 20), radius + 20, radius + 20);
     }
 
     @Override

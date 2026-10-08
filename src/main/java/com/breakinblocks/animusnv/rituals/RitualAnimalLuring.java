@@ -37,7 +37,7 @@ public class RitualAnimalLuring extends Ritual {
         super(Constants.Rituals.ANIMAL_LURING, 0, 5000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.ANIMAL_LURING);
 
         addBlockRange(SPAWN_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-4, 1, -4), 9, 3, 9));
-        setMaximumVolumeAndDistanceOfRange(SPAWN_RANGE, 0, 15, 10);
+        setMaximumVolumeAndDistanceOfRange(SPAWN_RANGE, RitualAreaDescriptors.maximumVolume(15, 10), 15, 10);
     }
 
     @Override
