@@ -150,6 +150,14 @@ public class AnimusSourceTests {
     }
 
     @GameTest(template = TEMPLATE)
+    public void arcane_rune_has_base_speed_stats(GameTestHelper h) {
+        var stats = BuiltInRegistries.BLOCK.wrapAsHolder(block("animusnv:arcane_rune")).getData(NVDataMaps.ALTAR_RUNE_STATS);
+        h.assertTrue(stats != null, "Arcane Rune has altar rune stats");
+        h.assertTrue(stats.getConsumptionMod(0) == 0.2, "Arcane Rune gives the Speed Rune base, got " + stats.getConsumptionMod(0));
+        h.succeed();
+    }
+
+    @GameTest(template = TEMPLATE)
     public void source_vitaeum_pattern_is_distinct_from_ars_vitae(GameTestHelper h) {
         Set<String> sourcePattern = rotatedPatterns(new RitualSourceVitaeum()).get(0);
         for (Set<String> rotatedArsPattern : rotatedPatterns(new RitualArsVitae())) {
