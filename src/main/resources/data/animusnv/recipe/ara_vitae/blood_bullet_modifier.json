@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "irons_artifice"
+    }
+  ],
+  "type": "neovitae:ara_vitae_recipe",
+  "bloodNeeded": 5000,
+  "craftSpeed": 5,
+  "drainSpeed": 5,
+  "input": "irons_artifice:enchanted_bullet_modifier",
+  "minTier": 1,
+  "output": {
+    "id": "animusnv:blood_bullet_modifier"
+  }
+}

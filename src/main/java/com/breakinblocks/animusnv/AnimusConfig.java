@@ -1010,6 +1010,23 @@ public class AnimusConfig {
         }
     }
 
+    public static class IronsArtifice {
+        public final ModConfigSpec.IntValue bloodBulletEvCost;
+
+        public IronsArtifice(ModConfigSpec.Builder builder) {
+            builder.comment("Iron's Arms 'n Artifice Integration").push("ironsArtifice");
+
+            bloodBulletEvCost = builder
+                .comment(
+                    "EV drained from the shooter's network per shot with a Blood Bullet modifier",
+                    "Default: 50"
+                )
+                .defineInRange("bloodBulletEvCost", 50, 0, 10000);
+
+            builder.pop();
+        }
+    }
+
     public static General general;
     public static Rituals rituals;
     public static Sigils sigils;
@@ -1020,6 +1037,7 @@ public class AnimusConfig {
     public static Weapons weapons;
     public static IronsSpells ironsSpells;
     public static SanguineRectifier sanguineRectifier;
+    public static IronsArtifice ironsArtifice;
 
     static {
         BUILDER.comment("Animus Configuration").push("animusnv");
@@ -1034,6 +1052,7 @@ public class AnimusConfig {
         weapons = new Weapons(BUILDER);
         ironsSpells = new IronsSpells(BUILDER);
         sanguineRectifier = new SanguineRectifier(BUILDER);
+        ironsArtifice = new IronsArtifice(BUILDER);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

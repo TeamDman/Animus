@@ -636,6 +636,14 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("jei.animusnv.sanguine_rectifier.info", "The Sanguine Rectifier bridges NeoVitae and EvilCraft. Place near an Ara Vitae and insert a bound Orb of Vitae. It converts EV from the bound network into EvilCraft blood, filling adjacent fluid tanks. It can also accept piped EvilCraft blood and transfer it into the linked altar. Transfer rates scale with the altar's speed runes.");
 
         add("guide.animusnv.entry.sanguine_rectifier", "Sanguine Rectifier");
+
+        add("item.animusnv.blood_bullet_modifier", "Blood Bullet");
+        add("item.animusnv.spirit_powder_modifier", "Spirit Powder");
+        add("tooltip.animusnv.blood_bullet_modifier.effect", "Shots use EV instead of bullets");
+        add("tooltip.animusnv.blood_bullet_modifier.cost", "Costs %s EV per shot");
+        add("text.component.animusnv.blood_bullet.no_ev", "Not enough EV, firing loaded bullets");
+        add("tooltip.animusnv.spirit_powder_modifier.snare", "Snares targets so kills drop Spiritus");
+        add("tooltip.animusnv.spirit_powder_modifier.scaling", "+%s%% to +%s%% damage from the Spiritus in your gems");
         add("tooltip.animusnv.diabolical_fungi.conversion", "1 Spiritus = 50 mana (configurable), bonus for variety");
         add("tooltip.animusnv.diabolical_fungi.flavour", "Devil's Tooth Mushroom - Feeds on Spiritus");
         add("tooltip.animusnv.diabolical_fungi.info", "Consumes Spiritus from the chunk to generate mana");

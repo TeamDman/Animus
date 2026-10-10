@@ -17,6 +17,7 @@ public class AnimusGameTestRegistration {
         AnimusDynamicTreesTests.register(r);
         registerOptional(r, "com.breakinblocks.animusnv.gametest.AnimusSourceTests");
         registerOptional(r, "com.breakinblocks.animusnv.gametest.AnimusSpellTests");
+        registerOptional(r, "com.breakinblocks.animusnv.gametest.AnimusArtificeTests");
     }
 
     private static void registerOptional(AnimusTestRegistrar r, String className) {

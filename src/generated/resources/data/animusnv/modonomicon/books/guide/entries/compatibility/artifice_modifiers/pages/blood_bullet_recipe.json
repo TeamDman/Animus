@@ -1,0 +1,9 @@
+{
+  "type": "neovitae:ara_vitae_recipe",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "blood_bullet_recipe",
+  "recipe_id_1": "animusnv:ara_vitae/blood_bullet_modifier",
+  "sort_number": 2
+}

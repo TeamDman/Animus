@@ -19,7 +19,7 @@ public class CompatCategory extends CategoryProvider {
         return new String[]{
                 "__a_b_c_d__",
                 "__e_f_g_h__",
-                "__i_j______"
+                "__i_j_k____"
         };
     }
 
@@ -50,6 +50,8 @@ public class CompatCategory extends CategoryProvider {
         // EvilCraft
         var sanguineRectifier = this.add(new SanguineRectifierEntry(this).generate('i')
                 .withCondition(BookModLoadedConditionModel.create().withModId("evilcraft")));
+        var artificeModifiers = this.add(new ArtificeModifiersEntry(this).generate('k')
+                .withCondition(BookModLoadedConditionModel.create().withModId("irons_artifice")));
     }
 
     @Override

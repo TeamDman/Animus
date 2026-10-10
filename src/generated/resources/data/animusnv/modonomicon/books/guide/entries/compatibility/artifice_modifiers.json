@@ -1,0 +1,26 @@
+{
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
+  },
+  "category": "animusnv:compatibility",
+  "condition": {
+    "type": "modonomicon:mod_loaded",
+    "mod_id": "irons_artifice",
+    "tooltip": {
+      "translate": "tooltip.modonomicon.condition.mod_loaded",
+      "with": [
+        "irons_artifice"
+      ]
+    }
+  },
+  "description": "book.animusnv.guide.compatibility.artifice_modifiers.description",
+  "icon": "animusnv:textures/item/blood_bullet_modifier.png",
+  "id": "animusnv:compatibility/artifice_modifiers",
+  "name": "book.animusnv.guide.compatibility.artifice_modifiers.name",
+  "sort_number": 10,
+  "x": 1,
+  "y": 1
+}

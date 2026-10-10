@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "spirit_powder",
+  "show_title_separator": true,
+  "sort_number": 3,
+  "text": "book.animusnv.guide.compatibility.artifice_modifiers.spirit_powder.text",
+  "title": "book.animusnv.guide.compatibility.artifice_modifiers.spirit_powder.title"
+}

@@ -22,6 +22,7 @@ public class CompatHandler {
         // Use lambdas (not method references) to avoid eager class loading when dependency is missing
         COMPAT_MODULES.put("evilcraft", () -> new EvilCraftCompat());
         COMPAT_MODULES.put("dynamictrees", () -> new DynamicTreesCompat());
+        COMPAT_MODULES.put("irons_artifice", () -> new IronsArtificeCompat());
     }
 
     /**
@@ -36,6 +37,10 @@ public class CompatHandler {
         if (ModList.get().isLoaded("dynamictrees")) {
             registerDynamicTreesDeferred(modEventBus);
         }
+
+        if (ModList.get().isLoaded("irons_artifice")) {
+            registerIronsArtificeDeferred(modEventBus);
+        }
     }
 
     private static void registerEvilCraftDeferred(IEventBus modEventBus) {
@@ -44,6 +49,10 @@ public class CompatHandler {
 
     private static void registerDynamicTreesDeferred(IEventBus modEventBus) {
         DynamicTreesCompatLoader.registerDeferred(modEventBus);
+    }
+
+    private static void registerIronsArtificeDeferred(IEventBus modEventBus) {
+        IronsArtificeCompatLoader.registerDeferred(modEventBus);
     }
 
     public static void init() {
@@ -91,6 +100,10 @@ public class CompatHandler {
 
     public static boolean isDynamicTreesLoaded() {
         return isModuleLoaded("dynamictrees");
+    }
+
+    public static boolean isIronsArtificeLoaded() {
+        return isModuleLoaded("irons_artifice");
     }
 
 }
