@@ -277,7 +277,7 @@ publishMods {
         clientRequired = true
         serverRequired = true
         requires("neovitae", "geckolib", "modonomicon")
-        optional("jei", "curios", "evilcraft", "dynamictrees")
+        optional("jei", "curios", "evilcraft", "dynamictrees", "irons-artifice")
     }
 
     modrinth {
