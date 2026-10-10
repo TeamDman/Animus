@@ -7,6 +7,7 @@ import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
 import net.minecraft.server.level.ServerLevel;
@@ -68,8 +69,17 @@ public class RitualSiphon extends Ritual {
 
         addBlockRange(EFFECT_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-hRadius, -vDepth, -hRadius), hSize, vDepth, hSize));
         addBlockRange(TANK_RANGE, new AreaDescriptor.Rectangle(new BlockPos(0, 1, 0), 1, 1, 1));
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, hRadius + 32, vDepth + 64);
-        setMaximumVolumeAndDistanceOfRange(TANK_RANGE, 0, 5, 5);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, RitualAreaDescriptors.maximumVolume(hRadius + 32, vDepth + 64), hRadius + 32, vDepth + 64);
+        setMaximumVolumeAndDistanceOfRange(TANK_RANGE, 1, 5, 5);
+    }
+
+    @Override
+    public void readFromNBT(CompoundTag tag) {
+        super.readFromNBT(tag);
+        if (getBlockRange(TANK_RANGE) instanceof AreaDescriptor.Rectangle range) {
+            BlockPos tank = range.getMinimumOffset();
+            range.modifyAreaByBlockPositions(tank, tank);
+        }
     }
 
     @Override
@@ -109,9 +119,7 @@ public class RitualSiphon extends Ritual {
 
         AreaDescriptor effectRange = getBlockRange(EFFECT_RANGE);
         AABB effectAABB = effectRange.getAABB(masterPos);
-        int horizontalRadius = ChebyshevSearcher.horizontalRadiusOf(effectAABB, masterPos);
-        int verticalDepth = (int) Math.abs(effectAABB.minY - masterPos.getY());
-        BlockPos fluidPos = findFluidSource(serverLevel, masterPos, horizontalRadius, verticalDepth);
+        BlockPos fluidPos = findFluidSource(serverLevel, masterPos, effectAABB);
 
         if (fluidPos == null) {
             emitSmokeParticles(serverLevel, masterPos);
@@ -166,13 +174,10 @@ public class RitualSiphon extends Ritual {
         network.syphon(AnimaTicket.create(evCost));
     }
 
-    private BlockPos findFluidSource(ServerLevel level, BlockPos masterPos, int horizontalRadius, int verticalDepth) {
+    private BlockPos findFluidSource(ServerLevel level, BlockPos masterPos, AABB area) {
         return SEARCHER.search(
             masterPos,
-            masterPos.below(),
-            horizontalRadius,
-            verticalDepth,
-            true,
+            area,
             64,
             checkPos -> isFluidSource(level, checkPos, masterPos)
         );

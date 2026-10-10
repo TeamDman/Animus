@@ -62,8 +62,8 @@ public class SolEntry extends EntryProvider {
         this.pageText("[#](B8860B)Activation:[#]() 1,000 EV"
                 + "\\\n[#](B8860B)Refresh:[#]() 1 EV per block placed"
                 + "\\\n[#](B8860B)Refresh Time:[#]() 5 ticks"
-                + "\\\n\\\n[#](B8860B)Horizontal Range:[#]() 32 blocks (configurable)"
-                + "\\\n[#](B8860B)Vertical Range:[#]() 64 blocks (configurable, -1 for world bottom)"
+                + "\\\n\\\n[#](B8860B)Effect Range:[#]() 32 blocks radius in all directions"
+                + "\\\n[#](B8860B)Maximum Radius:[#]() 128 blocks with the Ritual Tinkerer"
                 + "\\\n\\\nRequires dark spots (light level < 8) with solid ground below to place blocks.");
     }
 

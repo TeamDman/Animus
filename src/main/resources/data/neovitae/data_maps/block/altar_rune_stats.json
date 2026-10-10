@@ -1,0 +1,15 @@
+{
+  "values": {
+    "animusnv:arcane_rune": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "value": {
+        "consumption_mod": 0.2
+      }
+    }
+  }
+}

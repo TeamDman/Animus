@@ -46,7 +46,7 @@ public class RitualSol extends Ritual {
     private static final ResourceLocation BLOOD_LIGHT_SIGIL = ResourceLocation.fromNamespaceAndPath("neovitae", "sigil_blood_light");
     private static final ResourceLocation BLOOD_LIGHT_BLOCK = ResourceLocation.fromNamespaceAndPath("neovitae", "blood_light");
 
-    private static final ChebyshevSearcher SEARCHER = new ChebyshevSearcher();
+    private final ChebyshevSearcher searcher = new ChebyshevSearcher();
 
     public RitualSol() {
         super(Constants.Rituals.SOL, 0, 1000, "ritual." + Constants.Mod.MODID + "." + Constants.Rituals.SOL);
@@ -54,7 +54,7 @@ public class RitualSol extends Ritual {
         addBlockRange(EFFECT_RANGE, RitualAreaDescriptors.largeCube65());
         addBlockRange(CHEST_RANGE, RitualAreaDescriptors.singleBlockAbove());
 
-        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, 0, 128, 128);
+        setMaximumVolumeAndDistanceOfRange(EFFECT_RANGE, RitualAreaDescriptors.maximumVolume(128, 128), 128, 128);
         setMaximumVolumeAndDistanceOfRange(CHEST_RANGE, 1, 3, 3);
     }
 
@@ -175,12 +175,9 @@ public class RitualSol extends Ritual {
     private BlockPos findDarkSpot(Level level, BlockPos masterPos, AreaDescriptor effectRange) {
         AABB aabb = effectRange.getAABB(masterPos);
 
-        return SEARCHER.search(
+        return searcher.search(
             masterPos,
-            masterPos,
-            ChebyshevSearcher.horizontalRadiusOf(aabb, masterPos),
-            ChebyshevSearcher.downwardDepthOf(aabb, masterPos),
-            true,
+            aabb,
             4096,
             checkPos -> level.isEmptyBlock(checkPos)
                 && level.getBrightness(LightLayer.BLOCK, checkPos) < 8

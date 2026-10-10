@@ -4,7 +4,6 @@
     {
       "id": "ic2:te",
       "required": false
-    },
-    "minecraft:short_grass"
+    }
   ]
 }

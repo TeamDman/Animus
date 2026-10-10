@@ -38,7 +38,7 @@ public class PersistenceEntry extends EntryProvider {
         this.pageText("[#](B8860B)Activation:[#]() 50,000 EV"
                 + "\\\n[#](B8860B)Upkeep:[#]() 100 EV per tick (configurable)"
                 + "\\\n[#](B8860B)Range:[#]() 3 chunk radius (configurable)"
-                + "\\\n\\\nThe ritual maintains chunk loading in a square area around itself. Chunks unload immediately if EV runs out.");
+                + "\\\n\\\nThe ritual keeps every chunk touched by the selected area loaded. Chunks unload immediately if EV runs out.");
 
         this.page("notes", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
