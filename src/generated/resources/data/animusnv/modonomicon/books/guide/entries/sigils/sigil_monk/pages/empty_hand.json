@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "empty_hand",
+  "show_title_separator": true,
+  "sort_number": 6,
+  "text": "book.animusnv.guide.sigils.sigil_monk.empty_hand.text",
+  "title": "book.animusnv.guide.sigils.sigil_monk.empty_hand.title"
+}
