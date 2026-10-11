@@ -1,10 +1,16 @@
 package com.breakinblocks.animusnv.compat;
 
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import com.breakinblocks.neovitae.api.NeoVitaeAPI;
 import com.breakinblocks.neovitae.api.sentient.ISentientArmorManager;
+import com.breakinblocks.neovitae.common.registry.NVRegistries;
+import com.breakinblocks.neovitae.common.sentient.SentientHelper;
+import com.breakinblocks.neovitae.common.sentient.SentientUpgrade;
+
+import java.util.Optional;
 
 /**
  * Wraps NeoVitae's Sentient Armor API for use by compat modules.
@@ -32,7 +38,19 @@ public class SentientUpgradeHelper {
     }
 
     public static boolean addExperience(Player player, ResourceLocation upgradeId, float xpToAdd) {
-        return getManager().grantUpgradeExperience(player, upgradeId, xpToAdd);
+        if (xpToAdd <= 0 || !hasFullSet(player)) {
+            return false;
+        }
+
+        Optional<Holder.Reference<SentientUpgrade>> upgrade = player.level()
+            .registryAccess()
+            .registry(NVRegistries.Keys.SENTIENT_UPGRADES)
+            .flatMap(registry -> registry.getHolder(upgradeId));
+        if (upgrade.isEmpty()) {
+            return false;
+        }
+
+        return SentientHelper.applyExp(player, upgrade.get(), xpToAdd) > 0;
     }
 
     public static float getExperience(Player player, ResourceLocation upgradeId) {
