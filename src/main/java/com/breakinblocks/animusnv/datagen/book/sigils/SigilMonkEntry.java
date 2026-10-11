@@ -65,7 +65,16 @@ public class SigilMonkEntry extends EntryProvider {
                 + "- Arrows (regular and spectral)\n\n"
                 + "- Tridents\n\n"
                 + "- Firework rockets\\\n\\\n"
-                + "Caught projectiles go to your main hand, or stack if holding the same type.");
+                + "Caught projectiles stack onto the same type in your main hand, otherwise they go to your inventory.");
+
+        this.page("empty_hand", () -> BookTextPageModel.create()
+                .withTitle(this.context().pageTitle())
+                .withText(this.context().pageText()));
+        this.pageTitle("Empty Hand");
+        this.pageText("While the sigil is active and your selected hotbar slot is empty, items you pick up "
+                + "skip that slot and go elsewhere in your inventory, so your fist stays free.\\\n\\\n"
+                + "If every other slot is full, items stay on the ground. Scroll to a slot holding an item "
+                + "and pickups behave as normal.");
 
         this.page("spiritus_bonus", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())

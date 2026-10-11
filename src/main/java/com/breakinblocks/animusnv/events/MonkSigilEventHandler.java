@@ -10,8 +10,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -255,9 +255,7 @@ public class MonkSigilEventHandler {
         if (!caughtItem.isEmpty()) {
             event.setCanceled(true);
 
-            if (mainHandItem.isEmpty()) {
-                player.setItemInHand(InteractionHand.MAIN_HAND, caughtItem);
-            } else if (mainHandItem.is(caughtItem.getItem()) && mainHandItem.getCount() < mainHandItem.getMaxStackSize()) {
+            if (mainHandItem.is(caughtItem.getItem()) && mainHandItem.getCount() < mainHandItem.getMaxStackSize()) {
                 mainHandItem.grow(1);
             } else {
                 if (!player.getInventory().add(caughtItem)) {
@@ -389,6 +387,28 @@ public class MonkSigilEventHandler {
         }
 
         event.setNewSpeed(MONK_MINING_SPEED);
+    }
+
+    @SubscribeEvent
+    public static void onHarvestCheck(PlayerEvent.HarvestCheck event) {
+        if (event.canHarvest()) {
+            return;
+        }
+
+        Player player = event.getEntity();
+        if (!player.getMainHandItem().isEmpty()) {
+            return;
+        }
+
+        if (event.getTargetBlock().is(BlockTags.INCORRECT_FOR_NETHERITE_TOOL)) {
+            return;
+        }
+
+        if (!hasActiveMonkSigil(player)) {
+            return;
+        }
+
+        event.setCanHarvest(true);
     }
 
     @SubscribeEvent
