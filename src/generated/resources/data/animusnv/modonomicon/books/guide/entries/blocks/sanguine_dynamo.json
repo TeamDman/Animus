@@ -1,0 +1,21 @@
+{
+  "type": "modonomicon:content",
+  "background": {
+    "height": 26,
+    "sprite": "modonomicon:modonomicon/themes/default/node/entry_backgrounds/square_gold",
+    "width": 26
+  },
+  "category": "animusnv:blocks",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.blocks.sanguine_dynamo.description",
+  "icon": {
+    "id": "animusnv:sanguine_dynamo"
+  },
+  "id": "animusnv:blocks/sanguine_dynamo",
+  "name": "book.animusnv.guide.blocks.sanguine_dynamo.name",
+  "sort_number": 7,
+  "x": -1,
+  "y": 1
+}

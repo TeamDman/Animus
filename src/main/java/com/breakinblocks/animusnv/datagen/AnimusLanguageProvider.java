@@ -91,6 +91,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("treePack.animusnv.name", "Animus");
         add("block.animusnv.crystallized_spiritus_block", "Crystallized Spiritus Block");
         add("block.animusnv.sanguine_rectifier", "Sanguine Rectifier");
+        add("block.animusnv.sanguine_dynamo", "Sanguine Dynamo");
         add("block.animusnv.diabolical_fungi", "Diabolical Fungi");
         add("block.animusnv.imperfect_ritual_stone", "Imperfect Ritual Stone");
         add("block.animusnv.rune_unleashed_nature", "Rune of Unleashed Nature");
@@ -557,6 +558,12 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("text.component.animusnv.rectifier.orb_placed", "Orb of Vitae placed");
         add("text.component.animusnv.rectifier.orb_removed", "Orb of Vitae removed");
         add("text.component.animusnv.rectifier.orb_not_bound", "Orb of Vitae must be bound first");
+        add("text.component.animusnv.sanguine_dynamo.orb_placed", "Orb of Vitae placed: up to %s EV/t (%s FE/t)");
+        add("text.component.animusnv.sanguine_dynamo.orb_removed", "Orb of Vitae removed");
+        add("text.component.animusnv.sanguine_dynamo.orb_not_bound", "Orb of Vitae must be bound first");
+        add("text.component.animusnv.sanguine_dynamo.orb_unsupported", "This orb cannot power the Sanguine Dynamo");
+        add("text.component.animusnv.sanguine_dynamo.status", "%s EV/t → %s FE/t (limit %s EV/t) | Buffer: %s / %s FE | Anima: %s EV");
+        add("text.component.animusnv.sanguine_dynamo.status_no_orb", "No orb inserted | Buffer: %s / %s FE");
 
         add("text.component.animusnv.temporal.no_ev", "Not enough EV! Requires %s EV");
         add("text.component.animusnv.temporal.no_tile", "No block entity at target location");
@@ -636,6 +643,15 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("jei.animusnv.sanguine_rectifier.info", "The Sanguine Rectifier bridges NeoVitae and EvilCraft. Place near an Ara Vitae and insert a bound Orb of Vitae. It converts EV from the bound network into EvilCraft blood, filling adjacent fluid tanks. It can also accept piped EvilCraft blood and transfer it into the linked altar. Transfer rates scale with the altar's speed runes.");
 
         add("guide.animusnv.entry.sanguine_rectifier", "Sanguine Rectifier");
+
+        add("tooltip.animusnv.sanguine_dynamo.desc", "Converts Essentia Vitae into Forge Energy");
+        add("tooltip.animusnv.sanguine_dynamo.usage", "Insert a bound Orb of Vitae. The orb sets the maximum rate.");
+        add("tooltip.animusnv.sanguine_dynamo.redstone", "Redstone signal strength lowers the rate (15 = full)");
+        add("jei.animusnv.category.sanguine_dynamo", "Sanguine Dynamo");
+        add("jei.animusnv.sanguine_dynamo.ratio", "%s FE per EV");
+        add("jei.animusnv.sanguine_dynamo.max", "Up to %s EV/t → %s FE/t");
+        add("jei.animusnv.sanguine_dynamo.redstone", "Redstone lowers the rate");
+        add("guide.animusnv.entry.sanguine_dynamo", "Sanguine Dynamo");
 
         add("item.animusnv.blood_bullet_modifier", "Blood Bullet");
         add("item.animusnv.spirit_powder_modifier", "Spirit Powder");

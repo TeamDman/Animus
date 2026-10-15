@@ -40,6 +40,7 @@ public class Animus {
         AnimusCreativeTabs.CREATIVE_TABS.register(modEventBus);
         AnimusTreeDecoratorTypes.TREE_DECORATOR_TYPES.register(modEventBus);
         AnimusRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        AnimusRecipeSerializers.RECIPE_TYPES.register(modEventBus);
         AnimusAttributes.ATTRIBUTES.register(modEventBus);
         AnimusDataComponents.DATA_COMPONENTS.register(modEventBus);
 
@@ -68,6 +69,12 @@ public class Animus {
     }
 
     private void registerCapabilities(final RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+            Capabilities.Energy.BLOCK,
+            AnimusBlockEntities.SANGUINE_DYNAMO.get(),
+            (be, direction) -> be.getEnergyHandler()
+        );
+
         if (ModList.get().isLoaded("evilcraft")) {
             registerEvilCraftCapabilities(event);
         }

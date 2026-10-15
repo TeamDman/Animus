@@ -1027,6 +1027,20 @@ public class AnimusConfig {
         }
     }
 
+    public static class SanguineDynamo {
+        public final ModConfigSpec.IntValue bufferCapacity;
+
+        public SanguineDynamo(ModConfigSpec.Builder builder) {
+            builder.comment("Sanguine Dynamo. Conversion rates per orb are set by animusnv:sanguine_dynamo recipes.").push("sanguineDynamo");
+
+            bufferCapacity = builder
+                .comment("Internal FE buffer capacity")
+                .defineInRange("bufferCapacity", 250000, 1000, 100000000);
+
+            builder.pop();
+        }
+    }
+
     public static General general;
     public static Rituals rituals;
     public static Sigils sigils;
@@ -1037,6 +1051,7 @@ public class AnimusConfig {
     public static Weapons weapons;
     public static IronsSpells ironsSpells;
     public static SanguineRectifier sanguineRectifier;
+    public static SanguineDynamo sanguineDynamo;
     public static IronsArtifice ironsArtifice;
 
     static {
@@ -1052,6 +1067,7 @@ public class AnimusConfig {
         weapons = new Weapons(BUILDER);
         ironsSpells = new IronsSpells(BUILDER);
         sanguineRectifier = new SanguineRectifier(BUILDER);
+        sanguineDynamo = new SanguineDynamo(BUILDER);
         ironsArtifice = new IronsArtifice(BUILDER);
 
         BUILDER.pop();

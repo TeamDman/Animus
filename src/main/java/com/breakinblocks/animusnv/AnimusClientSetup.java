@@ -2,7 +2,9 @@ package com.breakinblocks.animusnv;
 
 import com.breakinblocks.animusnv.client.models.AnimusModelLayers;
 import com.breakinblocks.animusnv.client.models.SpearModel;
+import com.breakinblocks.animusnv.client.renderers.SanguineDynamoRenderer;
 import com.breakinblocks.animusnv.client.renderers.ThrownSpearRenderer;
+import com.breakinblocks.animusnv.registry.AnimusBlockEntities;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
 import com.breakinblocks.animusnv.client.renderers.AnimusArrowRenderer;
 import com.breakinblocks.animusnv.compat.EvilCraftCompat;
@@ -22,6 +24,8 @@ public class AnimusClientSetup {
 
         event.registerEntityRenderer(AnimusEntityTypes.SENTIENT_ARROW.get(), AnimusArrowRenderer::new);
         event.registerEntityRenderer(AnimusEntityTypes.HELLFORGED_ARROW.get(), AnimusArrowRenderer::new);
+
+        event.registerBlockEntityRenderer(AnimusBlockEntities.SANGUINE_DYNAMO.get(), SanguineDynamoRenderer::new);
 
         if (ModList.get().isLoaded("evilcraft")) {
             registerEvilCraftRenderers(event);

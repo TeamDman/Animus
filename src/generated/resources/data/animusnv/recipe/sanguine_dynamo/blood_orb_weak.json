@@ -1,0 +1,6 @@
+{
+  "type": "animusnv:sanguine_dynamo",
+  "fe_per_ev": 5,
+  "max_ev_per_tick": 16,
+  "orb": "neovitae:blood_orb_weak"
+}

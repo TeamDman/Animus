@@ -1,0 +1,12 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "ftbarmory"
+    }
+  ],
+  "type": "animusnv:sanguine_dynamo",
+  "fe_per_ev": 5,
+  "max_ev_per_tick": 25000,
+  "orb": "ftbarmory:aurichalcum_blood_orb"
+}

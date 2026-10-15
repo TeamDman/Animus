@@ -1,0 +1,11 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:none"
+  },
+  "id": "rates",
+  "show_title_separator": true,
+  "sort_number": 2,
+  "text": "book.animusnv.guide.blocks.sanguine_dynamo.rates.text",
+  "title": "book.animusnv.guide.blocks.sanguine_dynamo.rates.title"
+}

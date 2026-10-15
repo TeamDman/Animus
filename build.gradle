@@ -18,6 +18,10 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 neoForge {
     version = neoforge_version
 
+    interfaceInjectionData {
+        from(file("buildutil/interface_injections.json"))
+    }
+
     runs {
         client {
             client()

@@ -69,6 +69,9 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_LEAVES = registerBlockItem("blood_leaves", AnimusBlocks.BLOCK_BLOOD_LEAVES);
     public static final DeferredHolder<Item, Item> BLOCK_ANTILIFE = registerBlockItem("antilife", AnimusBlocks.BLOCK_ANTILIFE);
 
+    public static final DeferredHolder<Item, ItemSanguineDynamo> BLOCK_SANGUINE_DYNAMO = ITEMS.registerItem("sanguine_dynamo",
+        props -> new ItemSanguineDynamo(AnimusBlocks.BLOCK_SANGUINE_DYNAMO.get(), props), Item.Properties::useBlockDescriptionPrefix);
+
     public static final DeferredHolder<Item, Item> BLOCK_CRYSTALLIZED_SPIRITUS = ITEMS.registerItem("crystallized_spiritus_block",
         props -> new BlockItem(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get(), props) {
             @Override

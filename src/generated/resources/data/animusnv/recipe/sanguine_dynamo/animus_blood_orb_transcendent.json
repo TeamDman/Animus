@@ -1,0 +1,6 @@
+{
+  "type": "animusnv:sanguine_dynamo",
+  "fe_per_ev": 5,
+  "max_ev_per_tick": 20000,
+  "orb": "animusnv:blood_orb_transcendent"
+}

@@ -2,6 +2,7 @@ package com.breakinblocks.animusnv.datagen;
 
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.recipes.KeyUnbindingRecipe;
+import com.breakinblocks.animusnv.recipes.SanguineDynamoRecipe;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import net.minecraft.core.HolderGetter;
@@ -70,6 +71,22 @@ public class AnimusRecipeProvider extends RecipeProvider {
         buildTabulaVitaeRecipes(output);
         buildHellfireForgeRecipes(output);
         buildArrayRecipes(output);
+        buildSanguineDynamoRecipes(output);
+    }
+
+    private void buildSanguineDynamoRecipes(RecipeOutput output) {
+        sanguineDynamo(output, NVItems.ORB_WEAK.get(), "blood_orb_weak", 16);
+        sanguineDynamo(output, NVItems.ORB_APPRENTICE.get(), "blood_orb_apprentice", 64);
+        sanguineDynamo(output, NVItems.ORB_MAGICIAN.get(), "blood_orb_magician", 256);
+        sanguineDynamo(output, NVItems.ORB_MASTER.get(), "blood_orb_master", 1024);
+        sanguineDynamo(output, NVItems.ORB_ARCHMAGE.get(), "blood_orb_archmage", 4096);
+        sanguineDynamo(output, NVItems.ORB_TRANSCENDENT.get(), "blood_orb_transcendent", 16384);
+        sanguineDynamo(output, AnimusItems.BLOOD_ORB_TRANSCENDENT.get(), "animus_blood_orb_transcendent", 20000);
+    }
+
+    private void sanguineDynamo(RecipeOutput output, ItemLike orb, String name, int maxEvPerTick) {
+        output.accept(rKey(loc("sanguine_dynamo/" + name)),
+            new SanguineDynamoRecipe(Ingredient.of(orb), 5, maxEvPerTick), null);
     }
 
     public static class Runner extends RecipeProvider.Runner {
@@ -276,6 +293,15 @@ public class AnimusRecipeProvider extends RecipeProvider {
     }
 
     private void buildHellfireForgeRecipes(RecipeOutput output) {
+        HellfireForgeRecipeBuilder.build(AnimusItems.BLOCK_SANGUINE_DYNAMO.get())
+            .minSpiritus(400.0)
+            .drain(100.0)
+            .requires(NVItems.TABULA_ANIMATA.get())
+            .requires(Items.REDSTONE_BLOCK)
+            .requires(Items.GOLD_BLOCK)
+            .requires(Items.BLAST_FURNACE)
+            .save(output, loc("sanguine_dynamo"));
+
         HellfireForgeRecipeBuilder.build(AnimusItems.BLOCK_WILLFUL_STONE.get(), 4)
             .minSpiritus(50.0)
             .drain(25.0)

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "animusnv:block/sanguine_dynamo"
+  }
+}

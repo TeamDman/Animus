@@ -83,6 +83,9 @@ public class AnimusBlocks {
 
     // Sanguine Rectifier moved to EvilCraftCompat (only exists when EvilCraft is loaded)
 
+    public static final DeferredHolder<Block, BlockSanguineDynamo> BLOCK_SANGUINE_DYNAMO = BLOCKS.registerBlock("sanguine_dynamo",
+        BlockSanguineDynamo::new, BlockSanguineDynamo::defaultProperties);
+
     public static final DeferredHolder<Block, Block> BLOCK_FLUID_ANTILIFE = BLOCKS.registerBlock("antilife_fluid",
         BlockFluidAntiLife::new, BlockFluidAntiLife::defaultProperties);
 

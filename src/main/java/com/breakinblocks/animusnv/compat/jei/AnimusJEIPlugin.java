@@ -5,6 +5,8 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.registry.AnimusBlocks;
 import com.breakinblocks.animusnv.Animus;
 import com.breakinblocks.animusnv.registry.AnimusItems;
+import com.breakinblocks.animusnv.registry.AnimusRecipeSerializers;
+import com.breakinblocks.animusnv.client.AnimusClientRecipeCache;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -19,6 +21,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.fml.ModList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import com.breakinblocks.neovitae.common.block.NVBlocks;
@@ -45,10 +48,17 @@ public class AnimusJEIPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
 
+        registration.addRecipeCategories(new SanguineDynamoCategory(guiHelper));
+
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
+        registration.addRecipes(SanguineDynamoCategory.RECIPE_TYPE,
+            AnimusClientRecipeCache.get().byType(AnimusRecipeSerializers.SANGUINE_DYNAMO_TYPE.get()).stream()
+                .map(RecipeHolder::value)
+                .toList());
+
         registration.addIngredientInfo(
             Arrays.asList(
                 new ItemStack(AnimusItems.ANTILIFE_BUCKET.get())
@@ -102,6 +112,11 @@ public class AnimusJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(
+            new ItemStack(AnimusBlocks.BLOCK_SANGUINE_DYNAMO.get()),
+            SanguineDynamoCategory.RECIPE_TYPE
+        );
+
     }
 
     @Override
