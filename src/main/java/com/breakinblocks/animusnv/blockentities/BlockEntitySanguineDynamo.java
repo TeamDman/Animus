@@ -46,6 +46,7 @@ public class BlockEntitySanguineDynamo extends BlockEntity implements GeoBlockEn
     private static final double ORB_HEIGHT = 12.5 / 16.0;
     private static final double POST_TIP_HEIGHT = 15.5 / 16.0;
     private static final double POST_OFFSET = 6.5 / 16.0;
+    private static final double ZAP_OVERSHOOT = 0.5;
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WORKING = RawAnimation.begin().thenLoop("working");
 
@@ -134,12 +135,20 @@ public class BlockEntitySanguineDynamo extends BlockEntity implements GeoBlockEn
     private void sendZap(ServerLevel serverLevel) {
         double sx = level.random.nextBoolean() ? POST_OFFSET : -POST_OFFSET;
         double sz = level.random.nextBoolean() ? POST_OFFSET : -POST_OFFSET;
-        StreamEffect.builder(worldPosition.getX() + 0.5, worldPosition.getY() + ORB_HEIGHT, worldPosition.getZ() + 0.5)
-            .to(worldPosition.getX() + 0.5 + sx, worldPosition.getY() + POST_TIP_HEIGHT, worldPosition.getZ() + 0.5 + sz)
+        double ox = worldPosition.getX() + 0.5;
+        double oy = worldPosition.getY() + ORB_HEIGHT;
+        double oz = worldPosition.getZ() + 0.5;
+        double dx = sx;
+        double dy = POST_TIP_HEIGHT - ORB_HEIGHT;
+        double dz = sz;
+        double length = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        double reach = (length + ZAP_OVERSHOOT) / length;
+        StreamEffect.builder(ox, oy, oz)
+            .to(ox + dx * reach, oy + dy * reach, oz + dz * reach)
             .color(0xFF2A36)
             .endColor(0xFF9A9A)
-            .scale(0.012f)
-            .speed(9.0f)
+            .scale(0.03f)
+            .speed(3.0f)
             .gravity(0.0f)
             .wobble(0.035f)
             .wobbleFrequency(6.0f)
