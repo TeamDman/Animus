@@ -28,6 +28,8 @@ import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.ModList;
+import com.breakinblocks.animusnv.compat.MonkCuriosCompat;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -66,9 +68,17 @@ public class MonkSigilEventHandler {
 
     @Nullable
     public static ItemStack findActiveMonkSigil(Player player) {
-        return InventorySearchHelper
+        ItemStack inventorySigil = InventorySearchHelper
             .findActiveSigil(player, AnimusItems.SIGIL_MONK.get())
             .orElse(null);
+        if (inventorySigil != null) {
+            return inventorySigil;
+        }
+        if (!ModList.get().isLoaded("curios")) {
+            return null;
+        }
+
+        return MonkCuriosCompat.findActiveMonkSigil(player);
     }
 
     @SubscribeEvent
