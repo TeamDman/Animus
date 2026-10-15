@@ -29,7 +29,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.ModList;
-import com.breakinblocks.animusnv.compat.MonkCuriosCompat;
+import com.breakinblocks.animusnv.compat.CuriosCompat;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -78,7 +78,7 @@ public class MonkSigilEventHandler {
             return null;
         }
 
-        return MonkCuriosCompat.findActiveMonkSigil(player);
+        return CuriosCompat.findActiveMonkSigil(player);
     }
 
     @SubscribeEvent

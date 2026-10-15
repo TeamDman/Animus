@@ -9,9 +9,9 @@ import top.theillusivec4.curios.api.CuriosApi;
 import javax.annotation.Nullable;
 
 /** Only accessed after verifying that the optional Curios mod is loaded. */
-public final class MonkCuriosCompat {
+public final class CuriosCompat {
 
-    private MonkCuriosCompat() {
+    private CuriosCompat() {
     }
 
     @Nullable
