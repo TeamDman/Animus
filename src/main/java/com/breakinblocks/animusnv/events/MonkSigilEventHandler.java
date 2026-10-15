@@ -27,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -42,6 +43,8 @@ import com.breakinblocks.animusnv.util.InventorySearchHelper;
 import javax.annotation.Nullable;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.api.spiritus.IPlayerSpiritusHandler;
+import com.breakinblocks.neovitae.common.item.IActivatable;
+import top.theillusivec4.curios.api.CuriosApi;
 
 @EventBusSubscriber(modid = Constants.Mod.MODID)
 public class MonkSigilEventHandler {
@@ -66,8 +69,24 @@ public class MonkSigilEventHandler {
 
     @Nullable
     public static ItemStack findActiveMonkSigil(Player player) {
-        return InventorySearchHelper
+        ItemStack inventorySigil = InventorySearchHelper
             .findActiveSigil(player, AnimusItems.SIGIL_MONK.get())
+            .orElse(null);
+        if (inventorySigil != null) {
+            return inventorySigil;
+        }
+        if (!ModList.get().isLoaded("curios")) {
+            return null;
+        }
+
+        // Curios slots are separate from the player's inventory. All Monk effects,
+        // including client-side mining checks, must resolve the equipped stack too.
+        return CuriosApi.getCuriosInventory(player)
+            .flatMap(inventory -> inventory.findFirstCurio(stack ->
+                stack.is(AnimusItems.SIGIL_MONK.get())
+                    && stack.getItem() instanceof IActivatable activatable
+                    && activatable.getActivated(stack)))
+            .map(result -> result.stack())
             .orElse(null);
     }
 
