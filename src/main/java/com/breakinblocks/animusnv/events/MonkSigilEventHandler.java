@@ -43,8 +43,7 @@ import com.breakinblocks.animusnv.util.InventorySearchHelper;
 import javax.annotation.Nullable;
 import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.api.spiritus.IPlayerSpiritusHandler;
-import com.breakinblocks.neovitae.common.item.IActivatable;
-import top.theillusivec4.curios.api.CuriosApi;
+import com.breakinblocks.animusnv.compat.MonkCuriosCompat;
 
 @EventBusSubscriber(modid = Constants.Mod.MODID)
 public class MonkSigilEventHandler {
@@ -81,13 +80,7 @@ public class MonkSigilEventHandler {
 
         // Curios slots are separate from the player's inventory. All Monk effects,
         // including client-side mining checks, must resolve the equipped stack too.
-        return CuriosApi.getCuriosInventory(player)
-            .flatMap(inventory -> inventory.findFirstCurio(stack ->
-                stack.is(AnimusItems.SIGIL_MONK.get())
-                    && stack.getItem() instanceof IActivatable activatable
-                    && activatable.getActivated(stack)))
-            .map(result -> result.stack())
-            .orElse(null);
+        return MonkCuriosCompat.findActiveMonkSigil(player);
     }
 
     @SubscribeEvent
