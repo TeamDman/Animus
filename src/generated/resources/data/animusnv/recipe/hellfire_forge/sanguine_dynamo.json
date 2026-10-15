@@ -1,0 +1,23 @@
+{
+  "type": "neovitae:hellfire_forge",
+  "drain": 100.0,
+  "inputs": [
+    {
+      "item": "neovitae:tabula_animata"
+    },
+    {
+      "item": "minecraft:redstone_block"
+    },
+    {
+      "item": "minecraft:gold_block"
+    },
+    {
+      "item": "minecraft:blast_furnace"
+    }
+  ],
+  "minDrain": 400.0,
+  "output": {
+    "count": 1,
+    "id": "animusnv:sanguine_dynamo"
+  }
+}

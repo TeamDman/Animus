@@ -81,6 +81,9 @@ public class AnimusBlocks {
     public static final DeferredHolder<Block, Block> BLOCK_WILLFUL_STONE_BLACK = BLOCKS.register("willful_stone_black",
         BlockWillfulStone::new);
 
+    public static final DeferredHolder<Block, Block> BLOCK_SANGUINE_DYNAMO = BLOCKS.register("sanguine_dynamo",
+        BlockSanguineDynamo::new);
+
     // Sanguine Rectifier moved to EvilCraftCompat (only exists when EvilCraft is loaded)
 
     public static final DeferredHolder<Block, Block> BLOCK_FLUID_ANTILIFE = BLOCKS.register("antilife_fluid",

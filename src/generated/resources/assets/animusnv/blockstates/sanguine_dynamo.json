@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "animusnv:block/sanguine_dynamo"
+    },
+    "active=true": {
+      "model": "animusnv:block/sanguine_dynamo"
+    }
+  }
+}

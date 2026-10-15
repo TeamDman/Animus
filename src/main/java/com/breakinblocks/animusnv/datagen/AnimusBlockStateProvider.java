@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -85,6 +86,8 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
             )
         );
 
+        sanguineDynamoBlock(AnimusBlocks.BLOCK_SANGUINE_DYNAMO.get());
+
         if (ModList.get().isLoaded("evilcraft")) {
             simpleBlock(EvilCraftCompat.SANGUINE_RECTIFIER.get(),
                 models().getExistingFile(modLoc("block/block_sanguine_rectifier")));
@@ -115,6 +118,12 @@ public class AnimusBlockStateProvider extends BlockStateProvider {
                 modLoc("block/" + name)
             )
         );
+    }
+
+    private void sanguineDynamoBlock(Block block) {
+        ModelFile model = models().getBuilder("sanguine_dynamo")
+            .texture("particle", modLoc("block/sanguine_dynamo"));
+        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder().modelFile(model).build());
     }
 
     private void bloodCoreBlock(Block block) {

@@ -6,9 +6,11 @@ import com.breakinblocks.animusnv.registry.AnimusItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -29,6 +31,17 @@ public class AnimusItemModelProvider extends ItemModelProvider {
         blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD_STAIRS, "blood_wood_stairs");
         blockItem(AnimusBlocks.BLOCK_BLOOD_WOOD_SLAB, "blood_wood_slab");
         blockItem(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS, "crystallized_spiritus_block");
+        getBuilder("sanguine_dynamo")
+            .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
+            .transforms()
+            .transform(ItemDisplayContext.GUI).rotation(30, 225, 0).scale(0.625f).end()
+            .transform(ItemDisplayContext.GROUND).translation(0, 3, 0).scale(0.25f).end()
+            .transform(ItemDisplayContext.FIXED).scale(0.5f).end()
+            .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+            .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+            .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4f).end()
+            .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4f).end()
+            .end();
 
         withExistingParent("blood_wood_fence", mcLoc("block/fence_inventory"))
             .texture("texture", modLoc("block/bloodwood_planks"));

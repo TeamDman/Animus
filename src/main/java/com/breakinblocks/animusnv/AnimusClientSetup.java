@@ -2,7 +2,10 @@ package com.breakinblocks.animusnv;
 
 import com.breakinblocks.animusnv.client.models.AnimusModelLayers;
 import com.breakinblocks.animusnv.client.models.SpearModel;
+import com.breakinblocks.animusnv.client.renderers.SanguineDynamoItemRenderer;
+import com.breakinblocks.animusnv.client.renderers.SanguineDynamoRenderer;
 import com.breakinblocks.animusnv.client.renderers.ThrownSpearRenderer;
+import com.breakinblocks.animusnv.registry.AnimusBlockEntities;
 import com.breakinblocks.animusnv.registry.AnimusEntityTypes;
 import com.breakinblocks.animusnv.registry.AnimusItems;
 import com.breakinblocks.animusnv.client.renderers.AnimusArrowRenderer;
@@ -10,6 +13,7 @@ import com.breakinblocks.animusnv.compat.EvilCraftCompat;
 import com.breakinblocks.animusnv.compat.evilcraft.SanguineRectifierRenderer;
 import com.breakinblocks.animusnv.items.ItemSpearBound;
 import com.breakinblocks.animusnv.util.SpiritusTypeHelper;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +25,8 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import com.breakinblocks.neovitae.common.item.IActivatable;
 import com.breakinblocks.neovitae.common.item.IBindable;
 
@@ -88,9 +94,26 @@ public class AnimusClientSetup {
         event.registerEntityRenderer(AnimusEntityTypes.SENTIENT_ARROW.get(), AnimusArrowRenderer::new);
         event.registerEntityRenderer(AnimusEntityTypes.HELLFORGED_ARROW.get(), AnimusArrowRenderer::new);
 
+        event.registerBlockEntityRenderer(AnimusBlockEntities.SANGUINE_DYNAMO.get(), context -> new SanguineDynamoRenderer());
+
         if (ModList.get().isLoaded("evilcraft")) {
             registerEvilCraftRenderers(event);
         }
+    }
+
+    @SubscribeEvent
+    public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerItem(new IClientItemExtensions() {
+            private SanguineDynamoItemRenderer renderer;
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (renderer == null) {
+                    renderer = new SanguineDynamoItemRenderer();
+                }
+                return renderer;
+            }
+        }, AnimusItems.BLOCK_SANGUINE_DYNAMO.get());
     }
 
     private static void registerEvilCraftRenderers(EntityRenderersEvent.RegisterRenderers event) {

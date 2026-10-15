@@ -68,6 +68,9 @@ public class AnimusItems {
     public static final DeferredHolder<Item, Item> BLOCK_BLOOD_LEAVES = registerBlockItem("blood_leaves", AnimusBlocks.BLOCK_BLOOD_LEAVES);
     public static final DeferredHolder<Item, Item> BLOCK_ANTILIFE = registerBlockItem("antilife", AnimusBlocks.BLOCK_ANTILIFE);
 
+    public static final DeferredHolder<Item, ItemSanguineDynamo> BLOCK_SANGUINE_DYNAMO = ITEMS.register("sanguine_dynamo",
+        () -> new ItemSanguineDynamo(AnimusBlocks.BLOCK_SANGUINE_DYNAMO.get(), new Item.Properties()));
+
     public static final DeferredHolder<Item, Item> BLOCK_CRYSTALLIZED_SPIRITUS = ITEMS.register("crystallized_spiritus_block",
         () -> new BlockItem(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get(), new Item.Properties()) {
             @Override

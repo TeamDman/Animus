@@ -1,0 +1,8 @@
+{
+  "type": "animusnv:sanguine_dynamo",
+  "fe_per_ev": 5,
+  "max_ev_per_tick": 16384,
+  "orb": {
+    "item": "neovitae:blood_orb_transcendent"
+  }
+}

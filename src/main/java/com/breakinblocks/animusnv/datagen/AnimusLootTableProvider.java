@@ -75,6 +75,7 @@ public class AnimusLootTableProvider extends LootTableProvider {
             );
 
             this.dropSelf(AnimusBlocks.BLOCK_CRYSTALLIZED_SPIRITUS.get());
+            this.dropSelf(AnimusBlocks.BLOCK_SANGUINE_DYNAMO.get());
             // EvilCraft compat block (registered in EvilCraftCompat)
             if (ModList.get().isLoaded("evilcraft")) {
                 this.dropSelf(EvilCraftCompat.SANGUINE_RECTIFIER.get());

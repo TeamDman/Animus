@@ -3,6 +3,7 @@ package com.breakinblocks.animusnv.registry;
 import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.blockentities.BlockEntityAntiLife;
 import com.breakinblocks.animusnv.blockentities.BlockEntityBloodCore;
+import com.breakinblocks.animusnv.blockentities.BlockEntitySanguineDynamo;
 import com.breakinblocks.animusnv.blockentities.BlockEntityWillfulStone;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -50,6 +51,14 @@ public class AnimusBlockEntities {
             AnimusBlocks.BLOCK_WILLFUL_STONE_GREEN.get(),
             AnimusBlocks.BLOCK_WILLFUL_STONE_RED.get(),
             AnimusBlocks.BLOCK_WILLFUL_STONE_BLACK.get()
+        ).build(null)
+    );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockEntitySanguineDynamo>> SANGUINE_DYNAMO = BLOCK_ENTITIES.register(
+        "sanguine_dynamo",
+        () -> BlockEntityType.Builder.of(
+            BlockEntitySanguineDynamo::new,
+            AnimusBlocks.BLOCK_SANGUINE_DYNAMO.get()
         ).build(null)
     );
 }

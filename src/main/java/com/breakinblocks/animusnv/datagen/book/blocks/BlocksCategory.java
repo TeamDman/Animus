@@ -17,7 +17,7 @@ public class BlocksCategory extends CategoryProvider {
                 "__a_b__",
                 "__c_d__",
                 "__e_f__",
-                "____g__"
+                "__h_g__"
         };
     }
 
@@ -30,6 +30,7 @@ public class BlocksCategory extends CategoryProvider {
         var willfulStone = this.add(new WillfulStoneEntry(this).generate('e'));
         var bloodTrees = this.add(new BloodTreesEntry(this).generate('f'));
         var decorativeBlocks = this.add(new DecorativeBlocksEntry(this).generate('g'));
+        var sanguineDynamo = this.add(new SanguineDynamoEntry(this).generate('h'));
     }
 
     @Override
