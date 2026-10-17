@@ -94,6 +94,7 @@ def compatSources = [
                 'com/breakinblocks/animusnv/compat/ironsartifice/**',
                 'com/breakinblocks/animusnv/compat/IronsArtificeCompat.java',
                 'com/breakinblocks/animusnv/compat/IronsArtificeCompatLoader.java',
+                'com/breakinblocks/animusnv/mixin/ironsartifice/**',
         ]],
 ]
 

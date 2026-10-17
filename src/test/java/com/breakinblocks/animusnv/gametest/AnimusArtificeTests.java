@@ -12,6 +12,7 @@ import com.breakinblocks.neovitae.common.effect.NVMobEffects;
 import com.breakinblocks.neovitae.common.item.NVItems;
 import com.breakinblocks.neovitae.spiritus.ISpiritusGem;
 import io.redspace.irons_artifice.api.BulletImpactEvent;
+import io.redspace.irons_artifice.data.ReloadResult;
 import io.redspace.irons_artifice.data.ShotComponents;
 import io.redspace.irons_artifice.entity.Bullet;
 import io.redspace.irons_artifice.item.FireDelayState;
@@ -44,15 +45,21 @@ public final class AnimusArtificeTests {
     private AnimusArtificeTests() {}
 
     public static void register(AnimusTestRegistrar r) {
-        r.add("artifice_blood_bullet_uses_ev", AnimusArtificeTests::bloodBulletUsesEv);
-        r.add("artifice_blood_bullet_falls_back_to_bullets", AnimusArtificeTests::bloodBulletFallsBack);
+        r.add("artifice_blood_bullet_fires_from_magazine", AnimusArtificeTests::bloodBulletFiresFromMagazine);
+        r.add("artifice_blood_bullet_reloads_with_ev", AnimusArtificeTests::bloodBulletReloadsWithEv);
+        r.add("artifice_blood_bullet_partial_reload", AnimusArtificeTests::bloodBulletPartialReload);
+        r.add("artifice_blood_bullet_reload_falls_back_to_bullets", AnimusArtificeTests::bloodBulletReloadFallsBack);
         r.add("artifice_spirit_powder_scales_damage", AnimusArtificeTests::spiritPowderScalesDamage);
         r.add("artifice_spirit_powder_snares_target", AnimusArtificeTests::spiritPowderSnaresTarget);
         r.add("artifice_recipes_load", AnimusArtificeTests::recipesLoad);
     }
 
     private static ItemStack gunWith(int rounds, Item... modifiers) {
-        ItemStack stack = new ItemStack(ItemRegistry.MUSKET.get());
+        return gunWith(ItemRegistry.MUSKET.get(), rounds, modifiers);
+    }
+
+    private static ItemStack gunWith(Item gun, int rounds, Item... modifiers) {
+        ItemStack stack = new ItemStack(gun);
         GunItem.setMagazine(stack, new MagazineContents(rounds));
         GunContainer container = new GunContainer(stack);
         for (int slot = 0; slot < modifiers.length; slot++) {
@@ -72,34 +79,72 @@ public final class AnimusArtificeTests {
         return player;
     }
 
-    private static void bloodBulletUsesEv(GameTestHelper h) {
-        ServerPlayer player = shooter(h, gunWith(0, IronsArtificeCompat.BLOOD_BULLET_MODIFIER.get()));
-        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
-        network.set(AnimaTicket.create(1000), 1000);
-        int cost = BloodBulletModifier.getEvCost();
-
-        FireOutcome outcome = GunplayManager.tryFire(player, FORWARD);
-
-        h.assertValueEqual(outcome, FireOutcome.FIRED, "empty gun with a Blood Bullet fires");
-        h.assertValueEqual(network.getCurrentEV(), 1000 - cost, "one shot drains the configured EV");
-        h.assertValueEqual(GunItem.getMagazine(player.getMainHandItem()).count(), 0, "magazine untouched");
-        h.assertEntitiesPresent(EntityRegistry.BULLET.get(), 1);
-        h.succeed();
-    }
-
-    private static void bloodBulletFallsBack(GameTestHelper h) {
+    private static void bloodBulletFiresFromMagazine(GameTestHelper h) {
         ServerPlayer player = shooter(h, gunWith(1, IronsArtificeCompat.BLOOD_BULLET_MODIFIER.get()));
         IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
-        network.set(AnimaTicket.create(0), 0);
+        network.set(AnimaTicket.create(1000), 1000);
 
         FireOutcome first = GunplayManager.tryFire(player, FORWARD);
-        h.assertValueEqual(first, FireOutcome.FIRED, "loaded round fires when the network is dry");
-        h.assertValueEqual(GunItem.getMagazine(player.getMainHandItem()).count(), 0, "the loaded round was used");
-        h.assertValueEqual(network.getCurrentEV(), 0, "no EV taken for a bullet-paid shot");
+        h.assertValueEqual(first, FireOutcome.FIRED, "loaded round fires");
+        h.assertValueEqual(GunItem.getMagazine(player.getMainHandItem()).count(), 0, "the shot used the loaded round");
+        h.assertValueEqual(network.getCurrentEV(), 1000, "firing takes no EV");
 
         FireDelayState.clear(player);
         FireOutcome second = GunplayManager.tryFire(player, FORWARD);
-        h.assertValueEqual(second, FireOutcome.EMPTY_MAGAZINE, "no EV and no rounds refuses the shot");
+        h.assertValueEqual(second, FireOutcome.EMPTY_MAGAZINE, "an empty Blood Bullet gun needs a reload");
+        h.succeed();
+    }
+
+    private static void bloodBulletReloadsWithEv(GameTestHelper h) {
+        ServerPlayer player = shooter(h, gunWith(
+                ItemRegistry.BLACKPOWDER_REVOLVER.get(), 0, IronsArtificeCompat.BLOOD_BULLET_MODIFIER.get()));
+        ItemStack held = player.getMainHandItem();
+        int capacity = ((GunItem) held.getItem()).magazineCapacity();
+        int cost = BloodBulletModifier.getEvCost();
+        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+        network.set(AnimaTicket.create(capacity * cost + 50), capacity * cost + 50);
+
+        h.assertValueEqual(GunplayManager.attemptStartReload(player, held), ReloadResult.STARTING_RELOAD,
+                "reload starts with no bullets in the inventory");
+        h.assertValueEqual(GunplayManager.attemptFinishReload(player, held, capacity), ReloadResult.FINISHED_RELOAD,
+                "reload finishes");
+        h.assertValueEqual(GunItem.getMagazine(held).count(), capacity, "magazine filled");
+        h.assertValueEqual(network.getCurrentEV(), 50, "a full reload costs the per-round EV times the magazine size");
+        h.succeed();
+    }
+
+    private static void bloodBulletPartialReload(GameTestHelper h) {
+        ServerPlayer player = shooter(h, gunWith(
+                ItemRegistry.BLACKPOWDER_REVOLVER.get(), 0, IronsArtificeCompat.BLOOD_BULLET_MODIFIER.get()));
+        ItemStack held = player.getMainHandItem();
+        int cost = BloodBulletModifier.getEvCost();
+        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+        network.set(AnimaTicket.create(2 * cost + 10), 2 * cost + 10);
+
+        h.assertValueEqual(GunplayManager.attemptFinishReload(player, held, 0), ReloadResult.FINISHED_RELOAD,
+                "reload finishes");
+        h.assertValueEqual(GunItem.getMagazine(held).count(), 2, "only the affordable rounds are loaded");
+        h.assertValueEqual(network.getCurrentEV(), 10, "two rounds charged");
+        h.succeed();
+    }
+
+    private static void bloodBulletReloadFallsBack(GameTestHelper h) {
+        ServerPlayer player = shooter(h, gunWith(
+                ItemRegistry.BLACKPOWDER_REVOLVER.get(), 0, IronsArtificeCompat.BLOOD_BULLET_MODIFIER.get()));
+        ItemStack held = player.getMainHandItem();
+        IAnima network = NeoVitaeAPI.getInstance().getAnima(player.getUUID());
+        network.set(AnimaTicket.create(0), 0);
+
+        h.assertValueEqual(GunplayManager.attemptStartReload(player, held), ReloadResult.NO_AMMO,
+                "no EV and no bullets refuses the reload");
+
+        player.getInventory().add(new ItemStack(ItemRegistry.BULLET.get(), 3));
+        h.assertValueEqual(GunplayManager.attemptStartReload(player, held), ReloadResult.STARTING_RELOAD,
+                "a dry network reloads from bullets");
+        h.assertValueEqual(GunplayManager.attemptFinishReload(player, held, 0), ReloadResult.FINISHED_RELOAD,
+                "bullet reload finishes");
+        h.assertValueEqual(GunItem.getMagazine(held).count(), 3, "the bullets were loaded");
+        h.assertValueEqual(GunplayManager.countBullets(player), 0, "the bullets were taken from the inventory");
         h.succeed();
     }
 

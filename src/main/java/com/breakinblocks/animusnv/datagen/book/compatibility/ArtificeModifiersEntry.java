@@ -25,7 +25,7 @@ public class ArtificeModifiersEntry extends EntryProvider {
         this.pageText("Firearms from Iron's Arms 'n Artifice accept two modifiers that only a "
                 + "Vitaemancer can make. Open a gun's modifier slots ([#](B8860B)G[#]() by default) "
                 + "and fit them like any other modifier.\\\n\\\n"
-                + "[#](8B0000)Blood Bullet[#]() feeds the gun from your [#](8B0000)Anima[#](). "
+                + "[#](8B0000)Blood Bullet[#]() reloads the gun from your [#](8B0000)Anima[#](). "
                 + "[#](4A0080)Spirit Powder[#]() binds the souls of what you shoot.\\\n\\\n"
                 + "[#](2E8B57)Both can share one gun.[#]()");
 
@@ -33,11 +33,11 @@ public class ArtificeModifiersEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Blood Bullet");
-        this.pageText("A round of congealed life essence that never runs dry. Each shot draws "
-                + "[#](B8860B)50 EV[#]() from your network in place of a bullet, so the gun fires "
-                + "even with an empty magazine.\\\n\\\n"
-                + "When your network cannot pay, the gun falls back on whatever bullets are loaded.\\\n\\\n"
-                + "[#](2E8B57)The EV cost per shot is configurable.[#]()");
+        this.pageText("Congealed life essence pressed into the breech. The gun still fires from its "
+                + "magazine, but reloading draws [#](B8860B)100 EV[#]() per round from your network "
+                + "instead of taking bullets from your inventory.\\\n\\\n"
+                + "If your network cannot pay for a single round, the gun reloads from your bullets as normal.\\\n\\\n"
+                + "[#](2E8B57)The EV cost per round is configurable.[#]()");
 
         this.page("blood_bullet_recipe", () -> BookAraVitaeRecipePageModel.create()
                 .withRecipeId1(Identifier.fromNamespaceAndPath("animusnv", "ara_vitae/blood_bullet_modifier")));

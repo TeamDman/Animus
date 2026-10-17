@@ -1011,17 +1011,17 @@ public class AnimusConfig {
     }
 
     public static class IronsArtifice {
-        public final ModConfigSpec.IntValue bloodBulletEvCost;
+        public final ModConfigSpec.IntValue bloodBulletReloadCost;
 
         public IronsArtifice(ModConfigSpec.Builder builder) {
             builder.comment("Iron's Arms 'n Artifice Integration").push("ironsArtifice");
 
-            bloodBulletEvCost = builder
+            bloodBulletReloadCost = builder
                 .comment(
-                    "EV drained from the shooter's network per shot with a Blood Bullet modifier",
-                    "Default: 50"
+                    "EV drained from the shooter's network per round loaded when reloading a gun with a Blood Bullet modifier",
+                    "Default: 100"
                 )
-                .defineInRange("bloodBulletEvCost", 50, 0, 10000);
+                .defineInRange("bloodBulletReloadCost", 100, 0, 10000);
 
             builder.pop();
         }
