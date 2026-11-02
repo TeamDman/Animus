@@ -20,7 +20,7 @@ public class EnhancementEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Enhancement");
-        this.pageText("An [#](4A0080)imperfect ritual[#]() that pushes enchantments beyond their natural limits. Every enchantment on the held item gains one additional level, and the item is permanently marked to prevent further enhancement."
+        this.pageText("An [#](4A0080)imperfect ritual[#]() that pushes enchantments beyond their natural limits. Every enchantment on the held item gains one additional level, up to one past its natural maximum, and the item is permanently marked to prevent further enhancement."
                 + "\\\n\\\nPlace an [#](8B0000)Amethyst Block[#]() atop an [#](8B0000)Imperfect Ritual Stone[#]()."
                 + "\\\n\\\n[#](B8860B)Cost:[#]() 5,000 EV per activation"
                 + "\\\n\\\nThe stone remains intact for reuse.");
@@ -30,7 +30,8 @@ public class EnhancementEntry extends EntryProvider {
                 .withText(this.context().pageText()));
         this.pageTitle("Usage");
         this.pageText("Hold the item you wish to enhance in your main hand, then right-click the [#](8B0000)Imperfect Ritual Stone[#]()."
-                + "\n\n- All enchantments gain +1 level"
+                + "\n\n- All enchantments gain +1 level, to at most one past their maximum"
+                + "\n\n- Enchantments already past their maximum are left as they are"
                 + "\n\n- The item is marked as enhanced"
                 + "\n\n- Items can only be enhanced once"
                 + "\n\n- The enhancement mark cannot be removed through normal means"

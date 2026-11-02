@@ -335,6 +335,7 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
         add("ritual.animusnv.boundless_skies.success", "The boundless skies embrace you - creative flight granted!");
         add("ritual.animusnv.clear_skies.success", "The skies clear at your command!");
         add("ritual.animusnv.enhancement.already_enhanced", "This item has already been enhanced!");
+        add("ritual.animusnv.enhancement.at_limit", "These enchantments are already past their natural limit!");
         add("ritual.animusnv.enhancement.no_enchantments", "This item has no enchantments to enhance!");
         add("ritual.animusnv.enhancement.no_item", "You must be holding an item in your mainhand to perform this ritual!");
         add("ritual.animusnv.enhancement.success", "Item enchantments enhanced!");
