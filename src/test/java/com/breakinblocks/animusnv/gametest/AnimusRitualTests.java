@@ -6,13 +6,20 @@ import com.breakinblocks.animusnv.registry.AnimusRituals;
 import com.breakinblocks.animusnv.rituals.RitualLuna;
 import com.breakinblocks.animusnv.rituals.RitualNaturesLeach;
 import com.breakinblocks.animusnv.rituals.RitualSol;
+import com.breakinblocks.animusnv.rituals.imperfect.RitualEnhancement;
 import com.breakinblocks.animusnv.util.ChebyshevSearcher;
 import com.breakinblocks.neovitae.api.ritual.AreaDescriptor;
 import com.breakinblocks.neovitae.ritual.EnumReaderBoundaries;
 import com.breakinblocks.neovitae.ritual.Ritual;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
@@ -38,6 +45,7 @@ public final class AnimusRitualTests {
         r.add("natures_leach_refresh_never_zero", AnimusRitualTests::naturesLeachRefreshTimeNeverZero);
         r.add("natures_leach_ranges_are_editable", AnimusRitualTests::naturesLeachRangesAreEditable);
         r.add("natures_leach_loads_saved_ranges", AnimusRitualTests::naturesLeachLoadsSavedRanges);
+        r.add("enhancement_stops_one_level_past_max", AnimusRitualTests::enhancementStopsOneLevelPastMax);
         r.add("natures_leach_preserves_terrain", AnimusRitualTests::naturesLeachPreservesTerrain);
         r.add("every_ritual_has_usable_refresh", AnimusRitualTests::everyRitualHasUsableRefreshTime);
     }
@@ -175,6 +183,37 @@ public final class AnimusRitualTests {
                     key + " must still reject positions outside its reach");
             }
         }
+        helper.succeed();
+    }
+
+    private static void enhancementStopsOneLevelPastMax(GameTestHelper helper) {
+        HolderLookup.RegistryLookup<Enchantment> registry =
+            helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Holder<Enchantment> sharpness = registry.getOrThrow(Enchantments.SHARPNESS);
+        Holder<Enchantment> looting = registry.getOrThrow(Enchantments.LOOTING);
+        Holder<Enchantment> unbreaking = registry.getOrThrow(Enchantments.UNBREAKING);
+
+        ItemEnchantments.Mutable start = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+        start.set(sharpness, 5);
+        start.set(looting, 1);
+        start.set(unbreaking, 10);
+
+        ItemEnchantments once = RitualEnhancement.enhance(start.toImmutable());
+        helper.assertTrue(once.getLevel(sharpness) == 6, "Sharpness V becomes VI, got " + once.getLevel(sharpness));
+        helper.assertTrue(once.getLevel(looting) == 2, "Looting I becomes II, got " + once.getLevel(looting));
+        helper.assertTrue(once.getLevel(unbreaking) == 10,
+            "an enchantment already past its maximum is left alone, got " + once.getLevel(unbreaking));
+
+        ItemEnchantments repeated = once;
+        for (int run = 0; run < 10; run++) {
+            repeated = RitualEnhancement.enhance(repeated);
+        }
+        helper.assertTrue(repeated.getLevel(sharpness) == 6,
+            "repeated enhancement keeps Sharpness at VI, got " + repeated.getLevel(sharpness));
+        helper.assertTrue(repeated.getLevel(looting) == 4,
+            "repeated enhancement stops Looting at IV, got " + repeated.getLevel(looting));
+        helper.assertTrue(RitualEnhancement.enhance(repeated).equals(repeated),
+            "a fully capped item comes back unchanged so the ritual refuses it");
         helper.succeed();
     }
 

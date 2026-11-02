@@ -63,13 +63,14 @@ public class RitualEnhancement extends ImperfectRitual {
             return false;
         }
 
-        ItemEnchantments.Mutable mutableEnchantments = new ItemEnchantments.Mutable(enchantments);
-        for (Holder<Enchantment> enchantment : enchantments.keySet()) {
-            int currentLevel = enchantments.getLevel(enchantment);
-            mutableEnchantments.set(enchantment, currentLevel + 1);
+        ItemEnchantments enhancedEnchantments = enhance(enchantments);
+        if (enhancedEnchantments.equals(enchantments)) {
+            player.sendSystemMessage(
+                Component.translatable("ritual.animusnv.enhancement.at_limit"));
+            return false;
         }
 
-        mainhandItem.set(DataComponents.ENCHANTMENTS, mutableEnchantments.toImmutable());
+        mainhandItem.set(DataComponents.ENCHANTMENTS, enhancedEnchantments);
         mainhandItem.set(AnimusDataComponents.ANIMUS_ENHANCED.get(), true);
 
         level.playSound(
@@ -85,5 +86,16 @@ public class RitualEnhancement extends ImperfectRitual {
             Component.translatable("ritual.animusnv.enhancement.success"));
 
         return true;
+    }
+
+    public static ItemEnchantments enhance(ItemEnchantments enchantments) {
+        ItemEnchantments.Mutable mutableEnchantments = new ItemEnchantments.Mutable(enchantments);
+        for (Holder<Enchantment> enchantment : enchantments.keySet()) {
+            int currentLevel = enchantments.getLevel(enchantment);
+            if (currentLevel <= enchantment.value().getMaxLevel()) {
+                mutableEnchantments.set(enchantment, currentLevel + 1);
+            }
+        }
+        return mutableEnchantments.toImmutable();
     }
 }
