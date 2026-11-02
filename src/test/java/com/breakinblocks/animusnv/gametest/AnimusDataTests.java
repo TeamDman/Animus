@@ -4,16 +4,25 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.advancements.AltarTierTrigger;
 import com.breakinblocks.animusnv.advancements.AnimusCriteriaTriggers;
 import com.breakinblocks.animusnv.gametest.base.AnimusTestRegistrar;
+import com.breakinblocks.animusnv.registry.AnimusCreativeTabs;
+import com.breakinblocks.animusnv.registry.AnimusItems;
 import com.klikli_dev.modonomicon.data.BookDataManager;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
 
 import java.util.List;
@@ -30,6 +39,37 @@ public final class AnimusDataTests {
         r.add("altar_tier_trigger_registered", AnimusDataTests::altarTierTriggerIsRegistered);
         r.add("altar_tier_trigger_tracks_listening_players", AnimusDataTests::altarTierTriggerTracksListeningPlayers);
         r.add("altar_tier_trigger_awards_and_stops_checking", AnimusDataTests::altarTierTriggerAwardsAndStopsChecking);
+        r.add("javelins_have_melee_attributes", AnimusDataTests::javelinsHaveMeleeAttributes);
+        r.add("transcendent_orb_in_creative_tab", AnimusDataTests::transcendentOrbInCreativeTab);
+    }
+
+    private static void transcendentOrbInCreativeTab(GameTestHelper helper) {
+        CreativeModeTab tab = AnimusCreativeTabs.ANIMUS_TAB.get();
+        tab.buildContents(new CreativeModeTab.ItemDisplayParameters(
+                helper.getLevel().enabledFeatures(), true, helper.getLevel().registryAccess()));
+        helper.assertTrue(tab.getDisplayItems().stream()
+                        .anyMatch(stack -> stack.is(AnimusItems.BLOOD_ORB_TRANSCENDENT.get())),
+                "the Transcendent Orb of Vitae is listed in the Animus creative tab, which EMI indexes");
+        helper.succeed();
+    }
+
+    private static void javelinsHaveMeleeAttributes(GameTestHelper helper) {
+        List<Item> javelins = List.of(
+                AnimusItems.SPEAR_IRON.get(),
+                AnimusItems.SPEAR_DIAMOND.get(),
+                AnimusItems.SPEAR_BOUND.get(),
+                AnimusItems.SPEAR_SENTIENT.get());
+        for (Item javelin : javelins) {
+            ItemAttributeModifiers modifiers = new ItemStack(javelin)
+                    .getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+            boolean damage = modifiers.modifiers().stream()
+                    .anyMatch(entry -> entry.attribute().equals(Attributes.ATTACK_DAMAGE) && entry.modifier().amount() > 0);
+            boolean speed = modifiers.modifiers().stream()
+                    .anyMatch(entry -> entry.attribute().equals(Attributes.ATTACK_SPEED));
+            helper.assertTrue(damage && speed,
+                    BuiltInRegistries.ITEM.getKey(javelin) + " needs attack damage and attack speed modifiers");
+        }
+        helper.succeed();
     }
 
     private static void animusAdvancementsLoad(GameTestHelper helper) {

@@ -41,7 +41,7 @@ public class ItemSpear extends TridentItem {
     protected final ToolMaterial material;
 
     public ItemSpear(ToolMaterial material, Properties properties) {
-        super(properties.durability(material.durability()));
+        super(properties.durability(material.durability()).attributes(TridentItem.createAttributes()));
         this.material = material;
     }
 
