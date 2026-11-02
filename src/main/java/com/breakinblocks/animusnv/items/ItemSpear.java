@@ -43,7 +43,7 @@ public class ItemSpear extends TridentItem {
     protected final Tier tier;
 
     public ItemSpear(Tier tier) {
-        super(new Properties().durability(tier.getUses()));
+        super(new Properties().durability(tier.getUses()).attributes(TridentItem.createAttributes()));
         this.tier = tier;
     }
 

@@ -53,6 +53,7 @@ public class AnimusCreativeTabs {
             .icon(() -> new ItemStack(AnimusItems.BLOOD_APPLE.get()))
             .displayItems((parameters, output) -> {
                 AnimusItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                AnimusBloodOrbs.BLOOD_ORBS.getEntries().forEach(item -> output.accept(item.get()));
 
                 // Registry lookup avoids class loading issues with optional mod classes
                 if (ModList.get().isLoaded("irons_spellbooks")) {
