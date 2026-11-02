@@ -8,6 +8,7 @@ import io.redspace.irons_artifice.data.ValueModifier;
 import io.redspace.irons_artifice.entity.Bullet;
 import io.redspace.irons_artifice.gun.ShotProfile;
 import io.redspace.irons_artifice.utils.Utils;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -49,5 +50,17 @@ public final class IronsArtificeEvents {
                 new MobEffectInstance(
                         NVMobEffects.SPIRITUS_SNARE, SpiritPowderModifier.SNARE_DURATION_TICKS, 0, false, true),
                 bullet.getOwner());
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void onVengeanceBulletImpact(BulletImpactEvent event) {
+        Bullet bullet = event.getBullet();
+        if (event.isCanceled() || !(bullet.level() instanceof ServerLevel level)) {
+            return;
+        }
+        if (event.getRayTraceResult() instanceof EntityHitResult hit
+                && VengeanceBulletModifier.canStrike(bullet, hit.getEntity())) {
+            VengeanceBulletModifier.strike(level, bullet, hit.getEntity());
+        }
     }
 }

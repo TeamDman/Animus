@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "irons_artifice"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "evilcraft"
+    }
+  ],
+  "type": "evilcraft:blood_infuser",
+  "input_item": "irons_artifice:enchanted_bullet_modifier",
+  "input_fluid": {
+    "id": "evilcraft:blood",
+    "amount": 10000
+  },
+  "output_item": {
+    "id": "animusnv:vengeance_bullet_modifier"
+  },
+  "duration": 400,
+  "xp": 1.5,
+  "tier": 3
+}

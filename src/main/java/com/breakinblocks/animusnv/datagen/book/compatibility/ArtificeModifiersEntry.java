@@ -6,6 +6,7 @@ import com.klikli_dev.modonomicon.api.datagen.CategoryProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.EntryBackground;
 import com.klikli_dev.modonomicon.api.datagen.EntryProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
+import com.klikli_dev.modonomicon.api.datagen.book.condition.BookModLoadedConditionModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.klikli_dev.modonomicon.client.gui.book.theme.GuiSprite;
 import net.minecraft.resources.Identifier;
@@ -22,12 +23,12 @@ public class ArtificeModifiersEntry extends EntryProvider {
                 .withTitle(this.context().pageTitle())
                 .withText(this.context().pageText()));
         this.pageTitle("Sanguine Gunsmithing");
-        this.pageText("Firearms from Iron's Arms 'n Artifice accept two modifiers that only a "
+        this.pageText("Firearms from Iron's Arms 'n Artifice accept modifiers that only a "
                 + "Vitaemancer can make. Open a gun's modifier slots ([#](B8860B)G[#]() by default) "
                 + "and fit them like any other modifier.\\\n\\\n"
                 + "[#](8B0000)Blood Bullet[#]() reloads the gun from your [#](8B0000)Anima[#](). "
                 + "[#](4A0080)Spirit Powder[#]() binds the souls of what you shoot.\\\n\\\n"
-                + "[#](2E8B57)Both can share one gun.[#]()");
+                + "[#](2E8B57)They can all share one gun.[#]()");
 
         this.page("blood_bullet", () -> BookTextPageModel.create()
                 .withTitle(this.context().pageTitle())
@@ -55,6 +56,17 @@ public class ArtificeModifiersEntry extends EntryProvider {
 
         this.page("spirit_powder_recipe", () -> BookHellfireForgeRecipePageModel.create()
                 .withRecipeId1(Identifier.fromNamespaceAndPath("animusnv", "hellfire_forge/spirit_powder_modifier")));
+
+        this.page("vengeance_bullet", () -> BookTextPageModel.create()
+                .withTitle(this.context().pageTitle())
+                .withText(this.context().pageText())
+                .withCondition(BookModLoadedConditionModel.create().withModId("evilcraft")));
+        this.pageTitle("Vengeance Bullet");
+        this.pageText("An Enchanted Bullet steeped in blood until it carries a grudge of its own. "
+                + "Shots fitted with it strike [#](4A0080)Vengeance Spirits[#]() instead of passing "
+                + "through them, and wound them with the shot's full damage.\\\n\\\n"
+                + "Infuse an [#](B8860B)Enchanted Bullet[#]() modifier with [#](B8860B)10,000 mB[#]() "
+                + "of Blood in a [#](8B0000)Blood Infuser[#]() upgraded with a Promise of Tenacity III.");
     }
 
     @Override
@@ -64,7 +76,7 @@ public class ArtificeModifiersEntry extends EntryProvider {
 
     @Override
     protected String entryDescription() {
-        return "Blood Bullet and Spirit Powder gun modifiers. Requires Iron's Arms 'n Artifice.";
+        return "Blood-forged gun modifiers. Requires Iron's Arms 'n Artifice.";
     }
 
     @Override

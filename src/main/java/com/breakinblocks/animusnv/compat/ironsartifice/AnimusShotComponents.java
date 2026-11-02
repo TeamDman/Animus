@@ -9,6 +9,8 @@ public final class AnimusShotComponents {
             new ComponentType<>(Constants.rl("blood_bullet"), () -> Value.of(0));
     public static final ComponentType<Value> SPIRIT_POWDER =
             new ComponentType<>(Constants.rl("spirit_powder"), () -> Value.of(0));
+    public static final ComponentType<Value> VENGEANCE_BULLET =
+            new ComponentType<>(Constants.rl("vengeance_bullet"), () -> Value.of(0));
 
     private AnimusShotComponents() {}
 }

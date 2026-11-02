@@ -25,19 +25,27 @@ import io.redspace.irons_artifice.menu.GunContainer;
 import io.redspace.irons_artifice.registry.EntityRegistry;
 import io.redspace.irons_artifice.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
+
+import java.lang.reflect.Method;
 
 public final class AnimusArtificeTests {
     private static final Vec3 FORWARD = new Vec3(0.0, 0.0, 1.0);
@@ -51,6 +59,8 @@ public final class AnimusArtificeTests {
         r.add("artifice_blood_bullet_reload_falls_back_to_bullets", AnimusArtificeTests::bloodBulletReloadFallsBack);
         r.add("artifice_spirit_powder_scales_damage", AnimusArtificeTests::spiritPowderScalesDamage);
         r.add("artifice_spirit_powder_snares_target", AnimusArtificeTests::spiritPowderSnaresTarget);
+        r.add("artifice_vengeance_bullet_targets_spirits", AnimusArtificeTests::vengeanceBulletTargetsSpirits);
+        r.add("artifice_vengeance_bullet_wounds_spirits", AnimusArtificeTests::vengeanceBulletWoundsSpirits);
         r.add("artifice_recipes_load", AnimusArtificeTests::recipesLoad);
     }
 
@@ -77,6 +87,35 @@ public final class AnimusArtificeTests {
         FireDelayState.clear(player);
         PendingShot.clear(player);
         return player;
+    }
+
+    private static Bullet bullet(GameTestHelper h, ServerPlayer player, ItemStack gun, Entity target) {
+        Bullet bullet = new Bullet(EntityRegistry.BULLET.get(), h.getLevel());
+        bullet.setOwner(player);
+        bullet.applyProfile(GunplayManager.compose(player, ((GunItem) gun.getItem()).getGun(), gun));
+        bullet.setPos(target.position().add(0.0, 0.5, -1.0));
+        bullet.setDeltaMovement(0.0, 0.0, 2.0);
+        return bullet;
+    }
+
+    private static LivingEntity spirit(GameTestHelper h) {
+        EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(
+                Identifier.fromNamespaceAndPath("evilcraft", "vengeance_spirit"));
+        Entity spirit = h.spawn(type, new BlockPos(2, 2, 4));
+        if (spirit instanceof Mob mob) {
+            mob.setNoAi(true);
+        }
+        return (LivingEntity) spirit;
+    }
+
+    private static Object invoke(Bullet bullet, String name, Class<?> parameter, Object argument) {
+        try {
+            Method method = Bullet.class.getDeclaredMethod(name, parameter);
+            method.setAccessible(true);
+            return method.invoke(bullet, argument);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("could not call Bullet#" + name, e);
+        }
     }
 
     private static void bloodBulletFiresFromMagazine(GameTestHelper h) {
@@ -180,9 +219,43 @@ public final class AnimusArtificeTests {
         h.succeed();
     }
 
+    private static void vengeanceBulletTargetsSpirits(GameTestHelper h) {
+        ItemStack vengeanceGun = gunWith(1, IronsArtificeCompat.VENGEANCE_BULLET_MODIFIER.get());
+        ItemStack plainGun = gunWith(1);
+        ServerPlayer player = shooter(h, vengeanceGun);
+        LivingEntity spirit = spirit(h);
+
+        h.assertTrue(spirit.is(Constants.Tags.VENGEANCE_BULLET_TARGETS),
+                "Vengeance Spirits are in the vengeance bullet target tag");
+        h.assertTrue(!(boolean) invoke(bullet(h, player, plainGun, spirit), "canHitEntity", Entity.class, spirit),
+                "an ordinary shot passes through a Vengeance Spirit");
+        h.assertTrue((boolean) invoke(bullet(h, player, vengeanceGun, spirit), "canHitEntity", Entity.class, spirit),
+                "a Vengeance Bullet shot can hit a Vengeance Spirit");
+        h.succeed();
+    }
+
+    private static void vengeanceBulletWoundsSpirits(GameTestHelper h) {
+        ItemStack vengeanceGun = gunWith(1, IronsArtificeCompat.VENGEANCE_BULLET_MODIFIER.get());
+        ItemStack plainGun = gunWith(1);
+        ServerPlayer player = shooter(h, vengeanceGun);
+        LivingEntity spirit = spirit(h);
+        float health = spirit.getHealth();
+
+        invoke(bullet(h, player, plainGun, spirit), "onHit", HitResult.class, new EntityHitResult(spirit));
+        h.assertValueEqual(spirit.getHealth(), health, "an ordinary bullet does not hurt a Vengeance Spirit");
+
+        invoke(bullet(h, player, vengeanceGun, spirit), "onHit", HitResult.class, new EntityHitResult(spirit));
+        h.assertTrue(spirit.getHealth() < health,
+                "a Vengeance Bullet wounds a Vengeance Spirit, health " + health + " -> " + spirit.getHealth());
+        h.succeed();
+    }
+
     private static void recipesLoad(GameTestHelper h) {
         var recipes = h.getLevel().getServer().getRecipeManager();
-        for (String path : new String[] {"ara_vitae/blood_bullet_modifier", "hellfire_forge/spirit_powder_modifier"}) {
+        for (String path : new String[] {
+                "ara_vitae/blood_bullet_modifier",
+                "hellfire_forge/spirit_powder_modifier",
+                "blood_infuser/vengeance_bullet_modifier"}) {
             ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Constants.rl(path));
             h.assertTrue(recipes.byKey(key).isPresent(), "recipe " + path + " loaded");
         }

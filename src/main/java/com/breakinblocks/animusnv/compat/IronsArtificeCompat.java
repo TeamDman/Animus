@@ -5,6 +5,7 @@ import com.breakinblocks.animusnv.Constants;
 import com.breakinblocks.animusnv.compat.ironsartifice.BloodBulletModifier;
 import com.breakinblocks.animusnv.compat.ironsartifice.IronsArtificeEvents;
 import com.breakinblocks.animusnv.compat.ironsartifice.SpiritPowderModifier;
+import com.breakinblocks.animusnv.compat.ironsartifice.VengeanceBulletModifier;
 import io.redspace.irons_artifice.modifier.ModifierItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
@@ -20,6 +21,9 @@ public class IronsArtificeCompat implements ICompatModule {
 
     public static final DeferredItem<ModifierItem> SPIRIT_POWDER_MODIFIER = ITEMS.registerItem(
             "spirit_powder_modifier", props -> new ModifierItem(props.stacksTo(1), new SpiritPowderModifier()));
+
+    public static final DeferredItem<ModifierItem> VENGEANCE_BULLET_MODIFIER = ITEMS.registerItem(
+            "vengeance_bullet_modifier", props -> new ModifierItem(props.stacksTo(1), new VengeanceBulletModifier()));
 
     public static void registerDeferred(IEventBus modEventBus) {
         ITEMS.register(modEventBus);

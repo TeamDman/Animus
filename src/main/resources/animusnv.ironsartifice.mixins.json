@@ -4,6 +4,7 @@
   "package": "com.breakinblocks.animusnv.mixin.ironsartifice",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "BulletMixin",
     "GunplayManagerMixin"
   ],
   "client": [],

@@ -1,0 +1,18 @@
+{
+  "type": "modonomicon:text",
+  "condition": {
+    "type": "modonomicon:mod_loaded",
+    "mod_id": "evilcraft",
+    "tooltip": {
+      "translate": "tooltip.modonomicon.condition.mod_loaded",
+      "with": [
+        "evilcraft"
+      ]
+    }
+  },
+  "id": "vengeance_bullet",
+  "show_title_separator": true,
+  "sort_number": 5,
+  "text": "book.animusnv.guide.compatibility.artifice_modifiers.vengeance_bullet.text",
+  "title": "book.animusnv.guide.compatibility.artifice_modifiers.vengeance_bullet.title"
+}

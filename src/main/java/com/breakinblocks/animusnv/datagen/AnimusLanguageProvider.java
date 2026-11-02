@@ -656,11 +656,13 @@ public class AnimusLanguageProvider extends LanguageProvider implements Modonomi
 
         add("item.animusnv.blood_bullet_modifier", "Blood Bullet");
         add("item.animusnv.spirit_powder_modifier", "Spirit Powder");
+        add("item.animusnv.vengeance_bullet_modifier", "Vengeance Bullet");
         add("tooltip.animusnv.blood_bullet_modifier.effect", "Reloads with EV instead of bullets");
         add("tooltip.animusnv.blood_bullet_modifier.cost", "Costs %s EV per round loaded");
         add("text.component.animusnv.blood_bullet.no_ev", "Not enough EV to reload with blood");
         add("tooltip.animusnv.spirit_powder_modifier.snare", "Snares targets so kills drop Spiritus");
         add("tooltip.animusnv.spirit_powder_modifier.scaling", "+%s%% to +%s%% damage from the Spiritus in your gems");
+        add("tooltip.animusnv.vengeance_bullet_modifier.effect", "Shots can hit and wound Vengeance Spirits");
         add("tooltip.animusnv.diabolical_fungi.conversion", "1 Spiritus = 50 mana (configurable), bonus for variety");
         add("tooltip.animusnv.diabolical_fungi.flavour", "Devil's Tooth Mushroom - Feeds on Spiritus");
         add("tooltip.animusnv.diabolical_fungi.info", "Consumes Spiritus from the chunk to generate mana");
