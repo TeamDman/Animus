@@ -1,0 +1,90 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "compatibility",
+  "condition": {
+    "type": "modonomicon:mod_loaded",
+    "mod_id": "irons_artifice"
+  },
+  "description": "book.animusnv.guide.compatibility.artifice_modifiers.description",
+  "hide_while_locked": false,
+  "icon": {
+    "height": 16,
+    "texture": "animusnv:textures/item/blood_bullet_modifier.png",
+    "width": 16
+  },
+  "name": "book.animusnv.guide.compatibility.artifice_modifiers.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.artifice_modifiers.intro.text",
+      "title": "book.animusnv.guide.compatibility.artifice_modifiers.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.artifice_modifiers.blood_bullet.text",
+      "title": "book.animusnv.guide.compatibility.artifice_modifiers.blood_bullet.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "neovitae:ara_vitae_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "animusnv:ara_vitae/blood_bullet_modifier",
+      "text": "",
+      "title1": "",
+      "title2": ""
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.artifice_modifiers.spirit_powder.text",
+      "title": "book.animusnv.guide.compatibility.artifice_modifiers.spirit_powder.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "neovitae:hellfire_forge_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "animusnv:hellfire_forge/spirit_powder_modifier",
+      "text": "",
+      "title1": "",
+      "title2": ""
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:mod_loaded",
+        "mod_id": "evilcraft"
+      },
+      "show_title_separator": true,
+      "text": "book.animusnv.guide.compatibility.artifice_modifiers.vengeance_bullet.text",
+      "title": "book.animusnv.guide.compatibility.artifice_modifiers.vengeance_bullet.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 10,
+  "x": 1,
+  "y": 1
+}

@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.breakinblocks.animusnv.mixin.ironsartifice",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "com.breakinblocks.animusnv.mixin.IronsArtificeMixinPlugin",
+  "mixins": [
+    "BulletMixin",
+    "GunplayManagerMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

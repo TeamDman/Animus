@@ -1014,6 +1014,23 @@ public class AnimusConfig {
         }
     }
 
+    public static class IronsArtifice {
+        public final ModConfigSpec.IntValue bloodBulletReloadCost;
+
+        public IronsArtifice(ModConfigSpec.Builder builder) {
+            builder.comment("Iron's Arms 'n Artifice Integration").push("ironsArtifice");
+
+            bloodBulletReloadCost = builder
+                .comment(
+                    "EV drained from the shooter's network per round loaded when reloading a gun with a Blood Bullet modifier",
+                    "Default: 100"
+                )
+                .defineInRange("bloodBulletReloadCost", 100, 0, 10000);
+
+            builder.pop();
+        }
+    }
+
     public static class SanguineDynamo {
         public final ModConfigSpec.IntValue bufferCapacity;
 
@@ -1039,6 +1056,7 @@ public class AnimusConfig {
     public static IronsSpells ironsSpells;
     public static SanguineRectifier sanguineRectifier;
     public static SanguineDynamo sanguineDynamo;
+    public static IronsArtifice ironsArtifice;
 
     static {
         BUILDER.comment("Animus Configuration").push("animusnv");
@@ -1054,6 +1072,7 @@ public class AnimusConfig {
         ironsSpells = new IronsSpells(BUILDER);
         sanguineRectifier = new SanguineRectifier(BUILDER);
         sanguineDynamo = new SanguineDynamo(BUILDER);
+        ironsArtifice = new IronsArtifice(BUILDER);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

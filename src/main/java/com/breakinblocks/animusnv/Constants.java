@@ -285,6 +285,12 @@ public class Constants {
                 ResourceLocation.fromNamespaceAndPath(Mod.MODID, "disallow_execute")
             );
 
+        public static final TagKey<EntityType<?>> VENGEANCE_BULLET_TARGETS =
+            TagKey.create(
+                Registries.ENTITY_TYPE,
+                ResourceLocation.fromNamespaceAndPath(Mod.MODID, "vengeance_bullet_targets")
+            );
+
         public static final TagKey<Block> DISALLOW_LEACH =
             TagKey.create(
                 Registries.BLOCK,

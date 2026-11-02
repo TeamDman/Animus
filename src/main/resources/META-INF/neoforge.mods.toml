@@ -103,6 +103,13 @@ description = '''${mod_description}'''
     side = "BOTH"
 
 [[dependencies.animusnv]]
+    modId = "irons_artifice"
+    type = "optional"
+    versionRange = "[1.21.1-1.1.1,)"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.animusnv]]
     modId = "dynamictrees"
     type = "optional"
     versionRange = "[1.7.0,)"
@@ -118,4 +125,7 @@ config = "animusnv.mixins.json"
 
 [[mixins]]
 config = "animusnv.ironsspells.mixins.json"
+
+[[mixins]]
+config = "animusnv.ironsartifice.mixins.json"
 

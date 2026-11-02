@@ -138,6 +138,10 @@ dependencies {
 
     compileOnly "maven.modrinth:dynamictrees:${dynamictrees_version}"
     runtimeOnly "maven.modrinth:dynamictrees:${dynamictrees_version}"
+
+    compileOnly "maven.modrinth:irons-artifice:${irons_artifice_version}"
+    runtimeOnly "maven.modrinth:irons-artifice:${irons_artifice_version}"
+    runtimeOnly "maven.modrinth:irons-lib:${irons_lib_version}"
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -211,7 +215,7 @@ publishMods {
         clientRequired = true
         serverRequired = true
         requires("neovitae", "geckolib", "modonomicon")
-        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum", "dynamictrees")
+        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum", "dynamictrees", "irons-artifice")
     }
 
     modrinth {
@@ -219,7 +223,7 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         minecraftVersions.add(minecraft_version)
         requires("neovitae", "geckolib", "modonomicon")
-        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum", "dynamictrees")
+        optional("jei", "curios", "evilcraft", "ars-nouveau", "irons-spells-n-spellbooks", "malum", "dynamictrees", "irons-artifice")
     }
 }
 
