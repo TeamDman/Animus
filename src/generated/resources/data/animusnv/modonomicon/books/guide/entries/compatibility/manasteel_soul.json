@@ -7,6 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.manasteel_soul.description",
+  "icon": {
+    "id": "minecraft:iron_ingot"
+  },
+  "id": "animusnv:compatibility/manasteel_soul",
+  "load_condition": {
     "type": "modonomicon:mod_loaded",
     "mod_id": "botania",
     "tooltip": {
@@ -16,11 +24,9 @@
       ]
     }
   },
-  "description": "book.animusnv.guide.compatibility.manasteel_soul.description",
-  "icon": {
-    "id": "minecraft:iron_ingot"
+  "marker_condition": {
+    "type": "modonomicon:none"
   },
-  "id": "animusnv:compatibility/manasteel_soul",
   "name": "book.animusnv.guide.compatibility.manasteel_soul.name",
   "sort_number": 7,
   "x": 1,

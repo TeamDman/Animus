@@ -7,6 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.sanguine_rectifier.description",
+  "icon": {
+    "id": "minecraft:cauldron"
+  },
+  "id": "animusnv:compatibility/sanguine_rectifier",
+  "load_condition": {
     "type": "modonomicon:mod_loaded",
     "mod_id": "evilcraft",
     "tooltip": {
@@ -16,11 +24,9 @@
       ]
     }
   },
-  "description": "book.animusnv.guide.compatibility.sanguine_rectifier.description",
-  "icon": {
-    "id": "minecraft:cauldron"
+  "marker_condition": {
+    "type": "modonomicon:none"
   },
-  "id": "animusnv:compatibility/sanguine_rectifier",
   "name": "book.animusnv.guide.compatibility.sanguine_rectifier.name",
   "sort_number": 9,
   "x": -3,
