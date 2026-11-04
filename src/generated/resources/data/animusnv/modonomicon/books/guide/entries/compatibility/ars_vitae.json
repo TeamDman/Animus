@@ -7,6 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.ars_vitae.description",
+  "icon": {
+    "id": "minecraft:glass_bottle"
+  },
+  "id": "animusnv:compatibility/ars_vitae",
+  "load_condition": {
     "type": "modonomicon:mod_loaded",
     "mod_id": "ars_nouveau",
     "tooltip": {
@@ -16,11 +24,9 @@
       ]
     }
   },
-  "description": "book.animusnv.guide.compatibility.ars_vitae.description",
-  "icon": {
-    "id": "minecraft:glass_bottle"
+  "marker_condition": {
+    "type": "modonomicon:none"
   },
-  "id": "animusnv:compatibility/ars_vitae",
   "name": "book.animusnv.guide.compatibility.ars_vitae.name",
   "sort_number": 3,
   "x": -1,

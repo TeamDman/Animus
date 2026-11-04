@@ -24,6 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
+import net.neoforged.fml.ModList;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,34 @@ public final class AnimusDataTests {
         r.add("altar_tier_trigger_awards_and_stops_checking", AnimusDataTests::altarTierTriggerAwardsAndStopsChecking);
         r.add("javelins_have_melee_attributes", AnimusDataTests::javelinsHaveMeleeAttributes);
         r.add("transcendent_orb_in_creative_tab", AnimusDataTests::transcendentOrbInCreativeTab);
+        r.add("guide_book_builds_without_optional_mods", AnimusDataTests::guideBookBuildsWithoutOptionalMods);
+    }
+
+    private static void guideBookBuildsWithoutOptionalMods(GameTestHelper helper) {
+        BookDataManager.get().tryBuildBooks(helper.getLevel());
+        var book = BookDataManager.get().getBook(Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "guide"));
+        helper.assertTrue(book != null, "the Animus guide is loaded");
+        for (String mod : List.of("ars_nouveau", "botania", "irons_spellbooks", "malum", "evilcraft", "irons_artifice")) {
+            String entry = switch (mod) {
+                case "ars_nouveau" -> "ars_vitae";
+                case "botania" -> "manasteel_soul";
+                case "irons_spellbooks" -> "iron_heart";
+                case "malum" -> "soul_stained_blood";
+                case "evilcraft" -> "sanguine_rectifier";
+                default -> "artifice_modifiers";
+            };
+            boolean loaded = book.getEntry(Identifier.fromNamespaceAndPath(Constants.Mod.MODID, "compatibility/" + entry)) != null;
+            helper.assertTrue(loaded == ModList.get().isLoaded(mod), entry + " loads exactly when " + mod + " is present");
+        }
+        // A hidden entry still builds its pages. A missing optional multiblock can
+        // abort the book build and leave later categories/entries unbound.
+        for (var category : book.getCategories().values()) {
+            helper.assertTrue(category.getBook() == book, category.getId() + " is bound to the guide");
+            for (var entry : category.getEntries().values()) {
+                helper.assertTrue(entry.getBook() == book, entry.getId() + " is bound to the guide");
+            }
+        }
+        helper.succeed();
     }
 
     private static void transcendentOrbInCreativeTab(GameTestHelper helper) {

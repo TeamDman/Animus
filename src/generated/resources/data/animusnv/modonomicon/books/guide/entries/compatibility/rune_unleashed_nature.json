@@ -7,6 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.rune_unleashed_nature.description",
+  "icon": {
+    "id": "minecraft:oak_sapling"
+  },
+  "id": "animusnv:compatibility/rune_unleashed_nature",
+  "load_condition": {
     "type": "modonomicon:mod_loaded",
     "mod_id": "botania",
     "tooltip": {
@@ -16,11 +24,9 @@
       ]
     }
   },
-  "description": "book.animusnv.guide.compatibility.rune_unleashed_nature.description",
-  "icon": {
-    "id": "minecraft:oak_sapling"
+  "marker_condition": {
+    "type": "modonomicon:none"
   },
-  "id": "animusnv:compatibility/rune_unleashed_nature",
   "name": "book.animusnv.guide.compatibility.rune_unleashed_nature.name",
   "sort_number": 1,
   "x": -1,

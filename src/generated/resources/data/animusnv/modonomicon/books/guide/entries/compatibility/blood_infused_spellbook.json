@@ -7,6 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.blood_infused_spellbook.description",
+  "icon": {
+    "id": "minecraft:enchanted_book"
+  },
+  "id": "animusnv:compatibility/blood_infused_spellbook",
+  "load_condition": {
     "type": "modonomicon:mod_loaded",
     "mod_id": "irons_spellbooks",
     "tooltip": {
@@ -16,11 +24,9 @@
       ]
     }
   },
-  "description": "book.animusnv.guide.compatibility.blood_infused_spellbook.description",
-  "icon": {
-    "id": "minecraft:enchanted_book"
+  "marker_condition": {
+    "type": "modonomicon:none"
   },
-  "id": "animusnv:compatibility/blood_infused_spellbook",
   "name": "book.animusnv.guide.compatibility.blood_infused_spellbook.name",
   "sort_number": 4,
   "x": 3,

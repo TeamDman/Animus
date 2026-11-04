@@ -7,6 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.soul_stained_blood.description",
+  "icon": {
+    "id": "minecraft:sculk"
+  },
+  "id": "animusnv:compatibility/soul_stained_blood",
+  "load_condition": {
     "type": "modonomicon:mod_loaded",
     "mod_id": "malum",
     "tooltip": {
@@ -16,11 +24,9 @@
       ]
     }
   },
-  "description": "book.animusnv.guide.compatibility.soul_stained_blood.description",
-  "icon": {
-    "id": "minecraft:sculk"
+  "marker_condition": {
+    "type": "modonomicon:none"
   },
-  "id": "animusnv:compatibility/soul_stained_blood",
   "name": "book.animusnv.guide.compatibility.soul_stained_blood.name",
   "sort_number": 8,
   "x": 3,

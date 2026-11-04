@@ -7,6 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.sanguine_scrolls.description",
+  "icon": {
+    "id": "minecraft:paper"
+  },
+  "id": "animusnv:compatibility/sanguine_scrolls",
+  "load_condition": {
     "type": "modonomicon:mod_loaded",
     "mod_id": "irons_spellbooks",
     "tooltip": {
@@ -16,11 +24,9 @@
       ]
     }
   },
-  "description": "book.animusnv.guide.compatibility.sanguine_scrolls.description",
-  "icon": {
-    "id": "minecraft:paper"
+  "marker_condition": {
+    "type": "modonomicon:none"
   },
-  "id": "animusnv:compatibility/sanguine_scrolls",
   "name": "book.animusnv.guide.compatibility.sanguine_scrolls.name",
   "sort_number": 5,
   "x": -3,

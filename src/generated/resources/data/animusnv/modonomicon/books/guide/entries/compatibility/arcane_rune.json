@@ -7,6 +7,14 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.arcane_rune.description",
+  "icon": {
+    "id": "minecraft:amethyst_shard"
+  },
+  "id": "animusnv:compatibility/arcane_rune",
+  "load_condition": {
     "type": "modonomicon:mod_loaded",
     "mod_id": "ars_nouveau",
     "tooltip": {
@@ -16,11 +24,9 @@
       ]
     }
   },
-  "description": "book.animusnv.guide.compatibility.arcane_rune.description",
-  "icon": {
-    "id": "minecraft:amethyst_shard"
+  "marker_condition": {
+    "type": "modonomicon:none"
   },
-  "id": "animusnv:compatibility/arcane_rune",
   "name": "book.animusnv.guide.compatibility.arcane_rune.name",
   "sort_number": 0,
   "x": -3,

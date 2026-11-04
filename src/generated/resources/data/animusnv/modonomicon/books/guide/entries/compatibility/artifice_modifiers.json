@@ -7,6 +7,12 @@
   },
   "category": "animusnv:compatibility",
   "condition": {
+    "type": "modonomicon:none"
+  },
+  "description": "book.animusnv.guide.compatibility.artifice_modifiers.description",
+  "icon": "animusnv:textures/item/blood_bullet_modifier.png",
+  "id": "animusnv:compatibility/artifice_modifiers",
+  "load_condition": {
     "type": "modonomicon:mod_loaded",
     "mod_id": "irons_artifice",
     "tooltip": {
@@ -16,9 +22,9 @@
       ]
     }
   },
-  "description": "book.animusnv.guide.compatibility.artifice_modifiers.description",
-  "icon": "animusnv:textures/item/blood_bullet_modifier.png",
-  "id": "animusnv:compatibility/artifice_modifiers",
+  "marker_condition": {
+    "type": "modonomicon:none"
+  },
   "name": "book.animusnv.guide.compatibility.artifice_modifiers.name",
   "sort_number": 10,
   "x": 1,

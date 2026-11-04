@@ -25,33 +25,35 @@ public class CompatCategory extends CategoryProvider {
 
     @Override
     protected void generateEntries() {
+        // Visibility conditions still build pages, including optional multiblocks.
+        // Skip these entries entirely when their mod is absent.
         // Ars Nouveau
         var arcaneRune = this.add(new ArcaneRuneEntry(this).generate('a')
-                .withCondition(BookModLoadedConditionModel.create().withModId("ars_nouveau")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("ars_nouveau")));
         var runeUnleashedNature = this.add(new RuneUnleashedNatureEntry(this).generate('b')
-                .withCondition(BookModLoadedConditionModel.create().withModId("botania")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("botania")));
         var magi = this.add(new MagiEntry(this).generate('c')
-                .withCondition(BookModLoadedConditionModel.create().withModId("ars_nouveau")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("ars_nouveau")));
         var arsVitae = this.add(new ArsVitaeEntry(this).generate('j')
-                .withCondition(BookModLoadedConditionModel.create().withModId("ars_nouveau")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("ars_nouveau")));
         // Iron's Spells
         var bloodInfusedSpellbook = this.add(new BloodInfusedSpellbookEntry(this).generate('d')
-                .withCondition(BookModLoadedConditionModel.create().withModId("irons_spellbooks")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("irons_spellbooks")));
         var sanguineScrolls = this.add(new SanguineScrollsEntry(this).generate('e')
-                .withCondition(BookModLoadedConditionModel.create().withModId("irons_spellbooks")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("irons_spellbooks")));
         var ironHeart = this.add(new IronHeartEntry(this).generate('f')
-                .withCondition(BookModLoadedConditionModel.create().withModId("irons_spellbooks")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("irons_spellbooks")));
         // Botania
         var manasteelSoul = this.add(new ManasteelSoulEntry(this).generate('g')
-                .withCondition(BookModLoadedConditionModel.create().withModId("botania")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("botania")));
         // Malum
         var soulStainedBlood = this.add(new SoulStainedBloodEntry(this).generate('h')
-                .withCondition(BookModLoadedConditionModel.create().withModId("malum")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("malum")));
         // EvilCraft
         var sanguineRectifier = this.add(new SanguineRectifierEntry(this).generate('i')
-                .withCondition(BookModLoadedConditionModel.create().withModId("evilcraft")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("evilcraft")));
         var artificeModifiers = this.add(new ArtificeModifiersEntry(this).generate('k')
-                .withCondition(BookModLoadedConditionModel.create().withModId("irons_artifice")));
+                .withLoadCondition(BookModLoadedConditionModel.create().withModId("irons_artifice")));
     }
 
     @Override
