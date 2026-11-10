@@ -19,8 +19,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = SentientScytheItem.class, remap = false)
 public class SentientScytheSweepMixin {
 
-    @Inject(method = "performAreaAttack", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "performAreaAttack(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/entity/LivingEntity;Lcom/breakinblocks/neovitae/common/datacomponent/SpiritusType;I)V",
+            at = @At("HEAD"),
+            cancellable = true,
+            require = 0)
     private void animus$suppressSweepForNarrowEdge(Player player, LivingEntity target, SpiritusType type, int level, CallbackInfo ci) {
+        animus$suppressSweep(player, ci);
+    }
+
+    @Inject(
+            method = "performAreaAttack(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/entity/LivingEntity;Lcom/breakinblocks/neovitae/common/datacomponent/SpiritusType;ID)V",
+            at = @At("HEAD"),
+            cancellable = true,
+            require = 0)
+    private void animus$suppressSweepForNarrowEdgeScaled(Player player, LivingEntity target, SpiritusType type, int level, double scale, CallbackInfo ci) {
+        animus$suppressSweep(player, ci);
+    }
+
+    private static void animus$suppressSweep(Player player, CallbackInfo ci) {
         if (!(player.getMainHandItem().getItem() instanceof ItemRunicSentientScythe)) {
             return;
         }
