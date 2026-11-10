@@ -52,6 +52,9 @@ public class AnimusItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.SLABS)
             .add(AnimusItems.BLOCK_BLOOD_WOOD_SLAB.get());
 
+        tag(ItemTags.BOOKSHELF_BOOKS)
+            .add(AnimusItems.GUIDE_BOOK.get());
+
         tag(ItemTags.SWORDS)
             .add(AnimusItems.RUNIC_SENTIENT_SCYTHE.get())
             .add(AnimusItems.HAND_OF_DEATH.get());
