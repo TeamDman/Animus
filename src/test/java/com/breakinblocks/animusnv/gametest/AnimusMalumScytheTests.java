@@ -12,6 +12,7 @@ import com.sammy.malum.registry.common.item.MalumItems;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -59,10 +60,15 @@ public class AnimusMalumScytheTests {
         Zombie target = h.spawn(EntityType.ZOMBIE, new BlockPos(2, 2, 3));
         Zombie bystander = h.spawn(EntityType.ZOMBIE, new BlockPos(3, 2, 3));
 
-        Method areaAttack = SentientScytheItem.class.getDeclaredMethod(
-                "performAreaAttack", Player.class, LivingEntity.class, SpiritusType.class, int.class);
+        Method areaAttack = Arrays.stream(SentientScytheItem.class.getDeclaredMethods())
+                .filter(m -> m.getName().equals("performAreaAttack"))
+                .findFirst()
+                .orElseThrow();
         areaAttack.setAccessible(true);
-        areaAttack.invoke(player.getMainHandItem().getItem(), player, target, SpiritusType.RAW, 0);
+        Object[] args = areaAttack.getParameterCount() == 5
+                ? new Object[] {player, target, SpiritusType.RAW, 0, 1.0D}
+                : new Object[] {player, target, SpiritusType.RAW, 0};
+        areaAttack.invoke(player.getMainHandItem().getItem(), args);
 
         DamageSource source = bystander.getLastDamageSource();
         h.assertTrue(source != null, "bystander was hit by the area attack");
